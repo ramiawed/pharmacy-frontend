@@ -1,5 +1,3 @@
-import logo from "./logo.svg";
-import "./App.css";
 import { useTranslation } from "react-i18next";
 
 function App() {
@@ -9,7 +7,7 @@ function App() {
 
   return (
     <div>
-      <p>Pharmacy</p>
+      <p>{t("pharmacy")}</p>
     </div>
   );
 }

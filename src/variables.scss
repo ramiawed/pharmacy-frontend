@@ -1,0 +1,84 @@
+/* FONTS */
+$font1: "Amiri", serif;
+$font2: "Mirza", cursive;
+$font3: "Scheherazade", serif;
+
+/* SCSS HEX */
+$bdazzled-blue: #3d5a80ff;
+$pale-cerulean: #98c1d9ff;
+$light-cyan: #e0fbfcff;
+$burnt-sienna: #ee6c4dff;
+$gunmetal: #293241ff;
+
+/* SCSS Gradient */
+$gradient-top: linear-gradient(
+  0deg,
+  $bdazzled-blue,
+  $pale-cerulean,
+  $light-cyan,
+  $burnt-sienna,
+  $gunmetal
+);
+$gradient-right: linear-gradient(
+  90deg,
+  $bdazzled-blue,
+  $pale-cerulean,
+  $light-cyan,
+  $burnt-sienna,
+  $gunmetal
+);
+$gradient-bottom: linear-gradient(
+  180deg,
+  $bdazzled-blue,
+  $pale-cerulean,
+  $light-cyan,
+  $burnt-sienna,
+  $gunmetal
+);
+$gradient-left: linear-gradient(
+  270deg,
+  $bdazzled-blue,
+  $pale-cerulean,
+  $light-cyan,
+  $burnt-sienna,
+  $gunmetal
+);
+$gradient-top-right: linear-gradient(
+  45deg,
+  $bdazzled-blue,
+  $pale-cerulean,
+  $light-cyan,
+  $burnt-sienna,
+  $gunmetal
+);
+$gradient-bottom-right: linear-gradient(
+  135deg,
+  $bdazzled-blue,
+  $pale-cerulean,
+  $light-cyan,
+  $burnt-sienna,
+  $gunmetal
+);
+$gradient-top-left: linear-gradient(
+  225deg,
+  $bdazzled-blue,
+  $pale-cerulean,
+  $light-cyan,
+  $burnt-sienna,
+  $gunmetal
+);
+$gradient-bottom-left: linear-gradient(
+  315deg,
+  $bdazzled-blue,
+  $pale-cerulean,
+  $light-cyan,
+  $burnt-sienna,
+  $gunmetal
+);
+$gradient-radial: radial-gradient(
+  $bdazzled-blue,
+  $pale-cerulean,
+  $light-cyan,
+  $burnt-sienna,
+  $gunmetal
+);

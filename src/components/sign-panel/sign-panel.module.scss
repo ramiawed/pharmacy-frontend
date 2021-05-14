@@ -1,0 +1,19 @@
+@import "../../variables.scss";
+
+.sign_panel {
+  height: 100vh;
+  min-width: 100vw;
+
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  transition: all 0.5s;
+}
+
+.swipe_right:lang(ar) {
+  transform: translateX(100vw);
+}
+
+.swipe_right:lang(en) {
+  transform: translateX(-100vw);
+}

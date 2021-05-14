@@ -1,3 +1,14 @@
 {
-    "pharmacy" : "Pharmacy"
+    "signup-sentence": "If don't have an account, create your own.",
+    "signin-sentence": "If you have already an account, Sign in",
+    "signup": "Sign up",
+    "signin": "Sign in",
+    "app-name": "App Name",
+    "user-name": "Name",
+    "user-username": "Username",
+    "user-password": "Password",
+    "user-password-confirm": "Confirm password",
+    "user-phone": "Phone number",
+    "user-email": "Email",
+    "user-mobile": "Mobile number"
 }

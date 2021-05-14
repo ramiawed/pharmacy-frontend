@@ -1,3 +1,14 @@
 {
-    "pharmacy": "الصيدالية"
+    "signup-sentence": "إذا لم يكن لديك حساب، قم بإنشاء حساب خاص",
+    "signin-sentence": "إذا كان لديك حساب خاص، قم بتسجيل الدخول",
+    "signup": "حساب جديد",
+    "signin": "تسجيل دخول",
+    "app-name": "اسم البرنامج",
+    "user-name": "الاسم",
+    "user-username": "اسم الدخول",
+    "user-password": "كلمة السر",
+    "user-password-confirm": "تأكيد كلمة السر",
+    "user-phone": "رقم الهاتف",
+    "user-email": "البريد الالكتروني",
+    "user-mobile": "رقم الجوال"
 }

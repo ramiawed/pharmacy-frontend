@@ -1,0 +1,88 @@
+@import "../../variables.scss";
+
+@mixin shrinkLabel($color) {
+  top: 0px;
+  color: $color;
+  z-index: 5;
+  background-color: white;
+}
+
+.input_container {
+  position: relative;
+  padding: 10px;
+  width: 100%;
+  min-width: 200px;
+
+  input {
+    display: block;
+    width: 100%;
+    padding: 12px 12px;
+    border-radius: 8px;
+  }
+}
+
+.input_normal {
+  border: 1px solid $bdazzled-blue;
+  color: $bdazzled-blue;
+
+  &:focus {
+    outline: none;
+    border: 2px solid $pale-cerulean;
+    color: $pale-cerulean;
+  }
+
+  &:focus + .input_label {
+    @include shrinkLabel($pale-cerulean);
+  }
+
+  & + .input_label {
+    color: $bdazzled-blue;
+  }
+}
+
+.input_error {
+  border: 1px solid red;
+  color: red;
+
+  &:focus {
+    outline: none;
+    border: 2px solid red;
+  }
+
+  &:focus + .input_label {
+    @include shrinkLabel(red);
+  }
+
+  & + .input_label {
+    color: red;
+  }
+}
+
+.input_label {
+  position: absolute;
+  display: block;
+  padding: 0 5px;
+  top: 23px;
+
+  font-size: 0.8rem;
+  transition: 300ms ease all;
+}
+
+.input_label:lang(ar) {
+  right: 25px;
+}
+
+.input_label:lang(en) {
+  left: 25px;
+}
+
+.shrink {
+  @include shrinkLabel($pale-cerulean);
+}
+
+.input_form_error {
+  font-size: 12px;
+  color: rgb(231, 68, 68);
+  margin-top: 5px;
+  margin-left: 5px;
+}

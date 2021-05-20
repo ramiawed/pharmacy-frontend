@@ -3,7 +3,7 @@
 .square_top {
   width: 30%;
   padding-top: 30%;
-  background: $pale-cerulean;
+  background: $third-color;
   opacity: 0.2;
 
   position: absolute;
@@ -23,7 +23,7 @@
 .square_bottom {
   width: 10%;
   padding-top: 10%;
-  background: $pale-cerulean;
+  background: $third-color;
   opacity: 0.2;
 
   position: absolute;
@@ -43,15 +43,15 @@
 .circle {
   width: 60%;
   padding-top: 60%;
-  background: $gunmetal;
+  background: $secondary-color;
   opacity: 0.2;
   position: absolute;
-  top: 30%;
+  bottom: -5%;
   border-radius: 50%;
 }
 
 .circle:lang(ar) {
-  left: -30%;
+  left: -10%;
 }
 
 .circle:lang(en) {

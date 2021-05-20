@@ -21,7 +21,7 @@ const InputForm = ({ handleChange, label, error, width, ...otherProps }) => {
         </label>
       ) : null}
 
-      {error ? <p className={styles.input_form_error}>{error}</p> : null}
+      {/* {error ? <p className={styles.input_form_error}>{error}</p> : null} */}
     </div>
   );
 };

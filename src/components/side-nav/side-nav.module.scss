@@ -1,0 +1,88 @@
+@import "../../variables.scss";
+
+.side_nav_container {
+  position: fixed;
+  top: 60px;
+  bottom: 0;
+  transition: all 0.5s;
+}
+
+.collapsed {
+  width: 0px;
+  background: $white-color;
+  border-left: 1px solid $main-color;
+}
+
+.showed {
+  width: 200px;
+  background: $main-color;
+}
+
+.side_nav_container button {
+  position: absolute;
+  top: 50%;
+  left: -30px;
+  border: none;
+  outline: none;
+  width: 60px;
+  height: 36px;
+  border-radius: 25px;
+
+  color: $white-color;
+  background-color: $main-color;
+  border: 3px solid $main-color;
+}
+
+.icon {
+  position: absolute;
+  left: 20px;
+  top: 9px;
+}
+
+.icon_showed {
+  animation-name: icon-showed-move;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-direction: normal;
+  opacity: 0;
+}
+
+@keyframes icon-showed-move {
+  0% {
+    left: 5px;
+    opacity: 0;
+  }
+
+  50% {
+    left: 20px;
+    opacity: 1;
+  }
+
+  100% {
+    left: 20px;
+  }
+}
+
+.icon_collapsed {
+  animation-name: icon-collapsed-move;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-direction: normal;
+  opacity: 0;
+}
+
+@keyframes icon-collapsed-move {
+  0% {
+    left: 20px;
+    opacity: 0;
+  }
+
+  50% {
+    left: 5px;
+    opacity: 1;
+  }
+
+  100% {
+    left: 5px;
+  }
+}

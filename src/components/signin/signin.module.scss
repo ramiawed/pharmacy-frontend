@@ -1,0 +1,109 @@
+@import "../../variables.scss";
+
+.container {
+  height: 100vh;
+  width: 25%;
+  min-width: 300px;
+  // background-color: $main-color;
+  position: absolute;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  overflow: hidden;
+}
+
+.container::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+
+  top: 0;
+  left: 0;
+
+  background-color: $main-color;
+  opacity: 0.9;
+}
+
+.signup {
+  display: flex;
+  position: absolute;
+  top: 10px;
+  left: 10px;
+}
+
+.signup p {
+  font-size: 12px;
+  color: $white-color;
+}
+
+.signup .button {
+  color: $third-color;
+  margin-right: 4px;
+  font-weight: bolder;
+
+  &:hover {
+    text-decoration: underline;
+    cursor: pointer;
+  }
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 90%;
+  z-index: 10;
+}
+
+.info h3 {
+  color: $white-color;
+  margin-bottom: 10px;
+}
+
+.info button {
+  background-color: $third-color;
+  color: $white-color;
+  padding: 8px 12px;
+  border: none;
+  outline: none;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+
+.info .input_div {
+  width: 90%;
+  background-color: $white-color;
+  padding: 4px 8px;
+  border-radius: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.info .input_div input {
+  flex: 1;
+  margin-right: 8px;
+  padding: 4px 8px;
+  outline: none;
+  border: none;
+}
+
+.info .input_div .icon {
+  color: $secondary-color;
+}
+
+.info .input_div .icon_error {
+  color: $red-color;
+}
+
+p.error {
+  color: $third-color;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 4px 0;
+}

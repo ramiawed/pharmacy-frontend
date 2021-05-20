@@ -1,0 +1,52 @@
+@import "../../variables.scss";
+
+.nav {
+  width: 100%;
+  margin: auto;
+  color: $white-color;
+  min-height: 60px;
+  position: sticky;
+  top: 0;
+  z-index: 10px;
+  background-color: $white-color;
+
+  border-bottom: 1px solid $main-color;
+
+  box-shadow: 0 2px 5px #0f52baac;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+div.center {
+  flex: 1;
+  justify-content: center;
+}
+
+div.center,
+div.end {
+  display: flex;
+  flex-direction: row;
+}
+
+div .link {
+  text-decoration: none;
+  color: $main-color;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+div.center .link {
+  padding: 4px 8px;
+  font-size: 16px;
+}
+
+div.end .link {
+  padding: 4px 6px;
+  font-size: 12px;
+}
+
+div .link:hover {
+  border-bottom: 1px solid $main-color;
+}

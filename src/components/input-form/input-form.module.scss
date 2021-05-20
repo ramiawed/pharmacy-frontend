@@ -22,21 +22,21 @@
 }
 
 .input_normal {
-  border: 1px solid $bdazzled-blue;
-  color: $bdazzled-blue;
+  border: 1px solid $main-color;
+  color: $main-color;
 
   &:focus {
     outline: none;
-    border: 2px solid $pale-cerulean;
-    color: $pale-cerulean;
+    border: 2px solid $secondary-color;
+    color: $secondary-color;
   }
 
   &:focus + .input_label {
-    @include shrinkLabel($pale-cerulean);
+    @include shrinkLabel($secondary-color);
   }
 
   & + .input_label {
-    color: $bdazzled-blue;
+    color: $main-color;
   }
 }
 
@@ -77,7 +77,7 @@
 }
 
 .shrink {
-  @include shrinkLabel($pale-cerulean);
+  @include shrinkLabel($secondary-color);
 }
 
 .input_form_error {

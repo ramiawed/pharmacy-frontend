@@ -1,0 +1,100 @@
+@import "../../variables.scss";
+
+.fixed_position {
+  position: fixed;
+  top: 60px;
+  width: 80%;
+
+  z-index: 10;
+
+  background: $white-color;
+}
+
+.behind_fixed_position {
+  height: 80px;
+}
+
+.header_div {
+  padding-top: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.search_div {
+  align-self: flex-start;
+}
+
+.table_header_div {
+  margin-top: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid $secondary-color;
+  display: flex;
+  align-items: center;
+}
+
+.table_header_div label {
+  text-align: center;
+  color: $secondary-color;
+  font-weight: 400;
+}
+
+.table_header_div .label_small {
+  width: 75px;
+}
+
+.table_header_div .label_xsmall {
+  width: 40px;
+}
+
+.table_header_div .label_medium {
+  flex: 2;
+}
+
+.table_header_div .label_large {
+  flex: 3;
+}
+
+.rows,
+.loading {
+  padding-bottom: 10px;
+}
+
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.pagination {
+  position: relative;
+
+  margin-top: 10px;
+
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  cursor: pointer;
+}
+
+.pagination a {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid $secondary-color;
+  color: $secondary-color;
+  margin: 0 2px;
+}
+
+.pagination_link {
+  font-weight: bold;
+}
+
+.pagination_link_active a {
+  color: #fff;
+  background: $secondary-color;
+}
+
+.pagination_link_disabled a {
+  color: rgb(198, 197, 202);
+  border: 1px solid rgb(198, 197, 202);
+}

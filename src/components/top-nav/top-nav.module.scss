@@ -3,12 +3,11 @@
 .nav {
   width: 100%;
   margin: auto;
-  color: $white-color;
   min-height: 60px;
   position: sticky;
   top: 0;
-  z-index: 10px;
-  background-color: $white-color;
+  z-index: 10;
+  background-color: $main-color;
 
   border-bottom: 1px solid $main-color;
 
@@ -32,9 +31,11 @@ div.end {
 
 div .link {
   text-decoration: none;
-  color: $main-color;
+  color: $white-color;
   cursor: pointer;
   font-weight: bold;
+
+  transition: all 0.5s;
 }
 
 div.center .link {
@@ -49,4 +50,6 @@ div.end .link {
 
 div .link:hover {
   border-bottom: 1px solid $main-color;
+  color: $secondary-color;
+  transform: scale(1.1);
 }

@@ -14,10 +14,10 @@ import { AiFillPhone, AiFillEnvironment } from "react-icons/ai";
 
 // redux
 import {
-  userSignin,
+  authSign,
   selectUserData,
   resetError,
-} from "../../redux/user/userSlice";
+} from "../../redux/auth/authSlice";
 
 // loading
 import ReactLoading from "react-loading";
@@ -189,7 +189,7 @@ function SignUp() {
           // check if user type is normal
           if (user.type === "Normal") {
             dispatch(
-              userSignin({ username: user.username, password: user.password })
+              authSign({ username: user.username, password: user.password })
             );
           } else {
             // user type is not normal

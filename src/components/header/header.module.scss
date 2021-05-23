@@ -1,0 +1,10 @@
+@import "../../variables.scss";
+
+.header {
+  flex: 1;
+}
+
+.header h2 {
+  text-align: center;
+  color: $main-color;
+}

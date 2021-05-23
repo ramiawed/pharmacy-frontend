@@ -1,0 +1,72 @@
+@import "../../variables.scss";
+
+.user_row {
+  width: 100%;
+  height: 42px;
+  margin: 12px 0;
+  border-radius: 5px;
+
+  position: relative;
+
+  box-shadow: 3px 3px 3px #8c8c8c80;
+
+  display: flex;
+  flex-direction: column;
+}
+
+.user_row.even::after,
+.user_row.odd::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+
+  background: $main-color;
+  border-radius: 5px;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.user_row.even::after {
+  opacity: 0.5;
+}
+
+.user_row.odd::after {
+  opacity: 0.2;
+}
+
+.user_row_expanded {
+  height: 80px;
+}
+
+.basic_info {
+  display: flex;
+  align-items: center;
+  height: 40px;
+  z-index: 1;
+}
+
+.basic_info label {
+  text-align: center;
+}
+
+.label_small {
+  width: 75px;
+}
+
+.actions_div {
+  width: 40px;
+}
+
+.actions_div {
+  margin: auto;
+}
+
+.label_medium {
+  flex: 2;
+}
+
+.label_large {
+  flex: 3;
+}

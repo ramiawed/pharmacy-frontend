@@ -2,7 +2,7 @@
 
 .input_div {
   width: 100%;
-  margin-top: 10px;
+  // margin-top: 10px;
   padding: 4px 8px;
   border-radius: 8px;
 
@@ -16,10 +16,12 @@
 
 .input_div input {
   flex: 1;
+  // max-width: 100px;
   margin-right: 8px;
   padding: 4px 0px;
   outline: none;
   border: none;
+  color: $secondary-color;
 }
 
 .bordered {
@@ -37,14 +39,8 @@
   color: $red-color;
 }
 
-.error_message {
-  color: $third-color;
-  align-self: flex-start;
-  padding: 0px 12px;
-}
-
-.container {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-}
+// .container {
+//   width: 100%;
+//   display: flex;
+//   flex-direction: column;
+// }

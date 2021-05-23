@@ -8,8 +8,8 @@ const initialState = {
   error: "",
 };
 
-export const userSignin = createAsyncThunk(
-  "user/signin",
+export const authSign = createAsyncThunk(
+  "auth/signin",
   async ({ username, password }, { rejectWithValue }) => {
     try {
       const response = await axios.post("/users/signin", {
@@ -24,8 +24,8 @@ export const userSignin = createAsyncThunk(
   }
 );
 
-export const userSignup = createAsyncThunk(
-  "user/signup",
+export const authSignup = createAsyncThunk(
+  "auth/signup",
   async (obj, { rejectWithValue }) => {
     try {
       const response = await axios.post("/users/signup", obj);
@@ -37,25 +37,32 @@ export const userSignup = createAsyncThunk(
   }
 );
 
-export const userSlice = createSlice({
-  name: "user",
+export const authSlice = createSlice({
+  name: "auth",
   initialState,
   reducers: {
     resetError: (state) => {
       state.error = "";
     },
+    signOut: (state) => {
+      console.log("sign out");
+      state.status = "idle";
+      state.user = null;
+      state.token = "";
+      state.error = "";
+    },
   },
   extraReducers: {
-    [userSignin.pending]: (state, action) => {
+    [authSign.pending]: (state, action) => {
       state.status = "loading";
     },
-    [userSignin.fulfilled]: (state, action) => {
+    [authSign.fulfilled]: (state, action) => {
       state.status = "succeeded";
       state.token = action.payload.token;
       state.user = action.payload.data.user;
       state.error = "";
     },
-    [userSignin.rejected]: (state, { error, meta, payload }) => {
+    [authSign.rejected]: (state, { error, meta, payload }) => {
       state.status = "failed";
       state.token = "";
       state.user = null;
@@ -64,12 +71,12 @@ export const userSlice = createSlice({
   },
 });
 
-export const { resetError } = userSlice.actions;
+export const { resetError, signOut } = authSlice.actions;
 
-export const selectToken = (state) => state.user.token;
-export const selectUser = (state) => state.user.user;
-export const selectError = (state) => state.user.error;
-export const selectStatus = (state) => state.user.status;
-export const selectUserData = (state) => state.user;
+export const selectToken = (state) => state.auth.token;
+export const selectUser = (state) => state.auth.user;
+export const selectError = (state) => state.auth.error;
+export const selectStatus = (state) => state.auth.status;
+export const selectUserData = (state) => state.auth;
 
-export default userSlice.reducer;
+export default authSlice.reducer;

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Redirect } from "react-router";
-import { selectUserData } from "../../redux/user/userSlice";
+import { Redirect, Route } from "react-router";
+import { selectUserData } from "../../redux/auth/authSlice";
 import { useSelector } from "react-redux";
 
 // components
@@ -9,6 +9,11 @@ import SideNav from "../../components/side-nav/side-nav.component";
 
 // style
 import styles from "./main-page.module.scss";
+import CompaniesPage from "../compnaies-page/companies-page.component";
+import WarehousesPage from "../warehouses-page/warehouses.page.component";
+import CartPage from "../cart-page/cart-page.component";
+import AdminUsers from "../../components/admin-users/admin-users.component";
+import Constants from "../../utils/constants";
 
 function MainPage() {
   const { user } = useSelector(selectUserData);
@@ -17,6 +22,24 @@ function MainPage() {
     <div>
       <TopNav />
       <SideNav />
+
+      <div className={styles.content_area}>
+        <Route path="/companies">
+          <CompaniesPage />
+        </Route>
+
+        <Route path="/warehouses">
+          <WarehousesPage />
+        </Route>
+
+        <Route path="/cart">
+          <CartPage />
+        </Route>
+
+        <Route path="/admin/companies">
+          <AdminUsers type={Constants.COMPANY} />
+        </Route>
+      </div>
     </div>
   ) : (
     <Redirect to="/signin" />

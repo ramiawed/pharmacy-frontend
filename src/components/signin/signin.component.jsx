@@ -18,10 +18,10 @@ import ReactLoading from "react-loading";
 
 // redux
 import {
-  userSignin,
+  authSign,
   selectUserData,
   resetError,
-} from "../../redux/user/userSlice";
+} from "../../redux/auth/authSlice";
 
 import styles from "./signin.module.scss";
 
@@ -96,7 +96,7 @@ function SignIn() {
 
     // username and password is not empty
     // dispatch sign in
-    dispatch(userSignin({ username, password }));
+    dispatch(authSign({ username, password }));
   };
 
   return user ? (

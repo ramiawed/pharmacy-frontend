@@ -20,6 +20,10 @@
     "pharmacy": "Pharmacy",
     "normal": "Guest",
     "warehouse": "Warehouse",
+    "admin": "admin",
+    "partners": "Partners",
+    "all": "all",
+    "user-type": "Partner's type",
     "Incorrect username or password": "Invalid username or password",
     "You have to approve your account from Admin": "You have to take the approve from the admin of this website",
     "provide unique name": "The name already exists, enter another name",
@@ -66,5 +70,6 @@
     "delete-account-question": "If delete an account, the owner of that account will not be able to use the program, Would you like to continue the operation?",
     "approve-account-question": "If approve an account, the owner of that account will be able to use the program, Would you like to continue the operation?" ,
     "undo-delete-account-question": "If undo the delete operation, and approve the account, the owner of the account will be able to use the program, Would you like to continue the operation?",
-    "disapprove-account-question": "If dis-approve the account, the owner of the account will not be able to use the program, Would you like to continue the operation?"
+    "disapprove-account-question": "If dis-approve the account, the owner of the account will not be able to use the program, Would you like to continue the operation?",
+    "no-partners-found-message": "NO partner found with this search's condition"
 }

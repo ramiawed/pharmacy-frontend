@@ -10,21 +10,39 @@ const initialState = {
 
 export const getUsers = createAsyncThunk(
   "users/get",
-  async ({ type, token, page, name }, { rejectWithValue }) => {
+  async ({ queryString, token }, { rejectWithValue }) => {
+    console.log(queryString);
     try {
-      const response = await axios.get(
-        `/users/${type}?page=${page}&name=${name}`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      let buildUrl = `/users?page=${queryString.page}`;
+
+      if (queryString.name) {
+        buildUrl = buildUrl + `&name=${queryString.name}`;
+      }
+
+      if (queryString.type) {
+        buildUrl = buildUrl + `&type=${queryString.type}`;
+      }
+
+      if (queryString.approve !== undefined) {
+        buildUrl = buildUrl + `&isApproved=${queryString.approve}`;
+      }
+
+      if (queryString.active !== undefined) {
+        buildUrl = buildUrl + `&isActive=${queryString.active}`;
+      }
+
+      console.log(buildUrl);
+      const response = await axios.get(buildUrl, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       console.log(response.data);
 
       return response.data;
     } catch (err) {
+      console.log(err.message);
       return rejectWithValue(err.message.data);
     }
   }

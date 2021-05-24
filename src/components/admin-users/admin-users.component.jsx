@@ -1,260 +1,140 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import CompanyRow from "../user-row/user-row.component";
+
+// components
 import Header from "../header/header.component";
 import Search from "../search/search.component";
-// loading
-import ReactLoading from "react-loading";
+import UserRow from "../user-row/user-row.component";
+import SelectCustom from "../select/select.component";
+import Checkbox from "../checkbox/checkbox.component";
 
+// 3-party library (loading, paginate)
+import ReactLoading from "react-loading";
+import ReactPaginate from "react-paginate";
+
+// redux stuff
 import { getUsers, selectUsers } from "../../redux/users/usersSlice";
 import { selectToken } from "../../redux/auth/authSlice";
 import { useSelector, useDispatch } from "react-redux";
 
 // styles
 import styles from "./admin-users.module.scss";
-import ReactPaginate from "react-paginate";
-import UserRow from "../user-row/user-row.component";
 
-// const companies = [
-//   {
-//     name: "رامي",
-//     username: "رامي",
-//     email: "ramiawed@gmail.com",
-//     phone: "٠٢١١٢٣",
-//     mobile: "٠٩٣٢١٢٣١٢٣",
-//     isApprove: true,
-//     isActive: true,
-//   },
-//   {
-//     name: "ميلا",
-//     username: "ميلا",
-//     email: "ramiawed@gmail.com",
-//     phone: "٠٢١١٢٣",
-//     mobile: "٠٩٣٢١٢٣١٢٣",
-//     isApprove: true,
-//     isActive: true,
-//   },
-//   {
-//     name: "سيما",
-//     username: "سيما",
-//     email: "ramiawed@gmail.com",
-//     phone: "٠٢١١٢٣",
-//     mobile: "٠٩٣٢١٢٣١٢٣",
-//     isApprove: true,
-//     isActive: false,
-//   },
-//   {
-//     name: "جورج",
-//     username: "جورج",
-//     email: "ramiawed@gmail.com",
-//     phone: "٠٢١١٢٣",
-//     mobile: "٠٩٣٢١٢٣١٢٣",
-//     isApprove: true,
-//     isActive: true,
-//   },
-//   {
-//     name: "عبدالله",
-//     username: "عبدالله",
-//     email: "ramiawed@gmail.com",
-//     phone: "٠٢١١٢٣",
-//     mobile: "٠٩٣٢١٢٣١٢٣",
-//     isApprove: false,
-//     isActive: true,
-//   },
-//   {
-//     name: "جلال",
-//     username: "جلال",
-//     email: "ramiawed@gmail.com",
-//     phone: "٠٢١١٢٣",
-//     mobile: "٠٩٣٢١٢٣١٢٣",
-//     isApprove: true,
-//     isActive: false,
-//   },
-//   {
-//     name: "انعام",
-//     username: "انعام",
-//     email: "ramiawed@gmail.com",
-//     phone: "٠٢١١٢٣",
-//     mobile: "٠٩٣٢١٢٣١٢٣",
-//     isApprove: false,
-//     isActive: false,
-//   },
-//   {
-//     name: "رامي",
-//     username: "رامي",
-//     email: "ramiawed@gmail.com",
-//     phone: "٠٢١١٢٣",
-//     mobile: "٠٩٣٢١٢٣١٢٣",
-//     isApprove: true,
-//     isActive: true,
-//   },
-//   {
-//     name: "ميلا",
-//     username: "ميلا",
-//     email: "ramiawed@gmail.com",
-//     phone: "٠٢١١٢٣",
-//     mobile: "٠٩٣٢١٢٣١٢٣",
-//     isApprove: true,
-//     isActive: true,
-//   },
-//   {
-//     name: "سيما",
-//     username: "سيما",
-//     email: "ramiawed@gmail.com",
-//     phone: "٠٢١١٢٣",
-//     mobile: "٠٩٣٢١٢٣١٢٣",
-//     isApprove: true,
-//     isActive: false,
-//   },
-//   {
-//     name: "جورج",
-//     username: "جورج",
-//     email: "ramiawed@gmail.com",
-//     phone: "٠٢١١٢٣",
-//     mobile: "٠٩٣٢١٢٣١٢٣",
-//     isApprove: true,
-//     isActive: true,
-//   },
-//   {
-//     name: "عبدالله",
-//     username: "عبدالله",
-//     email: "ramiawed@gmail.com",
-//     phone: "٠٢١١٢٣",
-//     mobile: "٠٩٣٢١٢٣١٢٣",
-//     isApprove: false,
-//     isActive: true,
-//   },
-//   {
-//     name: "جلال",
-//     username: "جلال",
-//     email: "ramiawed@gmail.com",
-//     phone: "٠٢١١٢٣",
-//     mobile: "٠٩٣٢١٢٣١٢٣",
-//     isApprove: true,
-//     isActive: false,
-//   },
-//   {
-//     name: "انعام",
-//     username: "انعام",
-//     email: "ramiawed@gmail.com",
-//     phone: "٠٢١١٢٣",
-//     mobile: "٠٩٣٢١٢٣١٢٣",
-//     isApprove: false,
-//     isActive: false,
-//   },
-//   {
-//     name: "رامي",
-//     username: "رامي",
-//     email: "ramiawed@gmail.com",
-//     phone: "٠٢١١٢٣",
-//     mobile: "٠٩٣٢١٢٣١٢٣",
-//     isApprove: true,
-//     isActive: true,
-//   },
-//   {
-//     name: "ميلا",
-//     username: "ميلا",
-//     email: "ramiawed@gmail.com",
-//     phone: "٠٢١١٢٣",
-//     mobile: "٠٩٣٢١٢٣١٢٣",
-//     isApprove: true,
-//     isActive: true,
-//   },
-//   {
-//     name: "سيما",
-//     username: "سيما",
-//     email: "ramiawed@gmail.com",
-//     phone: "٠٢١١٢٣",
-//     mobile: "٠٩٣٢١٢٣١٢٣",
-//     isApprove: true,
-//     isActive: false,
-//   },
-//   {
-//     name: "جورج",
-//     username: "جورج",
-//     email: "ramiawed@gmail.com",
-//     phone: "٠٢١١٢٣",
-//     mobile: "٠٩٣٢١٢٣١٢٣",
-//     isApprove: true,
-//     isActive: true,
-//   },
-//   {
-//     name: "عبدالله",
-//     username: "عبدالله",
-//     email: "ramiawed@gmail.com",
-//     phone: "٠٢١١٢٣",
-//     mobile: "٠٩٣٢١٢٣١٢٣",
-//     isApprove: false,
-//     isActive: true,
-//   },
-//   {
-//     name: "جلال",
-//     username: "جلال",
-//     email: "ramiawed@gmail.com",
-//     phone: "٠٢١١٢٣",
-//     mobile: "٠٩٣٢١٢٣١٢٣",
-//     isApprove: true,
-//     isActive: false,
-//   },
-//   {
-//     name: "انعام",
-//     username: "انعام",
-//     email: "ramiawed@gmail.com",
-//     phone: "٠٢١١٢٣",
-//     mobile: "٠٩٣٢١٢٣١٢٣",
-//     isApprove: false,
-//     isActive: false,
-//   },
-// ];
-
-function AdminUsers({ type }) {
+function AdminUsers() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [userType, setUserType] = useState("All");
+  // own state
+  const [searchName, setSearchName] = useState("");
+  const [initialPage, setInitialPage] = useState(0);
+
+  // own state for user state (approved, notApproved, active, notActive)
+  const [userState, setUserState] = useState({
+    approved: false,
+    notApproved: false,
+    active: false,
+    notActive: false,
+  });
+
+  // handle user state changed
+  const handleUserStateChange = (state) => {
+    if (state === "approved") {
+      setUserState({
+        ...userState,
+        approved: !userState.approved,
+        notApproved: false,
+      });
+    } else if (state === "notApproved") {
+      setUserState({
+        ...userState,
+        approved: false,
+        notApproved: !userState.notApproved,
+      });
+    } else if (state === "active") {
+      setUserState({
+        ...userState,
+        active: !userState.active,
+        notActive: false,
+      });
+    } else if (state === "notActive") {
+      setUserState({
+        ...userState,
+        active: false,
+        notActive: !userState.notActive,
+      });
+    }
+  };
+
+  const typeOptions = [
+    { value: "Company", label: t("company") },
+    { value: "Warehouse", label: t("warehouse") },
+    { value: "Normal", label: t("normal") },
+    { value: "Pharmacy", label: t("pharmacy") },
+    { value: "Admin", label: t("admin") },
+    { value: "All", label: t("all") },
+  ];
+
+  const handleSearchTypeChange = (val) => {
+    setUserType(val);
+  };
+
+  // selectors
   const { users, status, count } = useSelector(selectUsers);
   const token = useSelector(selectToken);
-  const [searchValue, setSearchValue] = useState("");
 
   useEffect(() => {
-    const fetchData = async () => {
-      await dispatch(
-        getUsers({
-          type: type,
-          token: token,
-          page: 1,
-          name: searchValue,
-        })
-      );
-    };
-
-    fetchData();
+    handleSearch(1);
   }, [dispatch, token]);
 
   // handle to the page change
   const handlePageClick = (e) => {
     const { selected } = e;
-
-    dispatch(
-      getUsers({
-        type: "Company",
-        token: token,
-        page: selected + 1,
-        name: searchValue,
-      })
-    );
+    handleSearch(selected + 1);
+    setInitialPage(selected);
   };
 
   // handle will pass to Input Component
   // fire when the enter key presses
   // start search
   const enterPress = () => {
-    dispatch(
-      getUsers({
-        type: "Company",
-        token: token,
-        page: 1,
-        name: searchValue,
-      })
-    );
+    handleSearch(1);
+    setInitialPage(0);
+  };
+
+  // handle search
+  const handleSearch = (page) => {
+    const queryString = {};
+
+    queryString.page = page;
+
+    if (userType !== "All") {
+      queryString.type = userType;
+    }
+
+    if (searchName.trim().length !== 0) {
+      queryString.name = searchName.trim();
+    }
+
+    if (userState.approved) {
+      queryString.approve = true;
+    }
+
+    if (userState.notApproved) {
+      queryString.approve = false;
+    }
+
+    if (userState.active) {
+      queryString.active = true;
+    }
+
+    if (userState.notActive) {
+      queryString.active = false;
+    }
+
+    console.log(queryString);
+
+    dispatch(getUsers({ queryString, token }));
+    setInitialPage(0);
   };
 
   return (
@@ -262,18 +142,79 @@ function AdminUsers({ type }) {
       <div className={styles.fixed_position}>
         <div className={styles.header_div}>
           <Header>
-            <h2>{t("nav-company")}</h2>
+            <h2>{t("partners")}</h2>
           </Header>
+        </div>
 
+        <div className={styles.search_engines}>
           <div className={styles.search_div}>
             <Search
-              value={searchValue}
+              value={searchName}
               onchange={(e) => {
-                setSearchValue(e.target.value);
+                setSearchName(e.target.value);
               }}
               onEnterPress={enterPress}
             />
           </div>
+
+          <div className={styles.search_div}>
+            <SelectCustom
+              bgColor="#6172ac"
+              foreColor="#fff"
+              orderOptions={typeOptions}
+              onchange={handleSearchTypeChange}
+              defaultOption={{
+                value: userType,
+                label: t(userType.toLowerCase()),
+              }}
+              caption="user-type"
+            />
+          </div>
+
+          <div className={styles.search_div}>
+            <div>
+              <label style={{ marginLeft: 10 }}>
+                <span style={{ margin: 2 }}>مفعل</span>
+                <Checkbox
+                  checked={userState.approved}
+                  onChange={() => handleUserStateChange("approved")}
+                />
+              </label>
+
+              <label style={{ marginLeft: 10 }}>
+                <span style={{ margin: 2 }}>غير مفعل</span>
+                <Checkbox
+                  checked={userState.notApproved}
+                  onChange={() => handleUserStateChange("notApproved")}
+                />
+              </label>
+            </div>
+          </div>
+          <div className={styles.search_div}>
+            <div>
+              <label style={{ marginLeft: 10 }}>
+                <span style={{ margin: 2 }}>غير محذوف</span>
+                <Checkbox
+                  checked={userState.active}
+                  onChange={() => handleUserStateChange("active")}
+                />
+              </label>
+
+              <label style={{ marginLeft: 10 }}>
+                <span style={{ margin: 2 }}>محذوف</span>
+                <Checkbox
+                  checked={userState.notActive}
+                  onChange={() => handleUserStateChange("notActive")}
+                />
+              </label>
+            </div>
+          </div>
+          <button
+            onClick={() => handleSearch(1)}
+            className={styles.search_button}
+          >
+            {t("search")}
+          </button>
         </div>
 
         <div className={styles.table_header_div}>
@@ -290,23 +231,26 @@ function AdminUsers({ type }) {
 
       <div className={styles.behind_fixed_position}></div>
 
+      {/* loading components when retrieve the result from DB */}
       {status === "loading" && (
         <div className={styles.loading}>
           <ReactLoading color="#6172ac" type="bubbles" height={50} width={50} />
         </div>
       )}
 
+      {/* Results */}
       <div className={styles.rows}>
         {users?.map((user, index) => (
           <UserRow key={user._id} user={user} index={index} />
         ))}
       </div>
 
-      {count && (
+      {count > 0 ? (
         <ReactPaginate
           previousLabel={"→ السابق"}
           nextLabel={"التالي ←"}
           pageCount={Math.ceil(count / 4)}
+          forcePage={initialPage}
           onPageChange={handlePageClick}
           containerClassName={styles.pagination}
           previousLinkClassName={styles.pagination_link}
@@ -314,6 +258,10 @@ function AdminUsers({ type }) {
           disabledClassName={styles.pagination_link_disabled}
           activeClassName={styles.pagination_link_active}
         />
+      ) : (
+        <p style={{ textAlign: "center", padding: "16px" }}>
+          {t("no-partners-found-message")}
+        </p>
       )}
     </>
   );

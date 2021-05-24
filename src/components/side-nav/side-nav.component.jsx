@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import styles from "./side-nav.module.scss";
 
 function SideNav() {
-  const [optionSelected, setOptionSelected] = useState("COMPANIES");
+  const [optionSelected, setOptionSelected] = useState("PARTNERS");
   const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(true);
 
@@ -33,51 +33,16 @@ function SideNav() {
         <Link
           className={[
             styles.link,
-            optionSelected === "COMPANIES" ? `${styles.selected}` : "",
+            optionSelected === "PARTNERS" ? `${styles.selected}` : "",
           ].join(" ")}
           onClick={() => {
-            handleChangeOption("COMPANIES");
+            handleChangeOption("PARTNERS");
           }}
           to="/admin/companies"
         >
-          {t("nav-company")}
+          {t("partners")}
         </Link>
-        <Link
-          className={[
-            styles.link,
-            optionSelected === "WAREHOUSES" ? `${styles.selected}` : "",
-          ].join(" ")}
-          onClick={() => {
-            handleChangeOption("WAREHOUSES");
-          }}
-          to="/admin/warehouses"
-        >
-          {t("nav-warehouse")}
-        </Link>
-        <Link
-          className={[
-            styles.link,
-            optionSelected === "PHARMACIES" ? `${styles.selected}` : "",
-          ].join(" ")}
-          onClick={() => {
-            handleChangeOption("PHARMACIES");
-          }}
-          to="/admin/pharmacies"
-        >
-          {t("nav-pharmacy")}
-        </Link>
-        <Link
-          className={[
-            styles.link,
-            optionSelected === "GUESTS" ? `${styles.selected}` : "",
-          ].join(" ")}
-          onClick={() => {
-            handleChangeOption("GUESTS");
-          }}
-          to="/admin/guests"
-        >
-          {t("nav-guests")}
-        </Link>
+
         <Link
           className={[
             styles.link,

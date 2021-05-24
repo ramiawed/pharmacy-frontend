@@ -117,10 +117,10 @@ function UserRow({ user, index }) {
         <label className={styles.label_large}>{user.name}</label>
         {/* <label>{user.username}</label> */}
         <label className={styles.label_small}>
-          {user.isApprove ? (
+          {user.isApproved ? (
             <ActionButton
               tooltip="tooltip-disapprove"
-              icon={() => <AiFillUnlock color="rgb(0, 255, 100)" />}
+              icon={() => <AiFillUnlock color="rgb(100, 175, 100)" />}
               action={() => handleActionClick("disapprove")}
             />
           ) : (
@@ -135,7 +135,7 @@ function UserRow({ user, index }) {
           {user.isActive ? (
             <ActionButton
               tooltip="tooltip-delete"
-              icon={() => <BsFillPersonCheckFill color="rgb(0, 255, 100)" />}
+              icon={() => <BsFillPersonCheckFill color="rgb(100, 175, 100)" />}
               action={() => handleActionClick("delete")}
             />
           ) : (

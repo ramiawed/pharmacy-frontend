@@ -1,0 +1,30 @@
+@import "../../variables.scss";
+
+.toast-container {
+  position: fixed;
+  bottom: 40px;
+  z-index: 40;
+  border-radius: 15px;
+  box-shadow: 2px 2px 5px rgb(84, 83, 83);
+  animation-name: toastMove;
+  animation-duration: 0.1s;
+  animation-fill-mode: forwards;
+
+  @keyframes toastMove {
+    0% {
+      left: -100px;
+    }
+
+    90% {
+      left: 40px;
+    }
+
+    100% {
+      left: 30px;
+    }
+  }
+
+  & .toast {
+    padding: 10px 20px;
+  }
+}

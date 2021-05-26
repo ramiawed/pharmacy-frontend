@@ -1,9 +1,10 @@
 @import "../../variables.scss";
 
 .container {
-  height: 100vh;
-  width: 75%;
+  min-height: 100vh;
+  width: 100%;
   min-width: 300px;
+  padding: 30px 0;
   position: absolute;
 
   display: flex;
@@ -11,7 +12,7 @@
   justify-content: center;
   align-items: center;
 
-  overflow: hidden;
+  overflow: scroll;
 }
 
 .container::before {
@@ -79,7 +80,7 @@
 }
 
 .input_div {
-  width: 48%;
+  width: 98%;
   padding: 4px;
 }
 
@@ -125,4 +126,29 @@ p.error {
   z-index: 1;
   color: $third-color;
   margin-top: 10px;
+}
+
+@media only screen and (min-width: $small) {
+  .container {
+    width: 100%;
+    padding: 30px 0;
+  }
+
+  .input_div {
+    width: 98%;
+  }
+}
+
+@media only screen and (min-width: $medium) {
+  .container {
+    width: 75%;
+  }
+
+  .input_div {
+    width: 48%;
+  }
+
+  .input_full_width {
+    width: 98%;
+  }
 }

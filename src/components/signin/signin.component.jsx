@@ -8,10 +8,9 @@ import { useDispatch, useSelector } from "react-redux";
 // react-icons
 import { HiUser } from "react-icons/hi";
 import { RiLockPasswordLine } from "react-icons/ri";
-import { AiOutlineExclamationCircle } from "react-icons/ai";
 
 // component
-import Shapes from "../shapes/shapes.component";
+import Input from "../input/input.component";
 
 // loading
 import ReactLoading from "react-loading";
@@ -25,6 +24,7 @@ import {
 
 import styles from "./signin.module.scss";
 
+// constants use for motion
 const containerVariant = {
   hidden: {
     opacity: 0,
@@ -39,26 +39,54 @@ const containerVariant = {
   },
 };
 
+// Sign in component
 function SignIn() {
   const history = useHistory();
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  // state for input fields (usrename, password)
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [userInfo, setUserInfo] = useState({
+    username: "",
+    password: "",
+  });
 
   // error object contains error message and fields that has the error
-  const [preSignError, setPreSignError] = useState(null);
+  const [preSignError, setPreSignError] = useState({
+    username: "",
+    password: "",
+  });
+
+  const handleInputChange = (e) => {
+    setUserInfo({
+      ...userInfo,
+      [e.target.id]: e.target.value,
+    });
+
+    setPreSignError({
+      ...preSignError,
+      [e.target.id]: "",
+    });
+
+    if (error) {
+      dispatch(resetError());
+    }
+  };
 
   // state from user state redux
   const { status, user, error } = useSelector(selectUserData);
 
   const handleSignUpClick = () => {
     // reset the state
-    setUsername("");
-    setPassword("");
-    setPreSignError(null);
+    setUserInfo({
+      username: "",
+      password: "",
+    });
+
+    setPreSignError({
+      username: "",
+      password: "",
+    });
+
     if (error) {
       dispatch(resetError());
     }
@@ -68,35 +96,42 @@ function SignIn() {
   // check if the username and password fields are not empty
   // if true, dispatch signin from userSlice
   const handleSignIn = () => {
-    // check if the username is not empty
-    if (username.trim().length === 0) {
+    // check if the username and password is not empty
+    if (userInfo.username.length === 0 && userInfo.password.length === 0) {
       setPreSignError({
-        message: "enter-username",
-        fields: ["username"],
+        ...preSignError,
+        username: "enter-username",
+        password: "enter-password",
       });
+      return;
+    }
 
-      // check if the password is not empty
-      if (password.length === 0) {
-        setPreSignError({
-          message: "enter-username-password",
-          fields: ["username", "password"],
-        });
-      }
+    // check if the username is not empty
+    if (userInfo.username.length === 0) {
+      setPreSignError({
+        ...preSignError,
+        username: "enter-password",
+      });
       return;
     }
 
     // check if the password is not empty
-    if (password.length === 0) {
+    if (userInfo.password.length === 0) {
       setPreSignError({
-        message: "enter-password",
-        fields: ["password"],
+        ...preSignError,
+        password: "enter-password",
       });
       return;
     }
 
     // username and password is not empty
     // dispatch sign in
-    dispatch(authSign({ username, password }));
+    dispatch(authSign(userInfo));
+  };
+
+  // handle enter press on input
+  const handlePressEnter = () => {
+    handleSignIn();
   };
 
   return user ? (
@@ -117,64 +152,46 @@ function SignIn() {
         </div>
         <h3>{t("signin")}</h3>
         <div className={styles.input_div}>
-          <HiUser className={styles.icon} />
-          <input
-            placeholder={t("user-username")}
-            value={username}
-            onChange={(e) => {
-              setUsername(e.target.value);
-              if (error?.length > 0) {
-                dispatch(resetError());
-              }
-
-              if (preSignError && preSignError.fields.includes("username")) {
-                if (preSignError.fields.length === 1) {
-                  setPreSignError(null);
-                } else {
-                  setPreSignError({
-                    message: "enter-password",
-                    fields: ["password"],
-                  });
-                }
-              }
-            }}
+          <Input
+            icon={() => <HiUser className={styles.icons} />}
+            type="text"
+            placeholder="user-username"
+            id="username"
+            value={userInfo.username}
+            onchange={handleInputChange}
+            error={preSignError.username?.length > 0 || error}
+            onEnterPress={handlePressEnter}
           />
-          {(preSignError?.fields.includes("username") || error) && (
-            <AiOutlineExclamationCircle className={styles.icon_error} />
-          )}
         </div>
+
         <div className={styles.input_div}>
-          <RiLockPasswordLine className={styles.icon} />
-          <input
+          <Input
+            icon={() => <RiLockPasswordLine className={styles.icon} />}
             type="password"
-            placeholder={t("user-password")}
-            value={password}
-            onChange={(e) => {
-              setPassword(e.target.value);
-              if (error?.length > 0) {
-                dispatch(resetError());
-              }
-
-              if (preSignError && preSignError.fields.includes("password")) {
-                if (preSignError.fields.length === 1) {
-                  setPreSignError(null);
-                } else {
-                  setPreSignError({
-                    message: "enter-username",
-                    fields: ["username"],
-                  });
-                }
-              }
-            }}
+            placeholder="user-password"
+            id="password"
+            value={userInfo.password}
+            onchange={handleInputChange}
+            error={preSignError.password?.length > 0 || error}
+            onEnterPress={handlePressEnter}
           />
-          {(preSignError?.fields.includes("password") || error) && (
-            <AiOutlineExclamationCircle className={styles.icon_error} />
-          )}
         </div>
-        <p className={styles.error}>
-          {(preSignError ? t(`${preSignError?.message}`) : null) ||
-            t(`${error}`)}{" "}
-        </p>
+
+        {/* Error sections */}
+        <>
+          {Object.keys(preSignError).map((key) => {
+            if (preSignError[key].length > 0) {
+              return (
+                <p className={styles.error} key={key}>
+                  {t(`${preSignError[key]}`)}
+                </p>
+              );
+            } else {
+              return null;
+            }
+          })}
+        </>
+        {error && <p className={styles.error}>{t(error)}</p>}
         <motion.button
           whileHover={{
             scale: 1.1,
@@ -190,7 +207,6 @@ function SignIn() {
           <ReactLoading type="bubbles" height={50} width={50} />
         )}
       </div>
-      <Shapes />
     </motion.div>
   );
 }

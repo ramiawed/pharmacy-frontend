@@ -33,7 +33,7 @@ function SelectCustom({
       minHeight: "30px",
       height: "30px",
       boxShadow: state.isFocused ? null : null,
-      width: "125px",
+      minWidth: "125px",
       borderRadius: "6px",
       marginLeft: "5px",
     }),

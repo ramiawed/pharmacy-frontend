@@ -3,7 +3,14 @@ import ReactDOM from "react-dom";
 import { useTranslation } from "react-i18next";
 import styles from "./modal.module.scss";
 
-const Modal = ({ closeModal, header, children, cancelLabel, okLabel }) => {
+const Modal = ({
+  closeModal,
+  okModal,
+  header,
+  children,
+  cancelLabel,
+  okLabel,
+}) => {
   const { t } = useTranslation();
 
   useEffect(() => {
@@ -22,7 +29,7 @@ const Modal = ({ closeModal, header, children, cancelLabel, okLabel }) => {
         </header>
         <main className={styles.modal_body}>{children}</main>
         <footer className={styles.modal_footer}>
-          <button className={styles.ok_button} onClick={() => {}}>
+          <button className={styles.ok_button} onClick={okModal}>
             {t(okLabel)}
           </button>
           <button className={styles.cancel_button} onClick={closeModal}>

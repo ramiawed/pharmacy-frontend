@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useSelector, useDispatch } from "react-redux";
 
 // components
 import Header from "../header/header.component";
@@ -7,6 +8,7 @@ import Search from "../search/search.component";
 import UserRow from "../user-row/user-row.component";
 import SelectCustom from "../select/select.component";
 import Checkbox from "../checkbox/checkbox.component";
+import Toast from "../toast/toast.component";
 
 // 3-party library (loading, paginate)
 import ReactLoading from "react-loading";
@@ -15,11 +17,16 @@ import ReactPaginate from "react-paginate";
 // redux stuff
 import { getUsers, selectUsers } from "../../redux/users/usersSlice";
 import { selectToken } from "../../redux/auth/authSlice";
-import { useSelector, useDispatch } from "react-redux";
+import {
+  selectActivationDeleteStatus,
+  selectActivationDeleteMsg,
+  resetActivationDeleteStatus,
+} from "../../redux/users/usersSlice";
 
 // styles
 import styles from "./admin-users.module.scss";
 
+// AdminUsers component
 function AdminUsers() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -35,6 +42,9 @@ function AdminUsers() {
     active: false,
     notActive: false,
   });
+
+  const activationDeleteStatus = useSelector(selectActivationDeleteStatus);
+  const activationDeleteMessage = useSelector(selectActivationDeleteMsg);
 
   // handle user state changed
   const handleUserStateChange = (state) => {
@@ -82,25 +92,6 @@ function AdminUsers() {
   const { users, status, count } = useSelector(selectUsers);
   const token = useSelector(selectToken);
 
-  useEffect(() => {
-    handleSearch(1);
-  }, [dispatch, token]);
-
-  // handle to the page change
-  const handlePageClick = (e) => {
-    const { selected } = e;
-    handleSearch(selected + 1);
-    setInitialPage(selected);
-  };
-
-  // handle will pass to Input Component
-  // fire when the enter key presses
-  // start search
-  const enterPress = () => {
-    handleSearch(1);
-    setInitialPage(0);
-  };
-
   // handle search
   const handleSearch = (page) => {
     const queryString = {};
@@ -131,9 +122,28 @@ function AdminUsers() {
       queryString.active = false;
     }
 
-    console.log(queryString);
+    // console.log(queryString);
 
     dispatch(getUsers({ queryString, token }));
+    setInitialPage(page - 1);
+  };
+
+  useEffect(() => {
+    handleSearch(1);
+  }, []);
+
+  // handle to the page change
+  const handlePageClick = (e) => {
+    const { selected } = e;
+    handleSearch(selected + 1);
+    setInitialPage(selected);
+  };
+
+  // handle will pass to Input Component
+  // fire when the enter key presses
+  // start search
+  const enterPress = () => {
+    handleSearch(1);
     setInitialPage(0);
   };
 
@@ -263,6 +273,25 @@ function AdminUsers() {
           {t("no-partners-found-message")}
         </p>
       )}
+
+      {activationDeleteStatus === "success" ? (
+        <Toast
+          bgColor="rgb(100, 175, 100)"
+          foreColor="#fff"
+          toastText={t(activationDeleteMessage)}
+          actionAfterTimeout={() => {
+            dispatch(resetActivationDeleteStatus());
+            handleSearch(initialPage + 1);
+          }}
+        />
+      ) : activationDeleteStatus === "failed" ? (
+        <Toast
+          bgColor="rgb(255, 100, 100)"
+          foreColor="#000"
+          toastText={t(activationDeleteMessage)}
+          actionAfterTimeout={() => dispatch(resetActivationDeleteStatus())}
+        />
+      ) : null}
     </>
   );
 }

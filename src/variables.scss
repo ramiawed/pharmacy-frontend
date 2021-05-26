@@ -1,3 +1,19 @@
+/* Extra small devices (phones, 600px and down) */
+// @media only screen and (max-width: 320px)
+$xsmall: 320px;
+/* Small devices (portrait tablets and large phones, 600px and up) */
+// @media only screen and (min-width: 481px)
+$small: 481px;
+/* Medium devices (landscape tablets, 769px and up) */
+// @media only screen and (min-width: 769px)
+$medium: 769px;
+/* Large devices (laptops/desktops, 1025px and up) */
+// @media only screen and (min-width: 1025px)
+$large: 1025px;
+/* Extra large devices (large laptops and desktops, 1201px and up) */
+// @media only screen and (min-width: 1210px)
+$xlarge: 1201px;
+
 /* FONTS */
 $font1: "Amiri", serif;
 $font2: "Mirza", cursive;

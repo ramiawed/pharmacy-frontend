@@ -10,7 +10,13 @@ import axios from "../../api/pharmacy";
 import { FaUserAlt, FaMobile } from "react-icons/fa";
 import { RiLockPasswordFill, RiUserReceived2Fill } from "react-icons/ri";
 import { MdEmail } from "react-icons/md";
-import { AiFillPhone, AiFillEnvironment } from "react-icons/ai";
+import {
+  AiFillPhone,
+  AiFillEnvironment,
+  AiFillSafetyCertificate,
+} from "react-icons/ai";
+
+import SelectCustom from "../select/select.component";
 
 // redux
 import {
@@ -43,7 +49,11 @@ const containerVariant = {
 const icon = (type) => {
   switch (type) {
     case "name":
+    case "employeeName":
       return <FaUserAlt className={styles.icon} />;
+
+    case "certificateName":
+      return <AiFillSafetyCertificate className={styles.icon} />;
     case "username":
       return <RiUserReceived2Fill className={styles.icon} />;
     case "password":
@@ -70,6 +80,13 @@ function SignUp() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  const guestJobOptions = [
+    { value: "", label: t("user-job") },
+    { value: "Student", label: t("student") },
+    { value: "Pharmacist", label: t("pharmacist") },
+    { value: "Employee", label: t("employee") },
+  ];
+
   // state from user state redux
   const {
     status,
@@ -87,6 +104,11 @@ function SignUp() {
     password: "",
     passwordConfirm: "",
     email: "",
+    job: "",
+    employeeName: "",
+    certificateName: "",
+    companyName: "",
+    jobTitle: "",
   });
 
   // states for each field
@@ -102,10 +124,18 @@ function SignUp() {
     district: "",
     street: "",
     type: "Normal",
+    employeeName: "",
+    certificateName: "",
+    guestDetails: {
+      job: "",
+      companyName: "",
+      jobTitle: "",
+    },
   });
 
   // reset all state to default
-  const handleSigninClick = () => {
+  const resetUserAndError = () => {
+    // reset user
     setUser({
       name: "",
       username: "",
@@ -118,27 +148,128 @@ function SignUp() {
       district: "",
       street: "",
       type: "Normal",
+      employeeName: "",
+      certificateName: "",
+      guestDetails: {
+        job: "",
+        companyName: "",
+        jobTitle: "",
+      },
     });
+
+    // reset error
     setError({
       name: "",
       username: "",
       password: "",
       passwordConfirm: "",
       email: "",
+      employeeName: "",
+      certificateName: "",
+      job: "",
+      companyName: "",
+      jobTitle: "",
     });
+
     history.push("/signin");
+  };
+
+  // Guest types are (Student, Pharmacist, Employee)
+  // uses with the SelectCustom
+  const handleGuestType = (val) => {
+    // if the user type is Normal and the job is Student or Pharmacist
+    // so the user doesn't contains info about company name and job title
+    if (val === "Student" || val === "Pharmacist") {
+      setUser({
+        ...user,
+        guestDetails: {
+          ...user.guestDetails,
+          job: val,
+          // reset company name and job title
+          companyName: "",
+          jobTitle: "",
+        },
+      });
+    } else {
+      setUser({
+        ...user,
+        guestDetails: {
+          ...user.guestDetails,
+          job: val,
+        },
+      });
+    }
+
+    // reset the error
+    setError({
+      ...error,
+      job: "",
+      companyName: "",
+      employeeName: "",
+      certificateName: "",
+      jobTitle: "",
+    });
   };
 
   // handle change values in all fields
   const handleInputChange = (e) => {
-    setError({
-      ...error,
-      [e.target.id]: "",
-    });
-    setUser({
-      ...user,
-      [e.target.id]: e.target.value,
-    });
+    if (e.target.id === "type") {
+      setError({
+        ...error,
+        [e.target.id]: "",
+        job: "",
+        companyName: "",
+        employeeName: "",
+        certificateName: "",
+        jobTitle: "",
+      });
+    } else {
+      setError({
+        ...error,
+        [e.target.id]: "",
+      });
+    }
+
+    if (e.target.id === "companyName") {
+      // the input field is the company name
+      setUser({
+        ...user,
+        guestDetails: {
+          ...user.guestDetails,
+          companyName: e.target.value,
+        },
+      });
+    } else if (e.target.id === "jobTitle") {
+      // the input field is the job title
+      setUser({
+        ...user,
+        guestDetails: {
+          ...user.guestDetails,
+          jobTitle: e.target.value,
+        },
+      });
+    } else if (e.target.id === "type") {
+      // change the type of the user
+      // reset employee name and certificate name and guestDetails
+      // (job, company name, job title)
+      setUser({
+        ...user,
+        [e.target.id]: e.target.value,
+        employeeName: "",
+        certificateName: "",
+        guestDetails: {
+          ...user.guestDetails,
+          job: "",
+          companyName: "",
+          jobTitle: "",
+        },
+      });
+    } else {
+      setUser({
+        ...user,
+        [e.target.id]: e.target.value,
+      });
+    }
   };
 
   // handle click on the create an account button
@@ -177,6 +308,38 @@ function SignUp() {
     ) {
       errorObj["password"] = "unequal-passwords";
       errorObj["passwordConfirm"] = "unequal-passwords";
+    }
+
+    // if the user type is Pharmacy or Warehouse
+    // employee name and certificate name are required
+    if (user.type === "Pharmacy" || user.type === "Warehouse") {
+      if (user.employeeName.trim().length === 0) {
+        errorObj["employeeName"] = "enter-employee-name";
+      }
+
+      if (user.certificateName.trim().length === 0) {
+        errorObj["certificateName"] = "enter-certificate-name";
+      }
+    }
+
+    // if user type is normal
+    // 1- the job required
+    // 2- if the job is employee (job title, company name are required)
+    if (user.type === "Normal") {
+      if (user.guestDetails.job === "Employee") {
+        if (user.guestDetails.jobTitle.trim().length === 0) {
+          errorObj["jobTitle"] = "enter-job-title";
+        }
+
+        if (user.guestDetails.companyName.trim().length === 0) {
+          errorObj["companyName"] = "enter-company-name";
+        }
+      }
+
+      // job is required
+      if (user.guestDetails.job === "") {
+        errorObj["job"] = "choose-job";
+      }
     }
 
     // send post request to server to create a new user
@@ -221,7 +384,7 @@ function SignUp() {
       {/* top left */}
       <div className={styles.signup}>
         <p>{t("signin-sentence")}</p>
-        <p className={styles.button} onClick={handleSigninClick}>
+        <p className={styles.button} onClick={resetUserAndError}>
           {t("signin")}
         </p>
       </div>
@@ -337,6 +500,84 @@ function SignUp() {
             <label>{t("normal")}</label>
           </div>
         </div>
+
+        {user.type === "Pharmacy" || user.type === "Warehouse" ? (
+          <>
+            <div className={styles.input_div}>
+              <Input
+                icon={icon}
+                type="text"
+                label="user-employee-name"
+                id="employeeName"
+                value={user.employeeName}
+                onchange={handleInputChange}
+                error={error.employeeName?.length > 0}
+              />
+            </div>
+
+            <div className={styles.input_div}>
+              <Input
+                icon={icon}
+                type="text"
+                label="user-certificate-name"
+                id="certificateName"
+                value={user.certificateName}
+                onchange={handleInputChange}
+                error={error.certificateName?.length > 0}
+              />
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
+
+        {user.type === "Normal" ? (
+          <>
+            <div className={[styles.input_full_width].join(" ")}>
+              <SelectCustom
+                bgColor="#6172ac"
+                foreColor="#fff"
+                orderOptions={guestJobOptions}
+                onchange={handleGuestType}
+                defaultOption={{
+                  value: "Job",
+                  label: t("user-job"),
+                }}
+                // caption="user-job"
+              />
+            </div>
+
+            {user.guestDetails.job === "Employee" ? (
+              <>
+                <div className={styles.input_div}>
+                  <Input
+                    icon={icon}
+                    type="text"
+                    label="user-company-name"
+                    id="companyName"
+                    value={user.guestDetails.companyName}
+                    onchange={handleInputChange}
+                    error={error.companyName?.length > 0}
+                  />
+                </div>
+
+                <div className={styles.input_div}>
+                  <Input
+                    icon={icon}
+                    type="text"
+                    label="user-job-title"
+                    id="jobTitle"
+                    value={user.guestDetails.jobTitle}
+                    onchange={handleInputChange}
+                    error={error.jobTitle?.length > 0}
+                  />
+                </div>
+              </>
+            ) : null}
+          </>
+        ) : (
+          <></>
+        )}
 
         {/* email with 100% width and top margin of 10 */}
         <div

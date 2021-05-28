@@ -17,7 +17,7 @@ import styles from "./select.module.scss";
 function SelectCustom({
   bgColor,
   foreColor,
-  orderOptions,
+  options,
   onchange,
   defaultOption,
   caption,
@@ -34,8 +34,10 @@ function SelectCustom({
       height: "30px",
       boxShadow: state.isFocused ? null : null,
       minWidth: "125px",
+      width: "160px",
       borderRadius: "6px",
       marginLeft: "5px",
+      flex: 1,
     }),
     menu: (provided, state) => ({
       ...provided,
@@ -72,7 +74,7 @@ function SelectCustom({
       {/* third-party component react-select */}
       <Select
         styles={customStyles}
-        options={orderOptions}
+        options={options}
         defaultValue={defaultOption}
         onChange={(e) => onchange(e.value)}
       />

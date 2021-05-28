@@ -1,18 +1,33 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
+import { motion } from "framer-motion";
+
+// constants
+import {
+  UserTypeConstants,
+  UserApprovedState,
+  UserActiveState,
+  GuestJob,
+  Colors,
+} from "../../utils/constants";
 
 // components
 import Header from "../header/header.component";
-import Search from "../search/search.component";
 import UserRow from "../user-row/user-row.component";
 import SelectCustom from "../select/select.component";
-import Checkbox from "../checkbox/checkbox.component";
 import Toast from "../toast/toast.component";
+import ExpandableContainer from "../expandable-container/expandable-container.component";
+import RowWith4Children from "../row-with-four-children/row-with-four-children.component";
+import RowWith3Children from "../row-with-three-children/row-with-three-children.component";
+import Input from "../input/input.component";
 
 // 3-party library (loading, paginate)
 import ReactLoading from "react-loading";
 import ReactPaginate from "react-paginate";
+
+// react-icons
+import { FaSearch } from "react-icons/fa";
 
 // redux stuff
 import { getUsers, selectUsers } from "../../redux/users/usersSlice";
@@ -30,12 +45,22 @@ import styles from "./admin-users.module.scss";
 function AdminUsers() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [userType, setUserType] = useState("All");
+
   // own state
+  const [userType, setUserType] = useState(UserTypeConstants.ALL);
+  const [searchContainerExpanded, setSearchContainerExpanded] = useState(false);
   const [searchName, setSearchName] = useState("");
+  const [searchEmployeeName, setSearchEmployeeName] = useState("");
+  const [searchCertificateName, setSearchCertificateName] = useState("");
+  const [searchJob, setSearchJob] = useState(GuestJob.NONE);
+  const [searchCompanyName, setSearchCompanyName] = useState("");
+  const [searchJobTitle, setSearchJobTitle] = useState("");
+  const [searchCity, setSearchCity] = useState("");
+  const [searchDistrict, setSearchDistrict] = useState("");
+  const [searchStreet, setSearchStreet] = useState("");
   const [initialPage, setInitialPage] = useState(0);
 
-  // own state for user state (approved, notApproved, active, notActive)
+  // own state for user state (approved, notApproved, active, notActive) checkboxes
   const [userState, setUserState] = useState({
     approved: false,
     notApproved: false,
@@ -43,62 +68,136 @@ function AdminUsers() {
     notActive: false,
   });
 
+  // selectors
+  // watch the activationDeleteStatus and activationDeleteMsg to display a Toast when change
   const activationDeleteStatus = useSelector(selectActivationDeleteStatus);
   const activationDeleteMessage = useSelector(selectActivationDeleteMsg);
+  const { users, status, count } = useSelector(selectUsers);
+  const token = useSelector(selectToken);
 
-  // handle user state changed
-  const handleUserStateChange = (state) => {
-    if (state === "approved") {
+  // options for SelectCustom components (user type)
+  const userTypeOptions = [
+    { value: UserTypeConstants.COMPANY, label: t("company") },
+    { value: UserTypeConstants.WAREHOUSE, label: t("warehouse") },
+    { value: UserTypeConstants.PHARMACY, label: t("pharmacy") },
+    { value: UserTypeConstants.NORMAL, label: t("normal") },
+    { value: UserTypeConstants.ADMIN, label: t("admin") },
+    { value: UserTypeConstants.ALL, label: t("all") },
+  ];
+
+  // handle the change of the User type state
+  const handleSearchTypeChange = (val) => {
+    setUserType(val);
+    if (
+      val === UserTypeConstants.ALL ||
+      val === UserTypeConstants.ADMIN ||
+      val === UserTypeConstants.COMPANY
+    ) {
+      setSearchEmployeeName("");
+      setSearchCertificateName("");
+      setSearchJob(GuestJob.NONE);
+      setSearchCompanyName("");
+      setSearchJobTitle("");
+    }
+
+    if (
+      val === UserTypeConstants.PHARMACY ||
+      val === UserTypeConstants.WAREHOUSE
+    ) {
+      setSearchJob(GuestJob.NONE);
+      setSearchCompanyName("");
+      setSearchJobTitle("");
+    }
+
+    if (val === UserTypeConstants.NORMAL) {
+      setSearchEmployeeName("");
+      setSearchCertificateName("");
+    }
+  };
+
+  // options for the SelectCustom (Approved state)
+  const approvedState = [
+    { value: UserApprovedState.APPROVED, label: t("approved-account") },
+    { value: UserApprovedState.NOT_APPROVED, label: t("not-approved-account") },
+    { value: UserApprovedState.ALL, label: t("all") },
+  ];
+
+  // handle the change of the options in the SelectCustom (Approved state)
+  const handleApprovedStateChange = (val) => {
+    if (val === UserApprovedState.APPROVED) {
       setUserState({
         ...userState,
-        approved: !userState.approved,
+        approved: true,
         notApproved: false,
       });
-    } else if (state === "notApproved") {
+    } else if (val === UserApprovedState.NOT_APPROVED) {
       setUserState({
         ...userState,
         approved: false,
-        notApproved: !userState.notApproved,
+        notApproved: true,
       });
-    } else if (state === "active") {
+    } else if (val === UserApprovedState.ALL) {
       setUserState({
         ...userState,
-        active: !userState.active,
-        notActive: false,
-      });
-    } else if (state === "notActive") {
-      setUserState({
-        ...userState,
-        active: false,
-        notActive: !userState.notActive,
+        approved: false,
+        notApproved: false,
       });
     }
   };
 
-  const typeOptions = [
-    { value: "Company", label: t("company") },
-    { value: "Warehouse", label: t("warehouse") },
-    { value: "Normal", label: t("normal") },
-    { value: "Pharmacy", label: t("pharmacy") },
-    { value: "Admin", label: t("admin") },
-    { value: "All", label: t("all") },
+  // options for the SelectCustom (Delete state)
+  const deletedState = [
+    { value: UserActiveState.INACTIVE, label: t("deleted-account") },
+    { value: UserActiveState.ACTIVE, label: t("not-deleted-account") },
+    { value: UserActiveState.ALL, label: t("all") },
   ];
 
-  const handleSearchTypeChange = (val) => {
-    setUserType(val);
+  // handle the change of the options in the SelectCustom (Deleting state)
+  const handleDeletedStateChange = (val) => {
+    if (val === UserActiveState.INACTIVE) {
+      setUserState({
+        ...userState,
+        active: false,
+        notActive: true,
+      });
+    } else if (val === UserActiveState.ACTIVE) {
+      setUserState({
+        ...userState,
+        active: true,
+        notActive: false,
+      });
+    } else if (val === UserActiveState.ALL) {
+      setUserState({
+        ...userState,
+        active: false,
+        notActive: false,
+      });
+    }
   };
 
-  // selectors
-  const { users, status, count } = useSelector(selectUsers);
-  const token = useSelector(selectToken);
+  const guestJobOptions = [
+    { value: GuestJob.NONE, label: t("user-job") },
+    { value: GuestJob.STUDENT, label: t("student") },
+    { value: GuestJob.PHARMACIST, label: t("pharmacist") },
+    { value: GuestJob.EMPLOYEE, label: t("employee") },
+  ];
+
+  const handleGuestJobChange = (val) => {
+    setSearchJob(val);
+    if (val !== GuestJob.EMPLOYEE) {
+      setSearchCompanyName("");
+      setSearchJobTitle("");
+    }
+  };
 
   // handle search
   const handleSearch = (page) => {
+    // build the query string
     const queryString = {};
 
     queryString.page = page;
 
-    if (userType !== "All") {
+    if (userType !== UserTypeConstants.ALL) {
       queryString.type = userType;
     }
 
@@ -122,17 +221,45 @@ function AdminUsers() {
       queryString.active = false;
     }
 
-    // console.log(queryString);
+    if (searchCity.trim().length !== 0) {
+      queryString.city = searchCity.trim();
+    }
+
+    if (searchDistrict.trim().length !== 0) {
+      queryString.district = searchDistrict.trim();
+    }
+
+    if (searchStreet.trim().length !== 0) {
+      queryString.street = searchStreet.trim();
+    }
+
+    if (searchEmployeeName.trim().length !== 0) {
+      queryString.employeeName = searchEmployeeName.trim();
+    }
+
+    if (searchCertificateName.trim().length !== 0) {
+      queryString.certificateName = searchCertificateName.trim();
+    }
+
+    if (searchCompanyName.trim().length !== 0) {
+      queryString.companyName = searchCompanyName.trim();
+    }
+
+    if (searchJobTitle.trim().length !== 0) {
+      queryString.jobTitle = searchJobTitle.trim();
+    }
+
+    if (searchJob !== GuestJob.NONE) {
+      queryString.job = searchJob;
+    }
+
+    console.log(queryString);
 
     dispatch(getUsers({ queryString, token }));
     setInitialPage(page - 1);
   };
 
-  useEffect(() => {
-    handleSearch(1);
-  }, []);
-
-  // handle to the page change
+  // handle for page change in the paginate component
   const handlePageClick = (e) => {
     const { selected } = e;
     handleSearch(selected + 1);
@@ -147,31 +274,95 @@ function AdminUsers() {
     setInitialPage(0);
   };
 
+  // dispatch a getUsers after component render for the first time
+  useEffect(() => {
+    handleSearch(1);
+  }, []);
+
   return (
     <>
       <div className={styles.fixed_position}>
-        <div className={styles.header_div}>
-          <Header>
-            <h2>{t("partners")}</h2>
-          </Header>
-        </div>
+        {/* <div className={styles.header_div}> */}
+        <Header>
+          <h2>{t("partners")}</h2>
+        </Header>
+        {/* </div> */}
 
-        <div className={styles.search_engines}>
-          <div className={styles.search_div}>
-            <Search
-              value={searchName}
-              onchange={(e) => {
-                setSearchName(e.target.value);
-              }}
-              onEnterPress={enterPress}
-            />
-          </div>
+        <ExpandableContainer
+          labelText={t("search-engines")}
+          expanded={searchContainerExpanded}
+          changeExpanded={() =>
+            setSearchContainerExpanded(!searchContainerExpanded)
+          }
+        >
+          <RowWith4Children>
+            <div>
+              <Input
+                label="user-name"
+                id="search-name"
+                type="text"
+                value={searchName}
+                onchange={(e) => {
+                  setSearchName(e.target.value);
+                }}
+                bordered={true}
+                icon={() => <FaSearch />}
+                placeholder="search"
+                onEnterPress={enterPress}
+              />
+            </div>
+            <div>
+              <Input
+                label="user-city"
+                id="search-city"
+                type="text"
+                value={searchCity}
+                onchange={(e) => {
+                  setSearchCity(e.target.value);
+                }}
+                bordered={true}
+                icon={() => <FaSearch />}
+                placeholder="search"
+                onEnterPress={enterPress}
+              />
+            </div>
+            <div>
+              <Input
+                label="user-district"
+                id="search-district"
+                type="text"
+                value={searchDistrict}
+                onchange={(e) => {
+                  setSearchDistrict(e.target.value);
+                }}
+                bordered={true}
+                icon={() => <FaSearch />}
+                placeholder="search"
+                onEnterPress={enterPress}
+              />
+            </div>
+            <div>
+              <Input
+                label="user-street"
+                id="search-street"
+                type="text"
+                value={searchStreet}
+                onchange={(e) => {
+                  setSearchStreet(e.target.value);
+                }}
+                bordered={true}
+                icon={() => <FaSearch />}
+                placeholder="search"
+                onEnterPress={enterPress}
+              />
+            </div>
+          </RowWith4Children>
 
-          <div className={styles.search_div}>
+          <RowWith4Children>
             <SelectCustom
-              bgColor="#6172ac"
+              bgColor={Colors.SECONDARY_COLOR}
               foreColor="#fff"
-              orderOptions={typeOptions}
+              options={userTypeOptions}
               onchange={handleSearchTypeChange}
               defaultOption={{
                 value: userType,
@@ -179,53 +370,154 @@ function AdminUsers() {
               }}
               caption="user-type"
             />
-          </div>
-
-          <div className={styles.search_div}>
-            <div>
-              <label style={{ marginLeft: 10 }}>
-                <span style={{ margin: 2 }}>مفعل</span>
-                <Checkbox
-                  checked={userState.approved}
-                  onChange={() => handleUserStateChange("approved")}
+            {(userType === UserTypeConstants.WAREHOUSE ||
+              userType === UserTypeConstants.PHARMACY) && (
+              <>
+                <div>
+                  <Input
+                    label="user-employee-name"
+                    id="search-employee-name"
+                    type="text"
+                    value={searchEmployeeName}
+                    onchange={(e) => {
+                      setSearchEmployeeName(e.target.value);
+                    }}
+                    bordered={true}
+                    icon={() => <FaSearch />}
+                    placeholder="search"
+                    onEnterPress={enterPress}
+                  />
+                </div>
+                <div>
+                  <Input
+                    label="user-certificate-name"
+                    id="search-certificate-name"
+                    type="text"
+                    value={searchCertificateName}
+                    onchange={(e) => {
+                      setSearchCertificateName(e.target.value);
+                    }}
+                    bordered={true}
+                    icon={() => <FaSearch />}
+                    placeholder="search"
+                    onEnterPress={enterPress}
+                  />
+                </div>
+                <div></div>
+              </>
+            )}
+            {userType === UserTypeConstants.NORMAL && (
+              <>
+                <SelectCustom
+                  bgColor={Colors.SECONDARY_COLOR}
+                  foreColor="#fff"
+                  options={guestJobOptions}
+                  onchange={handleGuestJobChange}
+                  defaultOption={{
+                    value: GuestJob.NONE,
+                    label: t(searchJob.toLowerCase()),
+                  }}
+                  caption="user-job"
                 />
-              </label>
+                {searchJob === GuestJob.EMPLOYEE && (
+                  <>
+                    <div>
+                      <Input
+                        label="user-company-name"
+                        id="search-company-name"
+                        type="text"
+                        value={searchCompanyName}
+                        onchange={(e) => {
+                          setSearchCompanyName(e.target.value);
+                        }}
+                        bordered={true}
+                        icon={() => <FaSearch />}
+                        placeholder="search"
+                        onEnterPress={enterPress}
+                      />
+                    </div>
+                    <div>
+                      <Input
+                        label="user-job-title"
+                        id="search-job-title"
+                        type="text"
+                        value={searchJobTitle}
+                        onchange={(e) => {
+                          setSearchJobTitle(e.target.value);
+                        }}
+                        bordered={true}
+                        icon={() => <FaSearch />}
+                        placeholder="search"
+                        onEnterPress={enterPress}
+                      />
+                    </div>
+                  </>
+                )}
+                {searchJob !== GuestJob.EMPLOYEE && (
+                  <>
+                    <div></div>
+                    <div></div>
+                  </>
+                )}
+              </>
+            )}
+            {(userType === UserTypeConstants.ALL ||
+              userType === UserTypeConstants.COMPANY ||
+              userType === UserTypeConstants.ADMIN) && (
+              <>
+                <div></div>
+                <div></div>
+                <div></div>
+              </>
+            )}
+          </RowWith4Children>
 
-              <label style={{ marginLeft: 10 }}>
-                <span style={{ margin: 2 }}>غير مفعل</span>
-                <Checkbox
-                  checked={userState.notApproved}
-                  onChange={() => handleUserStateChange("notApproved")}
-                />
-              </label>
+          <RowWith4Children>
+            <SelectCustom
+              bgColor={Colors.SECONDARY_COLOR}
+              foreColor="#fff"
+              options={approvedState}
+              onchange={handleApprovedStateChange}
+              defaultOption={{
+                value: "All",
+                label: t("all"),
+              }}
+              caption="approved-state"
+            />
+            <SelectCustom
+              bgColor={Colors.SECONDARY_COLOR}
+              foreColor="#fff"
+              options={deletedState}
+              onchange={handleDeletedStateChange}
+              defaultOption={{
+                value: "All",
+                label: t("all"),
+              }}
+              caption="approved-state"
+            />
+
+            <div></div>
+            <div className={styles.button_div}>
+              <motion.button
+                whileHover={{
+                  scale: 1.1,
+                  textShadow: "0px 0px 8px rgb(255, 255, 255)",
+                  boxShadow: "0px 0px 8px rgba(0, 0, 0, 0.5)",
+                }}
+                onClick={() => handleSearch(1)}
+              >
+                {t("search")}
+              </motion.button>
             </div>
-          </div>
-          <div className={styles.search_div}>
-            <div>
-              <label style={{ marginLeft: 10 }}>
-                <span style={{ margin: 2 }}>غير محذوف</span>
-                <Checkbox
-                  checked={userState.active}
-                  onChange={() => handleUserStateChange("active")}
-                />
-              </label>
 
-              <label style={{ marginLeft: 10 }}>
-                <span style={{ margin: 2 }}>محذوف</span>
-                <Checkbox
-                  checked={userState.notActive}
-                  onChange={() => handleUserStateChange("notActive")}
-                />
-              </label>
-            </div>
-          </div>
-          <button
-            onClick={() => handleSearch(1)}
-            className={styles.search_button}
-          >
-            {t("search")}
-          </button>
-        </div>
+            {/* <button
+              onClick={() => handleSearch(1)}
+              className={styles.search_button}
+            >
+              {t("search")}
+            </button> */}
+          </RowWith4Children>
+        </ExpandableContainer>
 
         <div className={styles.table_header_div}>
           <label className={styles.label_large}>{t("user-name")}</label>
@@ -239,12 +531,19 @@ function AdminUsers() {
         </div>
       </div>
 
-      <div className={styles.behind_fixed_position}></div>
+      <div
+        className={[
+          styles.behind_fixed_position,
+          searchContainerExpanded
+            ? styles.behind_fixed_expanded
+            : styles.behind_fixed_collapsed,
+        ].join(" ")}
+      ></div>
 
       {/* loading components when retrieve the result from DB */}
       {status === "loading" && (
         <div className={styles.loading}>
-          <ReactLoading color="#6172ac" type="bubbles" height={50} width={50} />
+          <ReactLoading color="#8a7d85" type="bubbles" height={50} width={50} />
         </div>
       )}
 
@@ -269,14 +568,21 @@ function AdminUsers() {
           activeClassName={styles.pagination_link_active}
         />
       ) : (
-        <p style={{ textAlign: "center", padding: "16px" }}>
+        <p
+          style={{
+            textAlign: "center",
+            padding: "16px",
+            fontSize: "2rem",
+            color: Colors.SECONDARY_COLOR,
+          }}
+        >
           {t("no-partners-found-message")}
         </p>
       )}
 
       {activationDeleteStatus === "success" ? (
         <Toast
-          bgColor="rgb(100, 175, 100)"
+          bgColor={Colors.SUCCEEDED_COLOR}
           foreColor="#fff"
           toastText={t(activationDeleteMessage)}
           actionAfterTimeout={() => {
@@ -286,7 +592,7 @@ function AdminUsers() {
         />
       ) : activationDeleteStatus === "failed" ? (
         <Toast
-          bgColor="rgb(255, 100, 100)"
+          bgColor={Colors.FAILED_COLOR}
           foreColor="#000"
           toastText={t(activationDeleteMessage)}
           actionAfterTimeout={() => dispatch(resetActivationDeleteStatus())}

@@ -151,31 +151,27 @@ function SignIn() {
           </p>
         </div>
         <h3>{t("signin")}</h3>
-        <div className={styles.input_div}>
-          <Input
-            icon={() => <HiUser className={styles.icons} />}
-            type="text"
-            placeholder="user-username"
-            id="username"
-            value={userInfo.username}
-            onchange={handleInputChange}
-            error={preSignError.username?.length > 0 || error}
-            onEnterPress={handlePressEnter}
-          />
-        </div>
+        <Input
+          icon={() => <HiUser className={styles.icons} />}
+          type="text"
+          placeholder="user-username"
+          id="username"
+          value={userInfo.username}
+          onchange={handleInputChange}
+          error={preSignError.username?.length > 0 || error}
+          onEnterPress={handlePressEnter}
+        />
 
-        <div className={styles.input_div}>
-          <Input
-            icon={() => <RiLockPasswordLine className={styles.icon} />}
-            type="password"
-            placeholder="user-password"
-            id="password"
-            value={userInfo.password}
-            onchange={handleInputChange}
-            error={preSignError.password?.length > 0 || error}
-            onEnterPress={handlePressEnter}
-          />
-        </div>
+        <Input
+          icon={() => <RiLockPasswordLine className={styles.icon} />}
+          type="password"
+          placeholder="user-password"
+          id="password"
+          value={userInfo.password}
+          onchange={handleInputChange}
+          error={preSignError.password?.length > 0 || error}
+          onEnterPress={handlePressEnter}
+        />
 
         {/* Error sections */}
         <>

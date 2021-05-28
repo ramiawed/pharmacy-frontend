@@ -1,0 +1,34 @@
+{/* <div>
+              <label style={{ marginLeft: 10 }}>
+                <span style={{ margin: 2 }}>مفعل</span>
+                <Checkbox
+                  checked={userState.approved}
+                  onChange={() => handleUserStateChange("approved")}
+                />
+              </label>
+
+              <label style={{ marginLeft: 10 }}>
+                <span style={{ margin: 2 }}>غير مفعل</span>
+                <Checkbox
+                  checked={userState.notApproved}
+                  onChange={() => handleUserStateChange("notApproved")}
+                />
+              </label>
+            </div> */}
+            {/* <div>
+              <label style={{ marginLeft: 10 }}>
+                <span style={{ margin: 2 }}>غير محذوف</span>
+                <Checkbox
+                  checked={userState.active}
+                  onChange={() => handleUserStateChange("active")}
+                />
+              </label>
+
+              <label style={{ marginLeft: 10 }}>
+                <span style={{ margin: 2 }}>محذوف</span>
+                <Checkbox
+                  checked={userState.notActive}
+                  onChange={() => handleUserStateChange("notActive")}
+                />
+              </label>
+            </div> */}

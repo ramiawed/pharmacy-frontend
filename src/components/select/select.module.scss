@@ -3,11 +3,12 @@
 .order_container {
   // display properties
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 }
 
 .order_container label {
   padding: 0 5px;
+  font-size: 14px;
   color: $secondary-color;
 }

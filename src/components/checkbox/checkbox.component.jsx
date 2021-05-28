@@ -30,7 +30,7 @@ const StyledCheckbox = styled.div`
   display: inline-block;
   width: 16px;
   height: 16px;
-  background: ${(props) => (props.checked ? "#6172ac" : "#6172ac")};
+  background: ${(props) => (props.checked ? "#8a7d85" : "#8a7d85")};
   border-radius: 3px;
   transition: all 150ms;
 

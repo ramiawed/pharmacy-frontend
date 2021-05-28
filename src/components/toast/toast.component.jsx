@@ -7,7 +7,7 @@ function Toast({ bgColor, foreColor, toastText, actionAfterTimeout }) {
   useEffect(() => {
     setTimeout(() => {
       actionAfterTimeout();
-    }, 2000);
+    }, 3000);
   });
 
   return (

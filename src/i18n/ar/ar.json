@@ -37,8 +37,8 @@
     "provide unique name": "الاسم المدخل موجود مسبقاً، الرجاء إدخال اسم جديد",
     "provide unique username": "اسم الدخول موجود مسبقاً، الرجاء إدخال اسم جديد ",
     "something went wrong": "حدث خطأ أثناء العملية السابقة، الرجاء إعادة المحاولة",
-    "password-length": "كلمة السر يجب أن تكون أكثر من ٨ أحرف",
-    "confirm-password-length": "تأكيد كلمة السر يجب أن تكون أكثر من ٨ أحرف",
+    "password-length": "كلمة السر يجب أن تكون أكثر من ٥ أحرف",
+    "confirm-password-length": "تأكيد كلمة السر يجب أن تكون أكثر من ٥ أحرف",
     "unequal-passwords": "كلمة السر و تأكيد كلمة السر غير متطابقتان",
     "enter-employee-name": "ادخل اسم الموظف",
     "enter-company-name": "ادخل اسم الشركة",
@@ -54,6 +54,7 @@
     "enter-password": "ادخل كلمة السر",
     "enter-password-confirm": "ادخل تاكيد كلمة السر",
     "enter-username-password": "ادخل اسم الدخول و كلمة السر",
+    "enter-mobile": "ادخل رقم الموبايل",
     "nav-main-page": "الصفحة الرئيسية",
     "nav-company": "الشركات",
     "nav-warehouse": "المستودعات",
@@ -67,6 +68,7 @@
     "nav-advertise": "الإعلانات",
     "nav-offers": "العروض",
     "search": "بحث",
+    "search-engines": "محركات البحث",
     "user-action": "",
     "tooltip-approve": "تفعيل الحساب",
     "tooltip-disapprove": "إغلاق الحساب",
@@ -93,5 +95,10 @@
     "user-delete-failed": "حدث خطأ أثناء حذف الحساب، أعد المحاولة",
     "user-undo-delete-success": "تم استعادة الحساب من الحذف بنجاح",
     "user-undo-delete-failed": "حدث خطأ أثناء استعادة حذف الحساب، أعد المحاولة",
-    "warning": "تحذير"
+    "warning": "تحذير",
+    "approved-account": "حساب مفعل",
+    "not-approved-account": "حساب غير مفعل",
+    "approved-state": "حالة الحساب",
+    "deleted-account": "حساب محذوف",
+    "not-deleted-account": "حساب غير محذوف"
 }

@@ -1,0 +1,20 @@
+@import "../../variables.scss";
+
+.header_label {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 0 6px;
+  color: $secondary-color;
+}
+
+.expanded {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 120px;
+}
+
+.collapsed {
+  display: none;
+}

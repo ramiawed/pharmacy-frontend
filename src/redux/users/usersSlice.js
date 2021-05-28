@@ -25,6 +25,38 @@ export const getUsers = createAsyncThunk(
         buildUrl = buildUrl + `&type=${queryString.type}`;
       }
 
+      if (queryString.city) {
+        buildUrl = buildUrl + `&city=${queryString.city}`;
+      }
+
+      if (queryString.district) {
+        buildUrl = buildUrl + `&district=${queryString.district}`;
+      }
+
+      if (queryString.street) {
+        buildUrl = buildUrl + `&street=${queryString.street}`;
+      }
+
+      if (queryString.employeeName) {
+        buildUrl = buildUrl + `&employeeName=${queryString.employeeName}`;
+      }
+
+      if (queryString.certificateName) {
+        buildUrl = buildUrl + `&certificateName=${queryString.certificateName}`;
+      }
+
+      if (queryString.companyName) {
+        buildUrl = buildUrl + `&companyName=${queryString.companyName}`;
+      }
+
+      if (queryString.jobTitle) {
+        buildUrl = buildUrl + `&jobTitle=${queryString.jobTitle}`;
+      }
+
+      if (queryString.job) {
+        buildUrl = buildUrl + `&job=${queryString.job}`;
+      }
+
       if (queryString.approve !== undefined) {
         buildUrl = buildUrl + `&isApproved=${queryString.approve}`;
       }

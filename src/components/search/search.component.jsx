@@ -6,11 +6,7 @@ import { FaSearch } from "react-icons/fa";
 
 function Search({ value, onchange, onEnterPress }) {
   return (
-    <div
-      style={{
-        display: "flex",
-      }}
-    >
+    <>
       <Input
         id="search"
         type="text"
@@ -21,7 +17,7 @@ function Search({ value, onchange, onEnterPress }) {
         placeholder="search"
         onEnterPress={onEnterPress}
       />
-    </div>
+    </>
   );
 }
 

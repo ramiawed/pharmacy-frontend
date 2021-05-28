@@ -22,6 +22,7 @@
 .showed {
   width: 200px;
   background: $secondary-color;
+  box-shadow: -6px 0 6px rgba(0, 0, 0, 0.3);
 }
 
 .profile_img {
@@ -93,7 +94,6 @@
 
   color: $white-color;
   background-color: $secondary-color;
-  border: 3px solid $secondary-color;
 
   transition: all 0.5s;
 }
@@ -112,7 +112,7 @@
 
 .icon {
   position: absolute;
-  top: 20px;
+  top: 24px;
 }
 
 .icon:lang(ar) {
@@ -163,7 +163,7 @@
   }
 
   50% {
-    rigth: 20px;
+    right: 20px;
     opacity: 1;
   }
 

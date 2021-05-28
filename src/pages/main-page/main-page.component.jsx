@@ -13,7 +13,7 @@ import CompaniesPage from "../compnaies-page/companies-page.component";
 import WarehousesPage from "../warehouses-page/warehouses.page.component";
 import CartPage from "../cart-page/cart-page.component";
 import AdminUsers from "../../components/admin-users/admin-users.component";
-import Constants from "../../utils/constants";
+import { UserTypeConstants } from "../../utils/constants";
 
 function MainPage() {
   const { user } = useSelector(selectUserData);
@@ -37,7 +37,7 @@ function MainPage() {
         </Route>
 
         <Route path="/admin/companies">
-          <AdminUsers type={Constants.COMPANY} />
+          <AdminUsers type={UserTypeConstants.COMPANY} />
         </Route>
       </div>
     </div>

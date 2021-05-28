@@ -27,6 +27,7 @@ import Modal from "../modal/modal.component";
 // styles
 import styles from "./user-row.module.scss";
 import { selectToken } from "../../redux/auth/authSlice";
+import { Colors, GuestJob, UserTypeConstants } from "../../utils/constants";
 
 // UserRow component
 function UserRow({ user, index }) {
@@ -199,14 +200,16 @@ function UserRow({ user, index }) {
           <label className={styles.label_small}>
             {user.isApproved ? (
               <ActionButton
+                color={Colors.SUCCEEDED_COLOR}
                 tooltip="tooltip-disapprove"
-                icon={() => <AiFillUnlock color="rgb(100, 175, 100)" />}
+                icon={() => <AiFillUnlock />}
                 action={() => handleActionIconClick("disapprove")}
               />
             ) : (
               <ActionButton
+                color={Colors.FAILED_COLOR}
                 tooltip="tooltip-approve"
-                icon={() => <AiFillLock color="rgb(255, 100, 100)" />}
+                icon={() => <AiFillLock />}
                 action={() => handleActionIconClick("approve")}
               />
             )}
@@ -214,16 +217,16 @@ function UserRow({ user, index }) {
           <label className={styles.label_small}>
             {user.isActive ? (
               <ActionButton
+                color={Colors.SUCCEEDED_COLOR}
                 tooltip="tooltip-delete"
-                icon={() => (
-                  <BsFillPersonCheckFill color="rgb(100, 175, 100)" />
-                )}
+                icon={() => <BsFillPersonCheckFill />}
                 action={() => handleActionIconClick("delete")}
               />
             ) : (
               <ActionButton
+                color={Colors.FAILED_COLOR}
                 tooltip="tooltip-undo-delete"
-                icon={() => <BsFillPersonDashFill color="rgb(255, 100, 100)" />}
+                icon={() => <BsFillPersonDashFill />}
                 action={() => handleActionIconClick("undo-delete")}
               />
             )}{" "}
@@ -234,12 +237,14 @@ function UserRow({ user, index }) {
           <div className={styles.actions_div}>
             {collapsed ? (
               <ActionButton
+                color={Colors.SECONDARY_COLOR}
                 tooltip="tooltip-expanded"
-                icon={() => <BsFillCaretDownFill color="rgb(100, 100, 255)" />}
+                icon={() => <BsFillCaretDownFill />}
                 action={() => setCollapsed(!collapsed)}
               />
             ) : (
               <ActionButton
+                color={Colors.SECONDARY_COLOR}
                 tooltip="tooltip-collapsed"
                 icon={() => <BsFillCaretUpFill />}
                 action={() => setCollapsed(!collapsed)}
@@ -247,7 +252,84 @@ function UserRow({ user, index }) {
             )}
           </div>
         </div>
-        {!collapsed && <div className={styles.expanded_info}>some info</div>}
+        {!collapsed && (
+          <div className={styles.expanded_info_div}>
+            <div
+              style={{
+                backgroundImage: 'url("http://localhost:8000/avatar01.png',
+              }}
+              className={styles.profile_img}
+            ></div>
+            <div className={styles.advanced_info}>
+              <div className={styles.half_row}>
+                <label className={styles.label}>{t("user-username")}:</label>
+                <label>{user.username}</label>
+              </div>
+              <div className={styles.half_row}>
+                <label className={styles.label}>{t("user-type")}:</label>
+                <label>{t(`${user.type.toLowerCase()}`)}</label>
+              </div>
+              <div className={styles.half_row}>
+                <label className={styles.label}>{t("user-city")}:</label>
+                <label>{user.city}</label>
+              </div>
+              <div className={styles.half_row}></div>
+              <div className={styles.half_row}>
+                <label className={styles.label}>{t("user-district")}:</label>
+                <label>{user.district}</label>
+              </div>
+              <div className={styles.half_row}>
+                <label className={styles.label}>{t("user-street")}:</label>
+                <label>{user.street}</label>
+              </div>
+
+              {/* if the user type is pharmacy or warehouse display employee name and certificate name */}
+              {user.type === UserTypeConstants.PHARMACY ||
+              user.type === UserTypeConstants.WAREHOUSE ? (
+                <>
+                  <div className={styles.half_row}>
+                    <label className={styles.label}>
+                      {t("user-employee-name")}:
+                    </label>
+                    <label>{user.employeeName}</label>
+                  </div>
+                  <div className={styles.half_row}>
+                    <label className={styles.label}>
+                      {t("user-certificate-name")}:
+                    </label>
+                    <label>{user.certificateName}</label>
+                  </div>
+                </>
+              ) : null}
+
+              {user.type === UserTypeConstants.NORMAL ? (
+                <>
+                  <div className={styles.half_row}>
+                    <label className={styles.label}>{t("user-job")}:</label>
+                    <label>{t(`${user.guestDetails.job.toLowerCase()}`)}</label>
+                  </div>
+                  <div className={styles.half_row}></div>
+                  {user.guestDetails.job === GuestJob.EMPLOYEE ? (
+                    <>
+                      <div className={styles.half_row}>
+                        <label className={styles.label}>
+                          {t("user-company-name")}:
+                        </label>
+                        <label>{user.guestDetails.companyName}</label>
+                      </div>
+                      <div className={styles.half_row}>
+                        <label className={styles.label}>
+                          {t("user-job-title")}:
+                        </label>
+                        <label>{user.guestDetails.jobTitle}</label>
+                      </div>
+                    </>
+                  ) : null}
+                </>
+              ) : null}
+            </div>
+          </div>
+        )}
         {showModal && (
           <Modal
             header={modalInfo.header}

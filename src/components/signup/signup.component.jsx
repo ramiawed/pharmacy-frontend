@@ -17,6 +17,12 @@ import {
 } from "react-icons/ai";
 
 import SelectCustom from "../select/select.component";
+import {
+  Colors,
+  GuestJob,
+  UserActiveState,
+  UserTypeConstants,
+} from "../../utils/constants";
 
 // redux
 import {
@@ -81,10 +87,10 @@ function SignUp() {
   const dispatch = useDispatch();
 
   const guestJobOptions = [
-    { value: "", label: t("user-job") },
-    { value: "Student", label: t("student") },
-    { value: "Pharmacist", label: t("pharmacist") },
-    { value: "Employee", label: t("employee") },
+    { value: GuestJob.NONE, label: t("user-job") },
+    { value: GuestJob.STUDENT, label: t("student") },
+    { value: GuestJob.PHARMACIST, label: t("pharmacist") },
+    { value: GuestJob.EMPLOYEE, label: t("employee") },
   ];
 
   // state from user state redux
@@ -104,6 +110,7 @@ function SignUp() {
     password: "",
     passwordConfirm: "",
     email: "",
+    mobile: "",
     job: "",
     employeeName: "",
     certificateName: "",
@@ -123,7 +130,7 @@ function SignUp() {
     city: "",
     district: "",
     street: "",
-    type: "Normal",
+    type: UserTypeConstants.NORMAL,
     employeeName: "",
     certificateName: "",
     guestDetails: {
@@ -147,7 +154,7 @@ function SignUp() {
       city: "",
       district: "",
       street: "",
-      type: "Normal",
+      type: UserTypeConstants.NORMAL,
       employeeName: "",
       certificateName: "",
       guestDetails: {
@@ -164,6 +171,7 @@ function SignUp() {
       password: "",
       passwordConfirm: "",
       email: "",
+      mobile: "",
       employeeName: "",
       certificateName: "",
       job: "",
@@ -179,7 +187,7 @@ function SignUp() {
   const handleGuestType = (val) => {
     // if the user type is Normal and the job is Student or Pharmacist
     // so the user doesn't contains info about company name and job title
-    if (val === "Student" || val === "Pharmacist") {
+    if (val === GuestJob.STUDENT || val === GuestJob.PHARMACIST) {
       setUser({
         ...user,
         guestDetails: {
@@ -288,26 +296,30 @@ function SignUp() {
 
     if (user.password.length === 0) {
       errorObj["password"] = "enter-password";
-    } else if (user.password.length < 8) {
-      // password must be greater than or equals to 8 characters
+    } else if (user.password.length < 5) {
+      // password must be greater than or equals to 5 characters
       errorObj["password"] = "password-length";
     }
 
     if (user.passwordConfirm.length === 0) {
       errorObj["passwordConfirm"] = "enter-password-confirm";
-    } else if (user.passwordConfirm.length < 8) {
-      // password confirm must be greater than or equals to 8 characters
+    } else if (user.passwordConfirm.length < 5) {
+      // password confirm must be greater than or equals to 5 characters
       errorObj["passwordConfirm"] = "confirm-password-length";
     }
 
     // password must be equals to password confirm
     if (
-      user.password.length >= 8 &&
-      user.passwordConfirm.length >= 8 &&
+      user.password.length >= 5 &&
+      user.passwordConfirm.length >= 5 &&
       user.password !== user.passwordConfirm
     ) {
       errorObj["password"] = "unequal-passwords";
       errorObj["passwordConfirm"] = "unequal-passwords";
+    }
+
+    if (user.mobile.length === 0) {
+      errorObj["mobile"] = "enter-mobile";
     }
 
     // if the user type is Pharmacy or Warehouse
@@ -457,8 +469,8 @@ function SignUp() {
             <input
               id="type"
               type="radio"
-              value="Company"
-              checked={user.type === "Company"}
+              value={UserTypeConstants.COMPANY}
+              checked={user.type === UserTypeConstants.COMPANY}
               onChange={handleInputChange}
             />
             <label>{t("company")}</label>
@@ -469,8 +481,8 @@ function SignUp() {
             <input
               id="type"
               type="radio"
-              value="Warehouse"
-              checked={user.type === "Warehouse"}
+              value={UserTypeConstants.WAREHOUSE}
+              checked={user.type === UserTypeConstants.WAREHOUSE}
               onChange={handleInputChange}
             />
             <label>{t("warehouse")}</label>
@@ -481,8 +493,8 @@ function SignUp() {
             <input
               id="type"
               type="radio"
-              value="Pharmacy"
-              checked={user.type === "Pharmacy"}
+              value={UserTypeConstants.PHARMACY}
+              checked={user.type === UserTypeConstants.PHARMACY}
               onChange={handleInputChange}
             />
             <label>{t("pharmacy")}</label>
@@ -493,15 +505,16 @@ function SignUp() {
             <input
               id="type"
               type="radio"
-              value="Normal"
-              checked={user.type === "Normal"}
+              value={UserTypeConstants.NORMAL}
+              checked={user.type === UserTypeConstants.NORMAL}
               onChange={handleInputChange}
             />
             <label>{t("normal")}</label>
           </div>
         </div>
 
-        {user.type === "Pharmacy" || user.type === "Warehouse" ? (
+        {user.type === UserTypeConstants.PHARMACY ||
+        user.type === UserTypeConstants.WAREHOUSE ? (
           <>
             <div className={styles.input_div}>
               <Input
@@ -531,13 +544,13 @@ function SignUp() {
           <></>
         )}
 
-        {user.type === "Normal" ? (
+        {user.type === UserTypeConstants.NORMAL ? (
           <>
             <div className={[styles.input_full_width].join(" ")}>
               <SelectCustom
-                bgColor="#6172ac"
+                bgColor={Colors.SECONDARY_COLOR}
                 foreColor="#fff"
-                orderOptions={guestJobOptions}
+                options={guestJobOptions}
                 onchange={handleGuestType}
                 defaultOption={{
                   value: "Job",
@@ -547,7 +560,7 @@ function SignUp() {
               />
             </div>
 
-            {user.guestDetails.job === "Employee" ? (
+            {user.guestDetails.job === GuestJob.EMPLOYEE ? (
               <>
                 <div className={styles.input_div}>
                   <Input
@@ -618,6 +631,7 @@ function SignUp() {
             id="mobile"
             value={user.mobile}
             onchange={handleInputChange}
+            error={error.mobile?.length > 0}
           />
         </div>
 

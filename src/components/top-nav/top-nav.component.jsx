@@ -5,6 +5,9 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { signOut } from "../../redux/auth/authSlice";
 
+import { TiShoppingCart } from "react-icons/ti";
+import { GoSignOut } from "react-icons/go";
+
 // style
 import styles from "./top-nav.module.scss";
 
@@ -15,9 +18,7 @@ function TopNav() {
 
   return (
     <div className={styles.nav}>
-      <div className={styles.start}>
-        <p>start 1</p>
-      </div>
+      <div className={styles.start}>{/* <p>start 1</p> */}</div>
       <div className={styles.center}>
         <Link to="/" className={styles.link}>
           {t("nav-main-page")}
@@ -31,11 +32,13 @@ function TopNav() {
       </div>
       <div className={styles.end}>
         <Link to="/cart" className={styles.link}>
-          {t("nav-cart")}
+          {/* {t("nav-cart")} */}
+          <TiShoppingCart size={20} />
         </Link>
-        <Link className={styles.link}>{t("nav-profile")}</Link>
+        {/* <Link className={styles.link}>{t("nav-profile")}</Link> */}
         <p className={styles.link} onClick={() => dispatch(signOut())}>
           {t("nav-sign-out")}
+          {/* <GoSignOut size={20} /> */}
         </p>
       </div>
     </div>

@@ -4,10 +4,12 @@ import { persistReducer } from "redux-persist";
 
 import authSlice from "./redux/auth/authSlice";
 import usersSlice from "./redux/users/usersSlice";
+import companiesSlice from "./redux/company/companySlice";
 
 const reducers = combineReducers({
   auth: authSlice,
   users: usersSlice,
+  companies: companiesSlice,
 });
 
 const persistConfig = {

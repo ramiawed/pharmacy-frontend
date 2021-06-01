@@ -19,7 +19,6 @@ import SelectCustom from "../select/select.component";
 import Toast from "../toast/toast.component";
 import ExpandableContainer from "../expandable-container/expandable-container.component";
 import RowWith4Children from "../row-with-four-children/row-with-four-children.component";
-import RowWith3Children from "../row-with-three-children/row-with-three-children.component";
 import Input from "../input/input.component";
 
 // 3-party library (loading, paginate)
@@ -558,7 +557,7 @@ function AdminUsers() {
         <ReactPaginate
           previousLabel={"→ السابق"}
           nextLabel={"التالي ←"}
-          pageCount={Math.ceil(count / 4)}
+          pageCount={Math.ceil(count / 9)}
           forcePage={initialPage}
           onPageChange={handlePageClick}
           containerClassName={styles.pagination}

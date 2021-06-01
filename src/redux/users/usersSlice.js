@@ -15,7 +15,7 @@ export const getUsers = createAsyncThunk(
   "users/get",
   async ({ queryString, token }, { rejectWithValue }) => {
     try {
-      let buildUrl = `/users?page=${queryString.page}`;
+      let buildUrl = `/users?page=${queryString.page}&limit=9`;
 
       if (queryString.name) {
         buildUrl = buildUrl + `&name=${queryString.name}`;

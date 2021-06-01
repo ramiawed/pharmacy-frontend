@@ -2,10 +2,12 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 
+import { VscLoading } from "react-icons/vsc";
+
 // styles
 import styles from "./action-button.module.scss";
 
-function ActionButton({ icon, tooltip, action, color }) {
+function ActionButton({ icon, tooltip, action, color, text, loading }) {
   const { t } = useTranslation();
 
   return (
@@ -20,9 +22,13 @@ function ActionButton({ icon, tooltip, action, color }) {
       }}
       className={styles.action_button}
       onClick={action}
+      disabled={loading}
     >
-      {icon()}
-      <div>{t(tooltip)}</div>
+      {icon && icon()}
+      {text ? t(text) : null}
+      {tooltip && <div>{t(tooltip)}</div>}
+
+      {loading && <VscLoading className={styles.loading} />}
     </motion.button>
   );
 }

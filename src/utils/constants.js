@@ -30,6 +30,15 @@ export const GuestJob = {
 export const Colors = {
   MAIN_COLOR: "#3d425c",
   SECONDARY_COLOR: "#566092",
-  SUCCEEDED_COLOR: "#61c21c",
+  SUCCEEDED_COLOR: "#2aa70b",
   FAILED_COLOR: "#ff787e",
+};
+
+export const SideNavLinks = {
+  PARTNERS: "partners",
+  ITEMS: "items",
+  ORDERS: "orders",
+  ADVERTISEMENTS: "advertisements",
+  OFFERS: "offers",
+  PROFILE: "profile",
 };

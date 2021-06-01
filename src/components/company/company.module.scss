@@ -1,0 +1,117 @@
+@import "../../variables.scss";
+
+.company_container {
+  width: 30%;
+  min-height: 400px;
+  margin-bottom: 20px;
+  position: relative;
+  box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  border-radius: 6px;
+  transition: all 1s;
+}
+
+.company_logo {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  font-size: 48px;
+  transition: all 1s;
+}
+
+.company_container:hover .company_logo {
+  transform: scale(1.1);
+}
+
+.company_name {
+  position: relative;
+  font-size: 1.5rem;
+  background: $secondary-color;
+  color: $white-color;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+}
+
+.company_container:hover .company_name .hidden.fill_star {
+  animation-name: star;
+  animation-duration: 1s;
+  animation-fill-mode: backwards;
+  animation-delay: 0.6s;
+}
+
+@keyframes star {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.4);
+  }
+
+  100% {
+    transform: scale(1);
+  }
+}
+
+.from_top {
+  position: absolute;
+  top: -400px;
+  left: 0;
+  height: 400px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  // background: $main-color;
+  // opacity: 0.9;
+  transition: all 0.5s;
+}
+
+.from_top::after {
+  content: "";
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: $main-color;
+  opacity: 0.9;
+}
+
+.from_top > div {
+  z-index: 10;
+  margin: 8px;
+  color: $white-color;
+}
+
+.company_container:hover .from_top {
+  top: 0;
+}
+
+.company_container:hover .company_name {
+  display: none;
+}
+
+.more_button {
+  padding: 8px 12px;
+  background: $third-color;
+  color: $white-color;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+}

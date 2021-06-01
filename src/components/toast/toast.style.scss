@@ -9,6 +9,7 @@
   animation-name: toastMove;
   animation-duration: 0.1s;
   animation-fill-mode: forwards;
+  padding: 10px 20px;
 
   @keyframes toastMove {
     0% {
@@ -22,9 +23,5 @@
     100% {
       left: 30px;
     }
-  }
-
-  & .toast {
-    padding: 10px 20px;
   }
 }

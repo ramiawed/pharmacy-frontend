@@ -2,12 +2,13 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { SideNavLinks } from "../../utils/constants";
 
 // styles
 import styles from "./side-nav.module.scss";
 
 function SideNav() {
-  const [optionSelected, setOptionSelected] = useState("PARTNERS");
+  const [optionSelected, setOptionSelected] = useState("");
   const { t } = useTranslation();
   const [collapsed, setCollapsed] = useState(true);
 
@@ -33,23 +34,25 @@ function SideNav() {
         <Link
           className={[
             styles.link,
-            optionSelected === "PARTNERS" ? `${styles.selected}` : "",
+            optionSelected === SideNavLinks.PARTNERS
+              ? `${styles.selected}`
+              : "",
           ].join(" ")}
           onClick={() => {
-            handleChangeOption("PARTNERS");
+            handleChangeOption(SideNavLinks.PARTNERS);
           }}
           to="/admin/companies"
         >
-          {t("partners")}
+          {t(SideNavLinks.PARTNERS)}
         </Link>
 
         <Link
           className={[
             styles.link,
-            optionSelected === "ITEMS" ? `${styles.selected}` : "",
+            optionSelected === SideNavLinks.ITEMS ? `${styles.selected}` : "",
           ].join(" ")}
           onClick={() => {
-            handleChangeOption("ITEMS");
+            handleChangeOption(SideNavLinks.ITEMS);
           }}
           to="/admin/items"
         >
@@ -58,10 +61,10 @@ function SideNav() {
         <Link
           className={[
             styles.link,
-            optionSelected === "ORDERS" ? `${styles.selected}` : "",
+            optionSelected === SideNavLinks.OFFERS ? `${styles.selected}` : "",
           ].join(" ")}
           onClick={() => {
-            handleChangeOption("ORDERS");
+            handleChangeOption(SideNavLinks.OFFERS);
           }}
           to="/admin/orders"
         >
@@ -70,10 +73,12 @@ function SideNav() {
         <Link
           className={[
             styles.link,
-            optionSelected === "ADVERTISEMENTS" ? `${styles.selected}` : "",
+            optionSelected === SideNavLinks.ADVERTISEMENTS
+              ? `${styles.selected}`
+              : "",
           ].join(" ")}
           onClick={() => {
-            handleChangeOption("ADVERTISEMENTS");
+            handleChangeOption(SideNavLinks.ADVERTISEMENTS);
           }}
           to="/admin/advertises"
         >
@@ -82,14 +87,26 @@ function SideNav() {
         <Link
           className={[
             styles.link,
-            optionSelected === "OFFERS" ? `${styles.selected}` : "",
+            optionSelected === SideNavLinks.OFFERS ? `${styles.selected}` : "",
           ].join(" ")}
           onClick={() => {
-            handleChangeOption("OFFERS");
+            handleChangeOption(SideNavLinks.OFFERS);
           }}
           to="/admin/offers"
         >
           {t("nav-offers")}
+        </Link>
+        <Link
+          className={[
+            styles.link,
+            optionSelected === SideNavLinks.PROFILE ? `${styles.selected}` : "",
+          ].join(" ")}
+          onClick={() => {
+            handleChangeOption(SideNavLinks.PROFILE);
+          }}
+          to="/profile"
+        >
+          {t("nav-profile")}
         </Link>
       </div>
       <button onClick={() => setCollapsed(!collapsed)}>

@@ -3,7 +3,13 @@ import { useEffect } from "react";
 // style
 import "./toast.style.scss";
 
-function Toast({ bgColor, foreColor, toastText, actionAfterTimeout }) {
+function Toast({
+  bgColor,
+  foreColor,
+  toastText,
+  actionAfterTimeout,
+  children,
+}) {
   useEffect(() => {
     setTimeout(() => {
       actionAfterTimeout();
@@ -19,6 +25,7 @@ function Toast({ bgColor, foreColor, toastText, actionAfterTimeout }) {
       }}
     >
       <div className="toast">{toastText}</div>
+      {children}
     </div>
   );
 }

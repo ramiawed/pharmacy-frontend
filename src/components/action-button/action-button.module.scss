@@ -16,10 +16,6 @@
   border-radius: 4px;
 }
 
-.action_button:hover {
-  opacity: 0.8;
-}
-
 // tooltip
 .action_button div {
   width: 80px;
@@ -55,5 +51,21 @@
 
   100% {
     opacity: 1;
+  }
+}
+
+.loading {
+  animation-name: loading-move;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes loading-move {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
   }
 }

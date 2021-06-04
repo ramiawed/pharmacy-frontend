@@ -2,8 +2,15 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { VscClose } from "react-icons/vsc";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
-import { SideNavLinks } from "../../utils/constants";
+import { selectUser } from "../../redux/auth/authSlice";
+import { SideNavLinks, UserTypeConstants } from "../../utils/constants";
+import SideNavAdmin from "../side-nav-admin/side-nav-admin.component";
+import SideNavCompany from "../side-nav-company/side-nav-company.component";
+import SideNavGuest from "../side-nav-guest/side-nav-guest.component";
+import SideNavPharmacy from "../side-nav-pharmacy/side-nav-pharmacy.component";
+import SideNavWarehouse from "../side-nav-warehouse/side-nav-warehouse.component";
 
 // styles
 import styles from "./side-nav.module.scss";
@@ -15,6 +22,7 @@ function SideNav({
   onSelectedChange,
 }) {
   const { t } = useTranslation();
+  const user = useSelector(selectUser);
 
   return (
     <div
@@ -33,83 +41,36 @@ function SideNav({
         className={styles.profile_img}
       ></div>
       <div className={styles.links}>
-        <Link
-          className={[
-            styles.link,
-            selectedOption === SideNavLinks.PARTNERS
-              ? `${styles.selected}`
-              : "",
-          ].join(" ")}
-          onClick={() => {
-            onSelectedChange(SideNavLinks.PARTNERS);
-          }}
-          to="/admin/partners"
-        >
-          {t(SideNavLinks.PARTNERS)}
-        </Link>
-
-        <Link
-          className={[
-            styles.link,
-            selectedOption === SideNavLinks.ITEMS ? `${styles.selected}` : "",
-          ].join(" ")}
-          onClick={() => {
-            onSelectedChange(SideNavLinks.ITEMS);
-          }}
-          to="/admin/items"
-        >
-          {t("nav-items")}
-        </Link>
-        <Link
-          className={[
-            styles.link,
-            selectedOption === SideNavLinks.OFFERS ? `${styles.selected}` : "",
-          ].join(" ")}
-          onClick={() => {
-            onSelectedChange(SideNavLinks.OFFERS);
-          }}
-          to="/admin/orders"
-        >
-          {t("nav-orders")}
-        </Link>
-        <Link
-          className={[
-            styles.link,
-            selectedOption === SideNavLinks.ADVERTISEMENTS
-              ? `${styles.selected}`
-              : "",
-          ].join(" ")}
-          onClick={() => {
-            onSelectedChange(SideNavLinks.ADVERTISEMENTS);
-          }}
-          to="/admin/advertises"
-        >
-          {t("nav-advertise")}
-        </Link>
-        <Link
-          className={[
-            styles.link,
-            selectedOption === SideNavLinks.OFFERS ? `${styles.selected}` : "",
-          ].join(" ")}
-          onClick={() => {
-            onSelectedChange(SideNavLinks.OFFERS);
-          }}
-          to="/admin/offers"
-        >
-          {t("nav-offers")}
-        </Link>
-        <Link
-          className={[
-            styles.link,
-            selectedOption === SideNavLinks.PROFILE ? `${styles.selected}` : "",
-          ].join(" ")}
-          onClick={() => {
-            onSelectedChange(SideNavLinks.PROFILE);
-          }}
-          to="/profile"
-        >
-          {t("nav-profile")}
-        </Link>
+        {user.type === UserTypeConstants.ADMIN && (
+          <SideNavAdmin
+            selectedOption={selectedOption}
+            onSelectedChange={onSelectedChange}
+          />
+        )}
+        {user.type === UserTypeConstants.COMPANY && (
+          <SideNavCompany
+            selectedOption={selectedOption}
+            onSelectedChange={onSelectedChange}
+          />
+        )}
+        {user.type === UserTypeConstants.WAREHOUSE && (
+          <SideNavWarehouse
+            selectedOption={selectedOption}
+            onSelectedChange={onSelectedChange}
+          />
+        )}
+        {user.type === UserTypeConstants.PHARMACY && (
+          <SideNavPharmacy
+            selectedOption={selectedOption}
+            onSelectedChange={onSelectedChange}
+          />
+        )}
+        {user.type === UserTypeConstants.GUEST && (
+          <SideNavGuest
+            selectedOption={selectedOption}
+            onSelectedChange={onSelectedChange}
+          />
+        )}
       </div>
       <button onClick={() => onCollapsedChange()}>
         {collapsed ? (

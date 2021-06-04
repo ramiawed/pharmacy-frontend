@@ -26,6 +26,7 @@ import styles from "./main-page.module.scss";
 import { TopNavLinks, UserTypeConstants } from "../../utils/constants";
 import { useTranslation } from "react-i18next";
 import WarehousePage from "../warehouses-page/warehouses-page.component";
+import FavoritesPage from "../favorites-page/favorites-page.component";
 
 // MainPage
 // you have to sign in first
@@ -115,8 +116,12 @@ function MainPage() {
           <UserProfile />
         </Route>
 
+        <Route path="/favorites">
+          <FavoritesPage />
+        </Route>
+
         <Route path="/admin/partners">
-          <AdminUsers type={UserTypeConstants.COMPANY} />
+          <AdminUsers />
         </Route>
       </div>
     </div>

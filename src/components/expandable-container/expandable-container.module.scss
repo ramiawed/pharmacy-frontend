@@ -1,5 +1,9 @@
 @import "../../variables.scss";
 
+.expanded_div {
+  border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1);
+}
+
 .header_label {
   display: flex;
   justify-content: flex-start;
@@ -10,8 +14,9 @@
 
 .expanded {
   display: flex;
-  flex-direction: column;
-  justify-content: space-around;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
 }
 
 .collapsed {

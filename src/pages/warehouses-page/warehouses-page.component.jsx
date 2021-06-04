@@ -23,6 +23,10 @@ import {
   resetWarehouse,
   selectWarehouses,
 } from "../../redux/warehouse/warehousesSlice";
+import { selectFavorites } from "../../redux/favorites/favoritesSlice";
+
+// constants and utils
+import { UserTypeConstants } from "../../utils/constants.js";
 
 // styles
 import styles from "./warehouses-page.module.scss";
@@ -33,6 +37,10 @@ function WarehousePage() {
   const token = useSelector(selectToken);
   const user = useSelector(selectUser);
   const { warehouses, count, status } = useSelector(selectWarehouses);
+  const favorites = useSelector(selectFavorites);
+
+  // favorites expanded
+  const [favoriteExpanded, setFavoriteExpanded] = useState(false);
 
   // own state
   // expanded state for expandable container
@@ -87,13 +95,25 @@ function WarehousePage() {
   return user ? (
     <>
       <div className={styles.refresh_icon} onClick={handleEnterPress}>
-        <RiRefreshLine size="2rem" />
+        <RiRefreshLine className={styles.icon} size="2rem" />
+        <p>{t("refresh")}</p>
       </div>
       <Header>
         <h2>
-          {t("warehouses")} ({warehouses.length})
+          {t("warehouses")} ({count})
         </h2>
       </Header>
+      <ExpandableContainer
+        labelText={t("favorites")}
+        expanded={favoriteExpanded}
+        changeExpanded={() => setFavoriteExpanded(!favoriteExpanded)}
+      >
+        {favorites
+          .filter((favorite) => favorite.type === UserTypeConstants.WAREHOUSE)
+          .map((favorite) => (
+            <Warehouse key={favorite._id} warehouse={favorite} />
+          ))}
+      </ExpandableContainer>
       <ExpandableContainer
         labelText={t("search-engines")}
         expanded={searchContainerExpanded}
@@ -165,7 +185,7 @@ function WarehousePage() {
       </div>
     </>
   ) : (
-    <Redirect to="/signin" />
+    <Redirect to="/" />
   );
 }
 

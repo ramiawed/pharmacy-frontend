@@ -26,7 +26,6 @@
 }
 
 .refresh_icon {
-  width: 36px;
   height: 36px;
 
   position: absolute;
@@ -45,6 +44,10 @@
   cursor: pointer;
 }
 
-.refresh_icon:hover {
+.refresh_icon:hover .icon {
   transform: rotate(180deg);
+}
+
+.icon {
+  transition: all 0.5s;
 }

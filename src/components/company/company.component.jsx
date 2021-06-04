@@ -70,7 +70,7 @@ function Company({ company }) {
       <div className={styles.from_top}>
         <div className={styles.name}>{company.name}</div>
         <div>
-          {favorites.includes(company._id) ? (
+          {favorites.map((favorite) => favorite._id).includes(company._id) ? (
             <AiFillStar
               className={[styles.icon, styles.fill_star].join(" ")}
               color="yellow"

@@ -3,7 +3,7 @@ export const UserTypeConstants = {
   WAREHOUSE: "warehouse",
   NORMAL: "normal",
   ADMIN: "admin",
-  GUEST: "guest",
+  GUEST: "normal",
   PHARMACY: "pharmacy",
   ALL: "all",
 };
@@ -47,6 +47,7 @@ export const TopNavLinks = {
   HOME: "home",
   COMPANIES: "companies",
   WAREHOUSES: "warehouses",
+  FAVORITES: "favorites",
   CART: "cart",
   SIGNOUT: "signout",
 };

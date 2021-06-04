@@ -1,0 +1,22 @@
+@import "../../variables";
+
+.container {
+  position: relative;
+}
+
+.container p {
+  width: 16px;
+  height: 16px;
+
+  position: absolute;
+  top: -10px;
+  left: -6px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: $third-color;
+  border-radius: 50%;
+  color: $white-color !important;
+}

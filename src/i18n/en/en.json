@@ -129,5 +129,7 @@
     "no-more": "no more results",
     "previous": "previous",
     "next": "next",
-    "no-internet-connection": "No internet connection, check your connection"
+    "no-internet-connection": "No internet connection, check your connection",
+    "favorites": "Favorites",
+    "refresh": "Refresh"
 }

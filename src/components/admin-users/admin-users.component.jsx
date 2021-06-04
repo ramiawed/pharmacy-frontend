@@ -30,11 +30,12 @@ import { FaSearch } from "react-icons/fa";
 
 // redux stuff
 import { getUsers, selectUsers } from "../../redux/users/usersSlice";
-import { selectToken } from "../../redux/auth/authSlice";
+import { selectToken, selectUser } from "../../redux/auth/authSlice";
 import { resetActivationDeleteStatus } from "../../redux/users/usersSlice";
 
 // styles
 import styles from "./admin-users.module.scss";
+import { Redirect } from "react-router";
 
 // AdminUsers component
 function AdminUsers() {
@@ -51,6 +52,7 @@ function AdminUsers() {
     activationDeleteStatusMsg,
   } = useSelector(selectUsers);
   const token = useSelector(selectToken);
+  const user = useSelector(selectUser);
 
   // own state
   const [searchContainerExpanded, setSearchContainerExpanded] = useState(false);
@@ -277,7 +279,7 @@ function AdminUsers() {
     handleSearch(1);
   }, []);
 
-  return (
+  return user && user.type === UserTypeConstants.ADMIN ? (
     <>
       <div>
         {/* <div className={styles.header_div}> */}
@@ -581,6 +583,8 @@ function AdminUsers() {
         />
       ) : null}
     </>
+  ) : (
+    <Redirect to="/" />
   );
 }
 

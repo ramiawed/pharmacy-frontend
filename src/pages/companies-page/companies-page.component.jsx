@@ -26,6 +26,8 @@ import {
 
 // styles
 import styles from "./companies-page.module.scss";
+import { selectFavorites } from "../../redux/favorites/favoritesSlice";
+import { UserTypeConstants } from "../../utils/constants";
 
 function CompaniesPage() {
   const { t } = useTranslation();
@@ -33,12 +35,17 @@ function CompaniesPage() {
   const token = useSelector(selectToken);
   const user = useSelector(selectUser);
   const { companies, count, status } = useSelector(selectCompanies);
+  const favorites = useSelector(selectFavorites);
 
   // own state
   // expanded state for expandable container
   const [searchContainerExpanded, setSearchContainerExpanded] = useState(false);
   const [searchName, setSearchName] = useState("");
   const [searchCity, setSearchCity] = useState("");
+
+  // favorites expanded
+  const [favoriteExpanded, setFavoriteExpanded] = useState(false);
+
   // if companies doesn't contains any info set the page to 1
   // if companies have an info set the page to the next page
   const [page, setPage] = useState(
@@ -87,13 +94,25 @@ function CompaniesPage() {
   return user ? (
     <>
       <div className={styles.refresh_icon} onClick={handleEnterPress}>
-        <RiRefreshLine size="2rem" />
+        <RiRefreshLine className={styles.icon} size="2rem" />
+        <p>{t("refresh")}</p>
       </div>
       <Header>
         <h2>
-          {t("companies")} ({companies.length})
+          {t("companies")} ({count})
         </h2>
       </Header>
+      <ExpandableContainer
+        labelText={t("favorites")}
+        expanded={favoriteExpanded}
+        changeExpanded={() => setFavoriteExpanded(!favoriteExpanded)}
+      >
+        {favorites
+          .filter((favorite) => favorite.type === UserTypeConstants.COMPANY)
+          .map((favorite) => (
+            <Company key={favorite._id} company={favorite} />
+          ))}
+      </ExpandableContainer>
       <ExpandableContainer
         labelText={t("search-engines")}
         expanded={searchContainerExpanded}

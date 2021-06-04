@@ -52,44 +52,6 @@
   overflow: hidden;
 }
 
-.links .link {
-  width: 100%;
-  text-decoration: none;
-  color: $white-color;
-  cursor: pointer;
-  padding: 5px 20px;
-
-  transition: all 0.2s;
-}
-
-.links .link.selected {
-  color: $third-color;
-}
-
-.links .link.selected:hover {
-  color: $third-color;
-}
-
-.links .link.selected:lang(ar) {
-  border-right: 3px solid $third-color;
-}
-
-.links .link.selected:hover:lang(ar) {
-  border-right: 3px solid $third-color;
-}
-
-.links .link.selected:lang(en) {
-  border-left: 3px solid $third-color;
-}
-
-.links .link.selected:hover:lang(en) {
-  border-left: 3px solid $third-color;
-}
-
-.links .link:hover {
-  color: $third-color;
-}
-
 .side_nav_container button {
   position: absolute;
   top: 50%;

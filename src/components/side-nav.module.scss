@@ -1,0 +1,38 @@
+@import "../variables.scss";
+
+.link {
+  width: 100%;
+  text-decoration: none;
+  color: $white-color;
+  cursor: pointer;
+  padding: 5px 20px;
+
+  transition: all 0.2s;
+}
+
+.link.selected {
+  color: $third-color;
+}
+.link.selected:hover {
+  color: $third-color;
+}
+
+.link.selected:lang(ar) {
+  border-right: 3px solid $third-color;
+}
+
+.link.selected:hover:lang(ar) {
+  border-right: 3px solid $third-color;
+}
+
+.link.selected:lang(en) {
+  border-left: 3px solid $third-color;
+}
+
+.link.selected:hover:lang(en) {
+  border-left: 3px solid $third-color;
+}
+
+.link:hover {
+  color: $third-color;
+}

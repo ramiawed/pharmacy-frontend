@@ -113,7 +113,7 @@ export const favoritesSlice = createSlice({
     [removeFavorite.fulfilled]: (state, action) => {
       state.status = "success";
       state.favorites = state.favorites.filter(
-        (fa) => fa !== action.payload.data.favorite
+        (fa) => fa._id !== action.payload.data.favorite
       );
       state.error = null;
     },

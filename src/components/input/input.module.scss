@@ -10,7 +10,7 @@
   color: $secondary-color;
 
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -29,14 +29,28 @@
 }
 
 .input_div label {
-  // width: 100px;
-  font-size: 12px;
+  font-size: 0.7rem;
   padding: 0 12px;
-  // min-width: 90px;
   text-align: left;
 }
 
 .input_div .icon_error {
   width: 30px;
   color: $red-color;
+}
+
+@media only screen and (min-width: $small) {
+  .input_div label {
+    font-size: 0.7rem;
+    padding: 0 12px;
+    text-align: left;
+  }
+}
+
+@media only screen and (min-width: $medium) {
+  .input_div label {
+    font-size: 0.7rem;
+    padding: 0 12px;
+    text-align: left;
+  }
 }

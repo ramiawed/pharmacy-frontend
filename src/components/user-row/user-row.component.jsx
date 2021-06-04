@@ -254,57 +254,75 @@ function UserRow({ user, index }) {
         </div>
         {!collapsed && (
           <div className={styles.expanded_info_div}>
-            <div
+            {/* <div
               style={{
-                backgroundImage: 'url("http://localhost:8000/avatar01.png',
+                backgroundImage: 'url("http://localhost:8000/default-logo.jpg',
               }}
               className={styles.profile_img}
-            ></div>
+            ></div> */}
             <div className={styles.advanced_info}>
-              <div className={styles.half_row}>
-                <label className={styles.label}>{t("user-username")}:</label>
-                <label>{user.username}</label>
+              <div className={styles.row}>
+                <div className={[styles.half_row, styles.border_end].join(" ")}>
+                  <label className={styles.label}>{t("user-username")}:</label>
+                  <label className={styles.label_value}>{user.username}</label>
+                </div>
+                <div className={styles.half_row}>
+                  <label className={styles.label}>{t("user-type")}:</label>
+                  <label className={styles.label_value}>
+                    {t(`${user.type.toLowerCase()}`)}
+                  </label>
+                </div>
               </div>
-              <div className={styles.half_row}>
-                <label className={styles.label}>{t("user-type")}:</label>
-                <label>{t(`${user.type.toLowerCase()}`)}</label>
+
+              <div className={styles.row}>
+                <div className={[styles.half_row, styles.border_end].join(" ")}>
+                  <label className={styles.label}>{t("user-city")}:</label>
+                  <label className={styles.label_value}>{user.city}</label>
+                </div>
+                <div className={styles.half_row}></div>
               </div>
-              <div className={styles.half_row}>
-                <label className={styles.label}>{t("user-city")}:</label>
-                <label>{user.city}</label>
-              </div>
-              <div className={styles.half_row}></div>
-              <div className={styles.half_row}>
-                <label className={styles.label}>{t("user-district")}:</label>
-                <label>{user.district}</label>
-              </div>
-              <div className={styles.half_row}>
-                <label className={styles.label}>{t("user-street")}:</label>
-                <label>{user.street}</label>
+
+              <div className={styles.row}>
+                <div className={[styles.half_row, styles.border_end].join(" ")}>
+                  <label className={styles.label}>{t("user-district")}:</label>
+                  <label className={styles.label_value}>{user.district}</label>
+                </div>
+                <div className={styles.half_row}>
+                  <label className={styles.label}>{t("user-street")}:</label>
+                  <label className={styles.label_value}>{user.street}</label>
+                </div>
               </div>
 
               {/* if the user type is pharmacy or warehouse display employee name and certificate name */}
               {user.type === UserTypeConstants.PHARMACY ||
               user.type === UserTypeConstants.WAREHOUSE ? (
-                <>
-                  <div className={styles.half_row}>
+                <div className={styles.row}>
+                  <div
+                    className={[styles.half_row, styles.border_end].join(" ")}
+                  >
                     <label className={styles.label}>
                       {t("user-employee-name")}:
                     </label>
-                    <label>{user.employeeName}</label>
+                    <label className={styles.label_value}>
+                      {user.employeeName}
+                    </label>
                   </div>
                   <div className={styles.half_row}>
                     <label className={styles.label}>
                       {t("user-certificate-name")}:
                     </label>
-                    <label>{user.certificateName}</label>
+                    <label className={styles.label_value}>
+                      {user.certificateName}
+                    </label>
                   </div>
-                </>
+                </div>
               ) : null}
 
               {user.type === UserTypeConstants.NORMAL ? (
-                <>
-                  <div className={styles.half_row}>
+                <div className={styles.row}>
+                  <div
+                    className={[styles.half_row, styles.border_end].join(" ")}
+                  >
                     <label className={styles.label}>{t("user-job")}:</label>
                     <label>{t(`${user.guestDetails.job.toLowerCase()}`)}</label>
                   </div>
@@ -325,7 +343,7 @@ function UserRow({ user, index }) {
                       </div>
                     </>
                   ) : null}
-                </>
+                </div>
               ) : null}
             </div>
           </div>

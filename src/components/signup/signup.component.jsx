@@ -3,39 +3,25 @@ import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 import axios from "../../api/pharmacy";
 
-// react-icons
-import { FaUserAlt, FaMobile } from "react-icons/fa";
-import { RiLockPasswordFill, RiUserReceived2Fill } from "react-icons/ri";
-import { MdEmail } from "react-icons/md";
-import {
-  AiFillPhone,
-  AiFillEnvironment,
-  AiFillSafetyCertificate,
-} from "react-icons/ai";
-
+// components
 import SelectCustom from "../select/select.component";
-import {
-  Colors,
-  GuestJob,
-  UserActiveState,
-  UserTypeConstants,
-} from "../../utils/constants";
+import Input from "../input/input.component";
 
 // redux
-import {
-  authSign,
-  selectUserData,
-  resetError,
-} from "../../redux/auth/authSlice";
+import { authSign, selectUserData } from "../../redux/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 // loading
 import ReactLoading from "react-loading";
 
+// Constants && utils
+import { Colors, GuestJob, UserTypeConstants } from "../../utils/constants";
+import { getIcon } from "../../utils/icons.js";
+
+// styles
 import styles from "./signup.module.scss";
-import Input from "../input/input.component";
 
 const containerVariant = {
   hidden: {
@@ -51,40 +37,13 @@ const containerVariant = {
   },
 };
 
-// choose the icon based on the id of the input
-const icon = (type) => {
-  switch (type) {
-    case "name":
-    case "employeeName":
-      return <FaUserAlt className={styles.icon} />;
-
-    case "certificateName":
-      return <AiFillSafetyCertificate className={styles.icon} />;
-    case "username":
-      return <RiUserReceived2Fill className={styles.icon} />;
-    case "password":
-    case "passwordConfirm":
-      return <RiLockPasswordFill className={styles.icon} />;
-    case "email":
-      return <MdEmail className={styles.icon} />;
-    case "phone":
-      return <AiFillPhone className={styles.icon} />;
-    case "mobile":
-      return <FaMobile className={styles.icon} />;
-    case "city":
-    case "district":
-    case "street":
-      return <AiFillEnvironment className={styles.icon} />;
-    default:
-      return <RiLockPasswordFill className={styles.icon} />;
-  }
-};
-
 // Sign up component
 function SignUp() {
   const history = useHistory();
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  // state from user state redux
+  const { user: signinUser } = useSelector(selectUserData);
 
   const guestJobOptions = [
     { value: GuestJob.NONE, label: t("user-job") },
@@ -93,30 +52,10 @@ function SignUp() {
     { value: GuestJob.EMPLOYEE, label: t("employee") },
   ];
 
-  // state from user state redux
-  const {
-    status,
-    user: signinUser,
-    error: signinError,
-  } = useSelector(selectUserData);
+  const [signupLoading, setSignupLoading] = useState(false);
 
-  // state to determine that the sign up process succeeded
+  // state to determine that the sign up process succeeded or not
   const [signupSucceeded, setSignupSucceeded] = useState(false);
-
-  // state to hold the error with the field that cause the error
-  const [error, setError] = useState({
-    name: "",
-    username: "",
-    password: "",
-    passwordConfirm: "",
-    email: "",
-    mobile: "",
-    job: "",
-    employeeName: "",
-    certificateName: "",
-    companyName: "",
-    jobTitle: "",
-  });
 
   // states for each field
   const [user, setUser] = useState({
@@ -138,6 +77,21 @@ function SignUp() {
       companyName: "",
       jobTitle: "",
     },
+  });
+
+  // state to hold the error with the field that cause the error
+  const [error, setError] = useState({
+    name: "",
+    username: "",
+    password: "",
+    passwordConfirm: "",
+    email: "",
+    mobile: "",
+    job: "",
+    employeeName: "",
+    certificateName: "",
+    companyName: "",
+    jobTitle: "",
   });
 
   // reset all state to default
@@ -184,7 +138,7 @@ function SignUp() {
 
   // Guest types are (Student, Pharmacist, Employee)
   // uses with the SelectCustom
-  const handleGuestType = (val) => {
+  const handleGuestTypeChange = (val) => {
     // if the user type is Normal and the job is Student or Pharmacist
     // so the user doesn't contains info about company name and job title
     if (val === GuestJob.STUDENT || val === GuestJob.PHARMACIST) {
@@ -324,7 +278,10 @@ function SignUp() {
 
     // if the user type is Pharmacy or Warehouse
     // employee name and certificate name are required
-    if (user.type === "Pharmacy" || user.type === "Warehouse") {
+    if (
+      user.type === UserTypeConstants.PHARMACY ||
+      user.type === UserTypeConstants.WAREHOUSE
+    ) {
       if (user.employeeName.trim().length === 0) {
         errorObj["employeeName"] = "enter-employee-name";
       }
@@ -337,8 +294,8 @@ function SignUp() {
     // if user type is normal
     // 1- the job required
     // 2- if the job is employee (job title, company name are required)
-    if (user.type === "Normal") {
-      if (user.guestDetails.job === "Employee") {
+    if (user.type === UserTypeConstants.NORMAL) {
+      if (user.guestDetails.job === GuestJob.EMPLOYEE) {
         if (user.guestDetails.jobTitle.trim().length === 0) {
           errorObj["jobTitle"] = "enter-job-title";
         }
@@ -356,19 +313,22 @@ function SignUp() {
 
     // send post request to server to create a new user
     if (Object.entries(errorObj).length === 0) {
+      setSignupLoading(true);
       axios
         .post("/users/signup", user)
         .then((response) => {
           // if create user succeeded
 
           // check if user type is normal
-          if (user.type === "Normal") {
+          if (user.type === UserTypeConstants.NORMAL) {
             dispatch(
               authSign({ username: user.username, password: user.password })
             );
+            setSignupLoading(false);
           } else {
             // user type is not normal
             // redirect to approve page
+            setSignupLoading(false);
             setSignupSucceeded(true);
           }
         })
@@ -407,7 +367,7 @@ function SignUp() {
         {/* name */}
         <div className={styles.input_div}>
           <Input
-            icon={icon}
+            icon={getIcon("name")}
             type="text"
             label="user-name"
             id="name"
@@ -420,7 +380,7 @@ function SignUp() {
         {/* username */}
         <div className={styles.input_div}>
           <Input
-            icon={icon}
+            icon={getIcon("username")}
             type="text"
             label="user-username"
             id="username"
@@ -433,7 +393,7 @@ function SignUp() {
         {/* password */}
         <div className={styles.input_div}>
           <Input
-            icon={icon}
+            icon={getIcon("password")}
             type="password"
             label="user-password"
             id="password"
@@ -446,7 +406,7 @@ function SignUp() {
         {/* password confirm */}
         <div className={styles.input_div}>
           <Input
-            icon={icon}
+            icon={getIcon("password")}
             type="password"
             label="user-password-confirm"
             id="passwordConfirm"
@@ -518,7 +478,7 @@ function SignUp() {
           <>
             <div className={styles.input_div}>
               <Input
-                icon={icon}
+                icon={getIcon("name")}
                 type="text"
                 label="user-employee-name"
                 id="employeeName"
@@ -530,7 +490,7 @@ function SignUp() {
 
             <div className={styles.input_div}>
               <Input
-                icon={icon}
+                icon={getIcon("certificateName")}
                 type="text"
                 label="user-certificate-name"
                 id="certificateName"
@@ -551,12 +511,11 @@ function SignUp() {
                 bgColor={Colors.SECONDARY_COLOR}
                 foreColor="#fff"
                 options={guestJobOptions}
-                onchange={handleGuestType}
+                onchange={handleGuestTypeChange}
                 defaultOption={{
                   value: "Job",
                   label: t("user-job"),
                 }}
-                // caption="user-job"
               />
             </div>
 
@@ -564,7 +523,7 @@ function SignUp() {
               <>
                 <div className={styles.input_div}>
                   <Input
-                    icon={icon}
+                    icon={getIcon("name")}
                     type="text"
                     label="user-company-name"
                     id="companyName"
@@ -576,7 +535,7 @@ function SignUp() {
 
                 <div className={styles.input_div}>
                   <Input
-                    icon={icon}
+                    icon={getIcon("name")}
                     type="text"
                     label="user-job-title"
                     id="jobTitle"
@@ -601,7 +560,7 @@ function SignUp() {
           ].join(" ")}
         >
           <Input
-            icon={icon}
+            icon={getIcon("email")}
             type="email"
             label="user-email"
             id="email"
@@ -613,7 +572,7 @@ function SignUp() {
         {/* phone */}
         <div className={styles.input_div}>
           <Input
-            icon={icon}
+            icon={getIcon("phone")}
             type="text"
             label="user-phone"
             id="phone"
@@ -625,7 +584,7 @@ function SignUp() {
         {/* mobile */}
         <div className={styles.input_div}>
           <Input
-            icon={icon}
+            icon={getIcon("mobile")}
             type="text"
             label="user-mobile"
             id="mobile"
@@ -644,7 +603,7 @@ function SignUp() {
           ].join(" ")}
         >
           <Input
-            icon={icon}
+            icon={getIcon("city")}
             type="text"
             label="user-city"
             id="city"
@@ -656,7 +615,7 @@ function SignUp() {
         {/* district */}
         <div className={styles.input_div}>
           <Input
-            icon={icon}
+            icon={getIcon("district")}
             type="text"
             label="user-district"
             id="district"
@@ -668,7 +627,7 @@ function SignUp() {
         {/* street */}
         <div className={styles.input_div}>
           <Input
-            icon={icon}
+            icon={getIcon("street")}
             type="text"
             label="user-street"
             id="street"
@@ -678,15 +637,17 @@ function SignUp() {
         </div>
       </div>
 
-      <ul className={styles.error_ul}>
-        {Object.keys(error).map((key) => {
-          if (error[key].length > 0) {
-            return <li key={key}>{t(`${error[key]}`)}</li>;
-          } else {
-            return null;
-          }
-        })}
-      </ul>
+      {Object.entries(error).length > 0 && (
+        <ul className={styles.error_ul}>
+          {Object.keys(error).map((key) => {
+            if (error[key].length > 0) {
+              return <li key={key}>{t(`${error[key]}`)}</li>;
+            } else {
+              return null;
+            }
+          })}
+        </ul>
+      )}
 
       <motion.button
         whileHover={{
@@ -698,7 +659,8 @@ function SignUp() {
       >
         {t("signup")}
       </motion.button>
-      {/* <Shapes /> */}
+
+      {signupLoading && <ReactLoading type="bubbles" height={50} width={50} />}
     </motion.div>
   );
 }

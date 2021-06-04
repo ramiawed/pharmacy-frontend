@@ -18,13 +18,13 @@ import {
 import { selectToken } from "../../redux/auth/authSlice";
 
 // styles
-import styles from "./company.module.scss";
+import styles from "./warehouse.module.scss";
 
 // constants and utils
 import { checkConnection } from "../../utils/checkInternet";
 import { Colors } from "../../utils/constants.js";
 
-function Company({ company }) {
+function Company({ warehouse }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const favorites = useSelector(selectFavorites);
@@ -32,57 +32,57 @@ function Company({ company }) {
 
   const [connectionError, setConnectionError] = useState("");
 
-  // method to handle add company to user's favorite
-  const addCompanyToFavorite = () => {
+  // method to handle add warehouse to user's favorite
+  const addWarehouseToFavorite = () => {
     // check the internet connection
     if (!checkConnection()) {
       setConnectionError("no-internet-connection");
       return;
     }
 
-    dispatch(addFavorite({ obj: { favoriteId: company._id }, token }));
+    dispatch(addFavorite({ obj: { favoriteId: warehouse._id }, token }));
   };
 
-  // method to handle remove company from user's favorite
-  const removeCompanyFromFavorite = () => {
+  // method to handle remove warehouse from user's favorite
+  const removeWarehouseFromFavorite = () => {
     // check the internet connection
     if (!checkConnection()) {
       setConnectionError("no-internet-connection");
       return;
     }
 
-    dispatch(removeFavorite({ obj: { favoriteId: company._id }, token }));
+    dispatch(removeFavorite({ obj: { favoriteId: warehouse._id }, token }));
   };
 
   return (
-    <div className={styles.company_container}>
-      {company.logo_url?.length > 0 ? (
+    <div className={styles.warehouse_container}>
+      {warehouse.logo_url?.length > 0 ? (
         <></>
       ) : (
         <p
           style={{
             backgroundImage: 'url("http://localhost:8000/default-logo.jpg',
           }}
-          className={styles.company_logo}
+          className={styles.warehouse_logo}
         ></p>
       )}
-      <p className={styles.company_name}>{company.name}</p>
-      <div className={styles.from_top}>
-        <div className={styles.name}>{company.name}</div>
+      <p className={styles.warehouse_name}>{warehouse.name}</p>
+      <div className={styles.from_left}>
+        <div className={styles.name}>{warehouse.name}</div>
         <div>
-          {favorites.includes(company._id) ? (
+          {favorites.includes(warehouse._id) ? (
             <AiFillStar
               className={[styles.icon, styles.fill_star].join(" ")}
               color="yellow"
               size={32}
-              onClick={removeCompanyFromFavorite}
+              onClick={removeWarehouseFromFavorite}
             />
           ) : (
             <AiOutlineStar
               className={styles.icon}
               color="yellow"
               size={32}
-              onClick={addCompanyToFavorite}
+              onClick={addWarehouseToFavorite}
             />
           )}
         </div>

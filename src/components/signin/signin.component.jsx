@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 
 // react-icons
 import { HiUser } from "react-icons/hi";
@@ -16,12 +15,14 @@ import Input from "../input/input.component";
 import ReactLoading from "react-loading";
 
 // redux
+import { useDispatch, useSelector } from "react-redux";
 import {
   authSign,
   selectUserData,
   resetError,
 } from "../../redux/auth/authSlice";
 
+// styles
 import styles from "./signin.module.scss";
 
 // constants use for motion
@@ -45,6 +46,11 @@ function SignIn() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  // state from user state redux
+  const { status, user, error } = useSelector(selectUserData);
+
+  // state holds the username and password
+  // used in the input fields
   const [userInfo, setUserInfo] = useState({
     username: "",
     password: "",
@@ -56,6 +62,7 @@ function SignIn() {
     password: "",
   });
 
+  // handle username input and password input
   const handleInputChange = (e) => {
     setUserInfo({
       ...userInfo,
@@ -71,9 +78,6 @@ function SignIn() {
       dispatch(resetError());
     }
   };
-
-  // state from user state redux
-  const { status, user, error } = useSelector(selectUserData);
 
   const handleSignUpClick = () => {
     // reset the state
@@ -152,7 +156,7 @@ function SignIn() {
         </div>
         <h3>{t("signin")}</h3>
         <Input
-          icon={() => <HiUser className={styles.icons} />}
+          icon={<HiUser className={styles.icons} />}
           type="text"
           placeholder="user-username"
           id="username"
@@ -163,7 +167,7 @@ function SignIn() {
         />
 
         <Input
-          icon={() => <RiLockPasswordLine className={styles.icon} />}
+          icon={<RiLockPasswordLine className={styles.icon} />}
           type="password"
           placeholder="user-password"
           id="password"
@@ -186,8 +190,8 @@ function SignIn() {
               return null;
             }
           })}
+          {error && <p className={styles.error}>{t(error)}</p>}
         </>
-        {error && <p className={styles.error}>{t(error)}</p>}
         <motion.button
           whileHover={{
             scale: 1.1,

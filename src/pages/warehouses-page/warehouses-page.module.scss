@@ -1,0 +1,50 @@
+@import "../../variables.scss";
+
+.content_container {
+  padding: 12px 0;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.more_button {
+  min-width: 100px;
+  min-height: 36px;
+
+  background: $secondary-color;
+  color: $white-color;
+  border: none;
+  outline: none;
+  border-radius: 6px;
+
+  font-size: 1rem;
+
+  cursor: pointer;
+}
+
+.refresh_icon {
+  width: 36px;
+  height: 36px;
+
+  position: absolute;
+  left: 0;
+  top: 10px;
+
+  color: $secondary-color;
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  transition: all 0.5s;
+
+  cursor: pointer;
+}
+
+.refresh_icon:hover {
+  transform: rotate(180deg);
+}

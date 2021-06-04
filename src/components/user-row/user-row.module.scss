@@ -1,9 +1,9 @@
 @import "../../variables.scss";
 
 .user_row {
-  width: 100%;
-  height: 42px;
-  margin: 12px 0;
+  width: 98%;
+  // height: 42px;
+  margin: 12px auto;
   border-radius: 5px;
 
   position: relative;
@@ -36,10 +36,6 @@
   opacity: 0.2;
 }
 
-.user_row_expanded {
-  height: 180px;
-}
-
 .basic_info {
   display: flex;
   align-items: center;
@@ -53,14 +49,17 @@
 
 .basic_info label {
   text-align: center;
+  font-size: 0.6rem;
 }
 
 .label_small {
-  width: 75px;
+  // width: 75px;
+  flex: 1;
 }
 
 .actions_div {
-  width: 40px;
+  // width: 40px;
+  flex: 1;
 }
 
 .actions_div {
@@ -72,15 +71,23 @@
 }
 
 .label_large {
-  flex: 3;
+  flex: 4;
+}
+
+@media only screen and (min-width: $small) {
+  .basic_info label {
+    font-size: 0.7rem;
+  }
+}
+
+@media only screen and (min-width: $medium) {
+  .basic_info label {
+    font-size: 1rem;
+  }
 }
 
 .expanded_info_div {
-  margin: auto;
-  min-height: 120px;
-  max-width: 80%;
-  min-width: 80%;
-  width: 80%;
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -98,30 +105,53 @@
 }
 
 .advanced_info {
-  width: 80%;
+  width: 100%;
+
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
   flex-wrap: wrap;
-  padding: 12px;
-  border-radius: 6px;
-  box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.1);
-  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .label {
-  font-size: 12px;
-  margin: 0 10px;
+  font-size: 0.6rem;
+  margin-inline-end: 10px;
   min-width: 100px;
   width: 100px;
   text-align: end;
 }
 
-.half_row {
-  width: 49%;
+.label_value {
+  font-size: 0.8rem;
+}
+
+@media only screen and (min-width: $medium) {
+  .label_value {
+    font-size: 1rem;
+  }
+}
+
+.row {
+  width: 100%;
+  padding: 4px;
+
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: start;
+
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.half_row {
+  width: 50%;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.border_end {
+  border-inline-end: 1px solid rgba(0, 0, 0, 0.1);
 }

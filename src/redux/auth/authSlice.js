@@ -64,7 +64,6 @@ export const updateUserInfo = createAsyncThunk(
 export const changeMyPassword = createAsyncThunk(
   "auth/changeMyPassword",
   async ({ obj, token }, { rejectWithValue }) => {
-    console.log(obj);
     try {
       const response = await axios.post("/users/changeMyPassword", obj, {
         headers: {

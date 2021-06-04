@@ -1,5 +1,5 @@
 // libraries
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 // components
@@ -23,12 +23,17 @@ import {
   resetDeleteError,
   signOut,
 } from "../../redux/auth/authSlice";
+import { resetUsers } from "../../redux/users/usersSlice";
+import { resetFavorites } from "../../redux/favorites/favoritesSlice";
+import { resetCompanies } from "../../redux/company/companySlice";
 
 // styles
 import styles from "./user-profile.module.scss";
 
-// constants
+// constants, and utile
 import { UserTypeConstants, Colors } from "../../utils/constants";
+import { checkConnection } from "../../utils/checkInternet";
+import { resetWarehouse } from "../../redux/warehouse/warehousesSlice";
 
 function UserProfile() {
   const { t } = useTranslation();
@@ -36,9 +41,13 @@ function UserProfile() {
   const { user, token, passwordError, status } = useSelector(selectUserData);
 
   const [passwordForDelete, setPasswordForDelete] = useState("");
+  const [passwordForDeleteError, setPasswordForDeleteError] = useState("");
+  const [noInternetError, setNoInternetError] = useState("");
 
+  // method to handle change in password for delete account
   const handlePasswordForDeleteChange = (field, val) => {
     setPasswordForDelete(val);
+    setPasswordForDeleteError("");
   };
 
   const [passwordObj, setPasswordObj] = useState({
@@ -53,6 +62,8 @@ function UserProfile() {
     newPasswordConfirm: "",
   });
 
+  // method to handle the change in the input in password and confirm password
+  // for change password
   const handlePasswordFieldsChange = (field, val) => {
     setPasswordObj({
       ...passwordObj,
@@ -116,16 +127,43 @@ function UserProfile() {
       return;
     }
 
+    // check the internet connection
+    if (!checkConnection()) {
+      setNoInternetError("no-internet-connection");
+      return;
+    }
+
     dispatch(changeMyPassword({ obj: passwordObj, token }));
   };
 
   const handleDeleteMe = () => {
+    // the password length must be greater than 0
+    if (passwordForDelete.length === 0) {
+      setPasswordForDeleteError("enter-password");
+      return;
+    }
+
+    // check the internet connection
+    if (!checkConnection()) {
+      setNoInternetError("no-internet-connection");
+      return;
+    }
+
+    // dispatch delete operation
     dispatch(deleteMe({ obj: { password: passwordForDelete }, token }))
       .then(unwrapResult)
       .then((orginalPromiseResult) => {
+        // on succeeded sign out and reset redux's store
         dispatch(signOut());
+        dispatch(resetUsers());
+        dispatch(resetFavorites());
+        dispatch(resetCompanies());
+        dispatch(resetWarehouse());
       })
-      .catch((rejectedValueOrSerializedError) => {});
+      .catch((rejectedValueOrSerializedError) => {
+        // on failed, show message below the password input
+        setPasswordForDeleteError(t(rejectedValueOrSerializedError.message));
+      });
   };
 
   const [userObj, setUserObj] = useState(user);
@@ -138,10 +176,21 @@ function UserProfile() {
   };
 
   const handleOkAction = (field) => {
+    // check the internet connection
+    if (!checkConnection()) {
+      setNoInternetError("no-internet-connection");
+      return;
+    }
+
+    // dispatch updateUserInfo
     return dispatch(
       updateUserInfo({ obj: { [field]: userObj[field] }, token: token })
     );
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -313,6 +362,7 @@ function UserProfile() {
           field="deletePassword"
           value={passwordForDelete}
           onInputChange={handlePasswordForDeleteChange}
+          error={t(passwordForDeleteError)}
         />
         <div className={styles.action_div}>
           <ActionButton
@@ -350,6 +400,17 @@ function UserProfile() {
           }}
         >
           <p>{t("password-change-succeeded")}</p>
+        </Toast>
+      )}
+      {noInternetError && (
+        <Toast
+          bgColor={Colors.FAILED_COLOR}
+          foreColor="#fff"
+          actionAfterTimeout={() => {
+            setNoInternetError("");
+          }}
+        >
+          <p>{t(noInternetError)}</p>
         </Toast>
       )}
     </div>

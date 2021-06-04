@@ -6,7 +6,9 @@ const initialState = {
   users: null,
   error: "",
   count: 0,
+  // field holds the activation or deleting status
   activationDeleteStatus: "idle",
+  // field holds the activation or deleting message
   activationDeleteStatusMsg: "",
 };
 
@@ -96,7 +98,6 @@ export const userApproveChange = createAsyncThunk(
       );
       return response.data;
     } catch (err) {
-      console.log("error");
       return rejectWithValue(err.message.data);
     }
   }
@@ -150,6 +151,14 @@ export const usersSlice = createSlice({
   name: "users",
   initialState,
   reducers: {
+    resetUsers: (state) => {
+      state.status = "idle";
+      state.users = null;
+      state.error = "";
+      state.count = 0;
+      state.activationDeleteStatus = "idle";
+      state.activationDeleteStatusMsg = "";
+    },
     resetActivationDeleteStatus: (state) => {
       state.activationDeleteStatus = "idle";
       state.activationDeleteStatusMsg = "";
@@ -219,6 +228,6 @@ export const selectActivationDeleteStatus = (state) =>
 export const selectActivationDeleteMsg = (state) =>
   state.users.activationDeleteStatusMsg;
 
-export const { resetActivationDeleteStatus } = usersSlice.actions;
+export const { resetActivationDeleteStatus, resetUsers } = usersSlice.actions;
 
 export default usersSlice.reducer;

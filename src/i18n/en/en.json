@@ -22,6 +22,7 @@
     "normal": "Guest",
     "warehouse": "Warehouse",
     "warehouses": "Warehouses",
+    "home": "Home",
     "admin": "admin",
     "partners": "Partners",
     "all": "all",
@@ -61,6 +62,7 @@
     "Please Provide a password": "Enter password",
     "Please Provide a confirm password": "Enter confirm password",
     "Old password is wrong": "Incorrect old password",
+    "password is wrong": "Incorrect password",
     "password must be greater than 5 characters":  "Password must be greater or equals to 5 characters",
     "Password and confirm password must be the same": "The password and confirm password don't match.",
     "password-change-succeeded": "Password changed succeeded",
@@ -124,5 +126,8 @@
     "enter-value": "enter a value",
     "update-succeeded": "update succeeded",
     "more": "more",
-    "no-more": "no more results"
+    "no-more": "no more results",
+    "previous": "previous",
+    "next": "next",
+    "no-internet-connection": "No internet connection, check your connection"
 }

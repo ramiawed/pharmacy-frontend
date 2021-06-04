@@ -42,6 +42,7 @@ function SelectCustom({
     menu: (provided, state) => ({
       ...provided,
       background: bgColor,
+      zIndex: 15,
     }),
     option: (provided, state) => ({
       ...provided,
@@ -70,7 +71,8 @@ function SelectCustom({
 
   return (
     <div className={styles.order_container}>
-      <label>{t(caption)}</label>
+      {caption && <label>{t(caption)}</label>}
+
       {/* third-party component react-select */}
       <Select
         styles={customStyles}

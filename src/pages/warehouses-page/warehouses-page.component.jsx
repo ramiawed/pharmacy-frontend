@@ -1,45 +1,49 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { Redirect } from "react-router";
 
 // components
 import ExpandableContainer from "../../components/expandable-container/expandable-container.component";
 import Header from "../../components/header/header.component";
 import RowWith2Children from "../../components/row-with-two-children/row-with-two-children.component";
 import Input from "../../components/input/input.component";
-import Company from "../../components/company/company.component";
+import Warehouse from "../../components/warehouse/warehouse.component";
 import ReactLoading from "react-loading";
 
 // react-icons
 import { FaSearch } from "react-icons/fa";
+import { RiRefreshLine } from "react-icons/ri";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-import { selectToken } from "../../redux/auth/authSlice";
+import { selectToken, selectUser } from "../../redux/auth/authSlice";
 import {
-  getCompanies,
-  resetInitialState,
-  selectCompanies,
-} from "../../redux/company/companySlice";
-
-// constants
-import { Colors } from "../../utils/constants";
+  getWarehouses,
+  resetWarehouse,
+  selectWarehouses,
+} from "../../redux/warehouse/warehousesSlice";
 
 // styles
-import styles from "./companies.module.scss";
+import styles from "./warehouses-page.module.scss";
 
-function CompaniesPage() {
+function WarehousePage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
-  const { companies, count, status } = useSelector(selectCompanies);
+  const user = useSelector(selectUser);
+  const { warehouses, count, status } = useSelector(selectWarehouses);
 
   // own state
   // expanded state for expandable container
   const [searchContainerExpanded, setSearchContainerExpanded] = useState(false);
   const [searchName, setSearchName] = useState("");
   const [searchCity, setSearchCity] = useState("");
-  const [page, setPage] = useState(1);
+  // if companies doesn't contains any info set the page to 1
+  // if companies have an info set the page to the next page
+  const [page, setPage] = useState(
+    warehouses.length === 0 ? 1 : Math.ceil(warehouses.length / 9) + 1
+  );
 
   // handle search
   const handleSearch = (page, reset) => {
@@ -58,7 +62,7 @@ function CompaniesPage() {
       queryString.city = searchCity;
     }
 
-    dispatch(getCompanies({ queryString, token }));
+    dispatch(getWarehouses({ queryString, token }));
     setPage(reset ? 1 : page + 1);
     setPage(page + 1);
   };
@@ -68,18 +72,27 @@ function CompaniesPage() {
   };
 
   const handleEnterPress = () => {
-    dispatch(resetInitialState());
+    dispatch(resetWarehouse());
     handleSearch(1, true);
   };
 
   useEffect(() => {
-    handleSearch(1);
+    if (user) {
+      if (warehouses.length === 0) handleSearch(1);
+    }
+
+    window.scrollTo(0, 0);
   }, []);
 
-  return (
+  return user ? (
     <>
+      <div className={styles.refresh_icon} onClick={handleEnterPress}>
+        <RiRefreshLine size="2rem" />
+      </div>
       <Header>
-        <h2>{t("companies")}</h2>
+        <h2>
+          {t("warehouses")} ({warehouses.length})
+        </h2>
       </Header>
       <ExpandableContainer
         labelText={t("search-engines")}
@@ -99,7 +112,7 @@ function CompaniesPage() {
                 setSearchName(e.target.value);
               }}
               bordered={true}
-              icon={() => <FaSearch />}
+              icon={<FaSearch />}
               placeholder="search"
               onEnterPress={handleEnterPress}
             />
@@ -114,7 +127,7 @@ function CompaniesPage() {
                 setSearchCity(e.target.value);
               }}
               bordered={true}
-              icon={() => <FaSearch />}
+              icon={<FaSearch />}
               placeholder="search"
               onEnterPress={handleEnterPress}
             />
@@ -122,8 +135,8 @@ function CompaniesPage() {
         </RowWith2Children>
       </ExpandableContainer>
       <div className={styles.content_container}>
-        {companies.map((company) => (
-          <Company key={company._id} company={company} />
+        {warehouses.map((warehouse) => (
+          <Warehouse key={warehouse._id} warehouse={warehouse} />
         ))}
       </div>
       {status === "loading" && (
@@ -134,7 +147,7 @@ function CompaniesPage() {
           textAlign: "center",
         }}
       >
-        {companies.length < count ? (
+        {warehouses.length < count ? (
           <motion.button
             whileHover={{
               scale: 1.1,
@@ -151,7 +164,9 @@ function CompaniesPage() {
         )}
       </div>
     </>
+  ) : (
+    <Redirect to="/signin" />
   );
 }
 
-export default CompaniesPage;
+export default WarehousePage;

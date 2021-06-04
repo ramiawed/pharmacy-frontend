@@ -3,16 +3,16 @@ import axios from "../../api/pharmacy";
 
 const initialState = {
   status: "idle",
-  companies: [],
+  warehouses: [],
   count: 0,
   error: "",
 };
 
-export const getCompanies = createAsyncThunk(
-  "companies/getCompanies",
+export const getWarehouses = createAsyncThunk(
+  "warehouses/getWarehouses",
   async ({ queryString, token }, { rejectWithValue }) => {
     try {
-      let buildUrl = `/users?type=company&page=${queryString.page}&limit=9`;
+      let buildUrl = `/users?type=warehouse&page=${queryString.page}&limit=9`;
 
       if (queryString.name) {
         buildUrl = buildUrl + `&name=${queryString.name}`;
@@ -43,8 +43,8 @@ export const getCompanies = createAsyncThunk(
   }
 );
 
-export const companiesSlice = createSlice({
-  name: "companies",
+export const warehousesSlice = createSlice({
+  name: "warehouses",
   initialState,
   reducers: {
     resetError: (state) => {
@@ -54,9 +54,9 @@ export const companiesSlice = createSlice({
       state.status = "idle";
       state.error = null;
     },
-    resetCompanies: (state) => {
+    resetWarehouse: (state) => {
       state.status = "idle";
-      state.companies = [];
+      state.warehouses = [];
       state.count = 0;
       state.error = null;
     },
@@ -65,26 +65,26 @@ export const companiesSlice = createSlice({
     },
   },
   extraReducers: {
-    [getCompanies.pending]: (state, action) => {
+    [getWarehouses.pending]: (state, action) => {
       state.status = "loading";
       state.error = null;
     },
-    [getCompanies.fulfilled]: (state, action) => {
+    [getWarehouses.fulfilled]: (state, action) => {
       state.status = "success";
-      state.companies = [...state.companies, ...action.payload.data.users];
+      state.warehouses = [...state.warehouses, ...action.payload.data.users];
       state.count = action.payload.count;
       state.error = null;
     },
-    [getCompanies.rejected]: (state, { error, meta, payload }) => {
+    [getWarehouses.rejected]: (state, { error, meta, payload }) => {
       state.status = "failed";
       state.error = payload.message;
     },
   },
 });
 
-export const selectCompanies = (state) => state.companies;
+export const selectWarehouses = (state) => state.warehouses;
 
-export const { resetError, resetStatus, resetCompanies } =
-  companiesSlice.actions;
+export const { resetError, resetStatus, resetWarehouse } =
+  warehousesSlice.actions;
 
-export default companiesSlice.reducer;
+export default warehousesSlice.reducer;

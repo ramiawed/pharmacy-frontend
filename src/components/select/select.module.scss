@@ -3,7 +3,6 @@
 .order_container {
   // display properties
   display: flex;
-  justify-content: space-between;
   align-items: center;
 }
 
@@ -11,4 +10,5 @@
   padding: 0 5px;
   font-size: 14px;
   color: $secondary-color;
+  flex: 1;
 }

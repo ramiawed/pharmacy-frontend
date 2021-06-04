@@ -42,3 +42,11 @@ export const SideNavLinks = {
   OFFERS: "offers",
   PROFILE: "profile",
 };
+
+export const TopNavLinks = {
+  HOME: "home",
+  COMPANIES: "companies",
+  WAREHOUSES: "warehouses",
+  CART: "cart",
+  SIGNOUT: "signout",
+};

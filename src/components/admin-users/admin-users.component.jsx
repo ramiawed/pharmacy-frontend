@@ -31,11 +31,7 @@ import { FaSearch } from "react-icons/fa";
 // redux stuff
 import { getUsers, selectUsers } from "../../redux/users/usersSlice";
 import { selectToken } from "../../redux/auth/authSlice";
-import {
-  selectActivationDeleteStatus,
-  selectActivationDeleteMsg,
-  resetActivationDeleteStatus,
-} from "../../redux/users/usersSlice";
+import { resetActivationDeleteStatus } from "../../redux/users/usersSlice";
 
 // styles
 import styles from "./admin-users.module.scss";
@@ -45,9 +41,20 @@ function AdminUsers() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  // selectors
+  // watch the activationDeleteStatus and activationDeleteMsg to display a Toast when change
+  const {
+    users,
+    status,
+    count,
+    activationDeleteStatus,
+    activationDeleteStatusMsg,
+  } = useSelector(selectUsers);
+  const token = useSelector(selectToken);
+
   // own state
-  const [userType, setUserType] = useState(UserTypeConstants.ALL);
   const [searchContainerExpanded, setSearchContainerExpanded] = useState(false);
+  const [userType, setUserType] = useState(UserTypeConstants.ALL);
   const [searchName, setSearchName] = useState("");
   const [searchEmployeeName, setSearchEmployeeName] = useState("");
   const [searchCertificateName, setSearchCertificateName] = useState("");
@@ -66,13 +73,6 @@ function AdminUsers() {
     active: false,
     notActive: false,
   });
-
-  // selectors
-  // watch the activationDeleteStatus and activationDeleteMsg to display a Toast when change
-  const activationDeleteStatus = useSelector(selectActivationDeleteStatus);
-  const activationDeleteMessage = useSelector(selectActivationDeleteMsg);
-  const { users, status, count } = useSelector(selectUsers);
-  const token = useSelector(selectToken);
 
   // options for SelectCustom components (user type)
   const userTypeOptions = [
@@ -252,8 +252,6 @@ function AdminUsers() {
       queryString.job = searchJob;
     }
 
-    console.log(queryString);
-
     dispatch(getUsers({ queryString, token }));
     setInitialPage(page - 1);
   };
@@ -263,6 +261,7 @@ function AdminUsers() {
     const { selected } = e;
     handleSearch(selected + 1);
     setInitialPage(selected);
+    window.scrollTo(0, 0);
   };
 
   // handle will pass to Input Component
@@ -280,10 +279,12 @@ function AdminUsers() {
 
   return (
     <>
-      <div className={styles.fixed_position}>
+      <div>
         {/* <div className={styles.header_div}> */}
         <Header>
-          <h2>{t("partners")}</h2>
+          <h2>
+            {t("partners")} ({count})
+          </h2>
         </Header>
         {/* </div> */}
 
@@ -305,7 +306,7 @@ function AdminUsers() {
                   setSearchName(e.target.value);
                 }}
                 bordered={true}
-                icon={() => <FaSearch />}
+                icon={<FaSearch />}
                 placeholder="search"
                 onEnterPress={enterPress}
               />
@@ -320,7 +321,7 @@ function AdminUsers() {
                   setSearchCity(e.target.value);
                 }}
                 bordered={true}
-                icon={() => <FaSearch />}
+                icon={<FaSearch />}
                 placeholder="search"
                 onEnterPress={enterPress}
               />
@@ -335,7 +336,7 @@ function AdminUsers() {
                   setSearchDistrict(e.target.value);
                 }}
                 bordered={true}
-                icon={() => <FaSearch />}
+                icon={<FaSearch />}
                 placeholder="search"
                 onEnterPress={enterPress}
               />
@@ -350,7 +351,7 @@ function AdminUsers() {
                   setSearchStreet(e.target.value);
                 }}
                 bordered={true}
-                icon={() => <FaSearch />}
+                icon={<FaSearch />}
                 placeholder="search"
                 onEnterPress={enterPress}
               />
@@ -382,7 +383,7 @@ function AdminUsers() {
                       setSearchEmployeeName(e.target.value);
                     }}
                     bordered={true}
-                    icon={() => <FaSearch />}
+                    icon={<FaSearch />}
                     placeholder="search"
                     onEnterPress={enterPress}
                   />
@@ -397,7 +398,7 @@ function AdminUsers() {
                       setSearchCertificateName(e.target.value);
                     }}
                     bordered={true}
-                    icon={() => <FaSearch />}
+                    icon={<FaSearch />}
                     placeholder="search"
                     onEnterPress={enterPress}
                   />
@@ -430,7 +431,7 @@ function AdminUsers() {
                           setSearchCompanyName(e.target.value);
                         }}
                         bordered={true}
-                        icon={() => <FaSearch />}
+                        icon={<FaSearch />}
                         placeholder="search"
                         onEnterPress={enterPress}
                       />
@@ -445,7 +446,7 @@ function AdminUsers() {
                           setSearchJobTitle(e.target.value);
                         }}
                         bordered={true}
-                        icon={() => <FaSearch />}
+                        icon={<FaSearch />}
                         placeholder="search"
                         onEnterPress={enterPress}
                       />
@@ -508,36 +509,18 @@ function AdminUsers() {
                 {t("search")}
               </motion.button>
             </div>
-
-            {/* <button
-              onClick={() => handleSearch(1)}
-              className={styles.search_button}
-            >
-              {t("search")}
-            </button> */}
           </RowWith4Children>
         </ExpandableContainer>
-
-        <div className={styles.table_header_div}>
-          <label className={styles.label_large}>{t("user-name")}</label>
-          {/* <label>{t("user-username")}</label> */}
-          <label className={styles.label_small}>{t("user-approve")}</label>
-          <label className={styles.label_small}>{t("user-delete")}</label>
-          <label className={styles.label_large}>{t("user-email")}</label>
-          <label className={styles.label_medium}>{t("user-phone")}</label>
-          <label className={styles.label_medium}>{t("user-mobile")}</label>
-          <label className={styles.label_xsmall}>{t("user-action")}</label>
-        </div>
       </div>
-
-      <div
-        className={[
-          styles.behind_fixed_position,
-          searchContainerExpanded
-            ? styles.behind_fixed_expanded
-            : styles.behind_fixed_collapsed,
-        ].join(" ")}
-      ></div>
+      <div className={styles.table_header_div}>
+        <label className={styles.label_large}>{t("user-name")}</label>
+        <label className={styles.label_small}>{t("user-approve")}</label>
+        <label className={styles.label_small}>{t("user-delete")}</label>
+        <label className={styles.label_large}>{t("user-email")}</label>
+        <label className={styles.label_medium}>{t("user-phone")}</label>
+        <label className={styles.label_medium}>{t("user-mobile")}</label>
+        <label className={styles.label_xsmall}>{t("user-action")}</label>
+      </div>
 
       {/* loading components when retrieve the result from DB */}
       {status === "loading" && (
@@ -555,8 +538,8 @@ function AdminUsers() {
 
       {count > 0 ? (
         <ReactPaginate
-          previousLabel={"→ السابق"}
-          nextLabel={"التالي ←"}
+          previousLabel={t("previous")}
+          nextLabel={t("next")}
           pageCount={Math.ceil(count / 9)}
           forcePage={initialPage}
           onPageChange={handlePageClick}
@@ -583,7 +566,7 @@ function AdminUsers() {
         <Toast
           bgColor={Colors.SUCCEEDED_COLOR}
           foreColor="#fff"
-          toastText={t(activationDeleteMessage)}
+          toastText={t(activationDeleteStatusMsg)}
           actionAfterTimeout={() => {
             dispatch(resetActivationDeleteStatus());
             handleSearch(initialPage + 1);
@@ -593,7 +576,7 @@ function AdminUsers() {
         <Toast
           bgColor={Colors.FAILED_COLOR}
           foreColor="#000"
-          toastText={t(activationDeleteMessage)}
+          toastText={t(activationDeleteStatusMsg)}
           actionAfterTimeout={() => dispatch(resetActivationDeleteStatus())}
         />
       ) : null}

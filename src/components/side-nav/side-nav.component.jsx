@@ -1,21 +1,20 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { VscClose } from "react-icons/vsc";
 import { Link } from "react-router-dom";
 import { SideNavLinks } from "../../utils/constants";
 
 // styles
 import styles from "./side-nav.module.scss";
 
-function SideNav() {
-  const [optionSelected, setOptionSelected] = useState("");
+function SideNav({
+  collapsed,
+  onCollapsedChange,
+  selectedOption,
+  onSelectedChange,
+}) {
   const { t } = useTranslation();
-  const [collapsed, setCollapsed] = useState(true);
-
-  const handleChangeOption = (type) => {
-    setOptionSelected(type);
-    setCollapsed(true);
-  };
 
   return (
     <div
@@ -24,6 +23,9 @@ function SideNav() {
         `${collapsed ? styles.collapsed : styles.showed}`,
       ].join(" ")}
     >
+      <div className={styles.close_icon} onClick={onCollapsedChange}>
+        <VscClose size={32} />
+      </div>
       <div
         style={{
           backgroundImage: 'url("http://localhost:8000/avatar01.png',
@@ -34,14 +36,14 @@ function SideNav() {
         <Link
           className={[
             styles.link,
-            optionSelected === SideNavLinks.PARTNERS
+            selectedOption === SideNavLinks.PARTNERS
               ? `${styles.selected}`
               : "",
           ].join(" ")}
           onClick={() => {
-            handleChangeOption(SideNavLinks.PARTNERS);
+            onSelectedChange(SideNavLinks.PARTNERS);
           }}
-          to="/admin/companies"
+          to="/admin/partners"
         >
           {t(SideNavLinks.PARTNERS)}
         </Link>
@@ -49,10 +51,10 @@ function SideNav() {
         <Link
           className={[
             styles.link,
-            optionSelected === SideNavLinks.ITEMS ? `${styles.selected}` : "",
+            selectedOption === SideNavLinks.ITEMS ? `${styles.selected}` : "",
           ].join(" ")}
           onClick={() => {
-            handleChangeOption(SideNavLinks.ITEMS);
+            onSelectedChange(SideNavLinks.ITEMS);
           }}
           to="/admin/items"
         >
@@ -61,10 +63,10 @@ function SideNav() {
         <Link
           className={[
             styles.link,
-            optionSelected === SideNavLinks.OFFERS ? `${styles.selected}` : "",
+            selectedOption === SideNavLinks.OFFERS ? `${styles.selected}` : "",
           ].join(" ")}
           onClick={() => {
-            handleChangeOption(SideNavLinks.OFFERS);
+            onSelectedChange(SideNavLinks.OFFERS);
           }}
           to="/admin/orders"
         >
@@ -73,12 +75,12 @@ function SideNav() {
         <Link
           className={[
             styles.link,
-            optionSelected === SideNavLinks.ADVERTISEMENTS
+            selectedOption === SideNavLinks.ADVERTISEMENTS
               ? `${styles.selected}`
               : "",
           ].join(" ")}
           onClick={() => {
-            handleChangeOption(SideNavLinks.ADVERTISEMENTS);
+            onSelectedChange(SideNavLinks.ADVERTISEMENTS);
           }}
           to="/admin/advertises"
         >
@@ -87,10 +89,10 @@ function SideNav() {
         <Link
           className={[
             styles.link,
-            optionSelected === SideNavLinks.OFFERS ? `${styles.selected}` : "",
+            selectedOption === SideNavLinks.OFFERS ? `${styles.selected}` : "",
           ].join(" ")}
           onClick={() => {
-            handleChangeOption(SideNavLinks.OFFERS);
+            onSelectedChange(SideNavLinks.OFFERS);
           }}
           to="/admin/offers"
         >
@@ -99,17 +101,17 @@ function SideNav() {
         <Link
           className={[
             styles.link,
-            optionSelected === SideNavLinks.PROFILE ? `${styles.selected}` : "",
+            selectedOption === SideNavLinks.PROFILE ? `${styles.selected}` : "",
           ].join(" ")}
           onClick={() => {
-            handleChangeOption(SideNavLinks.PROFILE);
+            onSelectedChange(SideNavLinks.PROFILE);
           }}
           to="/profile"
         >
           {t("nav-profile")}
         </Link>
       </div>
-      <button onClick={() => setCollapsed(!collapsed)}>
+      <button onClick={() => onCollapsedChange()}>
         {collapsed ? (
           <FaChevronLeft
             className={[

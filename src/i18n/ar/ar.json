@@ -22,6 +22,7 @@
     "normal": "ضيف",
     "warehouse": "مستودع",
     "warehouses": "مستودعات",
+    "home": "الصفحة الرئيسية",
     "admin": "مدير",
     "all": "الكل",
     "partners": "الشركاء",
@@ -60,6 +61,7 @@
     "Please Provide a password": "ادخل كلمة السر",
     "Please Provide a confirm password": "ادخل تاكيد كلمة السر",
     "Old password is wrong": "كلمة السر القديمة غير صحيحة",
+    "password is wrong": "كلمة السر غير صحيحة",
     "password must be greater than 5 characters":  "كلمة السر يجب أن تكون أكثر من ٥ أحرف",
     "Password and confirm password must be the same": "كلمة السر و تأكيد كلمة السر غير متطابقتان",
     "password-change-succeeded": "تم تغيير كلمة السر بنجاح",
@@ -124,5 +126,8 @@
     "enter-value": "ادخل قيمة",
     "update-succeeded": "تم التعديل بنجاح",
     "more": "المزيد",
-    "no-more": "لا يوجد المزيد من النتائج"
+    "no-more": "لا يوجد المزيد من النتائج",
+    "previous": "السابق",
+    "next": "التالي",
+    "no-internet-connection": "لا يوجد اتصال بالانترنيت ، الرجاء التأكد من الاتصال"
 }

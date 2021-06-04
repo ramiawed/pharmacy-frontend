@@ -1,10 +1,39 @@
 @import "../../variables.scss";
 
 .content_area {
-  width: 80%;
+  width: 100%;
   margin: 20px auto;
 
   position: relative;
 
   z-index: 1;
+}
+
+.hamburger_menu {
+  background-color: $main-color;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  height: 60px;
+  z-index: 10;
+}
+
+.hamburger_menu p {
+  color: $white-color;
+  font-size: 0.8rem;
+  padding-inline-start: 10px;
+}
+
+@media only screen and (min-width: $small) {
+  .hamburger_menu {
+    display: none;
+  }
+}
+
+@media only screen and (min-width: $medium) {
+  .content_area {
+    width: 80%;
+  }
 }

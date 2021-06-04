@@ -123,9 +123,21 @@ p.error {
 }
 
 .error_ul {
+  width: 80%;
   z-index: 1;
   color: $third-color;
-  margin-top: 10px;
+  margin: 10px auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+}
+
+.error_ul li {
+  min-width: 25%;
+  text-align: center;
+  list-style-type: none;
+  font-size: 0.8rem;
 }
 
 @media only screen and (min-width: $small) {
@@ -136,6 +148,14 @@ p.error {
 
   .input_div {
     width: 98%;
+  }
+
+  .error_ul {
+    flex-direction: row;
+  }
+
+  .error_ul li {
+    min-width: 33%;
   }
 }
 
@@ -150,5 +170,13 @@ p.error {
 
   .input_full_width {
     width: 98%;
+  }
+
+  .error_ul {
+    flex-direction: row;
+  }
+
+  .error_ul li {
+    min-width: 25%;
   }
 }

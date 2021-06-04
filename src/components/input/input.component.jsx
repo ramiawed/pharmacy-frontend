@@ -30,7 +30,7 @@ function Input({
     <div
       className={[styles.input_div, bordered ? styles.bordered : ""].join(" ")}
     >
-      {icon(id)}
+      {icon}
       {label && <label htmlFor={id}>{t(label)}</label>}
 
       <input

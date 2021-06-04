@@ -14,6 +14,7 @@ import styles from "./info-row.module.scss";
 // constants
 import { Colors } from "../../utils/constants";
 
+// use this promise to abort the operation by click on the cancel button
 let promise;
 
 // Info Row component
@@ -65,12 +66,9 @@ function InfoRow({ labelText, value, onInputChange, action, field, editable }) {
         setLoading(false);
       })
       .catch((rejectedValueOrSerializedError) => {
-        // onInputChange(field, previousValue);
         setError(rejectedValueOrSerializedError.message);
         setLoading(false);
-        // console.log(rejectedValueOrSerializedError);
       });
-    console.log(promise);
   };
 
   // method to handle enter press in the input field
@@ -88,7 +86,9 @@ function InfoRow({ labelText, value, onInputChange, action, field, editable }) {
     setIsEditable(false);
     setError("");
     onInputChange(field, previousValue);
-    promise.abort();
+    if (promise) {
+      promise.abort();
+    }
   };
 
   // method to handle escape press in the input field

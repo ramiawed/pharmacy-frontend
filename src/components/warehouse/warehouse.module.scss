@@ -1,6 +1,6 @@
 @import "../../variables.scss";
 
-.company_container {
+.warehouse_container {
   width: 60%;
   min-height: 300px;
   margin-bottom: 20px;
@@ -12,18 +12,18 @@
 }
 
 @media only screen and (min-width: $small) {
-  .company_container {
+  .warehouse_container {
     width: 31%;
   }
 }
 
 @media only screen and (min-width: $medium) {
-  .company_container {
+  .warehouse_container {
     width: 23%;
   }
 }
 
-.company_logo {
+.warehouse_logo {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -41,11 +41,11 @@
   transition: all 1s;
 }
 
-.company_container:hover .company_logo {
+.warehouse_container:hover .warehouse_logo {
   transform: scale(1.1);
 }
 
-.company_name {
+.warehouse_name {
   position: relative;
   font-size: 1.5rem;
   background: $secondary-color;
@@ -58,10 +58,10 @@
   height: 50px;
 }
 
-.from_top {
+.from_left {
   position: absolute;
-  top: -300px;
-  left: 0;
+  top: 0;
+  left: -100%;
   height: 300px;
   width: 100%;
   display: flex;
@@ -71,7 +71,7 @@
   transition: all 0.5s;
 }
 
-.from_top::after {
+.from_left::after {
   content: "";
   width: 100%;
   height: 100%;
@@ -82,21 +82,21 @@
   opacity: 0.9;
 }
 
-.from_top > div {
+.from_left > div {
   z-index: 10;
   margin: 8px;
   color: $white-color;
 }
 
-.from_top .name {
+.from_left .name {
   font-size: 1.5rem;
 }
 
-.company_container:hover .from_top {
-  top: 0;
+.warehouse_container:hover .from_left {
+  left: 0;
 }
 
-.company_container:hover .company_name {
+.warehouse_container:hover .warehouse_name {
   display: none;
 }
 

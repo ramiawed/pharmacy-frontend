@@ -79,6 +79,18 @@ function SignIn() {
     }
   };
 
+  const handleResetField = (field) => {
+    setUserInfo({
+      ...userInfo,
+      [field]: "",
+    });
+
+    setPreSignError({
+      ...preSignError,
+      [field]: "",
+    });
+  };
+
   const handleSignUpClick = () => {
     // reset the state
     setUserInfo({
@@ -164,6 +176,7 @@ function SignIn() {
           onchange={handleInputChange}
           error={preSignError.username?.length > 0 || error}
           onEnterPress={handlePressEnter}
+          resetField={handleResetField}
         />
 
         <Input
@@ -175,6 +188,7 @@ function SignIn() {
           onchange={handleInputChange}
           error={preSignError.password?.length > 0 || error}
           onEnterPress={handlePressEnter}
+          resetField={handleResetField}
         />
 
         {/* Error sections */}

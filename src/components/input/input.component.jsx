@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { AiOutlineExclamationCircle } from "react-icons/ai";
+import { AiOutlineExclamationCircle, AiFillCloseCircle } from "react-icons/ai";
 
 import styles from "./input.module.scss";
 
@@ -15,6 +15,7 @@ function Input({
   onchange,
   placeholder,
   onEnterPress,
+  resetField,
 }) {
   const { t } = useTranslation();
 
@@ -41,6 +42,12 @@ function Input({
         onChange={onchange}
         onKeyPress={handleKeyPress}
       />
+      {resetField && value && (
+        <AiFillCloseCircle
+          onClick={() => resetField(id)}
+          className={styles.icon_close}
+        />
+      )}
       {error && <AiOutlineExclamationCircle className={styles.icon_error} />}
     </div>
   );

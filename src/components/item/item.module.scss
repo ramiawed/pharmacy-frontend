@@ -1,0 +1,66 @@
+@import "../../variables.scss";
+
+.content {
+  width: 75%;
+  margin: 0 auto;
+}
+
+.description {
+  padding: 0 12px;
+  color: $secondary-color;
+}
+
+textarea {
+  min-width: 100%;
+  min-height: 60px;
+  outline: none;
+  border: none;
+
+  padding: 2px 4px;
+  color: $secondary-color;
+}
+
+.select_div {
+  padding: 6px 0;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-left: 15px;
+}
+
+.error_icon {
+  color: $red-color;
+}
+
+.action_div {
+  display: flex;
+  justify-content: center;
+}
+
+.add_button {
+  padding: 8px 12px;
+  margin-top: 8px auto;
+
+  background-color: $green-color;
+  color: $white-color;
+
+  border: none;
+  outline: none;
+  border-radius: 6px;
+}
+
+.horizontal_div {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+ul {
+  width: 50%;
+  margin: 12px auto;
+}
+
+ul li {
+  color: $red-color;
+  font-size: 0.8rem;
+}

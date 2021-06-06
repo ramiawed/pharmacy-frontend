@@ -1,0 +1,55 @@
+@import "../../variables.scss";
+
+.container {
+  width: 100%;
+  color: $secondary-color;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 4px;
+}
+
+.header p {
+  padding: 0 6px;
+}
+
+.header .add_icon {
+  color: $green-color;
+  cursor: pointer;
+  margin: auto;
+}
+
+.header .add_icon:hover {
+  opacity: 0.9;
+}
+
+.container .input_div {
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 4px 8px;
+  margin-bottom: 8px;
+  width: 100%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container .input_div input {
+  flex: 1;
+  padding: 4px 0;
+  color: $secondary-color;
+
+  border: none;
+  outline: none;
+}
+
+.delete_icon {
+  color: $third-color;
+  cursor: pointer;
+}
+
+.delete_icon:hover {
+  opacity: 0.9;
+}

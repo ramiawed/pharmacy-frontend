@@ -75,7 +75,7 @@ export const getUsers = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      return rejectWithValue(err.message.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -98,7 +98,7 @@ export const userApproveChange = createAsyncThunk(
       );
       return response.data;
     } catch (err) {
-      return rejectWithValue(err.message.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -120,7 +120,7 @@ export const deleteUser = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      return rejectWithValue(err.message.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -142,7 +142,7 @@ export const undoDeleteUser = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      return rejectWithValue(err.message.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );

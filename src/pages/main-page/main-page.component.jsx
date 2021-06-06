@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Redirect, Route } from "react-router";
+import { useTranslation } from "react-i18next";
 
 // redux stuff
 import { resetStatus, selectUserData } from "../../redux/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { getFavorites } from "../../redux/favorites/favoritesSlice";
+import { getCategories } from "../../redux/categories/categoriesSlice";
+import { getTypes } from "../../redux/itemTypes/itemTypesSlice";
 
 // components
 import TopNav from "../../components/top-nav/top-nav.component";
@@ -18,15 +21,15 @@ import CompaniesPage from "../companies-page/companies-page.component";
 import CartPage from "../cart-page/cart-page.component";
 import AdminUsers from "../../components/admin-users/admin-users.component";
 import UserProfile from "../../components/user-profile/user-profile.component";
+import FavoritesPage from "../favorites-page/favorites-page.component";
+import WarehousePage from "../warehouses-page/warehouses-page.component";
+import Item from "../../components/item/item.component";
 
 // style
 import styles from "./main-page.module.scss";
 
 // constants
-import { TopNavLinks, UserTypeConstants } from "../../utils/constants";
-import { useTranslation } from "react-i18next";
-import WarehousePage from "../warehouses-page/warehouses-page.component";
-import FavoritesPage from "../favorites-page/favorites-page.component";
+import { TopNavLinks } from "../../utils/constants";
 
 // MainPage
 // you have to sign in first
@@ -55,6 +58,8 @@ function MainPage() {
     if (user) {
       dispatch(resetStatus());
       dispatch(getFavorites({ token }));
+      dispatch(getCategories({}));
+      dispatch(getTypes({}));
     }
   }, []);
 
@@ -118,6 +123,10 @@ function MainPage() {
 
         <Route path="/favorites">
           <FavoritesPage />
+        </Route>
+
+        <Route path="/company/items">
+          <Item />
         </Route>
 
         <Route path="/admin/partners">

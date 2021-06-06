@@ -29,6 +29,7 @@
 }
 
 .input_div label {
+  min-width: 85px;
   font-size: 0.7rem;
   padding: 0 12px;
   text-align: left;
@@ -37,6 +38,11 @@
 .input_div .icon_error {
   width: 30px;
   color: $red-color;
+}
+
+.input_div .icon_close {
+  width: 30px;
+  color: $secondary-color;
 }
 
 @media only screen and (min-width: $small) {

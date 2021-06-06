@@ -311,6 +311,7 @@ function AdminUsers() {
                 icon={<FaSearch />}
                 placeholder="search"
                 onEnterPress={enterPress}
+                resetField={() => setSearchName("")}
               />
             </div>
             <div>
@@ -326,6 +327,7 @@ function AdminUsers() {
                 icon={<FaSearch />}
                 placeholder="search"
                 onEnterPress={enterPress}
+                resetField={() => setSearchCity("")}
               />
             </div>
             <div>
@@ -341,6 +343,9 @@ function AdminUsers() {
                 icon={<FaSearch />}
                 placeholder="search"
                 onEnterPress={enterPress}
+                resetField={(e) => {
+                  setSearchDistrict("");
+                }}
               />
             </div>
             <div>
@@ -356,6 +361,7 @@ function AdminUsers() {
                 icon={<FaSearch />}
                 placeholder="search"
                 onEnterPress={enterPress}
+                resetField={() => setSearchStreet("")}
               />
             </div>
           </RowWith4Children>
@@ -388,6 +394,7 @@ function AdminUsers() {
                     icon={<FaSearch />}
                     placeholder="search"
                     onEnterPress={enterPress}
+                    resetField={() => setSearchEmployeeName("")}
                   />
                 </div>
                 <div>
@@ -403,6 +410,7 @@ function AdminUsers() {
                     icon={<FaSearch />}
                     placeholder="search"
                     onEnterPress={enterPress}
+                    resetField={() => setSearchCertificateName("")}
                   />
                 </div>
                 <div></div>
@@ -436,6 +444,7 @@ function AdminUsers() {
                         icon={<FaSearch />}
                         placeholder="search"
                         onEnterPress={enterPress}
+                        resetField={() => setSearchCompanyName("")}
                       />
                     </div>
                     <div>
@@ -451,6 +460,7 @@ function AdminUsers() {
                         icon={<FaSearch />}
                         placeholder="search"
                         onEnterPress={enterPress}
+                        resetField={() => setSearchJobTitle("")}
                       />
                     </div>
                   </>

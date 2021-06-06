@@ -38,7 +38,7 @@ export const getCompanies = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      return rejectWithValue(err.message.data);
+      return rejectWithValue(err.response.data);
     }
   }
 );

@@ -25,6 +25,8 @@ import styles from "./top-nav.module.scss";
 
 // constants
 import { TopNavLinks, UserTypeConstants } from "../../utils/constants.js";
+import { resetCategories } from "../../redux/categories/categoriesSlice";
+import { resetItemTypes } from "../../redux/itemTypes/itemTypesSlice";
 
 function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
   const { t } = useTranslation();
@@ -39,6 +41,8 @@ function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
     dispatch(resetFavorites());
     dispatch(resetCompanies());
     dispatch(resetWarehouse());
+    dispatch(resetCategories());
+    dispatch(resetItemTypes());
   };
 
   return (

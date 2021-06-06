@@ -134,6 +134,7 @@ function CompaniesPage() {
               icon={<FaSearch />}
               placeholder="search"
               onEnterPress={handleEnterPress}
+              resetField={() => setSearchName("")}
             />
           </div>
           <div>
@@ -149,6 +150,7 @@ function CompaniesPage() {
               icon={<FaSearch />}
               placeholder="search"
               onEnterPress={handleEnterPress}
+              resetField={() => setSearchCity("")}
             />
           </div>
         </RowWith2Children>

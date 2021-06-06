@@ -131,5 +131,7 @@
     "next": "next",
     "no-internet-connection": "No internet connection, check your connection",
     "favorites": "Favorites",
-    "refresh": "Refresh"
+    "refresh": "Refresh",
+    "add-item": "Add Medicine",
+    "update-item": "Update Medicine"
 }

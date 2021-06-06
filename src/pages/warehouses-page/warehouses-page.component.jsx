@@ -135,6 +135,7 @@ function WarehousePage() {
               icon={<FaSearch />}
               placeholder="search"
               onEnterPress={handleEnterPress}
+              resetField={() => setSearchName("")}
             />
           </div>
           <div>
@@ -150,6 +151,7 @@ function WarehousePage() {
               icon={<FaSearch />}
               placeholder="search"
               onEnterPress={handleEnterPress}
+              resetField={() => setSearchCity("")}
             />
           </div>
         </RowWith2Children>

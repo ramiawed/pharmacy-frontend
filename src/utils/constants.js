@@ -9,14 +9,14 @@ export const UserTypeConstants = {
 };
 
 export const UserApprovedState = {
-  APPROVED: "approved",
-  NOT_APPROVED: "notApproved",
+  APPROVED: "approved-account",
+  NOT_APPROVED: "not-approved-account",
   ALL: "all",
 };
 
 export const UserActiveState = {
-  ACTIVE: "active",
-  INACTIVE: "inActive",
+  ACTIVE: "not-deleted-account",
+  INACTIVE: "deleted-account",
   ALL: "all",
 };
 

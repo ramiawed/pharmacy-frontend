@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
-import { motion } from "framer-motion";
 
 // constants
 import {
@@ -17,9 +16,9 @@ import Header from "../header/header.component";
 import UserRow from "../user-row/user-row.component";
 import SelectCustom from "../select/select.component";
 import Toast from "../toast/toast.component";
-import ExpandableContainer from "../expandable-container/expandable-container.component";
-import RowWith4Children from "../row-with-four-children/row-with-four-children.component";
+import RowWith2Children from "../row-with-two-children/row-with-two-children.component";
 import Input from "../input/input.component";
+import Modal from "../modal/modal.component";
 
 // 3-party library (loading, paginate)
 import ReactLoading from "react-loading";
@@ -54,8 +53,10 @@ function AdminUsers() {
   const token = useSelector(selectToken);
   const user = useSelector(selectUser);
 
+  // modal state
+  const [showModal, setShowModal] = useState(false);
+
   // own state
-  const [searchContainerExpanded, setSearchContainerExpanded] = useState(false);
   const [userType, setUserType] = useState(UserTypeConstants.ALL);
   const [searchName, setSearchName] = useState("");
   const [searchEmployeeName, setSearchEmployeeName] = useState("");
@@ -67,14 +68,23 @@ function AdminUsers() {
   const [searchDistrict, setSearchDistrict] = useState("");
   const [searchStreet, setSearchStreet] = useState("");
   const [initialPage, setInitialPage] = useState(0);
+  const [approved, setApproved] = useState(UserApprovedState.ALL);
+  const [active, setActive] = useState(UserActiveState.ALL);
 
-  // own state for user state (approved, notApproved, active, notActive) checkboxes
-  const [userState, setUserState] = useState({
-    approved: false,
-    notApproved: false,
-    active: false,
-    notActive: false,
-  });
+  const guestJobOptions = [
+    { value: GuestJob.NONE, label: t("user-job") },
+    { value: GuestJob.STUDENT, label: t("student") },
+    { value: GuestJob.PHARMACIST, label: t("pharmacist") },
+    { value: GuestJob.EMPLOYEE, label: t("employee") },
+  ];
+
+  const handleGuestJobChange = (val) => {
+    setSearchJob(val);
+    if (val !== GuestJob.EMPLOYEE) {
+      setSearchCompanyName("");
+      setSearchJobTitle("");
+    }
+  };
 
   // options for SelectCustom components (user type)
   const userTypeOptions = [
@@ -123,27 +133,8 @@ function AdminUsers() {
     { value: UserApprovedState.ALL, label: t("all") },
   ];
 
-  // handle the change of the options in the SelectCustom (Approved state)
-  const handleApprovedStateChange = (val) => {
-    if (val === UserApprovedState.APPROVED) {
-      setUserState({
-        ...userState,
-        approved: true,
-        notApproved: false,
-      });
-    } else if (val === UserApprovedState.NOT_APPROVED) {
-      setUserState({
-        ...userState,
-        approved: false,
-        notApproved: true,
-      });
-    } else if (val === UserApprovedState.ALL) {
-      setUserState({
-        ...userState,
-        approved: false,
-        notApproved: false,
-      });
-    }
+  const handleApproveChange = (val) => {
+    setApproved(val);
   };
 
   // options for the SelectCustom (Delete state)
@@ -153,42 +144,8 @@ function AdminUsers() {
     { value: UserActiveState.ALL, label: t("all") },
   ];
 
-  // handle the change of the options in the SelectCustom (Deleting state)
-  const handleDeletedStateChange = (val) => {
-    if (val === UserActiveState.INACTIVE) {
-      setUserState({
-        ...userState,
-        active: false,
-        notActive: true,
-      });
-    } else if (val === UserActiveState.ACTIVE) {
-      setUserState({
-        ...userState,
-        active: true,
-        notActive: false,
-      });
-    } else if (val === UserActiveState.ALL) {
-      setUserState({
-        ...userState,
-        active: false,
-        notActive: false,
-      });
-    }
-  };
-
-  const guestJobOptions = [
-    { value: GuestJob.NONE, label: t("user-job") },
-    { value: GuestJob.STUDENT, label: t("student") },
-    { value: GuestJob.PHARMACIST, label: t("pharmacist") },
-    { value: GuestJob.EMPLOYEE, label: t("employee") },
-  ];
-
-  const handleGuestJobChange = (val) => {
-    setSearchJob(val);
-    if (val !== GuestJob.EMPLOYEE) {
-      setSearchCompanyName("");
-      setSearchJobTitle("");
-    }
+  const handleActiveChange = (val) => {
+    setActive(val);
   };
 
   // handle search
@@ -206,19 +163,19 @@ function AdminUsers() {
       queryString.name = searchName.trim();
     }
 
-    if (userState.approved) {
+    if (approved === UserApprovedState.APPROVED) {
       queryString.approve = true;
     }
 
-    if (userState.notApproved) {
+    if (approved === UserApprovedState.NOT_APPROVED) {
       queryString.approve = false;
     }
 
-    if (userState.active) {
+    if (active === UserActiveState.ACTIVE) {
       queryString.active = true;
     }
 
-    if (userState.notActive) {
+    if (active === UserActiveState.INACTIVE) {
       queryString.active = false;
     }
 
@@ -271,6 +228,7 @@ function AdminUsers() {
   // start search
   const enterPress = () => {
     handleSearch(1);
+    setShowModal(false);
     setInitialPage(0);
   };
 
@@ -289,240 +247,6 @@ function AdminUsers() {
           </h2>
         </Header>
         {/* </div> */}
-
-        <ExpandableContainer
-          labelText={t("search-engines")}
-          expanded={searchContainerExpanded}
-          changeExpanded={() =>
-            setSearchContainerExpanded(!searchContainerExpanded)
-          }
-        >
-          <RowWith4Children>
-            <div>
-              <Input
-                label="user-name"
-                id="search-name"
-                type="text"
-                value={searchName}
-                onchange={(e) => {
-                  setSearchName(e.target.value);
-                }}
-                bordered={true}
-                icon={<FaSearch />}
-                placeholder="search"
-                onEnterPress={enterPress}
-                resetField={() => setSearchName("")}
-              />
-            </div>
-            <div>
-              <Input
-                label="user-city"
-                id="search-city"
-                type="text"
-                value={searchCity}
-                onchange={(e) => {
-                  setSearchCity(e.target.value);
-                }}
-                bordered={true}
-                icon={<FaSearch />}
-                placeholder="search"
-                onEnterPress={enterPress}
-                resetField={() => setSearchCity("")}
-              />
-            </div>
-            <div>
-              <Input
-                label="user-district"
-                id="search-district"
-                type="text"
-                value={searchDistrict}
-                onchange={(e) => {
-                  setSearchDistrict(e.target.value);
-                }}
-                bordered={true}
-                icon={<FaSearch />}
-                placeholder="search"
-                onEnterPress={enterPress}
-                resetField={(e) => {
-                  setSearchDistrict("");
-                }}
-              />
-            </div>
-            <div>
-              <Input
-                label="user-street"
-                id="search-street"
-                type="text"
-                value={searchStreet}
-                onchange={(e) => {
-                  setSearchStreet(e.target.value);
-                }}
-                bordered={true}
-                icon={<FaSearch />}
-                placeholder="search"
-                onEnterPress={enterPress}
-                resetField={() => setSearchStreet("")}
-              />
-            </div>
-          </RowWith4Children>
-
-          <RowWith4Children>
-            <SelectCustom
-              bgColor={Colors.SECONDARY_COLOR}
-              foreColor="#fff"
-              options={userTypeOptions}
-              onchange={handleSearchTypeChange}
-              defaultOption={{
-                value: userType,
-                label: t(userType.toLowerCase()),
-              }}
-              caption="user-type"
-            />
-            {(userType === UserTypeConstants.WAREHOUSE ||
-              userType === UserTypeConstants.PHARMACY) && (
-              <>
-                <div>
-                  <Input
-                    label="user-employee-name"
-                    id="search-employee-name"
-                    type="text"
-                    value={searchEmployeeName}
-                    onchange={(e) => {
-                      setSearchEmployeeName(e.target.value);
-                    }}
-                    bordered={true}
-                    icon={<FaSearch />}
-                    placeholder="search"
-                    onEnterPress={enterPress}
-                    resetField={() => setSearchEmployeeName("")}
-                  />
-                </div>
-                <div>
-                  <Input
-                    label="user-certificate-name"
-                    id="search-certificate-name"
-                    type="text"
-                    value={searchCertificateName}
-                    onchange={(e) => {
-                      setSearchCertificateName(e.target.value);
-                    }}
-                    bordered={true}
-                    icon={<FaSearch />}
-                    placeholder="search"
-                    onEnterPress={enterPress}
-                    resetField={() => setSearchCertificateName("")}
-                  />
-                </div>
-                <div></div>
-              </>
-            )}
-            {userType === UserTypeConstants.NORMAL && (
-              <>
-                <SelectCustom
-                  bgColor={Colors.SECONDARY_COLOR}
-                  foreColor="#fff"
-                  options={guestJobOptions}
-                  onchange={handleGuestJobChange}
-                  defaultOption={{
-                    value: GuestJob.NONE,
-                    label: t(searchJob.toLowerCase()),
-                  }}
-                  caption="user-job"
-                />
-                {searchJob === GuestJob.EMPLOYEE && (
-                  <>
-                    <div>
-                      <Input
-                        label="user-company-name"
-                        id="search-company-name"
-                        type="text"
-                        value={searchCompanyName}
-                        onchange={(e) => {
-                          setSearchCompanyName(e.target.value);
-                        }}
-                        bordered={true}
-                        icon={<FaSearch />}
-                        placeholder="search"
-                        onEnterPress={enterPress}
-                        resetField={() => setSearchCompanyName("")}
-                      />
-                    </div>
-                    <div>
-                      <Input
-                        label="user-job-title"
-                        id="search-job-title"
-                        type="text"
-                        value={searchJobTitle}
-                        onchange={(e) => {
-                          setSearchJobTitle(e.target.value);
-                        }}
-                        bordered={true}
-                        icon={<FaSearch />}
-                        placeholder="search"
-                        onEnterPress={enterPress}
-                        resetField={() => setSearchJobTitle("")}
-                      />
-                    </div>
-                  </>
-                )}
-                {searchJob !== GuestJob.EMPLOYEE && (
-                  <>
-                    <div></div>
-                    <div></div>
-                  </>
-                )}
-              </>
-            )}
-            {(userType === UserTypeConstants.ALL ||
-              userType === UserTypeConstants.COMPANY ||
-              userType === UserTypeConstants.ADMIN) && (
-              <>
-                <div></div>
-                <div></div>
-                <div></div>
-              </>
-            )}
-          </RowWith4Children>
-
-          <RowWith4Children>
-            <SelectCustom
-              bgColor={Colors.SECONDARY_COLOR}
-              foreColor="#fff"
-              options={approvedState}
-              onchange={handleApprovedStateChange}
-              defaultOption={{
-                value: "All",
-                label: t("all"),
-              }}
-              caption="approved-state"
-            />
-            <SelectCustom
-              bgColor={Colors.SECONDARY_COLOR}
-              foreColor="#fff"
-              options={deletedState}
-              onchange={handleDeletedStateChange}
-              defaultOption={{
-                value: "All",
-                label: t("all"),
-              }}
-              caption="approved-state"
-            />
-
-            <div></div>
-            <div className={styles.button_div}>
-              <motion.button
-                whileHover={{
-                  scale: 1.1,
-                  textShadow: "0px 0px 8px rgb(255, 255, 255)",
-                  boxShadow: "0px 0px 8px rgba(0, 0, 0, 0.5)",
-                }}
-                onClick={() => handleSearch(1)}
-              >
-                {t("search")}
-              </motion.button>
-            </div>
-          </RowWith4Children>
-        </ExpandableContainer>
       </div>
       <div className={styles.table_header_div}>
         <label className={styles.label_large}>{t("user-name")}</label>
@@ -531,7 +255,14 @@ function AdminUsers() {
         <label className={styles.label_large}>{t("user-email")}</label>
         <label className={styles.label_medium}>{t("user-phone")}</label>
         <label className={styles.label_medium}>{t("user-mobile")}</label>
-        <label className={styles.label_xsmall}>{t("user-action")}</label>
+        <label className={styles.label_xsmall}>
+          <button
+            className={styles.search_button}
+            onClick={() => setShowModal(true)}
+          >
+            <FaSearch />
+          </button>
+        </label>
       </div>
 
       {/* loading components when retrieve the result from DB */}
@@ -592,6 +323,233 @@ function AdminUsers() {
           actionAfterTimeout={() => dispatch(resetActivationDeleteStatus())}
         />
       ) : null}
+
+      {showModal && (
+        <Modal
+          header="search-engines"
+          cancelLabel="cancel-label"
+          okLabel="search"
+          okModal={() => {
+            setShowModal(false);
+            handleSearch(1);
+          }}
+          closeModal={() => setShowModal(false)}
+        >
+          <RowWith2Children>
+            <div>
+              <Input
+                label="user-name"
+                id="search-name"
+                type="text"
+                value={searchName}
+                onchange={(e) => {
+                  setSearchName(e.target.value);
+                }}
+                bordered={true}
+                icon={<FaSearch />}
+                placeholder="search"
+                onEnterPress={enterPress}
+                resetField={() => setSearchName("")}
+              />
+            </div>
+            <div>
+              <Input
+                label="user-city"
+                id="search-city"
+                type="text"
+                value={searchCity}
+                onchange={(e) => {
+                  setSearchCity(e.target.value);
+                }}
+                bordered={true}
+                icon={<FaSearch />}
+                placeholder="search"
+                onEnterPress={enterPress}
+                resetField={() => setSearchCity("")}
+              />
+            </div>
+          </RowWith2Children>
+          <RowWith2Children>
+            <div>
+              <Input
+                label="user-district"
+                id="search-district"
+                type="text"
+                value={searchDistrict}
+                onchange={(e) => {
+                  setSearchDistrict(e.target.value);
+                }}
+                bordered={true}
+                icon={<FaSearch />}
+                placeholder="search"
+                onEnterPress={enterPress}
+                resetField={(e) => {
+                  setSearchDistrict("");
+                }}
+              />
+            </div>
+            <div>
+              <Input
+                label="user-street"
+                id="search-street"
+                type="text"
+                value={searchStreet}
+                onchange={(e) => {
+                  setSearchStreet(e.target.value);
+                }}
+                bordered={true}
+                icon={<FaSearch />}
+                placeholder="search"
+                onEnterPress={enterPress}
+                resetField={() => setSearchStreet("")}
+              />
+            </div>
+          </RowWith2Children>
+          <div
+            style={{
+              height: "4px",
+            }}
+          ></div>
+          <RowWith2Children>
+            <SelectCustom
+              bgColor={Colors.SECONDARY_COLOR}
+              foreColor="#fff"
+              options={approvedState}
+              onchange={handleApproveChange}
+              defaultOption={{
+                value: approved,
+                label: t(approved.toLowerCase()),
+              }}
+              caption="approved-state"
+            />
+            <SelectCustom
+              bgColor={Colors.SECONDARY_COLOR}
+              foreColor="#fff"
+              options={deletedState}
+              onchange={handleActiveChange}
+              defaultOption={{
+                value: active,
+                label: t(active.toLowerCase()),
+              }}
+              caption="approved-state"
+            />
+          </RowWith2Children>
+          <div
+            style={{
+              height: "8px",
+            }}
+          ></div>
+          <RowWith2Children>
+            <SelectCustom
+              bgColor={Colors.SECONDARY_COLOR}
+              foreColor="#fff"
+              options={userTypeOptions}
+              onchange={handleSearchTypeChange}
+              defaultOption={{
+                value: userType,
+                label: t(userType.toLowerCase()),
+              }}
+              caption="user-type"
+            />
+            {userType === UserTypeConstants.NORMAL ? (
+              <>
+                <SelectCustom
+                  bgColor={Colors.SECONDARY_COLOR}
+                  foreColor="#fff"
+                  options={guestJobOptions}
+                  onchange={handleGuestJobChange}
+                  defaultOption={{
+                    value: GuestJob.NONE,
+                    label: t(searchJob.toLowerCase()),
+                  }}
+                  caption="user-job"
+                />{" "}
+              </>
+            ) : (
+              <div></div>
+            )}
+          </RowWith2Children>
+          <div
+            style={{
+              height: "8px",
+            }}
+          ></div>
+          {(userType === UserTypeConstants.WAREHOUSE ||
+            userType === UserTypeConstants.PHARMACY) && (
+            <RowWith2Children>
+              <div>
+                <Input
+                  label="user-employee-name"
+                  id="search-employee-name"
+                  type="text"
+                  value={searchEmployeeName}
+                  onchange={(e) => {
+                    setSearchEmployeeName(e.target.value);
+                  }}
+                  bordered={true}
+                  icon={<FaSearch />}
+                  placeholder="search"
+                  onEnterPress={enterPress}
+                  resetField={() => setSearchEmployeeName("")}
+                />
+              </div>
+              <div>
+                <Input
+                  label="user-certificate-name"
+                  id="search-certificate-name"
+                  type="text"
+                  value={searchCertificateName}
+                  onchange={(e) => {
+                    setSearchCertificateName(e.target.value);
+                  }}
+                  bordered={true}
+                  icon={<FaSearch />}
+                  placeholder="search"
+                  onEnterPress={enterPress}
+                  resetField={() => setSearchCertificateName("")}
+                />
+              </div>
+            </RowWith2Children>
+          )}
+
+          {searchJob === GuestJob.EMPLOYEE && (
+            <RowWith2Children>
+              <div>
+                <Input
+                  label="user-company-name"
+                  id="search-company-name"
+                  type="text"
+                  value={searchCompanyName}
+                  onchange={(e) => {
+                    setSearchCompanyName(e.target.value);
+                  }}
+                  bordered={true}
+                  icon={<FaSearch />}
+                  placeholder="search"
+                  onEnterPress={enterPress}
+                  resetField={() => setSearchCompanyName("")}
+                />
+              </div>
+              <div>
+                <Input
+                  label="user-job-title"
+                  id="search-job-title"
+                  type="text"
+                  value={searchJobTitle}
+                  onchange={(e) => {
+                    setSearchJobTitle(e.target.value);
+                  }}
+                  bordered={true}
+                  icon={<FaSearch />}
+                  placeholder="search"
+                  onEnterPress={enterPress}
+                  resetField={() => setSearchJobTitle("")}
+                />
+              </div>
+            </RowWith2Children>
+          )}
+        </Modal>
+      )}
     </>
   ) : (
     <Redirect to="/" />

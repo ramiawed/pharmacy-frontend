@@ -20,7 +20,6 @@ import {
   resetPasswordError,
   resetStatus,
   deleteMe,
-  resetDeleteError,
   signOut,
 } from "../../redux/auth/authSlice";
 import { resetUsers } from "../../redux/users/usersSlice";

@@ -98,3 +98,33 @@ div.button_div > button {
   margin-top: 8px;
   width: 100%;
 }
+
+.search_button {
+  width: 36px;
+  height: 36px;
+  font-size: 1.2rem;
+
+  border: none;
+  outline: none;
+  border-radius: 50%;
+
+  background: $secondary-color;
+  color: $white-color;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  // position: fixed;
+  // left: 5%;
+  // bottom: 20%;
+
+  cursor: pointer;
+
+  transition: all 0.5s;
+}
+
+.search_button:hover {
+  transform: scale(1.1);
+  opacity: 0.9;
+}

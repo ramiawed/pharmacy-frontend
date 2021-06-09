@@ -6,50 +6,36 @@ import { useSelector } from "react-redux";
 import { selectFavorites } from "../../redux/favorites/favoritesSlice";
 
 // components
-import ExpandableContainer from "../../components/expandable-container/expandable-container.component";
-import Company from "../../components/company/company.component";
-import Warehouse from "../../components/warehouse/warehouse.component";
+import CompanyRow from "../../components/favorite-row/favorite-row.component";
 
 // constants
 import { UserTypeConstants } from "../../utils/constants.js";
+import CardInfo from "../../components/card-info/card-info.component";
+import Header from "../../components/header/header.component";
 
 function FavoritesPage() {
   const { t } = useTranslation();
   const favorites = useSelector(selectFavorites);
 
-  const [companiesContainerExpanded, setCompaniesContainerExpanded] =
-    useState(false);
-  const [warehousesContainerExpanded, setWarehousesContainerExpanded] =
-    useState(false);
-
   return (
     <div>
-      <ExpandableContainer
-        labelText={t("companies")}
-        expanded={companiesContainerExpanded}
-        changeExpanded={() =>
-          setCompaniesContainerExpanded(!companiesContainerExpanded)
-        }
-      >
+      <Header>
+        <h2>{t("favorites")}</h2>
+      </Header>
+      <CardInfo headerTitle={t("companies")}>
         {favorites
           .filter((favorite) => favorite.type === UserTypeConstants.COMPANY)
           .map((favorite) => (
-            <Company key={favorite._id} company={favorite} />
+            <CompanyRow key={favorite._id} user={favorite} />
           ))}
-      </ExpandableContainer>
-      <ExpandableContainer
-        labelText={t("warehouses")}
-        expanded={warehousesContainerExpanded}
-        changeExpanded={() =>
-          setWarehousesContainerExpanded(!warehousesContainerExpanded)
-        }
-      >
+      </CardInfo>
+      <CardInfo headerTitle={t("warehouses")}>
         {favorites
           .filter((favorite) => favorite.type === UserTypeConstants.WAREHOUSE)
           .map((favorite) => (
-            <Warehouse key={favorite._id} warehouse={favorite} />
+            <CompanyRow key={favorite._id} user={favorite} />
           ))}
-      </ExpandableContainer>
+      </CardInfo>
     </div>
   );
 }

@@ -1,19 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Redirect } from "react-router";
 
 // components
-import ExpandableContainer from "../../components/expandable-container/expandable-container.component";
 import Header from "../../components/header/header.component";
 import RowWith2Children from "../../components/row-with-two-children/row-with-two-children.component";
 import Input from "../../components/input/input.component";
-import Company from "../../components/company/company.component";
+import CardInfo from "../../components/card-info/card-info.component";
+import FavoriteRow from "../../components/favorite-row/favorite-row.component";
+import PartnerRow from "../../components/partner-row/partner-row.component";
+import PartnerCard from "../../components/partner-card/partner-card.component";
 import ReactLoading from "react-loading";
 
 // react-icons
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaListUl } from "react-icons/fa";
 import { RiRefreshLine } from "react-icons/ri";
+import { AiFillAppstore } from "react-icons/ai";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -23,15 +26,17 @@ import {
   resetCompanies,
   selectCompanies,
 } from "../../redux/company/companySlice";
+import { selectFavorites } from "../../redux/favorites/favoritesSlice";
+import { UserTypeConstants } from "../../utils/constants";
 
 // styles
 import styles from "./companies-page.module.scss";
-import { selectFavorites } from "../../redux/favorites/favoritesSlice";
-import { UserTypeConstants } from "../../utils/constants";
 
 function CompaniesPage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
+  // select from redux store
   const token = useSelector(selectToken);
   const user = useSelector(selectUser);
   const { companies, count, status } = useSelector(selectCompanies);
@@ -39,12 +44,9 @@ function CompaniesPage() {
 
   // own state
   // expanded state for expandable container
-  const [searchContainerExpanded, setSearchContainerExpanded] = useState(false);
   const [searchName, setSearchName] = useState("");
   const [searchCity, setSearchCity] = useState("");
-
-  // favorites expanded
-  const [favoriteExpanded, setFavoriteExpanded] = useState(false);
+  const [displayType, setDisplayType] = useState("list");
 
   // if companies doesn't contains any info set the page to 1
   // if companies have an info set the page to the next page
@@ -89,37 +91,32 @@ function CompaniesPage() {
     }
 
     window.scrollTo(0, 0);
+
+    // searchNameInputRef.current.focus();
   }, []);
 
   return user ? (
-    <>
+    <div>
       <div className={styles.refresh_icon} onClick={handleEnterPress}>
         <RiRefreshLine className={styles.icon} size="2rem" />
         <p>{t("refresh")}</p>
       </div>
+
       <Header>
         <h2>
           {t("companies")} ({count})
         </h2>
       </Header>
-      <ExpandableContainer
-        labelText={t("favorites")}
-        expanded={favoriteExpanded}
-        changeExpanded={() => setFavoriteExpanded(!favoriteExpanded)}
-      >
+
+      <CardInfo headerTitle={t("favorites")}>
         {favorites
           .filter((favorite) => favorite.type === UserTypeConstants.COMPANY)
           .map((favorite) => (
-            <Company key={favorite._id} company={favorite} />
+            <FavoriteRow key={favorite._id} user={favorite} />
           ))}
-      </ExpandableContainer>
-      <ExpandableContainer
-        labelText={t("search-engines")}
-        expanded={searchContainerExpanded}
-        changeExpanded={() =>
-          setSearchContainerExpanded(!searchContainerExpanded)
-        }
-      >
+      </CardInfo>
+
+      <CardInfo headerTitle={t("search-engines")}>
         <RowWith2Children>
           <div>
             <Input
@@ -134,7 +131,9 @@ function CompaniesPage() {
               icon={<FaSearch />}
               placeholder="search"
               onEnterPress={handleEnterPress}
-              resetField={() => setSearchName("")}
+              resetField={() => {
+                setSearchName("");
+              }}
             />
           </div>
           <div>
@@ -154,12 +153,44 @@ function CompaniesPage() {
             />
           </div>
         </RowWith2Children>
-      </ExpandableContainer>
-      <div className={styles.content_container}>
-        {companies.map((company) => (
-          <Company key={company._id} company={company} />
-        ))}
+      </CardInfo>
+
+      <div className={styles.display_type}>
+        <AiFillAppstore
+          className={[
+            styles.icon,
+            displayType === "card" ? styles.selected : "",
+          ].join(" ")}
+          size="1.5rem"
+          onClick={() => setDisplayType("card")}
+        />
+
+        <FaListUl
+          className={[
+            styles.icon,
+            displayType === "list" ? styles.selected : "",
+          ].join(" ")}
+          size="1.5rem"
+          onClick={() => setDisplayType("list")}
+        />
       </div>
+
+      {displayType === "list" && (
+        <CardInfo headerTitle={t("results")}>
+          {companies.map((company) => (
+            <PartnerRow key={company._id} user={company} />
+          ))}
+        </CardInfo>
+      )}
+
+      {displayType === "card" && (
+        <div className={styles.content_container}>
+          {companies.map((company) => (
+            <PartnerCard key={company._id} user={company} />
+          ))}
+        </div>
+      )}
+
       {status === "loading" && (
         <ReactLoading type="bubbles" height={50} width={50} />
       )}
@@ -184,7 +215,7 @@ function CompaniesPage() {
           <p>{t("no-more")}</p>
         )}
       </div>
-    </>
+    </div>
   ) : (
     <Redirect to="/signin" />
   );

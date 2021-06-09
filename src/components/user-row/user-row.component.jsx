@@ -254,12 +254,6 @@ function UserRow({ user, index }) {
         </div>
         {!collapsed && (
           <div className={styles.expanded_info_div}>
-            {/* <div
-              style={{
-                backgroundImage: 'url("http://localhost:8000/default-logo.jpg',
-              }}
-              className={styles.profile_img}
-            ></div> */}
             <div className={styles.advanced_info}>
               <div className={styles.row}>
                 <div className={[styles.half_row, styles.border_end].join(" ")}>

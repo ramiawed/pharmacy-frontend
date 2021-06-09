@@ -30,6 +30,7 @@ import styles from "./main-page.module.scss";
 
 // constants
 import { TopNavLinks } from "../../utils/constants";
+import Axios from "axios";
 
 // MainPage
 // you have to sign in first
@@ -62,6 +63,20 @@ function MainPage() {
       dispatch(getTypes({}));
     }
   }, []);
+
+  // uploading stuff
+  const [name, setName] = useState("");
+  const [file, setFile] = useState("");
+
+  const send = (e) => {
+    const data = new FormData();
+    data.append("name", name);
+    data.append("file", file);
+
+    Axios.post("http://localhost:8000/api/v1/upload", data)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+  };
 
   return user ? (
     <div>
@@ -103,6 +118,36 @@ function MainPage() {
           setCollapsedSideNavOption(true);
         }}
       />
+
+      {/* <form action="#">
+        <div>
+          <label htmlFor="name">Name</label>
+          <input
+            type="text"
+            id="name"
+            onChange={(event) => {
+              const { value } = event.target;
+              setName(value);
+            }}
+          />
+        </div>
+        <div>
+          <label htmlFor="file">File</label>
+          <input
+            type="file"
+            name="file"
+            id="file"
+            accept="image/*"
+            multiple={false}
+            onChange={(event) => {
+              const file = event.target.files[0];
+              setFile(file);
+            }}
+          />
+        </div>
+
+        <button onClick={send}>Send</button>
+      </form> */}
 
       <div className={styles.content_area}>
         <Route path="/companies">

@@ -4,16 +4,19 @@ import { motion } from "framer-motion";
 import { Redirect } from "react-router";
 
 // components
-import ExpandableContainer from "../../components/expandable-container/expandable-container.component";
 import Header from "../../components/header/header.component";
 import RowWith2Children from "../../components/row-with-two-children/row-with-two-children.component";
 import Input from "../../components/input/input.component";
-import Warehouse from "../../components/warehouse/warehouse.component";
+import CardInfo from "../../components/card-info/card-info.component";
+import FavoriteRow from "../../components/favorite-row/favorite-row.component";
+import PartnerRow from "../../components/partner-row/partner-row.component";
+import PartnerCard from "../../components/partner-card/partner-card.component";
 import ReactLoading from "react-loading";
 
 // react-icons
-import { FaSearch } from "react-icons/fa";
+import { FaSearch, FaListUl } from "react-icons/fa";
 import { RiRefreshLine } from "react-icons/ri";
+import { AiFillAppstore } from "react-icons/ai";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -26,7 +29,7 @@ import {
 import { selectFavorites } from "../../redux/favorites/favoritesSlice";
 
 // constants and utils
-import { UserTypeConstants } from "../../utils/constants.js";
+import { Colors, UserTypeConstants } from "../../utils/constants.js";
 
 // styles
 import styles from "./warehouses-page.module.scss";
@@ -34,19 +37,17 @@ import styles from "./warehouses-page.module.scss";
 function WarehousePage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
   const token = useSelector(selectToken);
   const user = useSelector(selectUser);
   const { warehouses, count, status } = useSelector(selectWarehouses);
   const favorites = useSelector(selectFavorites);
 
-  // favorites expanded
-  const [favoriteExpanded, setFavoriteExpanded] = useState(false);
-
   // own state
   // expanded state for expandable container
-  const [searchContainerExpanded, setSearchContainerExpanded] = useState(false);
   const [searchName, setSearchName] = useState("");
   const [searchCity, setSearchCity] = useState("");
+  const [displayType, setDisplayType] = useState("list");
   // if companies doesn't contains any info set the page to 1
   // if companies have an info set the page to the next page
   const [page, setPage] = useState(
@@ -93,34 +94,27 @@ function WarehousePage() {
   }, []);
 
   return user ? (
-    <>
+    <div>
       <div className={styles.refresh_icon} onClick={handleEnterPress}>
         <RiRefreshLine className={styles.icon} size="2rem" />
         <p>{t("refresh")}</p>
       </div>
+
       <Header>
         <h2>
-          {t("warehouses")} ({count})
+          {t("companies")} ({count})
         </h2>
       </Header>
-      <ExpandableContainer
-        labelText={t("favorites")}
-        expanded={favoriteExpanded}
-        changeExpanded={() => setFavoriteExpanded(!favoriteExpanded)}
-      >
+
+      <CardInfo headerTitle={t("favorites")}>
         {favorites
           .filter((favorite) => favorite.type === UserTypeConstants.WAREHOUSE)
           .map((favorite) => (
-            <Warehouse key={favorite._id} warehouse={favorite} />
+            <FavoriteRow key={favorite._id} user={favorite} />
           ))}
-      </ExpandableContainer>
-      <ExpandableContainer
-        labelText={t("search-engines")}
-        expanded={searchContainerExpanded}
-        changeExpanded={() =>
-          setSearchContainerExpanded(!searchContainerExpanded)
-        }
-      >
+      </CardInfo>
+
+      <CardInfo headerTitle={t("search-engines")}>
         <RowWith2Children>
           <div>
             <Input
@@ -135,7 +129,9 @@ function WarehousePage() {
               icon={<FaSearch />}
               placeholder="search"
               onEnterPress={handleEnterPress}
-              resetField={() => setSearchName("")}
+              resetField={() => {
+                setSearchName("");
+              }}
             />
           </div>
           <div>
@@ -155,18 +151,51 @@ function WarehousePage() {
             />
           </div>
         </RowWith2Children>
-      </ExpandableContainer>
-      <div className={styles.content_container}>
-        {warehouses.map((warehouse) => (
-          <Warehouse key={warehouse._id} warehouse={warehouse} />
-        ))}
+      </CardInfo>
+
+      <div className={styles.display_type}>
+        <AiFillAppstore
+          className={[
+            styles.icon,
+            displayType === "card" ? styles.selected : "",
+          ].join(" ")}
+          size="1.5rem"
+          onClick={() => setDisplayType("card")}
+        />
+
+        <FaListUl
+          className={[
+            styles.icon,
+            displayType === "list" ? styles.selected : "",
+          ].join(" ")}
+          size="1.5rem"
+          onClick={() => setDisplayType("list")}
+        />
       </div>
+
+      {displayType === "list" && (
+        <CardInfo headerTitle={t("results")}>
+          {warehouses.map((warehouse) => (
+            <PartnerRow key={warehouse._id} user={warehouse} />
+          ))}
+        </CardInfo>
+      )}
+
+      {displayType === "card" && (
+        <div className={styles.content_container}>
+          {warehouses.map((warehouse) => (
+            <PartnerCard key={warehouse._id} user={warehouse} />
+          ))}
+        </div>
+      )}
+
       {status === "loading" && (
         <ReactLoading type="bubbles" height={50} width={50} />
       )}
       <div
         style={{
           textAlign: "center",
+          color: Colors.SECONDARY_COLOR,
         }}
       >
         {warehouses.length < count ? (
@@ -185,9 +214,9 @@ function WarehousePage() {
           <p>{t("no-more")}</p>
         )}
       </div>
-    </>
+    </div>
   ) : (
-    <Redirect to="/" />
+    <Redirect to="/signin" />
   );
 }
 

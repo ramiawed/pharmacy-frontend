@@ -1,6 +1,8 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { useTranslation } from "react-i18next";
+
+// styles
 import styles from "./modal.module.scss";
 
 const Modal = ({

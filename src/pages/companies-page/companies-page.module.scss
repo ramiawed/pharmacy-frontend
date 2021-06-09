@@ -25,6 +25,28 @@
   cursor: pointer;
 }
 
+.display_type {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 85px;
+  padding: 4px 8px;
+  margin: 5px auto;
+  color: $secondary-color;
+  border: 1px solid $secondary-color;
+  border-radius: 6px;
+  box-shadow: 3px 3px 3px rgba($color: #000000, $alpha: 0.3);
+}
+
+.icon {
+  width: 24px;
+  height: 24px;
+}
+
+.icon.selected {
+  color: $green-color;
+}
+
 .refresh_icon {
   height: 36px;
 

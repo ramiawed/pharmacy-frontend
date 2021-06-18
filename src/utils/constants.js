@@ -51,3 +51,14 @@ export const TopNavLinks = {
   CART: "cart",
   SIGNOUT: "signout",
 };
+
+export const OrderOptions = {
+  NAME: "name",
+  DATE_CREATED: "createdAt",
+  DATE_UPDATED: "updatedAt",
+  APPROVED: "isApproved",
+  ACTIVE: "isActive",
+  CITY: "city",
+  DISTRICT: "district",
+  STREET: "street",
+};

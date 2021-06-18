@@ -1,0 +1,62 @@
+@import "../../variables.scss";
+
+.row {
+  padding: 10px 0;
+
+  display: flex;
+  align-items: center;
+  margin: 2px 0;
+  border-radius: 6px;
+}
+
+.row.even {
+  background: rgba($color: $secondary-color, $alpha: 0.3);
+}
+
+.row.odd {
+  background: rgba($color: $secondary-color, $alpha: 0.1);
+}
+
+.row div input,
+.row label {
+  width: 100%;
+  text-align: center;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  padding: 4px 2px;
+  border-radius: 6px;
+}
+
+.row div input:focus {
+  background-color: $white-color;
+  color: black;
+}
+
+.row.error {
+  background-color: $third-color;
+}
+
+.row.error div input {
+  color: $white-color;
+}
+
+.row.error div input:focus {
+  background-color: $white-color;
+  color: black;
+}
+
+.icon {
+  text-align: center;
+  color: $third-color;
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.icon:hover {
+  transform: scale(1.1);
+}
+
+.row.error .icon {
+  color: $white-color;
+}

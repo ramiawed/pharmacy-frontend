@@ -1,0 +1,19 @@
+@import "../variables.scss";
+
+.label_small {
+  // width: 75px;
+  flex: 1;
+}
+
+.label_xsmall {
+  // width: 40px;
+  flex: 1;
+}
+
+.label_medium {
+  flex: 2;
+}
+
+.label_large {
+  flex: 4;
+}

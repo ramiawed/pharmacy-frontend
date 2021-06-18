@@ -4,6 +4,7 @@ import axios from "../../api/pharmacy";
 const initialState = {
   status: "idle",
   favorites: [],
+  favorites_items: [],
   error: "",
 };
 
@@ -66,6 +67,48 @@ export const removeFavorite = createAsyncThunk(
   }
 );
 
+export const addFavoriteItem = createAsyncThunk(
+  "favorites/addFavoriteItem",
+  async ({ obj, token }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        "/favorites/add/items",
+        { favoriteItemId: obj.favoriteItemId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const removeFavoriteItem = createAsyncThunk(
+  "favorites/removeFavoriteItem",
+  async ({ obj, token }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        "/favorites/remove/items",
+        { favoriteItemId: obj.favoriteItemId },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const favoritesSlice = createSlice({
   name: "favorites",
   initialState,
@@ -73,6 +116,7 @@ export const favoritesSlice = createSlice({
     resetFavorites: (state) => {
       state.status = "idle";
       state.favorites = [];
+      state.favorites_items = [];
       state.error = "";
     },
     resetFavoriteError: (state) => {
@@ -86,7 +130,10 @@ export const favoritesSlice = createSlice({
     },
     [getFavorites.fulfilled]: (state, action) => {
       state.status = "success";
-      state.favorites = action.payload.data.favorites;
+      if (action.payload.data.favorites !== null) {
+        state.favorites = action.payload.data.favorites.favorites;
+        state.favorites_items = action.payload.data.favorites.favorites_items;
+      }
       state.error = null;
     },
     [getFavorites.rejected]: (state, { error, meta, payload }) => {
@@ -106,6 +153,22 @@ export const favoritesSlice = createSlice({
       state.status = "failed";
       state.error = payload.message;
     },
+    [addFavoriteItem.pending]: (state, action) => {
+      state.status = "loading";
+      state.error = null;
+    },
+    [addFavoriteItem.fulfilled]: (state, action) => {
+      state.status = "success";
+      state.favorites_items = [
+        ...state.favorites_items,
+        action.payload.data.favorite,
+      ];
+      state.error = null;
+    },
+    [addFavorite.rejected]: (state, { error, meta, payload }) => {
+      state.status = "failed";
+      state.error = payload.message;
+    },
     [removeFavorite.pending]: (state, action) => {
       state.status = "loading";
       state.error = null;
@@ -118,6 +181,21 @@ export const favoritesSlice = createSlice({
       state.error = null;
     },
     [removeFavorite.rejected]: (state, { error, meta, payload }) => {
+      state.status = "failed";
+      state.error = payload.message;
+    },
+    [removeFavoriteItem.pending]: (state, action) => {
+      state.status = "loading";
+      state.error = null;
+    },
+    [removeFavoriteItem.fulfilled]: (state, action) => {
+      state.status = "success";
+      state.favorites_items = state.favorites_items.filter(
+        (fa) => fa._id !== action.payload.data.favorite
+      );
+      state.error = null;
+    },
+    [removeFavoriteItem.rejected]: (state, { error, meta, payload }) => {
       state.status = "failed";
       state.error = payload.message;
     },

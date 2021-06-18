@@ -67,6 +67,10 @@ export const getUsers = createAsyncThunk(
         buildUrl = buildUrl + `&isActive=${queryString.active}`;
       }
 
+      if (queryString.sort) {
+        buildUrl = buildUrl + `&sort=${queryString.sort.replace(/,/g, " ")}`;
+      }
+
       const response = await axios.get(buildUrl, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -185,6 +189,13 @@ export const usersSlice = createSlice({
     },
     [userApproveChange.fulfilled]: (state, action) => {
       state.activationDeleteStatus = "success";
+      const newUsers = state.users.map((user) => {
+        if (user._id === action.payload.data.user._id) {
+          return action.payload.data.user;
+        } else return user;
+      });
+
+      state.users = newUsers;
       if (action.payload.status === "activation success") {
         state.activationDeleteStatusMsg = "user-approved-success";
       } else {
@@ -201,6 +212,12 @@ export const usersSlice = createSlice({
     },
     [deleteUser.fulfilled]: (state, action) => {
       state.activationDeleteStatus = "success";
+      const newUsers = state.users.map((user) => {
+        if (user._id === action.payload.data.user._id) {
+          return action.payload.data.user;
+        } else return user;
+      });
+      state.users = newUsers;
       state.activationDeleteStatusMsg = "user-delete-success";
     },
     [deleteUser.rejected]: (state, { error, meta, payload }) => {
@@ -213,6 +230,12 @@ export const usersSlice = createSlice({
     },
     [undoDeleteUser.fulfilled]: (state, action) => {
       state.activationDeleteStatus = "success";
+      const newUsers = state.users.map((user) => {
+        if (user._id === action.payload.data.user._id) {
+          return action.payload.data.user;
+        } else return user;
+      });
+      state.users = newUsers;
       state.activationDeleteStatusMsg = "user-undo-delete-success";
     },
     [undoDeleteUser.rejected]: (state, { error, meta, payload }) => {

@@ -32,3 +32,77 @@
                 />
               </label>
             </div> */}
+
+
+                // const promise = new Promise((resolve, reject) => {
+    //   const fileReader = new FileReader();
+
+    //   fileReader.readAsArrayBuffer(file);
+
+    //   fileReader.onload = (e) => {
+    //     const bufferArray = e.target.result;
+
+    //     const wb = XLSX.readFile(bufferArray, { type: "buffer" });
+
+    //     const wsname = wb.SheetNames[0];
+
+    //     const ws = wb.Sheets[wsname];
+
+    //     const d = XLSX.utils.sheet_to_json(ws);
+
+    //     resolve(data);
+    //   };
+
+    //   fileReader.onerror = (error) => {
+    //     reject(error);
+    //   };
+    // });
+
+    // promise.then((d) => {
+    //   const completeData = d.map((data) => {
+    //     let obj = {
+    //       ...data,
+    //       company: user._id,
+    //       isActive: true,
+    //     };
+
+    //     if (!data.price) {
+    //       obj = {
+    //         ...obj,
+    //         price: 0,
+    //       };
+    //     }
+
+    //     if (!data.customer_price) {
+    //       obj = {
+    //         ...obj,
+    //         customer_price: 0,
+    //       };
+    //     }
+
+    //     if (!data.caliber) {
+    //       obj = {
+    //         ...obj,
+    //         caliber: "",
+    //       };
+    //     }
+
+    //     if (!data.packing) {
+    //       obj = {
+    //         ...obj,
+    //         packing: "",
+    //       };
+    //     }
+
+    //     if (!data.composition) {
+    //       obj = {
+    //         ...obj,
+    //         composition: "",
+    //       };
+    //     }
+
+    //     return obj;
+    //   });
+    //   setLoading(false);
+    //   setItems(completeData);
+    // });

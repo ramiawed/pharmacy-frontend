@@ -2,16 +2,31 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "../../api/pharmacy";
 
 const initialState = {
-  statue: "idle",
+  status: "idle",
   items: [],
+  count: 0,
   error: "",
+  addStatus: "idle",
+  addError: "",
+  activeStatus: "idle",
+  activeError: "",
 };
 
 export const getItems = createAsyncThunk(
   "items/getItems",
   async ({ queryString, token }, { rejectWithValue }) => {
     try {
-      const response = await axios.get("/items", {
+      let buildUrl = `/items?page=${queryString.page}&limit=9`;
+
+      if (queryString.name) {
+        buildUrl = buildUrl + `&name=${queryString.name}`;
+      }
+
+      if (queryString.isActive !== undefined) {
+        buildUrl = buildUrl + `&isActive=${queryString.isActive}`;
+      }
+
+      const response = await axios.get(buildUrl, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -28,13 +43,49 @@ export const addItem = createAsyncThunk(
   "items/addItem",
   async ({ obj, token }, { rejectWithValue }) => {
     try {
-      console.log(obj);
-      console.log(token);
       const response = await axios.post("/items", obj, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const addItems = createAsyncThunk(
+  "items/addItems",
+  async ({ obj, token }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("/items/excel", obj, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const changeItemActiveState = createAsyncThunk(
+  "items/changeActive",
+  async ({ obj, token }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `/items/active/${obj.itemId}`,
+        { action: obj.action },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       return response.data;
     } catch (err) {
@@ -54,10 +105,29 @@ export const itemsSlice = createSlice({
     resetError: (state) => {
       state.error = "";
     },
+    resetActiveStatus: (state) => {
+      state.activeStatus = "idle";
+      state.activeError = "";
+    },
+    resetActiveError: (state) => {
+      state.activeError = "";
+    },
+    resetAddStatus: (state) => {
+      state.addStatus = "idle";
+      state.addError = "";
+    },
+    resetAddError: (state) => {
+      state.addError = "";
+    },
     resetItems: (state) => {
       state.status = "idle";
       state.items = [];
+      state.count = 0;
       state.error = "";
+      state.addStatus = "";
+      state.addError = "";
+      state.activeStatus = "idle";
+      state.activeError = "";
     },
   },
   extraReducers: {
@@ -67,6 +137,7 @@ export const itemsSlice = createSlice({
     [getItems.fulfilled]: (state, action) => {
       state.status = "succeeded";
       state.items = action.payload.data.items;
+      state.count = action.payload.count;
       state.error = "";
     },
     [getItems.rejected]: (state, { error, meta, payload }) => {
@@ -74,21 +145,58 @@ export const itemsSlice = createSlice({
       state.error = payload.message;
     },
     [addItem.pending]: (state, action) => {
-      state.status = "loading";
+      state.addStatus = "loading";
     },
     [addItem.fulfilled]: (state, action) => {
-      state.status = "succeeded";
-      state.items = [...state.items, action.payload.data.item];
-      state.error = "";
+      state.addStatus = "succeeded";
+      // state.items = [...state.items, action.payload.data.item];
+      state.addError = "";
     },
     [addItem.rejected]: (state, { error, meta, payload }) => {
+      state.addStatus = "failed";
+      state.addError = payload.message;
+    },
+    [addItems.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [addItems.fulfilled]: (state, action) => {
+      state.status = "succeeded";
+      // state.items = [...state.items, action.payload.data.items];
+      state.error = "";
+    },
+    [addItems.rejected]: (state, { error, meta, payload }) => {
       state.status = "failed";
       state.error = payload.message;
+    },
+    [changeItemActiveState.pending]: (state, action) => {
+      state.activeStatus = "loading";
+    },
+    [changeItemActiveState.fulfilled]: (state, action) => {
+      state.activeStatus = "succeeded";
+      const newItems = state.items.map((item) => {
+        if (item._id === action.payload.data.item._id) {
+          return action.payload.data.item;
+        } else return item;
+      });
+
+      state.items = newItems;
+    },
+    [changeItemActiveState.rejected]: (state, { error, meta, payload }) => {
+      state.activeStatus = "failed";
+      state.activeError = payload.message;
     },
   },
 });
 
-export const { resetStatus, resetError, resetItems } = itemsSlice.actions;
+export const {
+  resetStatus,
+  resetError,
+  resetItems,
+  resetActiveStatus,
+  resetActiveError,
+  resetAddStatus,
+  resetAddError,
+} = itemsSlice.actions;
 
 export const selectItems = (state) => state.items;
 

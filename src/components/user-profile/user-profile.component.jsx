@@ -33,6 +33,7 @@ import styles from "./user-profile.module.scss";
 import { UserTypeConstants, Colors } from "../../utils/constants";
 import { checkConnection } from "../../utils/checkInternet";
 import { resetWarehouse } from "../../redux/warehouse/warehousesSlice";
+import { resetItems } from "../../redux/items/itemsSlices";
 
 function UserProfile() {
   const { t } = useTranslation();
@@ -158,6 +159,7 @@ function UserProfile() {
         dispatch(resetFavorites());
         dispatch(resetCompanies());
         dispatch(resetWarehouse());
+        dispatch(resetItems());
       })
       .catch((rejectedValueOrSerializedError) => {
         // on failed, show message below the password input

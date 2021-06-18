@@ -1,44 +1,5 @@
 @import "../../variables.scss";
 
-.table_header_div {
-  padding: 10px 0;
-
-  border-bottom: 1px solid $secondary-color;
-  background: $white-color;
-
-  display: flex;
-  align-items: center;
-
-  position: sticky;
-  top: 60px;
-
-  z-index: 2;
-}
-
-.table_header_div label {
-  color: $secondary-color;
-  text-align: center;
-  font-size: 0.7rem;
-}
-
-.table_header_div .label_small {
-  // width: 75px;
-  flex: 1;
-}
-
-.table_header_div .label_xsmall {
-  // width: 40px;
-  flex: 1;
-}
-
-.table_header_div .label_medium {
-  flex: 2;
-}
-
-.table_header_div .label_large {
-  flex: 4;
-}
-
 .rows,
 .loading {
   padding-bottom: 10px;
@@ -99,32 +60,17 @@ div.button_div > button {
   width: 100%;
 }
 
-.search_button {
-  width: 36px;
-  height: 36px;
-  font-size: 1.2rem;
-
-  border: none;
-  outline: none;
-  border-radius: 50%;
-
-  background: $secondary-color;
-  color: $white-color;
-
+.actions_icons {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  justify-content: space-evenly;
 
-  // position: fixed;
-  // left: 5%;
-  // bottom: 20%;
-
-  cursor: pointer;
-
-  transition: all 0.5s;
+  font-size: 1.2rem;
 }
 
-.search_button:hover {
+.actions_icons div {
+  cursor: pointer;
+}
+
+.actions_icons div:hover {
   transform: scale(1.1);
-  opacity: 0.9;
 }

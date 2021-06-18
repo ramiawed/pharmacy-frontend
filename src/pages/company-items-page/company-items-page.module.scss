@@ -1,0 +1,29 @@
+@import "../../variables.scss";
+
+.tabs {
+  display: flex;
+  align-items: center;
+  // padding: 4px;
+}
+
+.tabs label {
+  min-width: 200px;
+  padding: 4px;
+  margin: 0 5px;
+
+  text-align: center;
+
+  color: $secondary-color;
+  border: 1px solid $secondary-color;
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  transition: all 0.6s;
+}
+
+.tabs label.selected {
+  background-color: $secondary-color;
+  color: $white-color;
+  flex: 1;
+}

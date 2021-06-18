@@ -7,7 +7,7 @@ import usersSlice from "./redux/users/usersSlice";
 import companiesSlice from "./redux/company/companySlice";
 import favoritesSlice from "./redux/favorites/favoritesSlice";
 import warehousesSlice from "./redux/warehouse/warehousesSlice";
-import categoriesSlice from "./redux/categories/categoriesSlice";
+// import categoriesSlice from "./redux/categories/categoriesSlice";
 import itemTypesSlice from "./redux/itemTypes/itemTypesSlice";
 import itemsSlice from "./redux/items/itemsSlices";
 
@@ -17,7 +17,7 @@ const reducers = combineReducers({
   companies: companiesSlice,
   warehouses: warehousesSlice,
   favorites: favoritesSlice,
-  categories: categoriesSlice,
+  // categories: categoriesSlice,
   itemTypes: itemTypesSlice,
   items: itemsSlice,
 });

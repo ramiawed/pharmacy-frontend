@@ -20,13 +20,14 @@
   width: 80px;
   padding: 4px 6px;
   text-align: center;
+  font-size: 0.7rem;
 
   background: $black-color;
   color: $white-color;
   border-radius: 4px;
 
   position: absolute;
-  bottom: -25px;
+  bottom: -20px;
   z-index: 200;
 
   display: none;
@@ -49,6 +50,7 @@
   }
 
   100% {
+    z-index: 100;
     opacity: 1;
   }
 }

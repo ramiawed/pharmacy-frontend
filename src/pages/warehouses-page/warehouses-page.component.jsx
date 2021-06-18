@@ -102,7 +102,7 @@ function WarehousePage() {
 
       <Header>
         <h2>
-          {t("companies")} ({count})
+          {t("warehouses")} ({count})
         </h2>
       </Header>
 

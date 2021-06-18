@@ -1,0 +1,39 @@
+@import "../../variables.scss";
+
+.add_item {
+  // padding: 4px;
+  color: $green-color;
+  background-color: $white-color;
+  font-size: 2rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: absolute;
+  left: 0;
+  top: 16px;
+
+  text-decoration: none;
+  text-align: center;
+  border-radius: 50%;
+  opacity: 0.4;
+
+  transition: all 0.3s;
+}
+
+.add_item:hover {
+  transform: scale(1.1);
+  opacity: 1;
+}
+
+.items_active {
+  display: flex;
+  align-items: center;
+  color: $secondary-color;
+  font-size: 0.8rem;
+}
+
+.items_active label {
+  margin: 0 5px;
+}

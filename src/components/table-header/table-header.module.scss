@@ -1,0 +1,22 @@
+@import "../../variables.scss";
+
+.header {
+  padding: 10px 0;
+
+  border-bottom: 1px solid $secondary-color;
+  background: $white-color;
+
+  display: flex;
+  align-items: center;
+
+  position: sticky;
+  top: 60px;
+
+  z-index: 2;
+}
+
+.header label {
+  color: $secondary-color;
+  text-align: center;
+  font-size: 0.7rem;
+}

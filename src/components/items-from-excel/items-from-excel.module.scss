@@ -1,0 +1,76 @@
+@import "../../variables.scss";
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+
+  color: $secondary-color;
+}
+
+.actions label {
+  margin: 0 8px;
+}
+
+.button {
+  padding: 8px 12px;
+  margin: 0 8px;
+
+  background-color: $green-color;
+  color: $white-color;
+
+  border: none;
+  outline: none;
+  border-radius: 6px;
+
+  cursor: pointer;
+}
+
+.loading {
+  width: 100%;
+  height: 100px;
+  padding-bottom: 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.toTop {
+  position: fixed;
+  left: 50px;
+  bottom: 30px;
+
+  font-size: 2rem;
+
+  color: $secondary-color;
+  opacity: 0.9;
+
+  cursor: pointer;
+
+  transition: all 0.3s;
+}
+
+.toTop:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+.excel_icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+}
+
+.excel_icon .icon {
+  font-size: 15rem;
+  color: rgba($color: #000000, $alpha: 0.2);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.excel_icon .icon:hover {
+  color: rgba($color: #000000, $alpha: 1);
+}

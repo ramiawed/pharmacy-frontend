@@ -55,12 +55,12 @@ textarea {
   background: rgba(0, 0, 0, 0.1);
 }
 
-ul {
+.error_ul {
   width: 50%;
   margin: 12px auto;
 }
 
-ul li {
+.error_ul li {
   color: $red-color;
   font-size: 0.8rem;
 }

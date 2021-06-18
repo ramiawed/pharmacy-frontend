@@ -1,0 +1,18 @@
+@import "../../variables.scss";
+
+.full-size {
+  width: 100vw;
+  height: 100vh;
+  background: gray;
+  opacity: 0.8;
+  z-index: 40;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  // positioning
+  position: fixed;
+  top: 0;
+  left: 0;
+}

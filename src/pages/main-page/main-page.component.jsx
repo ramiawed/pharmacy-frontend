@@ -6,7 +6,7 @@ import { useTranslation } from "react-i18next";
 import { resetStatus, selectUserData } from "../../redux/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { getFavorites } from "../../redux/favorites/favoritesSlice";
-import { getCategories } from "../../redux/categories/categoriesSlice";
+// import { getCategories } from "../../redux/categories/categoriesSlice";
 import { getTypes } from "../../redux/itemTypes/itemTypesSlice";
 
 // components
@@ -31,6 +31,7 @@ import styles from "./main-page.module.scss";
 // constants
 import { TopNavLinks } from "../../utils/constants";
 import Axios from "axios";
+import CompanyItemsPage from "../company-items-page/company-items-page.component";
 
 // MainPage
 // you have to sign in first
@@ -59,7 +60,7 @@ function MainPage() {
     if (user) {
       dispatch(resetStatus());
       dispatch(getFavorites({ token }));
-      dispatch(getCategories({}));
+      // dispatch(getCategories({}));
       dispatch(getTypes({}));
     }
   }, []);
@@ -171,7 +172,8 @@ function MainPage() {
         </Route>
 
         <Route path="/company/items">
-          <Item />
+          {/* <Item /> */}
+          <CompanyItemsPage />
         </Route>
 
         <Route path="/admin/partners">

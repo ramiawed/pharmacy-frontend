@@ -7,7 +7,6 @@ import { MdAddCircle, MdDelete } from "react-icons/md";
 import styles from "./multi-value.module.scss";
 
 function MultiValue({
-  header,
   addHandler,
   deleteHandler,
   values,
@@ -17,8 +16,6 @@ function MultiValue({
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        {/* <p>{header}</p> */}
-
         <MdAddCircle
           className={styles.add_icon}
           size={24}

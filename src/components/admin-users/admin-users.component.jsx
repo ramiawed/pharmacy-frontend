@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
+import { Redirect } from "react-router";
 
 // constants
 import {
@@ -9,6 +10,7 @@ import {
   UserActiveState,
   GuestJob,
   Colors,
+  OrderOptions,
 } from "../../utils/constants";
 
 // components
@@ -19,6 +21,8 @@ import Toast from "../toast/toast.component";
 import RowWith2Children from "../row-with-two-children/row-with-two-children.component";
 import Input from "../input/input.component";
 import Modal from "../modal/modal.component";
+import IconWithNumber from "../icon-with-number/icon-with-number.component";
+import Order from "../order/order.component";
 
 // 3-party library (loading, paginate)
 import ReactLoading from "react-loading";
@@ -26,6 +30,8 @@ import ReactPaginate from "react-paginate";
 
 // react-icons
 import { FaSearch } from "react-icons/fa";
+import { VscListOrdered } from "react-icons/vsc";
+import { FiFileText } from "react-icons/fi";
 
 // redux stuff
 import { getUsers, selectUsers } from "../../redux/users/usersSlice";
@@ -34,7 +40,9 @@ import { resetActivationDeleteStatus } from "../../redux/users/usersSlice";
 
 // styles
 import styles from "./admin-users.module.scss";
-import { Redirect } from "react-router";
+import tableStyles from "../table.module.scss";
+import paginationStyles from "../pagination.module.scss";
+import TableHeader from "../table-header/table-header.component";
 
 // AdminUsers component
 function AdminUsers() {
@@ -55,6 +63,7 @@ function AdminUsers() {
 
   // modal state
   const [showModal, setShowModal] = useState(false);
+  const [showOrderModal, setShowOrderModel] = useState(false);
 
   // own state
   const [userType, setUserType] = useState(UserTypeConstants.ALL);
@@ -70,6 +79,39 @@ function AdminUsers() {
   const [initialPage, setInitialPage] = useState(0);
   const [approved, setApproved] = useState(UserApprovedState.ALL);
   const [active, setActive] = useState(UserActiveState.ALL);
+  const [orderBy, setOrderBy] = useState({});
+  const [searchOptionCount, setSearchOptionCount] = useState(0);
+
+  const orderOptions = [
+    { value: OrderOptions.NAME, label: t("user-name") },
+    { value: OrderOptions.DATE_CREATED, label: t("user-created-at") },
+    { value: OrderOptions.DATE_UPDATED, label: t("user-updated-at") },
+    { value: OrderOptions.ACTIVE, label: t("deleted-account") },
+    { value: OrderOptions.APPROVED, label: t("approved-state") },
+    { value: OrderOptions.CITY, label: t("user-city") },
+    { value: OrderOptions.DISTRICT, label: t("user-district") },
+    { value: OrderOptions.STREET, label: t("user-street") },
+  ];
+
+  const addOrRemoveField = (field) => {
+    if (field in orderBy) {
+      const obj = { ...orderBy };
+      delete obj[field];
+      setOrderBy(obj);
+    } else {
+      setOrderBy({
+        ...orderBy,
+        [field]: 1,
+      });
+    }
+  };
+
+  const changeFieldValue = (field, value) => {
+    setOrderBy({
+      ...orderBy,
+      [field]: value,
+    });
+  };
 
   const guestJobOptions = [
     { value: GuestJob.NONE, label: t("user-job") },
@@ -211,6 +253,21 @@ function AdminUsers() {
       queryString.job = searchJob;
     }
 
+    setSearchOptionCount(Object.entries(queryString).length - 1);
+
+    let sortArray = [];
+    Object.keys(orderBy).forEach((key) => {
+      if (orderBy[key] === 1) {
+        sortArray.push(`${key}`);
+      } else {
+        sortArray.push(`-${key}`);
+      }
+    });
+
+    if (sortArray.length > 0) {
+      queryString.sort = sortArray.join(",");
+    }
+
     dispatch(getUsers({ queryString, token }));
     setInitialPage(page - 1);
   };
@@ -248,22 +305,35 @@ function AdminUsers() {
         </Header>
         {/* </div> */}
       </div>
-      <div className={styles.table_header_div}>
-        <label className={styles.label_large}>{t("user-name")}</label>
-        <label className={styles.label_small}>{t("user-approve")}</label>
-        <label className={styles.label_small}>{t("user-delete")}</label>
-        <label className={styles.label_large}>{t("user-email")}</label>
-        <label className={styles.label_medium}>{t("user-phone")}</label>
-        <label className={styles.label_medium}>{t("user-mobile")}</label>
-        <label className={styles.label_xsmall}>
-          <button
-            className={styles.search_button}
-            onClick={() => setShowModal(true)}
-          >
-            <FaSearch />
-          </button>
+      <TableHeader>
+        <label className={tableStyles.label_large}>{t("user-name")}</label>
+        <label className={tableStyles.label_small}>{t("user-approve")}</label>
+        <label className={tableStyles.label_small}>{t("user-delete")}</label>
+        <label className={tableStyles.label_large}>{t("user-email")}</label>
+        <label className={tableStyles.label_medium}>{t("user-phone")}</label>
+        <label className={tableStyles.label_medium}>{t("user-mobile")}</label>
+        <label className={tableStyles.label_xsmall}>
+          <div className={styles.actions_icons}>
+            <div onClick={() => setShowModal(true)}>
+              <IconWithNumber
+                value={searchOptionCount}
+                fillIcon={<FaSearch />}
+                noFillIcon={<FaSearch />}
+                small={true}
+              />
+            </div>
+
+            <div onClick={() => setShowOrderModel(true)}>
+              <IconWithNumber
+                value={Object.entries(orderBy).length}
+                fillIcon={<VscListOrdered />}
+                noFillIcon={<VscListOrdered />}
+                small={true}
+              />
+            </div>
+          </div>
         </label>
-      </div>
+      </TableHeader>
 
       {/* loading components when retrieve the result from DB */}
       {status === "loading" && (
@@ -286,23 +356,23 @@ function AdminUsers() {
           pageCount={Math.ceil(count / 9)}
           forcePage={initialPage}
           onPageChange={handlePageClick}
-          containerClassName={styles.pagination}
-          previousLinkClassName={styles.pagination_link}
-          nextLinkClassName={styles.pagination_link}
-          disabledClassName={styles.pagination_link_disabled}
-          activeClassName={styles.pagination_link_active}
+          containerClassName={paginationStyles.pagination}
+          previousLinkClassName={paginationStyles.pagination_link}
+          nextLinkClassName={paginationStyles.pagination_link}
+          disabledClassName={paginationStyles.pagination_link_disabled}
+          activeClassName={paginationStyles.pagination_link_active}
         />
       ) : (
-        <p
+        <div
           style={{
             textAlign: "center",
             padding: "16px",
-            fontSize: "2rem",
             color: Colors.SECONDARY_COLOR,
           }}
         >
-          {t("no-partners-found-message")}
-        </p>
+          <FiFileText size={200} style={{ opacity: "0.4" }} />
+          <p>{t("no-partners-found-message")}</p>
+        </div>
       )}
 
       {activationDeleteStatus === "success" ? (
@@ -312,7 +382,7 @@ function AdminUsers() {
           toastText={t(activationDeleteStatusMsg)}
           actionAfterTimeout={() => {
             dispatch(resetActivationDeleteStatus());
-            handleSearch(initialPage + 1);
+            // handleSearch(initialPage + 1);
           }}
         />
       ) : activationDeleteStatus === "failed" ? (
@@ -369,6 +439,13 @@ function AdminUsers() {
               />
             </div>
           </RowWith2Children>
+          <div
+            style={{
+              height: "1px",
+              background: "rgba(0, 0, 0, 0.3)",
+              margin: "2px 0",
+            }}
+          ></div>
           <RowWith2Children>
             <div>
               <Input
@@ -407,7 +484,9 @@ function AdminUsers() {
           </RowWith2Children>
           <div
             style={{
-              height: "4px",
+              height: "1px",
+              background: "rgba(0, 0, 0, 0.3)",
+              margin: "4px 0",
             }}
           ></div>
           <RowWith2Children>
@@ -434,9 +513,12 @@ function AdminUsers() {
               caption="approved-state"
             />
           </RowWith2Children>
+
           <div
             style={{
-              height: "8px",
+              height: "1px",
+              background: "rgba(0, 0, 0, 0.3)",
+              margin: "4px 0",
             }}
           ></div>
           <RowWith2Children>
@@ -471,7 +553,9 @@ function AdminUsers() {
           </RowWith2Children>
           <div
             style={{
-              height: "8px",
+              height: "1px",
+              background: "rgba(0, 0, 0, 0.3)",
+              margin: "4px 0",
             }}
           ></div>
           {(userType === UserTypeConstants.WAREHOUSE ||
@@ -548,6 +632,26 @@ function AdminUsers() {
               </div>
             </RowWith2Children>
           )}
+        </Modal>
+      )}
+
+      {showOrderModal && (
+        <Modal
+          header="order-results"
+          cancelLabel="cancel-label"
+          okLabel="ok-label"
+          okModal={() => {
+            setShowOrderModel(false);
+            handleSearch(1);
+          }}
+          closeModal={() => setShowOrderModel(false)}
+        >
+          <Order
+            arr={orderOptions}
+            orderBy={orderBy}
+            orderChange={(field) => addOrRemoveField(field)}
+            valueChanged={(field, value) => changeFieldValue(field, value)}
+          />
         </Modal>
       )}
     </>

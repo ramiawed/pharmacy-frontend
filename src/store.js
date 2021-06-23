@@ -10,6 +10,8 @@ import warehousesSlice from "./redux/warehouse/warehousesSlice";
 // import categoriesSlice from "./redux/categories/categoriesSlice";
 import itemTypesSlice from "./redux/itemTypes/itemTypesSlice";
 import itemsSlice from "./redux/items/itemsSlices";
+import companyItemsSlice from "./redux/companyItems/companyItemsSlices";
+import warehouseItemsSlices from "./redux/warehouseItems/warehouseItemsSlices";
 
 const reducers = combineReducers({
   auth: authSlice,
@@ -20,6 +22,8 @@ const reducers = combineReducers({
   // categories: categoriesSlice,
   itemTypes: itemTypesSlice,
   items: itemsSlice,
+  companyItems: companyItemsSlice,
+  warehouseItems: warehouseItemsSlices,
 });
 
 const persistConfig = {

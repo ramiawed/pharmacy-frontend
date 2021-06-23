@@ -18,19 +18,20 @@ import { selectUserData } from "../../redux/auth/authSlice";
 import {
   addItem,
   resetAddStatus,
-  resetStatus,
+  resetUpdateStatus,
   selectItems,
+  updateItem,
 } from "../../redux/items/itemsSlices";
 import { unwrapResult } from "@reduxjs/toolkit";
 
 // styles
 import styles from "./item.module.scss";
 
-function Item() {
+function Item({ selectedItem }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { user, token } = useSelector(selectUserData);
-  const { addStatus } = useSelector(selectItems);
+  const { addStatus, updateStatus } = useSelector(selectItems);
 
   // item type options
   const itemTypes = useSelector(selectItemTypes);
@@ -40,17 +41,21 @@ function Item() {
   );
 
   // state to hold the item field
-  const [item, setItem] = useState({
-    name: "",
-    company: user._id,
-    caliber: "",
-    formula: "",
-    indication: "",
-    composition: "",
-    packing: "",
-    price: 0,
-    customer_price: 0,
-  });
+  const [item, setItem] = useState(
+    selectedItem
+      ? selectedItem
+      : {
+          name: "",
+          company: user._id,
+          caliber: "",
+          formula: "",
+          indication: "",
+          composition: "",
+          packing: "",
+          price: 0,
+          customer_price: 0,
+        }
+  );
 
   const [itemError, setItemError] = useState({});
 
@@ -88,7 +93,7 @@ function Item() {
   // check the item caliber
   // check the item category
   // check the item type
-  const handleAddItem = () => {
+  const handleAddUpdateItem = () => {
     const errorObj = {};
 
     // item trade name must be not empty
@@ -97,12 +102,12 @@ function Item() {
     }
 
     // item price must be not empty
-    if (item.price === 0) {
+    if (item.price === 0 || !item.price) {
       errorObj["price"] = "enter-price";
     }
 
     // item customer price must be not empty
-    if (item.customer_price === 0) {
+    if (item.customer_price === 0 || !item.customer_price) {
       errorObj["customer_price"] = "enter-customer-price";
     }
 
@@ -112,12 +117,21 @@ function Item() {
         ...item,
       };
 
-      dispatch(addItem({ obj, token }))
-        .then(unwrapResult)
-        .then((originalPromiseResult) => {
-          resetItem();
-        })
-        .catch((rejectedValueOrSerializedError) => {});
+      if (!selectedItem) {
+        dispatch(addItem({ obj, token }))
+          .then(unwrapResult)
+          .then((originalPromiseResult) => {
+            resetItem();
+          })
+          .catch((rejectedValueOrSerializedError) => {});
+      } else {
+        // dispatch update item
+        dispatch(updateItem({ obj, token }))
+          .then((originalPromiseResult) => {
+            resetItem();
+          })
+          .catch((rejectedValueOrSerializedError) => {});
+      }
     } else {
       setItemError({
         ...errorObj,
@@ -258,9 +272,9 @@ function Item() {
             textShadow: "0px 0px 8px rgb(255, 255, 255)",
             boxShadow: "0px 0px 8px rgb(255, 255, 255)",
           }}
-          onClick={handleAddItem}
+          onClick={handleAddUpdateItem}
         >
-          {t("add-item")}
+          {selectedItem ? t("update-item") : t("add-item")}
         </motion.button>
       </div>
 
@@ -273,6 +287,18 @@ function Item() {
           }}
         >
           <p>{t("add-item-succeeded")}</p>
+        </Toast>
+      )}
+
+      {updateStatus === "succeeded" && (
+        <Toast
+          bgColor={Colors.SUCCEEDED_COLOR}
+          foreColor="#fff"
+          actionAfterTimeout={() => {
+            dispatch(resetUpdateStatus());
+          }}
+        >
+          <p>{t("update-item-succeeded")}</p>
         </Toast>
       )}
     </div>

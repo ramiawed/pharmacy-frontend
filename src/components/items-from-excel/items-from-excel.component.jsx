@@ -191,11 +191,7 @@ function ItemsFromExcel() {
   return (
     <>
       {status === "loading" && (
-        <ActionLoader
-          // bgColor={COLORS.DELETE_BG}
-          foreColor={Colors.SECONDARY_COLOR}
-          onclick={() => {}}
-        />
+        <ActionLoader foreColor={Colors.SECONDARY_COLOR} onclick={() => {}} />
       )}
 
       <div className={styles.actions}>

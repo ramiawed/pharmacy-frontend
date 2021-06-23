@@ -11,30 +11,49 @@ import styles from "./company-items-page.module.scss";
 function CompanyItemsPage() {
   const { t } = useTranslation();
   const [selectedTab, setSelectedTab] = useState("search");
+
+  const [selectedItem, setSelectedItem] = useState(null);
+
+  const onSelect = (item) => {
+    setSelectedItem(item);
+    setSelectedTab("single");
+  };
+
   return (
     <div>
       <div className={styles.tabs}>
         <label
-          onClick={() => setSelectedTab("search")}
+          onClick={() => {
+            setSelectedItem(null);
+            setSelectedTab("search");
+          }}
           className={selectedTab === "search" ? styles.selected : ""}
         >
           {t("search")}
         </label>
         <label
-          onClick={() => setSelectedTab("single")}
+          onClick={() => {
+            setSelectedItem(null);
+            setSelectedTab("single");
+          }}
           className={selectedTab === "single" ? styles.selected : ""}
         >
           {t("single-item")}
         </label>
         <label
-          onClick={() => setSelectedTab("excel")}
+          onClick={() => {
+            setSelectedItem(null);
+            setSelectedTab("excel");
+          }}
           className={selectedTab === "excel" ? styles.selected : ""}
         >
           {t("items-from-excel")}
         </label>
       </div>
-      {selectedTab === "search" && <CompanyItems />}
-      {selectedTab === "single" && <Item />}
+      {selectedTab === "search" && (
+        <CompanyItems onSelect={(item) => onSelect(item)} />
+      )}
+      {selectedTab === "single" && <Item selectedItem={selectedItem} />}
       {selectedTab === "excel" && <ItemsFromExcel />}
     </div>
   );

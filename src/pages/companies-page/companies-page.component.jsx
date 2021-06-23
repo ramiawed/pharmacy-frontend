@@ -26,7 +26,7 @@ import {
   resetCompanies,
   selectCompanies,
 } from "../../redux/company/companySlice";
-import { selectFavorites } from "../../redux/favorites/favoritesSlice";
+import { selectFavoritesPartners } from "../../redux/favorites/favoritesSlice";
 import { UserTypeConstants } from "../../utils/constants";
 
 // styles
@@ -40,7 +40,7 @@ function CompaniesPage() {
   const token = useSelector(selectToken);
   const user = useSelector(selectUser);
   const { companies, count, status } = useSelector(selectCompanies);
-  const favorites = useSelector(selectFavorites);
+  const favorites = useSelector(selectFavoritesPartners);
 
   // own state
   // expanded state for expandable container
@@ -91,6 +91,10 @@ function CompaniesPage() {
     }
 
     window.scrollTo(0, 0);
+
+    // return () => {
+    //   dispatch(resetCompanies());
+    // };
 
     // searchNameInputRef.current.focus();
   }, []);

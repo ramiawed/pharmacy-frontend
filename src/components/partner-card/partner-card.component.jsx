@@ -12,7 +12,7 @@ import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addFavorite,
-  selectFavorites,
+  selectFavoritesPartners,
   removeFavorite,
 } from "../../redux/favorites/favoritesSlice";
 import { selectToken } from "../../redux/auth/authSlice";
@@ -22,12 +22,14 @@ import styles from "./partner-card.module.scss";
 
 // constants and utils
 import { checkConnection } from "../../utils/checkInternet";
-import { Colors } from "../../utils/constants.js";
+import { Colors, UserTypeConstants } from "../../utils/constants.js";
+import { useHistory } from "react-router-dom";
 
 function PartnerCard({ user }) {
+  const history = useHistory();
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const favorites = useSelector(selectFavorites);
+  const favorites = useSelector(selectFavoritesPartners);
   const token = useSelector(selectToken);
 
   const [connectionError, setConnectionError] = useState("");
@@ -94,6 +96,11 @@ function PartnerCard({ user }) {
               boxShadow: "0px 0px 8px rgb(0, 0, 0, 0.3)",
             }}
             className={styles.more_button}
+            onClick={() => {
+              if (user.type === UserTypeConstants.COMPANY)
+                history.push(`/companies/${user._id}`);
+              else history.push(`/warehouses/${user._id}`);
+            }}
           >
             {t("more")}
           </motion.button>

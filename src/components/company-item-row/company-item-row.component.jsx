@@ -20,7 +20,7 @@ import tableStyles from "../table.module.scss";
 // constants
 import { Colors } from "../../utils/constants";
 
-function CompanyItemRow({ item, index }) {
+function CompanyItemRow({ item, index, onSelect }) {
   const { t } = useTranslation();
   const [modalObj, setModalObj] = useState({});
 
@@ -68,7 +68,12 @@ function CompanyItemRow({ item, index }) {
           index % 2 === 0 ? styles.even : styles.odd,
         ].join(" ")}
       >
-        <label className={tableStyles.label_medium}>{item.name}</label>
+        <label
+          className={[styles.name, tableStyles.label_medium].join(" ")}
+          onClick={() => onSelect(item)}
+        >
+          {item.name}
+        </label>
         <label className={tableStyles.label_small}>
           {item.isActive ? (
             <ActionButton

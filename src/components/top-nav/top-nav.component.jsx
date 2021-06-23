@@ -8,6 +8,7 @@ import { selectUser, signOut } from "../../redux/auth/authSlice";
 import {
   resetFavorites,
   selectFavorites,
+  selectFavoritesPartners,
 } from "../../redux/favorites/favoritesSlice";
 import { resetUsers } from "../../redux/users/usersSlice";
 import { resetCompanies } from "../../redux/company/companySlice";
@@ -28,10 +29,13 @@ import { TopNavLinks, UserTypeConstants } from "../../utils/constants.js";
 import { resetCategories } from "../../redux/categories/categoriesSlice";
 import { resetItemTypes } from "../../redux/itemTypes/itemTypesSlice";
 import { resetItems } from "../../redux/items/itemsSlices";
+import { resetCompanyItems } from "../../redux/companyItems/companyItemsSlices";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
+  const history = useHistory();
   const { t } = useTranslation();
-  const favorites = useSelector(selectFavorites);
+  const allFavorites = useSelector(selectFavorites);
   const user = useSelector(selectUser);
 
   const dispatch = useDispatch();
@@ -45,6 +49,7 @@ function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
     dispatch(resetCategories());
     dispatch(resetItemTypes());
     dispatch(resetItems());
+    dispatch(resetCompanyItems());
   };
 
   return (
@@ -57,7 +62,7 @@ function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
           to="/"
           className={[
             styles.link,
-            selectedOption === TopNavLinks.HOME ? styles.selected : null,
+            history.location.pathname === "/" ? styles.selected : null,
           ].join(" ")}
           onClick={() => onSelectedChange(TopNavLinks.HOME)}
         >
@@ -67,7 +72,7 @@ function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
           to="/companies"
           className={[
             styles.link,
-            selectedOption === TopNavLinks.COMPANIES ? styles.selected : null,
+            history.location.pathname === "/companies" ? styles.selected : null,
           ].join(" ")}
           onClick={() => onSelectedChange(TopNavLinks.COMPANIES)}
         >
@@ -77,7 +82,9 @@ function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
           to="/warehouses"
           className={[
             styles.link,
-            selectedOption === TopNavLinks.WAREHOUSES ? styles.selected : null,
+            history.location.pathname === "/warehouses"
+              ? styles.selected
+              : null,
           ].join(" ")}
           onClick={() => onSelectedChange(TopNavLinks.WAREHOUSES)}
         >
@@ -89,12 +96,15 @@ function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
           to="/favorites"
           className={[
             styles.link,
-            selectedOption === TopNavLinks.FAVORITES ? styles.selected : null,
+            history.location.pathname === "/favorites" ? styles.selected : null,
           ].join(" ")}
           onClick={() => onSelectedChange(TopNavLinks.FAVORITES)}
         >
           <IconWithNumber
-            value={favorites.length}
+            value={
+              allFavorites.favorites.length +
+              allFavorites.favorites_items.length
+            }
             fillIcon={<AiFillStar size={20} />}
             noFillIcon={<AiOutlineStar size={20} />}
           />
@@ -104,7 +114,7 @@ function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
             to="/cart"
             className={[
               styles.link,
-              selectedOption === TopNavLinks.CART ? styles.selected : null,
+              history.location.pathname === "/cart" ? styles.selected : null,
             ].join(" ")}
             onClick={() => onSelectedChange(TopNavLinks.CART)}
           >

@@ -171,6 +171,7 @@
     "delete-item": "حذف الدواء",
     "file-name": "اسم الملف",
     "add-item-succeeded": "تم إضافة الدواء بنجاح",
+    "update-item-succeeded": "تم تعديل الدواء بنجاح",
     "item-status": "حالة",
     "item-delete-header": "حذف دواء",
     "item-undo-delete-header": "استعادة حساب",
@@ -185,5 +186,9 @@
     "tooltip-item-delete": "حذف دواء",
     "tooltip-item-undo-delete": "استعادة دواء",
     "deleted-items": "الأدوية المحذوفة",
-    "active-items": "الأدوية الغير محذوفة"
+    "active-items": "الأدوية الغير محذوفة",
+    "item-max-qty": "الكمية العظمى",
+    "add-to-warehouse": "إضافة إلى المستودع",
+    "remove-from-warehouse": "حذف من المستودع",
+    "item-delete-from-warehouse": "هل تريد حذف الدواء من المستودع؟"
 }

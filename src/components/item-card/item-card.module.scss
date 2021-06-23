@@ -1,0 +1,172 @@
+@import "../../variables.scss";
+
+.partner_container {
+  position: relative;
+  width: 60%;
+  min-height: 300px;
+  margin-bottom: 20px;
+  position: relative;
+  box-shadow: 2px 2px 5px rgba($color: $secondary-color, $alpha: 1);
+
+  display: flex;
+  flex-direction: column;
+
+  transition: all 1s;
+}
+
+.partner_container:hover {
+  transform: scale(1.01);
+}
+
+@media only screen and (min-width: $small) {
+  .partner_container {
+    width: 31%;
+  }
+}
+
+@media only screen and (min-width: $medium) {
+  .partner_container {
+    width: 23%;
+  }
+}
+
+.logo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  background: $secondary-color;
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  font-size: 48px;
+  transition: all 1s;
+}
+
+.logo p {
+  width: 100%;
+  height: 100%;
+  flex: 1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background-color: $white-color;
+  border-bottom-right-radius: 30px;
+}
+
+.content {
+  position: relative;
+
+  color: $white-color;
+
+  display: flex;
+  flex-direction: column;
+
+  transition: all 1s;
+}
+
+.showed_content {
+  border-top-left-radius: 30px;
+  padding: 4px;
+
+  background: $secondary-color;
+  z-index: 5;
+  transition: all 1s;
+}
+
+.behind_content {
+  background-color: $white-color;
+
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.partner_name {
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+.info {
+  display: flex;
+  align-items: center;
+  font-size: 0.6rem;
+  color: $white-color;
+}
+
+.info .bigger {
+  font-size: 0.8rem;
+  padding: 0 8px;
+}
+
+.more_info {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+
+.icon {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+  background-color: rgba($color: $secondary-color, $alpha: 1);
+
+  border-radius: 50%;
+  padding: 4px;
+
+  transition: all 0.5s;
+}
+
+.add_from_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: $white-color;
+  max-width: 150px;
+  border-radius: 50%;
+
+  font-size: 0.6rem;
+
+  padding: 4px;
+
+  position: absolute;
+  top: 5px;
+  left: 40px;
+
+  cursor: pointer;
+
+  transition: width 0.3s;
+}
+
+.add_from_container.remove {
+  background: $third-color;
+}
+
+.add_from_container.add {
+  background: $green-color;
+}
+
+.add_from_container .label {
+  display: none;
+}
+
+.add_from_container:hover {
+  border-radius: 6px;
+}
+
+.add_from_container:hover .label {
+  display: inline-block;
+}
+
+.icon:hover {
+  transform: scale(1.1);
+}

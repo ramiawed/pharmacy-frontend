@@ -1,15 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Redirect } from "react-router";
+import { useParams } from "react-router";
 
 // components
 import Header from "../../components/header/header.component";
-import RowWith2Children from "../../components/row-with-two-children/row-with-two-children.component";
 import Input from "../../components/input/input.component";
 import CardInfo from "../../components/card-info/card-info.component";
-import FavoriteRow from "../../components/favorite-row/favorite-row.component";
-import PartnerRow from "../../components/partner-row/partner-row.component";
+import FavoirteItemRow from "../../components/favorite-item-row/favorite-item-row.component";
 import PartnerCard from "../../components/partner-card/partner-card.component";
 import ReactLoading from "react-loading";
 
@@ -21,37 +20,40 @@ import { AiFillAppstore } from "react-icons/ai";
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import { selectToken, selectUser } from "../../redux/auth/authSlice";
+import { selectFavoritesItems } from "../../redux/favorites/favoritesSlice.js";
 import {
-  getWarehouses,
-  resetWarehouse,
-  selectWarehouses,
-} from "../../redux/warehouse/warehousesSlice";
-import { selectFavoritesPartners } from "../../redux/favorites/favoritesSlice";
-
-// constants and utils
-import { Colors, UserTypeConstants } from "../../utils/constants.js";
+  getCompanyItems,
+  resetCompanyItems,
+  selectCompanyItems,
+} from "../../redux/companyItems/companyItemsSlices";
 
 // styles
-import styles from "./warehouses-page.module.scss";
+import styles from "./items-by-company-page.module.scss";
+import ItemRow from "../../components/item-row/item-row.component";
+import axios from "../../api/pharmacy";
+import ItemCard from "../../components/item-card/item-card.component";
 
-function WarehousePage() {
+function ItemsByCompanyPage() {
+  const { companyId } = useParams();
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  // select from redux store
   const token = useSelector(selectToken);
   const user = useSelector(selectUser);
-  const { warehouses, count, status } = useSelector(selectWarehouses);
-  const favorites = useSelector(selectFavoritesPartners);
+  const { companyItems, count, status } = useSelector(selectCompanyItems);
+  const favoritesItems = useSelector(selectFavoritesItems);
 
   // own state
   // expanded state for expandable container
   const [searchName, setSearchName] = useState("");
-  const [searchCity, setSearchCity] = useState("");
   const [displayType, setDisplayType] = useState("list");
+  const [company, setCompany] = useState(null);
+
   // if companies doesn't contains any info set the page to 1
   // if companies have an info set the page to the next page
   const [page, setPage] = useState(
-    warehouses.length === 0 ? 1 : Math.ceil(warehouses.length / 9) + 1
+    companyItems.length === 0 ? 1 : Math.ceil(companyItems.length / 9) + 1
   );
 
   // handle search
@@ -59,19 +61,14 @@ function WarehousePage() {
     // build the query string
     const queryString = {};
 
+    queryString.companyId = companyId;
     queryString.page = page;
-    queryString.approve = true;
-    queryString.active = true;
 
     if (searchName.trim().length !== 0) {
       queryString.name = searchName;
     }
 
-    if (searchCity.trim().length !== 0) {
-      queryString.city = searchCity;
-    }
-
-    dispatch(getWarehouses({ queryString, token }));
+    dispatch(getCompanyItems({ queryString, token }));
     setPage(reset ? 1 : page + 1);
     setPage(page + 1);
   };
@@ -81,13 +78,21 @@ function WarehousePage() {
   };
 
   const handleEnterPress = () => {
-    dispatch(resetWarehouse());
+    dispatch(resetCompanyItems());
     handleSearch(1, true);
   };
 
   useEffect(() => {
     if (user) {
-      if (warehouses.length === 0) handleSearch(1);
+      axios
+        .get(`/users/${companyId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => setCompany(response.data.data.user));
+      dispatch(resetCompanyItems());
+      handleSearch(1);
     }
 
     window.scrollTo(0, 0);
@@ -102,55 +107,35 @@ function WarehousePage() {
 
       <Header>
         <h2>
-          {t("warehouses")} ({count})
+          {company?.name} ({count})
         </h2>
       </Header>
 
       <CardInfo headerTitle={t("favorites")}>
-        {favorites
-          .filter((favorite) => favorite.type === UserTypeConstants.WAREHOUSE)
-          .map((favorite) => (
-            <FavoriteRow key={favorite._id} user={favorite} />
-          ))}
+        {favoritesItems.map((item) => (
+          <FavoirteItemRow key={item._id} item={item} />
+        ))}
       </CardInfo>
 
       <CardInfo headerTitle={t("search-engines")}>
-        <RowWith2Children>
-          <div>
-            <Input
-              label="user-name"
-              id="search-name"
-              type="text"
-              value={searchName}
-              onchange={(e) => {
-                setSearchName(e.target.value);
-              }}
-              bordered={true}
-              icon={<FaSearch />}
-              placeholder="search"
-              onEnterPress={handleEnterPress}
-              resetField={() => {
-                setSearchName("");
-              }}
-            />
-          </div>
-          <div>
-            <Input
-              label="user-city"
-              id="search-city"
-              type="text"
-              value={searchCity}
-              onchange={(e) => {
-                setSearchCity(e.target.value);
-              }}
-              bordered={true}
-              icon={<FaSearch />}
-              placeholder="search"
-              onEnterPress={handleEnterPress}
-              resetField={() => setSearchCity("")}
-            />
-          </div>
-        </RowWith2Children>
+        <div>
+          <Input
+            label="user-name"
+            id="search-name"
+            type="text"
+            value={searchName}
+            onchange={(e) => {
+              setSearchName(e.target.value);
+            }}
+            bordered={true}
+            icon={<FaSearch />}
+            placeholder="search"
+            onEnterPress={handleEnterPress}
+            resetField={() => {
+              setSearchName("");
+            }}
+          />
+        </div>
       </CardInfo>
 
       <div className={styles.display_type}>
@@ -175,16 +160,16 @@ function WarehousePage() {
 
       {displayType === "list" && (
         <CardInfo headerTitle={t("results")}>
-          {warehouses.map((warehouse) => (
-            <PartnerRow key={warehouse._id} user={warehouse} />
+          {companyItems.map((companyItem) => (
+            <ItemRow key={companyItem._id} companyItem={companyItem} />
           ))}
         </CardInfo>
       )}
 
       {displayType === "card" && (
         <div className={styles.content_container}>
-          {warehouses.map((warehouse) => (
-            <PartnerCard key={warehouse._id} user={warehouse} />
+          {companyItems.map((companyItem) => (
+            <ItemCard key={companyItem._id} companyItem={companyItem} />
           ))}
         </div>
       )}
@@ -195,10 +180,9 @@ function WarehousePage() {
       <div
         style={{
           textAlign: "center",
-          color: Colors.SECONDARY_COLOR,
         }}
       >
-        {warehouses.length < count ? (
+        {companyItems.length < count ? (
           <motion.button
             whileHover={{
               scale: 1.1,
@@ -220,4 +204,4 @@ function WarehousePage() {
   );
 }
 
-export default WarehousePage;
+export default ItemsByCompanyPage;

@@ -32,6 +32,8 @@ import styles from "./main-page.module.scss";
 import { TopNavLinks } from "../../utils/constants";
 import Axios from "axios";
 import CompanyItemsPage from "../company-items-page/company-items-page.component";
+import ItemsByCompanyPage from "../items-by-company-page/items-by-company-page.component";
+import WarehouseItemsPage from "../warehouse-items-page/warehouse-items-page.component";
 
 // MainPage
 // you have to sign in first
@@ -151,11 +153,19 @@ function MainPage() {
       </form> */}
 
       <div className={styles.content_area}>
-        <Route path="/companies">
+        <Route exact path="/companies">
           <CompaniesPage />
         </Route>
 
-        <Route path="/warehouses">
+        <Route path="/companies/:companyId">
+          <ItemsByCompanyPage />
+        </Route>
+
+        <Route path="/warehouse/items">
+          <WarehouseItemsPage />
+        </Route>
+
+        <Route exact path="/warehouses">
           <WarehousePage />
         </Route>
 

@@ -10,6 +10,8 @@ const initialState = {
   addError: "",
   activeStatus: "idle",
   activeError: "",
+  updateStatus: "idle",
+  updateError: "",
 };
 
 export const getItems = createAsyncThunk(
@@ -48,6 +50,27 @@ export const addItem = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
+
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const updateItem = createAsyncThunk(
+  "items/updateItem",
+  async ({ obj, token }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `/items/${obj._id}`,
+        { ...obj },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       return response.data;
     } catch (err) {
@@ -119,6 +142,13 @@ export const itemsSlice = createSlice({
     resetAddError: (state) => {
       state.addError = "";
     },
+    resetUpdateStatus: (state) => {
+      state.updateStatus = "idle";
+      state.updateError = "";
+    },
+    resetUpdateError: (state) => {
+      state.updateError = "";
+    },
     resetItems: (state) => {
       state.status = "idle";
       state.items = [];
@@ -128,6 +158,8 @@ export const itemsSlice = createSlice({
       state.addError = "";
       state.activeStatus = "idle";
       state.activeError = "";
+      state.updateStatus = "idle";
+      state.updateError = "";
     },
   },
   extraReducers: {
@@ -185,6 +217,23 @@ export const itemsSlice = createSlice({
       state.activeStatus = "failed";
       state.activeError = payload.message;
     },
+    [updateItem.pending]: (state, action) => {
+      state.updateStatus = "loading";
+    },
+    [updateItem.fulfilled]: (state, action) => {
+      state.updateStatus = "succeeded";
+      const newItems = state.items.map((item) => {
+        if (item._id === action.payload.data.item._id) {
+          return action.payload.data.item;
+        } else return item;
+      });
+
+      state.items = newItems;
+    },
+    [updateItem.rejected]: (state, { error, meta, payload }) => {
+      state.updateStatus = "failed";
+      state.updateError = payload.message;
+    },
   },
 });
 
@@ -196,6 +245,8 @@ export const {
   resetActiveError,
   resetAddStatus,
   resetAddError,
+  resetUpdateError,
+  resetUpdateStatus,
 } = itemsSlice.actions;
 
 export const selectItems = (state) => state.items;

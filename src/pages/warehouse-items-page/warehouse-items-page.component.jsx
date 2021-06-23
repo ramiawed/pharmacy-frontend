@@ -1,47 +1,42 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { selectToken } from "../../redux/auth/authSlice";
+import {
+  getWarehouseItems,
+  removeItemFromWarehouse,
+  selectWarehouseItems,
+  resetRemoveFromWarehouseStatus,
+} from "../../redux/warehouseItems/warehouseItemsSlices";
 
 // components
-import CardInfo from "../card-info/card-info.component";
-import Input from "../input/input.component";
-import TableHeader from "../table-header/table-header.component";
+import CardInfo from "../../components/card-info/card-info.component";
+import Input from "../../components/input/input.component";
+import TableHeader from "../../components/table-header/table-header.component";
 import ReactPaginate from "react-paginate";
-import paginationStyles from "../pagination.module.scss";
-import CompanyItemRow from "../company-item-row/company-item-row.component";
-import Toast from "../toast/toast.component";
-import RowWith2Children from "../row-with-two-children/row-with-two-children.component";
-import ActionButton from "../action-button/action-button.component";
+import paginationStyles from "../../components/pagination.module.scss";
+import WarehouseItemRow from "../../components/warehouse-item-row/warehouse-item-row.component";
+import Toast from "../../components/toast/toast.component";
+import RowWith2Children from "../../components/row-with-two-children/row-with-two-children.component";
 
 // react-icons
 import { FaSearch } from "react-icons/fa";
 import { GiMedicines } from "react-icons/gi";
 
-// redux stuff
-import { useDispatch, useSelector } from "react-redux";
-import {
-  getItems,
-  resetActiveStatus,
-  selectItems,
-} from "../../redux/items/itemsSlices";
-import { selectToken } from "../../redux/auth/authSlice";
-
-// constants
-import { Colors } from "../../utils/constants";
-
 // styles
-import styles from "./company-items.module.scss";
-import tableStyles from "../table.module.scss";
+import tableStyles from "../../components/table.module.scss";
+import { Colors } from "../../utils/constants";
+import { unwrapResult } from "@reduxjs/toolkit";
 
-function CompanyItems({ onSelect }) {
+function WarehouseItemsPage() {
   const { t } = useTranslation();
   const [searchName, setSearchName] = useState("");
-  const [deletedItemsCheck, setDeletedItemsCheck] = useState(false);
-  const [activeItemsCheck, setActiveItemsCheck] = useState(false);
+  const [searchCompanyName, setSearchCompanyName] = useState("");
   const dispatch = useDispatch();
-
-  const { count, items, activeStatus } = useSelector(selectItems);
-  const [initialPage, setInitialPage] = useState(0);
   const token = useSelector(selectToken);
+  const { warehouseItems, count, removeFromWarehouseStatus } =
+    useSelector(selectWarehouseItems);
+  const [initialPage, setInitialPage] = useState(0);
 
   // handle for page change in the paginate component
   const handlePageClick = (e) => {
@@ -64,16 +59,21 @@ function CompanyItems({ onSelect }) {
       queryString.name = searchName.trim();
     }
 
-    if (deletedItemsCheck) {
-      queryString.isActive = false;
+    if (searchCompanyName.trim().length !== 0) {
+      queryString.companyName = searchCompanyName.trim();
     }
 
-    if (activeItemsCheck) {
-      queryString.isActive = true;
-    }
-
-    dispatch(getItems({ queryString, token }));
+    dispatch(getWarehouseItems({ queryString, token }));
     setInitialPage(page - 1);
+  };
+
+  const deleteItem = (obj) => {
+    dispatch(removeItemFromWarehouse({ obj, token }))
+      .then(unwrapResult)
+      .then((originalPromiseResult) => {
+        handleSearch(initialPage + 1);
+      })
+      .catch((rejectedValueOrSerializedError) => {});
   };
 
   useEffect(() => {
@@ -100,32 +100,20 @@ function CompanyItems({ onSelect }) {
             />
           </div>
 
-          <div className={styles.items_active}>
-            <input
-              type="checkbox"
-              checked={deletedItemsCheck}
-              onChange={() => {
-                setDeletedItemsCheck(!deletedItemsCheck);
-                setActiveItemsCheck(false);
+          <div>
+            <Input
+              label="user-company-name"
+              id="search-company-name"
+              type="text"
+              value={searchCompanyName}
+              onchange={(e) => {
+                setSearchCompanyName(e.target.value);
               }}
+              icon={<FaSearch />}
+              placeholder="search"
+              onEnterPress={handleEnterPress}
+              resetField={() => setSearchCompanyName("")}
             />
-            <label>{t("deleted-items")}</label>
-            <input
-              type="checkbox"
-              checked={activeItemsCheck}
-              onChange={() => {
-                setDeletedItemsCheck(false);
-                setActiveItemsCheck(!activeItemsCheck);
-              }}
-            />
-            <label>{t("active-items")}</label>
-            <div style={{ marginRight: "auto" }}>
-              <ActionButton
-                text="search"
-                color={Colors.SECONDARY_COLOR}
-                action={() => handleSearch(1)}
-              />
-            </div>
           </div>
         </RowWith2Children>
       </CardInfo>
@@ -136,8 +124,9 @@ function CompanyItems({ onSelect }) {
             <label className={tableStyles.label_medium}>
               {t("item-trade-name")}
             </label>
-            <label className={tableStyles.label_small}>
-              {t("item-status")}
+
+            <label className={tableStyles.label_medium}>
+              {t("user-company-name")}
             </label>
             <label className={tableStyles.label_small}>
               {t("item-formula")}
@@ -152,17 +141,21 @@ function CompanyItems({ onSelect }) {
             <label className={tableStyles.label_small}>
               {t("item-customer-price")}
             </label>
-            <label className={tableStyles.label_large}>
+            {/* <label className={tableStyles.label_large}>
               {t("item-composition")}
+            </label> */}
+            <label className={tableStyles.label_small}>
+              {t("delete-item")}
             </label>
             {/* <label className={tableStyles.label_xsmall}></label> */}
           </TableHeader>
-          {items.map((item, index) => (
-            <CompanyItemRow
+          {warehouseItems?.map((item, index) => (
+            <WarehouseItemRow
               key={item._id}
               item={item}
               index={index}
-              onSelect={onSelect}
+              // onSelect={onSelect}
+              deleteItem={deleteItem}
             />
           ))}
           <div style={{ height: "10px" }}></div>
@@ -194,16 +187,16 @@ function CompanyItems({ onSelect }) {
         </>
       )}
 
-      {activeStatus === "succeeded" && (
+      {removeFromWarehouseStatus === "succeeded" && (
         <Toast
           bgColor={Colors.SUCCEEDED_COLOR}
           foreColor="#fff"
           toastText={t("item-operation-complete")}
-          actionAfterTimeout={() => dispatch(resetActiveStatus())}
+          actionAfterTimeout={() => dispatch(resetRemoveFromWarehouseStatus())}
         />
       )}
     </>
   );
 }
 
-export default CompanyItems;
+export default WarehouseItemsPage;

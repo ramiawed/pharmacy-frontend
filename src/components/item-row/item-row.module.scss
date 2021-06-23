@@ -1,0 +1,23 @@
+@import "../../variables.scss";
+
+.name {
+  flex: 2;
+}
+
+.info {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  font-size: 0.7rem;
+
+  padding: 0 12px;
+}
+
+.info input {
+  width: 50px;
+  padding: 4px;
+  outline: none;
+  border: 1px solid $secondary-color;
+  border-radius: 6px;
+  font-size: 0.7rem;
+}

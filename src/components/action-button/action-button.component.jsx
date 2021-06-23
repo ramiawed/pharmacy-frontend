@@ -7,7 +7,15 @@ import { VscLoading } from "react-icons/vsc";
 // styles
 import styles from "./action-button.module.scss";
 
-function ActionButton({ icon, tooltip, action, color, text, loading }) {
+function ActionButton({
+  icon,
+  tooltip,
+  action,
+  color,
+  text,
+  loading,
+  fontSize,
+}) {
   const { t } = useTranslation();
 
   return (
@@ -19,6 +27,7 @@ function ActionButton({ icon, tooltip, action, color, text, loading }) {
       }}
       style={{
         background: color,
+        fontSize: fontSize ? fontSize : "0.7rem",
       }}
       className={styles.action_button}
       onClick={action}

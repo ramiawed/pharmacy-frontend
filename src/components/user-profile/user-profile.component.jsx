@@ -34,6 +34,7 @@ import { UserTypeConstants, Colors } from "../../utils/constants";
 import { checkConnection } from "../../utils/checkInternet";
 import { resetWarehouse } from "../../redux/warehouse/warehousesSlice";
 import { resetItems } from "../../redux/items/itemsSlices";
+import { resetCompanyItems } from "../../redux/companyItems/companyItemsSlices";
 
 function UserProfile() {
   const { t } = useTranslation();
@@ -160,6 +161,7 @@ function UserProfile() {
         dispatch(resetCompanies());
         dispatch(resetWarehouse());
         dispatch(resetItems());
+        dispatch(resetCompanyItems());
       })
       .catch((rejectedValueOrSerializedError) => {
         // on failed, show message below the password input

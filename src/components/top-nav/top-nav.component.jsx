@@ -31,12 +31,18 @@ import { resetItemTypes } from "../../redux/itemTypes/itemTypesSlice";
 import { resetItems } from "../../redux/items/itemsSlices";
 import { resetCompanyItems } from "../../redux/companyItems/companyItemsSlices";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import {
+  resetCartItems,
+  selectCartItemCount,
+} from "../../redux/cart/cartSlice";
 
 function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
   const history = useHistory();
   const { t } = useTranslation();
   const allFavorites = useSelector(selectFavorites);
+
   const user = useSelector(selectUser);
+  const total = useSelector(selectCartItemCount);
 
   const dispatch = useDispatch();
 
@@ -50,6 +56,7 @@ function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
     dispatch(resetItemTypes());
     dispatch(resetItems());
     dispatch(resetCompanyItems());
+    dispatch(resetCartItems());
   };
 
   return (
@@ -118,7 +125,12 @@ function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
             ].join(" ")}
             onClick={() => onSelectedChange(TopNavLinks.CART)}
           >
-            <TiShoppingCart size={20} />
+            <IconWithNumber
+              value={total}
+              fillIcon={<TiShoppingCart size={20} />}
+              noFillIcon={<TiShoppingCart size={20} />}
+            />
+            {/* <TiShoppingCart size={20} /> */}
           </Link>
         )}
 

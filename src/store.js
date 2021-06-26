@@ -12,6 +12,7 @@ import itemTypesSlice from "./redux/itemTypes/itemTypesSlice";
 import itemsSlice from "./redux/items/itemsSlices";
 import companyItemsSlice from "./redux/companyItems/companyItemsSlices";
 import warehouseItemsSlices from "./redux/warehouseItems/warehouseItemsSlices";
+import cartSlice from "./redux/cart/cartSlice";
 
 const reducers = combineReducers({
   auth: authSlice,
@@ -24,12 +25,13 @@ const reducers = combineReducers({
   items: itemsSlice,
   companyItems: companyItemsSlice,
   warehouseItems: warehouseItemsSlices,
+  cart: cartSlice,
 });
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth"],
+  whitelist: ["auth", "cart"],
   blacklist: [],
 };
 

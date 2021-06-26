@@ -26,6 +26,7 @@ import Modal from "../modal/modal.component";
 
 // styles
 import styles from "./user-row.module.scss";
+import tableStyles from "../table.module.scss";
 import { selectToken } from "../../redux/auth/authSlice";
 import { Colors, GuestJob, UserTypeConstants } from "../../utils/constants";
 

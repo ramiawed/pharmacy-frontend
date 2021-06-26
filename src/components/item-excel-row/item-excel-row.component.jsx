@@ -10,7 +10,6 @@ import ActionButton from "../action-button/action-button.component";
 import { Colors } from "../../utils/constants";
 
 // styles
-import styles from "./item-excel-row.module.scss";
 import tableStyles from "../table.module.scss";
 
 function ItemExcelRow({ item, index, onchange, onDelete }) {
@@ -19,14 +18,11 @@ function ItemExcelRow({ item, index, onchange, onDelete }) {
 
   return (
     <div
-      className={[
-        styles.row,
-        index % 2 === 0 ? styles.odd : styles.even,
-        error ? styles.error : "",
-      ].join(" ")}
+      className={[tableStyles.row, error ? tableStyles.error : ""].join(" ")}
     >
       <div className={tableStyles.label_medium}>
         <input
+          className={tableStyles.input}
           id="name"
           type="text"
           value={item.name}
@@ -36,6 +32,7 @@ function ItemExcelRow({ item, index, onchange, onDelete }) {
 
       <div className={tableStyles.label_small}>
         <input
+          className={tableStyles.input}
           id="formula"
           type="text"
           value={item.formula}
@@ -44,6 +41,7 @@ function ItemExcelRow({ item, index, onchange, onDelete }) {
       </div>
       <div className={tableStyles.label_small}>
         <input
+          className={tableStyles.input}
           id="caliber"
           type="text"
           value={item.caliber}
@@ -53,6 +51,7 @@ function ItemExcelRow({ item, index, onchange, onDelete }) {
 
       <div className={tableStyles.label_small}>
         <input
+          className={tableStyles.input}
           id="packing"
           type="text"
           value={item.packing}
@@ -62,6 +61,7 @@ function ItemExcelRow({ item, index, onchange, onDelete }) {
 
       <div className={tableStyles.label_small}>
         <input
+          className={tableStyles.input}
           id="price"
           min="0"
           type="number"
@@ -72,6 +72,7 @@ function ItemExcelRow({ item, index, onchange, onDelete }) {
 
       <div className={tableStyles.label_small}>
         <input
+          className={tableStyles.input}
           id="customer_price"
           type="number"
           value={item.customer_price}
@@ -81,6 +82,7 @@ function ItemExcelRow({ item, index, onchange, onDelete }) {
 
       <div className={tableStyles.label_large}>
         <input
+          className={tableStyles.input}
           id="composition"
           style={{ overflow: "none" }}
           value={item.composition}

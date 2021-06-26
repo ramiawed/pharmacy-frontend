@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 
 // redux stuff
-import { useDispatch, useSelector } from "react-redux";
-import { selectToken, selectUser } from "../../redux/auth/authSlice";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/auth/authSlice";
 import Modal from "../modal/modal.component";
 import { useTranslation } from "react-i18next";
 
@@ -13,13 +13,19 @@ import ActionButton from "../action-button/action-button.component";
 import { MdDelete } from "react-icons/md";
 
 // styles
-import styles from "./warehouse-item-row.module.scss";
+// import styles from "./warehouse-item-row.module.scss";
 import tableStyles from "../table.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
 
-function WarehouseItemRow({ item, index, onSelect, deleteItem }) {
+function WarehouseItemRow({
+  item,
+  index,
+  onSelect,
+  deleteItem,
+  changeItemMaxQty,
+}) {
   const { t } = useTranslation();
   const user = useSelector(selectUser);
 
@@ -37,14 +43,12 @@ function WarehouseItemRow({ item, index, onSelect, deleteItem }) {
 
   return (
     <>
-      <div
-        className={[
-          styles.row,
-          index % 2 === 0 ? styles.even : styles.odd,
-        ].join(" ")}
-      >
+      <div className={[tableStyles.row].join(" ")}>
         <label
-          className={[styles.name, tableStyles.label_medium].join(" ")}
+          className={[
+            tableStyles.hover_underline,
+            tableStyles.label_medium,
+          ].join(" ")}
           onClick={() => onSelect(item)}
         >
           {item.name}
@@ -57,6 +61,21 @@ function WarehouseItemRow({ item, index, onSelect, deleteItem }) {
         <label className={tableStyles.label_small}>{item.packing}</label>
         <label className={tableStyles.label_small}>{item.price}</label>
         <label className={tableStyles.label_small}>{item.customer_price}</label>
+        <label className={tableStyles.label_small}>
+          <input
+            type="number"
+            className={tableStyles.input}
+            min={0}
+            defaultValue={item.warehouses.maxQty}
+            onBlur={(e) =>
+              changeItemMaxQty({
+                itemId: item._id,
+                warehouseId: user._id,
+                qty: e.target.value,
+              })
+            }
+          />
+        </label>
         {/* <label className={tableStyles.label_large}>{item.composition}</label> */}
         <label className={tableStyles.label_small}>
           <ActionButton

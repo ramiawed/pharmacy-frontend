@@ -8,6 +8,8 @@ const initialState = {
   error: "",
   removeFromWarehouseStatus: "idle",
   removeFromWarehouseError: "",
+  changeMaxQtyStatus: "idle",
+  changeMaxQtyError: "",
 };
 
 export const getWarehouseItems = createAsyncThunk(
@@ -62,6 +64,27 @@ export const removeItemFromWarehouse = createAsyncThunk(
   }
 );
 
+export const changeItemWarehouseMaxQty = createAsyncThunk(
+  "warehouseItems/changeItemsMaxQty",
+  async ({ obj, token }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(
+        `/items/warehouse/change-max-qty/${obj.itemId}`,
+        { warehouseId: obj.warehouseId, qty: obj.qty },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const warehouseItemsSlice = createSlice({
   name: "warehouseItemsSlice",
   initialState,
@@ -83,6 +106,13 @@ export const warehouseItemsSlice = createSlice({
     resetRemoveFromWarehouseError: (state) => {
       state.RemoveFromWarehouseError = "";
     },
+    resetChangeMaxQtyStatus: (state) => {
+      state.changeMaxQtyStatus = "idle";
+      state.changeMaxQtyError = "";
+    },
+    resetChangeMaxQtyError: (state) => {
+      state.changeMaxQtyError = "";
+    },
     resetWarehouseItems: (state) => {
       state.status = "idle";
       state.warehouseItems = [];
@@ -90,6 +120,8 @@ export const warehouseItemsSlice = createSlice({
       state.error = "";
       state.removeFromWarehouseStatus = "idle";
       state.removeFromWarehouseError = "";
+      state.changeMaxQtyStatus = "idle";
+      state.changeMaxQtyError = "";
     },
   },
   extraReducers: {
@@ -124,6 +156,16 @@ export const warehouseItemsSlice = createSlice({
       state.removeFromWarehouseStatus = "failed";
       state.removeFromWarehouseError = payload.message;
     },
+    [changeItemWarehouseMaxQty.pending]: (state, action) => {
+      state.changeMaxQtyStatus = "loading";
+    },
+    [changeItemWarehouseMaxQty.fulfilled]: (state, action) => {
+      state.changeMaxQtyStatus = "succeeded";
+    },
+    [changeItemWarehouseMaxQty.rejected]: (state, { error, meta, payload }) => {
+      state.changeMaxQtyStatus = "failed";
+      state.changeMaxQtyError = payload.message;
+    },
   },
 });
 
@@ -132,6 +174,8 @@ export const {
   resetError,
   resetWarehouseItems,
   resetRemoveFromWarehouseStatus,
+  resetChangeMaxQtyStatus,
+  resetChangeMaxQtyError,
 } = warehouseItemsSlice.actions;
 
 export const selectWarehouseItems = (state) => state.warehouseItems;

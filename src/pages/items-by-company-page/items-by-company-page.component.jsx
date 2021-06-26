@@ -8,8 +8,7 @@ import { useParams } from "react-router";
 import Header from "../../components/header/header.component";
 import Input from "../../components/input/input.component";
 import CardInfo from "../../components/card-info/card-info.component";
-import FavoirteItemRow from "../../components/favorite-item-row/favorite-item-row.component";
-import PartnerCard from "../../components/partner-card/partner-card.component";
+import FavoriteItemRow from "../../components/favorite-item-row/favorite-item-row.component";
 import ReactLoading from "react-loading";
 
 // react-icons
@@ -113,7 +112,7 @@ function ItemsByCompanyPage() {
 
       <CardInfo headerTitle={t("favorites")}>
         {favoritesItems.map((item) => (
-          <FavoirteItemRow key={item._id} item={item} />
+          <FavoriteItemRow key={item._id} item={item} />
         ))}
       </CardInfo>
 

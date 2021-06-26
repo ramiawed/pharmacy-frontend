@@ -13,16 +13,18 @@
 }
 
 .pagination a {
-  padding: 10px;
-  border-radius: 5px;
-  border: 1px solid $secondary-color;
+  font-size: 0.8rem;
+  padding: 5px;
+  border-radius: 6px;
+  // border: 1px solid $secondary-color;
+  box-shadow: 0 0 2px rgba($color: #000000, $alpha: 0.4);
   color: $secondary-color;
   margin: 0 2px;
 }
 
-.pagination_link {
-  font-weight: bold;
-}
+// .pagination_link {
+//   font-weight: bold;
+// }
 
 .pagination_link_active a {
   color: #fff;

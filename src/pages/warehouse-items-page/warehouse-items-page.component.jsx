@@ -7,6 +7,7 @@ import {
   removeItemFromWarehouse,
   selectWarehouseItems,
   resetRemoveFromWarehouseStatus,
+  changeItemWarehouseMaxQty,
 } from "../../redux/warehouseItems/warehouseItemsSlices";
 
 // components
@@ -69,6 +70,15 @@ function WarehouseItemsPage() {
 
   const deleteItem = (obj) => {
     dispatch(removeItemFromWarehouse({ obj, token }))
+      .then(unwrapResult)
+      .then((originalPromiseResult) => {
+        handleSearch(initialPage + 1);
+      })
+      .catch((rejectedValueOrSerializedError) => {});
+  };
+
+  const changeItemMaxQty = (obj) => {
+    dispatch(changeItemWarehouseMaxQty({ obj, token }))
       .then(unwrapResult)
       .then((originalPromiseResult) => {
         handleSearch(initialPage + 1);
@@ -141,14 +151,15 @@ function WarehouseItemsPage() {
             <label className={tableStyles.label_small}>
               {t("item-customer-price")}
             </label>
-            {/* <label className={tableStyles.label_large}>
-              {t("item-composition")}
-            </label> */}
+            <label className={tableStyles.label_small}>
+              {t("item-max-qty")}
+            </label>
             <label className={tableStyles.label_small}>
               {t("delete-item")}
             </label>
             {/* <label className={tableStyles.label_xsmall}></label> */}
           </TableHeader>
+
           {warehouseItems?.map((item, index) => (
             <WarehouseItemRow
               key={item._id}
@@ -156,8 +167,10 @@ function WarehouseItemsPage() {
               index={index}
               // onSelect={onSelect}
               deleteItem={deleteItem}
+              changeItemMaxQty={changeItemMaxQty}
             />
           ))}
+
           <div style={{ height: "10px" }}></div>
           <ReactPaginate
             previousLabel={t("previous")}

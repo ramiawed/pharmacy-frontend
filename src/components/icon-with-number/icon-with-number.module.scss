@@ -5,11 +5,13 @@
 }
 
 .container p {
-  width: 16px;
-  height: 16px;
+  min-width: 16px;
+  min-height: 16px;
+
+  padding: 0px 2px;
 
   position: absolute;
-  top: -10px;
+  top: -15px;
   left: -6px;
 
   display: flex;
@@ -17,7 +19,7 @@
   justify-content: center;
 
   background: $third-color;
-  border-radius: 50%;
+  border-radius: 6px;
   color: $white-color !important;
 }
 

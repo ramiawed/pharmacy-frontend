@@ -14,7 +14,6 @@ import ActionButton from "../action-button/action-button.component";
 import { AiFillUnlock, AiFillLock } from "react-icons/ai";
 
 // styles
-import styles from "./company-item-row.module.scss";
 import tableStyles from "../table.module.scss";
 
 // constants
@@ -62,14 +61,12 @@ function CompanyItemRow({ item, index, onSelect }) {
 
   return (
     <>
-      <div
-        className={[
-          styles.row,
-          index % 2 === 0 ? styles.even : styles.odd,
-        ].join(" ")}
-      >
+      <div className={tableStyles.row}>
         <label
-          className={[styles.name, tableStyles.label_medium].join(" ")}
+          className={[
+            tableStyles.hover_underline,
+            tableStyles.label_medium,
+          ].join(" ")}
           onClick={() => onSelect(item)}
         >
           {item.name}

@@ -11,7 +11,6 @@ import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 // redux-stuff
 import { useDispatch, useSelector } from "react-redux";
 import {
-  addFavorite,
   selectFavoritesPartners,
   removeFavorite,
 } from "../../redux/favorites/favoritesSlice";

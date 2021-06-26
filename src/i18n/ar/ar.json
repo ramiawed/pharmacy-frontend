@@ -187,8 +187,17 @@
     "tooltip-item-undo-delete": "استعادة دواء",
     "deleted-items": "الأدوية المحذوفة",
     "active-items": "الأدوية الغير محذوفة",
-    "item-max-qty": "الكمية العظمى",
+    "item-max-qty": "الحد الأعلى للطلب",
     "add-to-warehouse": "إضافة إلى المستودع",
     "remove-from-warehouse": "حذف من المستودع",
-    "item-delete-from-warehouse": "هل تريد حذف الدواء من المستودع؟"
+    "item-delete-from-warehouse": "هل تريد حذف الدواء من المستودع؟",
+    "add-to-cart": "إضافة إلى الحافظة",
+    "add-label": "إضافة",
+    "item-warehouse": "المستودع",
+    "no-limit-qty": "لا يوجد",
+    "selected-qty": "الكمية المطلوبة",
+    "price": "السعر ص/ع",
+    "total-price": "السعر الإجمالي",
+    "total-invoice-price": "القيمة الإجمالية",
+    "delete-cart-row": "حذف السطر"
 }

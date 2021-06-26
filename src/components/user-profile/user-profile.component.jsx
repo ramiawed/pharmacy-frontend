@@ -35,6 +35,7 @@ import { checkConnection } from "../../utils/checkInternet";
 import { resetWarehouse } from "../../redux/warehouse/warehousesSlice";
 import { resetItems } from "../../redux/items/itemsSlices";
 import { resetCompanyItems } from "../../redux/companyItems/companyItemsSlices";
+import { resetCartItems } from "../../redux/cart/cartSlice";
 
 function UserProfile() {
   const { t } = useTranslation();
@@ -162,6 +163,7 @@ function UserProfile() {
         dispatch(resetWarehouse());
         dispatch(resetItems());
         dispatch(resetCompanyItems());
+        dispatch(resetCartItems());
       })
       .catch((rejectedValueOrSerializedError) => {
         // on failed, show message below the password input

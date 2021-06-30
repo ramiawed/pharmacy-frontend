@@ -1,0 +1,40 @@
+@import "../../variables.scss";
+
+.input_div {
+  background: $white-color;
+  color: $secondary-color;
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  // min-width: 100%;
+}
+
+.input_div input {
+  margin-right: 8px;
+  padding: 4px 0px;
+  outline: none;
+  border: none;
+  border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1);
+  color: $secondary-color;
+  background: $white-color;
+  flex: 4;
+}
+
+.input_div input:focus {
+  border-bottom: 1px solid rgba($color: $secondary-color, $alpha: 1);
+}
+
+.input_div label {
+  flex: 1;
+  font-size: 0.6rem;
+  padding: 0 12px;
+  text-align: left;
+}
+
+.input_div .icon_close {
+  position: absolute;
+  left: 15px;
+  width: 30px;
+  color: $secondary-color;
+}

@@ -5,18 +5,19 @@ import { Redirect } from "react-router";
 
 // components
 import Header from "../../components/header/header.component";
-import RowWith2Children from "../../components/row-with-two-children/row-with-two-children.component";
-import Input from "../../components/input/input.component";
+import SearchInput from "../../components/search-input/search-input.component";
 import CardInfo from "../../components/card-info/card-info.component";
 import FavoriteRow from "../../components/favorite-row/favorite-row.component";
 import PartnerRow from "../../components/partner-row/partner-row.component";
 import PartnerCard from "../../components/partner-card/partner-card.component";
+import SearchContainer from "../../components/search-container/search-container.component";
 import ReactLoading from "react-loading";
 
 // react-icons
-import { FaSearch, FaListUl } from "react-icons/fa";
+import { FaListUl } from "react-icons/fa";
 import { RiRefreshLine } from "react-icons/ri";
-import { AiFillAppstore } from "react-icons/ai";
+import { AiFillAppstore, AiFillStar } from "react-icons/ai";
+import { IoAlbumsOutline } from "react-icons/io5";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -32,7 +33,7 @@ import { selectFavoritesPartners } from "../../redux/favorites/favoritesSlice";
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
 
 // styles
-import styles from "./warehouses-page.module.scss";
+import styles from "../companies-page/companies-page.module.scss";
 
 function WarehousePage() {
   const { t } = useTranslation();
@@ -48,6 +49,8 @@ function WarehousePage() {
   const [searchName, setSearchName] = useState("");
   const [searchCity, setSearchCity] = useState("");
   const [displayType, setDisplayType] = useState("list");
+  const [showFavorites, setShowFavorites] = useState(false);
+
   // if companies doesn't contains any info set the page to 1
   // if companies have an info set the page to the next page
   const [page, setPage] = useState(
@@ -94,73 +97,43 @@ function WarehousePage() {
   }, []);
 
   return user ? (
-    <div>
-      <div className={styles.refresh_icon} onClick={handleEnterPress}>
-        <RiRefreshLine className={styles.icon} size="2rem" />
-        <p>{t("refresh")}</p>
-      </div>
+    <>
+      <div className={styles.actions}>
+        <RiRefreshLine className={styles.icon} onClick={handleEnterPress} />
 
-      <Header>
-        <h2>
-          {t("warehouses")} ({count})
-        </h2>
-      </Header>
+        <div className={styles.favorite_div}>
+          <AiFillStar
+            className={styles.icon}
+            onClick={() => setShowFavorites(!showFavorites)}
+          />
 
-      <CardInfo headerTitle={t("favorites")}>
-        {favorites
-          .filter((favorite) => favorite.type === UserTypeConstants.WAREHOUSE)
-          .map((favorite) => (
-            <FavoriteRow key={favorite._id} user={favorite} />
-          ))}
-      </CardInfo>
+          {showFavorites && (
+            <div className={styles.favorites_content}>
+              {showFavorites &&
+                favorites
+                  .filter(
+                    (favorite) => favorite.type === UserTypeConstants.WAREHOUSE
+                  )
+                  .map((favorite) => (
+                    <FavoriteRow
+                      key={favorite._id}
+                      user={favorite}
+                      withoutBoxShadow={true}
+                    />
+                  ))}
+            </div>
+          )}
+        </div>
 
-      <CardInfo headerTitle={t("search-engines")}>
-        <RowWith2Children>
-          <div>
-            <Input
-              label="user-name"
-              id="search-name"
-              type="text"
-              value={searchName}
-              onchange={(e) => {
-                setSearchName(e.target.value);
-              }}
-              bordered={true}
-              icon={<FaSearch />}
-              placeholder="search"
-              onEnterPress={handleEnterPress}
-              resetField={() => {
-                setSearchName("");
-              }}
-            />
-          </div>
-          <div>
-            <Input
-              label="user-city"
-              id="search-city"
-              type="text"
-              value={searchCity}
-              onchange={(e) => {
-                setSearchCity(e.target.value);
-              }}
-              bordered={true}
-              icon={<FaSearch />}
-              placeholder="search"
-              onEnterPress={handleEnterPress}
-              resetField={() => setSearchCity("")}
-            />
-          </div>
-        </RowWith2Children>
-      </CardInfo>
-
-      <div className={styles.display_type}>
         <AiFillAppstore
           className={[
             styles.icon,
             displayType === "card" ? styles.selected : "",
           ].join(" ")}
-          size="1.5rem"
-          onClick={() => setDisplayType("card")}
+          onClick={() => {
+            setDisplayType("card");
+            setShowFavorites(false);
+          }}
         />
 
         <FaListUl
@@ -168,18 +141,53 @@ function WarehousePage() {
             styles.icon,
             displayType === "list" ? styles.selected : "",
           ].join(" ")}
-          size="1.5rem"
-          onClick={() => setDisplayType("list")}
+          onClick={() => {
+            setDisplayType("list");
+            setShowFavorites(false);
+          }}
         />
+        <SearchContainer>
+          <SearchInput
+            label="user-name"
+            id="search-name"
+            type="text"
+            value={searchName}
+            onchange={(e) => {
+              setSearchName(e.target.value);
+            }}
+            // bordered={true}
+            placeholder="search"
+            onEnterPress={handleEnterPress}
+            resetField={() => setSearchName("")}
+          />
+
+          <SearchInput
+            label="user-city"
+            id="search-city"
+            type="text"
+            value={searchCity}
+            onchange={(e) => {
+              setSearchCity(e.target.value);
+            }}
+            // bordered={true}
+            placeholder="search"
+            onEnterPress={handleEnterPress}
+            resetField={() => setSearchCity("")}
+          />
+        </SearchContainer>
       </div>
 
-      {displayType === "list" && (
-        <CardInfo headerTitle={t("results")}>
-          {warehouses.map((warehouse) => (
-            <PartnerRow key={warehouse._id} user={warehouse} />
-          ))}
-        </CardInfo>
-      )}
+      <Header>
+        <h2>
+          {t("warehouses")}{" "}
+          <span style={{ color: Colors.SUCCEEDED_COLOR }}>({count})</span>
+        </h2>
+      </Header>
+
+      {displayType === "list" &&
+        warehouses.map((warehouse) => (
+          <PartnerRow key={warehouse._id} user={warehouse} />
+        ))}
 
       {displayType === "card" && (
         <div className={styles.content_container}>
@@ -198,7 +206,12 @@ function WarehousePage() {
           color: Colors.SECONDARY_COLOR,
         }}
       >
-        {warehouses.length < count ? (
+        {warehouses.length === 0 ? (
+          <div>
+            <IoAlbumsOutline className={styles.no_content} />
+            <p>{t("no-warehouses")}</p>
+          </div>
+        ) : warehouses.length < count ? (
           <motion.button
             whileHover={{
               scale: 1.1,
@@ -211,10 +224,10 @@ function WarehousePage() {
             {t("more")}
           </motion.button>
         ) : (
-          <p>{t("no-more")}</p>
+          <p className={styles.no_more}>{t("no-more")}</p>
         )}
       </div>
-    </div>
+    </>
   ) : (
     <Redirect to="/signin" />
   );

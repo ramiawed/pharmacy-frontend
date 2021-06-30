@@ -19,7 +19,7 @@ import tableStyles from "../table.module.scss";
 // constants
 import { Colors } from "../../utils/constants";
 
-function CompanyItemRow({ item, index, onSelect }) {
+function CompanyItemRow({ item, onSelect }) {
   const { t } = useTranslation();
   const [modalObj, setModalObj] = useState({});
 

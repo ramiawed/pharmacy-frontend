@@ -26,8 +26,6 @@ import styles from "./top-nav.module.scss";
 
 // constants
 import { TopNavLinks, UserTypeConstants } from "../../utils/constants.js";
-import { resetCategories } from "../../redux/categories/categoriesSlice";
-import { resetItemTypes } from "../../redux/itemTypes/itemTypesSlice";
 import { resetItems } from "../../redux/items/itemsSlices";
 import { resetCompanyItems } from "../../redux/companyItems/companyItemsSlices";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
@@ -52,8 +50,6 @@ function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
     dispatch(resetFavorites());
     dispatch(resetCompanies());
     dispatch(resetWarehouse());
-    dispatch(resetCategories());
-    dispatch(resetItemTypes());
     dispatch(resetItems());
     dispatch(resetCompanyItems());
     dispatch(resetCartItems());

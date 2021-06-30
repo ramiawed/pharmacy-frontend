@@ -1,22 +1,21 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Redirect } from "react-router";
 
 // components
 import Header from "../../components/header/header.component";
-import RowWith2Children from "../../components/row-with-two-children/row-with-two-children.component";
-import Input from "../../components/input/input.component";
-import CardInfo from "../../components/card-info/card-info.component";
+import SearchInput from "../../components/search-input/search-input.component";
 import FavoriteRow from "../../components/favorite-row/favorite-row.component";
 import PartnerRow from "../../components/partner-row/partner-row.component";
 import PartnerCard from "../../components/partner-card/partner-card.component";
 import ReactLoading from "react-loading";
 
 // react-icons
-import { FaSearch, FaListUl } from "react-icons/fa";
+import { FaListUl } from "react-icons/fa";
 import { RiRefreshLine } from "react-icons/ri";
-import { AiFillAppstore } from "react-icons/ai";
+import { AiFillAppstore, AiFillStar } from "react-icons/ai";
+import { IoAlbumsOutline } from "react-icons/io5";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -27,10 +26,11 @@ import {
   selectCompanies,
 } from "../../redux/company/companySlice";
 import { selectFavoritesPartners } from "../../redux/favorites/favoritesSlice";
-import { UserTypeConstants } from "../../utils/constants";
+import { Colors, UserTypeConstants } from "../../utils/constants";
 
 // styles
 import styles from "./companies-page.module.scss";
+import SearchContainer from "../../components/search-container/search-container.component";
 
 function CompaniesPage() {
   const { t } = useTranslation();
@@ -47,6 +47,7 @@ function CompaniesPage() {
   const [searchName, setSearchName] = useState("");
   const [searchCity, setSearchCity] = useState("");
   const [displayType, setDisplayType] = useState("list");
+  const [showFavorites, setShowFavorites] = useState(false);
 
   // if companies doesn't contains any info set the page to 1
   // if companies have an info set the page to the next page
@@ -91,82 +92,43 @@ function CompaniesPage() {
     }
 
     window.scrollTo(0, 0);
-
-    // return () => {
-    //   dispatch(resetCompanies());
-    // };
-
-    // searchNameInputRef.current.focus();
   }, []);
 
   return user ? (
-    <div>
-      <div className={styles.refresh_icon} onClick={handleEnterPress}>
-        <RiRefreshLine className={styles.icon} size="2rem" />
-        <p>{t("refresh")}</p>
-      </div>
-
-      <Header>
-        <h2>
-          {t("companies")} ({count})
-        </h2>
-      </Header>
-
-      <CardInfo headerTitle={t("favorites")}>
-        {favorites
-          .filter((favorite) => favorite.type === UserTypeConstants.COMPANY)
-          .map((favorite) => (
-            <FavoriteRow key={favorite._id} user={favorite} />
-          ))}
-      </CardInfo>
-
-      <CardInfo headerTitle={t("search-engines")}>
-        <RowWith2Children>
-          <div>
-            <Input
-              label="user-name"
-              id="search-name"
-              type="text"
-              value={searchName}
-              onchange={(e) => {
-                setSearchName(e.target.value);
-              }}
-              bordered={true}
-              icon={<FaSearch />}
-              placeholder="search"
-              onEnterPress={handleEnterPress}
-              resetField={() => {
-                setSearchName("");
-              }}
-            />
-          </div>
-          <div>
-            <Input
-              label="user-city"
-              id="search-city"
-              type="text"
-              value={searchCity}
-              onchange={(e) => {
-                setSearchCity(e.target.value);
-              }}
-              bordered={true}
-              icon={<FaSearch />}
-              placeholder="search"
-              onEnterPress={handleEnterPress}
-              resetField={() => setSearchCity("")}
-            />
-          </div>
-        </RowWith2Children>
-      </CardInfo>
-
-      <div className={styles.display_type}>
+    <>
+      <div className={styles.actions}>
+        <RiRefreshLine className={styles.icon} onClick={handleEnterPress} />
+        <div className={styles.favorite_div}>
+          <AiFillStar
+            className={styles.icon}
+            onClick={() => setShowFavorites(!showFavorites)}
+          />
+          {showFavorites && (
+            <div className={styles.favorites_content}>
+              {showFavorites &&
+                favorites
+                  .filter(
+                    (favorite) => favorite.type === UserTypeConstants.COMPANY
+                  )
+                  .map((favorite) => (
+                    <FavoriteRow
+                      key={favorite._id}
+                      user={favorite}
+                      withoutBoxShadow={true}
+                    />
+                  ))}
+            </div>
+          )}
+        </div>
         <AiFillAppstore
           className={[
             styles.icon,
             displayType === "card" ? styles.selected : "",
           ].join(" ")}
-          size="1.5rem"
-          onClick={() => setDisplayType("card")}
+          onClick={() => {
+            setDisplayType("card");
+            setShowFavorites(false);
+          }}
         />
 
         <FaListUl
@@ -174,18 +136,54 @@ function CompaniesPage() {
             styles.icon,
             displayType === "list" ? styles.selected : "",
           ].join(" ")}
-          size="1.5rem"
-          onClick={() => setDisplayType("list")}
+          onClick={() => {
+            setDisplayType("list");
+            setShowFavorites(false);
+          }}
         />
+
+        <SearchContainer>
+          <SearchInput
+            label="user-name"
+            id="search-name"
+            type="text"
+            value={searchName}
+            onchange={(e) => {
+              setSearchName(e.target.value);
+            }}
+            // bordered={true}
+            placeholder="search"
+            onEnterPress={handleEnterPress}
+            resetField={() => setSearchName("")}
+          />
+
+          <SearchInput
+            label="user-city"
+            id="search-city"
+            type="text"
+            value={searchCity}
+            onchange={(e) => {
+              setSearchCity(e.target.value);
+            }}
+            // bordered={true}
+            placeholder="search"
+            onEnterPress={handleEnterPress}
+            resetField={() => setSearchCity("")}
+          />
+        </SearchContainer>
       </div>
 
-      {displayType === "list" && (
-        <CardInfo headerTitle={t("results")}>
-          {companies.map((company) => (
-            <PartnerRow key={company._id} user={company} />
-          ))}
-        </CardInfo>
-      )}
+      <Header>
+        <h2>
+          {t("companies")}{" "}
+          <span style={{ color: Colors.SUCCEEDED_COLOR }}>({count})</span>
+        </h2>
+      </Header>
+
+      {displayType === "list" &&
+        companies.map((company) => (
+          <PartnerRow key={company._id} user={company} />
+        ))}
 
       {displayType === "card" && (
         <div className={styles.content_container}>
@@ -201,9 +199,15 @@ function CompaniesPage() {
       <div
         style={{
           textAlign: "center",
+          color: Colors.SECONDARY_COLOR,
         }}
       >
-        {companies.length < count ? (
+        {companies.length === 0 ? (
+          <div>
+            <IoAlbumsOutline className={styles.no_content} />
+            <p>{t("no-companies")}</p>
+          </div>
+        ) : companies.length < count ? (
           <motion.button
             whileHover={{
               scale: 1.1,
@@ -216,10 +220,10 @@ function CompaniesPage() {
             {t("more")}
           </motion.button>
         ) : (
-          <p>{t("no-more")}</p>
+          <p className={styles.no_more}>{t("no-more")}</p>
         )}
       </div>
-    </div>
+    </>
   ) : (
     <Redirect to="/signin" />
   );

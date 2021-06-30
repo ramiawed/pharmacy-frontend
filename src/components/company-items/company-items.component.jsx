@@ -23,7 +23,7 @@ import {
   resetActiveStatus,
   selectItems,
 } from "../../redux/items/itemsSlices";
-import { selectToken } from "../../redux/auth/authSlice";
+import { selectToken, selectUser } from "../../redux/auth/authSlice";
 
 // constants
 import { Colors } from "../../utils/constants";
@@ -42,6 +42,7 @@ function CompanyItems({ onSelect }) {
   const { count, items, activeStatus } = useSelector(selectItems);
   const [initialPage, setInitialPage] = useState(0);
   const token = useSelector(selectToken);
+  const user = useSelector(selectUser);
 
   // handle for page change in the paginate component
   const handlePageClick = (e) => {
@@ -59,6 +60,8 @@ function CompanyItems({ onSelect }) {
     const queryString = {};
 
     queryString.page = page;
+
+    queryString.companyId = user._id;
 
     if (searchName.trim().length !== 0) {
       queryString.name = searchName.trim();
@@ -157,13 +160,8 @@ function CompanyItems({ onSelect }) {
             </label>
             {/* <label className={tableStyles.label_xsmall}></label> */}
           </TableHeader>
-          {items.map((item, index) => (
-            <CompanyItemRow
-              key={item._id}
-              item={item}
-              index={index}
-              onSelect={onSelect}
-            />
+          {items.map((item) => (
+            <CompanyItemRow key={item._id} item={item} onSelect={onSelect} />
           ))}
           <div style={{ height: "10px" }}></div>
           <ReactPaginate

@@ -2,19 +2,21 @@ import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 import { Redirect } from "react-router";
+import axios from "../../api/pharmacy";
 import { useParams } from "react-router";
 
 // components
 import Header from "../../components/header/header.component";
-import Input from "../../components/input/input.component";
-import CardInfo from "../../components/card-info/card-info.component";
 import FavoriteItemRow from "../../components/favorite-item-row/favorite-item-row.component";
 import ReactLoading from "react-loading";
+import ItemCard from "../../components/item-card/item-card.component";
+import SearchContainer from "../../components/search-container/search-container.component";
+import SearchInput from "../../components/search-input/search-input.component";
 
 // react-icons
 import { FaSearch, FaListUl } from "react-icons/fa";
 import { RiRefreshLine } from "react-icons/ri";
-import { AiFillAppstore } from "react-icons/ai";
+import { AiFillAppstore, AiFillStar } from "react-icons/ai";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -27,10 +29,9 @@ import {
 } from "../../redux/companyItems/companyItemsSlices";
 
 // styles
-import styles from "./items-by-company-page.module.scss";
+// import styles from "./items-by-company-page.module.scss";
+import styles from "../companies-page/companies-page.module.scss";
 import ItemRow from "../../components/item-row/item-row.component";
-import axios from "../../api/pharmacy";
-import ItemCard from "../../components/item-card/item-card.component";
 
 function ItemsByCompanyPage() {
   const { companyId } = useParams();
@@ -47,6 +48,7 @@ function ItemsByCompanyPage() {
   // expanded state for expandable container
   const [searchName, setSearchName] = useState("");
   const [displayType, setDisplayType] = useState("list");
+  const [showFavorites, setShowFavorites] = useState(false);
   const [company, setCompany] = useState(null);
 
   // if companies doesn't contains any info set the page to 1
@@ -98,46 +100,32 @@ function ItemsByCompanyPage() {
   }, []);
 
   return user ? (
-    <div>
-      <div className={styles.refresh_icon} onClick={handleEnterPress}>
-        <RiRefreshLine className={styles.icon} size="2rem" />
-        <p>{t("refresh")}</p>
-      </div>
+    <>
+      <div className={styles.actions}>
+        <RiRefreshLine
+          className={styles.icon}
+          size="2rem"
+          onClick={handleEnterPress}
+        />
 
-      <Header>
-        <h2>
-          {company?.name} ({count})
-        </h2>
-      </Header>
-
-      <CardInfo headerTitle={t("favorites")}>
-        {favoritesItems.map((item) => (
-          <FavoriteItemRow key={item._id} item={item} />
-        ))}
-      </CardInfo>
-
-      <CardInfo headerTitle={t("search-engines")}>
-        <div>
-          <Input
-            label="user-name"
-            id="search-name"
-            type="text"
-            value={searchName}
-            onchange={(e) => {
-              setSearchName(e.target.value);
-            }}
-            bordered={true}
-            icon={<FaSearch />}
-            placeholder="search"
-            onEnterPress={handleEnterPress}
-            resetField={() => {
-              setSearchName("");
-            }}
+        <div className={styles.favorite_div}>
+          <AiFillStar
+            className={styles.icon}
+            onClick={() => setShowFavorites(!showFavorites)}
           />
+          {showFavorites && (
+            <div className={styles.favorites_content}>
+              {showFavorites &&
+                favoritesItems.map((item) => (
+                  <FavoriteItemRow
+                    key={item._id}
+                    item={item}
+                    withoutBoxShadow={true}
+                  />
+                ))}
+            </div>
+          )}
         </div>
-      </CardInfo>
-
-      <div className={styles.display_type}>
         <AiFillAppstore
           className={[
             styles.icon,
@@ -155,15 +143,36 @@ function ItemsByCompanyPage() {
           size="1.5rem"
           onClick={() => setDisplayType("list")}
         />
+
+        <SearchContainer>
+          <SearchInput
+            label="user-name"
+            id="search-name"
+            type="text"
+            value={searchName}
+            onchange={(e) => {
+              setSearchName(e.target.value);
+            }}
+            icon={<FaSearch />}
+            placeholder="search"
+            onEnterPress={handleEnterPress}
+            resetField={() => {
+              setSearchName("");
+            }}
+          />
+        </SearchContainer>
       </div>
 
-      {displayType === "list" && (
-        <CardInfo headerTitle={t("results")}>
-          {companyItems.map((companyItem) => (
-            <ItemRow key={companyItem._id} companyItem={companyItem} />
-          ))}
-        </CardInfo>
-      )}
+      <Header>
+        <h2>
+          {company?.name} ({count})
+        </h2>
+      </Header>
+
+      {displayType === "list" &&
+        companyItems.map((companyItem) => (
+          <ItemRow key={companyItem._id} companyItem={companyItem} />
+        ))}
 
       {displayType === "card" && (
         <div className={styles.content_container}>
@@ -181,7 +190,9 @@ function ItemsByCompanyPage() {
           textAlign: "center",
         }}
       >
-        {companyItems.length < count ? (
+        {count === 0 ? (
+          <p>{t("no-medicines")}</p>
+        ) : companyItems.length < count ? (
           <motion.button
             whileHover={{
               scale: 1.1,
@@ -197,7 +208,7 @@ function ItemsByCompanyPage() {
           <p>{t("no-more")}</p>
         )}
       </div>
-    </div>
+    </>
   ) : (
     <Redirect to="/signin" />
   );

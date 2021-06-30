@@ -32,7 +32,11 @@ function FavoritesPage() {
         {favorites
           .filter((favorite) => favorite.type === UserTypeConstants.COMPANY)
           .map((favorite) => (
-            <FavoriteRow key={favorite._id} user={favorite} />
+            <FavoriteRow
+              key={favorite._id}
+              user={favorite}
+              withoutBoxShadow={true}
+            />
           ))}
       </CardInfo>
 
@@ -40,13 +44,17 @@ function FavoritesPage() {
         {favorites
           .filter((favorite) => favorite.type === UserTypeConstants.WAREHOUSE)
           .map((favorite) => (
-            <FavoriteRow key={favorite._id} user={favorite} />
+            <FavoriteRow
+              key={favorite._id}
+              user={favorite}
+              withoutBoxShadow={true}
+            />
           ))}
       </CardInfo>
 
       <CardInfo headerTitle={t("nav-items")}>
         {favoritesItems.map((item) => (
-          <FavoriteItemRow key={item._id} item={item} />
+          <FavoriteItemRow key={item._id} item={item} withoutBoxShadow={true} />
         ))}
       </CardInfo>
     </div>

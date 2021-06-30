@@ -102,7 +102,7 @@ function PartnerCard({ user }) {
               else history.push(`/warehouses/${user._id}`);
             }}
           >
-            {t("more")}
+            {t("medicines")}
           </motion.button>
         </div>
       </div>

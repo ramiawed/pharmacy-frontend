@@ -13,7 +13,6 @@ import { Colors } from "../../utils/constants";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-import { selectItemTypes } from "../../redux/itemTypes/itemTypesSlice";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
   addItem,
@@ -32,13 +31,6 @@ function Item({ selectedItem }) {
   const dispatch = useDispatch();
   const { user, token } = useSelector(selectUserData);
   const { addStatus, updateStatus } = useSelector(selectItems);
-
-  // item type options
-  const itemTypes = useSelector(selectItemTypes);
-  const itemTypesOptions = [{ value: "", label: t("choose-formula") }];
-  itemTypes.forEach((itemType) =>
-    itemTypesOptions.push({ value: itemType.name, label: itemType.name })
-  );
 
   // state to hold the item field
   const [item, setItem] = useState(

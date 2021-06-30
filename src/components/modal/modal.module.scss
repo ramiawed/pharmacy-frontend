@@ -24,7 +24,7 @@
 
 .modal_content {
   position: relative;
-  width: 50%;
+  width: 90%;
   // height: 20%;
   background-color: #fff;
   border-radius: 6px;
@@ -96,5 +96,11 @@
 
   100% {
     top: 0;
+  }
+}
+
+@media only screen and (min-width: $medium) {
+  .modal_content {
+    width: 75%;
   }
 }

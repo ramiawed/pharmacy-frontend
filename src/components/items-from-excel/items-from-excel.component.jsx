@@ -18,7 +18,6 @@ import {
 } from "../../redux/items/itemsSlices";
 
 // react-icons
-import { FaArrowAltCircleUp } from "react-icons/fa";
 import { AiFillDelete } from "react-icons/ai";
 
 // components
@@ -52,7 +51,6 @@ function ItemsFromExcel() {
   const [loading, setLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   const [failedMsg, setFailedMsg] = useState("");
-  const [toTopVisible, setToTopVisible] = useState(false);
 
   const fileChanged = (file) => {
     // if file is null
@@ -173,21 +171,6 @@ function ItemsFromExcel() {
     setItems(updatedItems);
   };
 
-  useEffect(() => {
-    // show toTop button after scroll more than 500
-    const toggleToTopVisible = () => {
-      if (window.pageYOffset > 500) {
-        setToTopVisible(true);
-      } else {
-        setToTopVisible(false);
-      }
-    };
-
-    window.addEventListener("scroll", toggleToTopVisible);
-
-    return () => window.removeEventListener("scroll", toggleToTopVisible);
-  }, []);
-
   return (
     <>
       {status === "loading" && (
@@ -286,18 +269,6 @@ function ItemsFromExcel() {
           toastText={error}
           actionAfterTimeout={() => {
             dispatch(resetError());
-          }}
-        />
-      )}
-
-      {toTopVisible && (
-        <FaArrowAltCircleUp
-          className={styles.toTop}
-          onClick={() => {
-            window.scrollTo({
-              top: 0,
-              behavior: "smooth",
-            });
           }}
         />
       )}

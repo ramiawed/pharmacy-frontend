@@ -6,8 +6,6 @@ import { useTranslation } from "react-i18next";
 import { resetStatus, selectUserData } from "../../redux/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { getFavorites } from "../../redux/favorites/favoritesSlice";
-// import { getCategories } from "../../redux/categories/categoriesSlice";
-import { getTypes } from "../../redux/itemTypes/itemTypesSlice";
 
 // components
 import TopNav from "../../components/top-nav/top-nav.component";
@@ -15,6 +13,7 @@ import SideNav from "../../components/side-nav/side-nav.component";
 
 // react-icons
 import { GiHamburgerMenu } from "react-icons/gi";
+import { FaArrowAltCircleUp } from "react-icons/fa";
 
 // pages
 import CompaniesPage from "../companies-page/companies-page.component";
@@ -23,7 +22,6 @@ import AdminUsers from "../../components/admin-users/admin-users.component";
 import UserProfile from "../../components/user-profile/user-profile.component";
 import FavoritesPage from "../favorites-page/favorites-page.component";
 import WarehousePage from "../warehouses-page/warehouses-page.component";
-import Item from "../../components/item/item.component";
 
 // style
 import styles from "./main-page.module.scss";
@@ -44,6 +42,8 @@ function MainPage() {
   const [selectedTopNavOption, setSelectedTopNavOption] = useState(
     TopNavLinks.HOME
   );
+
+  const [toTopVisible, setToTopVisible] = useState(false);
   // state to toggle show, hide TopNav
   const [showTopNav, setShowTopNav] = useState(false);
 
@@ -62,9 +62,20 @@ function MainPage() {
     if (user) {
       dispatch(resetStatus());
       dispatch(getFavorites({ token }));
-      // dispatch(getCategories({}));
-      dispatch(getTypes({}));
     }
+
+    // show toTop button after scroll more than 500
+    const toggleToTopVisible = () => {
+      if (window.pageYOffset > 500) {
+        setToTopVisible(true);
+      } else {
+        setToTopVisible(false);
+      }
+    };
+
+    window.addEventListener("scroll", toggleToTopVisible);
+
+    return () => window.removeEventListener("scroll", toggleToTopVisible);
   }, []);
 
   // uploading stuff
@@ -190,6 +201,18 @@ function MainPage() {
           <AdminUsers />
         </Route>
       </div>
+
+      {toTopVisible && (
+        <FaArrowAltCircleUp
+          className={styles.toTop}
+          onClick={() => {
+            window.scrollTo({
+              top: 0,
+              behavior: "smooth",
+            });
+          }}
+        />
+      )}
     </div>
   ) : (
     // direct access to this page without sign in

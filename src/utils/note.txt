@@ -1,108 +1,84 @@
-{/* <div>
-              <label style={{ marginLeft: 10 }}>
-                <span style={{ margin: 2 }}>مفعل</span>
-                <Checkbox
-                  checked={userState.approved}
-                  onChange={() => handleUserStateChange("approved")}
-                />
-              </label>
+<Modal
+          header="add-to-cart"
+          cancelLabel="cancel-label"
+          okLabel="add-label"
+          closeModal={() => setShowModal(false)}
+          okModal={handleAddItemToCart}
+        >
+          <InfoRow
+            editable={false}
+            field="item-name"
+            labelText={t("item-name")}
+            value={companyItem.name}
+            onInputChange={() => {}}
+            action={() => {}}
+          />
 
-              <label style={{ marginLeft: 10 }}>
-                <span style={{ margin: 2 }}>غير مفعل</span>
-                <Checkbox
-                  checked={userState.notApproved}
-                  onChange={() => handleUserStateChange("notApproved")}
-                />
-              </label>
-            </div> */}
-            {/* <div>
-              <label style={{ marginLeft: 10 }}>
-                <span style={{ margin: 2 }}>غير محذوف</span>
-                <Checkbox
-                  checked={userState.active}
-                  onChange={() => handleUserStateChange("active")}
-                />
-              </label>
+          <InfoRow
+            editable={false}
+            field="item-caliber"
+            labelText={t("item-caliber")}
+            value={companyItem.caliber}
+            onInputChange={() => {}}
+            action={() => {}}
+          />
 
-              <label style={{ marginLeft: 10 }}>
-                <span style={{ margin: 2 }}>محذوف</span>
-                <Checkbox
-                  checked={userState.notActive}
-                  onChange={() => handleUserStateChange("notActive")}
-                />
-              </label>
-            </div> */}
+          <InfoRow
+            editable={false}
+            field="item-formula"
+            labelText={t("item-formula")}
+            value={companyItem.formula}
+            onInputChange={() => {}}
+            action={() => {}}
+          />
 
+          <InfoRow
+            editable={false}
+            field="item-price"
+            labelText={t("item-price")}
+            value={companyItem.price}
+            onInputChange={() => {}}
+            action={() => {}}
+          />
 
-                // const promise = new Promise((resolve, reject) => {
-    //   const fileReader = new FileReader();
+          <InfoRow
+            editable={false}
+            field="item-customer-price"
+            labelText={t("item-customer-price")}
+            value={companyItem.customer_price}
+            onInputChange={() => {}}
+            action={() => {}}
+          />
 
-    //   fileReader.readAsArrayBuffer(file);
-
-    //   fileReader.onload = (e) => {
-    //     const bufferArray = e.target.result;
-
-    //     const wb = XLSX.readFile(bufferArray, { type: "buffer" });
-
-    //     const wsname = wb.SheetNames[0];
-
-    //     const ws = wb.Sheets[wsname];
-
-    //     const d = XLSX.utils.sheet_to_json(ws);
-
-    //     resolve(data);
-    //   };
-
-    //   fileReader.onerror = (error) => {
-    //     reject(error);
-    //   };
-    // });
-
-    // promise.then((d) => {
-    //   const completeData = d.map((data) => {
-    //     let obj = {
-    //       ...data,
-    //       company: user._id,
-    //       isActive: true,
-    //     };
-
-    //     if (!data.price) {
-    //       obj = {
-    //         ...obj,
-    //         price: 0,
-    //       };
-    //     }
-
-    //     if (!data.customer_price) {
-    //       obj = {
-    //         ...obj,
-    //         customer_price: 0,
-    //       };
-    //     }
-
-    //     if (!data.caliber) {
-    //       obj = {
-    //         ...obj,
-    //         caliber: "",
-    //       };
-    //     }
-
-    //     if (!data.packing) {
-    //       obj = {
-    //         ...obj,
-    //         packing: "",
-    //       };
-    //     }
-
-    //     if (!data.composition) {
-    //       obj = {
-    //         ...obj,
-    //         composition: "",
-    //       };
-    //     }
-
-    //     return obj;
-    //   });
-    //   setLoading(false);
-    //   setItems(completeData);
-    // });
+          <div className={styles.warehouse_row}>
+            <SelectCustom
+              bgColor={Colors.SECONDARY_COLOR}
+              foreColor="#fff"
+              options={itemWarehousesOption}
+              onchange={handleWarehouseChange}
+              defaultOption={itemWarehousesOption[0]}
+              caption="item-warehouse"
+            />
+            <div className={styles.max_qty_div}>
+              <p>{t("item-max-qty")}</p>
+              <p>
+                {selectedWarehouse.maxQty === 0
+                  ? t("no-limit-qty")
+                  : selectedWarehouse.maxQty}
+              </p>
+            </div>
+            <div className={styles.max_qty_div}>
+              <p>{t("selected-qty")}</p>
+              <input
+                className={qtyError ? styles.error : ""}
+                type="number"
+                min={0}
+                value={qty}
+                onChange={(e) => {
+                  setQty(e.target.value * 1);
+                  setQtyError(false);
+                }}
+              />
+            </div>
+          </div>
+        </Modal>

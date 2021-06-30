@@ -26,6 +26,26 @@
   padding-inline-start: 10px;
 }
 
+.toTop {
+  position: fixed;
+  left: 50px;
+  bottom: 30px;
+
+  font-size: 2rem;
+
+  color: $secondary-color;
+  opacity: 0.6;
+
+  cursor: pointer;
+
+  transition: all 0.3s;
+}
+
+.toTop:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
 @media only screen and (min-width: $small) {
   .hamburger_menu {
     display: none;

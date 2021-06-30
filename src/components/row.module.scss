@@ -2,14 +2,24 @@
 
 .container {
   width: 100%;
-  display: flex;
   padding: 4px 12px;
+  margin: 6px 0;
+
+  display: flex;
   justify-content: space-between;
   align-items: center;
 
   color: $secondary-color;
 
+  box-shadow: 0 0 3px rgba($color: #000000, $alpha: 0.3);
+  border-radius: 6px;
+}
+
+.container.without_box_shadow {
   border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1);
+  border-radius: 0;
+  box-shadow: none;
+  margin: 0;
 }
 
 .container:hover {
@@ -20,10 +30,32 @@
   text-decoration: none;
   color: $secondary-color;
   cursor: pointer;
+  flex: 1;
 }
 
 .name:hover {
   text-decoration: underline;
+}
+
+.icon,
+.cart_icon {
+  transition: all 0.5s;
+  cursor: pointer;
+
+  margin-right: 10px;
+}
+
+.icon {
+  color: #e9b93f;
+}
+
+.icon:hover,
+.cart_icon:hover {
+  transform: scale(1.1);
+}
+
+.cart_icon {
+  color: $green-color;
 }
 
 @media only screen and (min-width: $small) {
@@ -36,14 +68,4 @@
   .container {
     width: 100%;
   }
-}
-
-.icon {
-  color: #e9b93f;
-  transition: all 0.5s;
-  cursor: pointer;
-}
-
-.icon:hover {
-  transform: scale(1.1);
 }

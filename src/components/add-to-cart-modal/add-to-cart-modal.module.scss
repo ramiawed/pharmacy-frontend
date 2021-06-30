@@ -1,27 +1,5 @@
 @import "../../variables.scss";
 
-.name {
-  flex: 2;
-}
-
-.info {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  font-size: 0.7rem;
-
-  padding: 0 12px;
-}
-
-.info input {
-  width: 50px;
-  padding: 4px;
-  outline: none;
-  border: 1px solid $secondary-color;
-  border-radius: 6px;
-  font-size: 0.7rem;
-}
-
 .warehouse_row {
   display: flex;
   align-items: center;
@@ -52,15 +30,4 @@
 
 .max_qty_div input.error {
   border: 1px solid rgba($color: #ff0000, $alpha: 1);
-}
-
-.icon {
-  color: $green-color;
-  cursor: pointer;
-
-  transition: all 0.3s;
-}
-
-.icon:hover {
-  transform: scale(1.1);
 }

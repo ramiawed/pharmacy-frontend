@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { useDispatch, useSelector } from "react-redux";
@@ -10,8 +10,6 @@ import {
 } from "../../redux/favorites/favoritesSlice";
 
 import ActionButton from "../action-button/action-button.component";
-import SelectCustom from "../select/select.component";
-import InfoRow from "../info-row/info-row.component";
 
 // react icons
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
@@ -28,22 +26,15 @@ import {
   addItemToWarehouse,
   removeItemFromWarehouse,
 } from "../../redux/companyItems/companyItemsSlices";
-import Modal from "../modal/modal.component";
-import { addItemToCart } from "../../redux/cart/cartSlice";
+import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
 
 function ItemRow({ companyItem }) {
-  // console.log(companyItem);
-
   const user = useSelector(selectUser);
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const favoritesItems = useSelector(selectFavoritesItems);
   const token = useSelector(selectToken);
   const [showModal, setShowModal] = useState(false);
-  const [itemWarehousesOption, setItemWarehousesOption] = useState([]);
-  const [selectedWarehouse, setSelectedWarehouse] = useState(null);
-  const [qty, setQty] = useState(0);
-  const [qtyError, setQtyError] = useState(false);
 
   const [connectionError, setConnectionError] = useState("");
 
@@ -97,36 +88,6 @@ function ItemRow({ companyItem }) {
     );
   };
 
-  const buildWarehousesOption = () => {
-    const warehousesOption = companyItem.warehouses.map((w) => {
-      return { label: w.warehouse.name, value: w.warehouse._id };
-    });
-
-    setItemWarehousesOption(warehousesOption);
-    setSelectedWarehouse(companyItem.warehouses[0]);
-  };
-
-  const handleWarehouseChange = (val) => {
-    setSelectedWarehouse(
-      companyItem.warehouses.find((w) => w.warehouse._id == val)
-    );
-  };
-
-  const handleAddItemToCart = () => {
-    if (selectedWarehouse.maxQty !== 0 && qty > selectedWarehouse.maxQty) {
-      setQtyError(true);
-      return;
-    }
-    dispatch(
-      addItemToCart({
-        item: companyItem,
-        warehouse: selectedWarehouse,
-        qty: qty,
-      })
-    );
-    setShowModal(false);
-  };
-
   return (
     <>
       <div className={rowStyles.container}>
@@ -169,18 +130,17 @@ function ItemRow({ companyItem }) {
           ))}
 
         {user.type === UserTypeConstants.PHARMACY &&
-          companyItem.warehouses.length > 0 && (
-            <ActionButton
-              icon={() => <TiShoppingCart />}
-              // text="add-to-cart"
-              // fontSize="0.6rem"
-              action={() => {
-                buildWarehousesOption();
-                setShowModal(true);
-              }}
-              color={Colors.SUCCEEDED_COLOR}
-            />
-          )}
+        companyItem.warehouses.length > 0 ? (
+          <TiShoppingCart
+            className={styles.icon}
+            onClick={() => {
+              setShowModal(true);
+            }}
+            size={24}
+          />
+        ) : (
+          <div style={{ width: "24px" }}></div>
+        )}
 
         <div>
           {favoritesItems
@@ -201,90 +161,7 @@ function ItemRow({ companyItem }) {
         </div>
       </div>
       {showModal && (
-        <Modal
-          header="add-to-cart"
-          cancelLabel="cancel-label"
-          okLabel="add-label"
-          closeModal={() => setShowModal(false)}
-          okModal={handleAddItemToCart}
-        >
-          <InfoRow
-            editable={false}
-            field="item-name"
-            labelText={t("item-name")}
-            value={companyItem.name}
-            onInputChange={() => {}}
-            action={() => {}}
-          />
-
-          <InfoRow
-            editable={false}
-            field="item-caliber"
-            labelText={t("item-caliber")}
-            value={companyItem.caliber}
-            onInputChange={() => {}}
-            action={() => {}}
-          />
-
-          <InfoRow
-            editable={false}
-            field="item-formula"
-            labelText={t("item-formula")}
-            value={companyItem.formula}
-            onInputChange={() => {}}
-            action={() => {}}
-          />
-
-          <InfoRow
-            editable={false}
-            field="item-price"
-            labelText={t("item-price")}
-            value={companyItem.price}
-            onInputChange={() => {}}
-            action={() => {}}
-          />
-
-          <InfoRow
-            editable={false}
-            field="item-customer-price"
-            labelText={t("item-customer-price")}
-            value={companyItem.customer_price}
-            onInputChange={() => {}}
-            action={() => {}}
-          />
-
-          <div className={styles.warehouse_row}>
-            <SelectCustom
-              bgColor={Colors.SECONDARY_COLOR}
-              foreColor="#fff"
-              options={itemWarehousesOption}
-              onchange={handleWarehouseChange}
-              defaultOption={itemWarehousesOption[0]}
-              caption="item-warehouse"
-            />
-            <div className={styles.max_qty_div}>
-              <p>{t("item-max-qty")}</p>
-              <p>
-                {selectedWarehouse.maxQty === 0
-                  ? t("no-limit-qty")
-                  : selectedWarehouse.maxQty}
-              </p>
-            </div>
-            <div className={styles.max_qty_div}>
-              <p>{t("selected-qty")}</p>
-              <input
-                className={qtyError ? styles.error : ""}
-                type="number"
-                min={0}
-                value={qty}
-                onChange={(e) => {
-                  setQty(e.target.value * 1);
-                  setQtyError(false);
-                }}
-              />
-            </div>
-          </div>
-        </Modal>
+        <AddToCartModal item={companyItem} close={() => setShowModal(false)} />
       )}
     </>
   );

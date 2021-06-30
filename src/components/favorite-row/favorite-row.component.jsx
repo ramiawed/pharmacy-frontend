@@ -23,7 +23,7 @@ import rowStyles from "../row.module.scss";
 import { checkConnection } from "../../utils/checkInternet";
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
 
-function FavoriteRow({ user }) {
+function FavoriteRow({ user, withoutBoxShadow }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const favorites = useSelector(selectFavoritesPartners);
@@ -44,7 +44,12 @@ function FavoriteRow({ user }) {
 
   return (
     <>
-      <div className={rowStyles.container}>
+      <div
+        className={[
+          rowStyles.container,
+          withoutBoxShadow ? rowStyles.without_box_shadow : "",
+        ].join(" ")}
+      >
         {user.type === UserTypeConstants.COMPANY && (
           <Link to={`/companies/${user._id}`} className={rowStyles.name}>
             {user.name}

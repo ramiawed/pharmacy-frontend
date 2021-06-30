@@ -199,5 +199,10 @@
     "price": "السعر ص/ع",
     "total-price": "السعر الإجمالي",
     "total-invoice-price": "القيمة الإجمالية",
-    "delete-cart-row": "حذف السطر"
+    "delete-cart-row": "حذف السطر",
+    "no-companies": "لا يوجد شركات",
+    "no-warehouses": "لا يوجد مستودعات",
+    "no-medicines": "لا يوجد ادوية ضمن هذه الشركة",
+    "medicines": "الأدوية",
+    "empty-cart": "الحافظة فارغة"
 }

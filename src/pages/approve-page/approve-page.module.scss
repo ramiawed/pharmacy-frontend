@@ -35,11 +35,14 @@
   margin: 8px;
 
   z-index: 10;
+
+  text-align: center;
 }
 
 p.strong {
   color: $third-color;
   font-size: 36px;
+  text-align: center;
 }
 
 .info::after {

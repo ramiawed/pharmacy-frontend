@@ -17,7 +17,7 @@ import ReactLoading from "react-loading";
 import { FaListUl } from "react-icons/fa";
 import { RiRefreshLine } from "react-icons/ri";
 import { AiFillAppstore, AiFillStar } from "react-icons/ai";
-import { IoAlbumsOutline } from "react-icons/io5";
+import { SiAtAndT } from "react-icons/si";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -98,90 +98,90 @@ function WarehousePage() {
 
   return user ? (
     <>
-      <div className={styles.actions}>
-        <RiRefreshLine className={styles.icon} onClick={handleEnterPress} />
-
-        <div className={styles.favorite_div}>
-          <AiFillStar
-            className={styles.icon}
-            onClick={() => setShowFavorites(!showFavorites)}
-          />
-
-          {showFavorites && (
-            <div className={styles.favorites_content}>
-              {showFavorites &&
-                favorites
-                  .filter(
-                    (favorite) => favorite.type === UserTypeConstants.WAREHOUSE
-                  )
-                  .map((favorite) => (
-                    <FavoriteRow
-                      key={favorite._id}
-                      user={favorite}
-                      withoutBoxShadow={true}
-                    />
-                  ))}
-            </div>
-          )}
-        </div>
-
-        <AiFillAppstore
-          className={[
-            styles.icon,
-            displayType === "card" ? styles.selected : "",
-          ].join(" ")}
-          onClick={() => {
-            setDisplayType("card");
-            setShowFavorites(false);
-          }}
-        />
-
-        <FaListUl
-          className={[
-            styles.icon,
-            displayType === "list" ? styles.selected : "",
-          ].join(" ")}
-          onClick={() => {
-            setDisplayType("list");
-            setShowFavorites(false);
-          }}
-        />
-        <SearchContainer>
-          <SearchInput
-            label="user-name"
-            id="search-name"
-            type="text"
-            value={searchName}
-            onchange={(e) => {
-              setSearchName(e.target.value);
-            }}
-            // bordered={true}
-            placeholder="search"
-            onEnterPress={handleEnterPress}
-            resetField={() => setSearchName("")}
-          />
-
-          <SearchInput
-            label="user-city"
-            id="search-city"
-            type="text"
-            value={searchCity}
-            onchange={(e) => {
-              setSearchCity(e.target.value);
-            }}
-            // bordered={true}
-            placeholder="search"
-            onEnterPress={handleEnterPress}
-            resetField={() => setSearchCity("")}
-          />
-        </SearchContainer>
-      </div>
-
       <Header>
         <h2>
           {t("warehouses")}{" "}
           <span style={{ color: Colors.SUCCEEDED_COLOR }}>({count})</span>
         </h2>
+        <div className={styles.actions}>
+          <RiRefreshLine className={styles.icon} onClick={handleEnterPress} />
+
+          <div className={styles.favorite_div}>
+            <AiFillStar
+              className={styles.icon}
+              onClick={() => setShowFavorites(!showFavorites)}
+            />
+
+            {showFavorites && (
+              <div className={styles.favorites_content}>
+                {showFavorites &&
+                  favorites
+                    .filter(
+                      (favorite) =>
+                        favorite.type === UserTypeConstants.WAREHOUSE
+                    )
+                    .map((favorite) => (
+                      <FavoriteRow
+                        key={favorite._id}
+                        user={favorite}
+                        withoutBoxShadow={true}
+                      />
+                    ))}
+              </div>
+            )}
+          </div>
+
+          <AiFillAppstore
+            className={[
+              styles.icon,
+              displayType === "card" ? styles.selected : "",
+            ].join(" ")}
+            onClick={() => {
+              setDisplayType("card");
+              setShowFavorites(false);
+            }}
+          />
+
+          <FaListUl
+            className={[
+              styles.icon,
+              displayType === "list" ? styles.selected : "",
+            ].join(" ")}
+            onClick={() => {
+              setDisplayType("list");
+              setShowFavorites(false);
+            }}
+          />
+          <SearchContainer searchAction={handleEnterPress}>
+            <SearchInput
+              label="user-name"
+              id="search-name"
+              type="text"
+              value={searchName}
+              onchange={(e) => {
+                setSearchName(e.target.value);
+              }}
+              // bordered={true}
+              placeholder="search"
+              onEnterPress={handleEnterPress}
+              resetField={() => setSearchName("")}
+            />
+
+            <SearchInput
+              label="user-city"
+              id="search-city"
+              type="text"
+              value={searchCity}
+              onchange={(e) => {
+                setSearchCity(e.target.value);
+              }}
+              // bordered={true}
+              placeholder="search"
+              onEnterPress={handleEnterPress}
+              resetField={() => setSearchCity("")}
+            />
+          </SearchContainer>
+        </div>
       </Header>
 
       {displayType === "list" &&
@@ -207,8 +207,8 @@ function WarehousePage() {
         }}
       >
         {warehouses.length === 0 ? (
-          <div>
-            <IoAlbumsOutline className={styles.no_content} />
+          <div className={styles.no_content_div}>
+            <SiAtAndT className={styles.no_content_icon} />
             <p>{t("no-warehouses")}</p>
           </div>
         ) : warehouses.length < count ? (

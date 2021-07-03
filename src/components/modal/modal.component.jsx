@@ -12,6 +12,7 @@ const Modal = ({
   children,
   cancelLabel,
   okLabel,
+  small,
 }) => {
   const { t } = useTranslation();
 
@@ -25,7 +26,12 @@ const Modal = ({
   return ReactDOM.createPortal(
     <div className={styles.modal}>
       <div className={styles.closable_div} onClick={closeModal}></div>
-      <div className={styles.modal_content}>
+      <div
+        className={[
+          styles.modal_content,
+          small ? styles.small_content : "",
+        ].join(" ")}
+      >
         <header className={styles.modal_header} r>
           {t(header)}
         </header>

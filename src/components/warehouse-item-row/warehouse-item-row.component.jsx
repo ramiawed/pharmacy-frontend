@@ -19,13 +19,7 @@ import tableStyles from "../table.module.scss";
 // constants
 import { Colors } from "../../utils/constants";
 
-function WarehouseItemRow({
-  item,
-  index,
-  onSelect,
-  deleteItem,
-  changeItemMaxQty,
-}) {
+function WarehouseItemRow({ item, onSelect, deleteItem, changeItemMaxQty }) {
   const { t } = useTranslation();
   const user = useSelector(selectUser);
 

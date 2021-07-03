@@ -29,6 +29,8 @@ import styles from "./item-card.module.scss";
 // constants and utils
 import { checkConnection } from "../../utils/checkInternet";
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
+import { TiShoppingCart } from "react-icons/ti";
+import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
 
 function ItemCard({ companyItem }) {
   const user = useSelector(selectUser);
@@ -36,6 +38,7 @@ function ItemCard({ companyItem }) {
   const dispatch = useDispatch();
   const favorites = useSelector(selectFavoritesItems);
   const token = useSelector(selectToken);
+  const [showModal, setShowModal] = useState(false);
 
   const [connectionError, setConnectionError] = useState("");
 
@@ -111,7 +114,9 @@ function ItemCard({ companyItem }) {
 
       <div>
         {user.type === UserTypeConstants.WAREHOUSE &&
-          (companyItem.warehouses.map((w) => w.warehouse).includes(user._id) ? (
+          (companyItem.warehouses
+            .map((w) => w.warehouse._id)
+            .includes(user._id) ? (
             <p
               className={[styles.add_from_container, styles.remove].join(" ")}
               onClick={removeItemFromWarehouseHandler}
@@ -130,6 +135,18 @@ function ItemCard({ companyItem }) {
               <IoMdAdd className={styles.remove_icon} size="26" />
             </p>
           ))}
+
+        {user.type === UserTypeConstants.PHARMACY &&
+          companyItem.warehouses.length > 0 && (
+            <TiShoppingCart
+              className={styles.add_to_cart_icon}
+              // className={rowStyles.cart_icon}
+              onClick={() => {
+                setShowModal(true);
+              }}
+              size={32}
+            />
+          )}
       </div>
 
       <div className={styles.logo}>
@@ -173,6 +190,10 @@ function ItemCard({ companyItem }) {
 
         <div className={styles.behind_content}></div>
       </div>
+
+      {showModal && (
+        <AddToCartModal item={companyItem} close={() => setShowModal(false)} />
+      )}
 
       {connectionError && (
         <Toast

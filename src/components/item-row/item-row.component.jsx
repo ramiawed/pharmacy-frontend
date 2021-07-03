@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
+// react-redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import { selectToken, selectUser } from "../../redux/auth/authSlice";
 import {
@@ -8,34 +9,40 @@ import {
   removeFavoriteItem,
   selectFavoritesItems,
 } from "../../redux/favorites/favoritesSlice";
+import {
+  addItemToWarehouse,
+  removeItemFromWarehouse,
+} from "../../redux/companyItems/companyItemsSlices";
 
+// components
 import ActionButton from "../action-button/action-button.component";
+import Toast from "../toast/toast.component";
+import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
 
 // react icons
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { TiShoppingCart } from "react-icons/ti";
 
 // styles
-import styles from "./item-row.module.scss";
 import rowStyles from "../row.module.scss";
+import tableStyles from "../table.module.scss";
 
 // constants and utils
 import { checkConnection } from "../../utils/checkInternet";
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import {
-  addItemToWarehouse,
-  removeItemFromWarehouse,
-} from "../../redux/companyItems/companyItemsSlices";
-import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
 
 function ItemRow({ companyItem }) {
-  const user = useSelector(selectUser);
   const { t } = useTranslation();
+
+  // get the logged user and it's token
+  const user = useSelector(selectUser);
+  const token = useSelector(selectToken);
+
   const dispatch = useDispatch();
   const favoritesItems = useSelector(selectFavoritesItems);
-  const token = useSelector(selectToken);
-  const [showModal, setShowModal] = useState(false);
 
+  // own state
+  const [showModal, setShowModal] = useState(false);
   const [connectionError, setConnectionError] = useState("");
 
   // method to handle add company to user's favorite
@@ -64,7 +71,14 @@ function ItemRow({ companyItem }) {
     );
   };
 
+  // method to handle add item to warehouse
   const addItemToWarehouseHandler = () => {
+    // check the internet connection
+    if (!checkConnection()) {
+      setConnectionError("no-internet-connection");
+      return;
+    }
+
     dispatch(
       addItemToWarehouse({
         obj: {
@@ -76,7 +90,14 @@ function ItemRow({ companyItem }) {
     );
   };
 
+  // method to handle remove item from warehouse
   const removeItemFromWarehouseHandler = () => {
+    // check the internet connection
+    if (!checkConnection()) {
+      setConnectionError("no-internet-connection");
+      return;
+    }
+
     dispatch(
       removeItemFromWarehouse({
         obj: {
@@ -88,61 +109,90 @@ function ItemRow({ companyItem }) {
     );
   };
 
+  // render method
   return (
     <>
       <div className={rowStyles.container}>
-        <p className={styles.name}>{companyItem.name}</p>
-        <div className={styles.info}>
-          <p>{t("item-caliber")}:</p>
-          <p>{companyItem.caliber}</p>
-        </div>
+        <label
+          style={{ textAlign: "center" }}
+          className={tableStyles.label_medium}
+        >
+          {companyItem.name}
+        </label>
 
-        <div className={styles.info}>
-          <p>{t("item-formula")}:</p>
-          <p>{companyItem.formula}</p>
-        </div>
+        <label
+          style={{ textAlign: "center" }}
+          className={tableStyles.label_small}
+        >
+          {companyItem.caliber}
+        </label>
 
-        <div className={styles.info}>
-          <p>{t("item-price")}:</p>
-          <p>{companyItem.price}</p>
-        </div>
+        <label
+          style={{ textAlign: "center" }}
+          className={tableStyles.label_small}
+        >
+          {companyItem.formula}
+        </label>
 
-        <div className={styles.info}>
-          <p>{t("item-customer-price")}:</p>
-          <p>{companyItem.customer_price}</p>
-        </div>
+        <label
+          style={{ textAlign: "center" }}
+          className={tableStyles.label_small}
+        >
+          {companyItem.price}
+        </label>
 
-        {user.type === UserTypeConstants.WAREHOUSE &&
-          (companyItem.warehouses.map((w) => w.warehouse).includes(user._id) ? (
-            <ActionButton
-              text="remove-from-warehouse"
-              fontSize="0.6rem"
-              action={removeItemFromWarehouseHandler}
-              color={Colors.FAILED_COLOR}
+        <label
+          style={{ textAlign: "center" }}
+          className={tableStyles.label_small}
+        >
+          {companyItem.customer_price}
+        </label>
+
+        <label
+          style={{ textAlign: "center" }}
+          className={
+            user.type === UserTypeConstants.WAREHOUSE
+              ? tableStyles.label_small
+              : tableStyles.label_xsmall
+          }
+        >
+          {user.type === UserTypeConstants.WAREHOUSE &&
+            (companyItem.warehouses
+              .map((w) => w.warehouse._id)
+              .includes(user._id) ? (
+              <ActionButton
+                text="remove-from-warehouse"
+                fontSize="0.6rem"
+                action={removeItemFromWarehouseHandler}
+                color={Colors.FAILED_COLOR}
+              />
+            ) : (
+              <ActionButton
+                text="add-to-warehouse"
+                fontSize="0.6rem"
+                action={addItemToWarehouseHandler}
+                color={Colors.SUCCEEDED_COLOR}
+              />
+            ))}
+
+          {user.type === UserTypeConstants.PHARMACY &&
+          companyItem.warehouses.length > 0 ? (
+            <TiShoppingCart
+              className={rowStyles.cart_icon}
+              onClick={() => {
+                setShowModal(true);
+              }}
+              size={24}
             />
           ) : (
-            <ActionButton
-              text="add-to-warehouse"
-              fontSize="0.6rem"
-              action={addItemToWarehouseHandler}
-              color={Colors.SUCCEEDED_COLOR}
-            />
-          ))}
+            <div style={{ width: "24px" }}></div>
+          )}
+        </label>
 
-        {user.type === UserTypeConstants.PHARMACY &&
-        companyItem.warehouses.length > 0 ? (
-          <TiShoppingCart
-            className={styles.icon}
-            onClick={() => {
-              setShowModal(true);
-            }}
-            size={24}
-          />
-        ) : (
-          <div style={{ width: "24px" }}></div>
-        )}
-
-        <div>
+        <label
+          style={{ textAlign: "center" }}
+          className={tableStyles.label_xsmall}
+        >
           {favoritesItems
             .map((favorite) => favorite._id)
             .includes(companyItem._id) ? (
@@ -158,10 +208,23 @@ function ItemRow({ companyItem }) {
               onClick={addItemToFavoriteItems}
             />
           )}
-        </div>
+        </label>
       </div>
+
       {showModal && (
         <AddToCartModal item={companyItem} close={() => setShowModal(false)} />
+      )}
+
+      {connectionError && (
+        <Toast
+          bgColor={Colors.FAILED_COLOR}
+          foreColor="#fff"
+          actionAfterTimeout={() => {
+            setConnectionError("");
+          }}
+        >
+          <p>{t(connectionError)}</p>
+        </Toast>
       )}
     </>
   );

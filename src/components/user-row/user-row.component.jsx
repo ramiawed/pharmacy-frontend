@@ -196,9 +196,9 @@ function UserRow({ user, index }) {
         ].join(" ")}
       >
         <div className={styles.basic_info}>
-          <label className={styles.label_large}>{user.name}</label>
+          <label className={tableStyles.label_large}>{user.name}</label>
           {/* <label>{user.username}</label> */}
-          <label className={styles.label_small}>
+          <label className={tableStyles.label_small}>
             {user.isApproved ? (
               <ActionButton
                 color={Colors.SUCCEEDED_COLOR}
@@ -215,7 +215,7 @@ function UserRow({ user, index }) {
               />
             )}
           </label>
-          <label className={styles.label_small}>
+          <label className={tableStyles.label_small}>
             {user.isActive ? (
               <ActionButton
                 color={Colors.SUCCEEDED_COLOR}
@@ -232,10 +232,10 @@ function UserRow({ user, index }) {
               />
             )}{" "}
           </label>
-          <label className={styles.label_large}> {user.email}</label>
-          <label className={styles.label_medium}>{user.phone}</label>
-          <label className={styles.label_medium}>{user.mobile}</label>
-          <div className={styles.actions_div}>
+          <label className={tableStyles.label_large}> {user.email}</label>
+          <label className={tableStyles.label_medium}>{user.phone}</label>
+          <label className={tableStyles.label_medium}>{user.mobile}</label>
+          <div className={tableStyles.label_xsmall}>
             {collapsed ? (
               <ActionButton
                 color={Colors.SECONDARY_COLOR}
@@ -350,6 +350,7 @@ function UserRow({ user, index }) {
             okLabel={modalInfo.okLabel}
             okModal={() => handlePressOkOnModal()}
             closeModal={() => setShowModal(false)}
+            small={true}
           >
             {modalInfo.body()}
           </Modal>

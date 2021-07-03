@@ -3,6 +3,7 @@
 .input_div {
   background: $white-color;
   color: $secondary-color;
+  position: relative;
 
   display: flex;
   justify-content: flex-start;
@@ -34,7 +35,7 @@
 
 .input_div .icon_close {
   position: absolute;
-  left: 15px;
+  left: 0;
   width: 30px;
   color: $secondary-color;
 }

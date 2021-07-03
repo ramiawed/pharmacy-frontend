@@ -204,5 +204,9 @@
     "no-warehouses": "لا يوجد مستودعات",
     "no-medicines": "لا يوجد ادوية ضمن هذه الشركة",
     "medicines": "الأدوية",
-    "empty-cart": "الحافظة فارغة"
+    "empty-cart": "الحافظة فارغة",
+    "warehouse-in-warehouse": "الموجودة ضمن المستودع",
+    "warehouse-out-warehouse": "الغير موجودة ضمن المستودع",
+    "pharmacy-in-warehouse": "الموجودة ضمن المستودعات",
+    "pharmacy-out-warehouse": "الغير موجودة ضمن المستودعات"
 }

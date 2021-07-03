@@ -8,6 +8,7 @@ import axios from "../../api/pharmacy";
 // components
 import SelectCustom from "../select/select.component";
 import Input from "../input/input.component";
+import Toast from "../toast/toast.component";
 
 // redux
 import { authSign, selectUserData } from "../../redux/auth/authSlice";
@@ -19,6 +20,7 @@ import ReactLoading from "react-loading";
 // Constants && utils
 import { Colors, GuestJob, UserTypeConstants } from "../../utils/constants";
 import { getIcon } from "../../utils/icons.js";
+import { checkConnection } from "../../utils/checkInternet";
 
 // styles
 import styles from "./signup.module.scss";
@@ -42,6 +44,8 @@ function SignUp() {
   const history = useHistory();
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [connectionError, setConnectionError] = useState("");
+
   // state from user state redux
   const { user: signinUser } = useSelector(selectUserData);
 
@@ -313,6 +317,10 @@ function SignUp() {
 
     // send post request to server to create a new user
     if (Object.entries(errorObj).length === 0) {
+      if (!checkConnection()) {
+        setConnectionError("no-internet-connection");
+        return;
+      }
       setSignupLoading(true);
       axios
         .post("/users/signup", user)
@@ -659,6 +667,18 @@ function SignUp() {
       >
         {t("signup")}
       </motion.button>
+
+      {connectionError && (
+        <Toast
+          bgColor={Colors.FAILED_COLOR}
+          foreColor="#fff"
+          actionAfterTimeout={() => {
+            setConnectionError("");
+          }}
+        >
+          <p>{t(connectionError)}</p>
+        </Toast>
+      )}
 
       {signupLoading && <ReactLoading type="bubbles" height={50} width={50} />}
     </motion.div>

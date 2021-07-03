@@ -26,6 +26,14 @@ export const getCompanyItems = createAsyncThunk(
         buildUrl = buildUrl + `&isActive=${queryString.isActive}`;
       }
 
+      if (queryString.inWarehouse) {
+        buildUrl = buildUrl + `&inWarehouse=true`;
+      }
+
+      if (queryString.outWarehouse) {
+        buildUrl = buildUrl + `&outWarehouse=true`;
+      }
+
       const response = await axios.get(buildUrl, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -139,6 +147,7 @@ export const companyItemsSlice = createSlice({
     },
     [addItemToWarehouse.fulfilled]: (state, action) => {
       state.addToWarehouseStatus = "succeeded";
+
       const newItems = state.companyItems.map((item) => {
         if (item._id === action.payload.data.item._id) {
           return action.payload.data.item;

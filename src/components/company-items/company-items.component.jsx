@@ -160,10 +160,13 @@ function CompanyItems({ onSelect }) {
             </label>
             {/* <label className={tableStyles.label_xsmall}></label> */}
           </TableHeader>
+
           {items.map((item) => (
             <CompanyItemRow key={item._id} item={item} onSelect={onSelect} />
           ))}
+
           <div style={{ height: "10px" }}></div>
+
           <ReactPaginate
             previousLabel={t("previous")}
             nextLabel={t("next")}

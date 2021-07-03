@@ -25,6 +25,11 @@ import {
 // styles
 import styles from "./signin.module.scss";
 
+//
+import { checkConnection } from "../../utils/checkInternet";
+import { Colors } from "../../utils/constants";
+import Toast from "../toast/toast.component";
+
 // constants use for motion
 const containerVariant = {
   hidden: {
@@ -48,6 +53,7 @@ function SignIn() {
 
   // state from user state redux
   const { status, user, error } = useSelector(selectUserData);
+  const [connectionError, setConnectionError] = useState("");
 
   // state holds the username and password
   // used in the input fields
@@ -140,6 +146,12 @@ function SignIn() {
       return;
     }
 
+    // check the internet connection
+    if (!checkConnection()) {
+      setConnectionError("no-internet-connection");
+      return;
+    }
+
     // username and password is not empty
     // dispatch sign in
     dispatch(authSign(userInfo));
@@ -221,6 +233,17 @@ function SignIn() {
           <ReactLoading type="bubbles" height={50} width={50} />
         )}
       </div>
+      {connectionError && (
+        <Toast
+          bgColor={Colors.FAILED_COLOR}
+          foreColor="#fff"
+          actionAfterTimeout={() => {
+            setConnectionError("");
+          }}
+        >
+          <p>{t(connectionError)}</p>
+        </Toast>
+      )}
     </motion.div>
   );
 }

@@ -10,10 +10,6 @@
   flex-wrap: wrap;
 }
 
-// .content_container p {
-//   color: $secondary-color;
-// }
-
 .more_button {
   min-width: 100px;
   min-height: 36px;
@@ -29,17 +25,19 @@
   cursor: pointer;
 }
 
-.display_type {
+.checkbox_div {
+  border-bottom: 1px solid rgba($color: $secondary-color, $alpha: 0.3);
+
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  width: 85px;
-  padding: 4px 8px;
-  margin: 5px auto;
-  color: $secondary-color;
-  border: 1px solid $secondary-color;
-  border-radius: 6px;
-  box-shadow: 3px 3px 3px rgba($color: #000000, $alpha: 0.3);
+
+  margin: 4px 40px 4px 0;
+  padding: 4px 0;
+}
+
+.checkbox_div label {
+  font-size: 0.7rem;
+  padding-right: 10px;
 }
 
 .icon {
@@ -58,34 +56,14 @@
 }
 
 .actions {
-  position: absolute;
-  left: 0;
-  top: 15px;
-
   color: $secondary-color;
 
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
 
   transition: all 0.5s;
 
   cursor: pointer;
-}
-
-.search_input {
-  padding: 2px 4px;
-  outline: none;
-  border: none;
-  width: 0;
-  opacity: 0;
-
-  border-bottom: 1px solid rgba($color: $secondary-color, $alpha: 0.3);
-  transition: width 0.31s;
-}
-
-.search_input.show {
-  width: 200px;
-  opacity: 1;
 }
 
 .favorite_div {
@@ -106,16 +84,42 @@
   overflow: scroll;
   background: $white-color;
   z-index: 10;
-
-  // border: 1px solid $secondary-color;
 }
 
 .no_more {
   color: $secondary-color;
   margin: 10px;
+  text-align: center;
 }
 
-.no_content {
-  font-size: 16rem;
+.no_content_div {
+  width: 300px;
+  height: 300px;
+  margin: 50px auto;
+  color: $secondary-color;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.no_content_icon {
+  font-size: 15rem;
+  margin: 10px 0;
   color: rgba($color: $secondary-color, $alpha: 0.3);
+  animation-name: identifier;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate-reverse;
+}
+
+@keyframes identifier {
+  0% {
+    transform: rotateZ(0deg);
+  }
+
+  100% {
+    transform: rotateZ(180deg);
+  }
 }

@@ -59,6 +59,7 @@ function AddToCartModal({ item, close }) {
       okLabel="add-label"
       closeModal={close}
       okModal={handleAddItemToCart}
+      small={true}
     >
       <InfoRow
         editable={false}

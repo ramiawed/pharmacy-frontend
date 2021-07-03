@@ -23,6 +23,7 @@ import Input from "../input/input.component";
 import Modal from "../modal/modal.component";
 import IconWithNumber from "../icon-with-number/icon-with-number.component";
 import Order from "../order/order.component";
+import TableHeader from "../table-header/table-header.component";
 
 // 3-party library (loading, paginate)
 import ReactLoading from "react-loading";
@@ -42,7 +43,6 @@ import { resetActivationDeleteStatus } from "../../redux/users/usersSlice";
 import styles from "./admin-users.module.scss";
 import tableStyles from "../table.module.scss";
 import paginationStyles from "../pagination.module.scss";
-import TableHeader from "../table-header/table-header.component";
 
 // AdminUsers component
 function AdminUsers() {
@@ -297,22 +297,10 @@ function AdminUsers() {
   return user && user.type === UserTypeConstants.ADMIN ? (
     <>
       <div>
-        {/* <div className={styles.header_div}> */}
         <Header>
           <h2>
-            {t("partners")} ({count})
+            {t("partners")} <span>({count})</span>
           </h2>
-        </Header>
-        {/* </div> */}
-      </div>
-      <TableHeader>
-        <label className={tableStyles.label_large}>{t("user-name")}</label>
-        <label className={tableStyles.label_small}>{t("user-approve")}</label>
-        <label className={tableStyles.label_small}>{t("user-delete")}</label>
-        <label className={tableStyles.label_large}>{t("user-email")}</label>
-        <label className={tableStyles.label_medium}>{t("user-phone")}</label>
-        <label className={tableStyles.label_medium}>{t("user-mobile")}</label>
-        <label className={tableStyles.label_xsmall}>
           <div className={styles.actions_icons}>
             <div onClick={() => setShowModal(true)}>
               <IconWithNumber
@@ -326,13 +314,23 @@ function AdminUsers() {
             <div onClick={() => setShowOrderModel(true)}>
               <IconWithNumber
                 value={Object.entries(orderBy).length}
-                fillIcon={<VscListOrdered />}
-                noFillIcon={<VscListOrdered />}
+                fillIcon={<VscListOrdered size={16} />}
+                noFillIcon={<VscListOrdered size={16} />}
                 small={true}
               />
             </div>
           </div>
-        </label>
+        </Header>
+        {/* </div> */}
+      </div>
+      <TableHeader>
+        <label className={tableStyles.label_large}>{t("user-name")}</label>
+        <label className={tableStyles.label_small}>{t("user-approve")}</label>
+        <label className={tableStyles.label_small}>{t("user-delete")}</label>
+        <label className={tableStyles.label_large}>{t("user-email")}</label>
+        <label className={tableStyles.label_medium}>{t("user-phone")}</label>
+        <label className={tableStyles.label_medium}>{t("user-mobile")}</label>
+        <label className={tableStyles.label_xsmall}></label>
       </TableHeader>
 
       {/* loading components when retrieve the result from DB */}
@@ -404,6 +402,7 @@ function AdminUsers() {
             handleSearch(1);
           }}
           closeModal={() => setShowModal(false)}
+          small={true}
         >
           <RowWith2Children>
             <div>
@@ -645,6 +644,7 @@ function AdminUsers() {
             handleSearch(1);
           }}
           closeModal={() => setShowOrderModel(false)}
+          small={true}
         >
           <Order
             arr={orderOptions}

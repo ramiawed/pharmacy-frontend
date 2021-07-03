@@ -1,11 +1,14 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { FaSearch } from "react-icons/fa";
 import { VscSettings } from "react-icons/vsc";
+import { Colors } from "../../utils/constants";
+import ActionButton from "../action-button/action-button.component";
 
 import styles from "./search-container.module.scss";
 
-function SearchContainer({ children }) {
+function SearchContainer({ children, searchAction }) {
   let childrenArray = React.Children.toArray(children);
   const [expanded, setExpanded] = useState(false);
   const [moreSearchOptions, setMoreSearchOptions] = useState(false);
@@ -44,6 +47,11 @@ function SearchContainer({ children }) {
                 />
               </div>
             )}
+            <ActionButton
+              text="search"
+              color={Colors.SECONDARY_COLOR}
+              action={() => searchAction()}
+            />
           </>
         )}
       </div>
@@ -52,7 +60,7 @@ function SearchContainer({ children }) {
         <div
           style={{
             paddingRight: "16px",
-            paddingLeft: "16px",
+            paddingLeft: "45px",
           }}
         >
           {childrenArray[1]}

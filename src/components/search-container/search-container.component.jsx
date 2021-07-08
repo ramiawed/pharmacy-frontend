@@ -22,9 +22,8 @@ function SearchContainer({ children, searchAction }) {
       ].join(" ")}
     >
       <div className={styles.expanded_div}>
-        <div>
+        <div className={styles.icon_div}>
           <FaSearch
-            className={styles.icon}
             onClick={() => {
               setExpanded(!expanded);
               setMoreSearchOptions(false);
@@ -34,15 +33,19 @@ function SearchContainer({ children, searchAction }) {
 
         {expanded && (
           <>
-            <div style={{ flex: 1 }}>{childrenArray[0]}</div>
+            <div style={{ flex: 1 }}>
+              {childrenArray[0]}
+              {moreSearchOptions && childrenArray.length > 1
+                ? childrenArray.map((child, index) => {
+                    if (index > 0) return child;
+                    return null;
+                  })
+                : null}
+            </div>
 
             {childrenArray.length > 1 && (
-              <div>
+              <div className={styles.icon_div}>
                 <VscSettings
-                  style={{
-                    transform: "rotate(90deg)",
-                  }}
-                  className={styles.icon}
                   onClick={() => setMoreSearchOptions(!moreSearchOptions)}
                 />
               </div>
@@ -55,17 +58,6 @@ function SearchContainer({ children, searchAction }) {
           </>
         )}
       </div>
-
-      {moreSearchOptions && childrenArray.length > 1 && (
-        <div
-          style={{
-            paddingRight: "16px",
-            paddingLeft: "45px",
-          }}
-        >
-          {childrenArray[1]}
-        </div>
-      )}
     </div>
   );
 }

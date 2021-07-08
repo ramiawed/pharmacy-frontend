@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // components
@@ -18,6 +19,7 @@ import { selectToken, selectUser } from "../../redux/auth/authSlice";
 
 // rowStyles
 import rowStyles from "../row.module.scss";
+import tableStyles from "../table.module.scss";
 
 // constants and utils
 import { checkConnection } from "../../utils/checkInternet";
@@ -25,6 +27,7 @@ import { Colors, UserTypeConstants } from "../../utils/constants.js";
 import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
 
 function FavoriteItemRow({ item, withoutBoxShadow }) {
+  const history = useHistory();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const favorites = useSelector(selectFavoritesItems);
@@ -53,8 +56,25 @@ function FavoriteItemRow({ item, withoutBoxShadow }) {
           withoutBoxShadow ? rowStyles.without_box_shadow : "",
         ].join(" ")}
       >
-        <p className={rowStyles.name}>{item.name}</p>
-        {item.warehouses.length > 0 &&
+        <label
+          className={[
+            rowStyles.hover_underline,
+            rowStyles.padding_start,
+            tableStyles.label_medium,
+            rowStyles.align_start,
+          ].join(" ")}
+          onClick={() => {
+            history.push(`/item/user/${item._id}`);
+          }}
+        >
+          {item.name}
+        </label>
+
+        <label className={tableStyles.label_small}>{item.caliber}</label>
+        <label className={tableStyles.label_small}>{item.formula}</label>
+        <label className={tableStyles.label_small}>{item.packing}</label>
+
+        {item.warehouses.length > 0 ? (
           user.type === UserTypeConstants.PHARMACY && (
             <TiShoppingCart
               className={rowStyles.cart_icon}
@@ -63,8 +83,11 @@ function FavoriteItemRow({ item, withoutBoxShadow }) {
               }}
               size={24}
             />
-          )}
-        <div>
+          )
+        ) : (
+          <div className={tableStyles.label_xsmall}></div>
+        )}
+        <div className={rowStyles.padding_end}>
           {favorites.map((favorite) => favorite._id).includes(item._id) ? (
             <AiFillStar
               className={[rowStyles.icon, rowStyles.fill_star].join(" ")}

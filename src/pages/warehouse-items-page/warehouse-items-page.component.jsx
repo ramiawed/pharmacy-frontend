@@ -160,7 +160,7 @@ function WarehouseItemsPage() {
             {/* <label className={tableStyles.label_xsmall}></label> */}
           </TableHeader>
 
-          {warehouseItems?.map((item, index) => (
+          {warehouseItems.map((item, index) => (
             <WarehouseItemRow
               key={item._id}
               item={item}

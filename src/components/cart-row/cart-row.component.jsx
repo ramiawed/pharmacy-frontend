@@ -4,6 +4,7 @@ import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 
 import styles from "./cart-row.module.scss";
+import rowStyles from "../row.module.scss";
 import tableStyles from "../table.module.scss";
 import { useDispatch } from "react-redux";
 import {
@@ -18,7 +19,7 @@ function CartRow({ cartItem }) {
   const dispatch = useDispatch();
 
   return (
-    <div className={tableStyles.row}>
+    <div className={rowStyles.container}>
       <label className={tableStyles.label_medium}>{cartItem.item.name}</label>
       <label className={tableStyles.label_small}>
         {cartItem.item.company.name}

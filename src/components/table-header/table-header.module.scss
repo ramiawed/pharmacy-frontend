@@ -1,9 +1,9 @@
 @import "../../variables.scss";
 
 .header {
+  margin-top: 10px;
   padding: 10px 0;
 
-  // border-bottom: 1px solid $secondary-color;
   background: $secondary-color;
 
   display: flex;
@@ -19,7 +19,6 @@
 
 .header label {
   color: $white-color;
-  // font-weight: bold;
   text-align: center;
   font-size: 0.7rem;
 }

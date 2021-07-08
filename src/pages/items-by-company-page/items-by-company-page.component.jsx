@@ -35,6 +35,7 @@ import {
 // import styles from "./items-by-company-page.module.scss";
 import styles from "../companies-page/companies-page.module.scss";
 import tableStyles from "../../components/table.module.scss";
+import searchContainerStyles from "../../components/search-container/search-container.module.scss";
 
 // constants
 import { UserTypeConstants } from "../../utils/constants";
@@ -136,7 +137,9 @@ function ItemsByCompanyPage() {
               onClick={() => setShowFavorites(!showFavorites)}
             />
             {showFavorites && (
-              <div className={styles.favorites_content}>
+              <div
+                className={[styles.favorites_content, styles.bigger].join(" ")}
+              >
                 {showFavorites &&
                   favoritesItems.map((item) => (
                     <FavoriteItemRow
@@ -182,8 +185,10 @@ function ItemsByCompanyPage() {
                 setSearchName("");
               }}
             />
-            <div>
-              <div className={styles.checkbox_div}>
+
+            {(user.type === UserTypeConstants.WAREHOUSE ||
+              user.type === UserTypeConstants.PHARMACY) && (
+              <div className={searchContainerStyles.checkbox_div}>
                 <input
                   type="checkbox"
                   value={isInWarehouse}
@@ -200,8 +205,11 @@ function ItemsByCompanyPage() {
                   <label>{t("pharmacy-in-warehouse")}</label>
                 )}
               </div>
+            )}
 
-              <div className={styles.checkbox_div}>
+            {(user.type === UserTypeConstants.WAREHOUSE ||
+              user.type === UserTypeConstants.PHARMACY) && (
+              <div className={searchContainerStyles.checkbox_div}>
                 <input
                   type="checkbox"
                   value={isOutWarehouse}
@@ -218,7 +226,7 @@ function ItemsByCompanyPage() {
                   <label>{t("pharmacy-out-warehouse")}</label>
                 )}
               </div>
-            </div>
+            )}
           </SearchContainer>
         </div>
       </Header>

@@ -26,10 +26,6 @@ export const getWarehouseItems = createAsyncThunk(
         buildUrl = buildUrl + `&companyName=${queryString.companyName}`;
       }
 
-      // if (queryString.isActive !== undefined) {
-      //   buildUrl = buildUrl + `&isActive=${queryString.isActive}`;
-      // }
-
       const response = await axios.get(buildUrl, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -131,7 +127,7 @@ export const warehouseItemsSlice = createSlice({
     [getWarehouseItems.fulfilled]: (state, action) => {
       state.status = "succeeded";
       state.warehouseItems = action.payload.data.items;
-      state.count = action.payload.count[0] ? action.payload.count[0].price : 0;
+      state.count = action.payload.count;
       state.error = "";
     },
     [getWarehouseItems.rejected]: (state, { error, meta, payload }) => {

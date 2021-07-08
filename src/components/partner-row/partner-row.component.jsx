@@ -58,18 +58,32 @@ function PartnerRow({ user, type }) {
     <>
       <div className={rowStyles.container}>
         {user.type === UserTypeConstants.COMPANY && (
-          <Link to={`/companies/${user._id}`} className={rowStyles.name}>
+          <Link
+            to={`/companies/${user._id}`}
+            className={[
+              rowStyles.hover_underline,
+              rowStyles.full_width,
+              rowStyles.padding_start,
+            ].join(" ")}
+          >
             {user.name}
           </Link>
         )}
 
         {user.type === UserTypeConstants.WAREHOUSE && (
-          <Link to={`/warehouses/${user._id}`} className={rowStyles.name}>
+          <Link
+            to={`/warehouses/${user._id}`}
+            className={[
+              rowStyles.hover_underline,
+              rowStyles.full_width,
+              rowStyles.padding_start,
+            ].join(" ")}
+          >
             {user.name}
           </Link>
         )}
 
-        <div>
+        <div className={rowStyles.padding_end}>
           {favorites.map((favorite) => favorite._id).includes(user._id) ? (
             <AiFillStar
               className={[rowStyles.icon, rowStyles.fill_star].join(" ")}

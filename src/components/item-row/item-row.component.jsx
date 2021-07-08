@@ -30,8 +30,10 @@ import tableStyles from "../table.module.scss";
 // constants and utils
 import { checkConnection } from "../../utils/checkInternet";
 import { Colors, UserTypeConstants } from "../../utils/constants";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function ItemRow({ companyItem }) {
+  const history = useHistory();
   const { t } = useTranslation();
 
   // get the logged user and it's token
@@ -114,47 +116,50 @@ function ItemRow({ companyItem }) {
     <>
       <div className={rowStyles.container}>
         <label
-          style={{ textAlign: "center" }}
-          className={tableStyles.label_medium}
+          // style={{ textAlign: "center" }}
+          className={[
+            tableStyles.label_medium,
+            tableStyles.center,
+            tableStyles.underline,
+          ].join(" ")}
+          onClick={() => {
+            history.push(`/item/user/${companyItem._id}`);
+          }}
         >
           {companyItem.name}
         </label>
 
         <label
-          style={{ textAlign: "center" }}
-          className={tableStyles.label_small}
+          className={[tableStyles.label_small, tableStyles.center].join(" ")}
         >
           {companyItem.caliber}
         </label>
 
         <label
-          style={{ textAlign: "center" }}
-          className={tableStyles.label_small}
+          className={[tableStyles.label_small, tableStyles.center].join(" ")}
         >
           {companyItem.formula}
         </label>
 
         <label
-          style={{ textAlign: "center" }}
-          className={tableStyles.label_small}
+          className={[tableStyles.label_small, tableStyles.center].join(" ")}
         >
           {companyItem.price}
         </label>
 
         <label
-          style={{ textAlign: "center" }}
-          className={tableStyles.label_small}
+          className={[tableStyles.label_small, tableStyles.center].join(" ")}
         >
           {companyItem.customer_price}
         </label>
 
         <label
-          style={{ textAlign: "center" }}
-          className={
+          className={[
             user.type === UserTypeConstants.WAREHOUSE
               ? tableStyles.label_small
-              : tableStyles.label_xsmall
-          }
+              : tableStyles.label_xsmall,
+            tableStyles.center,
+          ].join(" ")}
         >
           {user.type === UserTypeConstants.WAREHOUSE &&
             (companyItem.warehouses
@@ -190,8 +195,7 @@ function ItemRow({ companyItem }) {
         </label>
 
         <label
-          style={{ textAlign: "center" }}
-          className={tableStyles.label_xsmall}
+          className={[tableStyles.label_xsmall, tableStyles.center].join(" ")}
         >
           {favoritesItems
             .map((favorite) => favorite._id)

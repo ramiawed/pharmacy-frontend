@@ -23,11 +23,26 @@ export const getItems = createAsyncThunk(
       buildUrl = buildUrl + `&companyId=${queryString.companyId}`;
 
       if (queryString.name) {
-        buildUrl = buildUrl + `&name=${queryString.name}`;
+        buildUrl = buildUrl + `&itemName=${queryString.name}`;
+      }
+      if (queryString.warehouseName) {
+        buildUrl = buildUrl + `&warehouseName=${queryString.warehouseName}`;
       }
 
       if (queryString.isActive !== undefined) {
         buildUrl = buildUrl + `&isActive=${queryString.isActive}`;
+      }
+
+      if (queryString.sort) {
+        buildUrl = buildUrl + `&sort=${queryString.sort}`;
+      }
+
+      if (queryString.inWarehouse) {
+        buildUrl = buildUrl + `&inWarehouse=true`;
+      }
+
+      if (queryString.outWarehouse) {
+        buildUrl = buildUrl + `&outWarehouse=true`;
       }
 
       const response = await axios.get(buildUrl, {
@@ -65,7 +80,7 @@ export const updateItem = createAsyncThunk(
   async ({ obj, token }, { rejectWithValue }) => {
     try {
       const response = await axios.post(
-        `/items/${obj._id}`,
+        `/items/item/${obj._id}`,
         { ...obj },
         {
           headers: {

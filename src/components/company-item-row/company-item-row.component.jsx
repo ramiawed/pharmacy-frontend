@@ -15,12 +15,15 @@ import { AiFillUnlock, AiFillLock } from "react-icons/ai";
 
 // styles
 import tableStyles from "../table.module.scss";
+import rowStyles from "../row.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
+import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
-function CompanyItemRow({ item, onSelect }) {
+function CompanyItemRow({ item }) {
   const { t } = useTranslation();
+  const history = useHistory();
   const [modalObj, setModalObj] = useState({});
 
   const [showModal, setShowModal] = useState(false);
@@ -61,13 +64,14 @@ function CompanyItemRow({ item, onSelect }) {
 
   return (
     <>
-      <div className={tableStyles.row}>
+      <div className={rowStyles.container}>
         <label
-          className={[
-            tableStyles.hover_underline,
-            tableStyles.label_medium,
-          ].join(" ")}
-          onClick={() => onSelect(item)}
+          className={[rowStyles.hover_underline, tableStyles.label_medium].join(
+            " "
+          )}
+          onClick={() => {
+            history.push(`/item/admin/${item._id}`);
+          }}
         >
           {item.name}
         </label>

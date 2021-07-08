@@ -25,21 +25,6 @@
   cursor: pointer;
 }
 
-.checkbox_div {
-  border-bottom: 1px solid rgba($color: $secondary-color, $alpha: 0.3);
-
-  display: flex;
-  align-items: center;
-
-  margin: 4px 40px 4px 0;
-  padding: 4px 0;
-}
-
-.checkbox_div label {
-  font-size: 0.7rem;
-  padding-right: 10px;
-}
-
 .icon {
   width: 24px;
   height: 24px;
@@ -74,16 +59,21 @@
 
 .favorites_content {
   min-width: 200px;
+  // width: 400px;
   box-shadow: 0 0 3px rgba($color: $secondary-color, $alpha: 0.5);
   border-radius: 6px;
   position: absolute;
   top: 20px;
   left: 50%;
 
-  max-height: 300px;
+  // max-height: 300px;
   overflow: scroll;
   background: $white-color;
   z-index: 10;
+}
+
+.bigger {
+  width: 400px;
 }
 
 .no_more {

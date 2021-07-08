@@ -2,7 +2,7 @@
 
 .container {
   width: 100%;
-  padding: 4px 12px;
+  padding: 4px 0;
   margin: 6px 0;
 
   display: flex;
@@ -22,19 +22,65 @@
   margin: 0;
 }
 
+.container.error {
+  box-shadow: 0 0 2px rgba($color: $third-color, $alpha: 1);
+  border: 1px solid $third-color;
+}
+
 .container:hover {
   background-color: rgba($color: $main-color, $alpha: 0.1);
+  cursor: pointer;
 }
 
-.name {
+.container label {
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.container label.align_start {
+  text-align: start;
+}
+
+.container .input {
+  width: 100%;
+  text-align: center;
+  border: none;
+  outline: none;
+  background-color: transparent;
+  padding: 4px 2px;
+  border-radius: 6px;
+
+  color: $secondary-color;
+}
+
+.input:focus {
+  background-color: $white-color;
+  color: black;
+}
+
+.hover_underline {
   text-decoration: none;
   color: $secondary-color;
-  cursor: pointer;
-  flex: 1;
 }
 
-.name:hover {
+.hover_underline:hover {
   text-decoration: underline;
+}
+
+.padding_start {
+  padding-right: 12px;
+}
+
+.padding_end {
+  padding-left: 12px;
+}
+
+.padding_all {
+  padding: 8px 12px;
+}
+
+.full_width {
+  flex: 1;
 }
 
 .icon,

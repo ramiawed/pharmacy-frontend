@@ -18,51 +18,10 @@
   flex: 4;
 }
 
-.row {
-  padding: 10px 0;
-
-  display: flex;
-  align-items: center;
-  margin: 4px 0;
-  border-radius: 6px;
-
-  color: $secondary-color;
-
-  box-shadow: 0 0 2px rgba($color: #000000, $alpha: 0.2);
-}
-
-.row:hover {
-  background: rgba($color: #000000, $alpha: 0.1);
-}
-
-.row label {
+.center {
   text-align: center;
-  font-size: 0.8rem;
 }
 
-.row.error {
-  box-shadow: 0 0 2px rgba($color: $third-color, $alpha: 1);
-  border: 1px solid $third-color;
-}
-
-.row .input {
-  width: 100%;
-  text-align: center;
-  border: none;
-  outline: none;
-  background-color: transparent;
-  padding: 4px 2px;
-  border-radius: 6px;
-
-  color: $secondary-color;
-}
-
-.input:focus {
-  background-color: $white-color;
-  color: black;
-}
-
-.hover_underline:hover {
-  cursor: pointer;
+.underline:hover {
   text-decoration: underline;
 }

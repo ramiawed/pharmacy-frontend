@@ -194,12 +194,7 @@ function CompaniesPage() {
       {status === "loading" && (
         <ReactLoading type="bubbles" height={50} width={50} />
       )}
-      {/* <div
-        style={{
-          textAlign: "center",
-          color: Colors.SECONDARY_COLOR,
-        }}
-      > */}
+
       {companies.length === 0 ? (
         <div className={styles.no_content_div}>
           <SiAtAndT className={styles.no_content_icon} />

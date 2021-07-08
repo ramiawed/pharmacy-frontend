@@ -51,19 +51,32 @@ function FavoriteRow({ user, withoutBoxShadow }) {
         ].join(" ")}
       >
         {user.type === UserTypeConstants.COMPANY && (
-          <Link to={`/companies/${user._id}`} className={rowStyles.name}>
-            {user.name}
-          </Link>
+          <label>
+            <Link
+              to={`/companies/${user._id}`}
+              className={[
+                rowStyles.hover_underline,
+                rowStyles.padding_start,
+              ].join(" ")}
+            >
+              {user.name}
+            </Link>
+          </label>
         )}
 
         {user.type === UserTypeConstants.WAREHOUSE && (
-          <Link to={`/warehouses/${user._id}`} className={rowStyles.name}>
+          <label
+            className={[
+              rowStyles.hover_underline,
+              rowStyles.padding_start,
+            ].join(" ")}
+          >
             {user.name}
-          </Link>
+          </label>
         )}
 
         {/* <p className={rowStyles.company_name}>{user.name}</p> */}
-        <div>
+        <div className={rowStyles.padding_end}>
           {favorites.map((favorite) => favorite._id).includes(user._id) ? (
             <AiFillStar
               className={[rowStyles.icon, rowStyles.fill_star].join(" ")}

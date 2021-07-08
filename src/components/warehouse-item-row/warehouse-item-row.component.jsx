@@ -15,6 +15,7 @@ import { MdDelete } from "react-icons/md";
 // styles
 // import styles from "./warehouse-item-row.module.scss";
 import tableStyles from "../table.module.scss";
+import rowStyles from "../row.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
@@ -37,7 +38,7 @@ function WarehouseItemRow({ item, onSelect, deleteItem, changeItemMaxQty }) {
 
   return (
     <>
-      <div className={[tableStyles.row].join(" ")}>
+      <div className={[rowStyles.container].join(" ")}>
         <label
           className={[
             tableStyles.hover_underline,
@@ -47,9 +48,7 @@ function WarehouseItemRow({ item, onSelect, deleteItem, changeItemMaxQty }) {
         >
           {item.name}
         </label>
-        <label className={tableStyles.label_medium}>
-          {item.company_name[0].name}
-        </label>
+        <label className={tableStyles.label_medium}>{item.company.name}</label>
         <label className={tableStyles.label_small}>{item.formula}</label>
         <label className={tableStyles.label_small}>{item.caliber}</label>
         <label className={tableStyles.label_small}>{item.packing}</label>
@@ -58,9 +57,11 @@ function WarehouseItemRow({ item, onSelect, deleteItem, changeItemMaxQty }) {
         <label className={tableStyles.label_small}>
           <input
             type="number"
-            className={tableStyles.input}
+            className={rowStyles.input}
             min={0}
-            defaultValue={item.warehouses.maxQty}
+            defaultValue={
+              item.warehouses.find((w) => w.warehouse._id === user._id).maxQty
+            }
             onBlur={(e) =>
               changeItemMaxQty({
                 itemId: item._id,

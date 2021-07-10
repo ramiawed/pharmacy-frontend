@@ -33,6 +33,7 @@ import {
   resetCartItems,
   selectCartItemCount,
 } from "../../redux/cart/cartSlice";
+import { resetWarehouseItems } from "../../redux/warehouseItems/warehouseItemsSlices";
 
 function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
   const history = useHistory();
@@ -52,6 +53,7 @@ function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
     dispatch(resetWarehouse());
     dispatch(resetItems());
     dispatch(resetCompanyItems());
+    dispatch(resetWarehouseItems());
     dispatch(resetCartItems());
   };
 
@@ -140,6 +142,17 @@ function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
           {t("nav-sign-out")}
         </p>
         <p className={styles.link}>{user.name}</p>
+        <div
+          style={{
+            backgroundImage: 'url("http://localhost:8000/avatar01.png',
+          }}
+          className={styles.profile_img}
+        >
+          {/* <div className={styles.user_actions}>
+            <p>sign out</p>
+            <p>medicines</p>
+          </div> */}
+        </div>
       </div>
     </div>
   );

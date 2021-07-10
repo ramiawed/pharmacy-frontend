@@ -3,6 +3,21 @@
 .container {
   width: 100%;
   color: $secondary-color;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 4px 4px;
+  margin-bottom: 8px;
+  width: 100%;
 }
 
 .header {
@@ -18,31 +33,31 @@
 .header .add_icon {
   color: $green-color;
   cursor: pointer;
-  margin: auto;
+  margin: 10px auto;
 }
 
 .header .add_icon:hover {
   opacity: 0.9;
 }
 
-.container .input_div {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  padding: 4px 8px;
-  margin-bottom: 8px;
-  width: 100%;
-
+.input_div {
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 
-.container .input_div input {
-  flex: 1;
-  padding: 4px 0;
-  color: $secondary-color;
+.input_div input {
+  width: 75px;
+  padding: 4px 12px;
+  text-align: center;
+  color: $green-color;
 
   border: none;
   outline: none;
+}
+
+.input_div label {
+  font-size: 0.9rem;
 }
 
 .delete_icon {

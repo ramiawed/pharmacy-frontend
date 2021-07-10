@@ -154,9 +154,8 @@ function WarehouseItemsPage() {
             <label className={tableStyles.label_small}>
               {t("item-max-qty")}
             </label>
-            <label className={tableStyles.label_small}>
-              {t("delete-item")}
-            </label>
+            <label className={tableStyles.label_xsmall}></label>
+            <label className={tableStyles.label_xsmall}></label>
             {/* <label className={tableStyles.label_xsmall}></label> */}
           </TableHeader>
 

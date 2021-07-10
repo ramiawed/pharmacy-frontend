@@ -10,6 +10,27 @@
   border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1);
 }
 
+.offer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 4px 0;
+  margin: 4px 0;
+  border-radius: 6px;
+  background: $third-color;
+  color: $white-color;
+}
+
+.value {
+  border-radius: 4px;
+  background: $white-color;
+  color: $third-color;
+
+  margin: 0 4px;
+  padding: 0 6px;
+}
+
 .max_qty_div {
   display: flex;
 
@@ -31,3 +52,7 @@
 .max_qty_div input.error {
   border: 1px solid rgba($color: #ff0000, $alpha: 1);
 }
+
+// .offer {
+//   border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1);
+// }

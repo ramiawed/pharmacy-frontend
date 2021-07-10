@@ -62,3 +62,9 @@ export const OrderOptions = {
   DISTRICT: "district",
   STREET: "street",
 };
+
+export const OfferTypes = {
+  PIECES: "pieces",
+  PERCENTAGE: "percentage",
+  SELECT_OFFER_TYPE: "select-offer-type",
+};

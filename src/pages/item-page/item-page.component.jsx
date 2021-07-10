@@ -29,6 +29,7 @@ import {
   addItemToWarehouse,
   removeItemFromWarehouse,
 } from "../../redux/companyItems/companyItemsSlices";
+import MultiValue from "../../components/multi-value/multi-value.component";
 
 function ItemPage() {
   const { t } = useTranslation();
@@ -313,6 +314,8 @@ function ItemPage() {
             />
           </div>
         </CardInfo>
+
+        <CardInfo headerTitle={t("nav-offers")}></CardInfo>
 
         {readOnly === "admin" &&
           (user.type === UserTypeConstants.COMPANY ||

@@ -1,16 +1,17 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 // redux stuff
 import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/auth/authSlice";
-import Modal from "../modal/modal.component";
-import { useTranslation } from "react-i18next";
+import { selectUser, selectUserData } from "../../redux/auth/authSlice";
 
 // components
 import ActionButton from "../action-button/action-button.component";
+import Modal from "../modal/modal.component";
+import OffersModal from "../offers-modal/offers-modal.component";
 
 // react-icons
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdLocalOffer } from "react-icons/md";
 
 // styles
 // import styles from "./warehouse-item-row.module.scss";
@@ -22,9 +23,10 @@ import { Colors } from "../../utils/constants";
 
 function WarehouseItemRow({ item, onSelect, deleteItem, changeItemMaxQty }) {
   const { t } = useTranslation();
-  const user = useSelector(selectUser);
+  const { user, token } = useSelector(selectUserData);
 
   const [showModal, setShowModal] = useState(false);
+  const [showOfferModal, setShowOfferModal] = useState(false);
 
   const actionButtonPress = () => {
     setShowModal(true);
@@ -72,12 +74,20 @@ function WarehouseItemRow({ item, onSelect, deleteItem, changeItemMaxQty }) {
           />
         </label>
         {/* <label className={tableStyles.label_large}>{item.composition}</label> */}
-        <label className={tableStyles.label_small}>
+        <label className={tableStyles.label_xsmall}>
           <ActionButton
             color={Colors.FAILED_COLOR}
             tooltip="tooltip-item-delete"
             icon={() => <MdDelete />}
             action={() => actionButtonPress()}
+          />
+        </label>
+        <label className={tableStyles.label_xsmall}>
+          <ActionButton
+            color={Colors.SECONDARY_COLOR}
+            tooltip="tooltip-offers"
+            icon={() => <MdLocalOffer />}
+            action={() => setShowOfferModal(true)}
           />
         </label>
       </div>
@@ -91,6 +101,15 @@ function WarehouseItemRow({ item, onSelect, deleteItem, changeItemMaxQty }) {
         >
           {<p>{t("item-delete-from-warehouse")}</p>}
         </Modal>
+      )}
+
+      {showOfferModal && (
+        <OffersModal
+          token={token}
+          item={item}
+          warehouseId={user._id}
+          close={() => setShowOfferModal(false)}
+        />
       )}
     </>
   );

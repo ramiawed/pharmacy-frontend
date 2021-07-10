@@ -1,0 +1,39 @@
+@import "../../variables.scss";
+
+.offer_type {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  width: 250px;
+  margin: auto;
+  margin-bottom: 10px;
+
+  // border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.checkboxes_div {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+
+  color: $secondary-color;
+  padding-bottom: 10px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.checkboxes_div > label {
+  font-size: 0.8rem;
+}
+
+.offer_type_checkbox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 0 10px;
+}
+
+.offer_type_checkbox label {
+  padding: 0 4px;
+}

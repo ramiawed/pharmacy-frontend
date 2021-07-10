@@ -208,5 +208,17 @@
     "warehouse-in-warehouse": "الموجودة ضمن المستودع",
     "warehouse-out-warehouse": "الغير موجودة ضمن المستودع",
     "pharmacy-in-warehouse": "الموجودة ضمن المستودعات",
-    "pharmacy-out-warehouse": "الغير موجودة ضمن المستودعات"
+    "pharmacy-out-warehouse": "الغير موجودة ضمن المستودعات",
+    "tooltip-offers": "عروض الدواء",
+    "offer-type": "نوع العرض",
+    "pieces": "عرض القطع",
+    "percentage": "عرض النسبة المئوية",
+    "select-offer-type": "اختر نوع العرض",
+    "quantity-label": "الكمية",
+    "bonus-quantity-label": "بونص قطع",
+    "bonus-percentage-label": "حسم نسبة مئوية",
+    "after-quantity-label": "قطعة",
+    "after-bonus-quantity-label": "قطعة",
+    "after-bonus-percentage-label": "%",
+    "offer-label" : "العرض"
 }

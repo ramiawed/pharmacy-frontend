@@ -5,18 +5,6 @@ const initialState = {
   cartItems: [],
 };
 
-// const compareTowCartItem = (a, b) => {
-//   if (a.warehouse.warehouse.name < b.warehouse.warehouse.name) {
-//     return -1;
-//   }
-
-//   if (a.warehouse.warehouse.name > b.warehouse.warehouse.name) {
-//     return -1;
-//   }
-
-//   return 0;
-// };
-
 export const cartSlice = createSlice({
   name: "cartSlice",
   initialState,
@@ -41,30 +29,42 @@ export const cartSlice = createSlice({
             action.payload.warehouse.warehouse._id
       );
 
-      // if the item is already in the cart, change the quantity
+      // if the item is already in the cart, replace the item
       if (findItem) {
-        state.cartItems = state.cartItems.map((item) => {
-          if (
-            item.item._id === action.payload.item._id &&
-            item.warehouse.warehouse._id ===
-              action.payload.warehouse.warehouse._id
-          ) {
-            return {
-              ...item,
-              qty:
-                item.warehouse.maxQty !== 0 &&
-                item.qty + action.payload.qty > item.warehouse.maxQty
-                  ? item.warehouse.maxQty
-                  : item.qty + action.payload.qty,
-            };
-          } else {
-            return item;
-          }
-        });
+        const filteredArray = state.cartItems.filter(
+          (item) =>
+            !(
+              item.item._id === action.payload.item._id &&
+              item.warehouse.warehouse._id ===
+                action.payload.warehouse.warehouse._id
+            )
+        );
+
+        state.cartItems = [...filteredArray, action.payload];
+
+        // state.cartItems = state.cartItems.map((item) => {
+        //   if (
+        //     item.item._id === action.payload.item._id &&
+        //     item.warehouse.warehouse._id ===
+        //       action.payload.warehouse.warehouse._id
+        //   ) {
+        //     return {
+        //       ...item,
+        //       qty:
+        //         item.warehouse.maxQty !== 0 &&
+        //         item.qty + action.payload.qty > item.warehouse.maxQty
+        //           ? item.warehouse.maxQty
+        //           : item.qty + action.payload.qty,
+        //     };
+        //   } else {
+        //     return item;
+        //   }
+        // });
       } else {
         state.cartItems = [...state.cartItems, action.payload];
       }
     },
+
     increaseItemQty: (state, action) => {
       const findItem = state.cartItems.find(
         (item) =>
@@ -87,6 +87,7 @@ export const cartSlice = createSlice({
         });
       }
     },
+
     decreaseItemQty: (state, action) => {
       const findItem = state.cartItems.find(
         (item) =>
@@ -109,6 +110,7 @@ export const cartSlice = createSlice({
         });
       }
     },
+
     removeItemFromCart: (state, action) => {
       state.cartItems = state.cartItems.filter(
         (item) =>

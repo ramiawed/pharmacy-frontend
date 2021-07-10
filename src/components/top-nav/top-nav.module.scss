@@ -80,3 +80,34 @@ div .link.selected {
 
 @media only screen and (min-width: $medium) {
 }
+
+.profile_img {
+  background-position: center;
+  background-size: contain;
+  width: 32px;
+  padding-top: 32px;
+  border-radius: 50%;
+
+  margin: 0 10px;
+
+  cursor: pointer;
+
+  position: relative;
+}
+
+.profile_img .user_actions {
+  background: $white-color;
+  box-shadow: 0 0 3px rgba($color: #000000, $alpha: 0.1);
+  border-radius: 6px;
+  padding: 10px;
+  position: absolute;
+  left: 10px;
+  top: 40px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-height: 300px;
+
+  cursor: default;
+}

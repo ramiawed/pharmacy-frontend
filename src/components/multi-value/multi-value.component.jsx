@@ -12,33 +12,63 @@ function MultiValue({
   values,
   changeHandler,
   placeholder,
+  quantityLabel,
+  bonusLabel,
+  afterQuantityLabel,
+  afterBonusLabel,
 }) {
   return (
-    <div className={styles.container}>
+    <>
       <div className={styles.header}>
         <MdAddCircle
           className={styles.add_icon}
-          size={24}
+          size={36}
           onClick={addHandler}
         />
       </div>
-      {values.map((value, index) => (
-        <div className={styles.input_div} key={value.key}>
-          <input
-            id={value.key}
-            value={value.value}
-            onChange={(e) => changeHandler(e)}
-            placeholder={placeholder}
-          />
+      <div className={styles.container}>
+        {values.map((value) => (
+          <div className={styles.row} key={value.key}>
+            {/* quantity value */}
+            <div className={styles.input_div}>
+              {quantityLabel && <label>{quantityLabel}</label>}
+              <input
+                type="number"
+                id={value.key}
+                title="qty"
+                value={value.value.qty}
+                onChange={(e) => changeHandler(e)}
+                placeholder={placeholder}
+                min={0}
+              />
+              {afterQuantityLabel && <label>{afterQuantityLabel}</label>}
+            </div>
 
-          <MdDelete
-            size={20}
-            className={styles.delete_icon}
-            onClick={() => deleteHandler(value.key)}
-          />
-        </div>
-      ))}
-    </div>
+            {/* bonus value */}
+            <div className={styles.input_div} key={value.key}>
+              {bonusLabel && <label>{bonusLabel}</label>}
+
+              <input
+                type="number"
+                id={value.key}
+                title="bonus"
+                value={value.value.bonus}
+                onChange={(e) => changeHandler(e)}
+                placeholder={placeholder}
+                min={0}
+              />
+
+              {afterBonusLabel && <label>{afterBonusLabel}</label>}
+            </div>
+            <MdDelete
+              size={20}
+              className={styles.delete_icon}
+              onClick={() => deleteHandler(value.key)}
+            />
+          </div>
+        ))}
+      </div>
+    </>
   );
 }
 

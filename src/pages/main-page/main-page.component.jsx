@@ -10,6 +10,11 @@ import { getFavorites } from "../../redux/favorites/favoritesSlice";
 // components
 import TopNav from "../../components/top-nav/top-nav.component";
 import SideNav from "../../components/side-nav/side-nav.component";
+import CompanyItemsPage from "../company-items-page/company-items-page.component";
+import ItemsByCompanyPage from "../items-by-company-page/items-by-company-page.component";
+import WarehouseItemsPage from "../warehouse-items-page/warehouse-items-page.component";
+import ItemPage from "../item-page/item-page.component";
+import ItemExcelPage from "../item-excel-page/item-excel-page.component";
 
 // react-icons
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -29,11 +34,6 @@ import styles from "./main-page.module.scss";
 // constants
 import { TopNavLinks } from "../../utils/constants";
 import Axios from "axios";
-import CompanyItemsPage from "../company-items-page/company-items-page.component";
-import ItemsByCompanyPage from "../items-by-company-page/items-by-company-page.component";
-import WarehouseItemsPage from "../warehouse-items-page/warehouse-items-page.component";
-import ItemPage from "../item-page/item-page.component";
-import ItemExcelPage from "../item-excel-page/item-excel-page.component";
 
 // MainPage
 // you have to sign in first

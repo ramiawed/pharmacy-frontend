@@ -1,28 +1,22 @@
-import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
+import React from "react";
+import { useSelector } from "react-redux";
+import { Redirect } from "react-router-dom";
+
+// redux stuff
+import { selectUser } from "../../redux/auth/authSlice";
 
 // components
 import CompanyItems from "../../components/company-items/company-items.component";
-import Item from "../../components/item/item.component";
-import ItemsFromExcel from "../../components/items-from-excel/items-from-excel.component";
-// styles
-import styles from "./company-items-page.module.scss";
 
 function CompanyItemsPage() {
-  // const { t } = useTranslation();
-  // const [selectedTab, setSelectedTab] = useState("search");
+  const user = useSelector(selectUser);
 
-  // const [selectedItem, setSelectedItem] = useState(null);
-
-  // const onSelect = (item) => {
-  //   setSelectedItem(item);
-  //   setSelectedTab("single");
-  // };
-
-  return (
+  return user ? (
     <>
       <CompanyItems />
     </>
+  ) : (
+    <Redirect to="/signin" />
   );
 }
 

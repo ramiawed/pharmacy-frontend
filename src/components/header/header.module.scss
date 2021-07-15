@@ -1,15 +1,14 @@
 @import "../../variables.scss";
 
-.header {
-  // padding: 10px 0;
-  // border-bottom: 1px solid rgba(0, 0, 0, 0.4);
-}
-
 .header h2 {
   text-align: center;
   color: $secondary-color;
 }
 
 .header h2 span {
-  color: $green-color;
+  background-color: $green-color;
+  color: $white-color;
+
+  padding: 4px 8px;
+  border-radius: 6px;
 }

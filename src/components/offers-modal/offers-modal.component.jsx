@@ -2,7 +2,9 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { v4 as uuidv4 } from "uuid";
 
+// redux stuff
 import { useDispatch } from "react-redux";
+import { changeItemWarehouseOffer } from "../../redux/warehouseItems/warehouseItemsSlices";
 
 // components
 import Modal from "../modal/modal.component";
@@ -14,9 +16,8 @@ import { MdErrorOutline } from "react-icons/md";
 // styles
 import styles from "./offers-modal.module.scss";
 import { Colors, OfferTypes } from "../../utils/constants";
-import { changeItemWarehouseOffer } from "../../redux/warehouseItems/warehouseItemsSlices";
 
-function OffersModal({ item, warehouseId, close, token }) {
+function OffersModal({ item, warehouseId, close, token, allowEdit }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -120,43 +121,46 @@ function OffersModal({ item, warehouseId, close, token }) {
       }}
       small={true}
     >
-      <div className={styles.checkboxes_div}>
-        <label>{t("offer-type")}:</label>
+      {allowEdit && (
+        <div className={styles.checkboxes_div}>
+          <label>{t("offer-type")}:</label>
 
-        <div className={styles.offer_type_checkbox}>
-          <input
-            type="checkbox"
-            value={quantityOfferType}
-            checked={quantityOfferType}
-            onChange={() => {
-              setQuantityOfferType(!quantityOfferType);
-              setPercentageOfferType(false);
-              setOfferTypeError(false);
-            }}
-          />
-          <label>{t(OfferTypes.PIECES)}</label>
+          <div className={styles.offer_type_checkbox}>
+            <input
+              type="checkbox"
+              value={quantityOfferType}
+              checked={quantityOfferType}
+              onChange={() => {
+                setQuantityOfferType(!quantityOfferType);
+                setPercentageOfferType(false);
+                setOfferTypeError(false);
+              }}
+            />
+            <label>{t(OfferTypes.PIECES)}</label>
+          </div>
+
+          <div className={styles.offer_type_checkbox}>
+            <input
+              type="checkbox"
+              value={percentageOfferType}
+              checked={percentageOfferType}
+              onChange={() => {
+                setPercentageOfferType(!percentageOfferType);
+                setQuantityOfferType(false);
+                setOfferTypeError(false);
+              }}
+            />
+            <label>{t(OfferTypes.PERCENTAGE)}</label>
+          </div>
+
+          {offerTypeError && (
+            <MdErrorOutline color={Colors.FAILED_COLOR} size={24} />
+          )}
         </div>
-
-        <div className={styles.offer_type_checkbox}>
-          <input
-            type="checkbox"
-            value={percentageOfferType}
-            checked={percentageOfferType}
-            onChange={() => {
-              setPercentageOfferType(!percentageOfferType);
-              setQuantityOfferType(false);
-              setOfferTypeError(false);
-            }}
-          />
-          <label>{t(OfferTypes.PERCENTAGE)}</label>
-        </div>
-
-        {offerTypeError && (
-          <MdErrorOutline color={Colors.FAILED_COLOR} size={24} />
-        )}
-      </div>
+      )}
 
       <MultiValue
+        allowEdit={allowEdit}
         values={values}
         addHandler={addHandler}
         deleteHandler={deleteHandler}

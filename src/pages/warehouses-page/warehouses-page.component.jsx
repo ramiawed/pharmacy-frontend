@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
 import { Redirect } from "react-router";
 
 // components
 import Header from "../../components/header/header.component";
 import SearchInput from "../../components/search-input/search-input.component";
-import CardInfo from "../../components/card-info/card-info.component";
 import FavoriteRow from "../../components/favorite-row/favorite-row.component";
 import PartnerRow from "../../components/partner-row/partner-row.component";
 import PartnerCard from "../../components/partner-card/partner-card.component";
@@ -21,7 +19,7 @@ import { SiAtAndT } from "react-icons/si";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-import { selectToken, selectUser } from "../../redux/auth/authSlice";
+import { selectUserData } from "../../redux/auth/authSlice";
 import {
   getWarehouses,
   resetWarehouse,
@@ -30,17 +28,16 @@ import {
 import { selectFavoritesPartners } from "../../redux/favorites/favoritesSlice";
 
 // constants and utils
-import { Colors, UserTypeConstants } from "../../utils/constants.js";
+import { UserTypeConstants } from "../../utils/constants.js";
 
 // styles
-import styles from "../companies-page/companies-page.module.scss";
+import generalStyles from "../../style.module.scss";
 
 function WarehousePage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const token = useSelector(selectToken);
-  const user = useSelector(selectUser);
+  const { token, user } = useSelector(selectUserData);
   const { warehouses, count, status } = useSelector(selectWarehouses);
   const favorites = useSelector(selectFavoritesPartners);
 
@@ -63,6 +60,8 @@ function WarehousePage() {
     const queryString = {};
 
     queryString.page = page;
+
+    // warehouse approve and active must be true
     queryString.approve = true;
     queryString.active = true;
 
@@ -100,20 +99,41 @@ function WarehousePage() {
     <>
       <Header>
         <h2>
-          {t("warehouses")}{" "}
-          <span style={{ color: Colors.SUCCEEDED_COLOR }}>({count})</span>
+          {t("warehouses")} <span>{count}</span>
         </h2>
-        <div className={styles.actions}>
-          <RiRefreshLine className={styles.icon} onClick={handleEnterPress} />
+        <div className={generalStyles.actions}>
+          {/* refresh */}
+          <div
+            className={[generalStyles.icon, generalStyles.fc_secondary].join(
+              " "
+            )}
+            onClick={handleEnterPress}
+          >
+            <RiRefreshLine />
+            <div className={generalStyles.tooltip}>{t("refresh-tooltip")}</div>
+          </div>
 
-          <div className={styles.favorite_div}>
-            <AiFillStar
-              className={styles.icon}
+          {/* show favorites */}
+          <div className={generalStyles.relative}>
+            <div
+              className={[generalStyles.icon, generalStyles.fc_secondary].join(
+                " "
+              )}
               onClick={() => setShowFavorites(!showFavorites)}
-            />
+            >
+              <AiFillStar />
+              <div className={generalStyles.tooltip}>
+                {t("show-favorite-tooltip")}
+              </div>
+            </div>
 
             {showFavorites && (
-              <div className={styles.favorites_content}>
+              <div
+                className={[
+                  generalStyles.favorites_content,
+                  generalStyles.bg_white,
+                ].join(" ")}
+              >
                 {showFavorites &&
                   favorites
                     .filter(
@@ -131,27 +151,44 @@ function WarehousePage() {
             )}
           </div>
 
-          <AiFillAppstore
+          {/* display card option */}
+          <div
             className={[
-              styles.icon,
-              displayType === "card" ? styles.selected : "",
+              generalStyles.icon,
+              displayType === "card"
+                ? generalStyles.fc_green
+                : generalStyles.fc_secondary,
             ].join(" ")}
             onClick={() => {
               setDisplayType("card");
               setShowFavorites(false);
             }}
-          />
+          >
+            <AiFillAppstore />
+            <div className={generalStyles.tooltip}>
+              {t("show-item-as-card-tooltip")}
+            </div>
+          </div>
 
-          <FaListUl
+          {/* display list option */}
+          <div
             className={[
-              styles.icon,
-              displayType === "list" ? styles.selected : "",
+              generalStyles.icon,
+              displayType === "list"
+                ? generalStyles.fc_green
+                : generalStyles.fc_secondary,
             ].join(" ")}
             onClick={() => {
               setDisplayType("list");
               setShowFavorites(false);
             }}
-          />
+          >
+            <FaListUl />
+            <div className={generalStyles.tooltip}>
+              {t("show-item-as-row-tooltip")}
+            </div>
+          </div>
+
           <SearchContainer searchAction={handleEnterPress}>
             <SearchInput
               label="user-name"
@@ -161,7 +198,6 @@ function WarehousePage() {
               onchange={(e) => {
                 setSearchName(e.target.value);
               }}
-              // bordered={true}
               placeholder="search"
               onEnterPress={handleEnterPress}
               resetField={() => setSearchName("")}
@@ -175,7 +211,6 @@ function WarehousePage() {
               onchange={(e) => {
                 setSearchCity(e.target.value);
               }}
-              // bordered={true}
               placeholder="search"
               onEnterPress={handleEnterPress}
               resetField={() => setSearchCity("")}
@@ -184,49 +219,55 @@ function WarehousePage() {
         </div>
       </Header>
 
+      {/* display as list */}
       {displayType === "list" &&
         warehouses.map((warehouse) => (
           <PartnerRow key={warehouse._id} user={warehouse} />
         ))}
 
+      {/* display as card */}
       {displayType === "card" && (
-        <div className={styles.content_container}>
+        <div className={generalStyles.content_container}>
           {warehouses.map((warehouse) => (
             <PartnerCard key={warehouse._id} user={warehouse} />
           ))}
         </div>
       )}
 
+      {/* show loading indicator when data loading from db */}
       {status === "loading" && (
         <ReactLoading type="bubbles" height={50} width={50} />
       )}
-      <div
-        style={{
-          textAlign: "center",
-          color: Colors.SECONDARY_COLOR,
-        }}
-      >
-        {warehouses.length === 0 ? (
-          <div className={styles.no_content_div}>
-            <SiAtAndT className={styles.no_content_icon} />
-            <p>{t("no-warehouses")}</p>
-          </div>
-        ) : warehouses.length < count ? (
-          <motion.button
-            whileHover={{
-              scale: 1.1,
-              textShadow: "0px 0px 8px rgb(255, 255, 255)",
-              boxShadow: "0px 0px 8px rgb(0, 0, 0, 0.3)",
-            }}
-            onClick={handleMoreResult}
-            className={styles.more_button}
-          >
-            {t("more")}
-          </motion.button>
-        ) : (
-          <p className={styles.no_more}>{t("no-more")}</p>
-        )}
-      </div>
+
+      {warehouses.length === 0 ? (
+        <div className={generalStyles.no_content_div}>
+          <SiAtAndT className={generalStyles.no_content_icon} />
+          <p className={generalStyles.fc_white}>{t("no-warehouses")}</p>
+        </div>
+      ) : warehouses.length < count ? (
+        <button
+          onClick={handleMoreResult}
+          className={[
+            generalStyles.button,
+            generalStyles.bg_secondary,
+            generalStyles.fc_white,
+            generalStyles.margin_h_auto,
+            generalStyles.block,
+            generalStyles.padding_v_10,
+            generalStyles.padding_h_12,
+          ].join(" ")}
+        >
+          {t("more")}
+        </button>
+      ) : (
+        <p
+          className={[generalStyles.center, generalStyles.fc_secondary].join(
+            " "
+          )}
+        >
+          {t("no-more")}
+        </p>
+      )}
     </>
   ) : (
     <Redirect to="/signin" />

@@ -18,6 +18,7 @@ import {
 import { selectToken } from "../../redux/auth/authSlice";
 
 // styles
+import generalStyles from "../../style.module.scss";
 import styles from "./partner-card.module.scss";
 
 // constants and utils
@@ -71,21 +72,13 @@ function PartnerCard({ user }) {
       <p className={styles.partner_name}>{user.name}</p>
       <div className={styles.from_top}>
         <div className={styles.name}>{user.name}</div>
-        <div>
+        <div
+          className={[generalStyles.icon, generalStyles.fc_yellow].join(" ")}
+        >
           {favorites.map((favorite) => favorite._id).includes(user._id) ? (
-            <AiFillStar
-              className={[styles.icon, styles.fill_star].join(" ")}
-              color="yellow"
-              size={32}
-              onClick={removeCompanyFromFavorite}
-            />
+            <AiFillStar size={24} onClick={removeCompanyFromFavorite} />
           ) : (
-            <AiOutlineStar
-              className={styles.icon}
-              color="yellow"
-              size={32}
-              onClick={addCompanyToFavorite}
-            />
+            <AiOutlineStar size={24} onClick={addCompanyToFavorite} />
           )}
         </div>
         <div>

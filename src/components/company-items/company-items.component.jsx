@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 
 // components
 import TableHeader from "../table-header/table-header.component";
@@ -26,13 +26,13 @@ import {
   resetActiveStatus,
   selectItems,
 } from "../../redux/items/itemsSlices";
-import { selectToken, selectUser } from "../../redux/auth/authSlice";
+import { selectUserData } from "../../redux/auth/authSlice";
 
 // constants
-import { Colors } from "../../utils/constants";
+import { Colors, UserTypeConstants } from "../../utils/constants";
 
 // styles
-import styles from "./company-items.module.scss";
+import generalStyles from "../../style.module.scss";
 import tableStyles from "../table.module.scss";
 import SearchInput from "../search-input/search-input.component";
 import searchContainerStyles from "../search-container/search-container.module.scss";
@@ -56,10 +56,10 @@ function CompanyItems() {
   const [sortField, setSortField] = useState("");
 
   const dispatch = useDispatch();
+
   const { count, items, activeStatus } = useSelector(selectItems);
   const [initialPage, setInitialPage] = useState(0);
-  const token = useSelector(selectToken);
-  const user = useSelector(selectUser);
+  const { token, user } = useSelector(selectUserData);
 
   // handle for page change in the paginate component
   const handlePageClick = (e) => {
@@ -78,7 +78,9 @@ function CompanyItems() {
 
     queryString.page = page;
 
-    queryString.companyId = user._id;
+    if (user.type === UserTypeConstants.COMPANY) {
+      queryString.companyId = user._id;
+    }
 
     if (searchName.trim().length !== 0) {
       queryString.name = searchName.trim();
@@ -184,200 +186,225 @@ function CompanyItems() {
     handleSearch(1);
   }, [sortField]);
 
-  return (
-    <>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "flex-end",
-          color: Colors.SECONDARY_COLOR,
-        }}
-      >
-        <RiAddCircleFill
-          className={styles.icon}
-          onClick={() => {
-            history.push("/item/admin");
-          }}
-        />
-        <SiMicrosoftexcel
-          className={styles.icon}
-          onClick={() => {
-            history.push("/items-from-excel");
-          }}
-        />
-        <SearchContainer searchAction={handleEnterPress}>
-          <SearchInput
-            label="item-name"
-            id="item-name"
-            type="text"
-            value={searchName}
-            onchange={(e) => setSearchName(e.target.value)}
-            placeholder="search"
-            onEnterPress={handleEnterPress}
-            resetField={() => {
-              setSearchName("");
-            }}
+  return user ? (
+    user.type === UserTypeConstants.COMPANY ||
+    user.type === UserTypeConstants.ADMIN ? (
+      <>
+        <div className={generalStyles.actions}>
+          {user.type === UserTypeConstants.COMPANY && (
+            <>
+              <div
+                className={[
+                  generalStyles.icon,
+                  generalStyles.fc_secondary,
+                ].join(" ")}
+                onClick={() => {
+                  history.push("/item/admin");
+                }}
+              >
+                <RiAddCircleFill size={20} />
+
+                <div className={generalStyles.tooltip}>{t("add-item")}</div>
+              </div>
+
+              <div
+                className={[
+                  generalStyles.icon,
+                  generalStyles.fc_secondary,
+                ].join(" ")}
+                onClick={() => {
+                  history.push("/items-from-excel");
+                }}
+              >
+                <SiMicrosoftexcel size={20} />
+                <div className={generalStyles.tooltip}>
+                  {t("items-from-excel")}
+                </div>
+              </div>
+            </>
+          )}
+
+          <SearchContainer searchAction={handleEnterPress}>
+            <SearchInput
+              label="item-name"
+              id="item-name"
+              type="text"
+              value={searchName}
+              onchange={(e) => setSearchName(e.target.value)}
+              placeholder="search"
+              onEnterPress={handleEnterPress}
+              resetField={() => {
+                setSearchName("");
+              }}
+            />
+
+            <SearchInput
+              label="item-warehouse"
+              id="item-warehouse"
+              type="text"
+              value={searchWarehouse}
+              onchange={(e) => setSearchWarehouse(e.target.value)}
+              placeholder="search"
+              onEnterPress={handleEnterPress}
+              resetField={() => {
+                setSearchWarehouse("");
+              }}
+            />
+            <div className={searchContainerStyles.checkbox_div}>
+              <input
+                type="checkbox"
+                checked={deletedItemsCheck}
+                onChange={() => {
+                  setDeletedItemsCheck(!deletedItemsCheck);
+                  setActiveItemsCheck(false);
+                }}
+              />
+              <label>{t("deleted-items")}</label>
+            </div>
+            <div className={searchContainerStyles.checkbox_div}>
+              <input
+                type="checkbox"
+                checked={activeItemsCheck}
+                onChange={() => {
+                  setDeletedItemsCheck(false);
+                  setActiveItemsCheck(!activeItemsCheck);
+                }}
+              />
+              <label>{t("active-items")}</label>
+            </div>
+            <div className={searchContainerStyles.checkbox_div}>
+              <input
+                type="checkbox"
+                checked={inWarehouseCheck}
+                onChange={() => {
+                  setInWarehouseCheck(!inWarehouseCheck);
+                  setOutWarehouseCheck(false);
+                }}
+              />
+              <label>{t("warehouse-in-warehouse")}</label>
+            </div>
+            <div className={searchContainerStyles.checkbox_div}>
+              <input
+                type="checkbox"
+                checked={outWarehouseCheck}
+                onChange={() => {
+                  setInWarehouseCheck(false);
+                  setOutWarehouseCheck(!outWarehouseCheck);
+                }}
+              />
+              <label>{t("warehouse-out-warehouse")}</label>
+            </div>
+          </SearchContainer>
+        </div>
+
+        {count > 0 ? (
+          <>
+            <TableHeader>
+              <label className={tableStyles.label_medium} onClick={sortByName}>
+                {t("item-trade-name")}
+                {sortNameField === 1 && (
+                  <AiOutlineSortAscending style={{ marginRight: "4px" }} />
+                )}
+                {sortNameField === -1 && (
+                  <AiOutlineSortDescending style={{ marginRight: "4px" }} />
+                )}
+              </label>
+              {user.type === UserTypeConstants.ADMIN && (
+                <label className={tableStyles.label_medium}>
+                  {t("user-company-name")}
+                </label>
+              )}
+              <label className={tableStyles.label_small}>
+                {t("item-status")}
+              </label>
+              <label className={tableStyles.label_small}>
+                {t("item-formula")}
+              </label>
+              <label
+                className={tableStyles.label_small}
+                onClick={sortByCaliber}
+              >
+                {t("item-caliber")}
+                {sortCaliberField === 1 && (
+                  <AiOutlineSortAscending style={{ marginRight: "4px" }} />
+                )}
+                {sortCaliberField === -1 && (
+                  <AiOutlineSortDescending style={{ marginRight: "4px" }} />
+                )}
+              </label>
+              <label className={tableStyles.label_small}>
+                {t("item-packing")}
+              </label>
+              <label className={tableStyles.label_small} onClick={sortByPrice}>
+                {t("item-price")}
+                {sortPriceField === 1 && (
+                  <AiOutlineSortAscending style={{ marginRight: "4px" }} />
+                )}
+                {sortPriceField === -1 && (
+                  <AiOutlineSortDescending style={{ marginRight: "4px" }} />
+                )}
+              </label>
+              <label
+                className={tableStyles.label_small}
+                onClick={sortByCustomerPrice}
+              >
+                {t("item-customer-price")}
+                {sortCustomerPriceField === 1 && (
+                  <AiOutlineSortAscending style={{ marginRight: "4px" }} />
+                )}
+                {sortCustomerPriceField === -1 && (
+                  <AiOutlineSortDescending style={{ marginRight: "4px" }} />
+                )}
+              </label>
+              {user.type === UserTypeConstants.COMPANY && (
+                <label className={tableStyles.label_large}>
+                  {t("item-composition")}
+                </label>
+              )}
+            </TableHeader>
+
+            {items.map((item) => (
+              <CompanyItemRow key={item._id} item={item} />
+            ))}
+
+            <div style={{ height: "10px" }}></div>
+
+            <ReactPaginate
+              previousLabel={t("previous")}
+              nextLabel={t("next")}
+              pageCount={Math.ceil(count / 9)}
+              forcePage={initialPage}
+              onPageChange={handlePageClick}
+              containerClassName={paginationStyles.pagination}
+              previousLinkClassName={paginationStyles.pagination_link}
+              nextLinkClassName={paginationStyles.pagination_link}
+              disabledClassName={paginationStyles.pagination_link_disabled}
+              activeClassName={paginationStyles.pagination_link_active}
+            />
+          </>
+        ) : (
+          <>
+            <div className={generalStyles.no_content_div}>
+              <GiMedicines className={generalStyles.no_content_icon} />
+              <p className={generalStyles.fc_white}>{t("no-items-found")}</p>
+            </div>
+          </>
+        )}
+
+        {activeStatus === "succeeded" && (
+          <Toast
+            bgColor={Colors.SUCCEEDED_COLOR}
+            foreColor="#fff"
+            toastText={t("item-operation-complete")}
+            actionAfterTimeout={() => dispatch(resetActiveStatus())}
           />
-
-          <SearchInput
-            label="item-warehouse"
-            id="item-warehouse"
-            type="text"
-            value={searchWarehouse}
-            onchange={(e) => setSearchWarehouse(e.target.value)}
-            placeholder="search"
-            onEnterPress={handleEnterPress}
-            resetField={() => {
-              setSearchWarehouse("");
-            }}
-          />
-          <div className={searchContainerStyles.checkbox_div}>
-            <input
-              type="checkbox"
-              checked={deletedItemsCheck}
-              onChange={() => {
-                setDeletedItemsCheck(!deletedItemsCheck);
-                setActiveItemsCheck(false);
-              }}
-            />
-            <label>{t("deleted-items")}</label>
-          </div>
-          <div className={searchContainerStyles.checkbox_div}>
-            <input
-              type="checkbox"
-              checked={activeItemsCheck}
-              onChange={() => {
-                setDeletedItemsCheck(false);
-                setActiveItemsCheck(!activeItemsCheck);
-              }}
-            />
-            <label>{t("active-items")}</label>
-          </div>
-          <div className={searchContainerStyles.checkbox_div}>
-            <input
-              type="checkbox"
-              checked={inWarehouseCheck}
-              onChange={() => {
-                setInWarehouseCheck(!inWarehouseCheck);
-                setOutWarehouseCheck(false);
-              }}
-            />
-            <label>{t("warehouse-in-warehouse")}</label>
-          </div>
-          <div className={searchContainerStyles.checkbox_div}>
-            <input
-              type="checkbox"
-              checked={outWarehouseCheck}
-              onChange={() => {
-                setInWarehouseCheck(false);
-                setOutWarehouseCheck(!outWarehouseCheck);
-              }}
-            />
-            <label>{t("warehouse-out-warehouse")}</label>
-          </div>
-        </SearchContainer>
-      </div>
-
-      {count > 0 ? (
-        <>
-          <TableHeader>
-            <label className={tableStyles.label_medium} onClick={sortByName}>
-              {t("item-trade-name")}
-              {sortNameField === 1 && (
-                <AiOutlineSortAscending style={{ marginRight: "4px" }} />
-              )}
-              {sortNameField === -1 && (
-                <AiOutlineSortDescending style={{ marginRight: "4px" }} />
-              )}
-            </label>
-            <label className={tableStyles.label_small}>
-              {t("item-status")}
-            </label>
-            <label className={tableStyles.label_small}>
-              {t("item-formula")}
-            </label>
-            <label className={tableStyles.label_small} onClick={sortByCaliber}>
-              {t("item-caliber")}
-              {sortCaliberField === 1 && (
-                <AiOutlineSortAscending style={{ marginRight: "4px" }} />
-              )}
-              {sortCaliberField === -1 && (
-                <AiOutlineSortDescending style={{ marginRight: "4px" }} />
-              )}
-            </label>
-            <label className={tableStyles.label_small}>
-              {t("item-packing")}
-            </label>
-            <label className={tableStyles.label_small} onClick={sortByPrice}>
-              {t("item-price")}
-              {sortPriceField === 1 && (
-                <AiOutlineSortAscending style={{ marginRight: "4px" }} />
-              )}
-              {sortPriceField === -1 && (
-                <AiOutlineSortDescending style={{ marginRight: "4px" }} />
-              )}
-            </label>
-            <label
-              className={tableStyles.label_small}
-              onClick={sortByCustomerPrice}
-            >
-              {t("item-customer-price")}
-              {sortCustomerPriceField === 1 && (
-                <AiOutlineSortAscending style={{ marginRight: "4px" }} />
-              )}
-              {sortCustomerPriceField === -1 && (
-                <AiOutlineSortDescending style={{ marginRight: "4px" }} />
-              )}
-            </label>
-            <label className={tableStyles.label_large}>
-              {t("item-composition")}
-            </label>
-            {/* <label className={tableStyles.label_xsmall}></label> */}
-          </TableHeader>
-
-          {items.map((item) => (
-            <CompanyItemRow key={item._id} item={item} />
-          ))}
-
-          <div style={{ height: "10px" }}></div>
-
-          <ReactPaginate
-            previousLabel={t("previous")}
-            nextLabel={t("next")}
-            pageCount={Math.ceil(count / 9)}
-            forcePage={initialPage}
-            onPageChange={handlePageClick}
-            containerClassName={paginationStyles.pagination}
-            previousLinkClassName={paginationStyles.pagination_link}
-            nextLinkClassName={paginationStyles.pagination_link}
-            disabledClassName={paginationStyles.pagination_link_disabled}
-            activeClassName={paginationStyles.pagination_link_active}
-          />
-        </>
-      ) : (
-        <>
-          <div
-            style={{
-              textAlign: "center",
-              padding: "16px",
-              color: Colors.SECONDARY_COLOR,
-            }}
-          >
-            <GiMedicines size={200} style={{ opacity: "0.4" }} />
-            <p>{t("no-items-found")}</p>
-          </div>
-        </>
-      )}
-
-      {activeStatus === "succeeded" && (
-        <Toast
-          bgColor={Colors.SUCCEEDED_COLOR}
-          foreColor="#fff"
-          toastText={t("item-operation-complete")}
-          actionAfterTimeout={() => dispatch(resetActiveStatus())}
-        />
-      )}
-    </>
+        )}
+      </>
+    ) : (
+      <Redirect to="/" />
+    )
+  ) : (
+    <Redirect to="/signin" />
   );
 }
 

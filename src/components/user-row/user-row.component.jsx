@@ -1,56 +1,44 @@
 // libraries
 import React, { useState } from "react";
-import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 
+// redux stuff
 import { useDispatch, useSelector } from "react-redux";
 
+import { selectToken } from "../../redux/auth/authSlice";
 import {
   userApproveChange,
   deleteUser,
   undoDeleteUser,
+  resetUserPassword,
 } from "../../redux/users/usersSlice";
 
 // react-icons
-import {
-  BsFillCaretDownFill,
-  BsFillCaretUpFill,
-  BsFillPersonCheckFill,
-  BsFillPersonDashFill,
-} from "react-icons/bs";
-import { AiFillUnlock, AiFillLock } from "react-icons/ai";
+import { BsFillPersonCheckFill, BsFillPersonDashFill } from "react-icons/bs";
+import { IoMdMore } from "react-icons/io";
+import { AiFillUnlock, AiFillLock, AiFillEdit } from "react-icons/ai";
 
 // component
-import ActionButton from "../action-button/action-button.component";
 import Modal from "../modal/modal.component";
+import UserMoreInfoModal from "../user-more-info-modal/user-more-info-modal.component";
+import PasswordRow from "../password-row/password-row.component";
 
 // styles
-import styles from "./user-row.module.scss";
+import generalStyles from "../../style.module.scss";
+import rowStyles from "../row.module.scss";
 import tableStyles from "../table.module.scss";
-import { selectToken } from "../../redux/auth/authSlice";
-import { Colors, GuestJob, UserTypeConstants } from "../../utils/constants";
+
+// constants
+import { checkConnection } from "../../utils/checkInternet";
 
 // UserRow component
 function UserRow({ user, index }) {
   const { t } = useTranslation();
+
   const dispatch = useDispatch();
 
   const token = useSelector(selectToken);
 
-  const containerVariant = {
-    hidden: {
-      opacity: 0,
-      left: "-100vh",
-    },
-    visible: {
-      opacity: 1,
-      left: "0",
-      transition: {
-        type: "tween",
-        delay: index * 0.02,
-      },
-    },
-  };
   const [modalInfo, setModalInfo] = useState({
     header: "",
     body: "",
@@ -58,8 +46,100 @@ function UserRow({ user, index }) {
     okLabel: "ok-label",
   });
   const [showModal, setShowModal] = useState(false);
-  const [collapsed, setCollapsed] = useState(true);
+  const [showMoreInfo, setShowMoreInfo] = useState(false);
+  const [showResetUserPasswordModal, setShowResetUserPasswordModal] =
+    useState(false);
   const [actionType, setActionType] = useState("");
+  const [passwordObj, setPasswordObj] = useState({
+    newPassword: "",
+    newPasswordConfirm: "",
+  });
+
+  const [passwordObjError, setPasswordObjError] = useState({
+    newPassword: "",
+    newPasswordConfirm: "",
+  });
+
+  // method to handle the change in the input in password and confirm password
+  // for change password
+  const handlePasswordFieldsChange = (field, val) => {
+    setPasswordObj({
+      ...passwordObj,
+      [field]: val,
+    });
+    setPasswordObjError({
+      ...passwordObjError,
+      [field]: "",
+    });
+  };
+
+  const changeUserPassword = () => {
+    let errorObj = {};
+
+    if (passwordObj.newPassword.length < 5) {
+      errorObj = {
+        ...errorObj,
+        newPassword: "password-length",
+      };
+    }
+
+    if (passwordObj.newPassword.length === 0) {
+      errorObj = {
+        ...errorObj,
+        newPassword: "enter-password",
+      };
+    }
+
+    if (passwordObj.newPassword !== passwordObj.newPasswordConfirm) {
+      errorObj = {
+        ...errorObj,
+        newPasswordConfirm: "unequal-passwords",
+      };
+    }
+
+    if (passwordObj.newPasswordConfirm.length < 5) {
+      errorObj = {
+        ...errorObj,
+        newPasswordConfirm: "confirm-password-length",
+      };
+    }
+
+    if (passwordObj.newPasswordConfirm.length === 0) {
+      errorObj = {
+        ...errorObj,
+        newPasswordConfirm: "enter-password-confirm",
+      };
+    }
+
+    if (Object.entries(errorObj).length !== 0) {
+      setPasswordObjError({
+        ...passwordObjError,
+        ...errorObj,
+      });
+      return;
+    }
+
+    // check the internet connection
+    if (!checkConnection()) {
+      return;
+    }
+
+    dispatch(
+      resetUserPassword({
+        userId: user._id,
+        newPassword: passwordObj.newPassword,
+        newPasswordConfirm: passwordObj.newPasswordConfirm,
+        token,
+      })
+    );
+
+    setPasswordObj({
+      newPassword: "",
+      newPasswordConfirm: "",
+    });
+
+    setShowResetUserPasswordModal(false);
+  };
 
   // handle press on the action icon in each row
   // based on the type of the action icon will set the modal info
@@ -185,177 +265,153 @@ function UserRow({ user, index }) {
 
   return (
     <>
-      <motion.div
-        variants={containerVariant}
-        initial="hidden"
-        animate="visible"
-        className={[
-          styles.user_row,
-          collapsed ? "" : `${styles.user_row_expanded}`,
-          index % 2 === 0 ? `${styles.odd}` : `${styles.even}`,
-        ].join(" ")}
-      >
-        <div className={styles.basic_info}>
-          <label className={tableStyles.label_large}>{user.name}</label>
-          {/* <label>{user.username}</label> */}
-          <label className={tableStyles.label_small}>
-            {user.isApproved ? (
-              <ActionButton
-                color={Colors.SUCCEEDED_COLOR}
-                tooltip="tooltip-disapprove"
-                icon={() => <AiFillUnlock />}
-                action={() => handleActionIconClick("disapprove")}
-              />
-            ) : (
-              <ActionButton
-                color={Colors.FAILED_COLOR}
-                tooltip="tooltip-approve"
-                icon={() => <AiFillLock />}
-                action={() => handleActionIconClick("approve")}
-              />
+      <div className={[rowStyles.container].join(" ")}>
+        {/* <div className={styles.basic_info}> */}
+        <label className={tableStyles.label_large}>{user.name}</label>
+        {/* <label>{user.username}</label> */}
+        <label className={tableStyles.label_small}>
+          {user.isApproved ? (
+            <div
+              className={[
+                generalStyles.icon,
+                generalStyles.fc_green,
+                generalStyles.margin_h_auto,
+              ].join(" ")}
+              onClick={() => handleActionIconClick("disapprove")}
+            >
+              <AiFillUnlock size={16} />
+              <div className={generalStyles.tooltip}>
+                {t("tooltip-disapprove")}
+              </div>
+            </div>
+          ) : (
+            <div
+              className={[
+                generalStyles.icon,
+                generalStyles.fc_red,
+                generalStyles.margin_h_auto,
+              ].join(" ")}
+              onClick={() => handleActionIconClick("approve")}
+            >
+              <AiFillLock size={16} />
+              <div className={generalStyles.tooltip}>
+                {t("tooltip-approve")}
+              </div>
+            </div>
+          )}
+        </label>
+        <label className={tableStyles.label_small}>
+          {user.isActive ? (
+            <div
+              className={[
+                generalStyles.icon,
+                generalStyles.fc_green,
+                generalStyles.margin_h_auto,
+              ].join(" ")}
+              onClick={() => handleActionIconClick("delete")}
+            >
+              <BsFillPersonCheckFill size={16} />
+              <div className={generalStyles.tooltip}>{t("tooltip-delete")}</div>
+            </div>
+          ) : (
+            <div
+              className={[
+                generalStyles.icon,
+                generalStyles.fc_red,
+                generalStyles.margin_h_auto,
+              ].join(" ")}
+              onClick={() => handleActionIconClick("undo-delete")}
+            >
+              <BsFillPersonDashFill size={16} />
+              <div className={generalStyles.tooltip}>
+                {t("tooltip-undo-delete")}
+              </div>
+            </div>
+          )}{" "}
+        </label>
+        <label className={tableStyles.label_large}> {user.email}</label>
+        <label className={tableStyles.label_medium}>{user.phone}</label>
+        <label className={tableStyles.label_medium}>{user.mobile}</label>
+        <label className={tableStyles.label_xsmall}>
+          <div
+            className={[generalStyles.icon, generalStyles.margin_h_auto].join(
+              " "
             )}
-          </label>
-          <label className={tableStyles.label_small}>
-            {user.isActive ? (
-              <ActionButton
-                color={Colors.SUCCEEDED_COLOR}
-                tooltip="tooltip-delete"
-                icon={() => <BsFillPersonCheckFill />}
-                action={() => handleActionIconClick("delete")}
-              />
-            ) : (
-              <ActionButton
-                color={Colors.FAILED_COLOR}
-                tooltip="tooltip-undo-delete"
-                icon={() => <BsFillPersonDashFill />}
-                action={() => handleActionIconClick("undo-delete")}
-              />
-            )}{" "}
-          </label>
-          <label className={tableStyles.label_large}> {user.email}</label>
-          <label className={tableStyles.label_medium}>{user.phone}</label>
-          <label className={tableStyles.label_medium}>{user.mobile}</label>
-          <div className={tableStyles.label_xsmall}>
-            {collapsed ? (
-              <ActionButton
-                color={Colors.SECONDARY_COLOR}
-                tooltip="tooltip-expanded"
-                icon={() => <BsFillCaretDownFill />}
-                action={() => setCollapsed(!collapsed)}
-              />
-            ) : (
-              <ActionButton
-                color={Colors.SECONDARY_COLOR}
-                tooltip="tooltip-collapsed"
-                icon={() => <BsFillCaretUpFill />}
-                action={() => setCollapsed(!collapsed)}
-              />
-            )}
-          </div>
-        </div>
-        {!collapsed && (
-          <div className={styles.expanded_info_div}>
-            <div className={styles.advanced_info}>
-              <div className={styles.row}>
-                <div className={[styles.half_row, styles.border_end].join(" ")}>
-                  <label className={styles.label}>{t("user-username")}:</label>
-                  <label className={styles.label_value}>{user.username}</label>
-                </div>
-                <div className={styles.half_row}>
-                  <label className={styles.label}>{t("user-type")}:</label>
-                  <label className={styles.label_value}>
-                    {t(`${user.type.toLowerCase()}`)}
-                  </label>
-                </div>
-              </div>
-
-              <div className={styles.row}>
-                <div className={[styles.half_row, styles.border_end].join(" ")}>
-                  <label className={styles.label}>{t("user-city")}:</label>
-                  <label className={styles.label_value}>{user.city}</label>
-                </div>
-                <div className={styles.half_row}></div>
-              </div>
-
-              <div className={styles.row}>
-                <div className={[styles.half_row, styles.border_end].join(" ")}>
-                  <label className={styles.label}>{t("user-district")}:</label>
-                  <label className={styles.label_value}>{user.district}</label>
-                </div>
-                <div className={styles.half_row}>
-                  <label className={styles.label}>{t("user-street")}:</label>
-                  <label className={styles.label_value}>{user.street}</label>
-                </div>
-              </div>
-
-              {/* if the user type is pharmacy or warehouse display employee name and certificate name */}
-              {user.type === UserTypeConstants.PHARMACY ||
-              user.type === UserTypeConstants.WAREHOUSE ? (
-                <div className={styles.row}>
-                  <div
-                    className={[styles.half_row, styles.border_end].join(" ")}
-                  >
-                    <label className={styles.label}>
-                      {t("user-employee-name")}:
-                    </label>
-                    <label className={styles.label_value}>
-                      {user.employeeName}
-                    </label>
-                  </div>
-                  <div className={styles.half_row}>
-                    <label className={styles.label}>
-                      {t("user-certificate-name")}:
-                    </label>
-                    <label className={styles.label_value}>
-                      {user.certificateName}
-                    </label>
-                  </div>
-                </div>
-              ) : null}
-
-              {user.type === UserTypeConstants.NORMAL ? (
-                <div className={styles.row}>
-                  <div
-                    className={[styles.half_row, styles.border_end].join(" ")}
-                  >
-                    <label className={styles.label}>{t("user-job")}:</label>
-                    <label>{t(`${user.guestDetails.job.toLowerCase()}`)}</label>
-                  </div>
-                  <div className={styles.half_row}></div>
-                  {user.guestDetails.job === GuestJob.EMPLOYEE ? (
-                    <>
-                      <div className={styles.half_row}>
-                        <label className={styles.label}>
-                          {t("user-company-name")}:
-                        </label>
-                        <label>{user.guestDetails.companyName}</label>
-                      </div>
-                      <div className={styles.half_row}>
-                        <label className={styles.label}>
-                          {t("user-job-title")}:
-                        </label>
-                        <label>{user.guestDetails.jobTitle}</label>
-                      </div>
-                    </>
-                  ) : null}
-                </div>
-              ) : null}
+            onClick={() => setShowResetUserPasswordModal(true)}
+          >
+            <AiFillEdit />
+            <div className={generalStyles.tooltip}>
+              {t("change-password-tooltip")}
             </div>
           </div>
-        )}
-        {showModal && (
-          <Modal
-            header={modalInfo.header}
-            cancelLabel={modalInfo.cancelLabel}
-            okLabel={modalInfo.okLabel}
-            okModal={() => handlePressOkOnModal()}
-            closeModal={() => setShowModal(false)}
-            small={true}
+        </label>
+        <label className={tableStyles.label_xsmall}>
+          <div
+            className={[generalStyles.icon, generalStyles.margin_h_auto].join(
+              " "
+            )}
+            onClick={() => setShowMoreInfo(true)}
           >
-            {modalInfo.body()}
-          </Modal>
-        )}
-      </motion.div>
+            <IoMdMore size={20} />
+            <div className={generalStyles.tooltip}>
+              {t("user-more-info-title")}
+            </div>
+          </div>
+        </label>
+      </div>
+
+      {showModal && (
+        <Modal
+          header={modalInfo.header}
+          cancelLabel={modalInfo.cancelLabel}
+          okLabel={modalInfo.okLabel}
+          okModal={() => handlePressOkOnModal()}
+          closeModal={() => setShowModal(false)}
+          small={true}
+        >
+          {modalInfo.body()}
+        </Modal>
+      )}
+
+      {showResetUserPasswordModal && (
+        <Modal
+          header="change-password-tooltip"
+          okLabel="ok-label"
+          cancelLabel="cancel-label"
+          okModal={changeUserPassword}
+          closeModal={() => {
+            setShowResetUserPasswordModal(false);
+            setPasswordObj({
+              newPassword: "",
+              newPasswordConfirm: "",
+            });
+            setPasswordObjError({
+              newPassword: "",
+              newPasswordConfirm: "",
+            });
+          }}
+          small={true}
+        >
+          <PasswordRow
+            field="newPassword"
+            labelText={t("new-password")}
+            value={passwordObj.newPassword}
+            onInputChange={handlePasswordFieldsChange}
+            error={t(passwordObjError.newPassword)}
+          />
+          <PasswordRow
+            field="newPasswordConfirm"
+            labelText={t("new-password-confirm")}
+            value={passwordObj.newPasswordConfirm}
+            onInputChange={handlePasswordFieldsChange}
+            error={t(passwordObjError.newPasswordConfirm)}
+          />
+        </Modal>
+      )}
+
+      {showMoreInfo && (
+        <UserMoreInfoModal user={user} close={() => setShowMoreInfo(false)} />
+      )}
     </>
   );
 }

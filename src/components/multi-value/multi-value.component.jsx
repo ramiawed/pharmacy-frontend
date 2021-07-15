@@ -1,9 +1,11 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 // react-icons
 import { MdAddCircle, MdDelete } from "react-icons/md";
 
 // styles
+import generalStyles from "../../style.module.scss";
 import styles from "./multi-value.module.scss";
 
 function MultiValue({
@@ -16,15 +18,27 @@ function MultiValue({
   bonusLabel,
   afterQuantityLabel,
   afterBonusLabel,
+  allowEdit,
 }) {
+  const { t } = useTranslation();
+
   return (
     <>
       <div className={styles.header}>
-        <MdAddCircle
-          className={styles.add_icon}
-          size={36}
-          onClick={addHandler}
-        />
+        {allowEdit && (
+          <div
+            className={[
+              generalStyles.icon,
+              generalStyles.fc_green,
+              generalStyles.margin_h_auto,
+            ].join(" ")}
+          >
+            <MdAddCircle size={36} onClick={addHandler} />
+            <div className={generalStyles.tooltip}>
+              {t("add-offer-tooltip")}
+            </div>
+          </div>
+        )}
       </div>
       <div className={styles.container}>
         {values.map((value) => (
@@ -40,6 +54,7 @@ function MultiValue({
                 onChange={(e) => changeHandler(e)}
                 placeholder={placeholder}
                 min={0}
+                disabled={!allowEdit}
               />
               {afterQuantityLabel && <label>{afterQuantityLabel}</label>}
             </div>
@@ -56,15 +71,22 @@ function MultiValue({
                 onChange={(e) => changeHandler(e)}
                 placeholder={placeholder}
                 min={0}
+                disabled={!allowEdit}
               />
 
               {afterBonusLabel && <label>{afterBonusLabel}</label>}
             </div>
-            <MdDelete
-              size={20}
-              className={styles.delete_icon}
-              onClick={() => deleteHandler(value.key)}
-            />
+
+            {allowEdit && (
+              <div
+                className={[generalStyles.icon, generalStyles.fc_red].join(" ")}
+              >
+                <MdDelete size={20} onClick={() => deleteHandler(value.key)} />
+                <div className={generalStyles.tooltip}>
+                  {t("remove-offer-tooltip")}
+                </div>
+              </div>
+            )}
           </div>
         ))}
       </div>

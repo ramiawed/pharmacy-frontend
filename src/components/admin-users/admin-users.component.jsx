@@ -31,15 +31,20 @@ import ReactPaginate from "react-paginate";
 
 // react-icons
 import { FaSearch } from "react-icons/fa";
-import { VscListOrdered } from "react-icons/vsc";
+import { BiSortAZ } from "react-icons/bi";
 import { FiFileText } from "react-icons/fi";
 
 // redux stuff
-import { getUsers, selectUsers } from "../../redux/users/usersSlice";
-import { selectToken, selectUser } from "../../redux/auth/authSlice";
+import {
+  getUsers,
+  resetUserChangePasswordStatus,
+  selectUsers,
+} from "../../redux/users/usersSlice";
+import { selectUserData } from "../../redux/auth/authSlice";
 import { resetActivationDeleteStatus } from "../../redux/users/usersSlice";
 
 // styles
+import generalStyles from "../../style.module.scss";
 import styles from "./admin-users.module.scss";
 import tableStyles from "../table.module.scss";
 import paginationStyles from "../pagination.module.scss";
@@ -57,9 +62,10 @@ function AdminUsers() {
     count,
     activationDeleteStatus,
     activationDeleteStatusMsg,
+    resetUserPasswordStatus,
+    resetUserPasswordError,
   } = useSelector(selectUsers);
-  const token = useSelector(selectToken);
-  const user = useSelector(selectUser);
+  const { token, user } = useSelector(selectUserData);
 
   // modal state
   const [showModal, setShowModal] = useState(false);
@@ -255,6 +261,7 @@ function AdminUsers() {
 
     setSearchOptionCount(Object.entries(queryString).length - 1);
 
+    // build sort string
     let sortArray = [];
     Object.keys(orderBy).forEach((key) => {
       if (orderBy[key] === 1) {
@@ -269,6 +276,7 @@ function AdminUsers() {
     }
 
     dispatch(getUsers({ queryString, token }));
+
     setInitialPage(page - 1);
   };
 
@@ -299,14 +307,22 @@ function AdminUsers() {
       <div>
         <Header>
           <h2>
-            {t("partners")} <span>({count})</span>
+            {t("partners")} <span>{count}</span>
           </h2>
           <div className={styles.actions_icons}>
             <div onClick={() => setShowModal(true)}>
               <IconWithNumber
                 value={searchOptionCount}
-                fillIcon={<FaSearch />}
-                noFillIcon={<FaSearch />}
+                fillIcon={
+                  <div className={generalStyles.icon}>
+                    <FaSearch size={16} />
+                  </div>
+                }
+                noFillIcon={
+                  <div className={generalStyles.icon}>
+                    <FaSearch size={16} />
+                  </div>
+                }
                 small={true}
               />
             </div>
@@ -314,9 +330,18 @@ function AdminUsers() {
             <div onClick={() => setShowOrderModel(true)}>
               <IconWithNumber
                 value={Object.entries(orderBy).length}
-                fillIcon={<VscListOrdered size={16} />}
-                noFillIcon={<VscListOrdered size={16} />}
+                fillIcon={
+                  <div className={generalStyles.icon}>
+                    <BiSortAZ size={16} />{" "}
+                  </div>
+                }
+                noFillIcon={
+                  <div className={generalStyles.icon}>
+                    <BiSortAZ size={16} />
+                  </div>
+                }
                 small={true}
+                tooltip={t("sort-results")}
               />
             </div>
           </div>
@@ -330,6 +355,7 @@ function AdminUsers() {
         <label className={tableStyles.label_large}>{t("user-email")}</label>
         <label className={tableStyles.label_medium}>{t("user-phone")}</label>
         <label className={tableStyles.label_medium}>{t("user-mobile")}</label>
+        <label className={tableStyles.label_xsmall}></label>
         <label className={tableStyles.label_xsmall}></label>
       </TableHeader>
 
@@ -361,16 +387,19 @@ function AdminUsers() {
           activeClassName={paginationStyles.pagination_link_active}
         />
       ) : (
-        <div
-          style={{
-            textAlign: "center",
-            padding: "16px",
-            color: Colors.SECONDARY_COLOR,
-          }}
-        >
-          <FiFileText size={200} style={{ opacity: "0.4" }} />
-          <p>{t("no-partners-found-message")}</p>
-        </div>
+        <>
+          <div
+            className={[
+              generalStyles.no_content_div,
+              generalStyles.fc_white,
+            ].join(" ")}
+          >
+            <FiFileText size={250} />
+            <p className={generalStyles.fc_white}>
+              {t("no-partners-found-message")}
+            </p>
+          </div>
+        </>
       )}
 
       {activationDeleteStatus === "success" ? (
@@ -389,6 +418,24 @@ function AdminUsers() {
           foreColor="#000"
           toastText={t(activationDeleteStatusMsg)}
           actionAfterTimeout={() => dispatch(resetActivationDeleteStatus())}
+        />
+      ) : null}
+
+      {resetUserPasswordStatus === "success" ? (
+        <Toast
+          bgColor={Colors.SUCCEEDED_COLOR}
+          foreColor="#fff"
+          toastText={t("password-change-succeeded")}
+          actionAfterTimeout={() => {
+            dispatch(resetUserChangePasswordStatus());
+          }}
+        />
+      ) : resetUserPasswordStatus === "failed" ? (
+        <Toast
+          bgColor={Colors.FAILED_COLOR}
+          foreColor="#000"
+          toastText={t()}
+          actionAfterTimeout={() => dispatch(resetUserChangePasswordStatus())}
         />
       ) : null}
 

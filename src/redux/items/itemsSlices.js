@@ -20,7 +20,9 @@ export const getItems = createAsyncThunk(
     try {
       let buildUrl = `/items?page=${queryString.page}&limit=9`;
 
-      buildUrl = buildUrl + `&companyId=${queryString.companyId}`;
+      if (queryString.companyId) {
+        buildUrl = buildUrl + `&companyId=${queryString.companyId}`;
+      }
 
       if (queryString.name) {
         buildUrl = buildUrl + `&itemName=${queryString.name}`;

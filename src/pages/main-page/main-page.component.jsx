@@ -210,6 +210,10 @@ function MainPage() {
         <Route path="/admin/partners">
           <AdminUsers />
         </Route>
+
+        <Route path="/admin/items">
+          <CompanyItemsPage />
+        </Route>
       </div>
 
       {toTopVisible && (

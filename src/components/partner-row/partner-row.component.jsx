@@ -18,6 +18,7 @@ import {
 import { selectToken } from "../../redux/auth/authSlice";
 
 // rowStyles
+import generalStyles from "../../style.module.scss";
 import rowStyles from "../row.module.scss";
 
 // constants and utils
@@ -85,17 +86,27 @@ function PartnerRow({ user, type }) {
 
         <div className={rowStyles.padding_end}>
           {favorites.map((favorite) => favorite._id).includes(user._id) ? (
-            <AiFillStar
-              className={[rowStyles.icon, rowStyles.fill_star].join(" ")}
-              size={24}
-              onClick={removeCompanyFromFavorite}
-            />
+            <div
+              className={[generalStyles.icon, generalStyles.fc_yellow].join(
+                " "
+              )}
+            >
+              <AiFillStar size={20} onClick={removeCompanyFromFavorite} />
+              <div className={generalStyles.tooltip}>
+                {t("remove-from-favorite-tooltip")}
+              </div>
+            </div>
           ) : (
-            <AiOutlineStar
-              className={rowStyles.icon}
-              size={24}
-              onClick={addCompanyToFavorite}
-            />
+            <div
+              className={[generalStyles.icon, generalStyles.fc_yellow].join(
+                " "
+              )}
+            >
+              <AiOutlineStar size={20} onClick={addCompanyToFavorite} />
+              <div className={generalStyles.tooltip}>
+                {t("add-to-favorite-tooltip")}
+              </div>
+            </div>
           )}
         </div>
       </div>

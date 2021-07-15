@@ -85,6 +85,10 @@
 .from_top > div {
   z-index: 10;
   margin: 8px;
+  // color: $white-color;
+}
+
+.from_top > div.name {
   color: $white-color;
 }
 

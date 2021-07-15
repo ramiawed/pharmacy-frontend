@@ -1,0 +1,274 @@
+@import "./variables.scss";
+
+// coloring
+.fc_green {
+  color: $green-color;
+}
+
+.fc_red {
+  color: $third-color;
+}
+
+.fc_yellow {
+  color: $yellow-color;
+}
+
+.fc_secondary {
+  color: $secondary-color;
+}
+
+.fc_white {
+  color: $white-color;
+}
+
+.bg_green {
+  background-color: $green-color;
+}
+
+.bg_red {
+  background-color: $third-color;
+}
+
+.bg_yellow {
+  background-color: $yellow-color;
+}
+
+.bg_secondary {
+  background-color: $secondary-color;
+}
+
+.bg_white {
+  background-color: $white-color;
+}
+
+// end coloring
+
+// text align
+.center {
+  text-align: center;
+}
+
+.left {
+  text-align: left;
+}
+
+.right {
+  text-align: right;
+}
+
+// end text align
+
+// style for icon div
+.icon {
+  width: 32px;
+  height: 32px;
+
+  padding: 4px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: relative;
+
+  cursor: pointer;
+}
+
+.tooltip {
+  display: none;
+
+  min-width: 100px;
+  font-size: 0.7rem;
+  padding: 2px 8px;
+
+  background-color: rgba($color: #000000, $alpha: 0.8);
+  color: $white-color;
+
+  border-radius: 6px;
+
+  position: absolute;
+  top: 35px;
+
+  z-index: 50;
+}
+
+.icon:hover {
+  border-radius: 50%;
+  background: rgba($color: #000000, $alpha: 0.1);
+}
+
+.icon:hover .tooltip {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+// end of style for icon div\
+.margin_h_auto {
+  margin: 0 auto;
+}
+
+.minus_top_margin {
+  margin-top: -4px;
+}
+
+.position_top_5_left_5 {
+  position: absolute;
+  top: 5px;
+  left: 5px;
+}
+
+.position_top_5_left_40 {
+  position: absolute;
+  top: 5px;
+  left: 40px;
+}
+
+.empty {
+  width: 400px;
+  height: 400px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  border-radius: 50%;
+
+  margin-top: 30px;
+}
+
+// button style
+.button {
+  outline: none;
+  border: none;
+
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  transition: all 0.3s;
+}
+
+.button:hover {
+  transform: scale(1.1);
+  text-shadow: 0 0 8px rgb(255, 255, 255);
+  box-shadow: 0 0 8px rgb(255, 255, 255);
+}
+
+// end button style
+
+// padding style
+.padding_v_10 {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.padding_v_6 {
+  padding-top: 6px;
+  padding-bottom: 6px;
+}
+
+.padding_v_4 {
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.padding_h_4 {
+  padding-left: 4px !important;
+  padding-right: 4px !important;
+}
+
+.padding_h_6 {
+  padding-left: 6px !important;
+  padding-right: 6px !important;
+}
+
+.padding_h_8 {
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.padding_h_10 {
+  padding-left: 10px;
+  padding-right: 10px;
+}
+
+.padding_h_12 {
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.margin_h_4 {
+  margin: 0 4px;
+}
+// end padding style
+
+.block {
+  display: block;
+}
+
+.relative {
+  position: relative;
+}
+
+.actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+// style the div that contains the favorite row
+.favorites_content {
+  min-width: 200px;
+
+  box-shadow: 0 0 3px rgba($color: $secondary-color, $alpha: 0.5);
+  border-radius: 6px;
+
+  position: absolute;
+  top: 20px;
+  left: 50%;
+
+  // overflow: scroll-y;
+  z-index: 10;
+}
+
+.favorites_content_wider {
+  min-width: 350px;
+}
+
+// style the div that display an icon the indicates that there is no result
+.no_content_div {
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  margin: 50px auto;
+  background: $secondary-color;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.no_content_icon {
+  font-size: 15rem;
+  margin: 10px 0;
+  color: $white-color;
+
+  animation-name: rotate-icon;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate-reverse;
+}
+
+@keyframes rotate-icon {
+  0% {
+    transform: rotateZ(0deg);
+  }
+
+  100% {
+    transform: rotateZ(180deg);
+  }
+}
+
+// end of style the div that display an icon the indicates that there is no result

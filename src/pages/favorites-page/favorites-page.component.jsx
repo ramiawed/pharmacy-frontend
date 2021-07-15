@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import { Redirect } from "react-router-dom";
 
 // redux stuff
 import { useSelector } from "react-redux";
@@ -7,23 +8,26 @@ import {
   selectFavoritesPartners,
   selectFavoritesItems,
 } from "../../redux/favorites/favoritesSlice";
+import { selectUser } from "../../redux/auth/authSlice";
 
 // components
+import CardInfo from "../../components/card-info/card-info.component";
+import Header from "../../components/header/header.component";
 import FavoriteRow from "../../components/favorite-row/favorite-row.component";
+import FavoriteItemRow from "../../components/favorite-item-row/favorite-item-row.component";
 
 // constants
 import { UserTypeConstants } from "../../utils/constants.js";
-import CardInfo from "../../components/card-info/card-info.component";
-import Header from "../../components/header/header.component";
-import FavoriteItemRow from "../../components/favorite-item-row/favorite-item-row.component";
 
 function FavoritesPage() {
   const { t } = useTranslation();
+
+  const user = useSelector(selectUser);
   const favorites = useSelector(selectFavoritesPartners);
   const favoritesItems = useSelector(selectFavoritesItems);
 
-  return (
-    <div>
+  return user ? (
+    <>
       <Header>
         <h2>{t("favorites")}</h2>
       </Header>
@@ -57,7 +61,9 @@ function FavoritesPage() {
           <FavoriteItemRow key={item._id} item={item} withoutBoxShadow={true} />
         ))}
       </CardInfo>
-    </div>
+    </>
+  ) : (
+    <Redirect to="/signin" />
   );
 }
 

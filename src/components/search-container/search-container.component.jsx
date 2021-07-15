@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
+// react-icons
 import { FaSearch } from "react-icons/fa";
 import { VscSettings } from "react-icons/vsc";
-import { Colors } from "../../utils/constants";
-import ActionButton from "../action-button/action-button.component";
 
+// styles
 import styles from "./search-container.module.scss";
+import generalStyles from "../../style.module.scss";
 
 function SearchContainer({ children, searchAction }) {
+  const { t } = useTranslation();
+
   let childrenArray = React.Children.toArray(children);
   const [expanded, setExpanded] = useState(false);
   const [moreSearchOptions, setMoreSearchOptions] = useState(false);
@@ -22,13 +25,17 @@ function SearchContainer({ children, searchAction }) {
       ].join(" ")}
     >
       <div className={styles.expanded_div}>
-        <div className={styles.icon_div}>
-          <FaSearch
-            onClick={() => {
-              setExpanded(!expanded);
-              setMoreSearchOptions(false);
-            }}
-          />
+        <div
+          className={[
+            generalStyles.icon,
+            expanded ? generalStyles.minus_top_margin : "",
+          ].join(" ")}
+          onClick={() => {
+            setExpanded(!expanded);
+            setMoreSearchOptions(false);
+          }}
+        >
+          <FaSearch />
         </div>
 
         {expanded && (
@@ -44,17 +51,30 @@ function SearchContainer({ children, searchAction }) {
             </div>
 
             {childrenArray.length > 1 && (
-              <div className={styles.icon_div}>
-                <VscSettings
-                  onClick={() => setMoreSearchOptions(!moreSearchOptions)}
-                />
+              <div
+                className={[
+                  generalStyles.icon,
+                  expanded ? generalStyles.minus_top_margin : "",
+                ].join(" ")}
+                onClick={() => setMoreSearchOptions(!moreSearchOptions)}
+              >
+                <VscSettings />
               </div>
             )}
-            <ActionButton
-              text="search"
-              color={Colors.SECONDARY_COLOR}
-              action={() => searchAction()}
-            />
+            <button
+              onClick={searchAction}
+              className={[
+                generalStyles.button,
+                generalStyles.bg_secondary,
+                generalStyles.fc_white,
+                generalStyles.margin_h_auto,
+                generalStyles.block,
+                generalStyles.padding_v_6,
+                generalStyles.padding_h_8,
+              ].join(" ")}
+            >
+              {t("search")}
+            </button>
           </>
         )}
       </div>

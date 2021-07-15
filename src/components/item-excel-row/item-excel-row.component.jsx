@@ -3,19 +3,17 @@ import React from "react";
 // icons
 import { AiFillDelete } from "react-icons/ai";
 
-// components
-import ActionButton from "../action-button/action-button.component";
-
-// constants
-import { Colors } from "../../utils/constants";
-
 // styles
+import generalStyles from "../../style.module.scss";
 import tableStyles from "../table.module.scss";
 import rowStyles from "../row.module.scss";
+import { useTranslation } from "react-i18next";
 
 function ItemExcelRow({ item, index, onchange, onDelete }) {
+  const { t } = useTranslation();
+
   const error =
-    item.name === "" || item.price === 0 || item.customer_price === 0;
+    item.name === "" || item.price * 1 === 0 || item.customer_price * 1 === 0;
 
   return (
     <div
@@ -92,12 +90,17 @@ function ItemExcelRow({ item, index, onchange, onDelete }) {
       </div>
 
       <label className={tableStyles.label_xsmall}>
-        <ActionButton
-          icon={() => <AiFillDelete />}
-          color={Colors.FAILED_COLOR}
-          tooltip="delete-item"
-          action={onDelete}
-        />
+        <div
+          className={[
+            generalStyles.icon,
+            generalStyles.fc_red,
+            generalStyles.margin_h_auto,
+          ].join(" ")}
+          onClick={() => onDelete()}
+        >
+          <AiFillDelete size={16} />
+          <p className={generalStyles.tooltip}>{t("delete-row")}</p>
+        </div>
       </label>
     </div>
   );

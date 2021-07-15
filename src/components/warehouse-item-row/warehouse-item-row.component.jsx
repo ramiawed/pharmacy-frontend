@@ -3,10 +3,9 @@ import { useTranslation } from "react-i18next";
 
 // redux stuff
 import { useSelector } from "react-redux";
-import { selectUser, selectUserData } from "../../redux/auth/authSlice";
+import { selectUserData } from "../../redux/auth/authSlice";
 
 // components
-import ActionButton from "../action-button/action-button.component";
 import Modal from "../modal/modal.component";
 import OffersModal from "../offers-modal/offers-modal.component";
 
@@ -15,11 +14,9 @@ import { MdDelete, MdLocalOffer } from "react-icons/md";
 
 // styles
 // import styles from "./warehouse-item-row.module.scss";
+import generalStyles from "../../style.module.scss";
 import tableStyles from "../table.module.scss";
 import rowStyles from "../row.module.scss";
-
-// constants
-import { Colors } from "../../utils/constants";
 
 function WarehouseItemRow({ item, onSelect, deleteItem, changeItemMaxQty }) {
   const { t } = useTranslation();
@@ -75,20 +72,25 @@ function WarehouseItemRow({ item, onSelect, deleteItem, changeItemMaxQty }) {
         </label>
         {/* <label className={tableStyles.label_large}>{item.composition}</label> */}
         <label className={tableStyles.label_xsmall}>
-          <ActionButton
-            color={Colors.FAILED_COLOR}
-            tooltip="tooltip-item-delete"
-            icon={() => <MdDelete />}
-            action={() => actionButtonPress()}
-          />
+          <div
+            className={[
+              generalStyles.icon,
+              generalStyles.fc_red,
+              generalStyles.margin_h_auto,
+            ].join(" ")}
+          >
+            <MdDelete onClick={() => actionButtonPress()} size={20} />
+          </div>
         </label>
         <label className={tableStyles.label_xsmall}>
-          <ActionButton
-            color={Colors.SECONDARY_COLOR}
-            tooltip="tooltip-offers"
-            icon={() => <MdLocalOffer />}
-            action={() => setShowOfferModal(true)}
-          />
+          <div
+            className={[generalStyles.icon, generalStyles.margin_h_auto].join(
+              " "
+            )}
+          >
+            <MdLocalOffer onClick={() => setShowOfferModal(true)} size={20} />
+            <div className={generalStyles.tooltip}>{t("nav-offers")}</div>
+          </div>
         </label>
       </div>
       {showModal && (
@@ -98,6 +100,7 @@ function WarehouseItemRow({ item, onSelect, deleteItem, changeItemMaxQty }) {
           okLabel={t("ok-label")}
           okModal={() => handlePressOkOnModal()}
           closeModal={() => setShowModal(false)}
+          small={true}
         >
           {<p>{t("item-delete-from-warehouse")}</p>}
         </Modal>
@@ -109,6 +112,7 @@ function WarehouseItemRow({ item, onSelect, deleteItem, changeItemMaxQty }) {
           item={item}
           warehouseId={user._id}
           close={() => setShowOfferModal(false)}
+          allowEdit={true}
         />
       )}
     </>

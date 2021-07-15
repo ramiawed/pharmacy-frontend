@@ -36,7 +36,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange }) {
       >
         {t("nav-items")}
       </Link>
-      <Link
+      {/* <Link
         className={[
           styles.link,
           selectedOption === SideNavLinks.OFFERS ? `${styles.selected}` : "",
@@ -47,7 +47,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange }) {
         to="/admin/orders"
       >
         {t("nav-orders")}
-      </Link>
+      </Link> */}
       <Link
         className={[
           styles.link,

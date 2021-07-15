@@ -516,7 +516,7 @@ function SignUp() {
           <>
             <div className={[styles.input_full_width].join(" ")}>
               <SelectCustom
-                bgColor={Colors.SECONDARY_COLOR}
+                bgColor={Colors.fc_secondary_COLOR}
                 foreColor="#fff"
                 options={guestJobOptions}
                 onchange={handleGuestTypeChange}

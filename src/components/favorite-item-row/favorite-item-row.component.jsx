@@ -18,6 +18,7 @@ import {
 import { selectToken, selectUser } from "../../redux/auth/authSlice";
 
 // rowStyles
+import generalStyles from "../../style.module.scss";
 import rowStyles from "../row.module.scss";
 import tableStyles from "../table.module.scss";
 
@@ -76,24 +77,29 @@ function FavoriteItemRow({ item, withoutBoxShadow }) {
 
         {item.warehouses.length > 0 ? (
           user.type === UserTypeConstants.PHARMACY && (
-            <TiShoppingCart
-              className={rowStyles.cart_icon}
-              onClick={() => {
-                setShowModal(true);
-              }}
-              size={24}
-            />
+            <div
+              className={[generalStyles.icon, generalStyles.fc_green].join(" ")}
+            >
+              <TiShoppingCart
+                onClick={() => {
+                  setShowModal(true);
+                }}
+                size={20}
+              />
+            </div>
           )
         ) : (
           <div className={tableStyles.label_xsmall}></div>
         )}
         <div className={rowStyles.padding_end}>
           {favorites.map((favorite) => favorite._id).includes(item._id) ? (
-            <AiFillStar
-              className={[rowStyles.icon, rowStyles.fill_star].join(" ")}
-              size={24}
-              onClick={removeItemFromFavorite}
-            />
+            <div
+              className={[generalStyles.icon, generalStyles.fc_yellow].join(
+                " "
+              )}
+            >
+              <AiFillStar size={20} onClick={removeItemFromFavorite} />
+            </div>
           ) : null}
         </div>
       </div>

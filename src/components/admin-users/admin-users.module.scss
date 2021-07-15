@@ -62,27 +62,8 @@ div.button_div > button {
 
 .actions_icons {
   margin-right: auto;
-  width: 50px;
   display: flex;
-  justify-content: space-between;
-  font-size: 1.2rem;
-
-  padding: 4px 0;
+  justify-content: flex-end;
 
   color: $secondary-color;
-}
-
-.actions_icons div {
-  width: 28px;
-  height: 28px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.actions_icons div:hover {
-  background: rgba($color: #000000, $alpha: 0.1);
-  border-radius: 50%;
 }

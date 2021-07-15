@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
-import { selectToken } from "../../redux/auth/authSlice";
+import { selectUserData } from "../../redux/auth/authSlice";
 import {
   getWarehouseItems,
   removeItemFromWarehouse,
@@ -11,32 +11,35 @@ import {
 } from "../../redux/warehouseItems/warehouseItemsSlices";
 
 // components
-import CardInfo from "../../components/card-info/card-info.component";
-import Input from "../../components/input/input.component";
 import TableHeader from "../../components/table-header/table-header.component";
 import ReactPaginate from "react-paginate";
 import paginationStyles from "../../components/pagination.module.scss";
 import WarehouseItemRow from "../../components/warehouse-item-row/warehouse-item-row.component";
 import Toast from "../../components/toast/toast.component";
-import RowWith2Children from "../../components/row-with-two-children/row-with-two-children.component";
+import SearchContainer from "../../components/search-container/search-container.component";
+import SearchInput from "../../components/search-input/search-input.component";
 
 // react-icons
 import { FaSearch } from "react-icons/fa";
 import { GiMedicines } from "react-icons/gi";
 
 // styles
+import generalStyles from "../../style.module.scss";
 import tableStyles from "../../components/table.module.scss";
-import { Colors } from "../../utils/constants";
+import { Colors, UserTypeConstants } from "../../utils/constants";
 import { unwrapResult } from "@reduxjs/toolkit";
+import { Redirect } from "react-router-dom";
 
 function WarehouseItemsPage() {
   const { t } = useTranslation();
-  const [searchName, setSearchName] = useState("");
-  const [searchCompanyName, setSearchCompanyName] = useState("");
+
   const dispatch = useDispatch();
-  const token = useSelector(selectToken);
+  const { token, user } = useSelector(selectUserData);
   const { warehouseItems, count, removeFromWarehouseStatus } =
     useSelector(selectWarehouseItems);
+
+  const [searchCompanyName, setSearchCompanyName] = useState("");
+  const [searchName, setSearchName] = useState("");
   const [initialPage, setInitialPage] = useState(0);
 
   // handle for page change in the paginate component
@@ -90,12 +93,12 @@ function WarehouseItemsPage() {
     handleSearch(1);
   }, []);
 
-  return (
-    <>
-      <CardInfo headerTitle={t("search-engines")}>
-        <RowWith2Children>
-          <div>
-            <Input
+  return user ? (
+    user.type === UserTypeConstants.WAREHOUSE ? (
+      <>
+        <div className={generalStyles.actions}>
+          <SearchContainer searchAction={handleEnterPress}>
+            <SearchInput
               label="item-name"
               id="search-name"
               type="text"
@@ -108,10 +111,7 @@ function WarehouseItemsPage() {
               onEnterPress={handleEnterPress}
               resetField={() => setSearchName("")}
             />
-          </div>
-
-          <div>
-            <Input
+            <SearchInput
               label="user-company-name"
               id="search-company-name"
               type="text"
@@ -124,90 +124,93 @@ function WarehouseItemsPage() {
               onEnterPress={handleEnterPress}
               resetField={() => setSearchCompanyName("")}
             />
-          </div>
-        </RowWith2Children>
-      </CardInfo>
+          </SearchContainer>
+        </div>
 
-      {count > 0 ? (
-        <>
-          <TableHeader>
-            <label className={tableStyles.label_medium}>
-              {t("item-trade-name")}
-            </label>
+        {count > 0 ? (
+          <>
+            <TableHeader>
+              <label className={tableStyles.label_medium}>
+                {t("item-trade-name")}
+              </label>
 
-            <label className={tableStyles.label_medium}>
-              {t("user-company-name")}
-            </label>
-            <label className={tableStyles.label_small}>
-              {t("item-formula")}
-            </label>
-            <label className={tableStyles.label_small}>
-              {t("item-caliber")}
-            </label>
-            <label className={tableStyles.label_small}>
-              {t("item-packing")}
-            </label>
-            <label className={tableStyles.label_small}>{t("item-price")}</label>
-            <label className={tableStyles.label_small}>
-              {t("item-customer-price")}
-            </label>
-            <label className={tableStyles.label_small}>
-              {t("item-max-qty")}
-            </label>
-            <label className={tableStyles.label_xsmall}></label>
-            <label className={tableStyles.label_xsmall}></label>
-            {/* <label className={tableStyles.label_xsmall}></label> */}
-          </TableHeader>
+              <label className={tableStyles.label_medium}>
+                {t("user-company-name")}
+              </label>
+              <label className={tableStyles.label_small}>
+                {t("item-formula")}
+              </label>
+              <label className={tableStyles.label_small}>
+                {t("item-caliber")}
+              </label>
+              <label className={tableStyles.label_small}>
+                {t("item-packing")}
+              </label>
+              <label className={tableStyles.label_small}>
+                {t("item-price")}
+              </label>
+              <label className={tableStyles.label_small}>
+                {t("item-customer-price")}
+              </label>
+              <label className={tableStyles.label_small}>
+                {t("item-max-qty")}
+              </label>
+              <label className={tableStyles.label_xsmall}></label>
+              <label className={tableStyles.label_xsmall}></label>
+              {/* <label className={tableStyles.label_xsmall}></label> */}
+            </TableHeader>
 
-          {warehouseItems.map((item, index) => (
-            <WarehouseItemRow
-              key={item._id}
-              item={item}
-              index={index}
-              // onSelect={onSelect}
-              deleteItem={deleteItem}
-              changeItemMaxQty={changeItemMaxQty}
+            {warehouseItems.map((item, index) => (
+              <WarehouseItemRow
+                key={item._id}
+                item={item}
+                index={index}
+                // onSelect={onSelect}
+                deleteItem={deleteItem}
+                changeItemMaxQty={changeItemMaxQty}
+              />
+            ))}
+
+            <div style={{ height: "10px" }}></div>
+
+            <ReactPaginate
+              previousLabel={t("previous")}
+              nextLabel={t("next")}
+              pageCount={Math.ceil(count / 9)}
+              forcePage={initialPage}
+              onPageChange={handlePageClick}
+              containerClassName={paginationStyles.pagination}
+              previousLinkClassName={paginationStyles.pagination_link}
+              nextLinkClassName={paginationStyles.pagination_link}
+              disabledClassName={paginationStyles.pagination_link_disabled}
+              activeClassName={paginationStyles.pagination_link_active}
             />
-          ))}
+          </>
+        ) : (
+          <>
+            <div className={generalStyles.no_content_div}>
+              <GiMedicines className={generalStyles.no_content_icon} />
+              <p className={generalStyles.fc_white}>{t("no-items-found")}</p>
+            </div>
+          </>
+        )}
 
-          <div style={{ height: "10px" }}></div>
-          <ReactPaginate
-            previousLabel={t("previous")}
-            nextLabel={t("next")}
-            pageCount={Math.ceil(count / 9)}
-            forcePage={initialPage}
-            onPageChange={handlePageClick}
-            containerClassName={paginationStyles.pagination}
-            previousLinkClassName={paginationStyles.pagination_link}
-            nextLinkClassName={paginationStyles.pagination_link}
-            disabledClassName={paginationStyles.pagination_link_disabled}
-            activeClassName={paginationStyles.pagination_link_active}
+        {removeFromWarehouseStatus === "succeeded" && (
+          <Toast
+            bgColor={Colors.SUCCEEDED_COLOR}
+            foreColor="#fff"
+            toastText={t("item-operation-complete")}
+            actionAfterTimeout={() =>
+              dispatch(resetRemoveFromWarehouseStatus())
+            }
           />
-        </>
-      ) : (
-        <>
-          <div
-            style={{
-              textAlign: "center",
-              padding: "16px",
-              color: Colors.SECONDARY_COLOR,
-            }}
-          >
-            <GiMedicines size={200} style={{ opacity: "0.4" }} />
-            <p>{t("no-items-found")}</p>
-          </div>
-        </>
-      )}
-
-      {removeFromWarehouseStatus === "succeeded" && (
-        <Toast
-          bgColor={Colors.SUCCEEDED_COLOR}
-          foreColor="#fff"
-          toastText={t("item-operation-complete")}
-          actionAfterTimeout={() => dispatch(resetRemoveFromWarehouseStatus())}
-        />
-      )}
-    </>
+        )}
+      </>
+    ) : (
+      <Redirect to="/" />
+    )
+  ) : (
+    <Redirect to="/signin" />
   );
 }
 

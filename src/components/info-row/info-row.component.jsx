@@ -130,7 +130,7 @@ function InfoRow({ labelText, value, onInputChange, action, field, editable }) {
               <ActionButton
                 text="ok-label"
                 action={handleOkAction}
-                color={Colors.SECONDARY_COLOR}
+                color={Colors.fc_secondary_COLOR}
                 loading={loading}
               />
               <ActionButton

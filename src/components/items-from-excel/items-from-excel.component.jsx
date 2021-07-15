@@ -1,6 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
 import * as XLSX from "xlsx";
 
 // 3-party library
@@ -27,9 +26,9 @@ import TableHeader from "../table-header/table-header.component";
 import Modal from "../modal/modal.component";
 import ActionLoader from "../action-loader/action-loader.component";
 import Toast from "../toast/toast.component";
-import ActionButton from "../action-button/action-button.component";
 
 // styles
+import generalStyles from "../../style.module.scss";
 import styles from "./items-from-excel.module.scss";
 import tableStyles from "../table.module.scss";
 
@@ -174,7 +173,10 @@ function ItemsFromExcel() {
   return (
     <>
       {status === "loading" && (
-        <ActionLoader foreColor={Colors.SECONDARY_COLOR} onclick={() => {}} />
+        <ActionLoader
+          foreColor={Colors.fc_secondary_COLOR}
+          onclick={() => {}}
+        />
       )}
 
       <div className={styles.actions}>
@@ -187,32 +189,38 @@ function ItemsFromExcel() {
               {t("items-count")}: {items.length}
             </label>
 
-            <motion.button
-              whileHover={{
-                scale: 1.1,
-                textShadow: "0px 0px 8px rgb(255, 255, 255)",
-                boxShadow: "0px 0px 8px rgb(255, 255, 255)",
-              }}
+            <button
               onClick={handleInsertItems}
-              className={styles.button}
+              className={[
+                generalStyles.button,
+                generalStyles.bg_secondary,
+                generalStyles.fc_white,
+                generalStyles.padding_v_6,
+                generalStyles.padding_h_12,
+                generalStyles.margin_h_4,
+              ].join(" ")}
             >
               {t("add-items")}
-            </motion.button>
+            </button>
+
             <InputFile small={true} fileChangedHandler={fileChanged} />
           </>
         ) : null}
       </div>
+
       {loading && (
         <div className={styles.loading}>
           <ReactLoading color="#8a7d85" type="bubbles" height={50} width={50} />
         </div>
       )}
+
       {items.length === 0 && (
         <InputFile
           btnLabel={t("choose-file")}
           fileChangedHandler={fileChanged}
         />
       )}
+
       {items.length > 0 ? (
         <TableHeader>
           <label className={tableStyles.label_medium}>
@@ -229,15 +237,23 @@ function ItemsFromExcel() {
             {t("item-composition")}
           </label>
           <label className={tableStyles.label_xsmall}>
-            <ActionButton
-              icon={() => <AiFillDelete />}
-              tooltip="reset-all-items"
-              color={Colors.FAILED_COLOR}
-              action={() => setItems([])}
-            />
+            <div
+              className={[
+                generalStyles.icon,
+                generalStyles.fc_red,
+                generalStyles.margin_h_auto,
+              ].join(" ")}
+              onClick={() => setItems([])}
+            >
+              <AiFillDelete size={16} />
+              <div className={generalStyles.tooltip}>
+                {t("delete-all-rows")}
+              </div>
+            </div>
           </label>
         </TableHeader>
       ) : null}
+
       {items.length > 0 &&
         items.map((item, index) => (
           <ItemExcelRow

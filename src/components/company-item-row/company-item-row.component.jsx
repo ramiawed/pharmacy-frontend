@@ -2,24 +2,24 @@ import React, { useState } from "react";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-import { selectToken } from "../../redux/auth/authSlice";
+import { selectUserData } from "../../redux/auth/authSlice";
 import { changeItemActiveState } from "../../redux/items/itemsSlices";
-import Modal from "../modal/modal.component";
 import { useTranslation } from "react-i18next";
 
 // components
-import ActionButton from "../action-button/action-button.component";
+import Modal from "../modal/modal.component";
 
 // react-icons
 import { AiFillUnlock, AiFillLock } from "react-icons/ai";
 
 // styles
+import generalStyles from "../../style.module.scss";
 import tableStyles from "../table.module.scss";
 import rowStyles from "../row.module.scss";
 
 // constants
-import { Colors } from "../../utils/constants";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { UserTypeConstants } from "../../utils/constants";
 
 function CompanyItemRow({ item }) {
   const { t } = useTranslation();
@@ -27,7 +27,8 @@ function CompanyItemRow({ item }) {
   const [modalObj, setModalObj] = useState({});
 
   const [showModal, setShowModal] = useState(false);
-  const token = useSelector(selectToken);
+  const [showWarningModal, setShowWarningModal] = useState(false);
+  const { token, user } = useSelector(selectUserData);
   const dispatch = useDispatch();
 
   const actionButtonPress = (action) => {
@@ -75,21 +76,55 @@ function CompanyItemRow({ item }) {
         >
           {item.name}
         </label>
+
+        {user.type === UserTypeConstants.ADMIN && (
+          <label className={tableStyles.label_medium}>
+            {item.company.name}
+          </label>
+        )}
         <label className={tableStyles.label_small}>
           {item.isActive ? (
-            <ActionButton
-              color={Colors.SUCCEEDED_COLOR}
-              tooltip="tooltip-item-delete"
-              icon={() => <AiFillUnlock />}
-              action={() => actionButtonPress("delete")}
-            />
+            <div
+              className={[
+                generalStyles.icon,
+                generalStyles.fc_green,
+                generalStyles.margin_h_auto,
+              ].join(" ")}
+              onClick={() => {
+                if (
+                  (user.type === UserTypeConstants.ADMIN &&
+                    item.company.allowAdmin) ||
+                  user.type === UserTypeConstants.COMPANY
+                ) {
+                  actionButtonPress("delete");
+                } else {
+                  setShowWarningModal(true);
+                }
+              }}
+            >
+              <AiFillUnlock />
+            </div>
           ) : (
-            <ActionButton
-              color={Colors.FAILED_COLOR}
-              tooltip="tooltip-item-undo-delete"
-              icon={() => <AiFillLock />}
-              action={() => actionButtonPress("undo-delete")}
-            />
+            <div
+              className={[
+                generalStyles.icon,
+                generalStyles.fc_red,
+                generalStyles.margin_h_auto,
+              ].join(" ")}
+              onClick={() => {
+                if (
+                  (user.type === UserTypeConstants.ADMIN &&
+                    item.company.allowAdmin) ||
+                  user.type === UserTypeConstants.COMPANY
+                ) {
+                  actionButtonPress("undo-delete");
+                } else {
+                  setShowWarningModal(true);
+                }
+              }}
+            >
+              <AiFillLock />
+            </div>
           )}
         </label>
         <label className={tableStyles.label_small}>{item.formula}</label>
@@ -97,8 +132,11 @@ function CompanyItemRow({ item }) {
         <label className={tableStyles.label_small}>{item.packing}</label>
         <label className={tableStyles.label_small}>{item.price}</label>
         <label className={tableStyles.label_small}>{item.customer_price}</label>
-        <label className={tableStyles.label_large}>{item.composition}</label>
+        {user.type === UserTypeConstants.COMPANY && (
+          <label className={tableStyles.label_large}>{item.composition}</label>
+        )}
       </div>
+
       {showModal && (
         <Modal
           header={t(modalObj.header)}
@@ -106,8 +144,21 @@ function CompanyItemRow({ item }) {
           okLabel={t("ok-label")}
           okModal={() => handlePressOkOnModal()}
           closeModal={() => setShowModal(false)}
+          small={true}
         >
           {<p>{t(modalObj.body)}</p>}
+        </Modal>
+      )}
+
+      {showWarningModal && (
+        <Modal
+          header={t("warning")}
+          cancelLabel={t("cancel-label")}
+          closeModal={() => setShowWarningModal(false)}
+          small={true}
+          warning={true}
+        >
+          {<p>{t("dont-have-permission")}</p>}
         </Modal>
       )}
     </>

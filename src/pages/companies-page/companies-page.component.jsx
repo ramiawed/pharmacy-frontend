@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
 import { Redirect } from "react-router";
 
 // components
@@ -9,6 +8,7 @@ import SearchInput from "../../components/search-input/search-input.component";
 import FavoriteRow from "../../components/favorite-row/favorite-row.component";
 import PartnerRow from "../../components/partner-row/partner-row.component";
 import PartnerCard from "../../components/partner-card/partner-card.component";
+import SearchContainer from "../../components/search-container/search-container.component";
 import ReactLoading from "react-loading";
 
 // react-icons
@@ -19,26 +19,27 @@ import { SiAtAndT } from "react-icons/si";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-import { selectToken, selectUser } from "../../redux/auth/authSlice";
+import { selectUserData } from "../../redux/auth/authSlice";
 import {
   getCompanies,
   resetCompanies,
   selectCompanies,
 } from "../../redux/company/companySlice";
 import { selectFavoritesPartners } from "../../redux/favorites/favoritesSlice";
-import { Colors, UserTypeConstants } from "../../utils/constants";
+import { UserTypeConstants } from "../../utils/constants";
 
 // styles
-import styles from "./companies-page.module.scss";
-import SearchContainer from "../../components/search-container/search-container.component";
+import generalStyles from "../../style.module.scss";
+// import styles from "./companies-page.module.scss";
 
 function CompaniesPage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   // select from redux store
-  const token = useSelector(selectToken);
-  const user = useSelector(selectUser);
+  // select logged user and it's token from redux store
+  const { token, user } = useSelector(selectUserData);
+  // select companies from redux stuff
   const { companies, count, status } = useSelector(selectCompanies);
   const favorites = useSelector(selectFavoritesPartners);
 
@@ -61,6 +62,8 @@ function CompaniesPage() {
     const queryString = {};
 
     queryString.page = page;
+
+    // company approve and active must be true
     queryString.approve = true;
     queryString.active = true;
 
@@ -98,17 +101,41 @@ function CompaniesPage() {
     <>
       <Header>
         <h2>
-          {t("companies")} <span>({count})</span>
+          {t("companies")} <span>{count}</span>
         </h2>
-        <div className={styles.actions}>
-          <RiRefreshLine className={styles.icon} onClick={handleEnterPress} />
-          <div className={styles.favorite_div}>
-            <AiFillStar
-              className={styles.icon}
+
+        <div className={generalStyles.actions}>
+          {/* refresh */}
+          <div
+            className={[generalStyles.icon, generalStyles.fc_secondary].join(
+              " "
+            )}
+            onClick={handleEnterPress}
+          >
+            <RiRefreshLine />
+            <div className={generalStyles.tooltip}>{t("refresh-tooltip")}</div>
+          </div>
+
+          {/* show favorites */}
+          <div className={generalStyles.relative}>
+            <div
+              className={[generalStyles.icon, generalStyles.fc_secondary].join(
+                " "
+              )}
               onClick={() => setShowFavorites(!showFavorites)}
-            />
+            >
+              <AiFillStar />
+              <div className={generalStyles.tooltip}>
+                {t("show-favorite-tooltip")}
+              </div>
+            </div>
             {showFavorites && (
-              <div className={styles.favorites_content}>
+              <div
+                className={[
+                  generalStyles.favorites_content,
+                  generalStyles.bg_white,
+                ].join(" ")}
+              >
                 {showFavorites &&
                   favorites
                     .filter(
@@ -124,27 +151,45 @@ function CompaniesPage() {
               </div>
             )}
           </div>
-          <AiFillAppstore
+
+          {/* display card option */}
+          <div
             className={[
-              styles.icon,
-              displayType === "card" ? styles.selected : "",
+              generalStyles.icon,
+              displayType === "card"
+                ? generalStyles.fc_green
+                : generalStyles.fc_secondary,
             ].join(" ")}
             onClick={() => {
               setDisplayType("card");
               setShowFavorites(false);
             }}
-          />
+          >
+            <AiFillAppstore />
+            <div className={generalStyles.tooltip}>
+              {t("show-item-as-card-tooltip")}
+            </div>
+          </div>
 
-          <FaListUl
+          {/* display list option */}
+          <div
             className={[
-              styles.icon,
-              displayType === "list" ? styles.selected : "",
+              generalStyles.icon,
+
+              displayType === "list"
+                ? generalStyles.fc_green
+                : generalStyles.fc_secondary,
             ].join(" ")}
             onClick={() => {
               setDisplayType("list");
               setShowFavorites(false);
             }}
-          />
+          >
+            <FaListUl />
+            <div className={generalStyles.tooltip}>
+              {t("show-item-as-row-tooltip")}
+            </div>
+          </div>
 
           <SearchContainer searchAction={handleEnterPress}>
             <SearchInput
@@ -155,7 +200,6 @@ function CompaniesPage() {
               onchange={(e) => {
                 setSearchName(e.target.value);
               }}
-              // bordered={true}
               placeholder="search"
               onEnterPress={handleEnterPress}
               resetField={() => setSearchName("")}
@@ -169,7 +213,6 @@ function CompaniesPage() {
               onchange={(e) => {
                 setSearchCity(e.target.value);
               }}
-              // bordered={true}
               placeholder="search"
               onEnterPress={handleEnterPress}
               resetField={() => setSearchCity("")}
@@ -178,44 +221,55 @@ function CompaniesPage() {
         </div>
       </Header>
 
+      {/* display partner as list */}
       {displayType === "list" &&
         companies.map((company) => (
           <PartnerRow key={company._id} user={company} />
         ))}
 
+      {/* display partner as a card */}
       {displayType === "card" && (
-        <div className={styles.content_container}>
+        <div>
           {companies.map((company) => (
             <PartnerCard key={company._id} user={company} />
           ))}
         </div>
       )}
 
+      {/* show loading animation when data is loading */}
       {status === "loading" && (
         <ReactLoading type="bubbles" height={50} width={50} />
       )}
 
       {companies.length === 0 ? (
-        <div className={styles.no_content_div}>
-          <SiAtAndT className={styles.no_content_icon} />
-          <p>{t("no-companies")}</p>
+        <div className={generalStyles.no_content_div}>
+          <SiAtAndT className={generalStyles.no_content_icon} />
+          <p className={generalStyles.fc_white}>{t("no-companies")}</p>
         </div>
       ) : companies.length < count ? (
-        <motion.button
-          whileHover={{
-            scale: 1.1,
-            textShadow: "0px 0px 8px rgb(255, 255, 255)",
-            boxShadow: "0px 0px 8px rgb(0, 0, 0, 0.3)",
-          }}
+        <button
           onClick={handleMoreResult}
-          className={styles.more_button}
+          className={[
+            generalStyles.button,
+            generalStyles.bg_secondary,
+            generalStyles.fc_white,
+            generalStyles.margin_h_auto,
+            generalStyles.block,
+            generalStyles.padding_v_10,
+            generalStyles.padding_h_12,
+          ].join(" ")}
         >
           {t("more")}
-        </motion.button>
+        </button>
       ) : (
-        <p className={styles.no_more}>{t("no-more")}</p>
+        <p
+          className={[generalStyles.center, generalStyles.fc_secondary].join(
+            " "
+          )}
+        >
+          {t("no-more")}
+        </p>
       )}
-      {/* </div> */}
     </>
   ) : (
     <Redirect to="/signin" />

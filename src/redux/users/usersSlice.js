@@ -10,6 +10,8 @@ const initialState = {
   activationDeleteStatus: "idle",
   // field holds the activation or deleting message
   activationDeleteStatusMsg: "",
+  resetUserPasswordStatus: "idle",
+  resetUserPasswordError: "",
 };
 
 // get the users
@@ -151,6 +153,34 @@ export const undoDeleteUser = createAsyncThunk(
   }
 );
 
+export const resetUserPassword = createAsyncThunk(
+  "users/resetPassword",
+  async (
+    { userId, newPassword, newPasswordConfirm, token },
+    { rejectWithValue }
+  ) => {
+    try {
+      const response = await axios.post(
+        `/users/resetUserPassword`,
+        {
+          userId,
+          newPassword,
+          newPasswordConfirm,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const usersSlice = createSlice({
   name: "users",
   initialState,
@@ -162,10 +192,18 @@ export const usersSlice = createSlice({
       state.count = 0;
       state.activationDeleteStatus = "idle";
       state.activationDeleteStatusMsg = "";
+      state.resetUserPasswordStatus = "idle";
+      state.resetUserPasswordError = "";
     },
     resetActivationDeleteStatus: (state) => {
       state.activationDeleteStatus = "idle";
       state.activationDeleteStatusMsg = "";
+    },
+    resetUserChangePasswordStatus: (state) => {
+      state.resetUserPasswordStatus = "idle";
+    },
+    resetUserChangePasswordError: (state) => {
+      state.resetUserPasswordError = "";
     },
   },
   extraReducers: {
@@ -242,6 +280,17 @@ export const usersSlice = createSlice({
       state.activationDeleteStatus = "failed";
       state.activationDeleteStatusMsg = "user-undo-delete-failed";
     },
+    [resetUserPassword.pending]: (state, action) => {
+      state.resetUserPasswordStatus = "loading";
+    },
+    [resetUserPassword.fulfilled]: (state, action) => {
+      state.resetUserPasswordStatus = "success";
+      state.resetUserPasswordError = "";
+    },
+    [resetUserPassword.rejected]: (state, { error, meta, payload }) => {
+      state.resetUserPasswordStatus = "failed";
+      state.resetUserPasswordError = "reset-user-password-failed";
+    },
   },
 });
 
@@ -251,6 +300,11 @@ export const selectActivationDeleteStatus = (state) =>
 export const selectActivationDeleteMsg = (state) =>
   state.users.activationDeleteStatusMsg;
 
-export const { resetActivationDeleteStatus, resetUsers } = usersSlice.actions;
+export const {
+  resetActivationDeleteStatus,
+  resetUsers,
+  resetUserChangePasswordStatus,
+  resetUserChangePasswordError,
+} = usersSlice.actions;
 
 export default usersSlice.reducer;

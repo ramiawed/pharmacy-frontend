@@ -133,7 +133,7 @@ function Item({ selectedItem }) {
 
   // Render
   return (
-    <div>
+    <>
       <div className={styles.content}>
         <CardInfo headerTitle={t("item-main-info")}>
           <Input
@@ -293,7 +293,7 @@ function Item({ selectedItem }) {
           <p>{t("update-item-succeeded")}</p>
         </Toast>
       )}
-    </div>
+    </>
   );
 }
 

@@ -22,8 +22,10 @@ import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
 // react icons
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { TiShoppingCart } from "react-icons/ti";
+import { MdDelete, MdAddCircle } from "react-icons/md";
 
 // styles
+import generalStyles from "../../style.module.scss";
 import rowStyles from "../row.module.scss";
 import tableStyles from "../table.module.scss";
 
@@ -154,41 +156,51 @@ function ItemRow({ companyItem }) {
         </label>
 
         <label
-          className={[
-            user.type === UserTypeConstants.WAREHOUSE
-              ? tableStyles.label_small
-              : tableStyles.label_xsmall,
-            tableStyles.center,
-          ].join(" ")}
+          className={[tableStyles.label_xsmall, tableStyles.center].join(" ")}
         >
           {user.type === UserTypeConstants.WAREHOUSE &&
             (companyItem.warehouses
               .map((w) => w.warehouse._id)
               .includes(user._id) ? (
-              <ActionButton
-                text="remove-from-warehouse"
-                fontSize="0.6rem"
-                action={removeItemFromWarehouseHandler}
-                color={Colors.FAILED_COLOR}
-              />
+              <div
+                className={[
+                  generalStyles.icon,
+                  generalStyles.fc_red,
+                  generalStyles.margin_h_auto,
+                ].join(" ")}
+                onClick={removeItemFromWarehouseHandler}
+              >
+                <MdDelete size={24} />
+                <div className={generalStyles.tooltip}>
+                  {t("remove-from-warehouse-tooltip")}
+                </div>
+              </div>
             ) : (
-              <ActionButton
-                text="add-to-warehouse"
-                fontSize="0.6rem"
-                action={addItemToWarehouseHandler}
-                color={Colors.SUCCEEDED_COLOR}
-              />
+              <div
+                className={[
+                  generalStyles.icon,
+                  generalStyles.fc_green,
+                  generalStyles.margin_h_auto,
+                ].join(" ")}
+                onClick={addItemToWarehouseHandler}
+              >
+                <MdAddCircle size={24} />
+                <div className={generalStyles.tooltip}>
+                  {t("add-to-warehouse-tooltip")}
+                </div>
+              </div>
             ))}
 
           {user.type === UserTypeConstants.PHARMACY &&
           companyItem.warehouses.length > 0 ? (
-            <TiShoppingCart
-              className={rowStyles.cart_icon}
+            <div
+              className={[generalStyles.icon, generalStyles.fc_green].join(" ")}
               onClick={() => {
                 setShowModal(true);
               }}
-              size={24}
-            />
+            >
+              <TiShoppingCart size={20} />
+            </div>
           ) : (
             <div style={{ width: "24px" }}></div>
           )}
@@ -200,17 +212,29 @@ function ItemRow({ companyItem }) {
           {favoritesItems
             .map((favorite) => favorite._id)
             .includes(companyItem._id) ? (
-            <AiFillStar
-              className={[rowStyles.icon, rowStyles.fill_star].join(" ")}
-              size={24}
+            <div
+              className={[generalStyles.icon, generalStyles.fc_yellow].join(
+                " "
+              )}
               onClick={removeItemFromFavoritesItems}
-            />
+            >
+              <AiFillStar size={20} />
+              <div className={generalStyles.tooltip}>
+                {t("remove-from-favorite-tooltip")}
+              </div>
+            </div>
           ) : (
-            <AiOutlineStar
-              className={rowStyles.icon}
-              size={24}
+            <div
+              className={[generalStyles.icon, generalStyles.fc_yellow].join(
+                " "
+              )}
               onClick={addItemToFavoriteItems}
-            />
+            >
+              <AiOutlineStar size={20} />
+              <div className={generalStyles.tooltip}>
+                {t("add-to-favorite-tooltip")}
+              </div>
+            </div>
           )}
         </label>
       </div>

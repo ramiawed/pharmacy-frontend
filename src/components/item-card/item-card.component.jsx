@@ -24,6 +24,7 @@ import {
 import { selectToken, selectUser } from "../../redux/auth/authSlice";
 
 // styles
+import generalStyles from "../../style.module.scss";
 import styles from "./item-card.module.scss";
 
 // constants and utils
@@ -96,19 +97,25 @@ function ItemCard({ companyItem }) {
     <div className={styles.partner_container}>
       <div>
         {favorites.map((favorite) => favorite._id).includes(companyItem._id) ? (
-          <AiFillStar
-            className={[styles.icon, styles.fill_star].join(" ")}
-            color="yellow"
-            size={32}
-            onClick={removeItemFromFavoritesItems}
-          />
+          <div
+            className={[
+              generalStyles.icon,
+              generalStyles.fc_yellow,
+              generalStyles.position_top_5_left_5,
+            ].join(" ")}
+          >
+            <AiFillStar onClick={removeItemFromFavoritesItems} size={24} />
+          </div>
         ) : (
-          <AiOutlineStar
-            className={styles.icon}
-            color="yellow"
-            size={32}
-            onClick={addItemToFavoriteItems}
-          />
+          <div
+            className={[
+              generalStyles.icon,
+              generalStyles.fc_yellow,
+              generalStyles.position_top_5_left_5,
+            ].join(" ")}
+          >
+            <AiOutlineStar onClick={addItemToFavoriteItems} size={24} />
+          </div>
         )}
       </div>
 
@@ -138,14 +145,20 @@ function ItemCard({ companyItem }) {
 
         {user.type === UserTypeConstants.PHARMACY &&
           companyItem.warehouses.length > 0 && (
-            <TiShoppingCart
-              className={styles.add_to_cart_icon}
-              // className={rowStyles.cart_icon}
-              onClick={() => {
-                setShowModal(true);
-              }}
-              size={32}
-            />
+            <div
+              className={[
+                generalStyles.icon,
+                generalStyles.green,
+                generalStyles.position_top_5_left_40,
+              ].join(" ")}
+            >
+              <TiShoppingCart
+                onClick={() => {
+                  setShowModal(true);
+                }}
+                size={24}
+              />
+            </div>
           )}
       </div>
 
@@ -154,7 +167,7 @@ function ItemCard({ companyItem }) {
           <></>
         ) : (
           <p className={styles.partner_logo}>
-            <GiMedicines color={Colors.SECONDARY_COLOR} size="100" />
+            <GiMedicines color={Colors.fc_secondary_COLOR} size="100" />
           </p>
         )}
       </div>

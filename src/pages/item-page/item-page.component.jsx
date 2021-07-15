@@ -1,6 +1,11 @@
-import { unwrapResult } from "@reduxjs/toolkit";
 import React, { useEffect, useState } from "react";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
+import { Redirect } from "react-router-dom";
+import axios from "../../api/pharmacy";
+
+// redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
 import { selectUserData } from "../../redux/auth/authSlice";
@@ -11,34 +16,43 @@ import {
   selectItems,
   updateItem,
 } from "../../redux/items/itemsSlices";
-
-import axios from "../../api/pharmacy";
-
-import styles from "./item-page.module.scss";
-import rowStyles from "../../components/row.module.scss";
-
-import CardInfo from "../../components/card-info/card-info.component";
-import Input from "../../components/input/input.component";
-import { getIcon } from "../../utils/icons";
-import { useTranslation } from "react-i18next";
-import Toast from "../../components/toast/toast.component";
-import { Colors, UserTypeConstants } from "../../utils/constants";
-import AddToCartModal from "../../components/add-to-cart-modal/add-to-cart-modal.component";
-import { checkConnection } from "../../utils/checkInternet";
 import {
   addItemToWarehouse,
   removeItemFromWarehouse,
 } from "../../redux/companyItems/companyItemsSlices";
-import MultiValue from "../../components/multi-value/multi-value.component";
+
+// components
+import CardInfo from "../../components/card-info/card-info.component";
+import Input from "../../components/input/input.component";
+import Toast from "../../components/toast/toast.component";
+import AddToCartModal from "../../components/add-to-cart-modal/add-to-cart-modal.component";
+
+// constants and utile
+import { getIcon } from "../../utils/icons";
+import { checkConnection } from "../../utils/checkInternet";
+import { Colors, UserTypeConstants } from "../../utils/constants";
+import { MdDelete, MdLocalOffer } from "react-icons/md";
+
+// styles
+import generalStyles from "../../style.module.scss";
+import styles from "./item-page.module.scss";
+import rowStyles from "../../components/row.module.scss";
+import OffersModal from "../../components/offers-modal/offers-modal.component";
 
 function ItemPage() {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
   const { readOnly, itemId } = useParams();
   const { user, token } = useSelector(selectUserData);
   const { addStatus, updateStatus } = useSelector(selectItems);
-  const dispatch = useDispatch();
 
   const [showModal, setShowModal] = useState(false);
+  const [showOfferModal, setShowOfferModal] = useState(false);
+  const [selectedWarehouseId, setSelectedWarehouseId] = useState("");
+  const [allowEdit, setAllowEdit] = useState(false);
+
+  const [itemError, setItemError] = useState({});
   const [connectionError, setConnectionError] = useState("");
 
   const [item, setItem] = useState({
@@ -52,8 +66,6 @@ function ItemPage() {
     price: 0,
     customer_price: 0,
   });
-
-  const [itemError, setItemError] = useState({});
 
   // reset handler
   const resetItem = () => {
@@ -108,6 +120,10 @@ function ItemPage() {
     }
 
     if (Object.entries(errorObj).length === 0) {
+      if (!checkConnection()) {
+        setConnectionError("no-internet-connection");
+      }
+
       // check if there is an error
       const obj = {
         ...item,
@@ -191,18 +207,11 @@ function ItemPage() {
 
   useEffect(() => {
     if (itemId) {
-      // axios
-      //   .get(`/items/item/${itemId}`, {
-      //     headers: {
-      //       Authorization: `Bearer ${token}`,
-      //     },
-      //   })
-      //   .then((response) => setItem(response.data.data.item));
       getItemFromDB();
     }
   }, [itemId, token]);
 
-  return (
+  return user ? (
     <>
       <div className={styles.content}>
         <CardInfo headerTitle={t("item-main-info")}>
@@ -315,8 +324,6 @@ function ItemPage() {
           </div>
         </CardInfo>
 
-        <CardInfo headerTitle={t("nav-offers")}></CardInfo>
-
         {readOnly === "admin" &&
           (user.type === UserTypeConstants.COMPANY ||
             user.type === UserTypeConstants.ADMIN) &&
@@ -327,10 +334,27 @@ function ItemPage() {
                   className={[
                     rowStyles.container,
                     rowStyles.without_box_shadow,
-                    rowStyles.padding_all,
+                    generalStyles.padding_h_6,
                   ].join(" ")}
                 >
-                  <label>{w.warehouse.name}</label>
+                  <label className={generalStyles.padding_v_6}>
+                    {w.warehouse.name}
+                  </label>
+                  {w.offer.offers.length > 0 && (
+                    <div
+                      className={generalStyles.icon}
+                      onClick={() => {
+                        setSelectedWarehouseId(w.warehouse._id);
+                        setAllowEdit(w.warehouse.allowAdmin);
+                        setShowOfferModal(true);
+                      }}
+                    >
+                      <MdLocalOffer />
+                      <div className={generalStyles.tooltip}>
+                        {t("nav-offers")}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ))}
             </CardInfo>
@@ -366,7 +390,7 @@ function ItemPage() {
       {readOnly === "user" && user.type === UserTypeConstants.PHARMACY && (
         <div className={styles.action_div}>
           <motion.button
-            className={[styles.add_button, styles.green].join(" ")}
+            className={[styles.add_button, generalStyles.bg_green].join(" ")}
             whileHover={{
               scale: 1.1,
               textShadow: "0px 0px 8px rgb(255, 255, 255)",
@@ -382,33 +406,35 @@ function ItemPage() {
       {readOnly === "user" &&
         user.type === UserTypeConstants.WAREHOUSE &&
         (item.warehouses?.map((w) => w.warehouse._id).includes(user._id) ? (
-          <div className={styles.action_div}>
-            <motion.button
-              className={[styles.add_button, styles.red].join(" ")}
-              whileHover={{
-                scale: 1.1,
-                textShadow: "0px 0px 8px rgb(255, 255, 255)",
-                boxShadow: "0px 0px 8px rgb(255, 255, 255)",
-              }}
-              onClick={removeItemFromWarehouseHandler}
-            >
-              {t("remove-from-warehouse")}
-            </motion.button>
-          </div>
+          <button
+            onClick={removeItemFromWarehouseHandler}
+            className={[
+              generalStyles.button,
+              generalStyles.bg_red,
+              generalStyles.fc_white,
+              generalStyles.margin_h_auto,
+              generalStyles.block,
+              generalStyles.padding_v_10,
+              generalStyles.padding_h_12,
+            ].join(" ")}
+          >
+            {t("remove-from-warehouse")}
+          </button>
         ) : (
-          <div className={styles.action_div}>
-            <motion.button
-              className={[styles.add_button, styles.green].join(" ")}
-              whileHover={{
-                scale: 1.1,
-                textShadow: "0px 0px 8px rgb(255, 255, 255)",
-                boxShadow: "0px 0px 8px rgb(255, 255, 255)",
-              }}
-              onClick={addItemToWarehouseHandler}
-            >
-              {t("add-to-warehouse")}
-            </motion.button>
-          </div>
+          <button
+            onClick={addItemToWarehouseHandler}
+            className={[
+              generalStyles.button,
+              generalStyles.bg_green,
+              generalStyles.fc_white,
+              generalStyles.margin_h_auto,
+              generalStyles.block,
+              generalStyles.padding_v_10,
+              generalStyles.padding_h_12,
+            ].join(" ")}
+          >
+            {t("add-to-warehouse")}
+          </button>
         ))}
 
       {showModal && (
@@ -450,7 +476,23 @@ function ItemPage() {
           <p>{t(connectionError)}</p>
         </Toast>
       )}
+
+      {showOfferModal && (
+        <OffersModal
+          token={token}
+          item={item}
+          warehouseId={selectedWarehouseId}
+          allowEdit={allowEdit}
+          close={() => {
+            setShowOfferModal(false);
+            setSelectedWarehouseId("");
+            setAllowEdit(false);
+          }}
+        />
+      )}
     </>
+  ) : (
+    <Redirect to="/signin" />
   );
 }
 

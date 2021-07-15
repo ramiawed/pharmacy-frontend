@@ -33,7 +33,8 @@ import {
 
 // styles
 // import styles from "./items-by-company-page.module.scss";
-import styles from "../companies-page/companies-page.module.scss";
+import generalStyles from "../../style.module.scss";
+// import styles from "../companies-page/companies-page.module.scss";
 import tableStyles from "../../components/table.module.scss";
 import searchContainerStyles from "../../components/search-container/search-container.module.scss";
 
@@ -122,23 +123,39 @@ function ItemsByCompanyPage() {
     <>
       <Header>
         <h2>
-          {company?.name} <span>({count})</span>
+          {company?.name} <span>{count}</span>
         </h2>
-        <div className={styles.actions}>
-          <RiRefreshLine
-            className={styles.icon}
-            size="2rem"
+        <div className={generalStyles.actions}>
+          <div
+            className={[generalStyles.icon, generalStyles.fc_secondary].join(
+              " "
+            )}
             onClick={handleEnterPress}
-          />
+          >
+            <RiRefreshLine />
+            <div className={generalStyles.tooltip}>{t("refresh-tooltip")}</div>
+          </div>
 
-          <div className={styles.favorite_div}>
-            <AiFillStar
-              className={styles.icon}
+          <div className={generalStyles.relative}>
+            <div
+              className={[generalStyles.icon, generalStyles.fc_secondary].join(
+                " "
+              )}
               onClick={() => setShowFavorites(!showFavorites)}
-            />
+            >
+              <AiFillStar />
+              <div className={generalStyles.tooltip}>
+                {t("show-favorite-tooltip")}
+              </div>
+            </div>
+
             {showFavorites && (
               <div
-                className={[styles.favorites_content, styles.bigger].join(" ")}
+                className={[
+                  generalStyles.favorites_content,
+                  generalStyles.favorites_content_wider,
+                  generalStyles.bg_white,
+                ].join(" ")}
               >
                 {showFavorites &&
                   favoritesItems.map((item) => (
@@ -151,23 +168,36 @@ function ItemsByCompanyPage() {
               </div>
             )}
           </div>
-          <AiFillAppstore
-            className={[
-              styles.icon,
-              displayType === "card" ? styles.selected : "",
-            ].join(" ")}
-            size="1.5rem"
-            onClick={() => setDisplayType("card")}
-          />
 
-          <FaListUl
+          <div
             className={[
-              styles.icon,
-              displayType === "list" ? styles.selected : "",
+              generalStyles.icon,
+              displayType === "card"
+                ? generalStyles.fc_green
+                : generalStyles.fc_secondary,
             ].join(" ")}
-            size="1.5rem"
+            onClick={() => setDisplayType("card")}
+          >
+            <AiFillAppstore />
+            <div className={generalStyles.tooltip}>
+              {t("show-item-as-card-tooltip")}
+            </div>
+          </div>
+
+          <div
+            className={[
+              generalStyles.icon,
+              displayType === "list"
+                ? generalStyles.fc_green
+                : generalStyles.fc_secondary,
+            ].join(" ")}
             onClick={() => setDisplayType("list")}
-          />
+          >
+            <FaListUl />
+            <div className={generalStyles.tooltip}>
+              {t("show-item-as-row-tooltip")}
+            </div>
+          </div>
 
           <SearchContainer searchAction={handleEnterPress}>
             <SearchInput
@@ -242,13 +272,7 @@ function ItemsByCompanyPage() {
           <label className={tableStyles.label_small}>
             {t("item-customer-price")}
           </label>
-          <label
-            className={
-              user.type === UserTypeConstants.WAREHOUSE
-                ? tableStyles.label_small
-                : tableStyles.label_xsmall
-            }
-          ></label>
+          <label className={tableStyles.label_xsmall}></label>
           <label className={tableStyles.label_xsmall}></label>
         </TableHeader>
       )}
@@ -259,7 +283,7 @@ function ItemsByCompanyPage() {
         ))}
 
       {displayType === "card" && (
-        <div className={styles.content_container}>
+        <div>
           {companyItems.map((companyItem) => (
             <ItemCard key={companyItem._id} companyItem={companyItem} />
           ))}
@@ -269,32 +293,36 @@ function ItemsByCompanyPage() {
       {status === "loading" && (
         <ReactLoading type="bubbles" height={50} width={50} />
       )}
-      <div
-        style={{
-          textAlign: "center",
-        }}
-      >
-        {count === 0 ? (
-          <div className={styles.no_content_div}>
-            <SiAtAndT className={styles.no_content_icon} />
-            <p>{t("no-medicines")}</p>
-          </div>
-        ) : companyItems.length < count ? (
-          <motion.button
-            whileHover={{
-              scale: 1.1,
-              textShadow: "0px 0px 8px rgb(255, 255, 255)",
-              boxShadow: "0px 0px 8px rgb(0, 0, 0, 0.3)",
-            }}
-            onClick={handleMoreResult}
-            className={styles.more_button}
-          >
-            {t("more")}
-          </motion.button>
-        ) : (
-          <p>{t("no-more")}</p>
-        )}
-      </div>
+
+      {count === 0 ? (
+        <div className={generalStyles.no_content_div}>
+          <SiAtAndT className={generalStyles.no_content_icon} />
+          <p className={generalStyles.fc_white}>{t("no-medicines")}</p>
+        </div>
+      ) : companyItems.length < count ? (
+        <button
+          onClick={handleMoreResult}
+          className={[
+            generalStyles.button,
+            generalStyles.bg_secondary,
+            generalStyles.fc_white,
+            generalStyles.margin_h_auto,
+            generalStyles.block,
+            generalStyles.padding_v_10,
+            generalStyles.padding_h_12,
+          ].join(" ")}
+        >
+          {t("more")}
+        </button>
+      ) : (
+        <p
+          className={[generalStyles.center, generalStyles.fc_secondary].join(
+            " "
+          )}
+        >
+          {t("no-more")}
+        </p>
+      )}
     </>
   ) : (
     <Redirect to="/signin" />

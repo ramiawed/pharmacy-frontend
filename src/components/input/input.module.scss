@@ -24,6 +24,11 @@
   flex: 1;
 }
 
+.input_div input:disabled {
+  background-color: $white-color;
+  color: gray;
+}
+
 .bordered {
   border: 1px solid $secondary-color;
 }

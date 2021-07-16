@@ -20,6 +20,10 @@ textarea {
   color: $secondary-color;
 }
 
+textarea:disabled {
+  color: gray;
+}
+
 .select_div {
   padding: 6px 0;
 

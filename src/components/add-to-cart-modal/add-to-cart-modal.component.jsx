@@ -151,7 +151,7 @@ function AddToCartModal({ item, close }) {
 
       <div className={styles.warehouse_row}>
         <SelectCustom
-          bgColor={Colors.fc_secondary_COLOR}
+          bgColor={Colors.SECONDARY_COLOR}
           foreColor="#fff"
           options={itemWarehousesOption}
           onchange={handleWarehouseChange}

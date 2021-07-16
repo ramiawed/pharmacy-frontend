@@ -16,6 +16,7 @@ function Input({
   placeholder,
   onEnterPress,
   resetField,
+  readOnly,
 }) {
   const { t } = useTranslation();
 
@@ -41,6 +42,7 @@ function Input({
         value={value}
         onChange={onchange}
         onKeyPress={handleKeyPress}
+        disabled={readOnly}
       />
       {resetField && value && (
         <AiFillCloseCircle

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Redirect, useHistory } from "react-router-dom";
+import { Link, Redirect, useHistory } from "react-router-dom";
 
 // components
 import TableHeader from "../table-header/table-header.component";
@@ -9,6 +9,7 @@ import paginationStyles from "../pagination.module.scss";
 import CompanyItemRow from "../company-item-row/company-item-row.component";
 import Toast from "../toast/toast.component";
 import SearchContainer from "../search-container/search-container.component";
+import Header from "../header/header.component";
 
 // react-icons
 import { GiMedicines } from "react-icons/gi";
@@ -190,112 +191,135 @@ function CompanyItems() {
     user.type === UserTypeConstants.COMPANY ||
     user.type === UserTypeConstants.ADMIN ? (
       <>
-        <div className={generalStyles.actions}>
-          {user.type === UserTypeConstants.COMPANY && (
-            <>
-              <div
-                className={[
-                  generalStyles.icon,
-                  generalStyles.fc_secondary,
-                ].join(" ")}
-                onClick={() => {
-                  history.push("/item/admin");
-                }}
-              >
-                <RiAddCircleFill size={20} />
+        <Header>
+          <h2>
+            {t("medicines")} <span>{count}</span>
+          </h2>
+          <div className={generalStyles.actions}>
+            {user.type === UserTypeConstants.COMPANY && (
+              <>
+                <div
+                  className={[
+                    generalStyles.icon,
+                    generalStyles.fc_secondary,
+                  ].join(" ")}
+                  // onClick={() => {
+                  //   history.push("/item/admin");
+                  // }}
+                >
+                  <Link
+                    style={{
+                      paddingTop: "3px",
+                    }}
+                    className={[generalStyles.fc_secondary].join(" ")}
+                    to={{
+                      pathname: "/item",
+                      state: {
+                        from: user.type,
+                        type: "new",
+                        allowAction: true,
+                        itemId: null,
+                        companyId: user._id,
+                        warehouseId: null,
+                      },
+                    }}
+                  >
+                    <RiAddCircleFill size={20} />
+                  </Link>
 
-                <div className={generalStyles.tooltip}>{t("add-item")}</div>
-              </div>
-
-              <div
-                className={[
-                  generalStyles.icon,
-                  generalStyles.fc_secondary,
-                ].join(" ")}
-                onClick={() => {
-                  history.push("/items-from-excel");
-                }}
-              >
-                <SiMicrosoftexcel size={20} />
-                <div className={generalStyles.tooltip}>
-                  {t("items-from-excel")}
+                  <div className={generalStyles.tooltip}>{t("add-item")}</div>
                 </div>
+
+                <div
+                  className={[
+                    generalStyles.icon,
+                    generalStyles.fc_secondary,
+                  ].join(" ")}
+                  onClick={() => {
+                    history.push("/items-from-excel");
+                  }}
+                >
+                  <SiMicrosoftexcel size={20} />
+                  <div className={generalStyles.tooltip}>
+                    {t("items-from-excel")}
+                  </div>
+                </div>
+              </>
+            )}
+
+            <SearchContainer searchAction={handleEnterPress}>
+              <SearchInput
+                label="item-name"
+                id="item-name"
+                type="text"
+                value={searchName}
+                onchange={(e) => setSearchName(e.target.value)}
+                placeholder="search"
+                onEnterPress={handleEnterPress}
+                resetField={() => {
+                  setSearchName("");
+                }}
+              />
+
+              <SearchInput
+                label="item-warehouse"
+                id="item-warehouse"
+                type="text"
+                value={searchWarehouse}
+                onchange={(e) => setSearchWarehouse(e.target.value)}
+                placeholder="search"
+                onEnterPress={handleEnterPress}
+                resetField={() => {
+                  setSearchWarehouse("");
+                }}
+              />
+              <div className={searchContainerStyles.checkbox_div}>
+                <input
+                  type="checkbox"
+                  checked={deletedItemsCheck}
+                  onChange={() => {
+                    setDeletedItemsCheck(!deletedItemsCheck);
+                    setActiveItemsCheck(false);
+                  }}
+                />
+                <label>{t("deleted-items")}</label>
               </div>
-            </>
-          )}
-
-          <SearchContainer searchAction={handleEnterPress}>
-            <SearchInput
-              label="item-name"
-              id="item-name"
-              type="text"
-              value={searchName}
-              onchange={(e) => setSearchName(e.target.value)}
-              placeholder="search"
-              onEnterPress={handleEnterPress}
-              resetField={() => {
-                setSearchName("");
-              }}
-            />
-
-            <SearchInput
-              label="item-warehouse"
-              id="item-warehouse"
-              type="text"
-              value={searchWarehouse}
-              onchange={(e) => setSearchWarehouse(e.target.value)}
-              placeholder="search"
-              onEnterPress={handleEnterPress}
-              resetField={() => {
-                setSearchWarehouse("");
-              }}
-            />
-            <div className={searchContainerStyles.checkbox_div}>
-              <input
-                type="checkbox"
-                checked={deletedItemsCheck}
-                onChange={() => {
-                  setDeletedItemsCheck(!deletedItemsCheck);
-                  setActiveItemsCheck(false);
-                }}
-              />
-              <label>{t("deleted-items")}</label>
-            </div>
-            <div className={searchContainerStyles.checkbox_div}>
-              <input
-                type="checkbox"
-                checked={activeItemsCheck}
-                onChange={() => {
-                  setDeletedItemsCheck(false);
-                  setActiveItemsCheck(!activeItemsCheck);
-                }}
-              />
-              <label>{t("active-items")}</label>
-            </div>
-            <div className={searchContainerStyles.checkbox_div}>
-              <input
-                type="checkbox"
-                checked={inWarehouseCheck}
-                onChange={() => {
-                  setInWarehouseCheck(!inWarehouseCheck);
-                  setOutWarehouseCheck(false);
-                }}
-              />
-              <label>{t("warehouse-in-warehouse")}</label>
-            </div>
-            <div className={searchContainerStyles.checkbox_div}>
-              <input
-                type="checkbox"
-                checked={outWarehouseCheck}
-                onChange={() => {
-                  setInWarehouseCheck(false);
-                  setOutWarehouseCheck(!outWarehouseCheck);
-                }}
-              />
-              <label>{t("warehouse-out-warehouse")}</label>
-            </div>
-          </SearchContainer>
-        </div>
+              <div className={searchContainerStyles.checkbox_div}>
+                <input
+                  type="checkbox"
+                  checked={activeItemsCheck}
+                  onChange={() => {
+                    setDeletedItemsCheck(false);
+                    setActiveItemsCheck(!activeItemsCheck);
+                  }}
+                />
+                <label>{t("active-items")}</label>
+              </div>
+              <div className={searchContainerStyles.checkbox_div}>
+                <input
+                  type="checkbox"
+                  checked={inWarehouseCheck}
+                  onChange={() => {
+                    setInWarehouseCheck(!inWarehouseCheck);
+                    setOutWarehouseCheck(false);
+                  }}
+                />
+                <label>{t("warehouse-in-warehouse")}</label>
+              </div>
+              <div className={searchContainerStyles.checkbox_div}>
+                <input
+                  type="checkbox"
+                  checked={outWarehouseCheck}
+                  onChange={() => {
+                    setInWarehouseCheck(false);
+                    setOutWarehouseCheck(!outWarehouseCheck);
+                  }}
+                />
+                <label>{t("warehouse-out-warehouse")}</label>
+              </div>
+            </SearchContainer>
+          </div>
+        </Header>
 
         {count > 0 ? (
           <>

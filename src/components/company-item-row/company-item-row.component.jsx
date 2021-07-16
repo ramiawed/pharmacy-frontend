@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import { changeItemActiveState } from "../../redux/items/itemsSlices";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 // components
 import Modal from "../modal/modal.component";
@@ -18,12 +19,10 @@ import tableStyles from "../table.module.scss";
 import rowStyles from "../row.module.scss";
 
 // constants
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { UserTypeConstants } from "../../utils/constants";
 
 function CompanyItemRow({ item }) {
   const { t } = useTranslation();
-  const history = useHistory();
   const [modalObj, setModalObj] = useState({});
 
   const [showModal, setShowModal] = useState(false);
@@ -66,15 +65,45 @@ function CompanyItemRow({ item }) {
   return (
     <>
       <div className={rowStyles.container}>
-        <label
+        {/* <label
           className={[rowStyles.hover_underline, tableStyles.label_medium].join(
             " "
           )}
           onClick={() => {
-            history.push(`/item/admin/${item._id}`);
+            const admin =
+              user.type === UserTypeConstants.COMPANY ||
+              (user.type === UserTypeConstants.ADMIN && item.company.allowAdmin)
+                ? "admin"
+                : "user";
+            history.push(`/item/${admin}/info/${item._id}`);
           }}
         >
           {item.name}
+        </label> */}
+        <label
+          className={[rowStyles.hover_underline, tableStyles.label_medium].join(
+            " "
+          )}
+        >
+          <Link
+            className={rowStyles.hover_underline}
+            to={{
+              pathname: "/item",
+              state: {
+                from: user.type,
+                type: "info",
+                allowAction:
+                  user.type === UserTypeConstants.COMPANY ||
+                  (user.type === UserTypeConstants.ADMIN &&
+                    item.company.allowAdmin),
+                itemId: item._id,
+                companyId: item.company._id,
+                warehouseId: null,
+              },
+            }}
+          >
+            {item.name}
+          </Link>
         </label>
 
         {user.type === UserTypeConstants.ADMIN && (

@@ -14,10 +14,6 @@
   transition: all 1s;
 }
 
-.partner_container:hover {
-  transform: scale(1.01);
-}
-
 @media only screen and (min-width: $small) {
   .partner_container {
     width: 31%;
@@ -111,77 +107,4 @@
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-}
-
-.icon {
-  position: absolute;
-  top: 5px;
-  left: 5px;
-  background-color: rgba($color: $secondary-color, $alpha: 1);
-
-  border-radius: 50%;
-  padding: 4px;
-
-  transition: all 0.3s;
-}
-
-.add_to_cart_icon {
-  position: absolute;
-  top: 5px;
-  left: 40px;
-  color: $green-color;
-
-  cursor: pointer;
-
-  transition: all 0.3s;
-}
-
-.add_to_cart_icon:hover {
-  transform: scale(1.1);
-}
-
-.add_from_container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  color: $white-color;
-  max-width: 150px;
-  border-radius: 50%;
-
-  font-size: 0.6rem;
-
-  padding: 4px;
-
-  position: absolute;
-  top: 5px;
-  left: 40px;
-
-  cursor: pointer;
-
-  transition: width 0.3s;
-}
-
-.add_from_container.remove {
-  background: $third-color;
-}
-
-.add_from_container.add {
-  background: $green-color;
-}
-
-.add_from_container .label {
-  display: none;
-}
-
-.add_from_container:hover {
-  border-radius: 6px;
-}
-
-.add_from_container:hover .label {
-  display: inline-block;
-}
-
-.icon:hover {
-  transform: scale(1.1);
 }

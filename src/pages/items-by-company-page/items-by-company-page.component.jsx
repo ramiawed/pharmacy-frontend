@@ -283,7 +283,12 @@ function ItemsByCompanyPage() {
         ))}
 
       {displayType === "card" && (
-        <div>
+        <div
+          className={[
+            generalStyles.flex_container,
+            generalStyles.margin_top_10,
+          ].join(" ")}
+        >
           {companyItems.map((companyItem) => (
             <ItemCard key={companyItem._id} companyItem={companyItem} />
           ))}

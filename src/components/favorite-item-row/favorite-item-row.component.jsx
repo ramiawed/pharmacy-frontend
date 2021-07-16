@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // components
@@ -64,11 +64,31 @@ function FavoriteItemRow({ item, withoutBoxShadow }) {
             tableStyles.label_medium,
             rowStyles.align_start,
           ].join(" ")}
-          onClick={() => {
-            history.push(`/item/user/${item._id}`);
-          }}
+          // onClick={() => {
+          //   history.push(`/item/user/${item._id}`);
+          // }}
         >
-          {item.name}
+          <Link
+            className={[
+              generalStyles.fc_secondary,
+              rowStyles.hover_underline,
+            ].join(" ")}
+            to={{
+              pathname: "/item",
+              state: {
+                from: user.type,
+                type: "info",
+                allowAction: false,
+
+                itemId: item._id,
+                companyId: item.company._id,
+                warehouseId:
+                  user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
+              },
+            }}
+          >
+            {item.name}
+          </Link>
         </label>
 
         <label className={tableStyles.label_small}>{item.caliber}</label>

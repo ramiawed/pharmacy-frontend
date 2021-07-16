@@ -33,6 +33,7 @@ import tableStyles from "../table.module.scss";
 import { checkConnection } from "../../utils/checkInternet";
 import { Colors, UserTypeConstants } from "../../utils/constants";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { Link } from "react-router-dom";
 
 function ItemRow({ companyItem }) {
   const history = useHistory();
@@ -124,11 +125,25 @@ function ItemRow({ companyItem }) {
             tableStyles.center,
             tableStyles.underline,
           ].join(" ")}
-          onClick={() => {
-            history.push(`/item/user/${companyItem._id}`);
-          }}
         >
-          {companyItem.name}
+          <Link
+            to={{
+              pathname: "/item",
+              state: {
+                from: user.type,
+                type: "info",
+                allowAction: false,
+
+                itemId: companyItem._id,
+                companyId: companyItem.company._id,
+                warehouseId:
+                  user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
+              },
+            }}
+            className={rowStyles.hover_underline}
+          >
+            {companyItem.name}
+          </Link>
         </label>
 
         <label

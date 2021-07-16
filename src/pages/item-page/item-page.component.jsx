@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
-import { Redirect } from "react-router-dom";
+import { Redirect, useLocation } from "react-router-dom";
 import axios from "../../api/pharmacy";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
   addItem,
@@ -31,7 +29,7 @@ import AddToCartModal from "../../components/add-to-cart-modal/add-to-cart-modal
 import { getIcon } from "../../utils/icons";
 import { checkConnection } from "../../utils/checkInternet";
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import { MdDelete, MdLocalOffer } from "react-icons/md";
+import { MdLocalOffer } from "react-icons/md";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -41,9 +39,13 @@ import OffersModal from "../../components/offers-modal/offers-modal.component";
 
 function ItemPage() {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
 
-  const { readOnly, itemId } = useParams();
+  const location = useLocation();
+
+  const { from, allowAction, type, itemId, companyId, warehouseId } =
+    location.state;
+
+  const dispatch = useDispatch();
   const { user, token } = useSelector(selectUserData);
   const { addStatus, updateStatus } = useSelector(selectItems);
 
@@ -57,7 +59,6 @@ function ItemPage() {
 
   const [item, setItem] = useState({
     name: "",
-    company: user._id,
     caliber: "",
     formula: "",
     indication: "",
@@ -71,7 +72,6 @@ function ItemPage() {
   const resetItem = () => {
     setItem({
       name: "",
-      company: user._id,
       caliber: "",
       formula: "",
       indication: "",
@@ -125,23 +125,32 @@ function ItemPage() {
       }
 
       // check if there is an error
-      const obj = {
+      let obj = {
         ...item,
       };
 
-      if (!itemId) {
+      if (type === "new") {
+        // add a new item
+        obj = {
+          ...obj,
+          company: companyId,
+        };
+
         dispatch(addItem({ obj, token }))
           .then(unwrapResult)
           .then((originalPromiseResult) => {
             resetItem();
           })
           .catch((rejectedValueOrSerializedError) => {});
-      } else {
+      } else if (type === "info") {
+        // update an existing item
+        obj = {
+          ...obj,
+          _id: itemId,
+        };
         // dispatch update item
         dispatch(updateItem({ obj, token }))
-          .then((originalPromiseResult) => {
-            // resetItem();
-          })
+          .then((originalPromiseResult) => {})
           .catch((rejectedValueOrSerializedError) => {});
       }
     } else {
@@ -162,8 +171,8 @@ function ItemPage() {
     dispatch(
       addItemToWarehouse({
         obj: {
-          itemId: item._id,
-          warehouseId: user._id,
+          itemId: itemId,
+          warehouseId: warehouseId,
         },
         token,
       })
@@ -184,8 +193,8 @@ function ItemPage() {
     dispatch(
       removeItemFromWarehouse({
         obj: {
-          itemId: item._id,
-          warehouseId: user._id,
+          itemId: itemId,
+          warehouseId: warehouseId,
         },
         token,
       })
@@ -206,10 +215,10 @@ function ItemPage() {
   };
 
   useEffect(() => {
-    if (itemId) {
+    if (type === "info" && itemId) {
       getItemFromDB();
     }
-  }, [itemId, token]);
+  }, [itemId, type]);
 
   return user ? (
     <>
@@ -224,6 +233,7 @@ function ItemPage() {
             icon={getIcon("medicine")}
             onchange={handleInputChange}
             error={itemError.name?.length > 0}
+            readOnly={!allowAction}
           />
 
           <div className={styles.horizontal_div}></div>
@@ -237,6 +247,7 @@ function ItemPage() {
             icon={getIcon("medicine")}
             onchange={handleInputChange}
             error={itemError.formula?.length > 0}
+            readOnly={!allowAction}
           />
 
           <div className={styles.horizontal_div}></div>
@@ -250,6 +261,7 @@ function ItemPage() {
             icon={getIcon("medicine")}
             onchange={handleInputChange}
             error={itemError.caliber?.length > 0}
+            readOnly={!allowAction}
           />
 
           <div className={styles.horizontal_div}></div>
@@ -263,6 +275,7 @@ function ItemPage() {
             icon={getIcon("medicine")}
             onchange={handleInputChange}
             error={itemError.packing?.length > 0}
+            readOnly={!allowAction}
           />
         </CardInfo>
 
@@ -281,6 +294,7 @@ function ItemPage() {
               icon={getIcon("price")}
               onchange={handleInputChange}
               error={itemError.price?.length > 0}
+              readOnly={!allowAction}
             />
           </div>
           <div className={styles.horizontal_div}></div>
@@ -298,6 +312,7 @@ function ItemPage() {
               icon={getIcon("price")}
               onchange={handleInputChange}
               error={itemError.customer_price?.length > 0}
+              readOnly={!allowAction}
             />
           </div>
         </CardInfo>
@@ -309,6 +324,7 @@ function ItemPage() {
               id="composition"
               value={item.composition}
               onChange={handleInputChange}
+              disabled={!allowAction}
             />
           </div>
         </CardInfo>
@@ -320,45 +336,43 @@ function ItemPage() {
               id="indication"
               value={item.indication}
               onChange={handleInputChange}
+              disabled={!allowAction}
             />
           </div>
         </CardInfo>
 
-        {readOnly === "admin" &&
-          (user.type === UserTypeConstants.COMPANY ||
-            user.type === UserTypeConstants.ADMIN) &&
-          item.warehouses?.length > 0 && (
-            <CardInfo headerTitle={t("warehouses")}>
-              {item.warehouses.map((w, index) => (
-                <div
-                  className={[
-                    rowStyles.container,
-                    rowStyles.without_box_shadow,
-                    generalStyles.padding_h_6,
-                  ].join(" ")}
-                >
-                  <label className={generalStyles.padding_v_6}>
-                    {w.warehouse.name}
-                  </label>
-                  {w.offer.offers.length > 0 && (
-                    <div
-                      className={generalStyles.icon}
-                      onClick={() => {
-                        setSelectedWarehouseId(w.warehouse._id);
-                        setAllowEdit(w.warehouse.allowAdmin);
-                        setShowOfferModal(true);
-                      }}
-                    >
-                      <MdLocalOffer />
-                      <div className={generalStyles.tooltip}>
-                        {t("nav-offers")}
-                      </div>
+        {item.warehouses?.length > 0 && (
+          <CardInfo headerTitle={t("warehouses")}>
+            {item.warehouses.map((w, index) => (
+              <div
+                className={[
+                  rowStyles.container,
+                  rowStyles.without_box_shadow,
+                  generalStyles.padding_h_6,
+                ].join(" ")}
+              >
+                <label className={generalStyles.padding_v_6}>
+                  {w.warehouse.name}
+                </label>
+                {w.offer.offers.length > 0 && (
+                  <div
+                    className={generalStyles.icon}
+                    onClick={() => {
+                      setSelectedWarehouseId(w.warehouse._id);
+                      setAllowEdit(w.warehouse.allowAdmin);
+                      setShowOfferModal(true);
+                    }}
+                  >
+                    <MdLocalOffer />
+                    <div className={generalStyles.tooltip}>
+                      {t("nav-offers")}
                     </div>
-                  )}
-                </div>
-              ))}
-            </CardInfo>
-          )}
+                  </div>
+                )}
+              </div>
+            ))}
+          </CardInfo>
+        )}
 
         {Object.entries(itemError).length > 0 && (
           <ul className={styles.error_ul}>
@@ -371,40 +385,48 @@ function ItemPage() {
         )}
       </div>
 
-      {readOnly === "admin" && (
-        <div className={styles.action_div}>
-          <motion.button
-            className={styles.add_button}
-            whileHover={{
-              scale: 1.1,
-              textShadow: "0px 0px 8px rgb(255, 255, 255)",
-              boxShadow: "0px 0px 8px rgb(255, 255, 255)",
-            }}
-            onClick={handleAddUpdateItem}
-          >
-            {itemId ? t("update-item") : t("add-item")}
-          </motion.button>
-        </div>
-      )}
+      {allowAction &&
+        (from === UserTypeConstants.COMPANY ||
+          from === UserTypeConstants.ADMIN) && (
+          <>
+            <button
+              className={[
+                generalStyles.button,
+                generalStyles.bg_green,
+                generalStyles.fc_white,
+                generalStyles.padding_v_6,
+                generalStyles.padding_h_10,
+                generalStyles.margin_h_auto,
+                generalStyles.block,
+              ].join(" ")}
+              onClick={handleAddUpdateItem}
+            >
+              {type === "info" ? t("update-item") : t("add-item")}
+            </button>
+          </>
+        )}
 
-      {readOnly === "user" && user.type === UserTypeConstants.PHARMACY && (
-        <div className={styles.action_div}>
-          <motion.button
-            className={[styles.add_button, generalStyles.bg_green].join(" ")}
-            whileHover={{
-              scale: 1.1,
-              textShadow: "0px 0px 8px rgb(255, 255, 255)",
-              boxShadow: "0px 0px 8px rgb(255, 255, 255)",
-            }}
+      {/* show add-to-cart button, if the user's type is PHARMACY and the item is exist in any warehouse */}
+      {user.type === UserTypeConstants.PHARMACY && item.warehouses?.length > 0 && (
+        <>
+          <button
+            className={[
+              generalStyles.button,
+              generalStyles.bg_green,
+              generalStyles.fc_white,
+              generalStyles.padding_v_6,
+              generalStyles.padding_h_10,
+              generalStyles.margin_h_auto,
+              generalStyles.block,
+            ].join(" ")}
             onClick={() => setShowModal(true)}
           >
             {t("add-to-cart")}
-          </motion.button>
-        </div>
+          </button>
+        </>
       )}
 
-      {readOnly === "user" &&
-        user.type === UserTypeConstants.WAREHOUSE &&
+      {user.type === UserTypeConstants.WAREHOUSE &&
         (item.warehouses?.map((w) => w.warehouse._id).includes(user._id) ? (
           <button
             onClick={removeItemFromWarehouseHandler}
@@ -414,8 +436,8 @@ function ItemPage() {
               generalStyles.fc_white,
               generalStyles.margin_h_auto,
               generalStyles.block,
-              generalStyles.padding_v_10,
-              generalStyles.padding_h_12,
+              generalStyles.padding_v_6,
+              generalStyles.padding_h_10,
             ].join(" ")}
           >
             {t("remove-from-warehouse")}
@@ -429,8 +451,8 @@ function ItemPage() {
               generalStyles.fc_white,
               generalStyles.margin_h_auto,
               generalStyles.block,
-              generalStyles.padding_v_10,
-              generalStyles.padding_h_12,
+              generalStyles.padding_v_6,
+              generalStyles.padding_h_10,
             ].join(" ")}
           >
             {t("add-to-warehouse")}

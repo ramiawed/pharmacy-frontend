@@ -3,12 +3,13 @@ import { useTranslation } from "react-i18next";
 
 // components
 import Toast from "../toast/toast.component";
+import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
 
 // react icons
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { GiMedicines } from "react-icons/gi";
-import { IoMdAdd } from "react-icons/io";
-import { MdDelete } from "react-icons/md";
+import { MdDelete, MdAddCircle } from "react-icons/md";
+import { TiShoppingCart } from "react-icons/ti";
 
 // redux-stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -30,8 +31,6 @@ import styles from "./item-card.module.scss";
 // constants and utils
 import { checkConnection } from "../../utils/checkInternet";
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
-import { TiShoppingCart } from "react-icons/ti";
-import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
 
 function ItemCard({ companyItem }) {
   const user = useSelector(selectUser);
@@ -103,8 +102,9 @@ function ItemCard({ companyItem }) {
               generalStyles.fc_yellow,
               generalStyles.position_top_5_left_5,
             ].join(" ")}
+            onClick={removeItemFromFavoritesItems}
           >
-            <AiFillStar onClick={removeItemFromFavoritesItems} size={24} />
+            <AiFillStar size={24} />
           </div>
         ) : (
           <div
@@ -113,54 +113,61 @@ function ItemCard({ companyItem }) {
               generalStyles.fc_yellow,
               generalStyles.position_top_5_left_5,
             ].join(" ")}
+            onClick={addItemToFavoriteItems}
           >
-            <AiOutlineStar onClick={addItemToFavoriteItems} size={24} />
+            <AiOutlineStar size={24} />
           </div>
         )}
       </div>
 
-      <div>
-        {user.type === UserTypeConstants.WAREHOUSE &&
-          (companyItem.warehouses
-            .map((w) => w.warehouse._id)
-            .includes(user._id) ? (
-            <p
-              className={[styles.add_from_container, styles.remove].join(" ")}
-              onClick={removeItemFromWarehouseHandler}
-            >
-              <label className={styles.label}>
-                {t("remove-from-warehouse")}
-              </label>
-              <MdDelete className={styles.remove_icon} size="26" />
-            </p>
-          ) : (
-            <p
-              className={[styles.add_from_container, styles.add].join(" ")}
-              onClick={addItemToWarehouseHandler}
-            >
-              <label className={styles.label}>{t("add-to-warehouse")}</label>
-              <IoMdAdd className={styles.remove_icon} size="26" />
-            </p>
-          ))}
-
-        {user.type === UserTypeConstants.PHARMACY &&
-          companyItem.warehouses.length > 0 && (
-            <div
-              className={[
-                generalStyles.icon,
-                generalStyles.green,
-                generalStyles.position_top_5_left_40,
-              ].join(" ")}
-            >
-              <TiShoppingCart
-                onClick={() => {
-                  setShowModal(true);
-                }}
-                size={24}
-              />
+      {user.type === UserTypeConstants.WAREHOUSE &&
+        (companyItem.warehouses
+          .map((w) => w.warehouse._id)
+          .includes(user._id) ? (
+          <div
+            className={[
+              generalStyles.icon,
+              generalStyles.fc_red,
+              generalStyles.position_top_5_left_40,
+            ].join(" ")}
+            onClick={removeItemFromWarehouseHandler}
+          >
+            <MdDelete size={24} />
+            <div className={generalStyles.tooltip}>
+              {t("remove-from-warehouse-tooltip")}
             </div>
-          )}
-      </div>
+          </div>
+        ) : (
+          <div
+            className={[
+              generalStyles.icon,
+              generalStyles.fc_green,
+              generalStyles.position_top_5_left_40,
+            ].join(" ")}
+            onClick={addItemToWarehouseHandler}
+          >
+            <MdAddCircle size={30} />
+            <div className={generalStyles.tooltip}>
+              {t("add-to-warehouse-tooltip")}
+            </div>
+          </div>
+        ))}
+
+      {user.type === UserTypeConstants.PHARMACY &&
+        companyItem.warehouses.length > 0 && (
+          <div
+            className={[
+              generalStyles.icon,
+              generalStyles.fc_green,
+              generalStyles.position_top_5_left_40,
+            ].join(" ")}
+            onClick={() => {
+              setShowModal(true);
+            }}
+          >
+            <TiShoppingCart size={24} />
+          </div>
+        )}
 
       <div className={styles.logo}>
         {user.logo_url?.length > 0 ? (

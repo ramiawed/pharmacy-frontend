@@ -17,8 +17,9 @@ import { MdDelete, MdLocalOffer } from "react-icons/md";
 import generalStyles from "../../style.module.scss";
 import tableStyles from "../table.module.scss";
 import rowStyles from "../row.module.scss";
+import { Link } from "react-router-dom";
 
-function WarehouseItemRow({ item, onSelect, deleteItem, changeItemMaxQty }) {
+function WarehouseItemRow({ item, deleteItem, changeItemMaxQty }) {
   const { t } = useTranslation();
   const { user, token } = useSelector(selectUserData);
 
@@ -43,9 +44,23 @@ function WarehouseItemRow({ item, onSelect, deleteItem, changeItemMaxQty }) {
             tableStyles.hover_underline,
             tableStyles.label_medium,
           ].join(" ")}
-          onClick={() => onSelect(item)}
         >
-          {item.name}
+          <Link
+            className={rowStyles.hover_underline}
+            to={{
+              pathname: "/item",
+              state: {
+                from: user.type,
+                type: "info",
+                allowAction: false,
+                itemId: item._id,
+                companyId: null,
+                warehouseId: user._id,
+              },
+            }}
+          >
+            {item.name}
+          </Link>
         </label>
         <label className={tableStyles.label_medium}>{item.company.name}</label>
         <label className={tableStyles.label_small}>{item.formula}</label>

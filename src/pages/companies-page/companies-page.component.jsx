@@ -229,7 +229,12 @@ function CompaniesPage() {
 
       {/* display partner as a card */}
       {displayType === "card" && (
-        <div>
+        <div
+          className={[
+            generalStyles.flex_container,
+            generalStyles.margin_top_10,
+          ].join(" ")}
+        >
           {companies.map((company) => (
             <PartnerCard key={company._id} user={company} />
           ))}

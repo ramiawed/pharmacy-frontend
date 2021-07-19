@@ -227,7 +227,12 @@ function WarehousePage() {
 
       {/* display as card */}
       {displayType === "card" && (
-        <div className={generalStyles.content_container}>
+        <div
+          className={[
+            generalStyles.flex_container,
+            generalStyles.margin_top_10,
+          ].join(" ")}
+        >
           {warehouses.map((warehouse) => (
             <PartnerCard key={warehouse._id} user={warehouse} />
           ))}

@@ -6,10 +6,13 @@ import { useTranslation } from "react-i18next";
 import styles from "../side-nav.module.scss";
 
 // constants
-import { SideNavLinks } from "../../utils/constants.js";
+import { SideNavLinks, UserTypeConstants } from "../../utils/constants.js";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/auth/authSlice";
 
 function SideNavAdmin({ selectedOption, onSelectedChange }) {
   const { t } = useTranslation();
+  const user = useSelector(selectUser);
   return (
     <>
       <Link
@@ -32,7 +35,16 @@ function SideNavAdmin({ selectedOption, onSelectedChange }) {
         onClick={() => {
           onSelectedChange(SideNavLinks.ITEMS);
         }}
-        to="/admin/items"
+        // to="/admin/items"
+        to={{
+          pathname: "/items",
+          state: {
+            user: user,
+            company: null,
+            warehouse: null,
+            role: UserTypeConstants.ADMIN,
+          },
+        }}
       >
         {t("nav-items")}
       </Link>

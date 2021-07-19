@@ -35,6 +35,7 @@ import styles from "./main-page.module.scss";
 import { TopNavLinks } from "../../utils/constants";
 import Axios from "axios";
 import TestParams from "../../components/test-params/test-params.component";
+import ItemsPage from "../items-page/items-page.component";
 
 // MainPage
 // you have to sign in first
@@ -183,9 +184,9 @@ function MainPage() {
           <WarehousePage />
         </Route>
 
-        <Route exact path="/item/:action/:id">
+        {/* <Route exact path="/item/:action/:id">
           <ItemPage />
-        </Route>
+        </Route> */}
 
         <Route exact path="/item">
           <ItemPage />
@@ -207,8 +208,11 @@ function MainPage() {
           <FavoritesPage />
         </Route>
 
+        <Route path="/items">
+          <ItemsPage />
+        </Route>
+
         <Route path="/company/items">
-          {/* <Item /> */}
           <CompanyItemsPage />
         </Route>
 

@@ -146,6 +146,7 @@
     "item-caliber": "العيار",
     "item-indication": "الاستطباب",
     "item-composition": "التركيب الدوائي",
+    "item-company": "الشركة",
     "enter-item-packing": "ادخل التعبئة",
     "choose-formula": "اختر االشكل الصيدلاني",
     "enter-price": "ادخل السعر للصيدلاني",
@@ -206,6 +207,9 @@
     "no-warehouses": "لا يوجد مستودعات",
     "no-medicines": "لا يوجد ادوية ضمن هذه الشركة",
     "medicines": "الأدوية",
+    "medicines-in-warehouse": "الأدوية الموجودة ضمن مستودع:",
+    "medicines-in-company": "الأدوية الموجودة ضمن شركة:",
+    "all-medicines": "جميع الأدوية",
     "empty-cart": "الحافظة فارغة",
     "warehouse-in-warehouse": "الموجودة ضمن المستودع",
     "warehouse-out-warehouse": "الغير موجودة ضمن المستودع",
@@ -238,5 +242,6 @@
     "sort-results": "ترتيب النتائج",
     "add-offer-tooltip": "إضافة عرض",
     "remove-offer-tooltip": "حذف عرض",
-    "dont-have-permission": "ليس لديك الصلاحية للقيام بهذه العملية"
+    "dont-have-permission": "ليس لديك الصلاحية للقيام بهذه العملية",
+    "no-offers": "لا يوجد عروض ضمن هذا المتسودع."
 }

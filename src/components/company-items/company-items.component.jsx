@@ -5,11 +5,11 @@ import { Link, Redirect, useHistory } from "react-router-dom";
 // components
 import TableHeader from "../table-header/table-header.component";
 import ReactPaginate from "react-paginate";
-import paginationStyles from "../pagination.module.scss";
 import CompanyItemRow from "../company-item-row/company-item-row.component";
 import Toast from "../toast/toast.component";
 import SearchContainer from "../search-container/search-container.component";
 import Header from "../header/header.component";
+import SearchInput from "../search-input/search-input.component";
 
 // react-icons
 import { GiMedicines } from "react-icons/gi";
@@ -34,15 +34,17 @@ import { Colors, UserTypeConstants } from "../../utils/constants";
 
 // styles
 import generalStyles from "../../style.module.scss";
+import paginationStyles from "../pagination.module.scss";
 import tableStyles from "../table.module.scss";
-import SearchInput from "../search-input/search-input.component";
 import searchContainerStyles from "../search-container/search-container.module.scss";
 
 function CompanyItems() {
   const history = useHistory();
   const { t } = useTranslation();
 
+  // search state
   const [searchName, setSearchName] = useState("");
+  const [searchCompanyName, setSearchCompanyName] = useState("");
   const [searchWarehouse, setSearchWarehouse] = useState("");
   const [deletedItemsCheck, setDeletedItemsCheck] = useState(false);
   const [activeItemsCheck, setActiveItemsCheck] = useState(false);
@@ -56,10 +58,11 @@ function CompanyItems() {
   const [sortCustomerPriceField, setSortCustomerPriceField] = useState(0);
   const [sortField, setSortField] = useState("");
 
-  const dispatch = useDispatch();
-
-  const { count, items, activeStatus } = useSelector(selectItems);
+  // initial page
   const [initialPage, setInitialPage] = useState(0);
+
+  const dispatch = useDispatch();
+  const { count, items, activeStatus } = useSelector(selectItems);
   const { token, user } = useSelector(selectUserData);
 
   // handle for page change in the paginate component
@@ -85,6 +88,10 @@ function CompanyItems() {
 
     if (searchName.trim().length !== 0) {
       queryString.name = searchName.trim();
+    }
+
+    if (searchCompanyName.trim().length !== 0) {
+      queryString.companyName = searchCompanyName.trim();
     }
 
     if (searchWarehouse.trim().length !== 0) {
@@ -203,9 +210,6 @@ function CompanyItems() {
                     generalStyles.icon,
                     generalStyles.fc_secondary,
                   ].join(" ")}
-                  // onClick={() => {
-                  //   history.push("/item/admin");
-                  // }}
                 >
                   <Link
                     style={{
@@ -260,6 +264,21 @@ function CompanyItems() {
                   setSearchName("");
                 }}
               />
+
+              {user.type === UserTypeConstants.ADMIN && (
+                <SearchInput
+                  label="item-company"
+                  id="item-company"
+                  type="text"
+                  value={searchCompanyName}
+                  onchange={(e) => setSearchCompanyName(e.target.value)}
+                  placeholder="search"
+                  onEnterPress={handleEnterPress}
+                  resetField={() => {
+                    setSearchCompanyName("");
+                  }}
+                />
+              )}
 
               <SearchInput
                 label="item-warehouse"

@@ -24,9 +24,18 @@ export const getItems = createAsyncThunk(
         buildUrl = buildUrl + `&companyId=${queryString.companyId}`;
       }
 
+      if (queryString.warehouseId) {
+        buildUrl = buildUrl + `&warehouseId=${queryString.warehouseId}`;
+      }
+
       if (queryString.name) {
         buildUrl = buildUrl + `&itemName=${queryString.name}`;
       }
+
+      if (queryString.companyName) {
+        buildUrl = buildUrl + `&companyName=${queryString.companyName}`;
+      }
+
       if (queryString.warehouseName) {
         buildUrl = buildUrl + `&warehouseName=${queryString.warehouseName}`;
       }

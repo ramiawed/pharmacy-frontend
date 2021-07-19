@@ -354,21 +354,23 @@ function ItemPage() {
                 <label className={generalStyles.padding_v_6}>
                   {w.warehouse.name}
                 </label>
-                {w.offer.offers.length > 0 && (
-                  <div
-                    className={generalStyles.icon}
-                    onClick={() => {
-                      setSelectedWarehouseId(w.warehouse._id);
-                      setAllowEdit(w.warehouse.allowAdmin);
-                      setShowOfferModal(true);
-                    }}
-                  >
-                    <MdLocalOffer />
-                    <div className={generalStyles.tooltip}>
-                      {t("nav-offers")}
-                    </div>
-                  </div>
-                )}
+
+                <div
+                  className={generalStyles.icon}
+                  onClick={() => {
+                    setSelectedWarehouseId(w.warehouse._id);
+                    setAllowEdit(
+                      (user.type === UserTypeConstants.WAREHOUSE &&
+                        user._id === w.warehouse._id) ||
+                        (user.type === UserTypeConstants.ADMIN &&
+                          w.warehouse.allowAdmin)
+                    );
+                    setShowOfferModal(true);
+                  }}
+                >
+                  <MdLocalOffer />
+                  <div className={generalStyles.tooltip}>{t("nav-offers")}</div>
+                </div>
               </div>
             ))}
           </CardInfo>
@@ -510,6 +512,7 @@ function ItemPage() {
             setSelectedWarehouseId("");
             setAllowEdit(false);
           }}
+          afterUpdateOffer={getItemFromDB}
         />
       )}
     </>

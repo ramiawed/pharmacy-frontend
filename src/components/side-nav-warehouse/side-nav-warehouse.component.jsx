@@ -6,10 +6,14 @@ import { useTranslation } from "react-i18next";
 import styles from "../side-nav.module.scss";
 
 // constants
-import { SideNavLinks } from "../../utils/constants.js";
+import { SideNavLinks, UserTypeConstants } from "../../utils/constants.js";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/auth/authSlice";
 
 function SideNavWarehouse({ selectedOption, onSelectedChange }) {
   const { t } = useTranslation();
+  const user = useSelector(selectUser);
+
   return (
     <>
       <Link
@@ -20,7 +24,16 @@ function SideNavWarehouse({ selectedOption, onSelectedChange }) {
         onClick={() => {
           onSelectedChange(SideNavLinks.ITEMS);
         }}
-        to="/warehouse/items"
+        // to="/warehouse/items"
+        to={{
+          pathname: "/items",
+          state: {
+            user: user,
+            company: null,
+            warehouse: user,
+            role: UserTypeConstants.WAREHOUSE,
+          },
+        }}
       >
         {t("nav-items")}
       </Link>

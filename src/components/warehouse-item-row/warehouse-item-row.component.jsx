@@ -18,6 +18,7 @@ import generalStyles from "../../style.module.scss";
 import tableStyles from "../table.module.scss";
 import rowStyles from "../row.module.scss";
 import { Link } from "react-router-dom";
+import { UserTypeConstants } from "../../utils/constants";
 
 function WarehouseItemRow({ item, deleteItem, changeItemMaxQty }) {
   const { t } = useTranslation();

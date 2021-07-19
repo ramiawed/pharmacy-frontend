@@ -15,9 +15,20 @@ import { MdErrorOutline } from "react-icons/md";
 
 // styles
 import styles from "./offers-modal.module.scss";
-import { Colors, OfferTypes } from "../../utils/constants";
+import generalStyles from "../../style.module.scss";
 
-function OffersModal({ item, warehouseId, close, token, allowEdit }) {
+// constants
+import { Colors, OfferTypes } from "../../utils/constants";
+import { unwrapResult } from "@reduxjs/toolkit";
+
+function OffersModal({
+  item,
+  warehouseId,
+  close,
+  token,
+  allowEdit,
+  afterUpdateOffer,
+}) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -105,7 +116,9 @@ function OffersModal({ item, warehouseId, close, token, allowEdit }) {
         },
         token,
       })
-    );
+    )
+      .then(unwrapResult)
+      .then(() => afterUpdateOffer && afterUpdateOffer());
 
     close();
   };
@@ -116,9 +129,13 @@ function OffersModal({ item, warehouseId, close, token, allowEdit }) {
       cancelLabel="cancel-label"
       okLabel="add-label"
       closeModal={close}
-      okModal={() => {
-        handleOkButton();
-      }}
+      okModal={
+        allowEdit
+          ? () => {
+              handleOkButton();
+            }
+          : null
+      }
       small={true}
     >
       {allowEdit && (
@@ -157,6 +174,16 @@ function OffersModal({ item, warehouseId, close, token, allowEdit }) {
             <MdErrorOutline color={Colors.FAILED_COLOR} size={24} />
           )}
         </div>
+      )}
+
+      {values.length === 0 && (
+        <p
+          className={[generalStyles.center, generalStyles.fc_secondary].join(
+            " "
+          )}
+        >
+          {t("no-offers")}
+        </p>
       )}
 
       <MultiValue

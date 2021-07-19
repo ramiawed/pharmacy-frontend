@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
 
-import { selectToken } from "../../redux/auth/authSlice";
+import { selectToken, selectUser } from "../../redux/auth/authSlice";
 import {
   userApproveChange,
   deleteUser,
@@ -30,14 +30,17 @@ import tableStyles from "../table.module.scss";
 
 // constants
 import { checkConnection } from "../../utils/checkInternet";
+import { Link } from "react-router-dom";
+import { UserTypeConstants } from "../../utils/constants";
 
 // UserRow component
-function UserRow({ user, index }) {
+function UserRow({ user }) {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
   const token = useSelector(selectToken);
+  const loggedUser = useSelector(selectUser);
 
   const [modalInfo, setModalInfo] = useState({
     header: "",
@@ -266,9 +269,32 @@ function UserRow({ user, index }) {
   return (
     <>
       <div className={[rowStyles.container].join(" ")}>
-        {/* <div className={styles.basic_info}> */}
-        <label className={tableStyles.label_large}>{user.name}</label>
-        {/* <label>{user.username}</label> */}
+        <label className={tableStyles.label_large}>
+          {user.type === UserTypeConstants.COMPANY ||
+          user.type === UserTypeConstants.WAREHOUSE ? (
+            <Link
+              to={{
+                pathname: "/items",
+                state: {
+                  user: loggedUser,
+                  company:
+                    user.type === UserTypeConstants.COMPANY ? user : null,
+                  warehouse:
+                    user.type === UserTypeConstants.WAREHOUSE ? user : null,
+                  role:
+                    user.type === UserTypeConstants.COMPANY
+                      ? UserTypeConstants.COMPANY
+                      : UserTypeConstants.WAREHOUSE,
+                },
+              }}
+              className={rowStyles.hover_underline}
+            >
+              {user.name}
+            </Link>
+          ) : (
+            user.name
+          )}
+        </label>
         <label className={tableStyles.label_small}>
           {user.isApproved ? (
             <div

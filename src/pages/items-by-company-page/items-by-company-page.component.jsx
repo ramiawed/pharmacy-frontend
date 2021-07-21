@@ -32,9 +32,7 @@ import {
 } from "../../redux/companyItems/companyItemsSlices";
 
 // styles
-// import styles from "./items-by-company-page.module.scss";
 import generalStyles from "../../style.module.scss";
-// import styles from "../companies-page/companies-page.module.scss";
 import tableStyles from "../../components/table.module.scss";
 import searchContainerStyles from "../../components/search-container/search-container.module.scss";
 
@@ -58,7 +56,9 @@ function ItemsByCompanyPage() {
   const [displayType, setDisplayType] = useState("list");
   const [showFavorites, setShowFavorites] = useState(false);
   const [company, setCompany] = useState(null);
-  const [isInWarehouse, setIsInWarehouse] = useState(false);
+  const [isInWarehouse, setIsInWarehouse] = useState(
+    user.type === UserTypeConstants.PHARMACY
+  );
   const [isOutWarehouse, setIsOutWarehouse] = useState(false);
 
   // if companies doesn't contains any info set the page to 1
@@ -216,47 +216,41 @@ function ItemsByCompanyPage() {
               }}
             />
 
-            {(user.type === UserTypeConstants.WAREHOUSE ||
-              user.type === UserTypeConstants.PHARMACY) && (
-              <div className={searchContainerStyles.checkbox_div}>
-                <input
-                  type="checkbox"
-                  value={isInWarehouse}
-                  checked={isInWarehouse}
-                  onChange={() => {
-                    setIsInWarehouse(!isInWarehouse);
-                    setIsOutWarehouse(false);
-                  }}
-                />
-                {user.type === UserTypeConstants.WAREHOUSE && (
-                  <label>{t("warehouse-in-warehouse")}</label>
-                )}
-                {user.type === UserTypeConstants.PHARMACY && (
-                  <label>{t("pharmacy-in-warehouse")}</label>
-                )}
-              </div>
-            )}
+            <div className={searchContainerStyles.checkbox_div}>
+              <input
+                type="checkbox"
+                value={isInWarehouse}
+                checked={isInWarehouse}
+                onChange={() => {
+                  setIsInWarehouse(!isInWarehouse);
+                  setIsOutWarehouse(false);
+                }}
+              />
+              {user.type === UserTypeConstants.WAREHOUSE && (
+                <label>{t("warehouse-in-warehouse")}</label>
+              )}
+              {user.type !== UserTypeConstants.WAREHOUSE && (
+                <label>{t("pharmacy-in-warehouse")}</label>
+              )}
+            </div>
 
-            {(user.type === UserTypeConstants.WAREHOUSE ||
-              user.type === UserTypeConstants.PHARMACY) && (
-              <div className={searchContainerStyles.checkbox_div}>
-                <input
-                  type="checkbox"
-                  value={isOutWarehouse}
-                  checked={isOutWarehouse}
-                  onChange={() => {
-                    setIsOutWarehouse(!isOutWarehouse);
-                    setIsInWarehouse(false);
-                  }}
-                />
-                {user.type === UserTypeConstants.WAREHOUSE && (
-                  <label>{t("warehouse-out-warehouse")}</label>
-                )}
-                {user.type === UserTypeConstants.PHARMACY && (
-                  <label>{t("pharmacy-out-warehouse")}</label>
-                )}
-              </div>
-            )}
+            <div className={searchContainerStyles.checkbox_div}>
+              <input
+                type="checkbox"
+                value={isOutWarehouse}
+                checked={isOutWarehouse}
+                onChange={() => {
+                  setIsOutWarehouse(!isOutWarehouse);
+                  setIsInWarehouse(false);
+                }}
+              />
+              {user.type === UserTypeConstants.WAREHOUSE && (
+                <label>{t("warehouse-out-warehouse")}</label>
+              )}
+              {user.type !== UserTypeConstants.WAREHOUSE && (
+                <label>{t("pharmacy-out-warehouse")}</label>
+              )}
+            </div>
           </SearchContainer>
         </div>
       </Header>

@@ -312,7 +312,10 @@ function ItemsPage() {
                       type: "new",
                       allowAction: true,
                       itemId: null,
-                      companyId: user._id,
+                      companyId:
+                        user.type === UserTypeConstants.COMPANY
+                          ? user._id
+                          : company._id,
                       warehouseId: null,
                     },
                   }}
@@ -328,14 +331,25 @@ function ItemsPage() {
                   generalStyles.icon,
                   generalStyles.fc_secondary,
                 ].join(" ")}
-                onClick={() => {
-                  history.push("/items-from-excel");
-                }}
               >
-                <SiMicrosoftexcel size={20} />
-                <div className={generalStyles.tooltip}>
-                  {t("items-from-excel")}
-                </div>
+                <Link
+                  style={{ paddingTop: "3px" }}
+                  className={generalStyles.fc_secondary}
+                  to={{
+                    pathname: "/items-from-excel",
+                    state: {
+                      companyId:
+                        user.type === UserTypeConstants.COMPANY
+                          ? user._id
+                          : company._id,
+                    },
+                  }}
+                >
+                  <SiMicrosoftexcel size={20} />
+                  <div className={generalStyles.tooltip}>
+                    {t("items-from-excel")}
+                  </div>
+                </Link>
               </div>
             </>
           ) : (

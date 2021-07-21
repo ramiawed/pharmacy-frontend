@@ -28,6 +28,8 @@ import { resetCompanies } from "../../redux/company/companySlice";
 
 // styles
 import styles from "./user-profile.module.scss";
+import rowStyles from "../row.module.scss";
+import generalStyles from "../../style.module.scss";
 
 // constants, and utile
 import { UserTypeConstants, Colors } from "../../utils/constants";
@@ -352,6 +354,42 @@ function UserProfile() {
           <ActionButton
             text="change-password"
             action={handleChangePassword}
+            color={Colors.SUCCEEDED_COLOR}
+          />
+        </div>
+      </CardInfo>
+
+      <CardInfo
+        headerTitle={t("admin-permission")}
+        bgColor={Colors.FAILED_COLOR}
+        // type="warning"
+      >
+        <div
+          className={[
+            rowStyles.container,
+            rowStyles.without_box_shadow,
+            generalStyles.padding_h_12,
+          ].join(" ")}
+        >
+          <input
+            type="checkbox"
+            value={userObj.allowAdmin}
+            onChange={(e) =>
+              handleInputChange("allowAdmin", !userObj.allowAdmin)
+            }
+            checked={userObj.allowAdmin}
+          />
+          <label
+            className={[generalStyles.right, generalStyles.padding_h_8].join(
+              " "
+            )}
+            style={{ flex: "1" }}
+          >
+            {t("admin-permission-label")}
+          </label>
+          <ActionButton
+            text="update-label"
+            action={() => handleOkAction("allowAdmin")}
             color={Colors.SUCCEEDED_COLOR}
           />
         </div>

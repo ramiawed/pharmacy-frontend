@@ -205,22 +205,20 @@ function CompanyItemRow({
                   generalStyles.fc_red,
                   generalStyles.margin_h_auto,
                 ].join(" ")}
+                onClick={() => {
+                  if (
+                    (user.type === UserTypeConstants.ADMIN &&
+                      role === UserTypeConstants.WAREHOUSE &&
+                      warehouse.allowAdmin) ||
+                    user.type === UserTypeConstants.WAREHOUSE
+                  ) {
+                    setShowDeleteFromWarehouseModal(true);
+                  } else {
+                    setShowWarningModal(true);
+                  }
+                }}
               >
-                <MdDelete
-                  onClick={() => {
-                    if (
-                      (user.type === UserTypeConstants.ADMIN &&
-                        role === UserTypeConstants.WAREHOUSE &&
-                        warehouse.allowAdmin) ||
-                      user.type === UserTypeConstants.WAREHOUSE
-                    ) {
-                      setShowDeleteFromWarehouseModal(true);
-                    } else {
-                      setShowWarningModal(true);
-                    }
-                  }}
-                  size={20}
-                />
+                <MdDelete size={20} />
               </div>
             </label>
             <label className={tableStyles.label_xsmall}>
@@ -229,13 +227,11 @@ function CompanyItemRow({
                   generalStyles.icon,
                   generalStyles.margin_h_auto,
                 ].join(" ")}
+                onClick={() => {
+                  setShowOfferModal(true);
+                }}
               >
-                <MdLocalOffer
-                  onClick={() => {
-                    setShowOfferModal(true);
-                  }}
-                  size={20}
-                />
+                <MdLocalOffer size={20} />
                 <div className={generalStyles.tooltip}>{t("nav-offers")}</div>
               </div>
             </label>

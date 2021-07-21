@@ -63,7 +63,6 @@ function PartnerRow({ user, type }) {
             to={`/companies/${user._id}`}
             className={[
               rowStyles.hover_underline,
-              rowStyles.full_width,
               rowStyles.padding_start,
             ].join(" ")}
           >
@@ -72,16 +71,14 @@ function PartnerRow({ user, type }) {
         )}
 
         {user.type === UserTypeConstants.WAREHOUSE && (
-          <Link
-            to={`/warehouses/${user._id}`}
+          <label
             className={[
               rowStyles.hover_underline,
-              rowStyles.full_width,
               rowStyles.padding_start,
             ].join(" ")}
           >
             {user.name}
-          </Link>
+          </label>
         )}
 
         <div className={rowStyles.padding_end}>

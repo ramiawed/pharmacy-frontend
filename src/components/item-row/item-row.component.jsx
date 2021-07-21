@@ -32,11 +32,9 @@ import tableStyles from "../table.module.scss";
 // constants and utils
 import { checkConnection } from "../../utils/checkInternet";
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { Link } from "react-router-dom";
 
 function ItemRow({ companyItem }) {
-  const history = useHistory();
   const { t } = useTranslation();
 
   // get the logged user and it's token

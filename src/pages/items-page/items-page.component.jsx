@@ -32,7 +32,7 @@ import {
 import { selectToken } from "../../redux/auth/authSlice";
 
 // constant
-import { Colors, UserTypeConstants } from "../../utils/constants";
+import { UserTypeConstants } from "../../utils/constants";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -50,9 +50,6 @@ function ItemsPage() {
 
   const location = useLocation();
   const { user, company, warehouse, role } = location.state;
-
-  console.log(warehouse);
-  const history = useHistory();
 
   // search state
   const [searchName, setSearchName] = useState("");

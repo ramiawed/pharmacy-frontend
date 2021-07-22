@@ -3,6 +3,7 @@ import { unwrapResult } from "@reduxjs/toolkit";
 import { useTranslation } from "react-i18next";
 import { Redirect, useLocation } from "react-router-dom";
 import axios from "../../api/pharmacy";
+import ReactLoading from "react-loading";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -10,6 +11,7 @@ import { selectUserData } from "../../redux/auth/authSlice";
 import {
   addItem,
   resetAddStatus,
+  resetChangeLogoStatus,
   resetUpdateStatus,
   selectItems,
   updateItem,
@@ -36,6 +38,7 @@ import generalStyles from "../../style.module.scss";
 import styles from "./item-page.module.scss";
 import rowStyles from "../../components/row.module.scss";
 import OffersModal from "../../components/offers-modal/offers-modal.component";
+import InputFileImage from "../../components/input-file-image/input-file-image.component";
 
 function ItemPage() {
   const { t } = useTranslation();
@@ -47,7 +50,8 @@ function ItemPage() {
 
   const dispatch = useDispatch();
   const { user, token } = useSelector(selectUserData);
-  const { addStatus, updateStatus } = useSelector(selectItems);
+  const { addStatus, updateStatus, changeLogoStatus, changeLogoError } =
+    useSelector(selectItems);
 
   const [showModal, setShowModal] = useState(false);
   const [showOfferModal, setShowOfferModal] = useState(false);
@@ -218,11 +222,40 @@ function ItemPage() {
     if (type === "info" && itemId) {
       getItemFromDB();
     }
-  }, [itemId, type]);
+  }, [itemId, type, changeLogoStatus]);
 
   return user ? (
     <>
       <div className={styles.content}>
+        <div
+          className={[
+            generalStyles.flex_center_container,
+            generalStyles.flex_column,
+            generalStyles.padding_v_6,
+            generalStyles.padding_h_12,
+          ].join(" ")}
+        >
+          {changeLogoStatus === "loading" && (
+            <ReactLoading color="#fff" type="bars" height={100} width={100} />
+          )}
+
+          {changeLogoStatus === "succeeded" || changeLogoStatus === "idle" ? (
+            <div
+              className={styles.logo}
+              style={{
+                backgroundImage:
+                  item.logo_url && item.logo_url !== ""
+                    ? `url("http://localhost:8000/${item.logo_url}`
+                    : `url("http://localhost:8000/avatar01.png`,
+              }}
+            ></div>
+          ) : null}
+
+          <div>
+            <InputFileImage type="item" item={item} />
+          </div>
+        </div>
+
         <CardInfo headerTitle={t("item-main-info")}>
           <Input
             label="item-trade-name"

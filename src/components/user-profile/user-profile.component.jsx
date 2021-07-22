@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
+import ReactLoading from "react-loading";
+
 // components
 import Header from "../header/header.component";
 import CardInfo from "../card-info/card-info.component";
@@ -38,15 +40,18 @@ import { resetWarehouse } from "../../redux/warehouse/warehousesSlice";
 import { resetItems } from "../../redux/items/itemsSlices";
 import { resetCompanyItems } from "../../redux/companyItems/companyItemsSlices";
 import { resetCartItems } from "../../redux/cart/cartSlice";
+import InputFileImage from "../input-file-image/input-file-image.component";
 
 function UserProfile() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { user, token, passwordError, status } = useSelector(selectUserData);
+  const { user, token, passwordError, status, changeLogoStatus } =
+    useSelector(selectUserData);
 
   const [passwordForDelete, setPasswordForDelete] = useState("");
   const [passwordForDeleteError, setPasswordForDeleteError] = useState("");
   const [noInternetError, setNoInternetError] = useState("");
+  // const [file, setFile] = useState(null);
 
   // method to handle change in password for delete account
   const handlePasswordForDeleteChange = (field, val) => {
@@ -195,64 +200,105 @@ function UserProfile() {
     );
   };
 
+  // const changeLogo = (file) => {
+  //   const data = new FormData();
+  //   data.append("name", `${user.username}.${file.name.split(".").pop()}`);
+  //   data.append("file", file);
+
+  //   dispatch(changeLogo({ data, token }));
+  // };
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
   return (
-    <div className={styles.container}>
+    <div>
       <Header>
         <h2>{t("nav-profile")}</h2>
       </Header>
-      <CardInfo headerTitle={t("personal-info")}>
-        <InfoRow
-          editable={true}
-          field="name"
-          labelText={t("user-name")}
-          value={userObj.name}
-          onInputChange={handleInputChange}
-          action={() => handleOkAction("name")}
-        />
-        <InfoRow
-          editable={true}
-          field="username"
-          labelText={t("user-username")}
-          value={userObj.username}
-          onInputChange={handleInputChange}
-          action={() => handleOkAction("username")}
-        />
-        <InfoRow
-          editable={false}
-          labelText={t("user-type")}
-          value={userObj.type}
-        />
-      </CardInfo>
-      <CardInfo headerTitle={t("communication-info")}>
-        <InfoRow
-          editable={true}
-          field="phone"
-          labelText={t("user-phone")}
-          value={userObj.phone}
-          onInputChange={handleInputChange}
-          action={() => handleOkAction("phone")}
-        />
-        <InfoRow
-          editable={true}
-          field="mobile"
-          labelText={t("user-mobile")}
-          value={userObj.mobile}
-          onInputChange={handleInputChange}
-          action={() => handleOkAction("mobile")}
-        />
-        <InfoRow
-          editable={true}
-          field="email"
-          labelText={t("user-email")}
-          value={userObj.email}
-          onInputChange={handleInputChange}
-          action={() => handleOkAction("email")}
-        />
-      </CardInfo>
+      <div className={generalStyles.flex_center_container}>
+        <div style={{ flex: 2 }}>
+          <CardInfo headerTitle={t("personal-info")}>
+            <InfoRow
+              editable={true}
+              field="name"
+              labelText={t("user-name")}
+              value={userObj.name}
+              onInputChange={handleInputChange}
+              action={() => handleOkAction("name")}
+            />
+            <InfoRow
+              editable={true}
+              field="username"
+              labelText={t("user-username")}
+              value={userObj.username}
+              onInputChange={handleInputChange}
+              action={() => handleOkAction("username")}
+            />
+            <InfoRow
+              editable={false}
+              labelText={t("user-type")}
+              value={userObj.type}
+            />
+          </CardInfo>
+
+          <CardInfo headerTitle={t("communication-info")}>
+            <InfoRow
+              editable={true}
+              field="phone"
+              labelText={t("user-phone")}
+              value={userObj.phone}
+              onInputChange={handleInputChange}
+              action={() => handleOkAction("phone")}
+            />
+            <InfoRow
+              editable={true}
+              field="mobile"
+              labelText={t("user-mobile")}
+              value={userObj.mobile}
+              onInputChange={handleInputChange}
+              action={() => handleOkAction("mobile")}
+            />
+            <InfoRow
+              editable={true}
+              field="email"
+              labelText={t("user-email")}
+              value={userObj.email}
+              onInputChange={handleInputChange}
+              action={() => handleOkAction("email")}
+            />
+          </CardInfo>
+        </div>
+        <div
+          className={[
+            generalStyles.flex_center_container,
+            generalStyles.flex_column,
+            generalStyles.padding_v_6,
+            generalStyles.padding_h_12,
+          ].join(" ")}
+        >
+          {changeLogoStatus === "loading" && (
+            <ReactLoading color="#fff" type="bars" height={100} width={100} />
+          )}
+
+          {changeLogoStatus === "succeeded" || changeLogoStatus === "idle" ? (
+            <div
+              className={styles.logo}
+              style={{
+                backgroundImage:
+                  user.logo_url && user.logo_url !== ""
+                    ? `url("http://localhost:8000/${user.logo_url}`
+                    : `url("http://localhost:8000/avatar01.png`,
+              }}
+            ></div>
+          ) : null}
+
+          <div>
+            <InputFileImage type="partner" />
+          </div>
+        </div>
+      </div>
 
       <CardInfo headerTitle={t("address-info")}>
         <InfoRow

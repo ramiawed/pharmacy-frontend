@@ -9,6 +9,8 @@ const initialState = {
   error: "",
   passwordError: "",
   deleteError: "",
+  changeLogoStatus: "idle",
+  changeLogoError: "",
 };
 
 export const authSign = createAsyncThunk(
@@ -95,6 +97,22 @@ export const deleteMe = createAsyncThunk(
   }
 );
 
+export const changeLogo = createAsyncThunk(
+  "auth/changeLogo",
+  async ({ data, token }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post("/users/upload", data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -115,12 +133,21 @@ export const authSlice = createSlice({
       state.error = "";
       state.passwordError = "";
       state.deleteError = "";
+      state.changeLogoStatus = "idle";
+      state.changeLogoError = "";
     },
     resetPasswordError: (state) => {
       state.passwordError = "";
     },
     resetDeleteError: (state) => {
       state.deleteError = "";
+    },
+    resetChangeLogoStatus: (state) => {
+      state.changeLogoStatus = "idle";
+      state.changeLogoError = "";
+    },
+    resetChangeLogoError: (state) => {
+      state.changeLogoError = "";
     },
   },
   extraReducers: {
@@ -175,6 +202,17 @@ export const authSlice = createSlice({
       state.status = "failed";
       state.deleteError = payload.message;
     },
+    [changeLogo.pending]: (state, action) => {
+      state.changeLogoStatus = "loading";
+    },
+    [changeLogo.fulfilled]: (state, action) => {
+      state.changeLogoStatus = "succeeded";
+      state.user = action.payload.data.user;
+    },
+    [changeLogo.rejected]: (state, { error, meta, payload }) => {
+      state.changeLogoStatus = "failed";
+      state.changeLogoError = payload.message;
+    },
   },
 });
 
@@ -184,6 +222,8 @@ export const {
   signOut,
   resetPasswordError,
   resetDeleteError,
+  resetChangeLogoStatus,
+  resetChangeLogoError,
 } = authSlice.actions;
 
 export const selectToken = (state) => state.auth.token;

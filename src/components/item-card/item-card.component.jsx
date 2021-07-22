@@ -170,8 +170,13 @@ function ItemCard({ companyItem }) {
         )}
 
       <div className={styles.logo}>
-        {user.logo_url?.length > 0 ? (
-          <></>
+        {companyItem.logo_url?.length > 0 ? (
+          <p
+            style={{
+              backgroundImage: `url("http://localhost:8000/${companyItem.logo_url}`,
+            }}
+            className={styles.partner_logo}
+          ></p>
         ) : (
           <p className={styles.partner_logo}>
             <GiMedicines color={Colors.fc_secondary_COLOR} size="100" />

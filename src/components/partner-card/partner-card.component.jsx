@@ -60,7 +60,12 @@ function PartnerCard({ user }) {
   return (
     <div className={styles.partner_container}>
       {user.logo_url?.length > 0 ? (
-        <></>
+        <p
+          style={{
+            backgroundImage: `url("http://localhost:8000/${user.logo_url}`,
+          }}
+          className={styles.partner_logo}
+        ></p>
       ) : (
         <p
           style={{

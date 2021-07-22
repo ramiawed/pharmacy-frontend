@@ -282,3 +282,13 @@
   flex-wrap: wrap;
   justify-content: space-around;
 }
+
+.flex_center_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex_column {
+  flex-direction: column;
+}

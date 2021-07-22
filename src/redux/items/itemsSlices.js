@@ -12,6 +12,8 @@ const initialState = {
   activeError: "",
   updateStatus: "idle",
   updateError: "",
+  changeLogoStatus: "idle",
+  changeLogoError: "",
 };
 
 export const getItems = createAsyncThunk(
@@ -145,6 +147,22 @@ export const changeItemActiveState = createAsyncThunk(
   }
 );
 
+export const changeItemLogo = createAsyncThunk(
+  "items/changeLogo",
+  async ({ data, _id, token }, { rejectWithValue }) => {
+    try {
+      const response = await axios.post(`/items/upload/${_id}`, data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const itemsSlice = createSlice({
   name: "itemsSlice",
   initialState,
@@ -177,6 +195,13 @@ export const itemsSlice = createSlice({
     resetUpdateError: (state) => {
       state.updateError = "";
     },
+    resetChangeLogoStatus: (state) => {
+      state.changeLogoStatus = "idle";
+      state.changeLogoError = "";
+    },
+    resetChangeLogoError: (state) => {
+      state.changeLogoError = "";
+    },
     resetItems: (state) => {
       state.status = "idle";
       state.items = [];
@@ -188,6 +213,8 @@ export const itemsSlice = createSlice({
       state.activeError = "";
       state.updateStatus = "idle";
       state.updateError = "";
+      state.changeLogoStatus = "idle";
+      state.changeLogoError = "";
     },
   },
   extraReducers: {
@@ -262,6 +289,16 @@ export const itemsSlice = createSlice({
       state.updateStatus = "failed";
       state.updateError = payload.message;
     },
+    [changeItemLogo.pending]: (state, action) => {
+      state.changeLogoStatus = "loading";
+    },
+    [changeItemLogo.fulfilled]: (state, action) => {
+      state.changeLogoStatus = "succeeded";
+    },
+    [changeItemLogo.rejected]: (state, { error, meta, payload }) => {
+      state.changeLogoStatus = "failed";
+      state.changeLogoError = payload.message;
+    },
   },
 });
 
@@ -275,6 +312,8 @@ export const {
   resetAddError,
   resetUpdateError,
   resetUpdateStatus,
+  resetChangeLogoStatus,
+  resetChangeLogoError,
 } = itemsSlice.actions;
 
 export const selectItems = (state) => state.items;

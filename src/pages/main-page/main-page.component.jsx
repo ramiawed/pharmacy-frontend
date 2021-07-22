@@ -3,7 +3,11 @@ import { Redirect, Route } from "react-router";
 import { useTranslation } from "react-i18next";
 
 // redux stuff
-import { resetStatus, selectUserData } from "../../redux/auth/authSlice";
+import {
+  changeLogo,
+  resetStatus,
+  selectUserData,
+} from "../../redux/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { getFavorites } from "../../redux/favorites/favoritesSlice";
 
@@ -34,7 +38,6 @@ import styles from "./main-page.module.scss";
 // constants
 import { TopNavLinks } from "../../utils/constants";
 import Axios from "axios";
-import TestParams from "../../components/test-params/test-params.component";
 import ItemsPage from "../items-page/items-page.component";
 
 // MainPage
@@ -88,12 +91,18 @@ function MainPage() {
 
   const send = (e) => {
     const data = new FormData();
-    data.append("name", name);
+    data.append("name", `${user.username}.${file.name.split(".").pop()}`);
     data.append("file", file);
 
-    Axios.post("http://localhost:8000/api/v1/upload", data)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+    dispatch(changeLogo({ data, token }));
+
+    // Axios.post("http://localhost:8000/api/v1/users/upload", data, {
+    //   headers: {
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // })
+    //   .then((res) => console.log(res))
+    //   .catch((err) => console.log(err));
   };
 
   return user ? (
@@ -137,7 +146,7 @@ function MainPage() {
         }}
       />
 
-      {/* <form action="#">
+      {/* <>
         <div>
           <label htmlFor="name">Name</label>
           <input
@@ -165,7 +174,7 @@ function MainPage() {
         </div>
 
         <button onClick={send}>Send</button>
-      </form> */}
+      </> */}
 
       <div className={styles.content_area}>
         <Route exact path="/companies">

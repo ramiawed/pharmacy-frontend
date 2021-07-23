@@ -222,6 +222,8 @@ function ItemPage() {
     if (type === "info" && itemId) {
       getItemFromDB();
     }
+
+    window.scrollTo(0, 0);
   }, [itemId, type, changeLogoStatus]);
 
   return user ? (
@@ -246,14 +248,16 @@ function ItemPage() {
                 backgroundImage:
                   item.logo_url && item.logo_url !== ""
                     ? `url("http://localhost:8000/${item.logo_url}`
-                    : `url("http://localhost:8000/avatar01.png`,
+                    : `url("http://localhost:8000/medicine.jpeg`,
               }}
             ></div>
           ) : null}
 
-          <div>
-            <InputFileImage type="item" item={item} />
-          </div>
+          {allowAction && (
+            <div>
+              <InputFileImage type="item" item={item} />
+            </div>
+          )}
         </div>
 
         <CardInfo headerTitle={t("item-main-info")}>

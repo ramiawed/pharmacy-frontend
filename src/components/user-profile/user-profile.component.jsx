@@ -213,92 +213,89 @@ function UserProfile() {
   }, []);
 
   return (
-    <div>
+    <div className={styles.content}>
       <Header>
         <h2>{t("nav-profile")}</h2>
       </Header>
-      <div className={generalStyles.flex_center_container}>
-        <div style={{ flex: 2 }}>
-          <CardInfo headerTitle={t("personal-info")}>
-            <InfoRow
-              editable={true}
-              field="name"
-              labelText={t("user-name")}
-              value={userObj.name}
-              onInputChange={handleInputChange}
-              action={() => handleOkAction("name")}
-            />
-            <InfoRow
-              editable={true}
-              field="username"
-              labelText={t("user-username")}
-              value={userObj.username}
-              onInputChange={handleInputChange}
-              action={() => handleOkAction("username")}
-            />
-            <InfoRow
-              editable={false}
-              labelText={t("user-type")}
-              value={userObj.type}
-            />
-          </CardInfo>
+      <div
+        className={[
+          generalStyles.flex_center_container,
+          generalStyles.flex_column,
+          generalStyles.padding_v_6,
+          generalStyles.padding_h_12,
+        ].join(" ")}
+      >
+        {changeLogoStatus === "loading" && (
+          <ReactLoading color="#fff" type="bars" height={100} width={100} />
+        )}
 
-          <CardInfo headerTitle={t("communication-info")}>
-            <InfoRow
-              editable={true}
-              field="phone"
-              labelText={t("user-phone")}
-              value={userObj.phone}
-              onInputChange={handleInputChange}
-              action={() => handleOkAction("phone")}
-            />
-            <InfoRow
-              editable={true}
-              field="mobile"
-              labelText={t("user-mobile")}
-              value={userObj.mobile}
-              onInputChange={handleInputChange}
-              action={() => handleOkAction("mobile")}
-            />
-            <InfoRow
-              editable={true}
-              field="email"
-              labelText={t("user-email")}
-              value={userObj.email}
-              onInputChange={handleInputChange}
-              action={() => handleOkAction("email")}
-            />
-          </CardInfo>
-        </div>
-        <div
-          className={[
-            generalStyles.flex_center_container,
-            generalStyles.flex_column,
-            generalStyles.padding_v_6,
-            generalStyles.padding_h_12,
-          ].join(" ")}
-        >
-          {changeLogoStatus === "loading" && (
-            <ReactLoading color="#fff" type="bars" height={100} width={100} />
-          )}
+        {changeLogoStatus === "succeeded" || changeLogoStatus === "idle" ? (
+          <div
+            className={styles.logo}
+            style={{
+              backgroundImage:
+                user.logo_url && user.logo_url !== ""
+                  ? `url("http://localhost:8000/${user.logo_url}`
+                  : `url("http://localhost:8000/avatar01.png`,
+            }}
+          ></div>
+        ) : null}
 
-          {changeLogoStatus === "succeeded" || changeLogoStatus === "idle" ? (
-            <div
-              className={styles.logo}
-              style={{
-                backgroundImage:
-                  user.logo_url && user.logo_url !== ""
-                    ? `url("http://localhost:8000/${user.logo_url}`
-                    : `url("http://localhost:8000/avatar01.png`,
-              }}
-            ></div>
-          ) : null}
-
-          <div>
-            <InputFileImage type="partner" />
-          </div>
+        <div>
+          <InputFileImage type="partner" />
         </div>
       </div>
+
+      <CardInfo headerTitle={t("personal-info")}>
+        <InfoRow
+          editable={true}
+          field="name"
+          labelText={t("user-name")}
+          value={userObj.name}
+          onInputChange={handleInputChange}
+          action={() => handleOkAction("name")}
+        />
+        <InfoRow
+          editable={true}
+          field="username"
+          labelText={t("user-username")}
+          value={userObj.username}
+          onInputChange={handleInputChange}
+          action={() => handleOkAction("username")}
+        />
+        <InfoRow
+          editable={false}
+          labelText={t("user-type")}
+          value={userObj.type}
+        />
+      </CardInfo>
+
+      <CardInfo headerTitle={t("communication-info")}>
+        <InfoRow
+          editable={true}
+          field="phone"
+          labelText={t("user-phone")}
+          value={userObj.phone}
+          onInputChange={handleInputChange}
+          action={() => handleOkAction("phone")}
+        />
+        <InfoRow
+          editable={true}
+          field="mobile"
+          labelText={t("user-mobile")}
+          value={userObj.mobile}
+          onInputChange={handleInputChange}
+          action={() => handleOkAction("mobile")}
+        />
+        <InfoRow
+          editable={true}
+          field="email"
+          labelText={t("user-email")}
+          value={userObj.email}
+          onInputChange={handleInputChange}
+          action={() => handleOkAction("email")}
+        />
+      </CardInfo>
 
       <CardInfo headerTitle={t("address-info")}>
         <InfoRow
@@ -405,41 +402,43 @@ function UserProfile() {
         </div>
       </CardInfo>
 
-      <CardInfo
-        headerTitle={t("admin-permission")}
-        bgColor={Colors.FAILED_COLOR}
-        // type="warning"
-      >
-        <div
-          className={[
-            rowStyles.container,
-            rowStyles.without_box_shadow,
-            generalStyles.padding_h_12,
-          ].join(" ")}
+      {user.type !== UserTypeConstants.ADMIN && (
+        <CardInfo
+          headerTitle={t("admin-permission")}
+          bgColor={Colors.FAILED_COLOR}
+          // type="warning"
         >
-          <input
-            type="checkbox"
-            value={userObj.allowAdmin}
-            onChange={(e) =>
-              handleInputChange("allowAdmin", !userObj.allowAdmin)
-            }
-            checked={userObj.allowAdmin}
-          />
-          <label
-            className={[generalStyles.right, generalStyles.padding_h_8].join(
-              " "
-            )}
-            style={{ flex: "1" }}
+          <div
+            className={[
+              rowStyles.container,
+              rowStyles.without_box_shadow,
+              generalStyles.padding_h_12,
+            ].join(" ")}
           >
-            {t("admin-permission-label")}
-          </label>
-          <ActionButton
-            text="update-label"
-            action={() => handleOkAction("allowAdmin")}
-            color={Colors.SUCCEEDED_COLOR}
-          />
-        </div>
-      </CardInfo>
+            <input
+              type="checkbox"
+              value={userObj.allowAdmin}
+              onChange={(e) =>
+                handleInputChange("allowAdmin", !userObj.allowAdmin)
+              }
+              checked={userObj.allowAdmin}
+            />
+            <label
+              className={[generalStyles.right, generalStyles.padding_h_8].join(
+                " "
+              )}
+              style={{ flex: "1" }}
+            >
+              {t("admin-permission-label")}
+            </label>
+            <ActionButton
+              text="update-label"
+              action={() => handleOkAction("allowAdmin")}
+              color={Colors.SUCCEEDED_COLOR}
+            />
+          </div>
+        </CardInfo>
+      )}
 
       <CardInfo
         headerTitle={t("delete-account")}

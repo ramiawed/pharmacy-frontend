@@ -12,6 +12,68 @@ import { Colors, OfferTypes } from "../../utils/constants";
 import styles from "./add-to-cart-modal.module.scss";
 import { useDispatch } from "react-redux";
 
+// check if there is an offer for entered quantity in a specific warehouse
+const checkOffer = (selectedWarehouse, qty) => {
+  // check if the specified warehouse has an offer
+  if (selectedWarehouse.offer.offers.length > 0) {
+    // through all the offers, check if the entered quantity has an offer
+    for (let i = 0; i < selectedWarehouse.offer.offers.length; i++) {
+      // check if the entered quantity has an offer
+      if (qty >= selectedWarehouse.offer.offers[i].qty) {
+        // if it has return:
+        // 1- mode of the offer (pieces, percentage)
+        // 2- bonus
+        // 2-1: if the mode is pieces return the bonus * (entered qty / bonus qty)
+        // 2-2: if the mode is percentage return the bonus
+        return {
+          bonusType: selectedWarehouse.offer.mode,
+          bonus:
+            selectedWarehouse.offer.mode === OfferTypes.PIECES
+              ? selectedWarehouse.offer.offers[i].bonus *
+                Math.floor(qty / selectedWarehouse.offer.offers[i].qty)
+              : selectedWarehouse.offer.offers[i].bonus,
+        };
+      }
+    }
+  }
+
+  // if the specified warehouse doesn't have any offer
+  // or the entered quantity doesn't have a match offer
+  return null;
+};
+
+// check if there is an offer for entered quantity in a specific warehouse
+const checkOfferQty = (selectedWarehouse, qty) => {
+  console.log(`quantity: ${qty}`);
+  // check if the specified warehouse has an offer
+  if (selectedWarehouse.offer.offers.length > 0) {
+    // through all the offers, check if the entered quantity has an offer
+    for (let i = 0; i < selectedWarehouse.offer.offers.length; i++) {
+      // check if the entered quantity has an offer
+      if (qty >= selectedWarehouse.offer.offers[i].qty) {
+        // if it has return:
+        // 1- mode of the offer (pieces, percentage)
+        // 2- bonus
+        // 2-1: if the mode is pieces return the bonus * (entered qty / bonus qty)
+        // 2-2: if the mode is percentage return the bonus
+        if (selectedWarehouse.offer.mode === OfferTypes.PERCENTAGE) {
+          return selectedWarehouse.offer.offers[i].bonus;
+        } else {
+          return (
+            selectedWarehouse.offer.offers[i].bonus +
+            checkOfferQty(
+              selectedWarehouse,
+              qty - selectedWarehouse.offer.offers[i].qty
+            )
+          );
+        }
+      }
+    }
+  }
+
+  return 0;
+};
+
 function AddToCartModal({ item, close }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -41,36 +103,6 @@ function AddToCartModal({ item, close }) {
     setQtyError(false);
   };
 
-  // check if there is an offer for entered quantity in a specific warehouse
-  const checkOffer = () => {
-    // check if the specified warehouse has an offer
-    if (selectedWarehouse.offer.offers.length > 0) {
-      // through all the offers, check if the entered quantity has an offer
-      for (let i = 0; i < selectedWarehouse.offer.offers.length; i++) {
-        // check if the entered quantity has an offer
-        if (qty >= selectedWarehouse.offer.offers[i].qty) {
-          // if it has return:
-          // 1- mode of the offer (pieces, percentage)
-          // 2- bonus
-          // 2-1: if the mode is pieces return the bonus * (entered qty / bonus qty)
-          // 2-2: if the mode is percentage return the bonus
-          return {
-            bonusType: selectedWarehouse.offer.mode,
-            bonus:
-              selectedWarehouse.offer.mode === OfferTypes.PIECES
-                ? selectedWarehouse.offer.offers[i].bonus *
-                  Math.floor(qty / selectedWarehouse.offer.offers[i].qty)
-                : selectedWarehouse.offer.offers[i].bonus,
-          };
-        }
-      }
-    }
-
-    // if the specified warehouse doesn't have any offer
-    // or the entered quantity doesn't have a match offer
-    return null;
-  };
-
   const handleAddItemToCart = () => {
     if (qty === 0) {
       setQtyError(true);
@@ -81,15 +113,19 @@ function AddToCartModal({ item, close }) {
       return;
     }
 
-    const offer = checkOffer();
+    const bonusQty = checkOfferQty(selectedWarehouse, qty);
+
+    // console.log(bonusQty);
+
+    // const offer = checkOffer(selectedWarehouse, qty);
 
     dispatch(
       addItemToCart({
         item: item,
         warehouse: selectedWarehouse,
         qty: qty,
-        bonus: offer?.bonus,
-        bonusType: offer?.bonusType,
+        bonus: bonusQty > 0 ? bonusQty : null,
+        bonusType: bonusQty > 0 ? selectedWarehouse.offer.mode : null,
       })
     );
     close();

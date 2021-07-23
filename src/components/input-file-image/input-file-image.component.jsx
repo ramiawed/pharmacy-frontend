@@ -7,7 +7,7 @@ import { changeItemLogo } from "../../redux/items/itemsSlices";
 // styles
 import generalStyles from "../../style.module.scss";
 
-function InputFileImage({ type, item }) {
+function InputFileImage({ type, item, readOnly }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const inputFileRef = React.useRef(null);
@@ -18,7 +18,6 @@ function InputFileImage({ type, item }) {
   };
 
   const handleFileChange = (event) => {
-    const { _id, name } = item;
     const uploadedFile = event.target.files[0];
     if (uploadedFile) {
       const data = new FormData();
@@ -30,7 +29,7 @@ function InputFileImage({ type, item }) {
       } else {
         data.append(
           "name",
-          `${name}${Date.now()}.${uploadedFile.name.split(".").pop()}`
+          `${item.name}${Date.now()}.${uploadedFile.name.split(".").pop()}`
         );
       }
 
@@ -39,6 +38,7 @@ function InputFileImage({ type, item }) {
       if (type === "partner") {
         dispatch(changeLogo({ data, token }));
       } else {
+        const { _id } = item;
         dispatch(changeItemLogo({ data, _id, token }));
       }
     }
@@ -56,6 +56,7 @@ function InputFileImage({ type, item }) {
             generalStyles.padding_v_6,
           ].join(" ")}
           onClick={handleClick}
+          disabled={readOnly}
         >
           {t("change-logo")}
         </button>

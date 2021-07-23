@@ -20,6 +20,7 @@ import {
 } from "react-icons/ai";
 import { RiAddCircleFill } from "react-icons/ri";
 import { SiMicrosoftexcel } from "react-icons/si";
+import { TiArrowUnsorted } from "react-icons/ti";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -445,13 +446,22 @@ function ItemsPage() {
       {count > 0 ? (
         <>
           <TableHeader>
-            <label className={tableStyles.label_medium} onClick={sortByName}>
+            <label
+              className={[
+                tableStyles.label_medium,
+                generalStyles.flex_center_container,
+              ].join(" ")}
+              onClick={sortByName}
+            >
               {t("item-trade-name")}
               {sortNameField === 1 && (
                 <AiOutlineSortAscending style={{ marginRight: "4px" }} />
               )}
               {sortNameField === -1 && (
                 <AiOutlineSortDescending style={{ marginRight: "4px" }} />
+              )}
+              {sortNameField === 0 && (
+                <TiArrowUnsorted style={{ marginRight: "4px" }} />
               )}
             </label>
 
@@ -472,7 +482,13 @@ function ItemsPage() {
               {t("item-formula")}
             </label>
 
-            <label className={tableStyles.label_small} onClick={sortByCaliber}>
+            <label
+              className={[
+                tableStyles.label_small,
+                generalStyles.flex_center_container,
+              ].join(" ")}
+              onClick={sortByCaliber}
+            >
               {t("item-caliber")}
               {sortCaliberField === 1 && (
                 <AiOutlineSortAscending style={{ marginRight: "4px" }} />
@@ -480,13 +496,22 @@ function ItemsPage() {
               {sortCaliberField === -1 && (
                 <AiOutlineSortDescending style={{ marginRight: "4px" }} />
               )}
+              {sortCaliberField === 0 && (
+                <TiArrowUnsorted style={{ marginRight: "4px" }} />
+              )}
             </label>
 
             <label className={tableStyles.label_small}>
               {t("item-packing")}
             </label>
 
-            <label className={tableStyles.label_small} onClick={sortByPrice}>
+            <label
+              className={[
+                tableStyles.label_small,
+                generalStyles.flex_center_container,
+              ].join(" ")}
+              onClick={sortByPrice}
+            >
               {t("item-price")}
               {sortPriceField === 1 && (
                 <AiOutlineSortAscending style={{ marginRight: "4px" }} />
@@ -494,10 +519,16 @@ function ItemsPage() {
               {sortPriceField === -1 && (
                 <AiOutlineSortDescending style={{ marginRight: "4px" }} />
               )}
+              {sortPriceField === 0 && (
+                <TiArrowUnsorted style={{ marginRight: "4px" }} />
+              )}
             </label>
 
             <label
-              className={tableStyles.label_small}
+              className={[
+                tableStyles.label_small,
+                generalStyles.flex_center_container,
+              ].join(" ")}
               onClick={sortByCustomerPrice}
             >
               {t("item-customer-price")}
@@ -506,6 +537,9 @@ function ItemsPage() {
               )}
               {sortCustomerPriceField === -1 && (
                 <AiOutlineSortDescending style={{ marginRight: "4px" }} />
+              )}
+              {sortCustomerPriceField === 0 && (
+                <TiArrowUnsorted style={{ marginRight: "4px" }} />
               )}
             </label>
 

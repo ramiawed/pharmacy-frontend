@@ -138,7 +138,7 @@ function OffersModal({
       }
       small={true}
     >
-      {allowEdit && (
+      {allowEdit && values.length > 0 && (
         <div className={styles.checkboxes_div}>
           <label>{t("offer-type")}:</label>
 

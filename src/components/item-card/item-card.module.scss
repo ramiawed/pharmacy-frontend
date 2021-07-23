@@ -3,7 +3,7 @@
 .partner_container {
   position: relative;
   width: 90%;
-  min-height: 300px;
+  min-height: 400px;
   margin-bottom: 20px;
   position: relative;
   box-shadow: 2px 2px 5px rgba($color: $secondary-color, $alpha: 1);
@@ -12,6 +12,10 @@
   flex-direction: column;
 
   transition: all 1s;
+}
+
+.partner_container:hover {
+  transform: scale(1.01);
 }
 
 @media only screen and (min-width: $small) {
@@ -26,12 +30,18 @@
   }
 }
 
+.logo_div {
+  flex: 1;
+
+  display: flex;
+}
+
 .logo {
   flex: 1;
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 
-  // background: $secondary-color;
   background-position: center;
   background-size: contain;
   background-repeat: no-repeat;
@@ -86,7 +96,7 @@
   z-index: 1;
 }
 
-.partner_name {
+.item_name {
   font-size: 1.2rem;
   text-align: center;
 }
@@ -107,17 +117,4 @@
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-}
-
-.partner_logo {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background-position: center;
-  background-size: contain;
-  background-repeat: no-repeat;
-
-  font-size: 48px;
-  transition: all 1s;
 }

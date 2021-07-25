@@ -3,7 +3,7 @@ import axios from "../../api/pharmacy";
 
 const initialState = {
   status: "idle",
-  favorites: [],
+  favorites_partners: [],
   favorites_items: [],
   error: "",
 };
@@ -115,7 +115,7 @@ export const favoritesSlice = createSlice({
   reducers: {
     resetFavorites: (state) => {
       state.status = "idle";
-      state.favorites = [];
+      state.favorites_partners = [];
       state.favorites_items = [];
       state.error = "";
     },
@@ -131,7 +131,7 @@ export const favoritesSlice = createSlice({
     [getFavorites.fulfilled]: (state, action) => {
       state.status = "success";
       if (action.payload.data.favorites !== null) {
-        state.favorites = action.payload.data.favorites.favorites;
+        state.favorites_partners = action.payload.data.favorites.favorites;
         state.favorites_items = action.payload.data.favorites.favorites_items;
       }
       state.error = null;
@@ -146,7 +146,10 @@ export const favoritesSlice = createSlice({
     },
     [addFavorite.fulfilled]: (state, action) => {
       state.status = "success";
-      state.favorites = [...state.favorites, action.payload.data.favorite];
+      state.favorites_partners = [
+        ...state.favorites,
+        action.payload.data.favorite,
+      ];
       state.error = null;
     },
     [addFavorite.rejected]: (state, { error, meta, payload }) => {
@@ -175,7 +178,7 @@ export const favoritesSlice = createSlice({
     },
     [removeFavorite.fulfilled]: (state, action) => {
       state.status = "success";
-      state.favorites = state.favorites.filter(
+      state.favorites_partners = state.favorites.filter(
         (fa) => fa._id !== action.payload.data.favorite
       );
       state.error = null;
@@ -204,7 +207,8 @@ export const favoritesSlice = createSlice({
 
 export const { resetFavorites } = favoritesSlice.actions;
 
-export const selectFavoritesPartners = (state) => state.favorites.favorites;
+export const selectFavoritesPartners = (state) =>
+  state.favorites.favorites_partners;
 export const selectFavoritesItems = (state) => state.favorites.favorites_items;
 export const selectFavorites = (state) => state.favorites;
 

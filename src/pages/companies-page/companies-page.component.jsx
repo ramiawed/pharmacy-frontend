@@ -1,3 +1,13 @@
+// THIS COMPONENT PAGE CAN BE DISPLAYED BY ALL THE USERS
+
+// this component display
+// 1- header
+// 2- actions(refresh, favorites companies, list display, card display, search)
+// 3- if the companies is empty or doesn't match the search engines display an empty icon
+// 4- if the companies is not empty display the companies as list or card.
+
+// this component depends on the companySlice
+
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
@@ -9,6 +19,7 @@ import FavoriteRow from "../../components/favorite-row/favorite-row.component";
 import PartnerRow from "../../components/partner-row/partner-row.component";
 import PartnerCard from "../../components/partner-card/partner-card.component";
 import SearchContainer from "../../components/search-container/search-container.component";
+import ActionIcon from "../../components/action-icon/action-icon.component";
 import ReactLoading from "react-loading";
 
 // react-icons
@@ -21,9 +32,17 @@ import { SiAtAndT } from "react-icons/si";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
+  changeDisplayType,
+  changePage,
+  changeSearchCity,
+  changeSearchName,
   getCompanies,
   resetCompanies,
+  resetPage,
+  resetSearchCity,
+  resetSearchName,
   selectCompanies,
+  selectCompaniesPageState,
 } from "../../redux/company/companySlice";
 import { selectFavoritesPartners } from "../../redux/favorites/favoritesSlice";
 import { UserTypeConstants } from "../../utils/constants";
@@ -37,26 +56,43 @@ function CompaniesPage() {
   const dispatch = useDispatch();
 
   // select from redux store
-  // select logged user and it's token from redux store
+  // select logged user and it's token from authSlice
   const { token, user } = useSelector(selectUserData);
-  // select companies from redux stuff
+  // select companies from companySlice
   const { companies, count, status } = useSelector(selectCompanies);
+  const { searchName, searchCity, displayType, page } = useSelector(
+    selectCompaniesPageState
+  );
+  // select favorites from favoriteSlice
   const favorites = useSelector(selectFavoritesPartners);
 
   // own state
   // expanded state for expandable container
-  const [searchName, setSearchName] = useState("");
-  const [searchCity, setSearchCity] = useState("");
-  const [displayType, setDisplayType] = useState("list");
+  // const [searchName, setSearchName] = useState(companiesPageState.searchName);
+  // const [searchCity, setSearchCity] = useState(companiesPageState.searchCity);
+
+  // const [displayType, setDisplayType] = useState(
+  //   companiesPageState.displayType
+  // );
+
   const [showFavorites, setShowFavorites] = useState(false);
 
   // if companies doesn't contains any info set the page to 1
   // if companies have an info set the page to the next page
-  const [page, setPage] = useState(
-    companies.length === 0 ? 1 : Math.ceil(companies.length / 9) + 1
-  );
+  // const [page, setPage] = useState(
+  //   companies.length === 0 ? 1 : Math.ceil(companies.length / 9) + 1
+  // );
 
-  // handle search
+  // search handler
+  // /users?type=company&page=page&limit=9
+  // this method take 2 params
+  // 1- page: determine which page you want to get its rows from DB
+  // 2- reset: boolean param, determine if you have to reset the page to 1 or not.
+  //
+  // build the query string that contains the required info like page and limit
+  // if any of the search state (searchName, searchCity) is not empty, add it to query string
+  // get the companies from DB
+  // depends on the reset field, add one to page, or reset to 1
   const handleSearch = (page, reset) => {
     // build the query string
     const queryString = {};
@@ -76,14 +112,25 @@ function CompaniesPage() {
     }
 
     dispatch(getCompanies({ queryString, token }));
-    setPage(reset ? 1 : page + 1);
-    setPage(page + 1);
+    if (reset) {
+      resetPage();
+    } else {
+      changePage();
+    }
+    // setPage(reset ? 1 : page + 1);
+    // setPage(page + 1);
   };
 
+  // get the next 9 companies from DB
+  // and add one to page
   const handleMoreResult = () => {
     handleSearch(page, false);
   };
 
+  // when press enter in search input field
+  // 1- reset the companies in the companySlice redux
+  // 2- search based on the new search engines
+  // 3- reset the page to 1
   const handleEnterPress = () => {
     dispatch(resetCompanies());
     handleSearch(1, true);
@@ -106,29 +153,22 @@ function CompaniesPage() {
 
         <div className={generalStyles.actions}>
           {/* refresh */}
-          <div
-            className={[generalStyles.icon, generalStyles.fc_secondary].join(
-              " "
-            )}
-            onClick={handleEnterPress}
-          >
-            <RiRefreshLine />
-            <div className={generalStyles.tooltip}>{t("refresh-tooltip")}</div>
-          </div>
+          <ActionIcon
+            selected={false}
+            tooltip={t("refresh-tooltip")}
+            onclick={handleEnterPress}
+            icon={() => <RiRefreshLine />}
+          />
 
           {/* show favorites */}
           <div className={generalStyles.relative}>
-            <div
-              className={[generalStyles.icon, generalStyles.fc_secondary].join(
-                " "
-              )}
-              onClick={() => setShowFavorites(!showFavorites)}
-            >
-              <AiFillStar />
-              <div className={generalStyles.tooltip}>
-                {t("show-favorite-tooltip")}
-              </div>
-            </div>
+            <ActionIcon
+              selected={showFavorites}
+              tooltip={t("show-favorite-tooltip")}
+              onclick={() => setShowFavorites(!showFavorites)}
+              icon={() => <AiFillStar />}
+            />
+
             {showFavorites && (
               <div
                 className={[
@@ -153,43 +193,26 @@ function CompaniesPage() {
           </div>
 
           {/* display card option */}
-          <div
-            className={[
-              generalStyles.icon,
-              displayType === "card"
-                ? generalStyles.fc_green
-                : generalStyles.fc_secondary,
-            ].join(" ")}
-            onClick={() => {
-              setDisplayType("card");
+          <ActionIcon
+            selected={displayType === "card"}
+            tooltip={t("show-item-as-card-tooltip")}
+            onclick={() => {
+              dispatch(changeDisplayType("card"));
               setShowFavorites(false);
             }}
-          >
-            <AiFillAppstore />
-            <div className={generalStyles.tooltip}>
-              {t("show-item-as-card-tooltip")}
-            </div>
-          </div>
+            icon={() => <AiFillAppstore />}
+          />
 
           {/* display list option */}
-          <div
-            className={[
-              generalStyles.icon,
-
-              displayType === "list"
-                ? generalStyles.fc_green
-                : generalStyles.fc_secondary,
-            ].join(" ")}
-            onClick={() => {
-              setDisplayType("list");
+          <ActionIcon
+            selected={displayType === "list"}
+            tooltip={t("show-item-as-row-tooltip")}
+            onclick={() => {
+              dispatch(changeDisplayType("list"));
               setShowFavorites(false);
             }}
-          >
-            <FaListUl />
-            <div className={generalStyles.tooltip}>
-              {t("show-item-as-row-tooltip")}
-            </div>
-          </div>
+            icon={() => <FaListUl />}
+          />
 
           <SearchContainer searchAction={handleEnterPress}>
             <SearchInput
@@ -198,11 +221,12 @@ function CompaniesPage() {
               type="text"
               value={searchName}
               onchange={(e) => {
-                setSearchName(e.target.value);
+                // setSearchName(e.target.value);
+                dispatch(changeSearchName(e.target.value));
               }}
               placeholder="search"
               onEnterPress={handleEnterPress}
-              resetField={() => setSearchName("")}
+              resetField={() => dispatch(resetSearchName())}
             />
 
             <SearchInput
@@ -211,11 +235,11 @@ function CompaniesPage() {
               type="text"
               value={searchCity}
               onchange={(e) => {
-                setSearchCity(e.target.value);
+                dispatch(changeSearchCity(e.target.value));
               }}
               placeholder="search"
               onEnterPress={handleEnterPress}
-              resetField={() => setSearchCity("")}
+              resetField={() => dispatch(resetSearchCity())}
             />
           </SearchContainer>
         </div>

@@ -6,6 +6,12 @@ const initialState = {
   companies: [],
   count: 0,
   error: "",
+  pageState: {
+    searchName: "",
+    searchCity: "",
+    displayType: "list",
+    page: 1,
+  },
 };
 
 export const getCompanies = createAsyncThunk(
@@ -47,6 +53,54 @@ export const companiesSlice = createSlice({
   name: "companies",
   initialState,
   reducers: {
+    changeSearchName: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchName: action.payload,
+      };
+    },
+    resetSearchName: (state) => {
+      state.pageState = {
+        ...state.pageState,
+        searchName: "",
+      };
+    },
+    changeSearchCity: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchCity: action.payload,
+      };
+    },
+    resetSearchCity: (state) => {
+      state.pageState = {
+        ...state.pageState,
+        searchCity: "",
+      };
+    },
+    changeDisplayType: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        displayType: action.payload,
+      };
+    },
+    resetDisplayType: (state) => {
+      state.pageState = {
+        ...state.pageState,
+        displayType: "list",
+      };
+    },
+    changePage: (state) => {
+      state.pageState = {
+        ...state.pageState,
+        page: state.pageState.page + 1,
+      };
+    },
+    resetPage: (state) => {
+      state.pageState = {
+        ...state.pageState,
+        page: 1,
+      };
+    },
     resetError: (state) => {
       state.error = null;
     },
@@ -59,9 +113,23 @@ export const companiesSlice = createSlice({
       state.companies = [];
       state.count = 0;
       state.error = null;
+      // state.state = {
+      //   searchName: "",
+      //   searchCity: "",
+      //   displayType: "list",
+      //   page: 1,
+      // };
     },
     resetCount: (state) => {
       state.count = 0;
+    },
+    resetCompaniesPageState: (state) => {
+      state.pageState = {
+        searchName: "",
+        searchCity: "",
+        displayType: "list",
+        page: 1,
+      };
     },
   },
   extraReducers: {
@@ -83,8 +151,21 @@ export const companiesSlice = createSlice({
 });
 
 export const selectCompanies = (state) => state.companies;
+export const selectCompaniesPageState = (state) => state.companies.pageState;
 
-export const { resetError, resetStatus, resetCompanies } =
-  companiesSlice.actions;
+export const {
+  resetError,
+  resetStatus,
+  resetCompanies,
+  resetCompaniesPageState,
+  changeSearchName,
+  changeSearchCity,
+  changeDisplayType,
+  changePage,
+  resetSearchName,
+  resetSearchCity,
+  resetDisplayType,
+  resetPage,
+} = companiesSlice.actions;
 
 export default companiesSlice.reducer;

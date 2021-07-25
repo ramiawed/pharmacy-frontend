@@ -39,7 +39,7 @@ function ItemExcelPage() {
   const user = useSelector(selectUser);
 
   const location = useLocation();
-  const { companyId } = location.state;
+  const { companyId = 0 } = location.state ? location.state : {};
 
   const { t } = useTranslation();
 
@@ -174,7 +174,7 @@ function ItemExcelPage() {
     setItems(updatedItems);
   };
 
-  return user ? (
+  return user && companyId !== 0 ? (
     <>
       {status === "loading" && (
         <ActionLoader

@@ -8,7 +8,6 @@ import { selectUser, signOut } from "../../redux/auth/authSlice";
 import {
   resetFavorites,
   selectFavorites,
-  selectFavoritesPartners,
 } from "../../redux/favorites/favoritesSlice";
 import { resetUsers } from "../../redux/users/usersSlice";
 import { resetCompanies } from "../../redux/company/companySlice";
@@ -107,7 +106,7 @@ function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
         >
           <IconWithNumber
             value={
-              allFavorites.favorites.length +
+              allFavorites.favorites_partners.length +
               allFavorites.favorites_items.length
             }
             fillIcon={<AiFillStar size={20} />}

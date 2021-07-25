@@ -37,7 +37,6 @@ function ApprovePage() {
         <p className={styles.strong}>{t("thank-message")}</p>
         <p>{t("approve-message")}</p>
         <p>{t("hour-serving")}</p>
-        {/* <ContactUs /> */}
       </motion.div>
     </div>
   );

@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { motion } from "framer-motion";
 import { Redirect } from "react-router";
 import { useParams } from "react-router";
 import axios from "../../api/pharmacy";

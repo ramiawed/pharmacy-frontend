@@ -1,3 +1,10 @@
+// this page display the favorite companies, warehouses, items
+// depends on the favoritesSlice
+
+// favoritesSlice contains
+// 1- favorites
+// 2- favorites_items
+
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router-dom";
@@ -22,8 +29,11 @@ import { UserTypeConstants } from "../../utils/constants.js";
 function FavoritesPage() {
   const { t } = useTranslation();
 
+  // get the logged user
   const user = useSelector(selectUser);
-  const favorites = useSelector(selectFavoritesPartners);
+
+  // get the favorites partners and favorites items from favoritesSlice
+  const favoritesPartners = useSelector(selectFavoritesPartners);
   const favoritesItems = useSelector(selectFavoritesItems);
 
   return user ? (
@@ -32,8 +42,9 @@ function FavoritesPage() {
         <h2>{t("favorites")}</h2>
       </Header>
 
+      {/* favorite companies */}
       <CardInfo headerTitle={t("companies")}>
-        {favorites
+        {favoritesPartners
           .filter((favorite) => favorite.type === UserTypeConstants.COMPANY)
           .map((favorite) => (
             <FavoriteRow
@@ -44,8 +55,9 @@ function FavoritesPage() {
           ))}
       </CardInfo>
 
+      {/* favorites warehouses */}
       <CardInfo headerTitle={t("warehouses")}>
-        {favorites
+        {favoritesPartners
           .filter((favorite) => favorite.type === UserTypeConstants.WAREHOUSE)
           .map((favorite) => (
             <FavoriteRow
@@ -56,6 +68,7 @@ function FavoritesPage() {
           ))}
       </CardInfo>
 
+      {/* favorites items */}
       <CardInfo headerTitle={t("nav-items")}>
         {favoritesItems.map((item) => (
           <FavoriteItemRow key={item._id} item={item} withoutBoxShadow={true} />

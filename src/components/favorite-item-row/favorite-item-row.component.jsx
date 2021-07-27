@@ -28,7 +28,6 @@ import { Colors, UserTypeConstants } from "../../utils/constants.js";
 import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
 
 function FavoriteItemRow({ item, withoutBoxShadow }) {
-  const history = useHistory();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const favorites = useSelector(selectFavoritesItems);
@@ -64,9 +63,6 @@ function FavoriteItemRow({ item, withoutBoxShadow }) {
             tableStyles.label_medium,
             rowStyles.align_start,
           ].join(" ")}
-          // onClick={() => {
-          //   history.push(`/item/user/${item._id}`);
-          // }}
         >
           <Link
             className={[

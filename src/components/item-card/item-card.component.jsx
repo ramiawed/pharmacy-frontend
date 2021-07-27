@@ -33,6 +33,8 @@ import rowStyles from "../row.module.scss";
 import { checkConnection } from "../../utils/checkInternet";
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
 import { Link } from "react-router-dom";
+import { statisticsItemFavorites } from "../../redux/statistics/statisticsSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 function ItemCard({ companyItem }) {
   const user = useSelector(selectUser);
@@ -54,7 +56,13 @@ function ItemCard({ companyItem }) {
 
     dispatch(
       addFavoriteItem({ obj: { favoriteItemId: companyItem._id }, token })
-    );
+    )
+      .then(unwrapResult)
+      .then((result) => {
+        dispatch(
+          statisticsItemFavorites({ obj: { itemId: companyItem._id }, token })
+        );
+      });
   };
 
   // method to handle remove company from user's favorite
@@ -206,6 +214,19 @@ function ItemCard({ companyItem }) {
             ].join(" ")}
           >
             <Link
+              onClick={() => {
+                if (
+                  user.type === UserTypeConstants.PHARMACY ||
+                  user.type === UserTypeConstants.NORMAL
+                ) {
+                  dispatch(
+                    statisticsItemFavorites({
+                      obj: { itemId: companyItem._id },
+                      token,
+                    })
+                  );
+                }
+              }}
               to={{
                 pathname: "/item",
                 state: {

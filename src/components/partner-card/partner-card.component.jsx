@@ -15,7 +15,7 @@ import {
   selectFavoritesPartners,
   removeFavorite,
 } from "../../redux/favorites/favoritesSlice";
-import { selectToken } from "../../redux/auth/authSlice";
+import { selectToken, selectUser } from "../../redux/auth/authSlice";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -25,6 +25,11 @@ import styles from "./partner-card.module.scss";
 import { checkConnection } from "../../utils/checkInternet";
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
 import { useHistory } from "react-router-dom";
+import {
+  statisticsCompanySelected,
+  statisticsUserFavorites,
+} from "../../redux/statistics/statisticsSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 function PartnerCard({ user }) {
   const history = useHistory();
@@ -32,6 +37,7 @@ function PartnerCard({ user }) {
   const dispatch = useDispatch();
   const favorites = useSelector(selectFavoritesPartners);
   const token = useSelector(selectToken);
+  const loggedUser = useSelector(selectUser);
 
   const [connectionError, setConnectionError] = useState("");
 
@@ -43,7 +49,11 @@ function PartnerCard({ user }) {
       return;
     }
 
-    dispatch(addFavorite({ obj: { favoriteId: user._id }, token }));
+    dispatch(addFavorite({ obj: { favoriteId: user._id }, token }))
+      .then(unwrapResult)
+      .then((result) => {
+        dispatch(statisticsUserFavorites({ obj: { userId: user._id }, token }));
+      });
   };
 
   // method to handle remove company from user's favorite
@@ -95,9 +105,20 @@ function PartnerCard({ user }) {
             }}
             className={styles.more_button}
             onClick={() => {
-              if (user.type === UserTypeConstants.COMPANY)
+              if (user.type === UserTypeConstants.COMPANY) {
+                if (
+                  loggedUser.type === UserTypeConstants.PHARMACY ||
+                  loggedUser.type === UserTypeConstants.NORMAL
+                ) {
+                  dispatch(
+                    statisticsCompanySelected({
+                      obj: { companyId: user._id },
+                      token,
+                    })
+                  );
+                }
                 history.push(`/companies/${user._id}`);
-              else history.push(`/warehouses/${user._id}`);
+              } else history.push(`/warehouses/${user._id}`);
             }}
           >
             {t("medicines")}

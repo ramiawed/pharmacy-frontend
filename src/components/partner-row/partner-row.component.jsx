@@ -15,7 +15,7 @@ import {
   selectFavoritesPartners,
   removeFavorite,
 } from "../../redux/favorites/favoritesSlice";
-import { selectToken } from "../../redux/auth/authSlice";
+import { selectToken, selectUser } from "../../redux/auth/authSlice";
 
 // rowStyles
 import generalStyles from "../../style.module.scss";
@@ -24,12 +24,20 @@ import rowStyles from "../row.module.scss";
 // constants and utils
 import { checkConnection } from "../../utils/checkInternet";
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
+import {
+  statisticsCompanySelected,
+  statisticsUserFavorites,
+} from "../../redux/statistics/statisticsSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 function PartnerRow({ user, type }) {
   const { t } = useTranslation();
+
   const dispatch = useDispatch();
+
   const favorites = useSelector(selectFavoritesPartners);
   const token = useSelector(selectToken);
+  const loggedUser = useSelector(selectUser);
 
   const [connectionError, setConnectionError] = useState("");
 
@@ -41,7 +49,11 @@ function PartnerRow({ user, type }) {
       return;
     }
 
-    dispatch(addFavorite({ obj: { favoriteId: user._id }, token }));
+    dispatch(addFavorite({ obj: { favoriteId: user._id }, token }))
+      .then(unwrapResult)
+      .then((result) => {
+        dispatch(statisticsUserFavorites({ obj: { userId: user._id }, token }));
+      });
   };
 
   // method to handle remove company from user's favorite
@@ -60,6 +72,21 @@ function PartnerRow({ user, type }) {
       <div className={rowStyles.container}>
         {user.type === UserTypeConstants.COMPANY && (
           <Link
+            onClick={() => {
+              // if the user type is pharmacy or normal, change the selectedCount
+              // and selectedDates for this company
+              if (
+                loggedUser.type === UserTypeConstants.PHARMACY ||
+                loggedUser.type === UserTypeConstants.NORMAL
+              ) {
+                dispatch(
+                  statisticsCompanySelected({
+                    obj: { companyId: user._id },
+                    token,
+                  })
+                );
+              }
+            }}
             to={`/companies/${user._id}`}
             className={[
               rowStyles.hover_underline,

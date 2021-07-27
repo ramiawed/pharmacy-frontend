@@ -11,6 +11,7 @@ import itemsSlice from "./redux/items/itemsSlices";
 import companyItemsSlice from "./redux/companyItems/companyItemsSlices";
 import warehouseItemsSlices from "./redux/warehouseItems/warehouseItemsSlices";
 import cartSlice from "./redux/cart/cartSlice";
+import statisticsSlice from "./redux/statistics/statisticsSlice";
 
 const reducers = combineReducers({
   auth: authSlice,
@@ -22,6 +23,7 @@ const reducers = combineReducers({
   companyItems: companyItemsSlice,
   warehouseItems: warehouseItemsSlices,
   cart: cartSlice,
+  statistics: statisticsSlice,
 });
 
 const persistConfig = {

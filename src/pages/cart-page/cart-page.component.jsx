@@ -34,6 +34,7 @@ import generalStyles from "../../style.module.scss";
 
 // constants and colors
 import { OfferTypes, UserTypeConstants } from "../../utils/constants";
+import { statisticsOrders } from "../../redux/statistics/statisticsSlice";
 
 function CartPage() {
   const { t } = useTranslation();
@@ -41,6 +42,7 @@ function CartPage() {
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showFailedModal, setShowFailedModal] = useState(false);
+  const [showLoadingModal, setShowLoadingModal] = useState(false);
 
   // get the logged user from redux store
   const user = useSelector(selectUser);
@@ -67,6 +69,7 @@ function CartPage() {
   };
 
   const handleSendOrder = () => {
+    setShowLoadingModal(true);
     let cartItemsToSend = cartItems.map((e) => {
       return {
         itemName: e.item.name,
@@ -112,8 +115,6 @@ function CartPage() {
       },
     ];
 
-    console.log(cartItemsToSend);
-
     axios
       .post(
         "/users/sendemail",
@@ -124,8 +125,15 @@ function CartPage() {
           },
         }
       )
-      .then((response) => setShowSuccessModal(true))
-      .catch(() => setShowFailedModal(true));
+      .then((response) => {
+        dispatch(statisticsOrders({ token }));
+        setShowLoadingModal(false);
+        setShowSuccessModal(true);
+      })
+      .catch(() => {
+        setShowLoadingModal(false);
+        setShowFailedModal(true);
+      });
   };
 
   // if there is no logged user or user type is not pharmacy
@@ -186,6 +194,7 @@ function CartPage() {
           header={t("send-order")}
           cancelLabel={t("cancel-label")}
           small={true}
+          green={true}
         >
           {t("send-order-succeeded")}
         </Modal>
@@ -201,6 +210,19 @@ function CartPage() {
           small={true}
         >
           {t("send-order-failed")}
+        </Modal>
+      )}
+
+      {showLoadingModal && (
+        <Modal
+          closeModal={() => {
+            setShowLoadingModal(false);
+          }}
+          header={t("send-order")}
+          cancelLabel={t("cancel-label")}
+          small={true}
+        >
+          {t("send-order-loading")}
         </Modal>
       )}
     </>

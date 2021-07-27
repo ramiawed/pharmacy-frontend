@@ -15,6 +15,7 @@ const Modal = ({
   okLabel,
   small,
   warning,
+  green,
 }) => {
   const { t } = useTranslation();
 
@@ -38,6 +39,7 @@ const Modal = ({
           className={[
             styles.modal_header,
             warning ? generalStyles.bg_yellow : "",
+            green ? generalStyles.bg_green : "",
           ].join(" ")}
           r
         >

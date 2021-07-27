@@ -34,6 +34,7 @@ import styles from "./main-page.module.scss";
 
 // constants
 import { TopNavLinks } from "../../utils/constants";
+import { statisticsSignin } from "../../redux/statistics/statisticsSlice";
 
 // MainPage
 // you have to sign in first
@@ -78,7 +79,7 @@ function MainPage() {
     window.addEventListener("scroll", toggleToTopVisible);
 
     return () => window.removeEventListener("scroll", toggleToTopVisible);
-  }, []);
+  }, [user]);
 
   return user ? (
     <div>

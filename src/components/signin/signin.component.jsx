@@ -21,7 +21,7 @@ import {
   selectUserData,
   resetError,
 } from "../../redux/auth/authSlice";
-
+import { statisticsSignin } from "../../redux/statistics/statisticsSlice";
 // styles
 import styles from "./signin.module.scss";
 
@@ -29,6 +29,7 @@ import styles from "./signin.module.scss";
 import { checkConnection } from "../../utils/checkInternet";
 import { Colors } from "../../utils/constants";
 import Toast from "../toast/toast.component";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 // constants use for motion
 const containerVariant = {
@@ -154,7 +155,10 @@ function SignIn() {
 
     // username and password is not empty
     // dispatch sign in
-    dispatch(authSign(userInfo));
+    dispatch(authSign(userInfo))
+      .then(unwrapResult)
+      .then((result) => dispatch(statisticsSignin({ token: result.token })))
+      .catch((err) => {});
   };
 
   // handle enter press on input

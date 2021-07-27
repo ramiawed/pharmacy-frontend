@@ -116,7 +116,7 @@ function ItemsByCompanyPage() {
     }
 
     window.scrollTo(0, 0);
-  }, []);
+  }, [companyId]);
 
   return user ? (
     <>

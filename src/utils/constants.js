@@ -41,6 +41,7 @@ export const SideNavLinks = {
   ADVERTISEMENTS: "advertisements",
   OFFERS: "offers",
   PROFILE: "profile",
+  STATISTICS: "statistics",
 };
 
 export const TopNavLinks = {

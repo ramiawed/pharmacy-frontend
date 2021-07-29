@@ -3,17 +3,49 @@ import axios from "../../api/pharmacy";
 
 const initialState = {
   status: "idle",
-  usersStatistics: [],
-  itemsStatistics: [],
+  statistics: [],
+  count: 0,
   error: "",
 };
+
+export const getStatistics = createAsyncThunk(
+  "statistics/getStatistics",
+  async ({ obj }, { rejectWithValue }) => {
+    try {
+      let response;
+      let queryString = "";
+
+      if (obj.type === "users") {
+        queryString = `/statistics/users?page=${obj.page}&limit=${obj.limit}&field=${obj.field}`;
+      } else {
+        queryString = `/statistics/items?page=${obj.page}&limit=${obj.limit}&field=${obj.field}`;
+      }
+
+      if (obj.name) {
+        queryString = queryString + `&name=${obj.name}`;
+      }
+
+      response = await axios.get(queryString);
+
+      // if (obj.type === "users") {
+      //   const url = `/statistics/users?${queryString}`;
+      // } else {
+      //   const url = `/statistics/items?${queryString}`;
+      //   response = await axios.get(url);
+      // }
+
+      return response.data;
+    } catch (err) {
+      return rejectWithValue(err.message.data);
+    }
+  }
+);
 
 // user sign in
 export const statisticsSignin = createAsyncThunk(
   "statistics/signin",
   async ({ token }, { rejectWithValue }) => {
     try {
-      console.log("increment signin");
       const response = await axios.post(
         "/statistics/signin",
         {},
@@ -26,7 +58,6 @@ export const statisticsSignin = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      console.log(err);
       return rejectWithValue(err.response.data);
     }
   }
@@ -155,40 +186,31 @@ export const statisticsSlice = createSlice({
       state.status = "idle";
       state.error = "";
     },
-    resetUsersStatistics: (state) => {
+    resetStatistics: (state) => {
       state.status = "idle";
-      state.usersStatistics = [];
-      state.error = "";
-    },
-    resetItemsStatistics: (state) => {
-      state.status = "idle";
-      state.itemsStatistics = [];
+      state.statistics = [];
+      state.count = 0;
       state.error = "";
     },
   },
   extraReducers: {
-    [statisticsSignin.pending]: (state, action) => {
+    [getStatistics.pending]: (state, action) => {
       state.status = "loading";
     },
-    [statisticsSignin.fulfilled]: (state, action) => {
+    [getStatistics.fulfilled]: (state, action) => {
       state.status = "success";
+      state.statistics = [...state.statistics, ...action.payload.data.data];
+      state.count = action.payload.count;
     },
-    [statisticsSignin.rejected]: (state, action) => {
+    [getStatistics.rejected]: (state, action) => {
       state.status = "failed";
     },
   },
 });
 
-export const selectUsersStatistics = (state) =>
-  state.statistics.usersStatistics;
-export const selectItemsStatistics = (state) =>
-  state.statistics.itemsStatistics;
+export const selectStatistics = (state) => state.statistics;
 
-export const {
-  resetStatisticsStatus,
-  resetStatisticsError,
-  resetUsersStatistics,
-  resetItemsStatistics,
-} = statisticsSlice.actions;
+export const { resetStatisticsStatus, resetStatisticsError, resetStatistics } =
+  statisticsSlice.actions;
 
 export default statisticsSlice.reducer;

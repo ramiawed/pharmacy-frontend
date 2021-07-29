@@ -80,6 +80,7 @@
     "nav-guests": "الضيوف",
     "nav-advertise": "الإعلانات",
     "nav-offers": "العروض",
+    "nav-statistics": "الأحصائيات",
     "search": "بحث",
     "search-engines": "محركات البحث",
     "user-action": "",
@@ -250,5 +251,15 @@
     "send-order": "إرسال الطلب",
     "send-order-succeeded": "تم إرسال الطلب بنجاح.",
     "send-order-failed": "حدث خطأ خلال إرسال الطلب، الرجاء إعادة المحاولة",
-    "send-order-loading": "جاري إرسال الطلب"
+    "send-order-loading": "جاري إرسال الطلب",
+    "statistics-sign-in": "إحصائيات تسجيل الدخول",
+    "statistics-selected-company": "إحصائيات اختيار شركة",
+    "statistics-selected-item": "إحصائيات اختيار منتج",
+    "statistics-item-added-to-card": "إحصائيات إضافة منتج إلى الحافظة",
+    "statistics-user-order": "إحصائيات طلبات الصيدلي",
+    "statistics-user-added-to-favorite": "إحصائيات إضافة شريك إلى المفضلة",
+    "statistics-item-added-to-favorite": "إحصائيات إضافة منتج إلى المفضلة",
+    "statistics-name": "الاسم",
+    "statistics-count": "العدد",
+    "statistics-dates": "التواريخ"
 }

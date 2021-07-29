@@ -1,0 +1,35 @@
+@import "../../variables.scss";
+
+.card {
+  margin: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  min-height: 250px;
+  width: 100%;
+
+  box-shadow: 0 0 3px rgba($color: #000000, $alpha: 0.3);
+  border-radius: 6px;
+
+  cursor: pointer;
+
+  background-color: $secondary-color;
+  color: $white-color;
+}
+
+.card:hover {
+  transform: scale(1.01);
+}
+
+@media only screen and (min-width: $small) {
+  .card {
+    width: 48%;
+  }
+}
+
+@media only screen and (min-width: $medium) {
+  .card {
+    width: 23%;
+  }
+}

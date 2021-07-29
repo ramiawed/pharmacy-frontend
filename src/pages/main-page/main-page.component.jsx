@@ -34,7 +34,8 @@ import styles from "./main-page.module.scss";
 
 // constants
 import { TopNavLinks } from "../../utils/constants";
-import { statisticsSignin } from "../../redux/statistics/statisticsSlice";
+import StatisticsOptionsPage from "../statistics-options-page/statistics-options-page.component";
+import StatisticsPage from "../statistics-page/statistics-page.component";
 
 // MainPage
 // you have to sign in first
@@ -147,24 +148,32 @@ function MainPage() {
           <ItemExcelPage />
         </Route>
 
-        <Route path="/cart">
+        <Route exact path="/cart">
           <CartPage />
         </Route>
 
-        <Route path="/profile">
+        <Route exact path="/profile">
           <UserProfile />
         </Route>
 
-        <Route path="/favorites">
+        <Route exact path="/favorites">
           <FavoritesPage />
         </Route>
 
-        <Route path="/items">
+        <Route exact path="/items">
           <ItemsPage />
         </Route>
 
-        <Route path="/admin/partners">
+        <Route exact path="/admin/partners">
           <AdminUsers />
+        </Route>
+
+        <Route exact path="/admin/statistics">
+          <StatisticsOptionsPage />
+        </Route>
+
+        <Route exact path="/admin/statistics/option">
+          <StatisticsPage />
         </Route>
 
         {/* <Route path="/admin/items">

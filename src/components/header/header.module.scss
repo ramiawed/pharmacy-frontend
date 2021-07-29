@@ -1,5 +1,9 @@
 @import "../../variables.scss";
 
+.header {
+  position: relative;
+}
+
 .header h2 {
   text-align: center;
   color: $secondary-color;

@@ -35,7 +35,6 @@ function SideNavAdmin({ selectedOption, onSelectedChange }) {
         onClick={() => {
           onSelectedChange(SideNavLinks.ITEMS);
         }}
-        // to="/admin/items"
         to={{
           pathname: "/items",
           state: {
@@ -48,18 +47,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange }) {
       >
         {t("nav-items")}
       </Link>
-      {/* <Link
-        className={[
-          styles.link,
-          selectedOption === SideNavLinks.OFFERS ? `${styles.selected}` : "",
-        ].join(" ")}
-        onClick={() => {
-          onSelectedChange(SideNavLinks.OFFERS);
-        }}
-        to="/admin/orders"
-      >
-        {t("nav-orders")}
-      </Link> */}
+
       <Link
         className={[
           styles.link,
@@ -85,6 +73,20 @@ function SideNavAdmin({ selectedOption, onSelectedChange }) {
         to="/admin/offers"
       >
         {t("nav-offers")}
+      </Link>
+      <Link
+        className={[
+          styles.link,
+          selectedOption === SideNavLinks.STATISTICS
+            ? `${styles.selected}`
+            : "",
+        ].join(" ")}
+        onClick={() => {
+          onSelectedChange(SideNavLinks.STATISTICS);
+        }}
+        to="/admin/statistics"
+      >
+        {t("nav-statistics")}
       </Link>
       <Link
         className={[

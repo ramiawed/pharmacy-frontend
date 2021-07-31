@@ -13,32 +13,31 @@ function SearchContainer({ children, searchAction }) {
   const { t } = useTranslation();
 
   let childrenArray = React.Children.toArray(children);
-  const [expanded, setExpanded] = useState(false);
+  // const [expanded, setExpanded] = useState(true);
   const [moreSearchOptions, setMoreSearchOptions] = useState(false);
 
   return (
     <div
       className={[
         styles.search_container,
-        expanded ? styles.expanded : "",
+        styles.expanded,
         moreSearchOptions ? styles.expanded_with_options : "",
       ].join(" ")}
     >
       <div className={styles.expanded_div}>
         <div
-          className={[
-            generalStyles.icon,
-            expanded ? generalStyles.minus_top_margin : "",
-          ].join(" ")}
+          className={[generalStyles.icon, generalStyles.minus_top_margin].join(
+            " "
+          )}
           onClick={() => {
-            setExpanded(!expanded);
+            // setExpanded(!expanded);
             setMoreSearchOptions(false);
           }}
         >
           <FaSearch />
         </div>
 
-        {expanded && (
+        {true && (
           <>
             <div style={{ flex: 1 }}>
               {childrenArray[0]}
@@ -48,33 +47,39 @@ function SearchContainer({ children, searchAction }) {
                     return null;
                   })
                 : null}
+
+              {moreSearchOptions && (
+                <button
+                  onClick={() => {
+                    searchAction();
+                    setMoreSearchOptions(false);
+                  }}
+                  style={{ margin: "4px auto 4px 0" }}
+                  className={[
+                    generalStyles.button,
+                    generalStyles.bg_secondary,
+                    generalStyles.fc_white,
+                    generalStyles.block,
+                    generalStyles.padding_v_6,
+                    generalStyles.padding_h_8,
+                  ].join(" ")}
+                >
+                  {t("search")}
+                </button>
+              )}
             </div>
 
             {childrenArray.length > 1 && (
               <div
                 className={[
                   generalStyles.icon,
-                  expanded ? generalStyles.minus_top_margin : "",
+                  generalStyles.minus_top_margin,
                 ].join(" ")}
                 onClick={() => setMoreSearchOptions(!moreSearchOptions)}
               >
                 <VscSettings />
               </div>
             )}
-            <button
-              onClick={searchAction}
-              className={[
-                generalStyles.button,
-                generalStyles.bg_secondary,
-                generalStyles.fc_white,
-                generalStyles.margin_h_auto,
-                generalStyles.block,
-                generalStyles.padding_v_6,
-                generalStyles.padding_h_8,
-              ].join(" ")}
-            >
-              {t("search")}
-            </button>
           </>
         )}
       </div>

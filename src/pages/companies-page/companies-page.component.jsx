@@ -151,6 +151,35 @@ function CompaniesPage() {
           {t("companies")} <span>{count}</span>
         </h2>
 
+        <SearchContainer searchAction={handleEnterPress}>
+          <SearchInput
+            label="user-name"
+            id="search-name"
+            type="text"
+            value={searchName}
+            onchange={(e) => {
+              // setSearchName(e.target.value);
+              dispatch(changeSearchName(e.target.value));
+            }}
+            placeholder="search"
+            onEnterPress={handleEnterPress}
+            resetField={() => dispatch(resetSearchName())}
+          />
+
+          <SearchInput
+            label="user-city"
+            id="search-city"
+            type="text"
+            value={searchCity}
+            onchange={(e) => {
+              dispatch(changeSearchCity(e.target.value));
+            }}
+            placeholder="search"
+            onEnterPress={handleEnterPress}
+            resetField={() => dispatch(resetSearchCity())}
+          />
+        </SearchContainer>
+
         <div className={generalStyles.actions}>
           {/* refresh */}
           <ActionIcon
@@ -213,35 +242,6 @@ function CompaniesPage() {
             }}
             icon={() => <FaListUl />}
           />
-
-          <SearchContainer searchAction={handleEnterPress}>
-            <SearchInput
-              label="user-name"
-              id="search-name"
-              type="text"
-              value={searchName}
-              onchange={(e) => {
-                // setSearchName(e.target.value);
-                dispatch(changeSearchName(e.target.value));
-              }}
-              placeholder="search"
-              onEnterPress={handleEnterPress}
-              resetField={() => dispatch(resetSearchName())}
-            />
-
-            <SearchInput
-              label="user-city"
-              id="search-city"
-              type="text"
-              value={searchCity}
-              onchange={(e) => {
-                dispatch(changeSearchCity(e.target.value));
-              }}
-              placeholder="search"
-              onEnterPress={handleEnterPress}
-              resetField={() => dispatch(resetSearchCity())}
-            />
-          </SearchContainer>
         </div>
       </Header>
 

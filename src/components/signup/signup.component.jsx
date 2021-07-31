@@ -24,6 +24,7 @@ import { checkConnection } from "../../utils/checkInternet";
 
 // styles
 import styles from "./signup.module.scss";
+import ActionLoader from "../action-loader/action-loader.component";
 
 const containerVariant = {
   hidden: {
@@ -680,7 +681,7 @@ function SignUp() {
         </Toast>
       )}
 
-      {signupLoading && <ReactLoading type="bubbles" height={50} width={50} />}
+      {signupLoading && <ActionLoader />}
     </motion.div>
   );
 }

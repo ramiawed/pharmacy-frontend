@@ -24,9 +24,9 @@ import Modal from "../modal/modal.component";
 import IconWithNumber from "../icon-with-number/icon-with-number.component";
 import Order from "../order/order.component";
 import TableHeader from "../table-header/table-header.component";
+import ActionLoader from "../action-loader/action-loader.component";
 
 // 3-party library (loading, paginate)
-import ReactLoading from "react-loading";
 import ReactPaginate from "react-paginate";
 
 // react-icons
@@ -48,6 +48,7 @@ import generalStyles from "../../style.module.scss";
 import styles from "./admin-users.module.scss";
 import tableStyles from "../table.module.scss";
 import paginationStyles from "../pagination.module.scss";
+import NoContent from "../no-content/no-content.component";
 
 // AdminUsers component
 function AdminUsers() {
@@ -63,7 +64,6 @@ function AdminUsers() {
     activationDeleteStatus,
     activationDeleteStatusMsg,
     resetUserPasswordStatus,
-    resetUserPasswordError,
   } = useSelector(selectUsers);
   const { token, user } = useSelector(selectUserData);
 
@@ -346,34 +346,29 @@ function AdminUsers() {
             </div>
           </div>
         </Header>
-        {/* </div> */}
       </div>
-      <TableHeader>
-        <label className={tableStyles.label_large}>{t("user-name")}</label>
-        <label className={tableStyles.label_small}>{t("user-approve")}</label>
-        <label className={tableStyles.label_small}>{t("user-delete")}</label>
-        <label className={tableStyles.label_large}>{t("user-email")}</label>
-        <label className={tableStyles.label_medium}>{t("user-phone")}</label>
-        <label className={tableStyles.label_medium}>{t("user-mobile")}</label>
-        <label className={tableStyles.label_xsmall}></label>
-        <label className={tableStyles.label_xsmall}></label>
-      </TableHeader>
 
-      {/* loading components when retrieve the result from DB */}
-      {status === "loading" && (
-        <div className={styles.loading}>
-          <ReactLoading color="#8a7d85" type="bubbles" height={50} width={50} />
-        </div>
+      {count > 0 && (
+        <TableHeader>
+          <label className={tableStyles.label_large}>{t("user-name")}</label>
+          <label className={tableStyles.label_small}>{t("user-approve")}</label>
+          <label className={tableStyles.label_small}>{t("user-delete")}</label>
+          <label className={tableStyles.label_large}>{t("user-email")}</label>
+          <label className={tableStyles.label_medium}>{t("user-phone")}</label>
+          <label className={tableStyles.label_medium}>{t("user-mobile")}</label>
+          <label className={tableStyles.label_xsmall}></label>
+          <label className={tableStyles.label_xsmall}></label>
+        </TableHeader>
       )}
 
       {/* Results */}
-      <div className={styles.rows}>
+      <div>
         {users?.map((user, index) => (
           <UserRow key={user._id} user={user} index={index} />
         ))}
       </div>
 
-      {count > 0 ? (
+      {count > 0 && (
         <ReactPaginate
           previousLabel={t("previous")}
           nextLabel={t("next")}
@@ -386,22 +381,20 @@ function AdminUsers() {
           disabledClassName={paginationStyles.pagination_link_disabled}
           activeClassName={paginationStyles.pagination_link_active}
         />
-      ) : (
+      )}
+
+      {count === 0 && (
         <>
-          <div
-            className={[
-              generalStyles.no_content_div,
-              generalStyles.fc_white,
-            ].join(" ")}
-          >
-            <FiFileText size={250} />
-            <p className={generalStyles.fc_white}>
-              {t("no-partners-found-message")}
-            </p>
-          </div>
+          <NoContent msg={t("no-partners-found-message")} />
         </>
       )}
 
+      {/* loading components when retrieve the result from DB */}
+      {status === "loading" && <ActionLoader />}
+      {resetUserPasswordStatus === "loading" && <ActionLoader />}
+      {activationDeleteStatus === "loading" && <ActionLoader />}
+
+      {/* show toast to display successfully or failed message */}
       {activationDeleteStatus === "success" ? (
         <Toast
           bgColor={Colors.SUCCEEDED_COLOR}
@@ -434,7 +427,7 @@ function AdminUsers() {
         <Toast
           bgColor={Colors.FAILED_COLOR}
           foreColor="#000"
-          toastText={t()}
+          toastText={t("password-change-failed")}
           actionAfterTimeout={() => dispatch(resetUserChangePasswordStatus())}
         />
       ) : null}

@@ -36,7 +36,7 @@ import tableStyles from "../../components/table.module.scss";
 import searchContainerStyles from "../../components/search-container/search-container.module.scss";
 
 // constants
-import { UserTypeConstants } from "../../utils/constants";
+import { Colors, UserTypeConstants } from "../../utils/constants";
 
 function ItemsByCompanyPage() {
   const { companyId } = useParams();
@@ -289,15 +289,22 @@ function ItemsByCompanyPage() {
       )}
 
       {status === "loading" && (
-        <ReactLoading type="bubbles" height={50} width={50} />
+        <div className={generalStyles.flex_center_container}>
+          <ReactLoading
+            color={Colors.SECONDARY_COLOR}
+            type="bubbles"
+            height={50}
+            width={50}
+          />
+        </div>
       )}
 
-      {count === 0 ? (
+      {count === 0 && status !== "loading" ? (
         <div className={generalStyles.no_content_div}>
           <SiAtAndT className={generalStyles.no_content_icon} />
           <p className={generalStyles.fc_white}>{t("no-medicines")}</p>
         </div>
-      ) : companyItems.length < count ? (
+      ) : companyItems.length < count && status !== "loading" ? (
         <button
           onClick={handleMoreResult}
           className={[

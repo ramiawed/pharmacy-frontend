@@ -25,14 +25,11 @@ export const getStatistics = createAsyncThunk(
         queryString = queryString + `&name=${obj.name}`;
       }
 
-      response = await axios.get(queryString);
+      if (obj.date) {
+        queryString = queryString + `&date=${obj.date}&date1=${obj.date1}`;
+      }
 
-      // if (obj.type === "users") {
-      //   const url = `/statistics/users?${queryString}`;
-      // } else {
-      //   const url = `/statistics/items?${queryString}`;
-      //   response = await axios.get(url);
-      // }
+      response = await axios.get(queryString);
 
       return response.data;
     } catch (err) {

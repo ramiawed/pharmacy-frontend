@@ -140,6 +140,33 @@ p.error {
   font-size: 0.8rem;
 }
 
+.loading {
+  position: absolute;
+
+  background: rgba($color: #000000, $alpha: 0.4);
+
+  width: 100vw;
+  height: 100vh;
+  padding-bottom: 10px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.loading div {
+  width: 200px;
+  height: 200px;
+
+  background-color: $secondary-color;
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @media only screen and (min-width: $small) {
   .container {
     width: 100%;

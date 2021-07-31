@@ -69,3 +69,14 @@ export const OfferTypes = {
   PERCENTAGE: "percentage",
   SELECT_OFFER_TYPE: "select-offer-type",
 };
+
+export const DateOptions = {
+  ONE_DAY: "1D",
+  THREE_DAY: "3D",
+  ONE_WEEK: "1W",
+  TWO_WEEK: "2W",
+  ONE_MONTH: "1M",
+  TWO_MONTH: "2M",
+  SIX_MONTH: "6M",
+  ONE_YEAR: "1Y",
+};

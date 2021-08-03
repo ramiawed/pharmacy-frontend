@@ -6,13 +6,13 @@ import { unwrapResult } from "@reduxjs/toolkit";
 
 // components
 import ActionButton from "../action-button/action-button.component";
-import Toast from "../toast/toast.component";
 
 // styles
 import styles from "./info-row.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
+import { cancelOperation } from "../../redux/auth/authSlice";
 
 // use this promise to abort the operation by click on the cancel button
 let promise;
@@ -20,11 +20,12 @@ let promise;
 // Info Row component
 function InfoRow({ labelText, value, onInputChange, action, field, editable }) {
   const { t } = useTranslation();
+
   // save the previous value for cancel button
   const [previousValue, setPreviousValue] = useState("");
   const [isEditable, setIsEditable] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+
   // to show loading icon while update the user info in the DB
   const [loading, setLoading] = useState(false);
 
@@ -57,22 +58,37 @@ function InfoRow({ labelText, value, onInputChange, action, field, editable }) {
     // 1- stay at the edit mode
     // 2- show an error message below the input field
     setLoading(true);
+
     promise = action();
-    promise
-      .then(unwrapResult)
-      .then((originalPromiseResult) => {
-        setIsEditable(false);
-        setSuccess("update-succeeded");
-        setLoading(false);
-      })
-      .catch((rejectedValueOrSerializedError) => {
-        setError(rejectedValueOrSerializedError.message);
-        setLoading(false);
-      });
+
+    // check if the promise is not undefined
+    if (promise) {
+      promise
+        .then(unwrapResult)
+        .then((originalPromiseResult) => {
+          setIsEditable(false);
+          setLoading(false);
+        })
+        .catch((rejectedValueOrSerializedError) => {
+          setError(
+            rejectedValueOrSerializedError.message
+              ? rejectedValueOrSerializedError.message
+              : rejectedValueOrSerializedError
+          );
+          setLoading(false);
+          if (!rejectedValueOrSerializedError.message) {
+            setIsEditable(false);
+            setError("");
+            onInputChange(field, previousValue);
+          }
+        });
+    } else {
+      cancelHandler();
+    }
   };
 
   // method to handle enter press in the input field
-  const onEnterPress = (e) => {
+  const onEnterPressHandler = (e) => {
     if (e.key === "Enter") {
       handleOkAction();
     }
@@ -82,19 +98,21 @@ function InfoRow({ labelText, value, onInputChange, action, field, editable }) {
   // return the read mode
   // set the error to empty
   // set the value of the input field to the previous value
-  const handleCancel = () => {
+  const cancelHandler = () => {
+    setLoading(false);
     setIsEditable(false);
     setError("");
     onInputChange(field, previousValue);
-    if (promise) {
-      promise.abort();
-    }
+    // if (promise) {
+    //   promise.abort();
+    // }
+    cancelOperation();
   };
 
   // method to handle escape press in the input field
-  const handleEscapePress = (e) => {
+  const escapePressHandler = (e) => {
     if (e.key === "Escape") {
-      handleCancel();
+      cancelHandler();
     }
   };
 
@@ -115,8 +133,8 @@ function InfoRow({ labelText, value, onInputChange, action, field, editable }) {
             <input
               value={value}
               onChange={(e) => onInputChange(field, e.target.value)}
-              onKeyPress={onEnterPress}
-              onKeyDown={handleEscapePress}
+              onKeyPress={onEnterPressHandler}
+              onKeyDown={escapePressHandler}
             />
           </div>
         ) : (
@@ -130,12 +148,12 @@ function InfoRow({ labelText, value, onInputChange, action, field, editable }) {
               <ActionButton
                 text="ok-label"
                 action={handleOkAction}
-                color={Colors.fc_secondary_COLOR}
+                color={Colors.SECONDARY_COLOR}
                 loading={loading}
               />
               <ActionButton
                 text="cancel-label"
-                action={handleCancel}
+                action={cancelHandler}
                 color={Colors.FAILED_COLOR}
               />
             </div>
@@ -153,19 +171,10 @@ function InfoRow({ labelText, value, onInputChange, action, field, editable }) {
           )
         ) : null}
       </div>
+
       {/* show error below the input field */}
-      {error && <p className={styles.error}>{t(error)}</p>}
-      {/* show toast when the update is succeeded */}
-      {success && (
-        <Toast
-          bgColor={Colors.SUCCEEDED_COLOR}
-          foreColor="#fff"
-          actionAfterTimeout={() => {
-            setSuccess("");
-          }}
-        >
-          <p>{t(success)}</p>
-        </Toast>
+      {error && error !== "cancel" && error !== "timeout" && (
+        <p className={styles.error}>{t(error)}</p>
       )}
     </>
   );

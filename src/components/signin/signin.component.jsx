@@ -20,6 +20,7 @@ import {
   authSign,
   selectUserData,
   resetError,
+  cancelOperation,
 } from "../../redux/auth/authSlice";
 import { statisticsSignin } from "../../redux/statistics/statisticsSlice";
 // styles
@@ -30,6 +31,7 @@ import { checkConnection } from "../../utils/checkInternet";
 import { Colors } from "../../utils/constants";
 import Toast from "../toast/toast.component";
 import { unwrapResult } from "@reduxjs/toolkit";
+import ActionLoader from "../action-loader/action-loader.component";
 
 // constants use for motion
 const containerVariant = {
@@ -232,10 +234,6 @@ function SignIn() {
         >
           {t("signin")}
         </motion.button>
-
-        {status === "loading" && (
-          <ReactLoading type="bubbles" height={50} width={50} />
-        )}
       </div>
       {connectionError && (
         <Toast
@@ -247,6 +245,10 @@ function SignIn() {
         >
           <p>{t(connectionError)}</p>
         </Toast>
+      )}
+
+      {status === "loading" && (
+        <ActionLoader allowCancel={true} onclick={() => cancelOperation()} />
       )}
     </motion.div>
   );

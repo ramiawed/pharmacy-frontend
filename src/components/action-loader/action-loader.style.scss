@@ -10,9 +10,14 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 
   // positioning
   position: fixed;
   top: 0;
   left: 0;
+}
+
+.full-size button {
+  margin-top: 50px;
 }

@@ -1,63 +1,121 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../../api/pharmacy";
+import axios from "axios";
+
+let CancelToken;
+let source;
 
 const initialState = {
   status: "idle",
   updateStatus: "idle",
+  changeLogoStatus: "idle",
+  changePasswordStatus: "idle",
+  deleteStatus: "idle",
   user: null,
   token: "",
   error: "",
+  updateError: "",
   passwordError: "",
   deleteError: "",
-  changeLogoStatus: "idle",
   changeLogoError: "",
+};
+
+export const cancelOperation = () => {
+  if (source) {
+    source.cancel("operation canceled by user");
+  }
 };
 
 export const authSign = createAsyncThunk(
   "auth/signin",
   async ({ username, password }, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/users/signin", {
-        username,
-        password,
-      });
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
 
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response.data);
-    }
-  }
-);
-
-export const authSignup = createAsyncThunk(
-  "auth/signup",
-  async ({ obj, token }, { rejectWithValue }) => {
-    try {
-      const response = await axios.post("/users/signup", obj, {
-        headers: {
-          Authorization: `Bearer ${token}`,
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/users/signin",
+        {
+          username,
+          password,
         },
-      });
+        {
+          timeout: 10000,
+          cancelToken: source.token,
+        }
+      );
 
       return response.data;
     } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
       return rejectWithValue(err.response.data);
     }
   }
 );
+
+// export const authSignup = createAsyncThunk(
+//   "auth/signup",
+//   async ({ obj, token }, { rejectWithValue }) => {
+//     try {
+//       CancelToken = axios.CancelToken;
+//       source = CancelToken.source();
+
+//       const response = await axios.post(
+//         "http://localhost:8000/api/v1/users/signup",
+//         obj,
+//         {
+//           timeout: 10000,
+//           cancelToken: source.token,
+//           headers: {
+//             Authorization: `Bearer ${token}`,
+//           },
+//         }
+//       );
+
+//       return response.data;
+//     } catch (err) {
+//       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+//         return rejectWithValue("timeout");
+//       }
+//       if (axios.isCancel(err)) {
+//         return rejectWithValue("cancel");
+//       }
+//       return rejectWithValue(err.response.data);
+//     }
+//   }
+// );
 
 export const updateUserInfo = createAsyncThunk(
   "auth/updateUser",
   async ({ obj, token }, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/users/updateMe", obj, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/users/updateMe",
+        obj,
+        {
+          timeout: 10000,
+          cancelToken: source.token,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       return response.data;
     } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
       return rejectWithValue(err.response.data);
     }
   }
@@ -67,14 +125,29 @@ export const changeMyPassword = createAsyncThunk(
   "auth/changeMyPassword",
   async ({ obj, token }, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/users/changeMyPassword", obj, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/users/changeMyPassword",
+        obj,
+        {
+          timeout: 10000,
+          cancelToken: source.token,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       return response.data;
     } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
       return rejectWithValue(err.response.data);
     }
   }
@@ -84,14 +157,29 @@ export const deleteMe = createAsyncThunk(
   "auth/deleteMe",
   async ({ obj, token }, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/users/deleteMe", obj, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/users/deleteMe",
+        obj,
+        {
+          timeout: 10000,
+          cancelToken: source.token,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       return response.data;
     } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
       return rejectWithValue(err.response.data);
     }
   }
@@ -101,13 +189,30 @@ export const changeLogo = createAsyncThunk(
   "auth/changeLogo",
   async ({ data, token }, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/users/upload", data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/users/upload",
+        data,
+        {
+          timeout: 10000,
+          cancelToken: source.token,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return response.data;
     } catch (err) {
+      console.log(err.message);
+      console.log(err.code);
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
       return rejectWithValue(err.response.data);
     }
   }
@@ -136,12 +241,31 @@ export const authSlice = createSlice({
       state.changeLogoStatus = "idle";
       state.changeLogoError = "";
     },
+
+    resetUpdateStatus: (state) => {
+      state.updateStatus = "idle";
+    },
+    resetUpdateError: (state) => {
+      state.updateStatus = "idle";
+      state.updateError = "";
+    },
+
+    resetPasswordStatus: (state) => {
+      state.changePasswordStatus = "idle";
+    },
     resetPasswordError: (state) => {
+      state.changePasswordStatus = "idle";
       state.passwordError = "";
     },
+
+    resetDeleteStatus: (state) => {
+      state.deleteStatus = "idle";
+    },
     resetDeleteError: (state) => {
+      state.deleteStatus = "idle";
       state.deleteError = "";
     },
+
     resetChangeLogoStatus: (state) => {
       state.changeLogoStatus = "idle";
       state.changeLogoError = "";
@@ -151,6 +275,7 @@ export const authSlice = createSlice({
     },
   },
   extraReducers: {
+    // use sign in lifecycle
     [authSign.pending]: (state, action) => {
       state.status = "loading";
       state.error = "";
@@ -165,53 +290,82 @@ export const authSlice = createSlice({
       state.status = "failed";
       state.token = "";
       state.user = null;
-      state.error = payload.message;
+
+      if (payload === "timeout") {
+        state.err = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.error = "cancel-operation-msg";
+      } else state.error = payload.message;
     },
-    [updateUserInfo.pending]: (state, action) => {
+
+    // user update info lifecycle
+    [updateUserInfo.pending]: (state) => {
       state.updateStatus = "loading";
     },
     [updateUserInfo.fulfilled]: (state, action) => {
       state.updateStatus = "succeeded";
       state.user = action.payload.data.user;
     },
-    // [updateUserInfo.rejected]: (state, { error, meta, payload }) => {
-    //   state.status = "failed";
-    //   state.error = payload.message;
-    // },
-    [changeMyPassword.pending]: (state, action) => {
-      state.status = "loading";
+    [updateUserInfo.rejected]: (state, { payload }) => {
+      state.updateStatus = "failed";
+      if (payload === "timeout") {
+        state.updateError = "timeout";
+      } else if (payload === "cancel") {
+        state.updateError = "cancel";
+      } else state.updateError = payload.message;
+    },
+
+    // change password lifecycle
+    [changeMyPassword.pending]: (state) => {
+      state.changePasswordStatus = "loading";
       state.passwordError = "";
     },
     [changeMyPassword.fulfilled]: (state, action) => {
-      state.status = "succeeded";
+      state.changePasswordStatus = "succeeded";
       state.user = action.payload.data.user;
     },
     [changeMyPassword.rejected]: (state, { error, meta, payload }) => {
-      state.status = "failed";
-      state.passwordError = payload.message;
+      state.changePasswordStatus = "failed";
+      if (payload === "timeout") {
+        state.passwordError = payload;
+      } else if (payload === "cancel") {
+        state.passwordError = "cancel-operation-msg";
+      } else state.passwordError = payload.message;
     },
-    [deleteMe.pending]: (state, action) => {
-      state.status = "loading";
+
+    // delete me lifecycle
+    [deleteMe.pending]: (state) => {
+      state.deleteStatus = "loading";
       state.deleteError = "";
     },
-    [deleteMe.fulfilled]: (state, action) => {
-      state.status = "succeeded";
+    [deleteMe.fulfilled]: (state) => {
+      state.deleteStatus = "succeeded";
       state.user = null;
     },
-    [deleteMe.rejected]: (state, { error, meta, payload }) => {
-      state.status = "failed";
-      state.deleteError = payload.message;
+    [deleteMe.rejected]: (state, { payload }) => {
+      state.deleteStatus = "failed";
+      if (payload === "timeout") {
+        state.deleteError = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.deleteError = "cancel-operation-msg";
+      } else state.deleteError = payload.message;
     },
-    [changeLogo.pending]: (state, action) => {
+
+    // change the logo of a user lifecycle
+    [changeLogo.pending]: (state) => {
       state.changeLogoStatus = "loading";
     },
     [changeLogo.fulfilled]: (state, action) => {
       state.changeLogoStatus = "succeeded";
       state.user = action.payload.data.user;
     },
-    [changeLogo.rejected]: (state, { error, meta, payload }) => {
+    [changeLogo.rejected]: (state, { payload }) => {
       state.changeLogoStatus = "failed";
-      state.changeLogoError = payload.message;
+      if (payload === "timeout") {
+        state.changeLogoError = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.changeLogoError = "cancel-operation-msg";
+      } else state.changeLogoError = payload.message;
     },
   },
 });
@@ -220,10 +374,14 @@ export const {
   resetError,
   resetStatus,
   signOut,
+  resetPasswordStatus,
   resetPasswordError,
+  resetDeleteStatus,
   resetDeleteError,
   resetChangeLogoStatus,
   resetChangeLogoError,
+  resetUpdateStatus,
+  resetUpdateError,
 } = authSlice.actions;
 
 export const selectToken = (state) => state.auth.token;

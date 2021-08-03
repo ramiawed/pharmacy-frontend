@@ -11,7 +11,11 @@ import Input from "../input/input.component";
 import Toast from "../toast/toast.component";
 
 // redux
-import { authSign, selectUserData } from "../../redux/auth/authSlice";
+import {
+  authSign,
+  cancelOperation,
+  selectUserData,
+} from "../../redux/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 // loading
@@ -681,7 +685,13 @@ function SignUp() {
         </Toast>
       )}
 
-      {signupLoading && <ActionLoader />}
+      {signupLoading && (
+        <ActionLoader
+          onclick={() => {
+            cancelOperation();
+          }}
+        />
+      )}
     </motion.div>
   );
 }

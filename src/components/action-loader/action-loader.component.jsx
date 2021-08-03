@@ -13,21 +13,48 @@
 // - show: boolean that indicates if show the component or not.
 
 // style
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
 
 // style
 import "./action-loader.style.scss";
+import generalStyles from "../../style.module.scss";
+import { useTranslation } from "react-i18next";
 
-function ActionLoader({ bgColor, foreColor, text, onclick }) {
-  // const [show, setShow] = useState(true);
+function ActionLoader({ bgColor, foreColor, text, onclick, allowCancel }) {
+  const { t } = useTranslation();
+  const [showButton, setShowButton] = useState(false);
 
-  useEffect(() => {});
+  useEffect(() => {
+    const time = setTimeout(() => {
+      setShowButton(true);
+    }, 3000);
+
+    return () => {
+      clearTimeout(time);
+    };
+  }, []);
 
   return (
     <>
       <div className="full-size">
         <ReactLoading color="#fff" type="bars" height={75} width={75} />
+        {allowCancel && (
+          <button
+            onClick={onclick}
+            className={[
+              generalStyles.button,
+              generalStyles.bg_secondary,
+              generalStyles.fc_white,
+              generalStyles.margin_h_auto,
+              generalStyles.block,
+              generalStyles.padding_v_10,
+              generalStyles.padding_h_12,
+            ].join(" ")}
+          >
+            {t("cancel-operation-label")}
+          </button>
+        )}
       </div>
     </>
   );

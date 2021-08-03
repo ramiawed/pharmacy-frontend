@@ -2,8 +2,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
-import ReactLoading from "react-loading";
-
 // components
 import Header from "../header/header.component";
 import CardInfo from "../card-info/card-info.component";
@@ -23,6 +21,9 @@ import {
   resetStatus,
   deleteMe,
   signOut,
+  cancelOperation,
+  resetUpdateStatus,
+  resetUpdateError,
 } from "../../redux/auth/authSlice";
 import { resetUsers } from "../../redux/users/usersSlice";
 import { resetFavorites } from "../../redux/favorites/favoritesSlice";
@@ -41,12 +42,20 @@ import { resetItems } from "../../redux/items/itemsSlices";
 import { resetCompanyItems } from "../../redux/companyItems/companyItemsSlices";
 import { resetCartItems } from "../../redux/cart/cartSlice";
 import InputFileImage from "../input-file-image/input-file-image.component";
+import ActionLoader from "../action-loader/action-loader.component";
 
 function UserProfile() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const { user, token, passwordError, status, changeLogoStatus } =
-    useSelector(selectUserData);
+  const {
+    user,
+    token,
+    passwordError,
+    updateStatus,
+    updateError,
+    status,
+    changeLogoStatus,
+  } = useSelector(selectUserData);
 
   const [passwordForDelete, setPasswordForDelete] = useState("");
   const [passwordForDeleteError, setPasswordForDeleteError] = useState("");
@@ -187,7 +196,7 @@ function UserProfile() {
     });
   };
 
-  const handleOkAction = (field) => {
+  const updateFieldHandler = (field) => {
     // check the internet connection
     if (!checkConnection()) {
       setNoInternetError("no-internet-connection");
@@ -199,14 +208,6 @@ function UserProfile() {
       updateUserInfo({ obj: { [field]: userObj[field] }, token: token })
     );
   };
-
-  // const changeLogo = (file) => {
-  //   const data = new FormData();
-  //   data.append("name", `${user.username}.${file.name.split(".").pop()}`);
-  //   data.append("file", file);
-
-  //   dispatch(changeLogo({ data, token }));
-  // };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -226,7 +227,12 @@ function UserProfile() {
         ].join(" ")}
       >
         {changeLogoStatus === "loading" && (
-          <ReactLoading color="#fff" type="bars" height={100} width={100} />
+          <ActionLoader
+            allowCancel={true}
+            onclick={() => {
+              cancelOperation();
+            }}
+          />
         )}
 
         {changeLogoStatus === "succeeded" || changeLogoStatus === "idle" ? (
@@ -253,7 +259,7 @@ function UserProfile() {
           labelText={t("user-name")}
           value={userObj.name}
           onInputChange={handleInputChange}
-          action={() => handleOkAction("name")}
+          action={() => updateFieldHandler("name")}
         />
         <InfoRow
           editable={true}
@@ -261,7 +267,7 @@ function UserProfile() {
           labelText={t("user-username")}
           value={userObj.username}
           onInputChange={handleInputChange}
-          action={() => handleOkAction("username")}
+          action={() => updateFieldHandler("username")}
         />
         <InfoRow
           editable={false}
@@ -277,7 +283,7 @@ function UserProfile() {
           labelText={t("user-phone")}
           value={userObj.phone}
           onInputChange={handleInputChange}
-          action={() => handleOkAction("phone")}
+          action={() => updateFieldHandler("phone")}
         />
         <InfoRow
           editable={true}
@@ -285,7 +291,7 @@ function UserProfile() {
           labelText={t("user-mobile")}
           value={userObj.mobile}
           onInputChange={handleInputChange}
-          action={() => handleOkAction("mobile")}
+          action={() => updateFieldHandler("mobile")}
         />
         <InfoRow
           editable={true}
@@ -293,7 +299,7 @@ function UserProfile() {
           labelText={t("user-email")}
           value={userObj.email}
           onInputChange={handleInputChange}
-          action={() => handleOkAction("email")}
+          action={() => updateFieldHandler("email")}
         />
       </CardInfo>
 
@@ -304,7 +310,7 @@ function UserProfile() {
           labelText={t("user-city")}
           value={userObj.city}
           onInputChange={handleInputChange}
-          action={() => handleOkAction("city")}
+          action={() => updateFieldHandler("city")}
         />
         <InfoRow
           editable={true}
@@ -312,7 +318,7 @@ function UserProfile() {
           labelText={t("user-district")}
           value={userObj.district}
           onInputChange={handleInputChange}
-          action={() => handleOkAction("district")}
+          action={() => updateFieldHandler("district")}
         />
         <InfoRow
           editable={true}
@@ -320,7 +326,7 @@ function UserProfile() {
           labelText={t("user-street")}
           value={userObj.street}
           onInputChange={handleInputChange}
-          action={() => handleOkAction("street")}
+          action={() => updateFieldHandler("street")}
         />
       </CardInfo>
 
@@ -333,7 +339,7 @@ function UserProfile() {
             labelText={t("user-employee-name")}
             value={userObj.employeeName}
             onInputChange={handleInputChange}
-            action={() => handleOkAction("employeeName")}
+            action={() => updateFieldHandler("employeeName")}
           />
           <InfoRow
             editable={true}
@@ -341,7 +347,7 @@ function UserProfile() {
             labelText={t("user-certificate-name")}
             value={userObj.certificateName}
             onInputChange={handleInputChange}
-            action={() => handleOkAction("certificateName")}
+            action={() => updateFieldHandler("certificateName")}
           />
         </CardInfo>
       ) : (
@@ -356,7 +362,7 @@ function UserProfile() {
             labelText={t("user-job")}
             value={userObj.guestDetails.job}
             onInputChange={handleInputChange}
-            action={() => handleOkAction("guestDetails.job")}
+            action={() => updateFieldHandler("guestDetails.job")}
           />
           <InfoRow
             editable={true}
@@ -364,7 +370,7 @@ function UserProfile() {
             labelText={t("user-company-name")}
             value={userObj.guestDetails.companyName}
             onInputChange={handleInputChange}
-            action={() => handleOkAction("guestDetails.companyName")}
+            action={() => updateFieldHandler("guestDetails.companyName")}
           />
         </CardInfo>
       ) : (
@@ -433,7 +439,7 @@ function UserProfile() {
             </label>
             <ActionButton
               text="update-label"
-              action={() => handleOkAction("allowAdmin")}
+              action={() => updateFieldHandler("allowAdmin")}
               color={Colors.SUCCEEDED_COLOR}
             />
           </div>
@@ -490,6 +496,31 @@ function UserProfile() {
           <p>{t("password-change-succeeded")}</p>
         </Toast>
       )}
+
+      {updateStatus === "succeeded" && (
+        <Toast
+          bgColor={Colors.SUCCEEDED_COLOR}
+          foreColor="#fff"
+          actionAfterTimeout={() => {
+            dispatch(resetUpdateStatus());
+          }}
+        >
+          <p>{t("update-succeeded")}</p>
+        </Toast>
+      )}
+
+      {updateStatus === "failed" && (
+        <Toast
+          bgColor={Colors.FAILED_COLOR}
+          foreColor="#fff"
+          actionAfterTimeout={() => {
+            dispatch(resetUpdateError());
+          }}
+        >
+          <p>{t(updateError)}</p>
+        </Toast>
+      )}
+
       {noInternetError && (
         <Toast
           bgColor={Colors.FAILED_COLOR}

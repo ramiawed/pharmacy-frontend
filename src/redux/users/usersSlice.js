@@ -1,5 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../../api/pharmacy";
+// import axios from "../../api/pharmacy";
+import Axios from "axios";
+
+let CancelToken;
+let source;
 
 const initialState = {
   status: "idle",
@@ -19,6 +23,9 @@ export const getUsers = createAsyncThunk(
   "users/get",
   async ({ queryString, token }, { rejectWithValue }) => {
     try {
+      CancelToken = Axios.CancelToken;
+      source = CancelToken.source();
+
       let buildUrl = `/users?page=${queryString.page}&limit=9`;
 
       if (queryString.name) {
@@ -73,30 +80,48 @@ export const getUsers = createAsyncThunk(
         buildUrl = buildUrl + `&sort=${queryString.sort.replace(/,/g, " ")}`;
       }
 
-      const response = await axios.get(buildUrl, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await Axios.get(
+        `http://localhost:8000/api/v1${buildUrl}`,
+        {
+          timeout: 10000,
+          cancelToken: source.token,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       return response.data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      if (Axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      } else {
+        return rejectWithValue("error");
+      }
     }
   }
 );
+
+export const cancelOperation = () => {
+  source.cancel("operation canceled by user");
+};
 
 // change the approve state for a specific user
 export const userApproveChange = createAsyncThunk(
   "users/approve",
   async ({ status, userId, token }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
-        `/users/approve/${userId}`,
+      CancelToken = Axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await Axios.post(
+        `http://localhost:8000/api/v1/users/approve/${userId}`,
         {
           action: status,
         },
         {
+          timeout: 10000,
+          cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -104,7 +129,11 @@ export const userApproveChange = createAsyncThunk(
       );
       return response.data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      if (Axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      } else {
+        return rejectWithValue("error");
+      }
     }
   }
 );
@@ -114,10 +143,15 @@ export const deleteUser = createAsyncThunk(
   "users/delete",
   async ({ userId, token }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
-        `/users/delete/${userId}`,
+      CancelToken = Axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await Axios.post(
+        `http://localhost:8000/api/v1/users/delete/${userId}`,
         {},
         {
+          timeout: 10000,
+          cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -126,7 +160,11 @@ export const deleteUser = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      if (Axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      } else {
+        return rejectWithValue("error");
+      }
     }
   }
 );
@@ -136,10 +174,15 @@ export const undoDeleteUser = createAsyncThunk(
   "users/undoDelete",
   async ({ userId, token }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(
-        `/users/reactivate/${userId}`,
+      CancelToken = Axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await Axios.post(
+        `http://localhost:8000/api/v1/users/reactivate/${userId}`,
         {},
         {
+          timeout: 10000,
+          cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -148,7 +191,11 @@ export const undoDeleteUser = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      if (Axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      } else {
+        return rejectWithValue("error");
+      }
     }
   }
 );
@@ -160,14 +207,19 @@ export const resetUserPassword = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      const response = await axios.post(
-        `/users/resetUserPassword`,
+      CancelToken = Axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await Axios.post(
+        `http://localhost:8000/api/v1/users/resetUserPassword`,
         {
           userId,
           newPassword,
           newPasswordConfirm,
         },
         {
+          timeout: 10000,
+          cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -176,7 +228,11 @@ export const resetUserPassword = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      if (Axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      } else {
+        return rejectWithValue("error");
+      }
     }
   }
 );
@@ -216,10 +272,9 @@ export const usersSlice = createSlice({
       state.count = action.payload.count;
       state.error = "";
     },
-    [getUsers.rejected]: (state, { error, meta, payload }) => {
+    [getUsers.rejected]: (state, { payload }) => {
       state.status = "failed";
-      state.users = null;
-      state.error = payload.message;
+      state.error = payload === "cancel" ? "cancel-operation-msg" : "error";
     },
     [userApproveChange.pending]: (state, action) => {
       state.activationDeleteStatus = "loading";
@@ -240,9 +295,11 @@ export const usersSlice = createSlice({
         state.activationDeleteStatusMsg = "user-disapproved-success";
       }
     },
-    [userApproveChange.rejected]: (state, { error, meta, payload }) => {
+    [userApproveChange.rejected]: (state, { payload }) => {
+      console.log(payload);
       state.activationDeleteStatus = "failed";
-      state.activationDeleteStatusMsg = "user-approved-failed";
+      state.activationDeleteStatusMsg =
+        payload === "cancel" ? "cancel-operation-msg" : "user-approved-failed";
     },
     [deleteUser.pending]: (state, action) => {
       state.activationDeleteStatus = "loading";
@@ -258,9 +315,10 @@ export const usersSlice = createSlice({
       state.users = newUsers;
       state.activationDeleteStatusMsg = "user-delete-success";
     },
-    [deleteUser.rejected]: (state, { error, meta, payload }) => {
+    [deleteUser.rejected]: (state, { payload }) => {
       state.activationDeleteStatus = "failed";
-      state.activationDeleteStatusMsg = "user-delete-failed";
+      state.activationDeleteStatusMsg =
+        payload === "cancel" ? "cancel-operation-msg" : "user-delete-failed";
     },
     [undoDeleteUser.pending]: (state, action) => {
       state.activationDeleteStatus = "loading";
@@ -276,9 +334,12 @@ export const usersSlice = createSlice({
       state.users = newUsers;
       state.activationDeleteStatusMsg = "user-undo-delete-success";
     },
-    [undoDeleteUser.rejected]: (state, { error, meta, payload }) => {
+    [undoDeleteUser.rejected]: (state, { payload }) => {
       state.activationDeleteStatus = "failed";
-      state.activationDeleteStatusMsg = "user-undo-delete-failed";
+      state.activationDeleteStatusMsg =
+        payload === "cancel"
+          ? "cancel-operation-msg"
+          : "user-undo-delete-failed";
     },
     [resetUserPassword.pending]: (state, action) => {
       state.resetUserPasswordStatus = "loading";
@@ -287,9 +348,12 @@ export const usersSlice = createSlice({
       state.resetUserPasswordStatus = "success";
       state.resetUserPasswordError = "";
     },
-    [resetUserPassword.rejected]: (state, { error, meta, payload }) => {
+    [resetUserPassword.rejected]: (state, { payload }) => {
       state.resetUserPasswordStatus = "failed";
-      state.resetUserPasswordError = "reset-user-password-failed";
+      state.resetUserPasswordError =
+        payload === "cancel"
+          ? "cancel-operation-msg"
+          : "reset-user-password-failed";
     },
   },
 });

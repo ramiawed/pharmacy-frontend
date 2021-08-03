@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router";
 
+// import { cancelOperation } from "../../api/pharmacy";
+
 // constants
 import {
   UserTypeConstants,
@@ -32,10 +34,10 @@ import ReactPaginate from "react-paginate";
 // react-icons
 import { FaSearch } from "react-icons/fa";
 import { BiSortAZ } from "react-icons/bi";
-import { FiFileText } from "react-icons/fi";
 
 // redux stuff
 import {
+  cancelOperation,
   getUsers,
   resetUserChangePasswordStatus,
   selectUsers,
@@ -300,6 +302,10 @@ function AdminUsers() {
   // dispatch a getUsers after component render for the first time
   useEffect(() => {
     handleSearch(1);
+
+    return () => {
+      cancelOperation();
+    };
   }, []);
 
   return user && user.type === UserTypeConstants.ADMIN ? (
@@ -383,6 +389,7 @@ function AdminUsers() {
         />
       )}
 
+      {/* show no content div when no user found */}
       {count === 0 && (
         <>
           <NoContent msg={t("no-partners-found-message")} />
@@ -390,9 +397,20 @@ function AdminUsers() {
       )}
 
       {/* loading components when retrieve the result from DB */}
-      {status === "loading" && <ActionLoader />}
-      {resetUserPasswordStatus === "loading" && <ActionLoader />}
-      {activationDeleteStatus === "loading" && <ActionLoader />}
+      {status === "loading" && (
+        <ActionLoader
+          onclick={() => {
+            cancelOperation();
+          }}
+          allowCancel={true}
+        />
+      )}
+      {resetUserPasswordStatus === "loading" && (
+        <ActionLoader onclick={() => cancelOperation()} allowCancel={true} />
+      )}
+      {activationDeleteStatus === "loading" && (
+        <ActionLoader onclick={() => cancelOperation()} allowCancel={true} />
+      )}
 
       {/* show toast to display successfully or failed message */}
       {activationDeleteStatus === "success" ? (
@@ -408,12 +426,13 @@ function AdminUsers() {
       ) : activationDeleteStatus === "failed" ? (
         <Toast
           bgColor={Colors.FAILED_COLOR}
-          foreColor="#000"
+          foreColor="#fff"
           toastText={t(activationDeleteStatusMsg)}
           actionAfterTimeout={() => dispatch(resetActivationDeleteStatus())}
         />
       ) : null}
 
+      {/* show toast to display successfully or failed update password */}
       {resetUserPasswordStatus === "success" ? (
         <Toast
           bgColor={Colors.SUCCEEDED_COLOR}
@@ -432,6 +451,7 @@ function AdminUsers() {
         />
       ) : null}
 
+      {/* search modal */}
       {showModal && (
         <Modal
           header="search-engines"
@@ -674,6 +694,7 @@ function AdminUsers() {
         </Modal>
       )}
 
+      {/* order modal */}
       {showOrderModal && (
         <Modal
           header="order-results"

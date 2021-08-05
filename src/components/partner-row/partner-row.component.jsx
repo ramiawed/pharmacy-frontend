@@ -2,69 +2,99 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-// components
-import Toast from "../toast/toast.component";
-
 // react icons
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
+import { VscLoading } from "react-icons/vsc";
 
 // redux-stuff
 import { useDispatch, useSelector } from "react-redux";
+import { unwrapResult } from "@reduxjs/toolkit";
 import {
   addFavorite,
   selectFavoritesPartners,
   removeFavorite,
 } from "../../redux/favorites/favoritesSlice";
 import { selectToken, selectUser } from "../../redux/auth/authSlice";
-
-// rowStyles
-import generalStyles from "../../style.module.scss";
-import rowStyles from "../row.module.scss";
-
-// constants and utils
-import { checkConnection } from "../../utils/checkInternet";
-import { Colors, UserTypeConstants } from "../../utils/constants.js";
 import {
   statisticsCompanySelected,
   statisticsUserFavorites,
 } from "../../redux/statistics/statisticsSlice";
-import { unwrapResult } from "@reduxjs/toolkit";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
 
-function PartnerRow({ user, type }) {
+// styles
+import generalStyles from "../../style.module.scss";
+import rowStyles from "../row.module.scss";
+
+// constants and utils
+import { UserTypeConstants } from "../../utils/constants.js";
+
+function PartnerRow({ user }) {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
+  const isOnline = useSelector(selectOnlineStatus);
   const favorites = useSelector(selectFavoritesPartners);
   const token = useSelector(selectToken);
   const loggedUser = useSelector(selectUser);
-
-  const [connectionError, setConnectionError] = useState("");
+  const [changeFavoriteLoading, setChangeFavoriteLoading] = useState(false);
 
   // method to handle add company to user's favorite
   const addCompanyToFavorite = () => {
     // check the internet connection
-    if (!checkConnection()) {
-      setConnectionError("no-internet-connection");
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
       return;
     }
 
+    setChangeFavoriteLoading(true);
+
     dispatch(addFavorite({ obj: { favoriteId: user._id }, token }))
       .then(unwrapResult)
-      .then((result) => {
+      .then(() => {
+        setChangeFavoriteLoading(false);
         dispatch(statisticsUserFavorites({ obj: { userId: user._id }, token }));
+      })
+      .catch(() => {
+        setChangeFavoriteLoading(false);
       });
   };
 
   // method to handle remove company from user's favorite
   const removeCompanyFromFavorite = () => {
     // check the internet connection
-    if (!checkConnection()) {
-      setConnectionError("no-internet-connection");
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
       return;
     }
 
-    dispatch(removeFavorite({ obj: { favoriteId: user._id }, token }));
+    setChangeFavoriteLoading(true);
+
+    dispatch(removeFavorite({ obj: { favoriteId: user._id }, token }))
+      .then(unwrapResult)
+      .then(() => {
+        setChangeFavoriteLoading(false);
+      })
+      .catch(() => setChangeFavoriteLoading(false));
+  };
+
+  const dispatchCompanySelectedHandler = () => {
+    // if the user type is pharmacy or normal, change the selectedCount
+    // and selectedDates for this company
+    if (
+      loggedUser.type === UserTypeConstants.PHARMACY ||
+      loggedUser.type === UserTypeConstants.NORMAL
+    ) {
+      dispatch(
+        statisticsCompanySelected({
+          obj: { companyId: user._id },
+          token,
+        })
+      );
+    }
   };
 
   return (
@@ -72,21 +102,7 @@ function PartnerRow({ user, type }) {
       <div className={rowStyles.container}>
         {user.type === UserTypeConstants.COMPANY && (
           <Link
-            onClick={() => {
-              // if the user type is pharmacy or normal, change the selectedCount
-              // and selectedDates for this company
-              if (
-                loggedUser.type === UserTypeConstants.PHARMACY ||
-                loggedUser.type === UserTypeConstants.NORMAL
-              ) {
-                dispatch(
-                  statisticsCompanySelected({
-                    obj: { companyId: user._id },
-                    token,
-                  })
-                );
-              }
-            }}
+            onClick={dispatchCompanySelectedHandler}
             to={`/companies/${user._id}`}
             className={[
               rowStyles.hover_underline,
@@ -108,43 +124,45 @@ function PartnerRow({ user, type }) {
           </label>
         )}
 
-        <div className={rowStyles.padding_end}>
-          {favorites.map((favorite) => favorite._id).includes(user._id) ? (
+        {changeFavoriteLoading ? (
+          <div className={rowStyles.padding_end}>
             <div
               className={[generalStyles.icon, generalStyles.fc_yellow].join(
                 " "
               )}
             >
-              <AiFillStar size={20} onClick={removeCompanyFromFavorite} />
-              <div className={generalStyles.tooltip}>
-                {t("remove-from-favorite-tooltip")}
-              </div>
+              <VscLoading className={generalStyles.loading} size={20} />
             </div>
-          ) : (
-            <div
-              className={[generalStyles.icon, generalStyles.fc_yellow].join(
-                " "
-              )}
-            >
-              <AiOutlineStar size={20} onClick={addCompanyToFavorite} />
-              <div className={generalStyles.tooltip}>
-                {t("add-to-favorite-tooltip")}
+          </div>
+        ) : (
+          <div className={rowStyles.padding_end}>
+            {favorites &&
+            favorites.map((favorite) => favorite._id).includes(user._id) ? (
+              <div
+                className={[generalStyles.icon, generalStyles.fc_yellow].join(
+                  " "
+                )}
+              >
+                <AiFillStar size={20} onClick={removeCompanyFromFavorite} />
+                <div className={generalStyles.tooltip}>
+                  {t("remove-from-favorite-tooltip")}
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            ) : (
+              <div
+                className={[generalStyles.icon, generalStyles.fc_yellow].join(
+                  " "
+                )}
+              >
+                <AiOutlineStar size={20} onClick={addCompanyToFavorite} />
+                <div className={generalStyles.tooltip}>
+                  {t("add-to-favorite-tooltip")}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
-      {connectionError && (
-        <Toast
-          bgColor={Colors.FAILED_COLOR}
-          foreColor="#fff"
-          actionAfterTimeout={() => {
-            setConnectionError("");
-          }}
-        >
-          <p>{t(connectionError)}</p>
-        </Toast>
-      )}
     </>
   );
 }

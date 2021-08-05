@@ -21,7 +21,7 @@ import "./action-loader.style.scss";
 import generalStyles from "../../style.module.scss";
 import { useTranslation } from "react-i18next";
 
-function ActionLoader({ bgColor, foreColor, text, onclick, allowCancel }) {
+function ActionLoader({ onclick, allowCancel }) {
   const { t } = useTranslation();
   const [showButton, setShowButton] = useState(false);
 
@@ -39,9 +39,11 @@ function ActionLoader({ bgColor, foreColor, text, onclick, allowCancel }) {
     <>
       <div className="full-size">
         <ReactLoading color="#fff" type="bars" height={75} width={75} />
-        {allowCancel && (
+        {allowCancel && showButton && (
           <button
-            onClick={onclick}
+            onClick={() => {
+              if (onclick) onclick();
+            }}
             className={[
               generalStyles.button,
               generalStyles.bg_secondary,

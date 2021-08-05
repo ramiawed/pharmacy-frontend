@@ -20,7 +20,9 @@ import PartnerRow from "../../components/partner-row/partner-row.component";
 import PartnerCard from "../../components/partner-card/partner-card.component";
 import SearchContainer from "../../components/search-container/search-container.component";
 import ActionIcon from "../../components/action-icon/action-icon.component";
-import ReactLoading from "react-loading";
+import Button from "../../components/button/button.component";
+import Toast from "../../components/toast/toast.component";
+import ActionLoader from "../../components/action-loader/action-loader.component";
 
 // react-icons
 import { FaListUl } from "react-icons/fa";
@@ -29,6 +31,7 @@ import { AiFillAppstore, AiFillStar } from "react-icons/ai";
 import { SiAtAndT } from "react-icons/si";
 
 // redux stuff
+import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
@@ -38,17 +41,21 @@ import {
   changeSearchName,
   getCompanies,
   resetCompanies,
-  resetPage,
   resetSearchCity,
   resetSearchName,
+  resetStatus,
   selectCompanies,
   selectCompaniesPageState,
 } from "../../redux/company/companySlice";
 import { selectFavoritesPartners } from "../../redux/favorites/favoritesSlice";
-import { UserTypeConstants } from "../../utils/constants";
+
+// constants and uitls
+import { Colors, UserTypeConstants } from "../../utils/constants";
 
 // styles
 import generalStyles from "../../style.module.scss";
+import NoContent from "../../components/no-content/no-content.component";
+
 // import styles from "./companies-page.module.scss";
 
 function CompaniesPage() {
@@ -58,30 +65,17 @@ function CompaniesPage() {
   // select from redux store
   // select logged user and it's token from authSlice
   const { token, user } = useSelector(selectUserData);
+
   // select companies from companySlice
-  const { companies, count, status } = useSelector(selectCompanies);
+  const { companies, count, status, error } = useSelector(selectCompanies);
   const { searchName, searchCity, displayType, page } = useSelector(
     selectCompaniesPageState
   );
+
   // select favorites from favoriteSlice
   const favorites = useSelector(selectFavoritesPartners);
 
-  // own state
-  // expanded state for expandable container
-  // const [searchName, setSearchName] = useState(companiesPageState.searchName);
-  // const [searchCity, setSearchCity] = useState(companiesPageState.searchCity);
-
-  // const [displayType, setDisplayType] = useState(
-  //   companiesPageState.displayType
-  // );
-
   const [showFavorites, setShowFavorites] = useState(false);
-
-  // if companies doesn't contains any info set the page to 1
-  // if companies have an info set the page to the next page
-  // const [page, setPage] = useState(
-  //   companies.length === 0 ? 1 : Math.ceil(companies.length / 9) + 1
-  // );
 
   // search handler
   // /users?type=company&page=page&limit=9
@@ -93,7 +87,7 @@ function CompaniesPage() {
   // if any of the search state (searchName, searchCity) is not empty, add it to query string
   // get the companies from DB
   // depends on the reset field, add one to page, or reset to 1
-  const handleSearch = (page, reset) => {
+  const handleSearch = (page) => {
     // build the query string
     const queryString = {};
 
@@ -111,20 +105,17 @@ function CompaniesPage() {
       queryString.city = searchCity;
     }
 
-    dispatch(getCompanies({ queryString, token }));
-    if (reset) {
-      resetPage();
-    } else {
-      changePage();
-    }
-    // setPage(reset ? 1 : page + 1);
-    // setPage(page + 1);
+    dispatch(getCompanies({ queryString, token }))
+      .then(unwrapResult)
+      .then(() => {
+        dispatch(changePage(page + 1));
+      });
   };
 
   // get the next 9 companies from DB
   // and add one to page
   const handleMoreResult = () => {
-    handleSearch(page, false);
+    handleSearch(page);
   };
 
   // when press enter in search input field
@@ -133,7 +124,7 @@ function CompaniesPage() {
   // 3- reset the page to 1
   const handleEnterPress = () => {
     dispatch(resetCompanies());
-    handleSearch(1, true);
+    handleSearch(1);
   };
 
   useEffect(() => {
@@ -206,6 +197,7 @@ function CompaniesPage() {
                 ].join(" ")}
               >
                 {showFavorites &&
+                  favorites &&
                   favorites
                     .filter(
                       (favorite) => favorite.type === UserTypeConstants.COMPANY
@@ -266,30 +258,16 @@ function CompaniesPage() {
       )}
 
       {/* show loading animation when data is loading */}
-      {status === "loading" && (
-        <ReactLoading type="bubbles" height={50} width={50} />
-      )}
+      {status === "loading" && <ActionLoader allowCancel={false} />}
 
       {companies.length === 0 ? (
-        <div className={generalStyles.no_content_div}>
-          <SiAtAndT className={generalStyles.no_content_icon} />
-          <p className={generalStyles.fc_white}>{t("no-companies")}</p>
-        </div>
+        <NoContent msg={t("no-companies")} />
       ) : companies.length < count ? (
-        <button
-          onClick={handleMoreResult}
-          className={[
-            generalStyles.button,
-            generalStyles.bg_secondary,
-            generalStyles.fc_white,
-            generalStyles.margin_h_auto,
-            generalStyles.block,
-            generalStyles.padding_v_10,
-            generalStyles.padding_h_12,
-          ].join(" ")}
-        >
-          {t("more")}
-        </button>
+        <Button
+          text={t("more")}
+          action={handleMoreResult}
+          bgColor={Colors.SECONDARY_COLOR}
+        />
       ) : (
         <p
           className={[generalStyles.center, generalStyles.fc_secondary].join(
@@ -298,6 +276,18 @@ function CompaniesPage() {
         >
           {t("no-more")}
         </p>
+      )}
+
+      {error && (
+        <Toast
+          bgColor={Colors.FAILED_COLOR}
+          foreColor="#fff"
+          actionAfterTimeout={() => {
+            dispatch(resetStatus());
+          }}
+        >
+          {t(error)}
+        </Toast>
       )}
     </>
   ) : (

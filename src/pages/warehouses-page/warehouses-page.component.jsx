@@ -10,6 +10,10 @@ import PartnerRow from "../../components/partner-row/partner-row.component";
 import PartnerCard from "../../components/partner-card/partner-card.component";
 import SearchContainer from "../../components/search-container/search-container.component";
 import ReactLoading from "react-loading";
+import ActionIcon from "../../components/action-icon/action-icon.component";
+import Button from "../../components/button/button.component";
+import Toast from "../../components/toast/toast.component";
+import ActionLoader from "../../components/action-loader/action-loader.component";
 
 // react-icons
 import { FaListUl } from "react-icons/fa";
@@ -18,44 +22,50 @@ import { AiFillAppstore, AiFillStar } from "react-icons/ai";
 import { SiAtAndT } from "react-icons/si";
 
 // redux stuff
+import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
   getWarehouses,
   resetWarehouse,
   selectWarehouses,
+  changeDisplayType,
+  changePage,
+  changeSearchCity,
+  changeSearchName,
+  resetSearchCity,
+  resetSearchName,
+  selectWarehousesPageState,
+  resetStatus,
 } from "../../redux/warehouse/warehousesSlice";
 import { selectFavoritesPartners } from "../../redux/favorites/favoritesSlice";
 
 // constants and utils
-import { UserTypeConstants } from "../../utils/constants.js";
+import { Colors, UserTypeConstants } from "../../utils/constants.js";
 
 // styles
 import generalStyles from "../../style.module.scss";
+import NoContent from "../../components/no-content/no-content.component";
 
 function WarehousePage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const { token, user } = useSelector(selectUserData);
-  const { warehouses, count, status } = useSelector(selectWarehouses);
+  const { warehouses, count, status, error } = useSelector(selectWarehouses);
+  const { searchName, searchCity, displayType, page } = useSelector(
+    selectWarehousesPageState
+  );
+
+  // select favorites from favoriteSlice
   const favorites = useSelector(selectFavoritesPartners);
 
   // own state
   // expanded state for expandable container
-  const [searchName, setSearchName] = useState("");
-  const [searchCity, setSearchCity] = useState("");
-  const [displayType, setDisplayType] = useState("list");
   const [showFavorites, setShowFavorites] = useState(false);
 
-  // if companies doesn't contains any info set the page to 1
-  // if companies have an info set the page to the next page
-  const [page, setPage] = useState(
-    warehouses.length === 0 ? 1 : Math.ceil(warehouses.length / 9) + 1
-  );
-
   // handle search
-  const handleSearch = (page, reset) => {
+  const handleSearch = (page) => {
     // build the query string
     const queryString = {};
 
@@ -73,18 +83,20 @@ function WarehousePage() {
       queryString.city = searchCity;
     }
 
-    dispatch(getWarehouses({ queryString, token }));
-    setPage(reset ? 1 : page + 1);
-    setPage(page + 1);
+    dispatch(getWarehouses({ queryString, token }))
+      .then(unwrapResult)
+      .then(() => {
+        dispatch(changePage(page + 1));
+      });
   };
 
   const handleMoreResult = () => {
-    handleSearch(page, false);
+    handleSearch(page);
   };
 
   const handleEnterPress = () => {
     dispatch(resetWarehouse());
-    handleSearch(1, true);
+    handleSearch(1);
   };
 
   useEffect(() => {
@@ -101,31 +113,52 @@ function WarehousePage() {
         <h2>
           {t("warehouses")} <span>{count}</span>
         </h2>
+
+        <SearchContainer searchAction={handleEnterPress}>
+          <SearchInput
+            label="user-name"
+            id="search-name"
+            type="text"
+            value={searchName}
+            onchange={(e) => {
+              dispatch(changeSearchName(e.target.value));
+            }}
+            placeholder="search"
+            onEnterPress={handleEnterPress}
+            resetField={() => dispatch(resetSearchName())}
+          />
+
+          <SearchInput
+            label="user-city"
+            id="search-city"
+            type="text"
+            value={searchCity}
+            onchange={(e) => {
+              dispatch(changeSearchCity(e.target.value));
+            }}
+            placeholder="search"
+            onEnterPress={handleEnterPress}
+            resetField={() => dispatch(resetSearchCity())}
+          />
+        </SearchContainer>
+
         <div className={generalStyles.actions}>
           {/* refresh */}
-          <div
-            className={[generalStyles.icon, generalStyles.fc_secondary].join(
-              " "
-            )}
-            onClick={handleEnterPress}
-          >
-            <RiRefreshLine />
-            <div className={generalStyles.tooltip}>{t("refresh-tooltip")}</div>
-          </div>
+          <ActionIcon
+            selected={false}
+            tooltip={t("refresh-tooltip")}
+            onclick={handleEnterPress}
+            icon={() => <RiRefreshLine />}
+          />
 
           {/* show favorites */}
           <div className={generalStyles.relative}>
-            <div
-              className={[generalStyles.icon, generalStyles.fc_secondary].join(
-                " "
-              )}
-              onClick={() => setShowFavorites(!showFavorites)}
-            >
-              <AiFillStar />
-              <div className={generalStyles.tooltip}>
-                {t("show-favorite-tooltip")}
-              </div>
-            </div>
+            <ActionIcon
+              selected={showFavorites}
+              tooltip={t("show-favorite-tooltip")}
+              onclick={() => setShowFavorites(!showFavorites)}
+              icon={() => <AiFillStar />}
+            />
 
             {showFavorites && (
               <div
@@ -152,70 +185,26 @@ function WarehousePage() {
           </div>
 
           {/* display card option */}
-          <div
-            className={[
-              generalStyles.icon,
-              displayType === "card"
-                ? generalStyles.fc_green
-                : generalStyles.fc_secondary,
-            ].join(" ")}
-            onClick={() => {
-              setDisplayType("card");
+          <ActionIcon
+            selected={displayType === "card"}
+            tooltip={t("show-item-as-card-tooltip")}
+            onclick={() => {
+              dispatch(changeDisplayType("card"));
               setShowFavorites(false);
             }}
-          >
-            <AiFillAppstore />
-            <div className={generalStyles.tooltip}>
-              {t("show-item-as-card-tooltip")}
-            </div>
-          </div>
+            icon={() => <AiFillAppstore />}
+          />
 
           {/* display list option */}
-          <div
-            className={[
-              generalStyles.icon,
-              displayType === "list"
-                ? generalStyles.fc_green
-                : generalStyles.fc_secondary,
-            ].join(" ")}
-            onClick={() => {
-              setDisplayType("list");
+          <ActionIcon
+            selected={displayType === "list"}
+            tooltip={t("show-item-as-row-tooltip")}
+            onclick={() => {
+              dispatch(changeDisplayType("list"));
               setShowFavorites(false);
             }}
-          >
-            <FaListUl />
-            <div className={generalStyles.tooltip}>
-              {t("show-item-as-row-tooltip")}
-            </div>
-          </div>
-
-          <SearchContainer searchAction={handleEnterPress}>
-            <SearchInput
-              label="user-name"
-              id="search-name"
-              type="text"
-              value={searchName}
-              onchange={(e) => {
-                setSearchName(e.target.value);
-              }}
-              placeholder="search"
-              onEnterPress={handleEnterPress}
-              resetField={() => setSearchName("")}
-            />
-
-            <SearchInput
-              label="user-city"
-              id="search-city"
-              type="text"
-              value={searchCity}
-              onchange={(e) => {
-                setSearchCity(e.target.value);
-              }}
-              placeholder="search"
-              onEnterPress={handleEnterPress}
-              resetField={() => setSearchCity("")}
-            />
-          </SearchContainer>
+            icon={() => <FaListUl />}
+          />
         </div>
       </Header>
 
@@ -240,30 +229,18 @@ function WarehousePage() {
       )}
 
       {/* show loading indicator when data loading from db */}
-      {status === "loading" && (
-        <ReactLoading type="bubbles" height={50} width={50} />
-      )}
+      {status === "loading" && <ActionLoader allowCancel={false} />}
 
       {warehouses.length === 0 ? (
-        <div className={generalStyles.no_content_div}>
-          <SiAtAndT className={generalStyles.no_content_icon} />
-          <p className={generalStyles.fc_white}>{t("no-warehouses")}</p>
-        </div>
+        <>
+          <NoContent msg={t("no-warehouses")} />
+        </>
       ) : warehouses.length < count ? (
-        <button
-          onClick={handleMoreResult}
-          className={[
-            generalStyles.button,
-            generalStyles.bg_secondary,
-            generalStyles.fc_white,
-            generalStyles.margin_h_auto,
-            generalStyles.block,
-            generalStyles.padding_v_10,
-            generalStyles.padding_h_12,
-          ].join(" ")}
-        >
-          {t("more")}
-        </button>
+        <Button
+          text={t("more")}
+          action={handleMoreResult}
+          bgColor={Colors.SECONDARY_COLOR}
+        />
       ) : (
         <p
           className={[generalStyles.center, generalStyles.fc_secondary].join(
@@ -272,6 +249,18 @@ function WarehousePage() {
         >
           {t("no-more")}
         </p>
+      )}
+
+      {error && (
+        <Toast
+          bgColor={Colors.FAILED_COLOR}
+          foreColor="#fff"
+          actionAfterTimeout={() => {
+            dispatch(resetStatus());
+          }}
+        >
+          {t(error)}
+        </Toast>
       )}
     </>
   ) : (

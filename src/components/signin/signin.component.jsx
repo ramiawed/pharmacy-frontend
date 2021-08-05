@@ -10,28 +10,29 @@ import { RiLockPasswordLine } from "react-icons/ri";
 
 // component
 import Input from "../input/input.component";
+import ActionLoader from "../action-loader/action-loader.component";
 
 // loading
-import ReactLoading from "react-loading";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
+import { unwrapResult } from "@reduxjs/toolkit";
 import {
   authSign,
   selectUserData,
   resetError,
-  cancelOperation,
 } from "../../redux/auth/authSlice";
 import { statisticsSignin } from "../../redux/statistics/statisticsSlice";
 // styles
 import styles from "./signin.module.scss";
 
-//
-import { checkConnection } from "../../utils/checkInternet";
+// constants
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
+import Button from "../button/button.component";
 import { Colors } from "../../utils/constants";
-import Toast from "../toast/toast.component";
-import { unwrapResult } from "@reduxjs/toolkit";
-import ActionLoader from "../action-loader/action-loader.component";
 
 // constants use for motion
 const containerVariant = {
@@ -50,13 +51,14 @@ const containerVariant = {
 
 // Sign in component
 function SignIn() {
-  const history = useHistory();
   const { t } = useTranslation();
+
+  const history = useHistory();
+  const isOnline = useSelector(selectOnlineStatus);
   const dispatch = useDispatch();
 
   // state from user state redux
   const { status, user, error } = useSelector(selectUserData);
-  const [connectionError, setConnectionError] = useState("");
 
   // state holds the username and password
   // used in the input fields
@@ -72,7 +74,7 @@ function SignIn() {
   });
 
   // handle username input and password input
-  const handleInputChange = (e) => {
+  const inputChangeHandler = (e) => {
     setUserInfo({
       ...userInfo,
       [e.target.id]: e.target.value,
@@ -88,7 +90,7 @@ function SignIn() {
     }
   };
 
-  const handleResetField = (field) => {
+  const resetFieldHandler = (field) => {
     setUserInfo({
       ...userInfo,
       [field]: "",
@@ -100,7 +102,8 @@ function SignIn() {
     });
   };
 
-  const handleSignUpClick = () => {
+  // go to the sign up page
+  const signupHandler = () => {
     // reset the state
     setUserInfo({
       username: "",
@@ -120,7 +123,7 @@ function SignIn() {
 
   // check if the username and password fields are not empty
   // if true, dispatch signin from userSlice
-  const handleSignIn = () => {
+  const signinHandler = () => {
     // check if the username and password is not empty
     if (userInfo.username.length === 0 && userInfo.password.length === 0) {
       setPreSignError({
@@ -150,13 +153,13 @@ function SignIn() {
     }
 
     // check the internet connection
-    if (!checkConnection()) {
-      setConnectionError("no-internet-connection");
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
       return;
     }
 
     // username and password is not empty
-    // dispatch sign in
+    // dispatch sign
     dispatch(authSign(userInfo))
       .then(unwrapResult)
       .then((result) => dispatch(statisticsSignin({ token: result.token })))
@@ -164,8 +167,8 @@ function SignIn() {
   };
 
   // handle enter press on input
-  const handlePressEnter = () => {
-    handleSignIn();
+  const pressEnterHandler = () => {
+    signinHandler();
   };
 
   return user ? (
@@ -180,21 +183,23 @@ function SignIn() {
       <div className={styles.info}>
         <div className={styles.signup}>
           <p>{t("signup-sentence")}</p>
-          <p className={styles.button} onClick={handleSignUpClick}>
+          <p className={styles.button} onClick={signupHandler}>
             {t("signup")}
           </p>
         </div>
+
         <h3>{t("signin")}</h3>
+
         <Input
           icon={<HiUser className={styles.icons} />}
           type="text"
           placeholder="user-username"
           id="username"
           value={userInfo.username}
-          onchange={handleInputChange}
+          onchange={inputChangeHandler}
           error={preSignError.username?.length > 0 || error}
-          onEnterPress={handlePressEnter}
-          resetField={handleResetField}
+          onEnterPress={pressEnterHandler}
+          resetField={resetFieldHandler}
         />
 
         <Input
@@ -203,10 +208,10 @@ function SignIn() {
           placeholder="user-password"
           id="password"
           value={userInfo.password}
-          onchange={handleInputChange}
+          onchange={inputChangeHandler}
           error={preSignError.password?.length > 0 || error}
-          onEnterPress={handlePressEnter}
-          resetField={handleResetField}
+          onEnterPress={pressEnterHandler}
+          resetField={resetFieldHandler}
         />
 
         {/* Error sections */}
@@ -224,32 +229,15 @@ function SignIn() {
           })}
           {error && <p className={styles.error}>{t(error)}</p>}
         </>
-        <motion.button
-          whileHover={{
-            scale: 1.1,
-            textShadow: "0px 0px 8px rgb(255, 255, 255)",
-            boxShadow: "0px 0px 8px rgb(255, 255, 255)",
-          }}
-          onClick={handleSignIn}
-        >
-          {t("signin")}
-        </motion.button>
-      </div>
-      {connectionError && (
-        <Toast
-          bgColor={Colors.FAILED_COLOR}
-          foreColor="#fff"
-          actionAfterTimeout={() => {
-            setConnectionError("");
-          }}
-        >
-          <p>{t(connectionError)}</p>
-        </Toast>
-      )}
 
-      {status === "loading" && (
-        <ActionLoader allowCancel={true} onclick={() => cancelOperation()} />
-      )}
+        <Button
+          text={t("signin")}
+          action={signinHandler}
+          bgColor={Colors.FAILED_COLOR}
+        />
+      </div>
+
+      {status === "loading" && <ActionLoader allowCancel={true} />}
     </motion.div>
   );
 }

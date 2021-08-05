@@ -52,6 +52,11 @@ export const authSign = createAsyncThunk(
       if (axios.isCancel(err)) {
         return rejectWithValue("cancel");
       }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
       return rejectWithValue(err.response.data);
     }
   }
@@ -110,12 +115,22 @@ export const updateUserInfo = createAsyncThunk(
 
       return response.data;
     } catch (err) {
+      // timeout finished
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }
+
+      // the operation had canceled
       if (axios.isCancel(err)) {
         return rejectWithValue("cancel");
       }
+
+      // no response from server
+      // or no url for this request
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
       return rejectWithValue(err.response.data);
     }
   }
@@ -147,6 +162,9 @@ export const changeMyPassword = createAsyncThunk(
       }
       if (axios.isCancel(err)) {
         return rejectWithValue("cancel");
+      }
+      if (!err.response) {
+        return rejectWithValue("network failed");
       }
       return rejectWithValue(err.response.data);
     }
@@ -180,6 +198,9 @@ export const deleteMe = createAsyncThunk(
       if (axios.isCancel(err)) {
         return rejectWithValue("cancel");
       }
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
       return rejectWithValue(err.response.data);
     }
   }
@@ -212,6 +233,9 @@ export const changeLogo = createAsyncThunk(
       }
       if (axios.isCancel(err)) {
         return rejectWithValue("cancel");
+      }
+      if (!err.response) {
+        return rejectWithValue("network failed");
       }
       return rejectWithValue(err.response.data);
     }
@@ -292,9 +316,11 @@ export const authSlice = createSlice({
       state.user = null;
 
       if (payload === "timeout") {
-        state.err = "timeout-msg";
+        state.error = "timeout-msg";
       } else if (payload === "cancel") {
         state.error = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.error = "network failed";
       } else state.error = payload.message;
     },
 
@@ -312,6 +338,8 @@ export const authSlice = createSlice({
         state.updateError = "timeout";
       } else if (payload === "cancel") {
         state.updateError = "cancel";
+      } else if (payload === "network failed") {
+        state.updateError = "network failed";
       } else state.updateError = payload.message;
     },
 
@@ -330,6 +358,8 @@ export const authSlice = createSlice({
         state.passwordError = payload;
       } else if (payload === "cancel") {
         state.passwordError = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.passwordError = "network failed";
       } else state.passwordError = payload.message;
     },
 
@@ -348,6 +378,8 @@ export const authSlice = createSlice({
         state.deleteError = "timeout-msg";
       } else if (payload === "cancel") {
         state.deleteError = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.deleteError = "network failed";
       } else state.deleteError = payload.message;
     },
 
@@ -365,6 +397,8 @@ export const authSlice = createSlice({
         state.changeLogoError = "timeout-msg";
       } else if (payload === "cancel") {
         state.changeLogoError = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.changeLogoError = "network failed";
       } else state.changeLogoError = payload.message;
     },
   },

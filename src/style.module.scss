@@ -151,7 +151,7 @@
 
   cursor: pointer;
 
-  transition: all 0.3s;
+  // transition: all 0.3s;
 }
 
 .button:hover {
@@ -294,4 +294,21 @@
 
 .flex_column {
   flex-direction: column;
+}
+
+// loading icon
+.loading {
+  animation-name: loading-move;
+  animation-duration: 1s;
+  animation-iteration-count: infinite;
+}
+
+@keyframes loading-move {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }

@@ -3,49 +3,43 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 // components
-import Header from "../header/header.component";
-import CardInfo from "../card-info/card-info.component";
-import InfoRow from "../info-row/info-row.component";
-import PasswordRow from "../password-row/password-row.component";
-import ActionButton from "../action-button/action-button.component";
-import Toast from "../toast/toast.component";
+import Header from "../../components/header/header.component";
+import CardInfo from "../../components/card-info/card-info.component";
+import InfoRow from "../../components/info-row/info-row.component";
+import ActionButton from "../../components/action-button/action-button.component";
+import Toast from "../../components/toast/toast.component";
+import InputFileImage from "../../components/input-file-image/input-file-image.component";
+import ActionLoader from "../../components/action-loader/action-loader.component";
+import ChangePassword from "../../components/change-password/change-password.component";
+import DeleteMe from "../../components/delete-me/delete-me.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-import { unwrapResult } from "@reduxjs/toolkit";
 import {
   selectUserData,
   updateUserInfo,
-  changeMyPassword,
   resetPasswordError,
-  resetStatus,
-  deleteMe,
-  signOut,
   cancelOperation,
   resetUpdateStatus,
   resetUpdateError,
+  resetChangeLogoError,
 } from "../../redux/auth/authSlice";
-import { resetUsers } from "../../redux/users/usersSlice";
-import { resetFavorites } from "../../redux/favorites/favoritesSlice";
-import { resetCompanies } from "../../redux/company/companySlice";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
 
 // styles
-import styles from "./user-profile.module.scss";
-import rowStyles from "../row.module.scss";
+import styles from "./user-profile-page.module.scss";
+import rowStyles from "../../components/row.module.scss";
 import generalStyles from "../../style.module.scss";
 
 // constants, and utile
 import { UserTypeConstants, Colors } from "../../utils/constants";
-import { checkConnection } from "../../utils/checkInternet";
-import { resetWarehouse } from "../../redux/warehouse/warehousesSlice";
-import { resetItems } from "../../redux/items/itemsSlices";
-import { resetCompanyItems } from "../../redux/companyItems/companyItemsSlices";
-import { resetCartItems } from "../../redux/cart/cartSlice";
-import InputFileImage from "../input-file-image/input-file-image.component";
-import ActionLoader from "../action-loader/action-loader.component";
 
-function UserProfile() {
+function UserProfilePage() {
   const { t } = useTranslation();
+  const isOnline = useSelector(selectOnlineStatus);
   const dispatch = useDispatch();
   const {
     user,
@@ -53,139 +47,9 @@ function UserProfile() {
     passwordError,
     updateStatus,
     updateError,
-    status,
     changeLogoStatus,
+    changeLogoError,
   } = useSelector(selectUserData);
-
-  const [passwordForDelete, setPasswordForDelete] = useState("");
-  const [passwordForDeleteError, setPasswordForDeleteError] = useState("");
-  const [noInternetError, setNoInternetError] = useState("");
-  // const [file, setFile] = useState(null);
-
-  // method to handle change in password for delete account
-  const handlePasswordForDeleteChange = (field, val) => {
-    setPasswordForDelete(val);
-    setPasswordForDeleteError("");
-  };
-
-  const [passwordObj, setPasswordObj] = useState({
-    oldPassword: "",
-    newPassword: "",
-    newPasswordConfirm: "",
-  });
-
-  const [passwordObjError, setPasswordObjError] = useState({
-    oldPassword: "",
-    newPassword: "",
-    newPasswordConfirm: "",
-  });
-
-  // method to handle the change in the input in password and confirm password
-  // for change password
-  const handlePasswordFieldsChange = (field, val) => {
-    setPasswordObj({
-      ...passwordObj,
-      [field]: val,
-    });
-    setPasswordObjError({
-      ...passwordObjError,
-      [field]: "",
-    });
-  };
-
-  const handleChangePassword = () => {
-    let errorObj = {};
-    if (passwordObj.oldPassword.length === 0) {
-      errorObj = {
-        ...errorObj,
-        oldPassword: "enter-old-password",
-      };
-    }
-
-    if (passwordObj.newPassword.length < 5) {
-      errorObj = {
-        ...errorObj,
-        newPassword: "password-length",
-      };
-    }
-
-    if (passwordObj.newPassword.length === 0) {
-      errorObj = {
-        ...errorObj,
-        newPassword: "enter-password",
-      };
-    }
-
-    if (passwordObj.newPassword !== passwordObj.newPasswordConfirm) {
-      errorObj = {
-        ...errorObj,
-        newPasswordConfirm: "unequal-passwords",
-      };
-    }
-
-    if (passwordObj.newPasswordConfirm.length < 5) {
-      errorObj = {
-        ...errorObj,
-        newPasswordConfirm: "confirm-password-length",
-      };
-    }
-
-    if (passwordObj.newPasswordConfirm.length === 0) {
-      errorObj = {
-        ...errorObj,
-        newPasswordConfirm: "enter-password-confirm",
-      };
-    }
-
-    if (Object.entries(errorObj).length !== 0) {
-      setPasswordObjError({
-        ...passwordObjError,
-        ...errorObj,
-      });
-      return;
-    }
-
-    // check the internet connection
-    if (!checkConnection()) {
-      setNoInternetError("no-internet-connection");
-      return;
-    }
-
-    dispatch(changeMyPassword({ obj: passwordObj, token }));
-  };
-
-  const handleDeleteMe = () => {
-    // the password length must be greater than 0
-    if (passwordForDelete.length === 0) {
-      setPasswordForDeleteError("enter-password");
-      return;
-    }
-
-    // check the internet connection
-    if (!checkConnection()) {
-      setNoInternetError("no-internet-connection");
-      return;
-    }
-
-    // dispatch delete operation
-    dispatch(deleteMe({ obj: { password: passwordForDelete }, token }))
-      .then(unwrapResult)
-      .then((orginalPromiseResult) => {
-        // on succeeded sign out and reset redux's store
-        dispatch(signOut());
-        dispatch(resetUsers());
-        dispatch(resetFavorites());
-        dispatch(resetCompanies());
-        dispatch(resetWarehouse());
-        dispatch(resetItems());
-        dispatch(resetCompanyItems());
-        dispatch(resetCartItems());
-      })
-      .catch((rejectedValueOrSerializedError) => {
-        // on failed, show message below the password input
-        setPasswordForDeleteError(t(rejectedValueOrSerializedError.message));
-      });
-  };
 
   const [userObj, setUserObj] = useState(user);
 
@@ -198,8 +62,8 @@ function UserProfile() {
 
   const updateFieldHandler = (field) => {
     // check the internet connection
-    if (!checkConnection()) {
-      setNoInternetError("no-internet-connection");
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
       return;
     }
 
@@ -218,6 +82,7 @@ function UserProfile() {
       <Header>
         <h2>{t("nav-profile")}</h2>
       </Header>
+
       <div
         className={[
           generalStyles.flex_center_container,
@@ -226,26 +91,15 @@ function UserProfile() {
           generalStyles.padding_h_12,
         ].join(" ")}
       >
-        {changeLogoStatus === "loading" && (
-          <ActionLoader
-            allowCancel={true}
-            onclick={() => {
-              cancelOperation();
-            }}
-          />
-        )}
-
-        {changeLogoStatus === "succeeded" || changeLogoStatus === "idle" ? (
-          <div
-            className={styles.logo}
-            style={{
-              backgroundImage:
-                user.logo_url && user.logo_url !== ""
-                  ? `url("http://localhost:8000/${user.logo_url}`
-                  : `url("http://localhost:8000/avatar01.png`,
-            }}
-          ></div>
-        ) : null}
+        <div
+          className={styles.logo}
+          style={{
+            backgroundImage:
+              user.logo_url && user.logo_url !== ""
+                ? `url("http://localhost:8000/${user.logo_url}`
+                : `url("http://localhost:8000/avatar01.png`,
+          }}
+        ></div>
 
         <div>
           <InputFileImage type="partner" />
@@ -378,41 +232,13 @@ function UserProfile() {
       )}
 
       <CardInfo headerTitle={t("change-password")}>
-        <PasswordRow
-          field="oldPassword"
-          labelText={t("old-password")}
-          value={passwordObj.oldPassword}
-          onInputChange={handlePasswordFieldsChange}
-          error={t(passwordObjError.oldPassword)}
-        />
-        <PasswordRow
-          field="newPassword"
-          labelText={t("new-password")}
-          value={passwordObj.newPassword}
-          onInputChange={handlePasswordFieldsChange}
-          error={t(passwordObjError.newPassword)}
-        />
-        <PasswordRow
-          field="newPasswordConfirm"
-          labelText={t("new-password-confirm")}
-          value={passwordObj.newPasswordConfirm}
-          onInputChange={handlePasswordFieldsChange}
-          error={t(passwordObjError.newPasswordConfirm)}
-        />
-        <div className={styles.action_div}>
-          <ActionButton
-            text="change-password"
-            action={handleChangePassword}
-            color={Colors.SUCCEEDED_COLOR}
-          />
-        </div>
+        <ChangePassword />
       </CardInfo>
 
       {user.type !== UserTypeConstants.ADMIN && (
         <CardInfo
           headerTitle={t("admin-permission")}
           bgColor={Colors.FAILED_COLOR}
-          // type="warning"
         >
           <div
             className={[
@@ -451,27 +277,13 @@ function UserProfile() {
         bgColor={Colors.FAILED_COLOR}
         type="warning"
       >
-        <PasswordRow
-          labelText={t("user-password")}
-          field="deletePassword"
-          value={passwordForDelete}
-          onInputChange={handlePasswordForDeleteChange}
-          error={t(passwordForDeleteError)}
-        />
-        <div className={styles.action_div}>
-          <ActionButton
-            text="delete-account"
-            action={handleDeleteMe}
-            color={Colors.FAILED_COLOR}
-          />
-        </div>
+        <DeleteMe />
       </CardInfo>
 
       {passwordError && (
         <Toast
           bgColor={Colors.FAILED_COLOR}
           foreColor="#fff"
-          // toastText={t(error)}
           actionAfterTimeout={() => dispatch(resetPasswordError())}
         >
           {passwordError.split("_").map((err, index) => (
@@ -480,20 +292,13 @@ function UserProfile() {
         </Toast>
       )}
 
-      {status === "succeeded" && (
+      {changeLogoError && (
         <Toast
-          bgColor={Colors.SUCCEEDED_COLOR}
+          bgColor={Colors.FAILED_COLOR}
           foreColor="#fff"
-          actionAfterTimeout={() => {
-            dispatch(resetStatus());
-            setPasswordObj({
-              oldPassword: "",
-              newPassword: "",
-              newPasswordConfirm: "",
-            });
-          }}
+          actionAfterTimeout={() => dispatch(resetChangeLogoError())}
         >
-          <p>{t("password-change-succeeded")}</p>
+          <p>{t(changeLogoError)}</p>
         </Toast>
       )}
 
@@ -521,19 +326,16 @@ function UserProfile() {
         </Toast>
       )}
 
-      {noInternetError && (
-        <Toast
-          bgColor={Colors.FAILED_COLOR}
-          foreColor="#fff"
-          actionAfterTimeout={() => {
-            setNoInternetError("");
+      {changeLogoStatus === "loading" && (
+        <ActionLoader
+          allowCancel={true}
+          onclick={() => {
+            cancelOperation();
           }}
-        >
-          <p>{t(noInternetError)}</p>
-        </Toast>
+        />
       )}
     </div>
   );
 }
 
-export default UserProfile;
+export default UserProfilePage;

@@ -20,6 +20,10 @@ import {
   selectCartItems,
   selectCartWarehouse,
 } from "../../redux/cart/cartSlice";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
 
 // components
 import Header from "../../components/header/header.component";
@@ -33,12 +37,15 @@ import { GiShoppingCart } from "react-icons/gi";
 import generalStyles from "../../style.module.scss";
 
 // constants and colors
-import { OfferTypes, UserTypeConstants } from "../../utils/constants";
+import { Colors, OfferTypes, UserTypeConstants } from "../../utils/constants";
 import { statisticsOrders } from "../../redux/statistics/statisticsSlice";
+import ActionButton from "../../components/action-button/action-button.component";
+import Button from "../../components/button/button.component";
 
 function CartPage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const isOnline = useSelector(selectOnlineStatus);
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showFailedModal, setShowFailedModal] = useState(false);
@@ -69,6 +76,12 @@ function CartPage() {
   };
 
   const handleSendOrder = () => {
+    // check internet connection
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
     setShowLoadingModal(true);
     let cartItemsToSend = cartItems.map((e) => {
       return {
@@ -153,6 +166,16 @@ function CartPage() {
             ))}
           </div>
 
+          {/* <ActionButton
+            text={t("send-order")}
+            action={handleSendOrder}
+            color={Colors.SECONDARY_COLOR}
+          /> */}
+          <Button
+            text={t("send-order")}
+            bgColor={Colors.SECONDARY_COLOR}
+            action={handleSendOrder}
+          />
           <button
             className={[
               generalStyles.button,

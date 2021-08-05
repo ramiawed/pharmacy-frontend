@@ -9,26 +9,22 @@ import axios from "../../api/pharmacy";
 import SelectCustom from "../select/select.component";
 import Input from "../input/input.component";
 import Toast from "../toast/toast.component";
+import ActionLoader from "../action-loader/action-loader.component";
 
 // redux
-import {
-  authSign,
-  cancelOperation,
-  selectUserData,
-} from "../../redux/auth/authSlice";
+import { authSign, selectUserData } from "../../redux/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-
-// loading
-import ReactLoading from "react-loading";
 
 // Constants && utils
 import { Colors, GuestJob, UserTypeConstants } from "../../utils/constants";
 import { getIcon } from "../../utils/icons.js";
-import { checkConnection } from "../../utils/checkInternet";
 
 // styles
 import styles from "./signup.module.scss";
-import ActionLoader from "../action-loader/action-loader.component";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
 
 const containerVariant = {
   hidden: {
@@ -46,10 +42,13 @@ const containerVariant = {
 
 // Sign up component
 function SignUp() {
-  const history = useHistory();
   const { t } = useTranslation();
+
+  const isOnline = useSelector(selectOnlineStatus);
+  const history = useHistory();
   const dispatch = useDispatch();
-  const [connectionError, setConnectionError] = useState("");
+
+  const [networkError, setNetworkError] = useState("");
 
   // state from user state redux
   const { user: signinUser } = useSelector(selectUserData);
@@ -147,7 +146,7 @@ function SignUp() {
 
   // Guest types are (Student, Pharmacist, Employee)
   // uses with the SelectCustom
-  const handleGuestTypeChange = (val) => {
+  const guestTypeChangeHandler = (val) => {
     // if the user type is Normal and the job is Student or Pharmacist
     // so the user doesn't contains info about company name and job title
     if (val === GuestJob.STUDENT || val === GuestJob.PHARMACIST) {
@@ -183,7 +182,7 @@ function SignUp() {
   };
 
   // handle change values in all fields
-  const handleInputChange = (e) => {
+  const inputChangeHandler = (e) => {
     if (e.target.id === "type") {
       setError({
         ...error,
@@ -247,7 +246,7 @@ function SignUp() {
   // check name, username, password, passwordConfirm to be not empty
   // check the password and passwordConfirm length (must be greater than or equals to 8)
   // check the equality of the password and passwordConfirm
-  const handleCreateAccount = () => {
+  const createAccountHandler = () => {
     const errorObj = {};
     if (user.name.trim().length === 0) {
       errorObj["name"] = "enter-name";
@@ -322,13 +321,14 @@ function SignUp() {
 
     // send post request to server to create a new user
     if (Object.entries(errorObj).length === 0) {
-      if (!checkConnection()) {
-        setConnectionError("no-internet-connection");
+      if (!isOnline) {
+        dispatch(changeOnlineMsg());
         return;
       }
+
       setSignupLoading(true);
       axios
-        .post("/users/signup", user)
+        .post("/users/signup", user, { timeout: 10000 })
         .then((response) => {
           // if create user succeeded
 
@@ -346,9 +346,20 @@ function SignUp() {
           }
         })
         .catch((err) => {
-          setError({
-            [err.response.data.field[0]]: err.response.data.message,
-          });
+          if (
+            err.code === "ECONNABORTED" &&
+            err.message.startsWith("timeout")
+          ) {
+            setNetworkError("timeout");
+          } else if (!err.response) {
+            setNetworkError("network failed");
+          } else {
+            setError({
+              [err.response.data.field[0]]: err.response.data.message,
+            });
+          }
+
+          setSignupLoading(false);
         });
     } else {
       setError(errorObj);
@@ -385,7 +396,7 @@ function SignUp() {
             label="user-name"
             id="name"
             value={user.name}
-            onchange={handleInputChange}
+            onchange={inputChangeHandler}
             error={error.name?.length > 0}
           />
         </div>
@@ -398,7 +409,7 @@ function SignUp() {
             label="user-username"
             id="username"
             value={user.username}
-            onchange={handleInputChange}
+            onchange={inputChangeHandler}
             error={error.username?.length > 0}
           />
         </div>
@@ -411,7 +422,7 @@ function SignUp() {
             label="user-password"
             id="password"
             value={user.password}
-            onchange={handleInputChange}
+            onchange={inputChangeHandler}
             error={error.password?.length > 0}
           />
         </div>
@@ -424,7 +435,7 @@ function SignUp() {
             label="user-password-confirm"
             id="passwordConfirm"
             value={user.passwordConfirm}
-            onchange={handleInputChange}
+            onchange={inputChangeHandler}
             error={error.passwordConfirm?.length > 0}
           />
         </div>
@@ -444,7 +455,7 @@ function SignUp() {
               type="radio"
               value={UserTypeConstants.COMPANY}
               checked={user.type === UserTypeConstants.COMPANY}
-              onChange={handleInputChange}
+              onChange={inputChangeHandler}
             />
             <label>{t("company")}</label>
           </div>
@@ -456,7 +467,7 @@ function SignUp() {
               type="radio"
               value={UserTypeConstants.WAREHOUSE}
               checked={user.type === UserTypeConstants.WAREHOUSE}
-              onChange={handleInputChange}
+              onChange={inputChangeHandler}
             />
             <label>{t("warehouse")}</label>
           </div>
@@ -468,7 +479,7 @@ function SignUp() {
               type="radio"
               value={UserTypeConstants.PHARMACY}
               checked={user.type === UserTypeConstants.PHARMACY}
-              onChange={handleInputChange}
+              onChange={inputChangeHandler}
             />
             <label>{t("pharmacy")}</label>
           </div>
@@ -480,7 +491,7 @@ function SignUp() {
               type="radio"
               value={UserTypeConstants.NORMAL}
               checked={user.type === UserTypeConstants.NORMAL}
-              onChange={handleInputChange}
+              onChange={inputChangeHandler}
             />
             <label>{t("normal")}</label>
           </div>
@@ -496,7 +507,7 @@ function SignUp() {
                 label="user-employee-name"
                 id="employeeName"
                 value={user.employeeName}
-                onchange={handleInputChange}
+                onchange={inputChangeHandler}
                 error={error.employeeName?.length > 0}
               />
             </div>
@@ -508,7 +519,7 @@ function SignUp() {
                 label="user-certificate-name"
                 id="certificateName"
                 value={user.certificateName}
-                onchange={handleInputChange}
+                onchange={inputChangeHandler}
                 error={error.certificateName?.length > 0}
               />
             </div>
@@ -524,7 +535,7 @@ function SignUp() {
                 bgColor={Colors.fc_secondary_COLOR}
                 foreColor="#fff"
                 options={guestJobOptions}
-                onchange={handleGuestTypeChange}
+                onchange={guestTypeChangeHandler}
                 defaultOption={{
                   value: "Job",
                   label: t("user-job"),
@@ -541,7 +552,7 @@ function SignUp() {
                     label="user-company-name"
                     id="companyName"
                     value={user.guestDetails.companyName}
-                    onchange={handleInputChange}
+                    onchange={inputChangeHandler}
                     error={error.companyName?.length > 0}
                   />
                 </div>
@@ -553,7 +564,7 @@ function SignUp() {
                     label="user-job-title"
                     id="jobTitle"
                     value={user.guestDetails.jobTitle}
-                    onchange={handleInputChange}
+                    onchange={inputChangeHandler}
                     error={error.jobTitle?.length > 0}
                   />
                 </div>
@@ -578,7 +589,7 @@ function SignUp() {
             label="user-email"
             id="email"
             value={user.email}
-            onchange={handleInputChange}
+            onchange={inputChangeHandler}
           />
         </div>
 
@@ -590,7 +601,7 @@ function SignUp() {
             label="user-phone"
             id="phone"
             value={user.phone}
-            onchange={handleInputChange}
+            onchange={inputChangeHandler}
           />
         </div>
 
@@ -602,7 +613,7 @@ function SignUp() {
             label="user-mobile"
             id="mobile"
             value={user.mobile}
-            onchange={handleInputChange}
+            onchange={inputChangeHandler}
             error={error.mobile?.length > 0}
           />
         </div>
@@ -621,7 +632,7 @@ function SignUp() {
             label="user-city"
             id="city"
             value={user.city}
-            onchange={handleInputChange}
+            onchange={inputChangeHandler}
           />
         </div>
 
@@ -633,7 +644,7 @@ function SignUp() {
             label="user-district"
             id="district"
             value={user.district}
-            onchange={handleInputChange}
+            onchange={inputChangeHandler}
           />
         </div>
 
@@ -645,7 +656,7 @@ function SignUp() {
             label="user-street"
             id="street"
             value={user.street}
-            onchange={handleInputChange}
+            onchange={inputChangeHandler}
           />
         </div>
       </div>
@@ -668,30 +679,24 @@ function SignUp() {
           textShadow: "0px 0px 8px rgb(255, 255, 255)",
           boxShadow: "0px 0px 8px rgb(255, 255, 255)",
         }}
-        onClick={handleCreateAccount}
+        onClick={createAccountHandler}
       >
         {t("signup")}
       </motion.button>
 
-      {connectionError && (
+      {networkError && (
         <Toast
           bgColor={Colors.FAILED_COLOR}
           foreColor="#fff"
           actionAfterTimeout={() => {
-            setConnectionError("");
+            setNetworkError("");
           }}
         >
-          <p>{t(connectionError)}</p>
+          <p>{t(networkError)}</p>
         </Toast>
       )}
 
-      {signupLoading && (
-        <ActionLoader
-          onclick={() => {
-            cancelOperation();
-          }}
-        />
-      )}
+      {signupLoading && <ActionLoader allowCancel={false} />}
     </motion.div>
   );
 }

@@ -103,9 +103,6 @@ function InfoRow({ labelText, value, onInputChange, action, field, editable }) {
     setIsEditable(false);
     setError("");
     onInputChange(field, previousValue);
-    // if (promise) {
-    //   promise.abort();
-    // }
     cancelOperation();
   };
 
@@ -132,7 +129,10 @@ function InfoRow({ labelText, value, onInputChange, action, field, editable }) {
           <div className={styles.value}>
             <input
               value={value}
-              onChange={(e) => onInputChange(field, e.target.value)}
+              onChange={(e) => {
+                onInputChange(field, e.target.value);
+                setError("");
+              }}
               onKeyPress={onEnterPressHandler}
               onKeyDown={escapePressHandler}
             />

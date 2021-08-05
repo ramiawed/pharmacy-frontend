@@ -15,7 +15,6 @@ import {
 } from "../../redux/companyItems/companyItemsSlices";
 
 // components
-import ActionButton from "../action-button/action-button.component";
 import Toast from "../toast/toast.component";
 import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
 

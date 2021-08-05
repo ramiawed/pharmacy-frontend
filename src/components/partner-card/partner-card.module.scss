@@ -104,20 +104,3 @@
 .partner_container:hover .partner_name {
   display: none;
 }
-
-.more_button {
-  padding: 8px 12px;
-  background: $third-color;
-  color: $white-color;
-  border: none;
-  outline: none;
-  border-radius: 6px;
-}
-
-.icon {
-  transition: all 0.5s;
-}
-
-.icon:hover {
-  transform: scale(1.1);
-}

@@ -24,7 +24,6 @@ import { FaArrowAltCircleUp } from "react-icons/fa";
 import CompaniesPage from "../companies-page/companies-page.component";
 import CartPage from "../cart-page/cart-page.component";
 import AdminUsers from "../../components/admin-users/admin-users.component";
-import UserProfile from "../../components/user-profile/user-profile.component";
 import FavoritesPage from "../favorites-page/favorites-page.component";
 import WarehousePage from "../warehouses-page/warehouses-page.component";
 import ItemsPage from "../items-page/items-page.component";
@@ -36,6 +35,7 @@ import styles from "./main-page.module.scss";
 import { TopNavLinks } from "../../utils/constants";
 import StatisticsOptionsPage from "../statistics-options-page/statistics-options-page.component";
 import StatisticsPage from "../statistics-page/statistics-page.component";
+import UserProfilePage from "../user-profile-page/user-profile-page.component";
 
 // MainPage
 // you have to sign in first
@@ -153,7 +153,8 @@ function MainPage() {
         </Route>
 
         <Route exact path="/profile">
-          <UserProfile />
+          {/* <UserProfile /> */}
+          <UserProfilePage />
         </Route>
 
         <Route exact path="/favorites">

@@ -6,6 +6,9 @@ import { Link } from "react-router-dom";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { VscLoading } from "react-icons/vsc";
 
+// components
+import ActionIcon from "../action-icon/action-icon.component";
+
 // redux-stuff
 import { useDispatch, useSelector } from "react-redux";
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -29,7 +32,7 @@ import generalStyles from "../../style.module.scss";
 import rowStyles from "../row.module.scss";
 
 // constants and utils
-import { UserTypeConstants } from "../../utils/constants.js";
+import { Colors, UserTypeConstants } from "../../utils/constants.js";
 
 function PartnerRow({ user }) {
   const { t } = useTranslation();
@@ -126,39 +129,31 @@ function PartnerRow({ user }) {
 
         {changeFavoriteLoading ? (
           <div className={rowStyles.padding_end}>
-            <div
-              className={[generalStyles.icon, generalStyles.fc_yellow].join(
-                " "
+            <ActionIcon
+              icon={() => (
+                <VscLoading className={generalStyles.loading} size={20} />
               )}
-            >
-              <VscLoading className={generalStyles.loading} size={20} />
-            </div>
+              onclick={() => {}}
+              foreColor={Colors.YELLOW_COLOR}
+            />
           </div>
         ) : (
           <div className={rowStyles.padding_end}>
             {favorites &&
             favorites.map((favorite) => favorite._id).includes(user._id) ? (
-              <div
-                className={[generalStyles.icon, generalStyles.fc_yellow].join(
-                  " "
-                )}
-              >
-                <AiFillStar size={20} onClick={removeCompanyFromFavorite} />
-                <div className={generalStyles.tooltip}>
-                  {t("remove-from-favorite-tooltip")}
-                </div>
-              </div>
+              <ActionIcon
+                icon={() => <AiFillStar size={20} />}
+                onclick={removeCompanyFromFavorite}
+                foreColor={Colors.YELLOW_COLOR}
+                tooltip={t("remove-from-favorite-tooltip")}
+              />
             ) : (
-              <div
-                className={[generalStyles.icon, generalStyles.fc_yellow].join(
-                  " "
-                )}
-              >
-                <AiOutlineStar size={20} onClick={addCompanyToFavorite} />
-                <div className={generalStyles.tooltip}>
-                  {t("add-to-favorite-tooltip")}
-                </div>
-              </div>
+              <ActionIcon
+                icon={() => <AiOutlineStar size={20} />}
+                onclick={addCompanyToFavorite}
+                foreColor={Colors.YELLOW_COLOR}
+                tooltip={t("add-to-favorite-tooltip")}
+              />
             )}
           </div>
         )}

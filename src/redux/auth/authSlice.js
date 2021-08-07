@@ -226,8 +226,6 @@ export const changeLogo = createAsyncThunk(
       );
       return response.data;
     } catch (err) {
-      console.log(err.message);
-      console.log(err.code);
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }

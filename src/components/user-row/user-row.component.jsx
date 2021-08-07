@@ -21,7 +21,9 @@ import { AiFillUnlock, AiFillLock, AiFillEdit } from "react-icons/ai";
 // component
 import Modal from "../modal/modal.component";
 import UserMoreInfoModal from "../user-more-info-modal/user-more-info-modal.component";
-import PasswordRow from "../password-row/password-row.component";
+import ActionIcon from "../action-icon/action-icon.component";
+import ActinIcon from "../action-icon/action-icon.component";
+import AdminResetUserPasswordModal from "../admin-reset-user-password-modal/admin-reset-user-password-modal";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -31,13 +33,18 @@ import tableStyles from "../table.module.scss";
 // constants
 import { checkConnection } from "../../utils/checkInternet";
 import { Link } from "react-router-dom";
-import { UserTypeConstants } from "../../utils/constants";
+import { Colors, UserTypeConstants } from "../../utils/constants";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
 
 // UserRow component
 function UserRow({ user }) {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
+  const isOnline = useSelector(selectOnlineStatus);
 
   const token = useSelector(selectToken);
   const loggedUser = useSelector(selectUser);
@@ -76,7 +83,7 @@ function UserRow({ user }) {
     });
   };
 
-  const changeUserPassword = () => {
+  const changeUserPasswordHandler = () => {
     let errorObj = {};
 
     if (passwordObj.newPassword.length < 5) {
@@ -123,7 +130,8 @@ function UserRow({ user }) {
     }
 
     // check the internet connection
-    if (!checkConnection()) {
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
       return;
     }
 
@@ -233,6 +241,11 @@ function UserRow({ user }) {
   // if the actionType === approve dispatch disapprove action
   // if the actionType === disapprove dispatch approve action
   const handlePressOkOnModal = () => {
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
     // dispatch disapprove action from usersSlice
     if (actionType === "approve") {
       dispatch(
@@ -266,6 +279,18 @@ function UserRow({ user }) {
     setShowModal(false);
   };
 
+  const closeResetPasswordModalHandler = () => {
+    setShowResetUserPasswordModal(false);
+    setPasswordObj({
+      newPassword: "",
+      newPasswordConfirm: "",
+    });
+    setPasswordObjError({
+      newPassword: "",
+      newPasswordConfirm: "",
+    });
+  };
+
   return (
     <>
       <div className={[rowStyles.container].join(" ")}>
@@ -295,94 +320,75 @@ function UserRow({ user }) {
             user.name
           )}
         </label>
-        <label className={tableStyles.label_small}>
+
+        <label
+          className={[
+            tableStyles.label_small,
+            generalStyles.flex_center_container,
+          ].join(" ")}
+        >
           {user.isApproved ? (
-            <div
-              className={[
-                generalStyles.icon,
-                generalStyles.fc_green,
-                generalStyles.margin_h_auto,
-              ].join(" ")}
-              onClick={() => handleActionIconClick("disapprove")}
-            >
-              <AiFillUnlock size={16} />
-              <div className={generalStyles.tooltip}>
-                {t("tooltip-disapprove")}
-              </div>
-            </div>
+            <ActionIcon
+              tooltip={t("tooltip-disapprove")}
+              onclick={() => handleActionIconClick("disapprove")}
+              icon={() => <AiFillUnlock size={16} />}
+              foreColor={Colors.SUCCEEDED_COLOR}
+            />
           ) : (
-            <div
-              className={[
-                generalStyles.icon,
-                generalStyles.fc_red,
-                generalStyles.margin_h_auto,
-              ].join(" ")}
-              onClick={() => handleActionIconClick("approve")}
-            >
-              <AiFillLock size={16} />
-              <div className={generalStyles.tooltip}>
-                {t("tooltip-approve")}
-              </div>
-            </div>
+            <ActionIcon
+              tooltip={t("tooltip-approve")}
+              onclick={() => handleActionIconClick("approve")}
+              icon={() => <AiFillLock size={16} />}
+              foreColor={Colors.FAILED_COLOR}
+            />
           )}
         </label>
-        <label className={tableStyles.label_small}>
+
+        <label
+          className={[
+            tableStyles.label_small,
+            generalStyles.flex_center_container,
+          ].join(" ")}
+        >
           {user.isActive ? (
-            <div
-              className={[
-                generalStyles.icon,
-                generalStyles.fc_green,
-                generalStyles.margin_h_auto,
-              ].join(" ")}
-              onClick={() => handleActionIconClick("delete")}
-            >
-              <BsFillPersonCheckFill size={16} />
-              <div className={generalStyles.tooltip}>{t("tooltip-delete")}</div>
-            </div>
+            <ActionIcon
+              tooltip={t("tooltip-delete")}
+              onclick={() => handleActionIconClick("delete")}
+              icon={() => <BsFillPersonCheckFill size={16} />}
+              foreColor={Colors.SUCCEEDED_COLOR}
+            />
           ) : (
-            <div
-              className={[
-                generalStyles.icon,
-                generalStyles.fc_red,
-                generalStyles.margin_h_auto,
-              ].join(" ")}
-              onClick={() => handleActionIconClick("undo-delete")}
-            >
-              <BsFillPersonDashFill size={16} />
-              <div className={generalStyles.tooltip}>
-                {t("tooltip-undo-delete")}
-              </div>
-            </div>
-          )}{" "}
+            <ActionIcon
+              tooltip={t("tooltip-undo-delete")}
+              onclick={() => handleActionIconClick("undo-delete")}
+              icon={() => <BsFillPersonDashFill size={16} />}
+              foreColor={Colors.FAILED_COLOR}
+            />
+          )}
         </label>
         <label className={tableStyles.label_large}> {user.email}</label>
         <label className={tableStyles.label_medium}>{user.phone}</label>
         <label className={tableStyles.label_medium}>{user.mobile}</label>
-        <label className={tableStyles.label_xsmall}>
-          <div
-            className={[generalStyles.icon, generalStyles.margin_h_auto].join(
-              " "
-            )}
-            onClick={() => setShowResetUserPasswordModal(true)}
-          >
-            <AiFillEdit />
-            <div className={generalStyles.tooltip}>
-              {t("change-password-tooltip")}
-            </div>
-          </div>
+        <label
+          className={[
+            tableStyles.label_xsmall,
+            generalStyles.flex_center_container,
+          ].join(" ")}
+        >
+          <ActionIcon
+            tooltip={t("change-password-tooltip")}
+            onclick={() => setShowResetUserPasswordModal(true)}
+            icon={() => <AiFillEdit />}
+            foreColor={Colors.SECONDARY_COLOR}
+          />
         </label>
         <label className={tableStyles.label_xsmall}>
-          <div
-            className={[generalStyles.icon, generalStyles.margin_h_auto].join(
-              " "
-            )}
-            onClick={() => setShowMoreInfo(true)}
-          >
-            <IoMdMore size={20} />
-            <div className={generalStyles.tooltip}>
-              {t("user-more-info-title")}
-            </div>
-          </div>
+          <ActinIcon
+            tooltip={t("user-more-info-title")}
+            onclick={() => setShowMoreInfo(true)}
+            icon={() => <IoMdMore size={20} />}
+            foreColor={Colors.SECONDARY_COLOR}
+          />
         </label>
       </div>
 
@@ -400,39 +406,13 @@ function UserRow({ user }) {
       )}
 
       {showResetUserPasswordModal && (
-        <Modal
-          header="change-password-tooltip"
-          okLabel="ok-label"
-          cancelLabel="cancel-label"
-          okModal={changeUserPassword}
-          closeModal={() => {
-            setShowResetUserPasswordModal(false);
-            setPasswordObj({
-              newPassword: "",
-              newPasswordConfirm: "",
-            });
-            setPasswordObjError({
-              newPassword: "",
-              newPasswordConfirm: "",
-            });
-          }}
-          small={true}
-        >
-          <PasswordRow
-            field="newPassword"
-            labelText={t("new-password")}
-            value={passwordObj.newPassword}
-            onInputChange={handlePasswordFieldsChange}
-            error={t(passwordObjError.newPassword)}
-          />
-          <PasswordRow
-            field="newPasswordConfirm"
-            labelText={t("new-password-confirm")}
-            value={passwordObj.newPasswordConfirm}
-            onInputChange={handlePasswordFieldsChange}
-            error={t(passwordObjError.newPasswordConfirm)}
-          />
-        </Modal>
+        <AdminResetUserPasswordModal
+          close={closeResetPasswordModalHandler}
+          resetPassword={changeUserPasswordHandler}
+          passwordObj={passwordObj}
+          passwordObjError={passwordObjError}
+          handlePasswordFieldsChange={handlePasswordFieldsChange}
+        />
       )}
 
       {showMoreInfo && (

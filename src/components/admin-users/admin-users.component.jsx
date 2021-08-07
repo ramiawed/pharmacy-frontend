@@ -25,8 +25,9 @@ import Input from "../input/input.component";
 import Modal from "../modal/modal.component";
 import IconWithNumber from "../icon-with-number/icon-with-number.component";
 import Order from "../order/order.component";
-import TableHeader from "../table-header/table-header.component";
 import ActionLoader from "../action-loader/action-loader.component";
+import NoContent from "../no-content/no-content.component";
+import AdminUserTableHeader from "../admin-users-table-header/admin-users-table-header.component";
 
 // 3-party library (loading, paginate)
 import ReactPaginate from "react-paginate";
@@ -48,9 +49,11 @@ import { resetActivationDeleteStatus } from "../../redux/users/usersSlice";
 // styles
 import generalStyles from "../../style.module.scss";
 import styles from "./admin-users.module.scss";
-import tableStyles from "../table.module.scss";
 import paginationStyles from "../pagination.module.scss";
-import NoContent from "../no-content/no-content.component";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
 
 // AdminUsers component
 function AdminUsers() {
@@ -68,6 +71,7 @@ function AdminUsers() {
     resetUserPasswordStatus,
   } = useSelector(selectUsers);
   const { token, user } = useSelector(selectUserData);
+  const isOnline = useSelector(selectOnlineStatus);
 
   // modal state
   const [showModal, setShowModal] = useState(false);
@@ -200,6 +204,11 @@ function AdminUsers() {
 
   // handle search
   const handleSearch = (page) => {
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
     // build the query string
     const queryString = {};
 
@@ -284,6 +293,11 @@ function AdminUsers() {
 
   // handle for page change in the paginate component
   const handlePageClick = (e) => {
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
     const { selected } = e;
     handleSearch(selected + 1);
     setInitialPage(selected);
@@ -303,69 +317,62 @@ function AdminUsers() {
   useEffect(() => {
     handleSearch(1);
 
-    return () => {
-      cancelOperation();
-    };
+    // return () => {
+    //   cancelOperation();
+    // };
   }, []);
+
+  const searchModalOkHandler = () => {
+    setShowModal(false);
+    handleSearch(1);
+  };
+  const searchModalCloseHandler = () => setShowModal(false);
 
   return user && user.type === UserTypeConstants.ADMIN ? (
     <>
-      <div>
-        <Header>
-          <h2>
-            {t("partners")} <span>{count}</span>
-          </h2>
-          <div className={styles.actions_icons}>
-            <div onClick={() => setShowModal(true)}>
-              <IconWithNumber
-                value={searchOptionCount}
-                fillIcon={
-                  <div className={generalStyles.icon}>
-                    <FaSearch size={16} />
-                  </div>
-                }
-                noFillIcon={
-                  <div className={generalStyles.icon}>
-                    <FaSearch size={16} />
-                  </div>
-                }
-                small={true}
-              />
-            </div>
-
-            <div onClick={() => setShowOrderModel(true)}>
-              <IconWithNumber
-                value={Object.entries(orderBy).length}
-                fillIcon={
-                  <div className={generalStyles.icon}>
-                    <BiSortAZ size={16} />{" "}
-                  </div>
-                }
-                noFillIcon={
-                  <div className={generalStyles.icon}>
-                    <BiSortAZ size={16} />
-                  </div>
-                }
-                small={true}
-                tooltip={t("sort-results")}
-              />
-            </div>
+      <Header>
+        <h2>
+          {t("partners")} <span>{count}</span>
+        </h2>
+        <div className={styles.actions_icons}>
+          <div onClick={() => setShowModal(true)}>
+            <IconWithNumber
+              value={searchOptionCount}
+              fillIcon={
+                <div className={generalStyles.icon}>
+                  <FaSearch size={16} />
+                </div>
+              }
+              noFillIcon={
+                <div className={generalStyles.icon}>
+                  <FaSearch size={16} />
+                </div>
+              }
+              small={true}
+            />
           </div>
-        </Header>
-      </div>
 
-      {count > 0 && (
-        <TableHeader>
-          <label className={tableStyles.label_large}>{t("user-name")}</label>
-          <label className={tableStyles.label_small}>{t("user-approve")}</label>
-          <label className={tableStyles.label_small}>{t("user-delete")}</label>
-          <label className={tableStyles.label_large}>{t("user-email")}</label>
-          <label className={tableStyles.label_medium}>{t("user-phone")}</label>
-          <label className={tableStyles.label_medium}>{t("user-mobile")}</label>
-          <label className={tableStyles.label_xsmall}></label>
-          <label className={tableStyles.label_xsmall}></label>
-        </TableHeader>
-      )}
+          <div onClick={() => setShowOrderModel(true)}>
+            <IconWithNumber
+              value={Object.entries(orderBy).length}
+              fillIcon={
+                <div className={generalStyles.icon}>
+                  <BiSortAZ size={16} />{" "}
+                </div>
+              }
+              noFillIcon={
+                <div className={generalStyles.icon}>
+                  <BiSortAZ size={16} />
+                </div>
+              }
+              small={true}
+              tooltip={t("sort-results")}
+            />
+          </div>
+        </div>
+      </Header>
+
+      {count > 0 && <AdminUserTableHeader />}
 
       {/* Results */}
       <div>
@@ -374,7 +381,7 @@ function AdminUsers() {
         ))}
       </div>
 
-      {count > 0 && (
+      {count > 0 && isOnline && (
         <ReactPaginate
           previousLabel={t("previous")}
           nextLabel={t("next")}
@@ -390,7 +397,7 @@ function AdminUsers() {
       )}
 
       {/* show no content div when no user found */}
-      {count === 0 && (
+      {count === 0 && status !== "loading" && (
         <>
           <NoContent msg={t("no-partners-found-message")} />
         </>
@@ -405,15 +412,17 @@ function AdminUsers() {
           allowCancel={true}
         />
       )}
+
       {resetUserPasswordStatus === "loading" && (
         <ActionLoader onclick={() => cancelOperation()} allowCancel={true} />
       )}
+
       {activationDeleteStatus === "loading" && (
         <ActionLoader onclick={() => cancelOperation()} allowCancel={true} />
       )}
 
       {/* show toast to display successfully or failed message */}
-      {activationDeleteStatus === "success" ? (
+      {activationDeleteStatus === "succeeded" ? (
         <Toast
           bgColor={Colors.SUCCEEDED_COLOR}
           foreColor="#fff"
@@ -433,7 +442,7 @@ function AdminUsers() {
       ) : null}
 
       {/* show toast to display successfully or failed update password */}
-      {resetUserPasswordStatus === "success" ? (
+      {resetUserPasswordStatus === "succeeded" ? (
         <Toast
           bgColor={Colors.SUCCEEDED_COLOR}
           foreColor="#fff"
@@ -445,7 +454,7 @@ function AdminUsers() {
       ) : resetUserPasswordStatus === "failed" ? (
         <Toast
           bgColor={Colors.FAILED_COLOR}
-          foreColor="#000"
+          foreColor="#fff"
           toastText={t("password-change-failed")}
           actionAfterTimeout={() => dispatch(resetUserChangePasswordStatus())}
         />
@@ -457,11 +466,8 @@ function AdminUsers() {
           header="search-engines"
           cancelLabel="cancel-label"
           okLabel="search"
-          okModal={() => {
-            setShowModal(false);
-            handleSearch(1);
-          }}
-          closeModal={() => setShowModal(false)}
+          okModal={searchModalOkHandler}
+          closeModal={searchModalCloseHandler}
           small={true}
         >
           <RowWith2Children>

@@ -2,19 +2,24 @@ import React from "react";
 
 import generalStyles from "../../style.module.scss";
 
-function ActinIcon({ selected, onclick, tooltip, icon }) {
+import { Colors } from "../../utils/constants";
+
+function ActionIcon({ onclick, tooltip, icon, foreColor }) {
   return (
     <div
       className={[
         generalStyles.icon,
-        selected ? generalStyles.fc_green : generalStyles.fc_secondary,
+        foreColor === Colors.SUCCEEDED_COLOR ? generalStyles.fc_green : "",
+        foreColor === Colors.FAILED_COLOR ? generalStyles.fc_red : "",
+        foreColor === Colors.SECONDARY_COLOR ? generalStyles.fc_secondary : "",
+        foreColor === Colors.YELLOW_COLOR ? generalStyles.fc_yellow : "",
       ].join(" ")}
       onClick={onclick}
     >
       {icon()}
-      <div className={generalStyles.tooltip}>{tooltip}</div>
+      {tooltip && <div className={generalStyles.tooltip}>{tooltip}</div>}
     </div>
   );
 }
 
-export default ActinIcon;
+export default ActionIcon;

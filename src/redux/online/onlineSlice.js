@@ -12,10 +12,10 @@ export const onlineSlice = createSlice({
     changeOnlineStatus: (state, action) => {
       state.onlineStatus = action.payload;
     },
-    resetOnlineMsg: (state, action) => {
+    resetOnlineMsg: (state) => {
       state.onlineMsg = null;
     },
-    changeOnlineMsg: (state, action) => {
+    changeOnlineMsg: (state) => {
       state.onlineMsg = "no-internet-connection";
     },
   },

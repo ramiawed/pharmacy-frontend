@@ -7,18 +7,19 @@ import axios from "../../api/pharmacy";
 // components
 import Header from "../../components/header/header.component";
 import FavoriteItemRow from "../../components/favorite-item-row/favorite-item-row.component";
-import ReactLoading from "react-loading";
 import ItemCard from "../../components/item-card/item-card.component";
 import SearchContainer from "../../components/search-container/search-container.component";
 import SearchInput from "../../components/search-input/search-input.component";
 import ItemRow from "../../components/item-row/item-row.component";
-import TableHeader from "../../components/table-header/table-header.component";
+import ItemsByCompanyTableHeader from "../../components/items-by-company-table-header/items-by-company-table-header.component";
+import ActionLoader from "../../components/action-loader/action-loader.component";
+import NoContent from "../../components/no-content/no-content.component";
+import Button from "../../components/button/button.component";
 
 // react-icons
 import { FaSearch, FaListUl } from "react-icons/fa";
 import { RiRefreshLine } from "react-icons/ri";
 import { AiFillAppstore, AiFillStar } from "react-icons/ai";
-import { SiAtAndT } from "react-icons/si";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -32,11 +33,11 @@ import {
 
 // styles
 import generalStyles from "../../style.module.scss";
-import tableStyles from "../../components/table.module.scss";
 import searchContainerStyles from "../../components/search-container/search-container.module.scss";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
+import ActionIcon from "../../components/action-icon/action-icon.component";
 
 function ItemsByCompanyPage() {
   const { companyId } = useParams();
@@ -124,80 +125,8 @@ function ItemsByCompanyPage() {
         <h2>
           {company?.name} <span>{count}</span>
         </h2>
-        <div className={generalStyles.actions}>
-          <div
-            className={[generalStyles.icon, generalStyles.fc_secondary].join(
-              " "
-            )}
-            onClick={handleEnterPress}
-          >
-            <RiRefreshLine />
-            <div className={generalStyles.tooltip}>{t("refresh-tooltip")}</div>
-          </div>
 
-          <div className={generalStyles.relative}>
-            <div
-              className={[generalStyles.icon, generalStyles.fc_secondary].join(
-                " "
-              )}
-              onClick={() => setShowFavorites(!showFavorites)}
-            >
-              <AiFillStar />
-              <div className={generalStyles.tooltip}>
-                {t("show-favorite-tooltip")}
-              </div>
-            </div>
-
-            {showFavorites && (
-              <div
-                className={[
-                  generalStyles.favorites_content,
-                  generalStyles.favorites_content_wider,
-                  generalStyles.bg_white,
-                ].join(" ")}
-              >
-                {showFavorites &&
-                  favoritesItems.map((item) => (
-                    <FavoriteItemRow
-                      key={item._id}
-                      item={item}
-                      withoutBoxShadow={true}
-                    />
-                  ))}
-              </div>
-            )}
-          </div>
-
-          <div
-            className={[
-              generalStyles.icon,
-              displayType === "card"
-                ? generalStyles.fc_green
-                : generalStyles.fc_secondary,
-            ].join(" ")}
-            onClick={() => setDisplayType("card")}
-          >
-            <AiFillAppstore />
-            <div className={generalStyles.tooltip}>
-              {t("show-item-as-card-tooltip")}
-            </div>
-          </div>
-
-          <div
-            className={[
-              generalStyles.icon,
-              displayType === "list"
-                ? generalStyles.fc_green
-                : generalStyles.fc_secondary,
-            ].join(" ")}
-            onClick={() => setDisplayType("list")}
-          >
-            <FaListUl />
-            <div className={generalStyles.tooltip}>
-              {t("show-item-as-row-tooltip")}
-            </div>
-          </div>
-
+        <div style={{ position: "relative", height: "50px" }}>
           <SearchContainer searchAction={handleEnterPress}>
             <SearchInput
               label="user-name"
@@ -252,23 +181,70 @@ function ItemsByCompanyPage() {
             </div>
           </SearchContainer>
         </div>
+
+        <div className={generalStyles.actions}>
+          <ActionIcon
+            icon={() => <RiRefreshLine />}
+            foreColor={Colors.SECONDARY_COLOR}
+            tooltip={t("refresh-tooltip")}
+            onclick={handleEnterPress}
+          />
+
+          <div className={generalStyles.relative}>
+            <ActionIcon
+              icon={() => <AiFillStar />}
+              foreColor={
+                showFavorites ? Colors.SUCCEEDED_COLOR : Colors.SECONDARY_COLOR
+              }
+              tooltip={t("show-favorite-tooltip")}
+              onclick={() => setShowFavorites(!showFavorites)}
+            />
+
+            {showFavorites && (
+              <div
+                className={[
+                  generalStyles.favorites_content,
+                  generalStyles.favorites_content_wider,
+                  generalStyles.bg_white,
+                ].join(" ")}
+              >
+                {showFavorites &&
+                  favoritesItems.map((item) => (
+                    <FavoriteItemRow
+                      key={item._id}
+                      item={item}
+                      withoutBoxShadow={true}
+                    />
+                  ))}
+              </div>
+            )}
+          </div>
+
+          <ActionIcon
+            icon={() => <AiFillAppstore />}
+            foreColor={
+              displayType === "card"
+                ? Colors.SUCCEEDED_COLOR
+                : Colors.SECONDARY_COLOR
+            }
+            tooltip={t("show-item-as-card-tooltip")}
+            onclick={() => setDisplayType("card")}
+          />
+
+          <ActionIcon
+            icon={() => <FaListUl />}
+            foreColor={
+              displayType === "list"
+                ? Colors.SUCCEEDED_COLOR
+                : Colors.SECONDARY_COLOR
+            }
+            tooltip={t("show-item-as-row-tooltip")}
+            onclick={() => setDisplayType("list")}
+          />
+        </div>
       </Header>
 
-      {count > 0 && displayType === "list" && (
-        <TableHeader>
-          <label className={tableStyles.label_medium}>
-            {t("item-trade-name")}
-          </label>
-          <label className={tableStyles.label_small}>{t("item-caliber")}</label>
-          <label className={tableStyles.label_small}>{t("item-formula")}</label>
-          <label className={tableStyles.label_small}>{t("item-price")}</label>
-          <label className={tableStyles.label_small}>
-            {t("item-customer-price")}
-          </label>
-          <label className={tableStyles.label_xsmall}></label>
-          <label className={tableStyles.label_xsmall}></label>
-        </TableHeader>
-      )}
+      {count > 0 && displayType === "list" && <ItemsByCompanyTableHeader />}
 
       {displayType === "list" &&
         companyItems.map((companyItem) => (
@@ -288,38 +264,19 @@ function ItemsByCompanyPage() {
         </div>
       )}
 
-      {status === "loading" && (
-        <div className={generalStyles.flex_center_container}>
-          <ReactLoading
-            color={Colors.SECONDARY_COLOR}
-            type="bubbles"
-            height={50}
-            width={50}
-          />
-        </div>
+      {count === 0 && status !== "loading" && (
+        <NoContent msg={t("no-medicines")} />
       )}
 
-      {count === 0 && status !== "loading" ? (
-        <div className={generalStyles.no_content_div}>
-          <SiAtAndT className={generalStyles.no_content_icon} />
-          <p className={generalStyles.fc_white}>{t("no-medicines")}</p>
-        </div>
-      ) : companyItems.length < count && status !== "loading" ? (
-        <button
-          onClick={handleMoreResult}
-          className={[
-            generalStyles.button,
-            generalStyles.bg_secondary,
-            generalStyles.fc_white,
-            generalStyles.margin_h_auto,
-            generalStyles.block,
-            generalStyles.padding_v_10,
-            generalStyles.padding_h_12,
-          ].join(" ")}
-        >
-          {t("more")}
-        </button>
-      ) : (
+      {companyItems.length < count && status !== "loading" && (
+        <Button
+          text={t("more")}
+          action={handleMoreResult}
+          bgColor={Colors.SECONDARY_COLOR}
+        />
+      )}
+
+      {companyItems.length === count && status !== "loading" && (
         <p
           className={[generalStyles.center, generalStyles.fc_secondary].join(
             " "
@@ -328,6 +285,8 @@ function ItemsByCompanyPage() {
           {t("no-more")}
         </p>
       )}
+
+      {status === "loading" && <ActionLoader />}
     </>
   ) : (
     <Redirect to="/signin" />

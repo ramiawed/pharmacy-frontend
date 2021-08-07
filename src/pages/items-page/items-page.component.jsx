@@ -4,53 +4,55 @@ import { Link, Redirect, useLocation } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 // components
-import TableHeader from "../../components/table-header/table-header.component";
 import ReactPaginate from "react-paginate";
 import CompanyItemRow from "../../components/company-item-row/company-item-row.component";
 import Toast from "../../components/toast/toast.component";
 import SearchContainer from "../../components/search-container/search-container.component";
 import Header from "../../components/header/header.component";
 import SearchInput from "../../components/search-input/search-input.component";
+import NoContent from "../../components/no-content/no-content.component";
+import ActionLoader from "../../components/action-loader/action-loader.component";
+import ItemsTableHeader from "../../components/items-table-header/items-table-header.component";
 
 // react-icons
-import { GiMedicines } from "react-icons/gi";
-import {
-  AiOutlineSortAscending,
-  AiOutlineSortDescending,
-} from "react-icons/ai";
 import { RiAddCircleFill } from "react-icons/ri";
 import { SiMicrosoftexcel } from "react-icons/si";
-import { TiArrowUnsorted } from "react-icons/ti";
 
 // redux stuff
+import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getItems,
   resetActiveStatus,
+  resetStatus,
   resetItems,
   selectItems,
 } from "../../redux/items/itemsSlices";
-import { selectToken } from "../../redux/auth/authSlice";
-
-// constant
-import { UserTypeConstants } from "../../utils/constants";
-
-// styles
-import generalStyles from "../../style.module.scss";
-import paginationStyles from "../../components/pagination.module.scss";
-import tableStyles from "../../components/table.module.scss";
-import searchContainerStyles from "../../components/search-container/search-container.module.scss";
 import {
   changeItemWarehouseMaxQty,
   removeItemFromWarehouse,
 } from "../../redux/warehouseItems/warehouseItemsSlices";
-import { unwrapResult } from "@reduxjs/toolkit";
+import { selectToken } from "../../redux/auth/authSlice";
+
+// constant
+import { Colors, UserTypeConstants } from "../../utils/constants";
+
+// styles
+import generalStyles from "../../style.module.scss";
+import paginationStyles from "../../components/pagination.module.scss";
+import searchContainerStyles from "../../components/search-container/search-container.module.scss";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
 
 function ItemsPage() {
   const { t } = useTranslation();
 
   const location = useLocation();
   const { user, company, warehouse, role } = location.state;
+
+  const isOnline = useSelector(selectOnlineStatus);
 
   // search state
   const [searchName, setSearchName] = useState("");
@@ -72,7 +74,8 @@ function ItemsPage() {
   const [initialPage, setInitialPage] = useState(0);
 
   const dispatch = useDispatch();
-  const { count, items, activeStatus } = useSelector(selectItems);
+  const { status, error, count, items, activeStatus, activeError } =
+    useSelector(selectItems);
   const token = useSelector(selectToken);
 
   // handle for page change in the paginate component
@@ -90,6 +93,11 @@ function ItemsPage() {
 
   // search handler
   const handleSearch = (page) => {
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
     const queryString = {};
 
     queryString.page = page;
@@ -250,9 +258,11 @@ function ItemsPage() {
               {t("medicines")} <span>{count}</span>
             </h2>
             <p
-              className={[generalStyles.center, generalStyles.fc_yellow].join(
-                " "
-              )}
+              className={[
+                generalStyles.center,
+                generalStyles.fc_yellow,
+                generalStyles.margin_v_4,
+              ].join(" ")}
             >
               {t("medicines-in-warehouse")} {warehouse.name}
             </p>
@@ -267,9 +277,11 @@ function ItemsPage() {
               {t("medicines")} <span>{count}</span>
             </h2>
             <p
-              className={[generalStyles.center, generalStyles.fc_yellow].join(
-                " "
-              )}
+              className={[
+                generalStyles.center,
+                generalStyles.fc_yellow,
+                generalStyles.margin_v_4,
+              ].join(" ")}
             >
               {t("medicines-in-company")} {company.name}
             </p>
@@ -283,77 +295,7 @@ function ItemsPage() {
           </h2>
         ) : null}
 
-        {/* <h2>
-          {t("medicines")} <span>{count}</span>
-        </h2> */}
-        <div className={generalStyles.actions}>
-          {user.type === UserTypeConstants.COMPANY ||
-          (user.type === UserTypeConstants.ADMIN &&
-            company !== null &&
-            company.allowAdmin) ? (
-            <>
-              <div
-                className={[
-                  generalStyles.icon,
-                  generalStyles.fc_secondary,
-                ].join(" ")}
-              >
-                <Link
-                  style={{
-                    paddingTop: "3px",
-                  }}
-                  className={[generalStyles.fc_secondary].join(" ")}
-                  to={{
-                    pathname: "/item",
-                    state: {
-                      from: user.type,
-                      type: "new",
-                      allowAction: true,
-                      itemId: null,
-                      companyId:
-                        user.type === UserTypeConstants.COMPANY
-                          ? user._id
-                          : company._id,
-                      warehouseId: null,
-                    },
-                  }}
-                >
-                  <RiAddCircleFill size={20} />
-                </Link>
-
-                <div className={generalStyles.tooltip}>{t("add-item")}</div>
-              </div>
-
-              <div
-                className={[
-                  generalStyles.icon,
-                  generalStyles.fc_secondary,
-                ].join(" ")}
-              >
-                <Link
-                  style={{ paddingTop: "3px" }}
-                  className={generalStyles.fc_secondary}
-                  to={{
-                    pathname: "/items-from-excel",
-                    state: {
-                      companyId:
-                        user.type === UserTypeConstants.COMPANY
-                          ? user._id
-                          : company._id,
-                    },
-                  }}
-                >
-                  <SiMicrosoftexcel size={20} />
-                  <div className={generalStyles.tooltip}>
-                    {t("items-from-excel")}
-                  </div>
-                </Link>
-              </div>
-            </>
-          ) : (
-            <></>
-          )}
-
+        <div style={{ position: "relative", height: "50px" }}>
           <SearchContainer searchAction={handleEnterPress}>
             <SearchInput
               label="item-name"
@@ -441,156 +383,156 @@ function ItemsPage() {
             </div>
           </SearchContainer>
         </div>
+        <div className={generalStyles.actions}>
+          {user.type === UserTypeConstants.COMPANY ||
+          (user.type === UserTypeConstants.ADMIN &&
+            company !== null &&
+            company.allowAdmin) ? (
+            <>
+              <div
+                className={[
+                  generalStyles.icon,
+                  generalStyles.fc_secondary,
+                ].join(" ")}
+              >
+                <Link
+                  style={{
+                    paddingTop: "3px",
+                  }}
+                  className={[generalStyles.fc_secondary].join(" ")}
+                  to={{
+                    pathname: "/item",
+                    state: {
+                      from: user.type,
+                      type: "new",
+                      allowAction: true,
+                      itemId: null,
+                      companyId:
+                        user.type === UserTypeConstants.COMPANY
+                          ? user._id
+                          : company._id,
+                      warehouseId: null,
+                    },
+                  }}
+                >
+                  <RiAddCircleFill size={20} />
+                </Link>
+
+                <div className={generalStyles.tooltip}>{t("add-item")}</div>
+              </div>
+
+              <div
+                className={[
+                  generalStyles.icon,
+                  generalStyles.fc_secondary,
+                ].join(" ")}
+              >
+                <Link
+                  style={{ paddingTop: "3px" }}
+                  className={generalStyles.fc_secondary}
+                  to={{
+                    pathname: "/items-from-excel",
+                    state: {
+                      companyId:
+                        user.type === UserTypeConstants.COMPANY
+                          ? user._id
+                          : company._id,
+                    },
+                  }}
+                >
+                  <SiMicrosoftexcel size={20} />
+                  <div className={generalStyles.tooltip}>
+                    {t("items-from-excel")}
+                  </div>
+                </Link>
+              </div>
+            </>
+          ) : (
+            <></>
+          )}
+        </div>
       </Header>
 
-      {count > 0 ? (
+      {count > 0 && (
+        <ItemsTableHeader
+          user={user}
+          role={role}
+          sortByName={sortByName}
+          sortNameField={sortNameField}
+          sortByCaliber={sortByCaliber}
+          sortCaliberField={sortCaliberField}
+          sortByPrice={sortByPrice}
+          sortPriceField={sortPriceField}
+          sortByCustomerPrice={sortByCustomerPrice}
+          sortCustomerPriceField={sortCustomerPriceField}
+        />
+      )}
+
+      {/* display items */}
+      {items?.map((item) => (
+        <CompanyItemRow
+          key={uuidv4()}
+          item={item}
+          user={user}
+          company={company}
+          warehouse={warehouse}
+          role={role}
+          deleteItemFromWarehouse={deleteItemFromWarehouse}
+          changeItemMaxQty={changeItemMaxQty}
+        />
+      ))}
+
+      {/* show the pagination option when the items in not empty and the internet connection is well */}
+      {count > 0 && isOnline && (
+        <ReactPaginate
+          previousLabel={t("previous")}
+          nextLabel={t("next")}
+          pageCount={Math.ceil(count / 9)}
+          forcePage={initialPage}
+          onPageChange={handlePageClick}
+          containerClassName={paginationStyles.pagination}
+          previousLinkClassName={paginationStyles.pagination_link}
+          nextLinkClassName={paginationStyles.pagination_link}
+          disabledClassName={paginationStyles.pagination_link_disabled}
+          activeClassName={paginationStyles.pagination_link_active}
+        />
+      )}
+
+      {count === 0 && status !== "loading" && (
         <>
-          <TableHeader>
-            <label
-              className={[
-                tableStyles.label_medium,
-                generalStyles.flex_center_container,
-              ].join(" ")}
-              onClick={sortByName}
-            >
-              {t("item-trade-name")}
-              {sortNameField === 1 && (
-                <AiOutlineSortAscending style={{ marginRight: "4px" }} />
-              )}
-              {sortNameField === -1 && (
-                <AiOutlineSortDescending style={{ marginRight: "4px" }} />
-              )}
-              {sortNameField === 0 && (
-                <TiArrowUnsorted style={{ marginRight: "4px" }} />
-              )}
-            </label>
-
-            {((user.type === UserTypeConstants.ADMIN &&
-              role === UserTypeConstants.ADMIN) ||
-              (user.type === UserTypeConstants.ADMIN &&
-                role === UserTypeConstants.WAREHOUSE) ||
-              user.type === UserTypeConstants.WAREHOUSE) && (
-              <label className={tableStyles.label_medium}>
-                {t("user-company-name")}
-              </label>
-            )}
-            <label className={tableStyles.label_small}>
-              {t("item-status")}
-            </label>
-
-            <label className={tableStyles.label_small}>
-              {t("item-formula")}
-            </label>
-
-            <label
-              className={[
-                tableStyles.label_small,
-                generalStyles.flex_center_container,
-              ].join(" ")}
-              onClick={sortByCaliber}
-            >
-              {t("item-caliber")}
-              {sortCaliberField === 1 && (
-                <AiOutlineSortAscending style={{ marginRight: "4px" }} />
-              )}
-              {sortCaliberField === -1 && (
-                <AiOutlineSortDescending style={{ marginRight: "4px" }} />
-              )}
-              {sortCaliberField === 0 && (
-                <TiArrowUnsorted style={{ marginRight: "4px" }} />
-              )}
-            </label>
-
-            <label className={tableStyles.label_small}>
-              {t("item-packing")}
-            </label>
-
-            <label
-              className={[
-                tableStyles.label_small,
-                generalStyles.flex_center_container,
-              ].join(" ")}
-              onClick={sortByPrice}
-            >
-              {t("item-price")}
-              {sortPriceField === 1 && (
-                <AiOutlineSortAscending style={{ marginRight: "4px" }} />
-              )}
-              {sortPriceField === -1 && (
-                <AiOutlineSortDescending style={{ marginRight: "4px" }} />
-              )}
-              {sortPriceField === 0 && (
-                <TiArrowUnsorted style={{ marginRight: "4px" }} />
-              )}
-            </label>
-
-            <label
-              className={[
-                tableStyles.label_small,
-                generalStyles.flex_center_container,
-              ].join(" ")}
-              onClick={sortByCustomerPrice}
-            >
-              {t("item-customer-price")}
-              {sortCustomerPriceField === 1 && (
-                <AiOutlineSortAscending style={{ marginRight: "4px" }} />
-              )}
-              {sortCustomerPriceField === -1 && (
-                <AiOutlineSortDescending style={{ marginRight: "4px" }} />
-              )}
-              {sortCustomerPriceField === 0 && (
-                <TiArrowUnsorted style={{ marginRight: "4px" }} />
-              )}
-            </label>
-
-            {((user.type === UserTypeConstants.ADMIN &&
-              role === UserTypeConstants.WAREHOUSE) ||
-              user.type === UserTypeConstants.WAREHOUSE) && (
-              <>
-                <label className={tableStyles.label_small}>
-                  {t("item-max-qty")}
-                </label>
-                <label className={tableStyles.label_xsmall}></label>
-                <label className={tableStyles.label_xsmall}></label>
-              </>
-            )}
-          </TableHeader>
-
-          {items.map((item) => (
-            <CompanyItemRow
-              key={uuidv4()}
-              item={item}
-              user={user}
-              company={company}
-              warehouse={warehouse}
-              role={role}
-              deleteItemFromWarehouse={deleteItemFromWarehouse}
-              changeItemMaxQty={changeItemMaxQty}
-            />
-          ))}
-
-          <div style={{ height: "10px" }}></div>
-
-          <ReactPaginate
-            previousLabel={t("previous")}
-            nextLabel={t("next")}
-            pageCount={Math.ceil(count / 9)}
-            forcePage={initialPage}
-            onPageChange={handlePageClick}
-            containerClassName={paginationStyles.pagination}
-            previousLinkClassName={paginationStyles.pagination_link}
-            nextLinkClassName={paginationStyles.pagination_link}
-            disabledClassName={paginationStyles.pagination_link_disabled}
-            activeClassName={paginationStyles.pagination_link_active}
-          />
+          <NoContent msg={t("no-items-found")} />
         </>
-      ) : (
-        <>
-          <div className={generalStyles.no_content_div}>
-            <GiMedicines className={generalStyles.no_content_icon} />
-            <p className={generalStyles.fc_white}>{t("no-items-found")}</p>
-          </div>
-        </>
+      )}
+
+      {status === "loading" && <ActionLoader allowCancel={false} />}
+
+      {error && (
+        <Toast
+          bgColor={Colors.FAILED_COLOR}
+          foreColor="#fff"
+          toastText={t(error)}
+          actionAfterTimeout={() => dispatch(resetStatus())}
+        />
+      )}
+
+      {activeStatus === "loading" && <ActionLoader allowCancel={false} />}
+
+      {activeStatus === "succeeded" && (
+        <Toast
+          bgColor={Colors.SUCCEEDED_COLOR}
+          foreColor="#fff"
+          toastText={t("update-succeeded")}
+          actionAfterTimeout={() => dispatch(resetActiveStatus())}
+        />
+      )}
+
+      {activeError && (
+        <Toast
+          bgColor={Colors.FAILED_COLOR}
+          foreColor="#fff"
+          toastText={t(activeError)}
+          actionAfterTimeout={() => dispatch(resetActiveStatus())}
+        />
       )}
     </>
   ) : (

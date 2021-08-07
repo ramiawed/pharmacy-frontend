@@ -1,5 +1,8 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../../api/pharmacy";
+import axios from "axios";
+
+let CancelToken;
+let source;
 
 const initialState = {
   status: "idle",
@@ -8,18 +11,43 @@ const initialState = {
   error: "",
 };
 
+export const cancelOperation = () => {
+  if (source) {
+    source.cancel("operation canceled by user");
+  }
+};
+
 export const getFavorites = createAsyncThunk(
   "favorites/getFavorites",
   async ({ token }, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`/favorites`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.get(
+        `http://localhost:8000/api/v1/favorites`,
+        {
+          timeout: 10000,
+          cancelToken: source.token,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       return response.data;
     } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
       return rejectWithValue(err.response.data);
     }
   }
@@ -29,10 +57,15 @@ export const addFavorite = createAsyncThunk(
   "favorites/addFavorite",
   async ({ obj, token }, { rejectWithValue }) => {
     try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
       const response = await axios.post(
-        "/favorites/add",
+        "http://localhost:8000/api/v1/favorites/add",
         { favoriteId: obj.favoriteId },
         {
+          timeout: 10000,
+          cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -41,6 +74,17 @@ export const addFavorite = createAsyncThunk(
 
       return response.data;
     } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
       return rejectWithValue(err.response.data);
     }
   }
@@ -50,10 +94,15 @@ export const removeFavorite = createAsyncThunk(
   "favorites/removeFavorite",
   async ({ obj, token }, { rejectWithValue }) => {
     try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
       const response = await axios.post(
-        "/favorites/remove",
+        "http://localhost:8000/api/v1/favorites/remove",
         { favoriteId: obj.favoriteId },
         {
+          timeout: 10000,
+          cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -62,6 +111,17 @@ export const removeFavorite = createAsyncThunk(
 
       return response.data;
     } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
       return rejectWithValue(err.response.data);
     }
   }
@@ -71,10 +131,15 @@ export const addFavoriteItem = createAsyncThunk(
   "favorites/addFavoriteItem",
   async ({ obj, token }, { rejectWithValue }) => {
     try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
       const response = await axios.post(
-        "/favorites/add/items",
+        "http://localhost:8000/api/v1/favorites/add/items",
         { favoriteItemId: obj.favoriteItemId },
         {
+          timeout: 10000,
+          cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -83,6 +148,17 @@ export const addFavoriteItem = createAsyncThunk(
 
       return response.data;
     } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
       return rejectWithValue(err.response.data);
     }
   }
@@ -92,10 +168,15 @@ export const removeFavoriteItem = createAsyncThunk(
   "favorites/removeFavoriteItem",
   async ({ obj, token }, { rejectWithValue }) => {
     try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
       const response = await axios.post(
-        "/favorites/remove/items",
+        "http://localhost:8000/api/v1/favorites/remove/items",
         { favoriteItemId: obj.favoriteItemId },
         {
+          timeout: 10000,
+          cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -104,6 +185,17 @@ export const removeFavoriteItem = createAsyncThunk(
 
       return response.data;
     } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
       return rejectWithValue(err.response.data);
     }
   }
@@ -120,11 +212,12 @@ export const favoritesSlice = createSlice({
       state.error = "";
     },
     resetFavoriteError: (state) => {
+      state.status = "idle";
       state.error = "";
     },
   },
   extraReducers: {
-    [getFavorites.pending]: (state, action) => {
+    [getFavorites.pending]: (state) => {
       state.status = "loading";
       state.error = null;
     },
@@ -136,11 +229,17 @@ export const favoritesSlice = createSlice({
       }
       state.error = null;
     },
-    [getFavorites.rejected]: (state, { error, meta, payload }) => {
+    [getFavorites.rejected]: (state, { payload }) => {
       state.status = "failed";
-      state.error = payload.message;
+      if (payload === "timeout") {
+        state.error = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.error = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.error = "network failed";
+      } else state.error = payload.message;
     },
-    [addFavorite.pending]: (state, action) => {
+    [addFavorite.pending]: (state) => {
       state.status = "loading";
       state.error = null;
     },
@@ -152,11 +251,17 @@ export const favoritesSlice = createSlice({
       ];
       state.error = null;
     },
-    [addFavorite.rejected]: (state, { error, meta, payload }) => {
+    [addFavorite.rejected]: (state, { payload }) => {
       state.status = "failed";
-      state.error = payload.message;
+      if (payload === "timeout") {
+        state.error = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.error = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.error = "network failed";
+      } else state.error = payload.message;
     },
-    [addFavoriteItem.pending]: (state, action) => {
+    [addFavoriteItem.pending]: (state) => {
       state.status = "loading";
       state.error = null;
     },
@@ -168,11 +273,17 @@ export const favoritesSlice = createSlice({
       ];
       state.error = null;
     },
-    [addFavorite.rejected]: (state, { error, meta, payload }) => {
+    [addFavorite.rejected]: (state, { payload }) => {
       state.status = "failed";
-      state.error = payload.message;
+      if (payload === "timeout") {
+        state.error = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.error = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.error = "network failed";
+      } else state.error = payload.message;
     },
-    [removeFavorite.pending]: (state, action) => {
+    [removeFavorite.pending]: (state) => {
       state.status = "loading";
       state.error = null;
     },
@@ -183,9 +294,15 @@ export const favoritesSlice = createSlice({
       );
       state.error = null;
     },
-    [removeFavorite.rejected]: (state, { error, meta, payload }) => {
+    [removeFavorite.rejected]: (state, { payload }) => {
       state.status = "failed";
-      state.error = payload.message;
+      if (payload === "timeout") {
+        state.error = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.error = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.error = "network failed";
+      } else state.error = payload.message;
     },
     [removeFavoriteItem.pending]: (state, action) => {
       state.status = "loading";
@@ -198,14 +315,20 @@ export const favoritesSlice = createSlice({
       );
       state.error = null;
     },
-    [removeFavoriteItem.rejected]: (state, { error, meta, payload }) => {
+    [removeFavoriteItem.rejected]: (state, { payload }) => {
       state.status = "failed";
-      state.error = payload.message;
+      if (payload === "timeout") {
+        state.error = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.error = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.error = "network failed";
+      } else state.error = payload.message;
     },
   },
 });
 
-export const { resetFavorites } = favoritesSlice.actions;
+export const { resetFavorites, resetFavoriteError } = favoritesSlice.actions;
 
 export const selectFavoritesPartners = (state) =>
   state.favorites.favorites_partners;

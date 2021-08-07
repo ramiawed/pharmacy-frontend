@@ -9,17 +9,16 @@ import FavoriteRow from "../../components/favorite-row/favorite-row.component";
 import PartnerRow from "../../components/partner-row/partner-row.component";
 import PartnerCard from "../../components/partner-card/partner-card.component";
 import SearchContainer from "../../components/search-container/search-container.component";
-import ReactLoading from "react-loading";
 import ActionIcon from "../../components/action-icon/action-icon.component";
 import Button from "../../components/button/button.component";
 import Toast from "../../components/toast/toast.component";
 import ActionLoader from "../../components/action-loader/action-loader.component";
+import NoContent from "../../components/no-content/no-content.component";
 
 // react-icons
 import { FaListUl } from "react-icons/fa";
 import { RiRefreshLine } from "react-icons/ri";
 import { AiFillAppstore, AiFillStar } from "react-icons/ai";
-import { SiAtAndT } from "react-icons/si";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -37,15 +36,19 @@ import {
   resetSearchName,
   selectWarehousesPageState,
   resetStatus,
+  cancelOperation,
 } from "../../redux/warehouse/warehousesSlice";
-import { selectFavoritesPartners } from "../../redux/favorites/favoritesSlice";
+import {
+  resetFavoriteError,
+  selectFavorites,
+  selectFavoritesPartners,
+} from "../../redux/favorites/favoritesSlice";
 
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
 
 // styles
 import generalStyles from "../../style.module.scss";
-import NoContent from "../../components/no-content/no-content.component";
 
 function WarehousePage() {
   const { t } = useTranslation();
@@ -59,6 +62,7 @@ function WarehousePage() {
 
   // select favorites from favoriteSlice
   const favorites = useSelector(selectFavoritesPartners);
+  const { error: favoriteError } = useSelector(selectFavorites);
 
   // own state
   // expanded state for expandable container
@@ -105,6 +109,11 @@ function WarehousePage() {
     }
 
     window.scrollTo(0, 0);
+    return () => {
+      if (status === "loading") {
+        cancelOperation();
+      }
+    };
   }, []);
 
   return user ? (
@@ -114,38 +123,40 @@ function WarehousePage() {
           {t("warehouses")} <span>{count}</span>
         </h2>
 
-        <SearchContainer searchAction={handleEnterPress}>
-          <SearchInput
-            label="user-name"
-            id="search-name"
-            type="text"
-            value={searchName}
-            onchange={(e) => {
-              dispatch(changeSearchName(e.target.value));
-            }}
-            placeholder="search"
-            onEnterPress={handleEnterPress}
-            resetField={() => dispatch(resetSearchName())}
-          />
+        <div style={{ position: "relative", height: "50px" }}>
+          <SearchContainer searchAction={handleEnterPress}>
+            <SearchInput
+              label="user-name"
+              id="search-name"
+              type="text"
+              value={searchName}
+              onchange={(e) => {
+                dispatch(changeSearchName(e.target.value));
+              }}
+              placeholder="search"
+              onEnterPress={handleEnterPress}
+              resetField={() => dispatch(resetSearchName())}
+            />
 
-          <SearchInput
-            label="user-city"
-            id="search-city"
-            type="text"
-            value={searchCity}
-            onchange={(e) => {
-              dispatch(changeSearchCity(e.target.value));
-            }}
-            placeholder="search"
-            onEnterPress={handleEnterPress}
-            resetField={() => dispatch(resetSearchCity())}
-          />
-        </SearchContainer>
+            <SearchInput
+              label="user-city"
+              id="search-city"
+              type="text"
+              value={searchCity}
+              onchange={(e) => {
+                dispatch(changeSearchCity(e.target.value));
+              }}
+              placeholder="search"
+              onEnterPress={handleEnterPress}
+              resetField={() => dispatch(resetSearchCity())}
+            />
+          </SearchContainer>
+        </div>
 
         <div className={generalStyles.actions}>
           {/* refresh */}
           <ActionIcon
-            selected={false}
+            foreColor={Colors.SECONDARY_COLOR}
             tooltip={t("refresh-tooltip")}
             onclick={handleEnterPress}
             icon={() => <RiRefreshLine />}
@@ -154,7 +165,9 @@ function WarehousePage() {
           {/* show favorites */}
           <div className={generalStyles.relative}>
             <ActionIcon
-              selected={showFavorites}
+              foreColor={
+                showFavorites ? Colors.SUCCEEDED_COLOR : Colors.SECONDARY_COLOR
+              }
               tooltip={t("show-favorite-tooltip")}
               onclick={() => setShowFavorites(!showFavorites)}
               icon={() => <AiFillStar />}
@@ -186,7 +199,11 @@ function WarehousePage() {
 
           {/* display card option */}
           <ActionIcon
-            selected={displayType === "card"}
+            foreColor={
+              displayType === "card"
+                ? Colors.SUCCEEDED_COLOR
+                : Colors.SECONDARY_COLOR
+            }
             tooltip={t("show-item-as-card-tooltip")}
             onclick={() => {
               dispatch(changeDisplayType("card"));
@@ -197,7 +214,11 @@ function WarehousePage() {
 
           {/* display list option */}
           <ActionIcon
-            selected={displayType === "list"}
+            foreColor={
+              displayType === "list"
+                ? Colors.SUCCEEDED_COLOR
+                : Colors.SECONDARY_COLOR
+            }
             tooltip={t("show-item-as-row-tooltip")}
             onclick={() => {
               dispatch(changeDisplayType("list"));
@@ -231,7 +252,7 @@ function WarehousePage() {
       {/* show loading indicator when data loading from db */}
       {status === "loading" && <ActionLoader allowCancel={false} />}
 
-      {warehouses.length === 0 ? (
+      {warehouses.length === 0 && status !== "loading" ? (
         <>
           <NoContent msg={t("no-warehouses")} />
         </>
@@ -260,6 +281,18 @@ function WarehousePage() {
           }}
         >
           {t(error)}
+        </Toast>
+      )}
+
+      {favoriteError && (
+        <Toast
+          bgColor={Colors.FAILED_COLOR}
+          foreColor="#fff"
+          actionAfterTimeout={() => {
+            dispatch(resetFavoriteError());
+          }}
+        >
+          {t(favoriteError)}
         </Toast>
       )}
     </>

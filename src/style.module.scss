@@ -206,6 +206,10 @@
 .margin_h_4 {
   margin: 0 4px;
 }
+
+.margin_v_4 {
+  margin: 4px 0;
+}
 // end padding style
 
 .block {
@@ -224,6 +228,7 @@
 // style the div that contains the favorite row
 .favorites_content {
   min-width: 200px;
+  max-height: 300px;
 
   box-shadow: 0 0 3px rgba($color: $secondary-color, $alpha: 0.5);
   border-radius: 6px;
@@ -232,7 +237,7 @@
   top: 20px;
   left: 50%;
 
-  // overflow: scroll-y;
+  overflow: auto;
   z-index: 10;
 }
 

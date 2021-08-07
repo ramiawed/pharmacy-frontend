@@ -13,7 +13,6 @@ function SearchContainer({ children, searchAction }) {
   const { t } = useTranslation();
 
   let childrenArray = React.Children.toArray(children);
-  // const [expanded, setExpanded] = useState(true);
   const [moreSearchOptions, setMoreSearchOptions] = useState(false);
 
   return (

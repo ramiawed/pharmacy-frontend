@@ -10,6 +10,7 @@ import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { GiMedicines } from "react-icons/gi";
 import { MdDelete, MdAddCircle } from "react-icons/md";
 import { TiShoppingCart } from "react-icons/ti";
+import { VscLoading } from "react-icons/vsc";
 
 // redux-stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -35,24 +36,35 @@ import { Colors, UserTypeConstants } from "../../utils/constants.js";
 import { Link } from "react-router-dom";
 import { statisticsItemFavorites } from "../../redux/statistics/statisticsSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
+import ActionIcon from "../action-icon/action-icon.component";
 
 function ItemCard({ companyItem }) {
-  const user = useSelector(selectUser);
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
+  const isOnline = useSelector(selectOnlineStatus);
+  const user = useSelector(selectUser);
   const favorites = useSelector(selectFavoritesItems);
   const token = useSelector(selectToken);
   const [showModal, setShowModal] = useState(false);
 
-  const [connectionError, setConnectionError] = useState("");
+  const [changeFavoriteLoading, setChangeFavoriteLoading] = useState(false);
+  const [changeAddToWarehouseLoading, setChangeAddToWarehouseLoading] =
+    useState(false);
 
   // method to handle add company to user's favorite
   const addItemToFavoriteItems = () => {
     // check the internet connection
-    if (!checkConnection()) {
-      setConnectionError("no-internet-connection");
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
       return;
     }
+
+    setChangeFavoriteLoading(true);
 
     dispatch(
       addFavoriteItem({ obj: { favoriteItemId: companyItem._id }, token })
@@ -62,23 +74,45 @@ function ItemCard({ companyItem }) {
         dispatch(
           statisticsItemFavorites({ obj: { itemId: companyItem._id }, token })
         );
+        setChangeFavoriteLoading(false);
+      })
+      .catch(() => {
+        setChangeFavoriteLoading(false);
       });
   };
 
   // method to handle remove company from user's favorite
   const removeItemFromFavoritesItems = () => {
     // check the internet connection
-    if (!checkConnection()) {
-      setConnectionError("no-internet-connection");
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
       return;
     }
 
+    setChangeFavoriteLoading(true);
+
     dispatch(
       removeFavoriteItem({ obj: { favoriteItemId: companyItem._id }, token })
-    );
+    )
+      .then(unwrapResult)
+      .then(() => {
+        setChangeFavoriteLoading(false);
+      })
+      .catch(() => {
+        setChangeFavoriteLoading(false);
+      });
   };
 
+  // method to handle add item to warehouse
   const addItemToWarehouseHandler = () => {
+    // check the internet connection
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
+    setChangeAddToWarehouseLoading(true);
+
     dispatch(
       addItemToWarehouse({
         obj: {
@@ -87,10 +121,26 @@ function ItemCard({ companyItem }) {
         },
         token,
       })
-    );
+    )
+      .then(unwrapResult)
+      .then(() => {
+        setChangeAddToWarehouseLoading(false);
+      })
+      .catch(() => {
+        setChangeAddToWarehouseLoading(false);
+      });
   };
 
+  // method to handle remove item from warehouse
   const removeItemFromWarehouseHandler = () => {
+    // check the internet connection
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
+    setChangeAddToWarehouseLoading(true);
+
     dispatch(
       removeItemFromWarehouse({
         obj: {
@@ -99,9 +149,29 @@ function ItemCard({ companyItem }) {
         },
         token,
       })
-    );
+    )
+      .then(unwrapResult)
+      .then(() => {
+        setChangeAddToWarehouseLoading(false);
+      })
+      .catch(() => {
+        setChangeAddToWarehouseLoading(false);
+      });
   };
 
+  const dispatchStatisticsHandler = () => {
+    if (
+      user.type === UserTypeConstants.PHARMACY ||
+      user.type === UserTypeConstants.NORMAL
+    ) {
+      dispatch(
+        statisticsItemFavorites({
+          obj: { itemId: companyItem._id },
+          token,
+        })
+      );
+    }
+  };
   return (
     <div className={styles.partner_container}>
       <div
@@ -111,38 +181,34 @@ function ItemCard({ companyItem }) {
           generalStyles.padding_h_6,
         ].join(" ")}
       >
-        {user.type === UserTypeConstants.WAREHOUSE &&
+        {changeAddToWarehouseLoading ? (
+          <ActionIcon
+            icon={() => (
+              <VscLoading className={generalStyles.loading} size={20} />
+            )}
+            onclick={() => {}}
+            foreColor={Colors.SECONDARY_COLOR}
+          />
+        ) : (
+          user.type === UserTypeConstants.WAREHOUSE &&
           (companyItem.warehouses
             .map((w) => w.warehouse._id)
             .includes(user._id) ? (
-            <div
-              className={[
-                generalStyles.icon,
-                generalStyles.fc_red,
-                // generalStyles.position_top_5_left_40,
-              ].join(" ")}
-              onClick={removeItemFromWarehouseHandler}
-            >
-              <MdDelete size={24} />
-              <div className={generalStyles.tooltip}>
-                {t("remove-from-warehouse-tooltip")}
-              </div>
-            </div>
+            <ActionIcon
+              icon={() => <MdDelete size={24} />}
+              onclick={removeItemFromWarehouseHandler}
+              tooltip={t("remove-from-warehouse-tooltip")}
+              foreColor={Colors.FAILED_COLOR}
+            />
           ) : (
-            <div
-              className={[
-                generalStyles.icon,
-                generalStyles.fc_green,
-                // generalStyles.position_top_5_left_40,
-              ].join(" ")}
-              onClick={addItemToWarehouseHandler}
-            >
-              <MdAddCircle size={30} />
-              <div className={generalStyles.tooltip}>
-                {t("add-to-warehouse-tooltip")}
-              </div>
-            </div>
-          ))}
+            <ActionIcon
+              icon={() => <MdAddCircle size={24} />}
+              onclick={addItemToWarehouseHandler}
+              tooltip={t("add-to-warehouse-tooltip")}
+              foreColor={Colors.SUCCEEDED_COLOR}
+            />
+          ))
+        )}
 
         {user.type === UserTypeConstants.PHARMACY &&
           companyItem.warehouses.length > 0 && (
@@ -160,33 +226,31 @@ function ItemCard({ companyItem }) {
             </div>
           )}
 
-        <div>
-          {favorites
+        {changeFavoriteLoading ? (
+          <ActionIcon
+            icon={() => (
+              <VscLoading className={generalStyles.loading} size={20} />
+            )}
+            onclick={() => {}}
+            foreColor={Colors.YELLOW_COLOR}
+          />
+        ) : favorites
             .map((favorite) => favorite._id)
             .includes(companyItem._id) ? (
-            <div
-              className={[
-                generalStyles.icon,
-                generalStyles.fc_yellow,
-                // generalStyles.position_top_5_left_5,
-              ].join(" ")}
-              onClick={removeItemFromFavoritesItems}
-            >
-              <AiFillStar size={24} />
-            </div>
-          ) : (
-            <div
-              className={[
-                generalStyles.icon,
-                generalStyles.fc_yellow,
-                // generalStyles.position_top_5_left_5,
-              ].join(" ")}
-              onClick={addItemToFavoriteItems}
-            >
-              <AiOutlineStar size={24} />
-            </div>
-          )}
-        </div>
+          <ActionIcon
+            icon={() => <AiFillStar size={20} />}
+            onclick={removeItemFromFavoritesItems}
+            tooltip={t("remove-from-favorite-tooltip")}
+            foreColor={Colors.YELLOW_COLOR}
+          />
+        ) : (
+          <ActionIcon
+            icon={() => <AiOutlineStar size={20} />}
+            onclick={addItemToFavoriteItems}
+            tooltip={t("add-to-favorite-tooltip")}
+            foreColor={Colors.YELLOW_COLOR}
+          />
+        )}
       </div>
 
       <div className={styles.logo_div}>
@@ -214,19 +278,7 @@ function ItemCard({ companyItem }) {
             ].join(" ")}
           >
             <Link
-              onClick={() => {
-                if (
-                  user.type === UserTypeConstants.PHARMACY ||
-                  user.type === UserTypeConstants.NORMAL
-                ) {
-                  dispatch(
-                    statisticsItemFavorites({
-                      obj: { itemId: companyItem._id },
-                      token,
-                    })
-                  );
-                }
-              }}
+              onClick={dispatchStatisticsHandler}
               to={{
                 pathname: "/item",
                 state: {
@@ -284,18 +336,6 @@ function ItemCard({ companyItem }) {
 
       {showModal && (
         <AddToCartModal item={companyItem} close={() => setShowModal(false)} />
-      )}
-
-      {connectionError && (
-        <Toast
-          bgColor={Colors.FAILED_COLOR}
-          foreColor="#fff"
-          actionAfterTimeout={() => {
-            setConnectionError("");
-          }}
-        >
-          <p>{t(connectionError)}</p>
-        </Toast>
       )}
     </div>
   );

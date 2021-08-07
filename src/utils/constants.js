@@ -32,6 +32,7 @@ export const Colors = {
   SECONDARY_COLOR: "#566092",
   SUCCEEDED_COLOR: "#2aa70b",
   FAILED_COLOR: "#ff787e",
+  YELLOW_COLOR: "#e9b93f",
 };
 
 export const SideNavLinks = {

@@ -1,5 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../../api/pharmacy";
+import axios from "axios";
+import { cacheAdapterEnhancer } from "axios-extensions";
+
+let CancelToken;
+let source;
 
 const initialState = {
   status: "idle",
@@ -19,8 +23,11 @@ const initialState = {
 export const getItems = createAsyncThunk(
   "items/getItems",
   async ({ queryString, token }, { rejectWithValue }) => {
+    CancelToken = axios.CancelToken;
+    source = CancelToken.source;
+
     try {
-      let buildUrl = `/items?page=${queryString.page}&limit=9`;
+      let buildUrl = `http://localhost:8000/api/v1/items?page=${queryString.page}&limit=9`;
 
       if (queryString.companyId) {
         buildUrl = buildUrl + `&companyId=${queryString.companyId}`;
@@ -59,6 +66,8 @@ export const getItems = createAsyncThunk(
       }
 
       const response = await axios.get(buildUrl, {
+        timeout: 10000,
+        cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -66,6 +75,15 @@ export const getItems = createAsyncThunk(
 
       return response.data;
     } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
       return rejectWithValue(err.response.data);
     }
   }
@@ -75,14 +93,32 @@ export const addItem = createAsyncThunk(
   "items/addItem",
   async ({ obj, token }, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/items", obj, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/items",
+        obj,
+        {
+          timeout: 10000,
+          cancelToken: source.token,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       return response.data;
     } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
       return rejectWithValue(err.response.data);
     }
   }
@@ -92,10 +128,15 @@ export const updateItem = createAsyncThunk(
   "items/updateItem",
   async ({ obj, token }, { rejectWithValue }) => {
     try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
       const response = await axios.post(
-        `/items/item/${obj._id}`,
+        `http://localhost:8000/api/v1/items/item/${obj._id}`,
         { ...obj },
         {
+          timeout: 10000,
+          cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -104,6 +145,15 @@ export const updateItem = createAsyncThunk(
 
       return response.data;
     } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
       return rejectWithValue(err.response.data);
     }
   }
@@ -113,14 +163,32 @@ export const addItems = createAsyncThunk(
   "items/addItems",
   async ({ obj, token }, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/items/excel", obj, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.post(
+        "http://localhost:8000/api/v1/items/excel",
+        obj,
+        {
+          timeout: 25000,
+          cancelToken: source.token,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       return response.data;
     } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
       return rejectWithValue(err.response.data);
     }
   }
@@ -130,11 +198,34 @@ export const changeItemActiveState = createAsyncThunk(
   "items/changeActive",
   async ({ obj, token }, { rejectWithValue }) => {
     try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      // const http = axios.create({
+      //   baseURL: "http://localhost:8000/api/v1",
+      //   timeout: 10000,
+      //   cancelToken: source.token,
+      //   headers: {
+      //     "Cache-Control": "no-cache",
+      //     Authorization: `Bearer ${token}`,
+      //   },
+      //   adapter: cacheAdapterEnhancer(axios.defaults.adapter, {
+      //     enabledByDefault: false,
+      //     cacheFlag: "useCache",
+      //   }),
+      // });
+
       const response = await axios.post(
-        `/items/active/${obj.itemId}`,
+        `http://localhost:8000/api/v1/items/active/${obj.itemId}`,
         { action: obj.action },
         {
+          timeout: 10000,
+          cancelToken: source.token,
+
           headers: {
+            "Cache-Control": "no-cache",
+            Pragma: "no-cache",
+            Expires: "0",
             Authorization: `Bearer ${token}`,
           },
         }
@@ -142,6 +233,15 @@ export const changeItemActiveState = createAsyncThunk(
 
       return response.data;
     } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
       return rejectWithValue(err.response.data);
     }
   }
@@ -151,13 +251,31 @@ export const changeItemLogo = createAsyncThunk(
   "items/changeLogo",
   async ({ data, _id, token }, { rejectWithValue }) => {
     try {
-      const response = await axios.post(`/items/upload/${_id}`, data, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.post(
+        `http://localhost:8000/api/v1/items/upload/${_id}`,
+        data,
+        {
+          timeout: 10000,
+          cancelToken: source.token,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       return response.data;
     } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
       return rejectWithValue(err.response.data);
     }
   }
@@ -218,7 +336,7 @@ export const itemsSlice = createSlice({
     },
   },
   extraReducers: {
-    [getItems.pending]: (state, action) => {
+    [getItems.pending]: (state) => {
       state.status = "loading";
     },
     [getItems.fulfilled]: (state, action) => {
@@ -227,35 +345,56 @@ export const itemsSlice = createSlice({
       state.count = action.payload.count;
       state.error = "";
     },
-    [getItems.rejected]: (state, { error, meta, payload }) => {
+    [getItems.rejected]: (state, { payload }) => {
       state.status = "failed";
-      state.error = payload.message;
+
+      if (payload === "timeout") {
+        state.error = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.error = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.error = "network failed";
+      } else state.error = payload.message;
     },
-    [addItem.pending]: (state, action) => {
+    [addItem.pending]: (state) => {
       state.addStatus = "loading";
     },
-    [addItem.fulfilled]: (state, action) => {
+    [addItem.fulfilled]: (state) => {
       state.addStatus = "succeeded";
       // state.items = [...state.items, action.payload.data.item];
       state.addError = "";
     },
-    [addItem.rejected]: (state, { error, meta, payload }) => {
+    [addItem.rejected]: (state, { payload }) => {
       state.addStatus = "failed";
-      state.addError = payload.message;
+
+      if (payload === "timeout") {
+        state.addError = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.addError = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.addError = "network failed";
+      } else state.addError = payload.message;
     },
-    [addItems.pending]: (state, action) => {
-      state.status = "loading";
+    [addItems.pending]: (state) => {
+      state.addStatus = "loading";
     },
-    [addItems.fulfilled]: (state, action) => {
-      state.status = "succeeded";
+    [addItems.fulfilled]: (state) => {
+      state.addStatus = "succeeded";
       // state.items = [...state.items, action.payload.data.items];
-      state.error = "";
+      state.addError = "";
     },
-    [addItems.rejected]: (state, { error, meta, payload }) => {
-      state.status = "failed";
-      state.error = payload.message;
+    [addItems.rejected]: (state, { payload }) => {
+      state.addStatus = "failed";
+
+      if (payload === "timeout") {
+        state.addError = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.addError = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.addError = "network failed";
+      } else state.addError = payload.message;
     },
-    [changeItemActiveState.pending]: (state, action) => {
+    [changeItemActiveState.pending]: (state) => {
       state.activeStatus = "loading";
     },
     [changeItemActiveState.fulfilled]: (state, action) => {
@@ -268,9 +407,16 @@ export const itemsSlice = createSlice({
 
       state.items = newItems;
     },
-    [changeItemActiveState.rejected]: (state, { error, meta, payload }) => {
+    [changeItemActiveState.rejected]: (state, { payload }) => {
       state.activeStatus = "failed";
-      state.activeError = payload.message;
+
+      if (payload === "timeout") {
+        state.activeError = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.activeError = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.activeError = "network failed";
+      } else state.activeError = payload.message;
     },
     [updateItem.pending]: (state, action) => {
       state.updateStatus = "loading";
@@ -285,19 +431,33 @@ export const itemsSlice = createSlice({
 
       state.items = newItems;
     },
-    [updateItem.rejected]: (state, { error, meta, payload }) => {
+    [updateItem.rejected]: (state, { payload }) => {
       state.updateStatus = "failed";
-      state.updateError = payload.message;
+
+      if (payload === "timeout") {
+        state.updateError = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.updateError = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.updateError = "network failed";
+      } else state.updateError = payload.message;
     },
-    [changeItemLogo.pending]: (state, action) => {
+    [changeItemLogo.pending]: (state) => {
       state.changeLogoStatus = "loading";
     },
-    [changeItemLogo.fulfilled]: (state, action) => {
+    [changeItemLogo.fulfilled]: (state) => {
       state.changeLogoStatus = "succeeded";
     },
-    [changeItemLogo.rejected]: (state, { error, meta, payload }) => {
+    [changeItemLogo.rejected]: (state, { payload }) => {
       state.changeLogoStatus = "failed";
-      state.changeLogoError = payload.message;
+
+      if (payload === "timeout") {
+        state.changeLogoError = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.changeLogoError = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.changeLogoError = "network failed";
+      } else state.changeLogoError = payload.message;
     },
   },
 });

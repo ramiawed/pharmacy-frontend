@@ -109,7 +109,6 @@
     "user-approved-success": "تم تفعيل الحساب بنجاح",
     "user-disapproved-success": "تم إلغاء تفعيل الحساب بنجاح",
     "user-approved-failed": "حدث خطأ، اعد المحاولة",
-    
     "user-delete-success": "تم حذف الحساب بنجاح",
     "user-delete-failed": "حدث خطأ أثناء حذف الحساب، أعد المحاولة",
     "user-undo-delete-success": "تم استعادة الحساب من الحذف بنجاح",

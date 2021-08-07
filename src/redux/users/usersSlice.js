@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 // import axios from "../../api/pharmacy";
-import Axios from "axios";
+import axios from "axios";
 
 let CancelToken;
 let source;
@@ -18,12 +18,16 @@ const initialState = {
   resetUserPasswordError: "",
 };
 
+export const cancelOperation = () => {
+  source.cancel("operation canceled by user");
+};
+
 // get the users
 export const getUsers = createAsyncThunk(
   "users/get",
   async ({ queryString, token }, { rejectWithValue }) => {
     try {
-      CancelToken = Axios.CancelToken;
+      CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
       let buildUrl = `/users?page=${queryString.page}&limit=9`;
@@ -80,7 +84,7 @@ export const getUsers = createAsyncThunk(
         buildUrl = buildUrl + `&sort=${queryString.sort.replace(/,/g, " ")}`;
       }
 
-      const response = await Axios.get(
+      const response = await axios.get(
         `http://localhost:8000/api/v1${buildUrl}`,
         {
           timeout: 10000,
@@ -93,28 +97,31 @@ export const getUsers = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      if (Axios.isCancel(err)) {
-        return rejectWithValue("cancel");
-      } else {
-        return rejectWithValue("error");
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
       }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
+      return rejectWithValue(err.response.data);
     }
   }
 );
-
-export const cancelOperation = () => {
-  source.cancel("operation canceled by user");
-};
 
 // change the approve state for a specific user
 export const userApproveChange = createAsyncThunk(
   "users/approve",
   async ({ status, userId, token }, { rejectWithValue }) => {
     try {
-      CancelToken = Axios.CancelToken;
+      CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      const response = await Axios.post(
+      const response = await axios.post(
         `http://localhost:8000/api/v1/users/approve/${userId}`,
         {
           action: status,
@@ -129,11 +136,18 @@ export const userApproveChange = createAsyncThunk(
       );
       return response.data;
     } catch (err) {
-      if (Axios.isCancel(err)) {
-        return rejectWithValue("cancel");
-      } else {
-        return rejectWithValue("error");
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
       }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -143,10 +157,10 @@ export const deleteUser = createAsyncThunk(
   "users/delete",
   async ({ userId, token }, { rejectWithValue }) => {
     try {
-      CancelToken = Axios.CancelToken;
+      CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      const response = await Axios.post(
+      const response = await axios.post(
         `http://localhost:8000/api/v1/users/delete/${userId}`,
         {},
         {
@@ -160,11 +174,18 @@ export const deleteUser = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      if (Axios.isCancel(err)) {
-        return rejectWithValue("cancel");
-      } else {
-        return rejectWithValue("error");
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
       }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -174,10 +195,10 @@ export const undoDeleteUser = createAsyncThunk(
   "users/undoDelete",
   async ({ userId, token }, { rejectWithValue }) => {
     try {
-      CancelToken = Axios.CancelToken;
+      CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      const response = await Axios.post(
+      const response = await axios.post(
         `http://localhost:8000/api/v1/users/reactivate/${userId}`,
         {},
         {
@@ -191,11 +212,18 @@ export const undoDeleteUser = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      if (Axios.isCancel(err)) {
-        return rejectWithValue("cancel");
-      } else {
-        return rejectWithValue("error");
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
       }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -207,10 +235,10 @@ export const resetUserPassword = createAsyncThunk(
     { rejectWithValue }
   ) => {
     try {
-      CancelToken = Axios.CancelToken;
+      CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      const response = await Axios.post(
+      const response = await axios.post(
         `http://localhost:8000/api/v1/users/resetUserPassword`,
         {
           userId,
@@ -228,11 +256,18 @@ export const resetUserPassword = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      if (Axios.isCancel(err)) {
-        return rejectWithValue("cancel");
-      } else {
-        return rejectWithValue("error");
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
       }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
+      return rejectWithValue(err.response.data);
     }
   }
 );
@@ -263,7 +298,7 @@ export const usersSlice = createSlice({
     },
   },
   extraReducers: {
-    [getUsers.pending]: (state, action) => {
+    [getUsers.pending]: (state) => {
       state.status = "loading";
     },
     [getUsers.fulfilled]: (state, action) => {
@@ -274,14 +309,21 @@ export const usersSlice = createSlice({
     },
     [getUsers.rejected]: (state, { payload }) => {
       state.status = "failed";
-      state.error = payload === "cancel" ? "cancel-operation-msg" : "error";
+
+      if (payload === "timeout") {
+        state.error = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.error = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.error = "network failed";
+      } else state.error = payload.message;
     },
-    [userApproveChange.pending]: (state, action) => {
+    [userApproveChange.pending]: (state) => {
       state.activationDeleteStatus = "loading";
       state.activationDeleteStatusMsg = "";
     },
     [userApproveChange.fulfilled]: (state, action) => {
-      state.activationDeleteStatus = "success";
+      state.activationDeleteStatus = "succeeded";
       const newUsers = state.users.map((user) => {
         if (user._id === action.payload.data.user._id) {
           return action.payload.data.user;
@@ -296,17 +338,22 @@ export const usersSlice = createSlice({
       }
     },
     [userApproveChange.rejected]: (state, { payload }) => {
-      console.log(payload);
       state.activationDeleteStatus = "failed";
-      state.activationDeleteStatusMsg =
-        payload === "cancel" ? "cancel-operation-msg" : "user-approved-failed";
+
+      if (payload === "timeout") {
+        state.activationDeleteStatusMsg = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.activationDeleteStatusMsg = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.activationDeleteStatusMsg = "network failed";
+      } else state.activationDeleteStatusMsg = payload.message;
     },
-    [deleteUser.pending]: (state, action) => {
+    [deleteUser.pending]: (state) => {
       state.activationDeleteStatus = "loading";
       state.activationDeleteStatusMsg = "";
     },
     [deleteUser.fulfilled]: (state, action) => {
-      state.activationDeleteStatus = "success";
+      state.activationDeleteStatus = "succeeded";
       const newUsers = state.users.map((user) => {
         if (user._id === action.payload.data.user._id) {
           return action.payload.data.user;
@@ -317,15 +364,21 @@ export const usersSlice = createSlice({
     },
     [deleteUser.rejected]: (state, { payload }) => {
       state.activationDeleteStatus = "failed";
-      state.activationDeleteStatusMsg =
-        payload === "cancel" ? "cancel-operation-msg" : "user-delete-failed";
+
+      if (payload === "timeout") {
+        state.activationDeleteStatusMsg = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.activationDeleteStatusMsg = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.activationDeleteStatusMsg = "network failed";
+      } else state.activationDeleteStatusMsg = payload.message;
     },
     [undoDeleteUser.pending]: (state, action) => {
       state.activationDeleteStatus = "loading";
       state.activationDeleteStatusMsg = "";
     },
     [undoDeleteUser.fulfilled]: (state, action) => {
-      state.activationDeleteStatus = "success";
+      state.activationDeleteStatus = "succeeded";
       const newUsers = state.users.map((user) => {
         if (user._id === action.payload.data.user._id) {
           return action.payload.data.user;
@@ -336,24 +389,32 @@ export const usersSlice = createSlice({
     },
     [undoDeleteUser.rejected]: (state, { payload }) => {
       state.activationDeleteStatus = "failed";
-      state.activationDeleteStatusMsg =
-        payload === "cancel"
-          ? "cancel-operation-msg"
-          : "user-undo-delete-failed";
+
+      if (payload === "timeout") {
+        state.activationDeleteStatusMsg = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.activationDeleteStatusMsg = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.activationDeleteStatusMsg = "network failed";
+      } else state.activationDeleteStatusMsg = payload.message;
     },
-    [resetUserPassword.pending]: (state, action) => {
+    [resetUserPassword.pending]: (state) => {
       state.resetUserPasswordStatus = "loading";
     },
-    [resetUserPassword.fulfilled]: (state, action) => {
-      state.resetUserPasswordStatus = "success";
+    [resetUserPassword.fulfilled]: (state) => {
+      state.resetUserPasswordStatus = "succeeded";
       state.resetUserPasswordError = "";
     },
     [resetUserPassword.rejected]: (state, { payload }) => {
       state.resetUserPasswordStatus = "failed";
-      state.resetUserPasswordError =
-        payload === "cancel"
-          ? "cancel-operation-msg"
-          : "reset-user-password-failed";
+
+      if (payload === "timeout") {
+        state.resetUserPasswordError = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.resetUserPasswordError = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.resetUserPasswordError = "network failed";
+      } else state.resetUserPasswordError = payload.message;
     },
   },
 });

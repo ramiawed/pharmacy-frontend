@@ -23,18 +23,19 @@ import ActionIcon from "../../components/action-icon/action-icon.component";
 import Button from "../../components/button/button.component";
 import Toast from "../../components/toast/toast.component";
 import ActionLoader from "../../components/action-loader/action-loader.component";
+import NoContent from "../../components/no-content/no-content.component";
 
 // react-icons
 import { FaListUl } from "react-icons/fa";
 import { RiRefreshLine } from "react-icons/ri";
 import { AiFillAppstore, AiFillStar } from "react-icons/ai";
-import { SiAtAndT } from "react-icons/si";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
+  cancelOperation,
   changeDisplayType,
   changePage,
   changeSearchCity,
@@ -54,9 +55,6 @@ import { Colors, UserTypeConstants } from "../../utils/constants";
 
 // styles
 import generalStyles from "../../style.module.scss";
-import NoContent from "../../components/no-content/no-content.component";
-
-// import styles from "./companies-page.module.scss";
 
 function CompaniesPage() {
   const { t } = useTranslation();
@@ -133,6 +131,12 @@ function CompaniesPage() {
     }
 
     window.scrollTo(0, 0);
+
+    return () => {
+      if (status === "loading") {
+        cancelOperation();
+      }
+    };
   }, []);
 
   return user ? (
@@ -142,39 +146,46 @@ function CompaniesPage() {
           {t("companies")} <span>{count}</span>
         </h2>
 
-        <SearchContainer searchAction={handleEnterPress}>
-          <SearchInput
-            label="user-name"
-            id="search-name"
-            type="text"
-            value={searchName}
-            onchange={(e) => {
-              // setSearchName(e.target.value);
-              dispatch(changeSearchName(e.target.value));
-            }}
-            placeholder="search"
-            onEnterPress={handleEnterPress}
-            resetField={() => dispatch(resetSearchName())}
-          />
+        <div style={{ position: "relative", height: "50px" }}>
+          <SearchContainer searchAction={handleEnterPress}>
+            <SearchInput
+              label="user-name"
+              id="search-name"
+              type="text"
+              value={searchName}
+              onchange={(e) => {
+                // setSearchName(e.target.value);
+                dispatch(changeSearchName(e.target.value));
+              }}
+              placeholder="search"
+              onEnterPress={handleEnterPress}
+              resetField={() => dispatch(resetSearchName())}
+            />
 
-          <SearchInput
-            label="user-city"
-            id="search-city"
-            type="text"
-            value={searchCity}
-            onchange={(e) => {
-              dispatch(changeSearchCity(e.target.value));
-            }}
-            placeholder="search"
-            onEnterPress={handleEnterPress}
-            resetField={() => dispatch(resetSearchCity())}
-          />
-        </SearchContainer>
+            <SearchInput
+              label="user-city"
+              id="search-city"
+              type="text"
+              value={searchCity}
+              onchange={(e) => {
+                dispatch(changeSearchCity(e.target.value));
+              }}
+              placeholder="search"
+              onEnterPress={handleEnterPress}
+              resetField={() => dispatch(resetSearchCity())}
+            />
+          </SearchContainer>
+        </div>
 
-        <div className={generalStyles.actions}>
+        <div
+          className={[generalStyles.actions, generalStyles.margin_v_4].join(
+            " "
+          )}
+        >
           {/* refresh */}
           <ActionIcon
             selected={false}
+            foreColor={Colors.SECONDARY_COLOR}
             tooltip={t("refresh-tooltip")}
             onclick={handleEnterPress}
             icon={() => <RiRefreshLine />}
@@ -183,7 +194,9 @@ function CompaniesPage() {
           {/* show favorites */}
           <div className={generalStyles.relative}>
             <ActionIcon
-              selected={showFavorites}
+              foreColor={
+                showFavorites ? Colors.SUCCEEDED_COLOR : Colors.SECONDARY_COLOR
+              }
               tooltip={t("show-favorite-tooltip")}
               onclick={() => setShowFavorites(!showFavorites)}
               icon={() => <AiFillStar />}
@@ -215,7 +228,11 @@ function CompaniesPage() {
 
           {/* display card option */}
           <ActionIcon
-            selected={displayType === "card"}
+            foreColor={
+              displayType === "card"
+                ? Colors.SUCCEEDED_COLOR
+                : Colors.SECONDARY_COLOR
+            }
             tooltip={t("show-item-as-card-tooltip")}
             onclick={() => {
               dispatch(changeDisplayType("card"));
@@ -226,7 +243,11 @@ function CompaniesPage() {
 
           {/* display list option */}
           <ActionIcon
-            selected={displayType === "list"}
+            foreColor={
+              displayType === "list"
+                ? Colors.SUCCEEDED_COLOR
+                : Colors.SECONDARY_COLOR
+            }
             tooltip={t("show-item-as-row-tooltip")}
             onclick={() => {
               dispatch(changeDisplayType("list"));

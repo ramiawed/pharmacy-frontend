@@ -9,13 +9,12 @@
   color: $secondary-color;
 
   position: absolute;
-  top: 0;
-  left: 0;
+  left: -150px;
 }
 
 .search_container.expanded {
   width: 300px;
-  padding: 4px 0;
+  padding: 8px 4px;
   padding-left: 3px;
 
   box-shadow: 0 0 3px rgba($color: #000000, $alpha: 0.5);

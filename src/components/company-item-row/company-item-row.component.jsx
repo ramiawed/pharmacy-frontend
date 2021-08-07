@@ -9,6 +9,8 @@ import { Link } from "react-router-dom";
 
 // components
 import Modal from "../modal/modal.component";
+import OffersModal from "../offers-modal/offers-modal.component";
+import ActionIcon from "../action-icon/action-icon.component";
 
 // react-icons
 import { AiFillUnlock, AiFillLock } from "react-icons/ai";
@@ -20,8 +22,11 @@ import tableStyles from "../table.module.scss";
 import rowStyles from "../row.module.scss";
 
 // constants
-import { UserTypeConstants } from "../../utils/constants";
-import OffersModal from "../offers-modal/offers-modal.component";
+import { Colors, UserTypeConstants } from "../../utils/constants";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
 
 function CompanyItemRow({
   item,
@@ -33,8 +38,9 @@ function CompanyItemRow({
   deleteItemFromWarehouse,
 }) {
   const { t } = useTranslation();
-  const [modalObj, setModalObj] = useState({});
+  const isOnline = useSelector(selectOnlineStatus);
 
+  const [modalObj, setModalObj] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [showWarningModal, setShowWarningModal] = useState(false);
   const [showOfferModal, setShowOfferModal] = useState(false);
@@ -63,6 +69,11 @@ function CompanyItemRow({
   };
 
   const handlePressOkOnModal = () => {
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
     dispatch(
       changeItemActiveState({
         obj: {
@@ -77,9 +88,65 @@ function CompanyItemRow({
   };
 
   const handleDeleteItemFromWarehouse = () => {
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
     deleteItemFromWarehouse({ itemId: item._id, warehouseId: warehouse._id });
 
     setShowDeleteFromWarehouseModal(false);
+  };
+
+  const deleteItemHandler = () => {
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
+    if (
+      (user.type === UserTypeConstants.ADMIN && item.company.allowAdmin) ||
+      user.type === UserTypeConstants.COMPANY
+    ) {
+      actionButtonPress("delete");
+    } else {
+      setShowWarningModal(true);
+    }
+  };
+
+  const undoDeleteItemHandler = () => {
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
+    if (
+      (user.type === UserTypeConstants.ADMIN &&
+        role === UserTypeConstants.COMPANY &&
+        item.company.allowAdmin) ||
+      user.type === UserTypeConstants.COMPANY
+    ) {
+      actionButtonPress("undo-delete");
+    } else {
+      setShowWarningModal(true);
+    }
+  };
+
+  const deleteFromWarehouseHandler = () => {
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
+    if (
+      (user.type === UserTypeConstants.ADMIN &&
+        role === UserTypeConstants.WAREHOUSE &&
+        warehouse.allowAdmin) ||
+      user.type === UserTypeConstants.WAREHOUSE
+    ) {
+      setShowDeleteFromWarehouseModal(true);
+    } else {
+      setShowWarningModal(true);
+    }
   };
 
   return (
@@ -120,56 +187,33 @@ function CompanyItemRow({
             {item.company.name}
           </label>
         )}
-        <label className={tableStyles.label_small}>
+
+        <label
+          className={[
+            tableStyles.label_small,
+            generalStyles.flex_center_container,
+          ].join(" ")}
+        >
           {item.isActive ? (
-            <div
-              className={[
-                generalStyles.icon,
-                generalStyles.fc_green,
-                generalStyles.margin_h_auto,
-              ].join(" ")}
-              onClick={() => {
-                if (
-                  (user.type === UserTypeConstants.ADMIN &&
-                    item.company.allowAdmin) ||
-                  user.type === UserTypeConstants.COMPANY
-                ) {
-                  actionButtonPress("delete");
-                } else {
-                  setShowWarningModal(true);
-                }
-              }}
-            >
-              <AiFillUnlock />
-            </div>
+            <ActionIcon
+              icon={() => <AiFillUnlock />}
+              foreColor={Colors.SUCCEEDED_COLOR}
+              onclick={deleteItemHandler}
+            />
           ) : (
-            <div
-              className={[
-                generalStyles.icon,
-                generalStyles.fc_red,
-                generalStyles.margin_h_auto,
-              ].join(" ")}
-              onClick={() => {
-                if (
-                  (user.type === UserTypeConstants.ADMIN &&
-                    role === UserTypeConstants.COMPANY &&
-                    item.company.allowAdmin) ||
-                  user.type === UserTypeConstants.COMPANY
-                ) {
-                  actionButtonPress("undo-delete");
-                } else {
-                  setShowWarningModal(true);
-                }
-              }}
-            >
-              <AiFillLock />
-            </div>
+            <ActionIcon
+              icon={() => <AiFillLock />}
+              foreColor={Colors.FAILED_COLOR}
+              onclick={undoDeleteItemHandler}
+            />
           )}
         </label>
+
         <label className={tableStyles.label_small}>{item.formula}</label>
         <label className={tableStyles.label_small}>{item.caliber}</label>
         <label className={tableStyles.label_small}>{item.packing}</label>
         <label className={tableStyles.label_small}>{item.price}</label>
+
         <label className={tableStyles.label_small}>{item.customer_price}</label>
         {((user.type === UserTypeConstants.ADMIN &&
           role === UserTypeConstants.WAREHOUSE) ||
@@ -192,48 +236,36 @@ function CompanyItemRow({
                   })
                 }
                 disabled={
-                  user.type === UserTypeConstants.ADMIN &&
-                  role === UserTypeConstants.WAREHOUSE &&
-                  !warehouse?.allowAdmin
+                  (user.type === UserTypeConstants.ADMIN &&
+                    role === UserTypeConstants.WAREHOUSE &&
+                    !warehouse?.allowAdmin) ||
+                  !isOnline
                 }
               />
             </label>
-            <label className={tableStyles.label_xsmall}>
-              <div
-                className={[
-                  generalStyles.icon,
-                  generalStyles.fc_red,
-                  generalStyles.margin_h_auto,
-                ].join(" ")}
-                onClick={() => {
-                  if (
-                    (user.type === UserTypeConstants.ADMIN &&
-                      role === UserTypeConstants.WAREHOUSE &&
-                      warehouse.allowAdmin) ||
-                    user.type === UserTypeConstants.WAREHOUSE
-                  ) {
-                    setShowDeleteFromWarehouseModal(true);
-                  } else {
-                    setShowWarningModal(true);
-                  }
-                }}
-              >
-                <MdDelete size={20} />
-              </div>
+
+            <label
+              className={[
+                tableStyles.label_xsmall,
+                generalStyles.flex_center_container,
+              ].join(" ")}
+            >
+              <ActionIcon
+                icon={() => <MdDelete size={20} />}
+                onclick={deleteFromWarehouseHandler}
+                foreColor={Colors.FAILED_COLOR}
+              />
             </label>
+
             <label className={tableStyles.label_xsmall}>
-              <div
-                className={[
-                  generalStyles.icon,
-                  generalStyles.margin_h_auto,
-                ].join(" ")}
-                onClick={() => {
+              <ActionIcon
+                icon={() => <MdLocalOffer size={20} />}
+                tooltip={t("nav-offers")}
+                foreColor={Colors.SECONDARY_COLOR}
+                onclick={() => {
                   setShowOfferModal(true);
                 }}
-              >
-                <MdLocalOffer size={20} />
-                <div className={generalStyles.tooltip}>{t("nav-offers")}</div>
-              </div>
+              />
             </label>
           </>
         )}

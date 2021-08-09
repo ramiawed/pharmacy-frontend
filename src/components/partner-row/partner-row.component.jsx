@@ -33,6 +33,7 @@ import rowStyles from "../row.module.scss";
 
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
+import Icon from "../action-icon/action-icon.component";
 
 function PartnerRow({ user }) {
   const { t } = useTranslation();
@@ -129,7 +130,7 @@ function PartnerRow({ user }) {
 
         {changeFavoriteLoading ? (
           <div className={rowStyles.padding_end}>
-            <ActionIcon
+            <Icon
               icon={() => (
                 <VscLoading className={generalStyles.loading} size={20} />
               )}
@@ -141,14 +142,14 @@ function PartnerRow({ user }) {
           <div className={rowStyles.padding_end}>
             {favorites &&
             favorites.map((favorite) => favorite._id).includes(user._id) ? (
-              <ActionIcon
+              <Icon
                 icon={() => <AiFillStar size={20} />}
                 onclick={removeCompanyFromFavorite}
                 foreColor={Colors.YELLOW_COLOR}
                 tooltip={t("remove-from-favorite-tooltip")}
               />
             ) : (
-              <ActionIcon
+              <Icon
                 icon={() => <AiOutlineStar size={20} />}
                 onclick={addCompanyToFavorite}
                 foreColor={Colors.YELLOW_COLOR}

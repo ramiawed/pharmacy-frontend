@@ -23,6 +23,7 @@ import SearchContainer from "../../components/search-container/search-container.
 import SearchInput from "../../components/search-input/search-input.component";
 import { Colors, DateOptions } from "../../utils/constants";
 import SelectCustom from "../../components/select/select.component";
+import Button from "../../components/button/button.component";
 
 function StatisticsPage() {
   const { t } = useTranslation();
@@ -286,20 +287,11 @@ function StatisticsPage() {
           <p className={generalStyles.fc_white}>{t("no-warehouses")}</p>
         </div>
       ) : statistics.length < count ? (
-        <button
-          onClick={handleMoreResult}
-          className={[
-            generalStyles.button,
-            generalStyles.bg_secondary,
-            generalStyles.fc_white,
-            generalStyles.margin_h_auto,
-            generalStyles.block,
-            generalStyles.padding_v_10,
-            generalStyles.padding_h_12,
-          ].join(" ")}
-        >
-          {t("more")}
-        </button>
+        <Button
+          text={t("more")}
+          action={handleMoreResult}
+          bgColor={Colors.SECONDARY_COLOR}
+        />
       ) : (
         <p
           className={[generalStyles.center, generalStyles.fc_secondary].join(

@@ -5,7 +5,7 @@ import { useTranslation } from "react-i18next";
 import { unwrapResult } from "@reduxjs/toolkit";
 
 // components
-import ActionButton from "../action-button/action-button.component";
+import Button from "../button/button.component";
 
 // styles
 import styles from "./info-row.module.scss";
@@ -145,27 +145,28 @@ function InfoRow({ labelText, value, onInputChange, action, field, editable }) {
         {editable ? (
           isEditable ? (
             <div className={styles.actions}>
-              <ActionButton
+              <Button
                 text="ok-label"
                 action={handleOkAction}
-                color={Colors.SECONDARY_COLOR}
+                bgColor={Colors.SECONDARY_COLOR}
                 loading={loading}
               />
-              <ActionButton
+              <div style={{ minWidth: "10px" }}></div>
+              <Button
                 text="cancel-label"
                 action={cancelHandler}
-                color={Colors.FAILED_COLOR}
+                bgColor={Colors.FAILED_COLOR}
               />
             </div>
           ) : (
             <div className={styles.actions}>
-              <ActionButton
+              <Button
                 text="edit-label"
                 action={() => {
                   setIsEditable(true);
                   setPreviousValue(value);
                 }}
-                color={Colors.SUCCEEDED_COLOR}
+                bgColor={Colors.SUCCEEDED_COLOR}
               />
             </div>
           )

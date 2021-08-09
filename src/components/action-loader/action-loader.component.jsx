@@ -10,18 +10,20 @@
 // - onclick: action that will trigger when click on the component
 
 // Own State:
-// - show: boolean that indicates if show the component or not.
+// - show: boolean that indicates to show cancel button or not
 
 // style
 import { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
-
-// style
-import "./action-loader.style.scss";
-import generalStyles from "../../style.module.scss";
 import { useTranslation } from "react-i18next";
 
-function ActionLoader({ onclick, allowCancel }) {
+// components
+import Button from "../button/button.component";
+// style
+import "./action-loader.style.scss";
+import { Colors } from "../../utils/constants";
+
+function Loader({ onclick, allowCancel }) {
   const { t } = useTranslation();
   const [showButton, setShowButton] = useState(false);
 
@@ -40,26 +42,17 @@ function ActionLoader({ onclick, allowCancel }) {
       <div className="full-size">
         <ReactLoading color="#fff" type="bars" height={75} width={75} />
         {allowCancel && showButton && (
-          <button
-            onClick={() => {
+          <Button
+            action={() => {
               if (onclick) onclick();
             }}
-            className={[
-              generalStyles.button,
-              generalStyles.bg_secondary,
-              generalStyles.fc_white,
-              generalStyles.margin_h_auto,
-              generalStyles.block,
-              generalStyles.padding_v_10,
-              generalStyles.padding_h_12,
-            ].join(" ")}
-          >
-            {t("cancel-operation-label")}
-          </button>
+            text={t("cancel-operation-label")}
+            bgColor={Colors.SECONDARY_COLOR}
+          />
         )}
       </div>
     </>
   );
 }
 
-export default ActionLoader;
+export default Loader;

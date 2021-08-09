@@ -12,9 +12,10 @@ import SearchContainer from "../../components/search-container/search-container.
 import SearchInput from "../../components/search-input/search-input.component";
 import ItemRow from "../../components/item-row/item-row.component";
 import ItemsByCompanyTableHeader from "../../components/items-by-company-table-header/items-by-company-table-header.component";
-import ActionLoader from "../../components/action-loader/action-loader.component";
 import NoContent from "../../components/no-content/no-content.component";
 import Button from "../../components/button/button.component";
+import Icon from "../../components/action-icon/action-icon.component";
+import Loader from "../../components/action-loader/action-loader.component";
 
 // react-icons
 import { FaSearch, FaListUl } from "react-icons/fa";
@@ -37,7 +38,6 @@ import searchContainerStyles from "../../components/search-container/search-cont
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import ActionIcon from "../../components/action-icon/action-icon.component";
 
 function ItemsByCompanyPage() {
   const { companyId } = useParams();
@@ -123,7 +123,7 @@ function ItemsByCompanyPage() {
     <>
       <Header>
         <h2>
-          {company?.name} <span>{count}</span>
+          {t("medicines-in-company")} {company?.name} <span>{count}</span>
         </h2>
 
         <div style={{ position: "relative", height: "50px" }}>
@@ -183,7 +183,7 @@ function ItemsByCompanyPage() {
         </div>
 
         <div className={generalStyles.actions}>
-          <ActionIcon
+          <Icon
             icon={() => <RiRefreshLine />}
             foreColor={Colors.SECONDARY_COLOR}
             tooltip={t("refresh-tooltip")}
@@ -191,7 +191,7 @@ function ItemsByCompanyPage() {
           />
 
           <div className={generalStyles.relative}>
-            <ActionIcon
+            <Icon
               icon={() => <AiFillStar />}
               foreColor={
                 showFavorites ? Colors.SUCCEEDED_COLOR : Colors.SECONDARY_COLOR
@@ -220,7 +220,7 @@ function ItemsByCompanyPage() {
             )}
           </div>
 
-          <ActionIcon
+          <Icon
             icon={() => <AiFillAppstore />}
             foreColor={
               displayType === "card"
@@ -231,7 +231,7 @@ function ItemsByCompanyPage() {
             onclick={() => setDisplayType("card")}
           />
 
-          <ActionIcon
+          <Icon
             icon={() => <FaListUl />}
             foreColor={
               displayType === "list"
@@ -276,7 +276,7 @@ function ItemsByCompanyPage() {
         />
       )}
 
-      {companyItems.length === count && status !== "loading" && (
+      {companyItems.length === count && status !== "loading" && count !== 0 && (
         <p
           className={[generalStyles.center, generalStyles.fc_secondary].join(
             " "
@@ -286,7 +286,7 @@ function ItemsByCompanyPage() {
         </p>
       )}
 
-      {status === "loading" && <ActionLoader />}
+      {status === "loading" && <Loader allowCancel={false} />}
     </>
   ) : (
     <Redirect to="/signin" />

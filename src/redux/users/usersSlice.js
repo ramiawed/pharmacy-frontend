@@ -286,6 +286,10 @@ export const usersSlice = createSlice({
       state.resetUserPasswordStatus = "idle";
       state.resetUserPasswordError = "";
     },
+    resetError: (state) => {
+      state.status = "idle";
+      state.error = "";
+    },
     resetActivationDeleteStatus: (state) => {
       state.activationDeleteStatus = "idle";
       state.activationDeleteStatusMsg = "";
@@ -430,6 +434,7 @@ export const {
   resetUsers,
   resetUserChangePasswordStatus,
   resetUserChangePasswordError,
+  resetError,
 } = usersSlice.actions;
 
 export default usersSlice.reducer;

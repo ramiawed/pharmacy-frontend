@@ -1,19 +1,15 @@
+// component to change the password for logged user
+
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-import {
-  changeMyPassword,
-  resetPasswordStatus,
-  selectUserData,
-} from "../../redux/auth/authSlice";
+import { changeMyPassword, selectUserData } from "../../redux/auth/authSlice";
 
 // components
-import ActionButton from "../action-button/action-button.component";
 import PasswordRow from "../password-row/password-row.component";
-import Toast from "../toast/toast.component";
-import ActionLoader from "../action-loader/action-loader.component";
+import Button from "../button/button.component";
 
 // constants and utils
 import { Colors } from "../../utils/constants";
@@ -24,19 +20,24 @@ import {
   changeOnlineMsg,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 function ChangePassword() {
   const { t } = useTranslation();
-  const { changePasswordStatus, token } = useSelector(selectUserData);
   const dispatch = useDispatch();
+
+  // selectors
+  const { token } = useSelector(selectUserData);
   const isOnline = useSelector(selectOnlineStatus);
 
+  // own state that holds the oldPassword, newPassword, newPasswordConfirm values
   const [passwordObj, setPasswordObj] = useState({
     oldPassword: "",
     newPassword: "",
     newPasswordConfirm: "",
   });
 
+  // own state that holds the error of oldPassword, newPassword, newPasswordConfirm values
   const [passwordObjError, setPasswordObjError] = useState({
     oldPassword: "",
     newPassword: "",
@@ -114,7 +115,15 @@ function ChangePassword() {
       return;
     }
 
-    dispatch(changeMyPassword({ obj: passwordObj, token }));
+    dispatch(changeMyPassword({ obj: passwordObj, token }))
+      .then(unwrapResult)
+      .then(() => {
+        setPasswordObj({
+          oldPassword: "",
+          newPassword: "",
+          newPasswordConfirm: "",
+        });
+      });
   };
 
   return (
@@ -146,31 +155,12 @@ function ChangePassword() {
           generalStyles.padding_v_6,
         ].join(" ")}
       >
-        <ActionButton
+        <Button
           text="change-password"
           action={changePasswordHandler}
-          color={Colors.SUCCEEDED_COLOR}
+          bgColor={Colors.SUCCEEDED_COLOR}
         />
       </div>
-
-      {changePasswordStatus === "succeeded" && (
-        <Toast
-          bgColor={Colors.SUCCEEDED_COLOR}
-          foreColor="#fff"
-          actionAfterTimeout={() => {
-            dispatch(resetPasswordStatus());
-            setPasswordObj({
-              oldPassword: "",
-              newPassword: "",
-              newPasswordConfirm: "",
-            });
-          }}
-        >
-          <p>{t("password-change-succeeded")}</p>
-        </Toast>
-      )}
-
-      {changePasswordStatus === "loading" && <ActionLoader />}
     </>
   );
 }

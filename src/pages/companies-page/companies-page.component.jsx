@@ -19,10 +19,8 @@ import FavoriteRow from "../../components/favorite-row/favorite-row.component";
 import PartnerRow from "../../components/partner-row/partner-row.component";
 import PartnerCard from "../../components/partner-card/partner-card.component";
 import SearchContainer from "../../components/search-container/search-container.component";
-import ActionIcon from "../../components/action-icon/action-icon.component";
 import Button from "../../components/button/button.component";
 import Toast from "../../components/toast/toast.component";
-import ActionLoader from "../../components/action-loader/action-loader.component";
 import NoContent from "../../components/no-content/no-content.component";
 
 // react-icons
@@ -55,6 +53,8 @@ import { Colors, UserTypeConstants } from "../../utils/constants";
 
 // styles
 import generalStyles from "../../style.module.scss";
+import Icon from "../../components/action-icon/action-icon.component";
+import Loader from "../../components/action-loader/action-loader.component";
 
 function CompaniesPage() {
   const { t } = useTranslation();
@@ -183,7 +183,7 @@ function CompaniesPage() {
           )}
         >
           {/* refresh */}
-          <ActionIcon
+          <Icon
             selected={false}
             foreColor={Colors.SECONDARY_COLOR}
             tooltip={t("refresh-tooltip")}
@@ -193,7 +193,7 @@ function CompaniesPage() {
 
           {/* show favorites */}
           <div className={generalStyles.relative}>
-            <ActionIcon
+            <Icon
               foreColor={
                 showFavorites ? Colors.SUCCEEDED_COLOR : Colors.SECONDARY_COLOR
               }
@@ -227,7 +227,7 @@ function CompaniesPage() {
           </div>
 
           {/* display card option */}
-          <ActionIcon
+          <Icon
             foreColor={
               displayType === "card"
                 ? Colors.SUCCEEDED_COLOR
@@ -242,7 +242,7 @@ function CompaniesPage() {
           />
 
           {/* display list option */}
-          <ActionIcon
+          <Icon
             foreColor={
               displayType === "list"
                 ? Colors.SUCCEEDED_COLOR
@@ -278,18 +278,19 @@ function CompaniesPage() {
         </div>
       )}
 
-      {/* show loading animation when data is loading */}
-      {status === "loading" && <ActionLoader allowCancel={false} />}
-
-      {companies.length === 0 ? (
+      {companies.length === 0 && status !== "loading" && (
         <NoContent msg={t("no-companies")} />
-      ) : companies.length < count ? (
+      )}
+
+      {companies.length < count && (
         <Button
           text={t("more")}
           action={handleMoreResult}
           bgColor={Colors.SECONDARY_COLOR}
         />
-      ) : (
+      )}
+
+      {companies.length === count && status !== "loading" && count !== 0 && (
         <p
           className={[generalStyles.center, generalStyles.fc_secondary].join(
             " "
@@ -298,6 +299,9 @@ function CompaniesPage() {
           {t("no-more")}
         </p>
       )}
+
+      {/* show loading animation when data is loading */}
+      {status === "loading" && <Loader allowCancel={false} />}
 
       {error && (
         <Toast

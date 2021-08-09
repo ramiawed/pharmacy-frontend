@@ -10,7 +10,6 @@ import { RiLockPasswordLine } from "react-icons/ri";
 
 // component
 import Input from "../input/input.component";
-import ActionLoader from "../action-loader/action-loader.component";
 
 // loading
 
@@ -33,6 +32,7 @@ import {
 } from "../../redux/online/onlineSlice";
 import Button from "../button/button.component";
 import { Colors } from "../../utils/constants";
+import Loader from "../action-loader/action-loader.component";
 
 // constants use for motion
 const containerVariant = {
@@ -237,7 +237,7 @@ function SignIn() {
         />
       </div>
 
-      {status === "loading" && <ActionLoader allowCancel={true} />}
+      {status === "loading" && <Loader allowCancel={true} />}
     </motion.div>
   );
 }

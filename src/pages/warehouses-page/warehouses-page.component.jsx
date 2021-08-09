@@ -9,11 +9,11 @@ import FavoriteRow from "../../components/favorite-row/favorite-row.component";
 import PartnerRow from "../../components/partner-row/partner-row.component";
 import PartnerCard from "../../components/partner-card/partner-card.component";
 import SearchContainer from "../../components/search-container/search-container.component";
-import ActionIcon from "../../components/action-icon/action-icon.component";
 import Button from "../../components/button/button.component";
 import Toast from "../../components/toast/toast.component";
-import ActionLoader from "../../components/action-loader/action-loader.component";
 import NoContent from "../../components/no-content/no-content.component";
+import Icon from "../../components/action-icon/action-icon.component";
+import Loader from "../../components/action-loader/action-loader.component";
 
 // react-icons
 import { FaListUl } from "react-icons/fa";
@@ -155,7 +155,7 @@ function WarehousePage() {
 
         <div className={generalStyles.actions}>
           {/* refresh */}
-          <ActionIcon
+          <Icon
             foreColor={Colors.SECONDARY_COLOR}
             tooltip={t("refresh-tooltip")}
             onclick={handleEnterPress}
@@ -164,7 +164,7 @@ function WarehousePage() {
 
           {/* show favorites */}
           <div className={generalStyles.relative}>
-            <ActionIcon
+            <Icon
               foreColor={
                 showFavorites ? Colors.SUCCEEDED_COLOR : Colors.SECONDARY_COLOR
               }
@@ -198,7 +198,7 @@ function WarehousePage() {
           </div>
 
           {/* display card option */}
-          <ActionIcon
+          <Icon
             foreColor={
               displayType === "card"
                 ? Colors.SUCCEEDED_COLOR
@@ -213,7 +213,7 @@ function WarehousePage() {
           />
 
           {/* display list option */}
-          <ActionIcon
+          <Icon
             foreColor={
               displayType === "list"
                 ? Colors.SUCCEEDED_COLOR
@@ -250,7 +250,7 @@ function WarehousePage() {
       )}
 
       {/* show loading indicator when data loading from db */}
-      {status === "loading" && <ActionLoader allowCancel={false} />}
+      {status === "loading" && <Loader allowCancel={false} />}
 
       {warehouses.length === 0 && status !== "loading" ? (
         <>

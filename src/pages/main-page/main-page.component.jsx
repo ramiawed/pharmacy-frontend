@@ -10,11 +10,6 @@ import { getFavorites } from "../../redux/favorites/favoritesSlice";
 // components
 import TopNav from "../../components/top-nav/top-nav.component";
 import SideNav from "../../components/side-nav/side-nav.component";
-// import CompanyItemsPage from "../company-items-page/company-items-page.component";
-import ItemsByCompanyPage from "../items-by-company-page/items-by-company-page.component";
-import WarehouseItemsPage from "../warehouse-items-page/warehouse-items-page.component";
-import ItemPage from "../item-page/item-page.component";
-import ItemExcelPage from "../item-excel-page/item-excel-page.component";
 
 // react-icons
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -23,19 +18,23 @@ import { FaArrowAltCircleUp } from "react-icons/fa";
 // pages
 import CompaniesPage from "../companies-page/companies-page.component";
 import CartPage from "../cart-page/cart-page.component";
-import AdminUsers from "../../components/admin-users/admin-users.component";
+import AdminUsersPage from "../admin-users-page/admin-users-page.component";
 import FavoritesPage from "../favorites-page/favorites-page.component";
 import WarehousePage from "../warehouses-page/warehouses-page.component";
 import ItemsPage from "../items-page/items-page.component";
+import ItemsByCompanyPage from "../items-by-company-page/items-by-company-page.component";
+import WarehouseItemsPage from "../warehouse-items-page/warehouse-items-page.component";
+import ItemPage from "../item-page/item-page.component";
+import ItemExcelPage from "../item-excel-page/item-excel-page.component";
+import StatisticsOptionsPage from "../statistics-options-page/statistics-options-page.component";
+import StatisticsPage from "../statistics-page/statistics-page.component";
+import UserProfilePage from "../user-profile-page/user-profile-page.component";
 
 // style
 import styles from "./main-page.module.scss";
 
 // constants
 import { TopNavLinks } from "../../utils/constants";
-import StatisticsOptionsPage from "../statistics-options-page/statistics-options-page.component";
-import StatisticsPage from "../statistics-page/statistics-page.component";
-import UserProfilePage from "../user-profile-page/user-profile-page.component";
 
 // MainPage
 // you have to sign in first
@@ -166,7 +165,7 @@ function MainPage() {
         </Route>
 
         <Route exact path="/admin/partners">
-          <AdminUsers />
+          <AdminUsersPage />
         </Route>
 
         <Route exact path="/admin/statistics">

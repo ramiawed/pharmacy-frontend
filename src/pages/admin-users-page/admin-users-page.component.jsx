@@ -1,9 +1,36 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useSelector, useDispatch } from "react-redux";
 import { Redirect } from "react-router";
 
-// import { cancelOperation } from "../../api/pharmacy";
+// components
+import Header from "../../components/header/header.component";
+import UserRow from "../../components/user-row/user-row.component";
+import SelectCustom from "../../components/select/select.component";
+import RowWith2Children from "../../components/row-with-two-children/row-with-two-children.component";
+import Input from "../../components/input/input.component";
+import Modal from "../../components/modal/modal.component";
+import IconWithNumber from "../../components/icon-with-number/icon-with-number.component";
+import Order from "../../components/order/order.component";
+import NoContent from "../../components/no-content/no-content.component";
+import AdminUserTableHeader from "../../components/admin-users-table-header/admin-users-table-header.component";
+
+// 3-party library (loading, paginate)
+import ReactPaginate from "react-paginate";
+
+// react-icons
+import { FaSearch } from "react-icons/fa";
+import { BiSortAZ } from "react-icons/bi";
+
+// redux stuff
+import { useSelector, useDispatch } from "react-redux";
+import { getUsers, selectUsers } from "../../redux/users/usersSlice";
+import { selectUserData } from "../../redux/auth/authSlice";
+import { selectOnlineStatus } from "../../redux/online/onlineSlice";
+
+// styles
+import generalStyles from "../../style.module.scss";
+import styles from "./admin-users-page.module.scss";
+import paginationStyles from "../../components/pagination.module.scss";
 
 // constants
 import {
@@ -14,64 +41,19 @@ import {
   Colors,
   OrderOptions,
 } from "../../utils/constants";
-
-// components
-import Header from "../header/header.component";
-import UserRow from "../user-row/user-row.component";
-import SelectCustom from "../select/select.component";
-import Toast from "../toast/toast.component";
-import RowWith2Children from "../row-with-two-children/row-with-two-children.component";
-import Input from "../input/input.component";
-import Modal from "../modal/modal.component";
-import IconWithNumber from "../icon-with-number/icon-with-number.component";
-import Order from "../order/order.component";
-import ActionLoader from "../action-loader/action-loader.component";
-import NoContent from "../no-content/no-content.component";
-import AdminUserTableHeader from "../admin-users-table-header/admin-users-table-header.component";
-
-// 3-party library (loading, paginate)
-import ReactPaginate from "react-paginate";
-
-// react-icons
-import { FaSearch } from "react-icons/fa";
-import { BiSortAZ } from "react-icons/bi";
-
-// redux stuff
-import {
-  cancelOperation,
-  getUsers,
-  resetUserChangePasswordStatus,
-  selectUsers,
-} from "../../redux/users/usersSlice";
-import { selectUserData } from "../../redux/auth/authSlice";
-import { resetActivationDeleteStatus } from "../../redux/users/usersSlice";
-
-// styles
-import generalStyles from "../../style.module.scss";
-import styles from "./admin-users.module.scss";
-import paginationStyles from "../pagination.module.scss";
-import {
-  changeOnlineMsg,
-  selectOnlineStatus,
-} from "../../redux/online/onlineSlice";
+import AdminUsersNotifications from "../../components/admin-users-notifications/admin-users-notification.component";
 
 // AdminUsers component
-function AdminUsers() {
+function AdminUsersPage() {
   const { t } = useTranslation();
+  const isOnline = useSelector(selectOnlineStatus);
+
   const dispatch = useDispatch();
 
   // selectors
-  // watch the activationDeleteStatus and activationDeleteMsg to display a Toast when change
-  const {
-    users,
-    status,
-    count,
-    activationDeleteStatus,
-    activationDeleteStatusMsg,
-    resetUserPasswordStatus,
-  } = useSelector(selectUsers);
+  // observe the activationDeleteStatus and activationDeleteMsg to display a Toast when change
+  const { users, status, count } = useSelector(selectUsers);
   const { token, user } = useSelector(selectUserData);
-  const isOnline = useSelector(selectOnlineStatus);
 
   // modal state
   const [showModal, setShowModal] = useState(false);
@@ -94,6 +76,7 @@ function AdminUsers() {
   const [orderBy, setOrderBy] = useState({});
   const [searchOptionCount, setSearchOptionCount] = useState(0);
 
+  // order options
   const orderOptions = [
     { value: OrderOptions.NAME, label: t("user-name") },
     { value: OrderOptions.DATE_CREATED, label: t("user-created-at") },
@@ -105,6 +88,7 @@ function AdminUsers() {
     { value: OrderOptions.STREET, label: t("user-street") },
   ];
 
+  // add/remove field from orderBy object
   const addOrRemoveField = (field) => {
     if (field in orderBy) {
       const obj = { ...orderBy };
@@ -118,6 +102,7 @@ function AdminUsers() {
     }
   };
 
+  // change the order option (ascending, descending) for a specific field
   const changeFieldValue = (field, value) => {
     setOrderBy({
       ...orderBy,
@@ -125,6 +110,7 @@ function AdminUsers() {
     });
   };
 
+  // guest option
   const guestJobOptions = [
     { value: GuestJob.NONE, label: t("user-job") },
     { value: GuestJob.STUDENT, label: t("student") },
@@ -132,6 +118,7 @@ function AdminUsers() {
     { value: GuestJob.EMPLOYEE, label: t("employee") },
   ];
 
+  // change guest job option handler
   const handleGuestJobChange = (val) => {
     setSearchJob(val);
     if (val !== GuestJob.EMPLOYEE) {
@@ -204,11 +191,6 @@ function AdminUsers() {
 
   // handle search
   const handleSearch = (page) => {
-    if (!isOnline) {
-      dispatch(changeOnlineMsg());
-      return;
-    }
-
     // build the query string
     const queryString = {};
 
@@ -293,11 +275,6 @@ function AdminUsers() {
 
   // handle for page change in the paginate component
   const handlePageClick = (e) => {
-    if (!isOnline) {
-      dispatch(changeOnlineMsg());
-      return;
-    }
-
     const { selected } = e;
     handleSearch(selected + 1);
     setInitialPage(selected);
@@ -305,7 +282,7 @@ function AdminUsers() {
   };
 
   // handle will pass to Input Component
-  // fire when the enter key presses
+  // fire when the enter key press
   // start search
   const enterPress = () => {
     handleSearch(1);
@@ -313,20 +290,17 @@ function AdminUsers() {
     setInitialPage(0);
   };
 
-  // dispatch a getUsers after component render for the first time
-  useEffect(() => {
-    handleSearch(1);
-
-    // return () => {
-    //   cancelOperation();
-    // };
-  }, []);
-
   const searchModalOkHandler = () => {
     setShowModal(false);
     handleSearch(1);
   };
+
   const searchModalCloseHandler = () => setShowModal(false);
+
+  // dispatch a getUsers after component render for the first time
+  useEffect(() => {
+    handleSearch(1);
+  }, []);
 
   return user && user.type === UserTypeConstants.ADMIN ? (
     <>
@@ -375,11 +349,11 @@ function AdminUsers() {
       {count > 0 && <AdminUserTableHeader />}
 
       {/* Results */}
-      <div>
-        {users?.map((user, index) => (
+      {users &&
+        users.length > 0 &&
+        users.map((user, index) => (
           <UserRow key={user._id} user={user} index={index} />
         ))}
-      </div>
 
       {count > 0 && isOnline && (
         <ReactPaginate
@@ -403,62 +377,8 @@ function AdminUsers() {
         </>
       )}
 
-      {/* loading components when retrieve the result from DB */}
-      {status === "loading" && (
-        <ActionLoader
-          onclick={() => {
-            cancelOperation();
-          }}
-          allowCancel={true}
-        />
-      )}
-
-      {resetUserPasswordStatus === "loading" && (
-        <ActionLoader onclick={() => cancelOperation()} allowCancel={true} />
-      )}
-
-      {activationDeleteStatus === "loading" && (
-        <ActionLoader onclick={() => cancelOperation()} allowCancel={true} />
-      )}
-
-      {/* show toast to display successfully or failed message */}
-      {activationDeleteStatus === "succeeded" ? (
-        <Toast
-          bgColor={Colors.SUCCEEDED_COLOR}
-          foreColor="#fff"
-          toastText={t(activationDeleteStatusMsg)}
-          actionAfterTimeout={() => {
-            dispatch(resetActivationDeleteStatus());
-            // handleSearch(initialPage + 1);
-          }}
-        />
-      ) : activationDeleteStatus === "failed" ? (
-        <Toast
-          bgColor={Colors.FAILED_COLOR}
-          foreColor="#fff"
-          toastText={t(activationDeleteStatusMsg)}
-          actionAfterTimeout={() => dispatch(resetActivationDeleteStatus())}
-        />
-      ) : null}
-
-      {/* show toast to display successfully or failed update password */}
-      {resetUserPasswordStatus === "succeeded" ? (
-        <Toast
-          bgColor={Colors.SUCCEEDED_COLOR}
-          foreColor="#fff"
-          toastText={t("password-change-succeeded")}
-          actionAfterTimeout={() => {
-            dispatch(resetUserChangePasswordStatus());
-          }}
-        />
-      ) : resetUserPasswordStatus === "failed" ? (
-        <Toast
-          bgColor={Colors.FAILED_COLOR}
-          foreColor="#fff"
-          toastText={t("password-change-failed")}
-          actionAfterTimeout={() => dispatch(resetUserChangePasswordStatus())}
-        />
-      ) : null}
+      {/* loading and notifications */}
+      <AdminUsersNotifications />
 
       {/* search modal */}
       {showModal && (
@@ -727,4 +647,4 @@ function AdminUsers() {
   );
 }
 
-export default AdminUsers;
+export default AdminUsersPage;

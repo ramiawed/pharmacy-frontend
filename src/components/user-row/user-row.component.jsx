@@ -38,6 +38,7 @@ import {
   changeOnlineMsg,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
+import Icon from "../action-icon/action-icon.component";
 
 // UserRow component
 function UserRow({ user }) {
@@ -328,14 +329,14 @@ function UserRow({ user }) {
           ].join(" ")}
         >
           {user.isApproved ? (
-            <ActionIcon
+            <Icon
               tooltip={t("tooltip-disapprove")}
               onclick={() => handleActionIconClick("disapprove")}
               icon={() => <AiFillUnlock size={16} />}
               foreColor={Colors.SUCCEEDED_COLOR}
             />
           ) : (
-            <ActionIcon
+            <Icon
               tooltip={t("tooltip-approve")}
               onclick={() => handleActionIconClick("approve")}
               icon={() => <AiFillLock size={16} />}
@@ -351,14 +352,14 @@ function UserRow({ user }) {
           ].join(" ")}
         >
           {user.isActive ? (
-            <ActionIcon
+            <Icon
               tooltip={t("tooltip-delete")}
               onclick={() => handleActionIconClick("delete")}
               icon={() => <BsFillPersonCheckFill size={16} />}
               foreColor={Colors.SUCCEEDED_COLOR}
             />
           ) : (
-            <ActionIcon
+            <Icon
               tooltip={t("tooltip-undo-delete")}
               onclick={() => handleActionIconClick("undo-delete")}
               icon={() => <BsFillPersonDashFill size={16} />}
@@ -375,7 +376,7 @@ function UserRow({ user }) {
             generalStyles.flex_center_container,
           ].join(" ")}
         >
-          <ActionIcon
+          <Icon
             tooltip={t("change-password-tooltip")}
             onclick={() => setShowResetUserPasswordModal(true)}
             icon={() => <AiFillEdit />}
@@ -408,7 +409,7 @@ function UserRow({ user }) {
       {showResetUserPasswordModal && (
         <AdminResetUserPasswordModal
           close={closeResetPasswordModalHandler}
-          resetPassword={changeUserPasswordHandler}
+          changePasswordHandler={changeUserPasswordHandler}
           passwordObj={passwordObj}
           passwordObjError={passwordObjError}
           handlePasswordFieldsChange={handlePasswordFieldsChange}

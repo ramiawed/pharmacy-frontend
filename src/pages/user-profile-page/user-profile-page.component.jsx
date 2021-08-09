@@ -6,24 +6,13 @@ import { useTranslation } from "react-i18next";
 import Header from "../../components/header/header.component";
 import CardInfo from "../../components/card-info/card-info.component";
 import InfoRow from "../../components/info-row/info-row.component";
-import ActionButton from "../../components/action-button/action-button.component";
-import Toast from "../../components/toast/toast.component";
 import InputFileImage from "../../components/input-file-image/input-file-image.component";
-import ActionLoader from "../../components/action-loader/action-loader.component";
 import ChangePassword from "../../components/change-password/change-password.component";
 import DeleteMe from "../../components/delete-me/delete-me.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectUserData,
-  updateUserInfo,
-  resetPasswordError,
-  cancelOperation,
-  resetUpdateStatus,
-  resetUpdateError,
-  resetChangeLogoError,
-} from "../../redux/auth/authSlice";
+import { selectUserData, updateUserInfo } from "../../redux/auth/authSlice";
 import {
   changeOnlineMsg,
   selectOnlineStatus,
@@ -36,20 +25,14 @@ import generalStyles from "../../style.module.scss";
 
 // constants, and utile
 import { UserTypeConstants, Colors } from "../../utils/constants";
+import Button from "../../components/button/button.component";
+import UserProfileNotifications from "../../components/user-profile-notifications/user-profile-notifications.component";
 
 function UserProfilePage() {
   const { t } = useTranslation();
   const isOnline = useSelector(selectOnlineStatus);
   const dispatch = useDispatch();
-  const {
-    user,
-    token,
-    passwordError,
-    updateStatus,
-    updateError,
-    changeLogoStatus,
-    changeLogoError,
-  } = useSelector(selectUserData);
+  const { user, token } = useSelector(selectUserData);
 
   const [userObj, setUserObj] = useState(user);
 
@@ -263,10 +246,10 @@ function UserProfilePage() {
             >
               {t("admin-permission-label")}
             </label>
-            <ActionButton
+            <Button
               text="update-label"
               action={() => updateFieldHandler("allowAdmin")}
-              color={Colors.SUCCEEDED_COLOR}
+              bgColor={Colors.SUCCEEDED_COLOR}
             />
           </div>
         </CardInfo>
@@ -280,60 +263,7 @@ function UserProfilePage() {
         <DeleteMe />
       </CardInfo>
 
-      {passwordError && (
-        <Toast
-          bgColor={Colors.FAILED_COLOR}
-          foreColor="#fff"
-          actionAfterTimeout={() => dispatch(resetPasswordError())}
-        >
-          {passwordError.split("_").map((err, index) => (
-            <p key={index}>{t(err)}</p>
-          ))}
-        </Toast>
-      )}
-
-      {changeLogoError && (
-        <Toast
-          bgColor={Colors.FAILED_COLOR}
-          foreColor="#fff"
-          actionAfterTimeout={() => dispatch(resetChangeLogoError())}
-        >
-          <p>{t(changeLogoError)}</p>
-        </Toast>
-      )}
-
-      {updateStatus === "succeeded" && (
-        <Toast
-          bgColor={Colors.SUCCEEDED_COLOR}
-          foreColor="#fff"
-          actionAfterTimeout={() => {
-            dispatch(resetUpdateStatus());
-          }}
-        >
-          <p>{t("update-succeeded")}</p>
-        </Toast>
-      )}
-
-      {updateStatus === "failed" && (
-        <Toast
-          bgColor={Colors.FAILED_COLOR}
-          foreColor="#fff"
-          actionAfterTimeout={() => {
-            dispatch(resetUpdateError());
-          }}
-        >
-          <p>{t(updateError)}</p>
-        </Toast>
-      )}
-
-      {changeLogoStatus === "loading" && (
-        <ActionLoader
-          allowCancel={true}
-          onclick={() => {
-            cancelOperation();
-          }}
-        />
-      )}
+      <UserProfileNotifications />
     </div>
   );
 }

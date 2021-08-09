@@ -41,6 +41,7 @@ import {
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
 import ActionIcon from "../action-icon/action-icon.component";
+import Icon from "../action-icon/action-icon.component";
 
 function ItemCard({ companyItem }) {
   const { t } = useTranslation();
@@ -182,7 +183,7 @@ function ItemCard({ companyItem }) {
         ].join(" ")}
       >
         {changeAddToWarehouseLoading ? (
-          <ActionIcon
+          <Icon
             icon={() => (
               <VscLoading className={generalStyles.loading} size={20} />
             )}
@@ -194,14 +195,14 @@ function ItemCard({ companyItem }) {
           (companyItem.warehouses
             .map((w) => w.warehouse._id)
             .includes(user._id) ? (
-            <ActionIcon
+            <Icon
               icon={() => <MdDelete size={24} />}
               onclick={removeItemFromWarehouseHandler}
               tooltip={t("remove-from-warehouse-tooltip")}
               foreColor={Colors.FAILED_COLOR}
             />
           ) : (
-            <ActionIcon
+            <Icon
               icon={() => <MdAddCircle size={24} />}
               onclick={addItemToWarehouseHandler}
               tooltip={t("add-to-warehouse-tooltip")}
@@ -227,7 +228,7 @@ function ItemCard({ companyItem }) {
           )}
 
         {changeFavoriteLoading ? (
-          <ActionIcon
+          <Icon
             icon={() => (
               <VscLoading className={generalStyles.loading} size={20} />
             )}
@@ -237,14 +238,14 @@ function ItemCard({ companyItem }) {
         ) : favorites
             .map((favorite) => favorite._id)
             .includes(companyItem._id) ? (
-          <ActionIcon
+          <Icon
             icon={() => <AiFillStar size={20} />}
             onclick={removeItemFromFavoritesItems}
             tooltip={t("remove-from-favorite-tooltip")}
             foreColor={Colors.YELLOW_COLOR}
           />
         ) : (
-          <ActionIcon
+          <Icon
             icon={() => <AiOutlineStar size={20} />}
             onclick={addItemToFavoriteItems}
             tooltip={t("add-to-favorite-tooltip")}

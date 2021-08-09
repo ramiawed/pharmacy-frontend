@@ -9,7 +9,6 @@ import axios from "../../api/pharmacy";
 import SelectCustom from "../select/select.component";
 import Input from "../input/input.component";
 import Toast from "../toast/toast.component";
-import ActionLoader from "../action-loader/action-loader.component";
 
 // redux
 import { authSign, selectUserData } from "../../redux/auth/authSlice";
@@ -25,6 +24,8 @@ import {
   changeOnlineMsg,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
+import Button from "../button/button.component";
+import Loader from "../action-loader/action-loader.component";
 
 const containerVariant = {
   hidden: {
@@ -673,16 +674,11 @@ function SignUp() {
         </ul>
       )}
 
-      <motion.button
-        whileHover={{
-          scale: 1.1,
-          textShadow: "0px 0px 8px rgb(255, 255, 255)",
-          boxShadow: "0px 0px 8px rgb(255, 255, 255)",
-        }}
-        onClick={createAccountHandler}
-      >
-        {t("signup")}
-      </motion.button>
+      <Button
+        text={t("signup")}
+        action={createAccountHandler}
+        bgColor={Colors.FAILED_COLOR}
+      />
 
       {networkError && (
         <Toast
@@ -696,7 +692,7 @@ function SignUp() {
         </Toast>
       )}
 
-      {signupLoading && <ActionLoader allowCancel={false} />}
+      {signupLoading && <Loader allowCancel={false} />}
     </motion.div>
   );
 }

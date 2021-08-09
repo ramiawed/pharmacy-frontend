@@ -1,3 +1,10 @@
+// Modal that show the item with it's warehouse to allow pharmacy to buy an item
+// you should select a quantity greater than zero an less than the selected warehouse max quantity
+
+// Props
+// item: the item that the pharmacy will buy
+// close: action to close the modal
+
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 

@@ -1,3 +1,12 @@
+// component uses to change the password for a logged user
+
+// Props
+// close: action to execute when press on cancel button
+// changePasswordHandler: dispatch change password action
+// passwordObj: obj contains the password and confirmPassword
+// passwordObjError: obj contains the error for password and confirmPassword
+// handlePasswordFieldsChange: change the value in the passwordObj for password and confirmPassword
+
 import React from "react";
 import { useTranslation } from "react-i18next";
 
@@ -7,7 +16,7 @@ import PasswordRow from "../password-row/password-row.component";
 
 function AdminResetUserPasswordModal({
   close,
-  resetPassword,
+  changePasswordHandler,
   passwordObj,
   passwordObjError,
   handlePasswordFieldsChange,
@@ -21,7 +30,7 @@ function AdminResetUserPasswordModal({
       closeModal={close}
       small={true}
       okLabel="ok-label"
-      okModal={resetPassword}
+      okModal={changePasswordHandler}
     >
       <PasswordRow
         field="newPassword"

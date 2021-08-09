@@ -3,7 +3,6 @@ import { unwrapResult } from "@reduxjs/toolkit";
 import { useTranslation } from "react-i18next";
 import { Redirect, useLocation } from "react-router-dom";
 import axios from "../../api/pharmacy";
-import ReactLoading from "react-loading";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -29,7 +28,6 @@ import AddToCartModal from "../../components/add-to-cart-modal/add-to-cart-modal
 
 // constants and utile
 import { getIcon } from "../../utils/icons";
-import { checkConnection } from "../../utils/checkInternet";
 import { Colors, UserTypeConstants } from "../../utils/constants";
 import { MdLocalOffer } from "react-icons/md";
 
@@ -39,9 +37,16 @@ import styles from "./item-page.module.scss";
 import rowStyles from "../../components/row.module.scss";
 import OffersModal from "../../components/offers-modal/offers-modal.component";
 import InputFileImage from "../../components/input-file-image/input-file-image.component";
+import Button from "../../components/button/button.component";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
+import Loader from "../../components/action-loader/action-loader.component";
 
 function ItemPage() {
   const { t } = useTranslation();
+  const isOnline = useSelector(selectOnlineStatus);
 
   const location = useLocation();
 
@@ -53,13 +58,12 @@ function ItemPage() {
   const { addStatus, updateStatus, changeLogoStatus, changeLogoError } =
     useSelector(selectItems);
 
-  const [showModal, setShowModal] = useState(false);
+  const [showAddToCartModal, setShowAddToCartModal] = useState(false);
   const [showOfferModal, setShowOfferModal] = useState(false);
   const [selectedWarehouseId, setSelectedWarehouseId] = useState("");
   const [allowEdit, setAllowEdit] = useState(false);
 
   const [itemError, setItemError] = useState({});
-  const [connectionError, setConnectionError] = useState("");
 
   const [item, setItem] = useState({
     name: "",
@@ -124,8 +128,9 @@ function ItemPage() {
     }
 
     if (Object.entries(errorObj).length === 0) {
-      if (!checkConnection()) {
-        setConnectionError("no-internet-connection");
+      if (!isOnline) {
+        dispatch(changeOnlineMsg());
+        return;
       }
 
       // check if there is an error
@@ -167,8 +172,8 @@ function ItemPage() {
   // method to handle add item to warehouse
   const addItemToWarehouseHandler = () => {
     // check the internet connection
-    if (!checkConnection()) {
-      setConnectionError("no-internet-connection");
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
       return;
     }
 
@@ -189,8 +194,8 @@ function ItemPage() {
   // method to handle remove item from warehouse
   const removeItemFromWarehouseHandler = () => {
     // check the internet connection
-    if (!checkConnection()) {
-      setConnectionError("no-internet-connection");
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
       return;
     }
 
@@ -237,9 +242,7 @@ function ItemPage() {
             generalStyles.padding_h_12,
           ].join(" ")}
         >
-          {changeLogoStatus === "loading" && (
-            <ReactLoading color="#fff" type="bars" height={100} width={100} />
-          )}
+          {changeLogoStatus === "loading" && <Loader allowCancel={false} />}
 
           {changeLogoStatus === "succeeded" || changeLogoStatus === "idle" ? (
             <div
@@ -428,79 +431,43 @@ function ItemPage() {
         (from === UserTypeConstants.COMPANY ||
           from === UserTypeConstants.ADMIN) && (
           <>
-            <button
-              className={[
-                generalStyles.button,
-                generalStyles.bg_green,
-                generalStyles.fc_white,
-                generalStyles.padding_v_6,
-                generalStyles.padding_h_10,
-                generalStyles.margin_h_auto,
-                generalStyles.block,
-              ].join(" ")}
-              onClick={handleAddUpdateItem}
-            >
-              {type === "info" ? t("update-item") : t("add-item")}
-            </button>
+            <Button
+              text={type === "info" ? t("update-item") : t("add-item")}
+              bgColor={Colors.SUCCEEDED_COLOR}
+              action={handleAddUpdateItem}
+            />
           </>
         )}
 
       {/* show add-to-cart button, if the user's type is PHARMACY and the item is exist in any warehouse */}
       {user.type === UserTypeConstants.PHARMACY && item.warehouses?.length > 0 && (
         <>
-          <button
-            className={[
-              generalStyles.button,
-              generalStyles.bg_green,
-              generalStyles.fc_white,
-              generalStyles.padding_v_6,
-              generalStyles.padding_h_10,
-              generalStyles.margin_h_auto,
-              generalStyles.block,
-            ].join(" ")}
-            onClick={() => setShowModal(true)}
-          >
-            {t("add-to-cart")}
-          </button>
+          <Button
+            text={t("add-to-cart")}
+            action={() => setShowAddToCartModal(true)}
+            bgColor={Colors.SUCCEEDED_COLOR}
+          />
         </>
       )}
 
       {user.type === UserTypeConstants.WAREHOUSE &&
         (item.warehouses?.map((w) => w.warehouse._id).includes(user._id) ? (
-          <button
-            onClick={removeItemFromWarehouseHandler}
-            className={[
-              generalStyles.button,
-              generalStyles.bg_red,
-              generalStyles.fc_white,
-              generalStyles.margin_h_auto,
-              generalStyles.block,
-              generalStyles.padding_v_6,
-              generalStyles.padding_h_10,
-            ].join(" ")}
-          >
-            {t("remove-from-warehouse")}
-          </button>
+          <>
+            <Button
+              text={t("remove-from-warehouse")}
+              action={removeItemFromWarehouseHandler}
+              bgColor={Colors.FAILED_COLOR}
+            />
+          </>
         ) : (
-          <button
-            onClick={addItemToWarehouseHandler}
-            className={[
-              generalStyles.button,
-              generalStyles.bg_green,
-              generalStyles.fc_white,
-              generalStyles.margin_h_auto,
-              generalStyles.block,
-              generalStyles.padding_v_6,
-              generalStyles.padding_h_10,
-            ].join(" ")}
-          >
-            {t("add-to-warehouse")}
-          </button>
+          <>
+            <Button
+              text={t("add-to-warehouse")}
+              action={addItemToWarehouseHandler}
+              bgColor={Colors.SUCCEEDED_COLOR}
+            />
+          </>
         ))}
-
-      {showModal && (
-        <AddToCartModal item={item} close={() => setShowModal(false)} />
-      )}
 
       {addStatus === "succeeded" && (
         <Toast
@@ -526,16 +493,11 @@ function ItemPage() {
         </Toast>
       )}
 
-      {connectionError && (
-        <Toast
-          bgColor={Colors.FAILED_COLOR}
-          foreColor="#fff"
-          actionAfterTimeout={() => {
-            setConnectionError("");
-          }}
-        >
-          <p>{t(connectionError)}</p>
-        </Toast>
+      {showAddToCartModal && (
+        <AddToCartModal
+          item={item}
+          close={() => setShowAddToCartModal(false)}
+        />
       )}
 
       {showOfferModal && (

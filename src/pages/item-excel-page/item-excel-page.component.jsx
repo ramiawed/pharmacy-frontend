@@ -4,7 +4,6 @@ import { Redirect, useLocation } from "react-router-dom";
 import * as XLSX from "xlsx";
 
 // components
-import ActionLoader from "../../components/action-loader/action-loader.component";
 import InputFile from "../../components/input-file/input-file.component";
 import ItemExcelRow from "../../components/item-excel-row/item-excel-row.component";
 import Modal from "../../components/modal/modal.component";
@@ -32,6 +31,7 @@ import styles from "./item-excel-page.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
+import Loader from "../../components/action-loader/action-loader.component";
 
 function ItemExcelPage() {
   const user = useSelector(selectUser);
@@ -206,7 +206,7 @@ function ItemExcelPage() {
         ) : null}
       </div>
 
-      {loading && <ActionLoader allowCancel={false} />}
+      {loading && <Loader allowCancel={false} />}
 
       {items.length === 0 && (
         <InputFile
@@ -243,12 +243,7 @@ function ItemExcelPage() {
         </Modal>
       )}
 
-      {addStatus === "loading" && (
-        <ActionLoader
-          foreColor={Colors.fc_secondary_COLOR}
-          onclick={() => {}}
-        />
-      )}
+      {addStatus === "loading" && <Loader allowCancel={false} />}
 
       {addError && (
         <Toast

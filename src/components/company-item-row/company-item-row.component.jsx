@@ -27,6 +27,7 @@ import {
   changeOnlineMsg,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
+import Icon from "../action-icon/action-icon.component";
 
 function CompanyItemRow({
   item,
@@ -195,13 +196,13 @@ function CompanyItemRow({
           ].join(" ")}
         >
           {item.isActive ? (
-            <ActionIcon
+            <Icon
               icon={() => <AiFillUnlock />}
               foreColor={Colors.SUCCEEDED_COLOR}
               onclick={deleteItemHandler}
             />
           ) : (
-            <ActionIcon
+            <Icon
               icon={() => <AiFillLock />}
               foreColor={Colors.FAILED_COLOR}
               onclick={undoDeleteItemHandler}
@@ -250,7 +251,7 @@ function CompanyItemRow({
                 generalStyles.flex_center_container,
               ].join(" ")}
             >
-              <ActionIcon
+              <Icon
                 icon={() => <MdDelete size={20} />}
                 onclick={deleteFromWarehouseHandler}
                 foreColor={Colors.FAILED_COLOR}
@@ -258,7 +259,7 @@ function CompanyItemRow({
             </label>
 
             <label className={tableStyles.label_xsmall}>
-              <ActionIcon
+              <Icon
                 icon={() => <MdLocalOffer size={20} />}
                 tooltip={t("nav-offers")}
                 foreColor={Colors.SECONDARY_COLOR}

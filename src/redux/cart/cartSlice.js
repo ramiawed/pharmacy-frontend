@@ -140,9 +140,14 @@ export const cartSlice = createSlice({
         );
       }
     },
-    resetCartItems: (state) => {
-      state.cartWarehouse = [];
-      state.cartItems = [];
+    resetCartItems: (state, action) => {
+      console.log(action.payload);
+      state.cartWarehouse = state.cartWarehouse.filter(
+        (w) => w !== action.payload
+      );
+      state.cartItems = state.cartItems.filter(
+        (item) => item.warehouse.warehouse.name !== action.payload
+      );
     },
   },
 });

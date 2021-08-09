@@ -11,7 +11,6 @@ import SearchContainer from "../../components/search-container/search-container.
 import Header from "../../components/header/header.component";
 import SearchInput from "../../components/search-input/search-input.component";
 import NoContent from "../../components/no-content/no-content.component";
-import ActionLoader from "../../components/action-loader/action-loader.component";
 import ItemsTableHeader from "../../components/items-table-header/items-table-header.component";
 
 // react-icons
@@ -45,6 +44,7 @@ import {
   changeOnlineMsg,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
+import Loader from "../../components/action-loader/action-loader.component";
 
 function ItemsPage() {
   const { t } = useTranslation();
@@ -504,7 +504,7 @@ function ItemsPage() {
         </>
       )}
 
-      {status === "loading" && <ActionLoader allowCancel={false} />}
+      {status === "loading" && <Loader allowCancel={false} />}
 
       {error && (
         <Toast
@@ -515,7 +515,7 @@ function ItemsPage() {
         />
       )}
 
-      {activeStatus === "loading" && <ActionLoader allowCancel={false} />}
+      {activeStatus === "loading" && <Loader allowCancel={false} />}
 
       {activeStatus === "succeeded" && (
         <Toast

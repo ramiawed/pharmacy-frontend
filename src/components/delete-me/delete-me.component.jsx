@@ -3,12 +3,7 @@ import { useTranslation } from "react-i18next";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-import {
-  deleteMe,
-  resetDeleteError,
-  selectUserData,
-  signOut,
-} from "../../redux/auth/authSlice";
+import { deleteMe, selectUserData, signOut } from "../../redux/auth/authSlice";
 import { resetUsers } from "../../redux/users/usersSlice";
 import { resetFavorites } from "../../redux/favorites/favoritesSlice";
 import { resetCompanies } from "../../redux/company/companySlice";
@@ -19,26 +14,24 @@ import { resetCartItems } from "../../redux/cart/cartSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 
 // components
-import ActionButton from "../action-button/action-button.component";
 import PasswordRow from "../password-row/password-row.component";
-import Toast from "../toast/toast.component";
+import Button from "../button/button.component";
 
 // styles
 import generalStyles from "../../style.module.scss";
 
 // constants and utils
 import { Colors } from "../../utils/constants";
-import ActionLoader from "../action-loader/action-loader.component";
 import {
   changeOnlineMsg,
-  changeOnlineStatus,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
 
 function DeleteMe() {
   const { t } = useTranslation();
   const isOnline = useSelector(selectOnlineStatus);
-  const { token, deleteError, deleteStatus } = useSelector(selectUserData);
+
+  const { token, deleteError } = useSelector(selectUserData);
   const dispatch = useDispatch();
 
   const [passwordForDelete, setPasswordForDelete] = useState("");
@@ -98,24 +91,12 @@ function DeleteMe() {
           generalStyles.padding_v_6,
         ].join(" ")}
       >
-        <ActionButton
+        <Button
           text="delete-account"
           action={handleDeleteMe}
-          color={Colors.FAILED_COLOR}
+          bgColor={Colors.FAILED_COLOR}
         />
       </div>
-
-      {deleteStatus === "loading" && <ActionLoader allowCancel={false} />}
-
-      {deleteError && (
-        <Toast
-          bgColor={Colors.FAILED_COLOR}
-          foreColor="#fff"
-          actionAfterTimeout={() => dispatch(resetDeleteError())}
-        >
-          <p>{t(deleteError)}</p>
-        </Toast>
-      )}
     </>
   );
 }

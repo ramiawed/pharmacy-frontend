@@ -1,20 +1,33 @@
-import React from "react";
+// component contains information about the item in the cart
 
+// Props
+// cartItem: object
+
+import React from "react";
+import { useTranslation } from "react-i18next";
+
+// react icons
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
 import { MdDelete } from "react-icons/md";
 
-import styles from "./cart-row.module.scss";
-import rowStyles from "../row.module.scss";
-import tableStyles from "../table.module.scss";
+// component
+import Icon from "../action-icon/action-icon.component";
+
+// redux stuff
 import { useDispatch } from "react-redux";
 import {
   decreaseItemQty,
   increaseItemQty,
   removeItemFromCart,
 } from "../../redux/cart/cartSlice";
-import ActionButton from "../action-button/action-button.component";
+
+// styles
+import styles from "./cart-row.module.scss";
+import rowStyles from "../row.module.scss";
+import tableStyles from "../table.module.scss";
+
+// constants
 import { Colors, OfferTypes } from "../../utils/constants";
-import { useTranslation } from "react-i18next";
 
 function CartRow({ cartItem }) {
   const { t } = useTranslation();
@@ -81,11 +94,11 @@ function CartRow({ cartItem }) {
             : 0)}
       </label>
       <label className={tableStyles.label_xsmall}>
-        <ActionButton
+        <Icon
           icon={() => <MdDelete />}
-          color={Colors.FAILED_COLOR}
+          foreColor={Colors.FAILED_COLOR}
           tooltip="delete-cart-row"
-          action={() => dispatch(removeItemFromCart(cartItem))}
+          onclick={() => dispatch(removeItemFromCart(cartItem))}
         />
       </label>
     </div>

@@ -44,35 +44,42 @@ function FavoritesPage() {
 
       {/* favorite companies */}
       <CardInfo headerTitle={t("companies")}>
-        {favoritesPartners
-          .filter((favorite) => favorite.type === UserTypeConstants.COMPANY)
-          .map((favorite) => (
-            <FavoriteRow
-              key={favorite._id}
-              user={favorite}
-              withoutBoxShadow={true}
-            />
-          ))}
+        {favoritesPartners &&
+          favoritesPartners
+            .filter((favorite) => favorite.type === UserTypeConstants.COMPANY)
+            .map((favorite) => (
+              <FavoriteRow
+                key={favorite._id}
+                user={favorite}
+                withoutBoxShadow={true}
+              />
+            ))}
       </CardInfo>
 
       {/* favorites warehouses */}
       <CardInfo headerTitle={t("warehouses")}>
-        {favoritesPartners
-          .filter((favorite) => favorite.type === UserTypeConstants.WAREHOUSE)
-          .map((favorite) => (
-            <FavoriteRow
-              key={favorite._id}
-              user={favorite}
-              withoutBoxShadow={true}
-            />
-          ))}
+        {favoritesPartners &&
+          favoritesPartners
+            .filter((favorite) => favorite.type === UserTypeConstants.WAREHOUSE)
+            .map((favorite) => (
+              <FavoriteRow
+                key={favorite._id}
+                user={favorite}
+                withoutBoxShadow={true}
+              />
+            ))}
       </CardInfo>
 
       {/* favorites items */}
       <CardInfo headerTitle={t("nav-items")}>
-        {favoritesItems.map((item) => (
-          <FavoriteItemRow key={item._id} item={item} withoutBoxShadow={true} />
-        ))}
+        {favoritesItems &&
+          favoritesItems.map((item) => (
+            <FavoriteItemRow
+              key={item._id}
+              item={item}
+              withoutBoxShadow={true}
+            />
+          ))}
       </CardInfo>
     </>
   ) : (

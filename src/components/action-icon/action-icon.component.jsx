@@ -1,10 +1,20 @@
+// component the show an icon with tooltip
+
+// Props:
+// onclick: action to execute when press on the icon
+// tooltip: text show when hover over the icon
+// foreColor: the color of the icon
+// icon: the icon that show in this component
+
 import React from "react";
 
+// styles
 import generalStyles from "../../style.module.scss";
 
+// constants
 import { Colors } from "../../utils/constants";
 
-function ActionIcon({ onclick, tooltip, icon, foreColor }) {
+function Icon({ onclick, tooltip, icon, foreColor }) {
   return (
     <div
       className={[
@@ -16,10 +26,10 @@ function ActionIcon({ onclick, tooltip, icon, foreColor }) {
       ].join(" ")}
       onClick={onclick}
     >
-      {icon()}
+      {icon && icon()}
       {tooltip && <div className={generalStyles.tooltip}>{tooltip}</div>}
     </div>
   );
 }
 
-export default ActionIcon;
+export default Icon;

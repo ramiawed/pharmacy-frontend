@@ -24,7 +24,7 @@ import {
 // components
 import Toast from "../toast/toast.component";
 import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
-import ActionIcon from "../action-icon/action-icon.component";
+import Icon from "../action-icon/action-icon.component";
 
 // react icons
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
@@ -234,7 +234,7 @@ function ItemRow({ companyItem }) {
           className={[tableStyles.label_xsmall, tableStyles.center].join(" ")}
         >
           {changeAddToWarehouseLoading ? (
-            <ActionIcon
+            <Icon
               icon={() => (
                 <VscLoading className={generalStyles.loading} size={20} />
               )}
@@ -246,14 +246,14 @@ function ItemRow({ companyItem }) {
             (companyItem.warehouses
               .map((w) => w.warehouse._id)
               .includes(user._id) ? (
-              <ActionIcon
+              <Icon
                 icon={() => <MdDelete size={24} />}
                 onclick={removeItemFromWarehouseHandler}
                 tooltip={t("remove-from-warehouse-tooltip")}
                 foreColor={Colors.FAILED_COLOR}
               />
             ) : (
-              <ActionIcon
+              <Icon
                 icon={() => <MdAddCircle size={24} />}
                 onclick={addItemToWarehouseHandler}
                 tooltip={t("add-to-warehouse-tooltip")}
@@ -264,7 +264,7 @@ function ItemRow({ companyItem }) {
 
           {user.type === UserTypeConstants.PHARMACY &&
           companyItem.warehouses.length > 0 ? (
-            <ActionIcon
+            <Icon
               icon={() => <TiShoppingCart size={20} />}
               onclick={() => {
                 setShowModal(true);
@@ -280,7 +280,7 @@ function ItemRow({ companyItem }) {
           className={[tableStyles.label_xsmall, tableStyles.center].join(" ")}
         >
           {changeFavoriteLoading ? (
-            <ActionIcon
+            <Icon
               icon={() => (
                 <VscLoading className={generalStyles.loading} size={20} />
               )}
@@ -290,14 +290,14 @@ function ItemRow({ companyItem }) {
           ) : favoritesItems
               .map((favorite) => favorite._id)
               .includes(companyItem._id) ? (
-            <ActionIcon
+            <Icon
               icon={() => <AiFillStar size={20} />}
               onclick={removeItemFromFavoritesItems}
               tooltip={t("remove-from-favorite-tooltip")}
               foreColor={Colors.YELLOW_COLOR}
             />
           ) : (
-            <ActionIcon
+            <Icon
               icon={() => <AiOutlineStar size={20} />}
               onclick={addItemToFavoriteItems}
               tooltip={t("add-to-favorite-tooltip")}

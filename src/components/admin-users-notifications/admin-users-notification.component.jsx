@@ -1,4 +1,38 @@
-{status === "loading" && (
+import React from "react";
+import { useTranslation } from "react-i18next";
+
+// redux stuff
+import { useDispatch, useSelector } from "react-redux";
+import {
+  cancelOperation,
+  resetActivationDeleteStatus,
+  resetError,
+  resetUserChangePasswordStatus,
+  selectUsers,
+} from "../../redux/users/usersSlice";
+
+import { Colors } from "../../utils/constants";
+
+// components
+import Loader from "../action-loader/action-loader.component";
+import Toast from "../toast/toast.component";
+
+function AdminUsersNotifications({}) {
+  const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  const {
+    status,
+    error,
+    activationDeleteStatus,
+    activationDeleteStatusMsg,
+    resetUserPasswordStatus,
+  } = useSelector(selectUsers);
+
+  return (
+    <>
+      {/* loading components when retrieve the result from DB */}
+      {status === "loading" && (
         <Loader
           onclick={() => {
             cancelOperation();
@@ -67,3 +101,8 @@
           actionAfterTimeout={() => dispatch(resetUserChangePasswordStatus())}
         />
       )}
+    </>
+  );
+}
+
+export default AdminUsersNotifications;

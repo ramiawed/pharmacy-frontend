@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Route, Switch } from "react-router-dom";
+
 import MainPage from "./pages/main-page/main-page.component";
 import styles from "./app.module.scss";
 import ApprovePage from "./pages/approve-page/approve-page.component";

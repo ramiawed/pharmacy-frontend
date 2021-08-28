@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { BASEURL } from "../../utils/constants";
 import { cacheAdapterEnhancer } from "axios-extensions";
 
 let CancelToken;
@@ -27,7 +28,7 @@ export const getItems = createAsyncThunk(
     source = CancelToken.source;
 
     try {
-      let buildUrl = `http://localhost:8000/api/v1/items?page=${queryString.page}&limit=9`;
+      let buildUrl = `${BASEURL}/items?page=${queryString.page}&limit=9`;
 
       if (queryString.companyId) {
         buildUrl = buildUrl + `&companyId=${queryString.companyId}`;
@@ -96,17 +97,13 @@ export const addItem = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      const response = await axios.post(
-        "http://localhost:8000/api/v1/items",
-        obj,
-        {
-          timeout: 10000,
-          cancelToken: source.token,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(`${BASEURL}/items`, obj, {
+        timeout: 10000,
+        cancelToken: source.token,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       return response.data;
     } catch (err) {
@@ -132,7 +129,7 @@ export const updateItem = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        `http://localhost:8000/api/v1/items/item/${obj._id}`,
+        `${BASEURL}/items/item/${obj._id}`,
         { ...obj },
         {
           timeout: 10000,
@@ -166,17 +163,13 @@ export const addItems = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      const response = await axios.post(
-        "http://localhost:8000/api/v1/items/excel",
-        obj,
-        {
-          timeout: 25000,
-          cancelToken: source.token,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(`${BASEURL}/items/excel`, obj, {
+        timeout: 25000,
+        cancelToken: source.token,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       return response.data;
     } catch (err) {
@@ -202,7 +195,7 @@ export const changeItemActiveState = createAsyncThunk(
       source = CancelToken.source();
 
       // const http = axios.create({
-      //   baseURL: "http://localhost:8000/api/v1",
+      //   baseURL: "${BASEURL}",
       //   timeout: 10000,
       //   cancelToken: source.token,
       //   headers: {
@@ -216,7 +209,7 @@ export const changeItemActiveState = createAsyncThunk(
       // });
 
       const response = await axios.post(
-        `http://localhost:8000/api/v1/items/active/${obj.itemId}`,
+        `${BASEURL}/items/active/${obj.itemId}`,
         { action: obj.action },
         {
           timeout: 10000,
@@ -255,7 +248,7 @@ export const changeItemLogo = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        `http://localhost:8000/api/v1/items/upload/${_id}`,
+        `${BASEURL}/items/upload/${_id}`,
         data,
         {
           timeout: 10000,
@@ -321,6 +314,20 @@ export const itemsSlice = createSlice({
       state.changeLogoError = "";
     },
     resetItems: (state) => {
+      state.status = "idle";
+      state.items = [];
+      state.count = 0;
+      state.error = "";
+      state.addStatus = "";
+      state.addError = "";
+      state.activeStatus = "idle";
+      state.activeError = "";
+      state.updateStatus = "idle";
+      state.updateError = "";
+      state.changeLogoStatus = "idle";
+      state.changeLogoError = "";
+    },
+    itemsSliceSignOut: (state) => {
       state.status = "idle";
       state.items = [];
       state.count = 0;
@@ -474,6 +481,7 @@ export const {
   resetUpdateStatus,
   resetChangeLogoStatus,
   resetChangeLogoError,
+  itemsSliceSignOut,
 } = itemsSlice.actions;
 
 export const selectItems = (state) => state.items;

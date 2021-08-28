@@ -10,7 +10,9 @@ import generalStyles from "../../style.module.scss";
 function InputFileImage({ type, item, readOnly }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
   const inputFileRef = React.useRef(null);
+
   const { token, user } = useSelector(selectUserData);
 
   const handleClick = () => {

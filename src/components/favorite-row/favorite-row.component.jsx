@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import Toast from "../toast/toast.component";
 
 // react icons
-import { AiFillStar, AiOutlineStar } from "react-icons/ai";
+import { AiFillStar } from "react-icons/ai";
 
 // redux-stuff
 import { useDispatch, useSelector } from "react-redux";

@@ -6,8 +6,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteMe, selectUserData, signOut } from "../../redux/auth/authSlice";
 import { resetUsers } from "../../redux/users/usersSlice";
 import { resetFavorites } from "../../redux/favorites/favoritesSlice";
-import { resetCompanies } from "../../redux/company/companySlice";
-import { resetWarehouse } from "../../redux/warehouse/warehousesSlice";
+import {
+  resetCompanies,
+  resetCompaniesPageState,
+} from "../../redux/company/companySlice";
+import {
+  resetWarehouse,
+  resetWarehousePageState,
+} from "../../redux/warehouse/warehousesSlice";
 import { resetItems } from "../../redux/items/itemsSlices";
 import { resetCompanyItems } from "../../redux/companyItems/companyItemsSlices";
 import { resetCartItems } from "../../redux/cart/cartSlice";
@@ -65,7 +71,9 @@ function DeleteMe() {
         dispatch(resetUsers());
         dispatch(resetFavorites());
         dispatch(resetCompanies());
+        dispatch(resetCompaniesPageState());
         dispatch(resetWarehouse());
+        dispatch(resetWarehousePageState());
         dispatch(resetItems());
         dispatch(resetCompanyItems());
         dispatch(resetCartItems());

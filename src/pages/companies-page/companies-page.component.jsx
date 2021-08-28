@@ -47,6 +47,10 @@ import {
   selectCompaniesPageState,
 } from "../../redux/company/companySlice";
 import { selectFavoritesPartners } from "../../redux/favorites/favoritesSlice";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
 
 // constants and uitls
 import { Colors, UserTypeConstants } from "../../utils/constants";
@@ -58,6 +62,9 @@ import Loader from "../../components/action-loader/action-loader.component";
 
 function CompaniesPage() {
   const { t } = useTranslation();
+
+  const isOnline = useSelector(selectOnlineStatus);
+
   const dispatch = useDispatch();
 
   // select from redux store
@@ -113,6 +120,10 @@ function CompaniesPage() {
   // get the next 9 companies from DB
   // and add one to page
   const handleMoreResult = () => {
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
     handleSearch(page);
   };
 

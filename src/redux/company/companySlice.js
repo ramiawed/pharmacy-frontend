@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { BASEURL } from "../../utils/constants";
 
 let CancelToken;
 let source;
@@ -30,7 +31,7 @@ export const getCompanies = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source;
 
-      let buildUrl = `http://localhost:8000/api/v1/users?type=company&page=${queryString.page}&limit=9`;
+      let buildUrl = `${BASEURL}/users?type=company&page=${queryString.page}&limit=9`;
 
       if (queryString.name) {
         buildUrl = buildUrl + `&name=${queryString.name}`;
@@ -69,6 +70,7 @@ export const getCompanies = createAsyncThunk(
       if (!err.response) {
         return rejectWithValue("network failed");
       }
+
       return rejectWithValue(err.response.data);
     }
   }
@@ -150,6 +152,18 @@ export const companiesSlice = createSlice({
     resetCount: (state) => {
       state.count = 0;
     },
+    companySliceSignOut: (state) => {
+      state.status = "idle";
+      state.companies = [];
+      state.count = 0;
+      state.error = "";
+      state.pageState = {
+        searchName: "",
+        searchCity: "",
+        displayType: "list",
+        page: 1,
+      };
+    },
   },
   extraReducers: {
     [getCompanies.pending]: (state) => {
@@ -192,6 +206,7 @@ export const {
   resetSearchCity,
   resetDisplayType,
   resetPage,
+  companySliceSignOut,
 } = companiesSlice.actions;
 
 export default companiesSlice.reducer;

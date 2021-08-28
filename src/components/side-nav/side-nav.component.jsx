@@ -1,9 +1,10 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import { VscClose } from "react-icons/vsc";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { authSliceSignOut, selectUser } from "../../redux/auth/authSlice";
 import { UserTypeConstants } from "../../utils/constants";
 import SideNavAdmin from "../side-nav-admin/side-nav-admin.component";
 import SideNavCompany from "../side-nav-company/side-nav-company.component";
@@ -13,6 +14,16 @@ import SideNavWarehouse from "../side-nav-warehouse/side-nav-warehouse.component
 
 // styles
 import styles from "./side-nav.module.scss";
+import linkStyles from "../side-nav.module.scss";
+import { usersSliceSignOut } from "../../redux/users/usersSlice";
+import { favoritesSliceSignOut } from "../../redux/favorites/favoritesSlice";
+import { cartSliceSignOut } from "../../redux/cart/cartSlice";
+import { companySliceSignOut } from "../../redux/company/companySlice";
+import { companyItemsSliceSignOut } from "../../redux/companyItems/companyItemsSlices";
+import { itemsSliceSignOut } from "../../redux/items/itemsSlices";
+import { statisticsSliceSignOut } from "../../redux/statistics/statisticsSlice";
+import { warehouseSliceSignOut } from "../../redux/warehouse/warehousesSlice";
+import { warehouseItemsSliceSignOut } from "../../redux/warehouseItems/warehouseItemsSlices";
 
 function SideNav({
   collapsed,
@@ -22,6 +33,20 @@ function SideNav({
 }) {
   const { t } = useTranslation();
   const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+
+  const handleSignOut = () => {
+    dispatch(authSliceSignOut());
+    dispatch(cartSliceSignOut());
+    dispatch(companySliceSignOut());
+    dispatch(companyItemsSliceSignOut());
+    dispatch(favoritesSliceSignOut());
+    dispatch(itemsSliceSignOut());
+    dispatch(statisticsSliceSignOut());
+    dispatch(usersSliceSignOut());
+    dispatch(warehouseSliceSignOut());
+    dispatch(warehouseItemsSliceSignOut());
+  };
 
   return (
     <div
@@ -35,7 +60,10 @@ function SideNav({
       </div>
       <div
         style={{
-          backgroundImage: 'url("http://localhost:8000/avatar01.png',
+          backgroundImage:
+            user.logo_url !== ""
+              ? `url('http://localhost:8000/${user.logo_url}')`
+              : 'url("http://localhost:8000/avatar01.png',
         }}
         className={styles.profile_img}
       ></div>
@@ -70,6 +98,9 @@ function SideNav({
             onSelectedChange={onSelectedChange}
           />
         )}
+        <Link className={linkStyles.link} onClick={handleSignOut}>
+          {t("nav-sign-out")}
+        </Link>
       </div>
       <button onClick={() => onCollapsedChange()}>
         {collapsed ? (

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { BASEURL } from "../../utils/constants";
 
 let CancelToken;
 let source;
@@ -33,7 +34,7 @@ export const authSign = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        "http://localhost:8000/api/v1/users/signin",
+        `${BASEURL}/users/signin`,
         {
           username,
           password,
@@ -70,7 +71,7 @@ export const authSign = createAsyncThunk(
 //       source = CancelToken.source();
 
 //       const response = await axios.post(
-//         "http://localhost:8000/api/v1/users/signup",
+//         "${BASEURL}/users/signup",
 //         obj,
 //         {
 //           timeout: 10000,
@@ -101,17 +102,13 @@ export const updateUserInfo = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      const response = await axios.post(
-        "http://localhost:8000/api/v1/users/updateMe",
-        obj,
-        {
-          timeout: 10000,
-          cancelToken: source.token,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(`${BASEURL}/users/updateMe`, obj, {
+        timeout: 10000,
+        cancelToken: source.token,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       return response.data;
     } catch (err) {
@@ -144,7 +141,7 @@ export const changeMyPassword = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        "http://localhost:8000/api/v1/users/changeMyPassword",
+        `${BASEURL}/users/changeMyPassword`,
         obj,
         {
           timeout: 10000,
@@ -178,17 +175,13 @@ export const deleteMe = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      const response = await axios.post(
-        "http://localhost:8000/api/v1/users/deleteMe",
-        obj,
-        {
-          timeout: 10000,
-          cancelToken: source.token,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(`${BASEURL}/users/deleteMe`, obj, {
+        timeout: 10000,
+        cancelToken: source.token,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       return response.data;
     } catch (err) {
@@ -213,17 +206,13 @@ export const changeLogo = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      const response = await axios.post(
-        "http://localhost:8000/api/v1/users/upload",
-        data,
-        {
-          timeout: 10000,
-          cancelToken: source.token,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(`${BASEURL}/users/upload`, data, {
+        timeout: 10000,
+        cancelToken: source.token,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
       return response.data;
     } catch (err) {
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
@@ -295,6 +284,20 @@ export const authSlice = createSlice({
     resetChangeLogoError: (state) => {
       state.changeLogoError = "";
     },
+    authSliceSignOut: (state) => {
+      state.status = "idle";
+      state.updateStatus = "idle";
+      state.changeLogoStatus = "idle";
+      state.changePasswordStatus = "idle";
+      state.deleteStatus = "idle";
+      state.user = null;
+      state.token = "";
+      state.error = "";
+      state.updateError = "";
+      state.passwordError = "";
+      state.deleteError = "";
+      state.changeLogoError = "";
+    },
   },
   extraReducers: {
     // use sign in lifecycle
@@ -352,6 +355,7 @@ export const authSlice = createSlice({
     },
     [changeMyPassword.rejected]: (state, { error, meta, payload }) => {
       state.changePasswordStatus = "failed";
+
       if (payload === "timeout") {
         state.passwordError = payload;
       } else if (payload === "cancel") {
@@ -414,6 +418,7 @@ export const {
   resetChangeLogoError,
   resetUpdateStatus,
   resetUpdateError,
+  authSliceSignOut,
 } = authSlice.actions;
 
 export const selectToken = (state) => state.auth.token;

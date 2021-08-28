@@ -36,13 +36,16 @@ import {
   resetSearchName,
   selectWarehousesPageState,
   resetStatus,
-  cancelOperation,
 } from "../../redux/warehouse/warehousesSlice";
 import {
   resetFavoriteError,
   selectFavorites,
   selectFavoritesPartners,
 } from "../../redux/favorites/favoritesSlice";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
 
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
@@ -52,6 +55,9 @@ import generalStyles from "../../style.module.scss";
 
 function WarehousePage() {
   const { t } = useTranslation();
+
+  const isOnline = useSelector(selectOnlineStatus);
+
   const dispatch = useDispatch();
 
   const { token, user } = useSelector(selectUserData);
@@ -95,6 +101,11 @@ function WarehousePage() {
   };
 
   const handleMoreResult = () => {
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
     handleSearch(page);
   };
 
@@ -109,11 +120,6 @@ function WarehousePage() {
     }
 
     window.scrollTo(0, 0);
-    return () => {
-      if (status === "loading") {
-        cancelOperation();
-      }
-    };
   }, []);
 
   return user ? (
@@ -252,17 +258,21 @@ function WarehousePage() {
       {/* show loading indicator when data loading from db */}
       {status === "loading" && <Loader allowCancel={false} />}
 
-      {warehouses.length === 0 && status !== "loading" ? (
+      {warehouses.length === 0 && status !== "loading" && (
         <>
           <NoContent msg={t("no-warehouses")} />
         </>
-      ) : warehouses.length < count ? (
+      )}
+
+      {warehouses.length < count && (
         <Button
           text={t("more")}
           action={handleMoreResult}
           bgColor={Colors.SECONDARY_COLOR}
         />
-      ) : (
+      )}
+
+      {warehouses.length === count && status !== "loading" && count !== 0 && (
         <p
           className={[generalStyles.center, generalStyles.fc_secondary].join(
             " "

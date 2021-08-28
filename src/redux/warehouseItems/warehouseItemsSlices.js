@@ -1,5 +1,9 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../../api/pharmacy";
+import axios from "axios";
+import { BASEURL } from "../../utils/constants";
+
+let CancelToken;
+let source;
 
 const initialState = {
   status: "idle",
@@ -18,7 +22,10 @@ export const getWarehouseItems = createAsyncThunk(
   "warehouseItems/getItems",
   async ({ queryString, token }, { rejectWithValue }) => {
     try {
-      let buildUrl = `/items/warehouseItems?page=${queryString.page}&limit=9`;
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      let buildUrl = `${BASEURL}/items/warehouseItems?page=${queryString.page}&limit=9`;
 
       if (queryString.name) {
         buildUrl = buildUrl + `&name=${queryString.name}`;
@@ -29,6 +36,8 @@ export const getWarehouseItems = createAsyncThunk(
       }
 
       const response = await axios.get(buildUrl, {
+        timeout: 10000,
+        cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -36,6 +45,17 @@ export const getWarehouseItems = createAsyncThunk(
 
       return response.data;
     } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
       return rejectWithValue(err.response.data);
     }
   }
@@ -45,10 +65,15 @@ export const removeItemFromWarehouse = createAsyncThunk(
   "warehouseItems/removeFromWarehouse",
   async ({ obj, token }, { rejectWithValue }) => {
     try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
       const response = await axios.post(
-        `/items/warehouse/remove-item/${obj.itemId}`,
+        `${BASEURL}/items/warehouse/remove-item/${obj.itemId}`,
         { warehouseId: obj.warehouseId },
         {
+          timeout: 10000,
+          cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -57,6 +82,17 @@ export const removeItemFromWarehouse = createAsyncThunk(
 
       return response.data;
     } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
       return rejectWithValue(err.response.data);
     }
   }
@@ -66,10 +102,15 @@ export const changeItemWarehouseMaxQty = createAsyncThunk(
   "warehouseItems/changeItemsMaxQty",
   async ({ obj, token }, { rejectWithValue }) => {
     try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
       const response = await axios.post(
-        `/items/warehouse/change-max-qty/${obj.itemId}`,
+        `${BASEURL}/items/warehouse/change-max-qty/${obj.itemId}`,
         { warehouseId: obj.warehouseId, qty: obj.qty },
         {
+          timeout: 10000,
+          cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -78,6 +119,17 @@ export const changeItemWarehouseMaxQty = createAsyncThunk(
 
       return response.data;
     } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
       return rejectWithValue(err.response.data);
     }
   }
@@ -87,10 +139,15 @@ export const changeItemWarehouseOffer = createAsyncThunk(
   "warehouseItems/changeItemsOffer",
   async ({ obj, token }, { rejectWithValue }) => {
     try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
       const response = await axios.post(
-        `/items/warehouse/change-offer/${obj.itemId}`,
+        `${BASEURL}/items/warehouse/change-offer/${obj.itemId}`,
         { warehouseId: obj.warehouseId, offer: obj.offer },
         {
+          timeout: 10000,
+          cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -99,6 +156,17 @@ export const changeItemWarehouseOffer = createAsyncThunk(
 
       return response.data;
     } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
       return rejectWithValue(err.response.data);
     }
   }
@@ -151,9 +219,21 @@ export const warehouseItemsSlice = createSlice({
       state.changeOfferStatus = "idle";
       state.changeOfferError = "";
     },
+    warehouseItemsSliceSignOut: (state) => {
+      state.status = "idle";
+      state.warehouseItems = [];
+      state.count = 0;
+      state.error = "";
+      state.removeFromWarehouseStatus = "idle";
+      state.removeFromWarehouseError = "";
+      state.changeMaxQtyStatus = "idle";
+      state.changeMaxQtyError = "";
+      state.changeOfferStatus = "idle";
+      state.changeOfferError = "";
+    },
   },
   extraReducers: {
-    [getWarehouseItems.pending]: (state, action) => {
+    [getWarehouseItems.pending]: (state) => {
       state.status = "loading";
     },
     [getWarehouseItems.fulfilled]: (state, action) => {
@@ -162,14 +242,21 @@ export const warehouseItemsSlice = createSlice({
       state.count = action.payload.count;
       state.error = "";
     },
-    [getWarehouseItems.rejected]: (state, { error, meta, payload }) => {
+    [getWarehouseItems.rejected]: (state, { payload }) => {
       state.status = "failed";
-      state.error = payload.message;
+
+      if (payload === "timeout") {
+        state.error = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.error = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.error = "network failed";
+      } else state.error = payload.message;
     },
-    [removeItemFromWarehouse.pending]: (state, action) => {
+    [removeItemFromWarehouse.pending]: (state) => {
       state.removeFromWarehouseStatus = "loading";
     },
-    [removeItemFromWarehouse.fulfilled]: (state, action) => {
+    [removeItemFromWarehouse.fulfilled]: (state) => {
       state.removeFromWarehouseStatus = "succeeded";
       // const newItems = state.warehouseItems.map((item) => {
       //   if (item._id === action.payload.data.item._id) {
@@ -180,19 +267,33 @@ export const warehouseItemsSlice = createSlice({
       // state.warehouseItems = newItems;
       // state.count = state.count - 1;
     },
-    [removeItemFromWarehouse.rejected]: (state, { error, meta, payload }) => {
+    [removeItemFromWarehouse.rejected]: (state, { payload }) => {
       state.removeFromWarehouseStatus = "failed";
-      state.removeFromWarehouseError = payload.message;
+
+      if (payload === "timeout") {
+        state.removeFromWarehouseError = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.removeFromWarehouseError = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.removeFromWarehouseError = "network failed";
+      } else state.removeFromWarehouseError = payload.message;
     },
-    [changeItemWarehouseMaxQty.pending]: (state, action) => {
+    [changeItemWarehouseMaxQty.pending]: (state) => {
       state.changeMaxQtyStatus = "loading";
     },
-    [changeItemWarehouseMaxQty.fulfilled]: (state, action) => {
+    [changeItemWarehouseMaxQty.fulfilled]: (state) => {
       state.changeMaxQtyStatus = "succeeded";
     },
-    [changeItemWarehouseMaxQty.rejected]: (state, { error, meta, payload }) => {
+    [changeItemWarehouseMaxQty.rejected]: (state, { payload }) => {
       state.changeMaxQtyStatus = "failed";
-      state.changeMaxQtyError = payload.message;
+
+      if (payload === "timeout") {
+        state.changeMaxQtyError = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.changeMaxQtyError = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.changeMaxQtyError = "network failed";
+      } else state.changeMaxQtyError = payload.message;
     },
     [changeItemWarehouseOffer.pending]: (state, action) => {
       state.changeOfferStatus = "loading";
@@ -205,9 +306,16 @@ export const warehouseItemsSlice = createSlice({
         } else return item;
       });
     },
-    [changeItemWarehouseOffer.rejected]: (state, { error, meta, payload }) => {
+    [changeItemWarehouseOffer.rejected]: (state, { payload }) => {
       state.changeOfferStatus = "failed";
-      state.changeOfferError = payload.message;
+
+      if (payload === "timeout") {
+        state.changeOfferError = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.changeOfferError = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.changeOfferError = "network failed";
+      } else state.changeOfferError = payload.message;
     },
   },
 });
@@ -221,6 +329,7 @@ export const {
   resetChangeMaxQtyError,
   resetChangeOfferStatus,
   resetChangeOfferError,
+  warehouseItemsSliceSignOut,
 } = warehouseItemsSlice.actions;
 
 export const selectWarehouseItems = (state) => state.warehouseItems;

@@ -81,3 +81,5 @@ export const DateOptions = {
   SIX_MONTH: "6M",
   ONE_YEAR: "1Y",
 };
+
+export const BASEURL = "http://localhost:8000/api/v1";

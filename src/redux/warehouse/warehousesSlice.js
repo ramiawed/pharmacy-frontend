@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { BASEURL } from "../../utils/constants";
 
 let CancelToken;
 let source;
@@ -30,7 +31,7 @@ export const getWarehouses = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source;
 
-      let buildUrl = `http://localhost:8000/api/v1/users?type=warehouse&page=${queryString.page}&limit=9`;
+      let buildUrl = `${BASEURL}/users?type=warehouse&page=${queryString.page}&limit=9`;
 
       if (queryString.name) {
         buildUrl = buildUrl + `&name=${queryString.name}`;
@@ -151,6 +152,18 @@ export const warehousesSlice = createSlice({
     resetCount: (state) => {
       state.count = 0;
     },
+    warehouseSliceSignOut: (state) => {
+      state.status = "idle";
+      state.warehouses = [];
+      state.count = 0;
+      state.error = null;
+      state.pageState = {
+        searchName: "",
+        searchCity: "",
+        displayType: "list",
+        page: 1,
+      };
+    },
   },
   extraReducers: {
     [getWarehouses.pending]: (state) => {
@@ -193,6 +206,7 @@ export const {
   resetSearchCity,
   resetDisplayType,
   resetPage,
+  warehouseSliceSignOut,
 } = warehousesSlice.actions;
 
 export default warehousesSlice.reducer;

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { BASEURL } from "../../utils/constants";
 
 let CancelToken;
 let source;
@@ -24,16 +25,13 @@ export const getFavorites = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      const response = await axios.get(
-        `http://localhost:8000/api/v1/favorites`,
-        {
-          timeout: 10000,
-          cancelToken: source.token,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASEURL}/favorites`, {
+        timeout: 10000,
+        cancelToken: source.token,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       return response.data;
     } catch (err) {
@@ -61,7 +59,7 @@ export const addFavorite = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        "http://localhost:8000/api/v1/favorites/add",
+        "${BASEURL}/favorites/add",
         { favoriteId: obj.favoriteId },
         {
           timeout: 10000,
@@ -98,7 +96,7 @@ export const removeFavorite = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        "http://localhost:8000/api/v1/favorites/remove",
+        "${BASEURL}/favorites/remove",
         { favoriteId: obj.favoriteId },
         {
           timeout: 10000,
@@ -135,7 +133,7 @@ export const addFavoriteItem = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        "http://localhost:8000/api/v1/favorites/add/items",
+        "${BASEURL}/favorites/add/items",
         { favoriteItemId: obj.favoriteItemId },
         {
           timeout: 10000,
@@ -172,7 +170,7 @@ export const removeFavoriteItem = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        "http://localhost:8000/api/v1/favorites/remove/items",
+        "${BASEURL}/favorites/remove/items",
         { favoriteItemId: obj.favoriteItemId },
         {
           timeout: 10000,
@@ -213,6 +211,12 @@ export const favoritesSlice = createSlice({
     },
     resetFavoriteError: (state) => {
       state.status = "idle";
+      state.error = "";
+    },
+    favoritesSliceSignOut: (state) => {
+      state.status = "idle";
+      state.favorites_partners = [];
+      state.favorites_items = [];
       state.error = "";
     },
   },
@@ -328,7 +332,8 @@ export const favoritesSlice = createSlice({
   },
 });
 
-export const { resetFavorites, resetFavoriteError } = favoritesSlice.actions;
+export const { resetFavorites, resetFavoriteError, favoritesSliceSignOut } =
+  favoritesSlice.actions;
 
 export const selectFavoritesPartners = (state) =>
   state.favorites.favorites_partners;

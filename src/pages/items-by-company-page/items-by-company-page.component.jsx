@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
 import { useParams } from "react-router";
-import axios from "../../api/pharmacy";
+import axios from "axios";
 
 // components
 import Header from "../../components/header/header.component";
@@ -37,7 +37,7 @@ import generalStyles from "../../style.module.scss";
 import searchContainerStyles from "../../components/search-container/search-container.module.scss";
 
 // constants
-import { Colors, UserTypeConstants } from "../../utils/constants";
+import { Colors, UserTypeConstants, BASEURL } from "../../utils/constants";
 
 function ItemsByCompanyPage() {
   const { companyId } = useParams();
@@ -104,7 +104,7 @@ function ItemsByCompanyPage() {
   useEffect(() => {
     if (user) {
       axios
-        .get(`/users/${companyId}`, {
+        .get(`${BASEURL}/users/${companyId}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

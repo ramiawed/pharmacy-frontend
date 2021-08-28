@@ -10,8 +10,14 @@ import {
   selectFavorites,
 } from "../../redux/favorites/favoritesSlice";
 import { resetUsers } from "../../redux/users/usersSlice";
-import { resetCompanies } from "../../redux/company/companySlice";
-import { resetWarehouse } from "../../redux/warehouse/warehousesSlice";
+import {
+  resetCompanies,
+  resetCompaniesPageState,
+} from "../../redux/company/companySlice";
+import {
+  resetWarehouse,
+  resetWarehousePageState,
+} from "../../redux/warehouse/warehousesSlice";
 
 // components
 import IconWithNumber from "../icon-with-number/icon-with-number.component";
@@ -41,20 +47,6 @@ function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
 
   const user = useSelector(selectUser);
   const total = useSelector(selectCartItemCount);
-
-  const dispatch = useDispatch();
-
-  const handleSignout = () => {
-    dispatch(signOut());
-    dispatch(resetUsers());
-    dispatch(resetFavorites());
-    dispatch(resetCompanies());
-    dispatch(resetWarehouse());
-    dispatch(resetItems());
-    dispatch(resetCompanyItems());
-    dispatch(resetWarehouseItems());
-    dispatch(resetCartItems());
-  };
 
   return (
     <div
@@ -131,7 +123,7 @@ function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
           </Link>
         )}
 
-        <p
+        {/* <p
           className={[
             styles.link,
             selectedOption === TopNavLinks.SIGNOUT ? styles.selected : null,
@@ -139,19 +131,17 @@ function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
           onClick={() => handleSignout()}
         >
           {t("nav-sign-out")}
-        </p>
+        </p> */}
         <p className={styles.link}>{user.name}</p>
         <div
           style={{
-            backgroundImage: 'url("http://localhost:8000/avatar01.png',
+            backgroundImage:
+              user.logo_url !== ""
+                ? `url('http://localhost:8000/${user.logo_url}')`
+                : 'url("http://localhost:8000/avatar01.png',
           }}
           className={styles.profile_img}
-        >
-          {/* <div className={styles.user_actions}>
-            <p>sign out</p>
-            <p>medicines</p>
-          </div> */}
-        </div>
+        ></div>
       </div>
     </div>
   );

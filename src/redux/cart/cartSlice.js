@@ -141,13 +141,16 @@ export const cartSlice = createSlice({
       }
     },
     resetCartItems: (state, action) => {
-      console.log(action.payload);
       state.cartWarehouse = state.cartWarehouse.filter(
         (w) => w !== action.payload
       );
       state.cartItems = state.cartItems.filter(
         (item) => item.warehouse.warehouse.name !== action.payload
       );
+    },
+    cartSliceSignOut: (state) => {
+      state.cartItems = [];
+      state.cartWarehouse = [];
     },
   },
 });
@@ -158,6 +161,7 @@ export const {
   resetCartItems,
   increaseItemQty,
   decreaseItemQty,
+  cartSliceSignOut,
 } = cartSlice.actions;
 
 export const selectCartItems = (state) => state.cart.cartItems;

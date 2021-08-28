@@ -10,7 +10,6 @@ import { selectUserData } from "../../redux/auth/authSlice";
 import {
   addItem,
   resetAddStatus,
-  resetChangeLogoStatus,
   resetUpdateStatus,
   selectItems,
   updateItem,

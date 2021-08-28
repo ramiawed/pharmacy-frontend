@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 // import axios from "../../api/pharmacy";
 import axios from "axios";
+import { BASEURL } from "../../utils/constants";
 
 let CancelToken;
 let source;
@@ -84,16 +85,13 @@ export const getUsers = createAsyncThunk(
         buildUrl = buildUrl + `&sort=${queryString.sort.replace(/,/g, " ")}`;
       }
 
-      const response = await axios.get(
-        `http://localhost:8000/api/v1${buildUrl}`,
-        {
-          timeout: 10000,
-          cancelToken: source.token,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.get(`${BASEURL}${buildUrl}`, {
+        timeout: 10000,
+        cancelToken: source.token,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       return response.data;
     } catch (err) {
@@ -122,7 +120,7 @@ export const userApproveChange = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        `http://localhost:8000/api/v1/users/approve/${userId}`,
+        `${BASEURL}/users/approve/${userId}`,
         {
           action: status,
         },
@@ -161,7 +159,7 @@ export const deleteUser = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        `http://localhost:8000/api/v1/users/delete/${userId}`,
+        `${BASEURL}/users/delete/${userId}`,
         {},
         {
           timeout: 10000,
@@ -199,7 +197,7 @@ export const undoDeleteUser = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        `http://localhost:8000/api/v1/users/reactivate/${userId}`,
+        `${BASEURL}/users/reactivate/${userId}`,
         {},
         {
           timeout: 10000,
@@ -239,7 +237,7 @@ export const resetUserPassword = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        `http://localhost:8000/api/v1/users/resetUserPassword`,
+        `${BASEURL}/users/resetUserPassword`,
         {
           userId,
           newPassword,
@@ -298,6 +296,16 @@ export const usersSlice = createSlice({
       state.resetUserPasswordStatus = "idle";
     },
     resetUserChangePasswordError: (state) => {
+      state.resetUserPasswordError = "";
+    },
+    usersSliceSignOut: (state) => {
+      state.status = "idle";
+      state.users = null;
+      state.error = "";
+      state.count = 0;
+      state.activationDeleteStatus = "idle";
+      state.activationDeleteStatusMsg = "";
+      state.resetUserPasswordStatus = "idle";
       state.resetUserPasswordError = "";
     },
   },
@@ -435,6 +443,7 @@ export const {
   resetUserChangePasswordStatus,
   resetUserChangePasswordError,
   resetError,
+  usersSliceSignOut,
 } = usersSlice.actions;
 
 export default usersSlice.reducer;

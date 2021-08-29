@@ -1,7 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 // import axios from "../../api/pharmacy";
 import axios from "axios";
-import { BASEURL } from "../../utils/constants";
+import {
+  BASEURL,
+  GuestJob,
+  UserActiveState,
+  UserApprovedState,
+  UserTypeConstants,
+} from "../../utils/constants";
 
 let CancelToken;
 let source;
@@ -11,6 +17,23 @@ const initialState = {
   users: null,
   error: "",
   count: 0,
+  refresh: true,
+  pageState: {
+    searchName: "",
+    searchCity: "",
+    searchDistrict: "",
+    searchStreet: "",
+    searchEmployeeName: "",
+    searchCertificateName: "",
+    searchCompanyName: "",
+    searchJobTitle: "",
+    approved: UserApprovedState.ALL,
+    active: UserActiveState.ALL,
+    userType: UserTypeConstants.ALL,
+    searchJob: GuestJob.NONE,
+    orderBy: {},
+    page: 1,
+  },
   // field holds the activation or deleting status
   activationDeleteStatus: "idle",
   // field holds the activation or deleting message
@@ -26,63 +49,91 @@ export const cancelOperation = () => {
 // get the users
 export const getUsers = createAsyncThunk(
   "users/get",
-  async ({ queryString, token }, { rejectWithValue }) => {
+  async ({ token }, { rejectWithValue, getState }) => {
+    const {
+      users: { pageState },
+    } = getState();
+    console.log(pageState);
+
     try {
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      let buildUrl = `/users?page=${queryString.page}&limit=9`;
+      let buildUrl = `/users?page=${pageState.page}&limit=9`;
 
-      if (queryString.name) {
-        buildUrl = buildUrl + `&name=${queryString.name}`;
+      if (pageState.searchName.trim() !== "") {
+        buildUrl = buildUrl + `&name=${pageState.searchName}`;
       }
 
-      if (queryString.type) {
-        buildUrl = buildUrl + `&type=${queryString.type}`;
+      if (pageState.searchCity.trim() !== "") {
+        buildUrl = buildUrl + `&city=${pageState.searchCity}`;
       }
 
-      if (queryString.city) {
-        buildUrl = buildUrl + `&city=${queryString.city}`;
+      if (pageState.searchDistrict.trim() !== "") {
+        buildUrl = buildUrl + `&district=${pageState.searchDistrict}`;
       }
 
-      if (queryString.district) {
-        buildUrl = buildUrl + `&district=${queryString.district}`;
+      if (pageState.searchStreet.trim() !== "") {
+        buildUrl = buildUrl + `&street=${pageState.searchStreet}`;
       }
 
-      if (queryString.street) {
-        buildUrl = buildUrl + `&street=${queryString.street}`;
+      if (pageState.searchEmployeeName.trim() !== "") {
+        buildUrl = buildUrl + `&employeeName=${pageState.searchEmployeeName}`;
       }
 
-      if (queryString.employeeName) {
-        buildUrl = buildUrl + `&employeeName=${queryString.employeeName}`;
+      if (pageState.userType !== UserTypeConstants.ALL) {
+        buildUrl = buildUrl + `&type=${pageState.userType}`;
       }
 
-      if (queryString.certificateName) {
-        buildUrl = buildUrl + `&certificateName=${queryString.certificateName}`;
+      if (pageState.searchCertificateName.trim() !== "") {
+        buildUrl =
+          buildUrl + `&certificateName=${pageState.searchCertificateName}`;
       }
 
-      if (queryString.companyName) {
-        buildUrl = buildUrl + `&companyName=${queryString.companyName}`;
+      if (pageState.searchCompanyName.trim() !== "") {
+        buildUrl = buildUrl + `&companyName=${pageState.searchCompanyName}`;
       }
 
-      if (queryString.jobTitle) {
-        buildUrl = buildUrl + `&jobTitle=${queryString.jobTitle}`;
+      if (pageState.searchJobTitle.trim() !== "") {
+        buildUrl = buildUrl + `&jobTitle=${pageState.searchJobTitle}`;
       }
 
-      if (queryString.job) {
-        buildUrl = buildUrl + `&job=${queryString.job}`;
+      if (pageState.searchJob !== GuestJob.NONE) {
+        buildUrl = buildUrl + `&job=${pageState.searchJob}`;
       }
 
-      if (queryString.approve !== undefined) {
-        buildUrl = buildUrl + `&isApproved=${queryString.approve}`;
+      if (pageState.approved === UserApprovedState.APPROVED) {
+        buildUrl = buildUrl + `&isApproved=${true}`;
       }
 
-      if (queryString.active !== undefined) {
-        buildUrl = buildUrl + `&isActive=${queryString.active}`;
+      if (pageState.approved === UserApprovedState.NOT_APPROVED) {
+        buildUrl = buildUrl + `&isApproved=${false}`;
       }
 
-      if (queryString.sort) {
-        buildUrl = buildUrl + `&sort=${queryString.sort.replace(/,/g, " ")}`;
+      if (pageState.active === UserActiveState.ACTIVE) {
+        buildUrl = buildUrl + `&isActive=${true}`;
+      }
+
+      if (pageState.active === UserActiveState.INACTIVE) {
+        buildUrl = buildUrl + `&isActive=${false}`;
+      }
+
+      let sortArray = [];
+      let sort;
+      Object.keys(pageState.orderBy).forEach((key) => {
+        if (pageState.orderBy[key] === 1) {
+          sortArray.push(`${key}`);
+        } else {
+          sortArray.push(`-${key}`);
+        }
+      });
+
+      if (sortArray.length > 0) {
+        sort = sortArray.join(",");
+      }
+
+      if (sort) {
+        buildUrl = buildUrl + `&sort=${sort.replace(/,/g, " ")}`;
       }
 
       const response = await axios.get(`${BASEURL}${buildUrl}`, {
@@ -298,15 +349,135 @@ export const usersSlice = createSlice({
     resetUserChangePasswordError: (state) => {
       state.resetUserPasswordError = "";
     },
+    setSearchName: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchName: action.payload,
+      };
+    },
+
+    setSearchCity: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchCity: action.payload,
+      };
+    },
+
+    setSearchDistrict: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchDistrict: action.payload,
+      };
+    },
+
+    setSearchStreet: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchStreet: action.payload,
+      };
+    },
+
+    setSearchEmployeeName: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchEmployeeName: action.payload,
+      };
+    },
+
+    setSearchCertificateName: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchCertificateName: action.payload,
+      };
+    },
+
+    setSearchCompanyName: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchCompanyName: action.payload,
+      };
+    },
+
+    setSearchJobTitle: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchJobTitle: action.payload,
+      };
+    },
+
+    setUserApproved: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        approved: action.payload,
+      };
+    },
+
+    setUserActive: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        active: action.payload,
+      };
+    },
+
+    setUserType: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        userType: action.payload,
+      };
+    },
+
+    setSearchJob: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchJob: action.payload,
+      };
+    },
+
+    setPage: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        page: action.payload,
+      };
+    },
+
+    setRefresh: (state, action) => {
+      state.refresh = action.payload;
+    },
+
+    setOrderBy: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        orderBy: action.payload,
+      };
+    },
+
     usersSliceSignOut: (state) => {
       state.status = "idle";
       state.users = null;
       state.error = "";
       state.count = 0;
+      state.refresh = true;
       state.activationDeleteStatus = "idle";
       state.activationDeleteStatusMsg = "";
       state.resetUserPasswordStatus = "idle";
       state.resetUserPasswordError = "";
+
+      state.pageState = {
+        searchName: "",
+        searchCity: "",
+        searchDistrict: "",
+        searchStreet: "",
+        searchEmployeeName: "",
+        searchCertificateName: "",
+        searchCompanyName: "",
+        searchJobTitle: "",
+        approved: UserApprovedState.ALL,
+        active: UserActiveState.ALL,
+        userType: UserTypeConstants.ALL,
+        searchJob: GuestJob.NONE,
+        orderBy: {},
+        page: 1,
+      };
     },
   },
   extraReducers: {
@@ -444,6 +615,21 @@ export const {
   resetUserChangePasswordError,
   resetError,
   usersSliceSignOut,
+  setSearchName,
+  setSearchCity,
+  setSearchDistrict,
+  setSearchStreet,
+  setSearchEmployeeName,
+  setSearchCertificateName,
+  setSearchCompanyName,
+  setSearchJobTitle,
+  setUserApproved,
+  setUserActive,
+  setUserType,
+  setSearchJob,
+  setPage,
+  setRefresh,
+  setOrderBy,
 } = usersSlice.actions;
 
 export default usersSlice.reducer;

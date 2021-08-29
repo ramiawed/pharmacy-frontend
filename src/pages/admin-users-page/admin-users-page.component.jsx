@@ -13,17 +13,36 @@ import IconWithNumber from "../../components/icon-with-number/icon-with-number.c
 import Order from "../../components/order/order.component";
 import NoContent from "../../components/no-content/no-content.component";
 import AdminUserTableHeader from "../../components/admin-users-table-header/admin-users-table-header.component";
+import AdminUsersNotifications from "../../components/admin-users-notifications/admin-users-notification.component";
 
 // 3-party library (loading, paginate)
 import ReactPaginate from "react-paginate";
 
 // react-icons
-import { FaSearch } from "react-icons/fa";
+import { FaBullseye, FaSearch } from "react-icons/fa";
 import { BiSortAZ } from "react-icons/bi";
 
 // redux stuff
 import { useSelector, useDispatch } from "react-redux";
-import { getUsers, selectUsers } from "../../redux/users/usersSlice";
+import {
+  getUsers,
+  selectUsers,
+  setSearchName,
+  setSearchCity,
+  setSearchDistrict,
+  setSearchStreet,
+  setSearchEmployeeName,
+  setSearchCertificateName,
+  setSearchCompanyName,
+  setSearchJobTitle,
+  setUserApproved,
+  setUserActive,
+  setUserType,
+  setSearchJob,
+  setPage,
+  setRefresh,
+  setOrderBy,
+} from "../../redux/users/usersSlice";
 import { selectUserData } from "../../redux/auth/authSlice";
 import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 
@@ -41,7 +60,6 @@ import {
   Colors,
   OrderOptions,
 } from "../../utils/constants";
-import AdminUsersNotifications from "../../components/admin-users-notifications/admin-users-notification.component";
 
 // AdminUsers component
 function AdminUsersPage() {
@@ -52,7 +70,7 @@ function AdminUsersPage() {
 
   // selectors
   // observe the activationDeleteStatus and activationDeleteMsg to display a Toast when change
-  const { users, status, count } = useSelector(selectUsers);
+  const { users, status, count, pageState, refresh } = useSelector(selectUsers);
   const { token, user } = useSelector(selectUserData);
 
   // modal state
@@ -60,20 +78,20 @@ function AdminUsersPage() {
   const [showOrderModal, setShowOrderModel] = useState(false);
 
   // own state
-  const [userType, setUserType] = useState(UserTypeConstants.ALL);
-  const [searchName, setSearchName] = useState("");
-  const [searchEmployeeName, setSearchEmployeeName] = useState("");
-  const [searchCertificateName, setSearchCertificateName] = useState("");
-  const [searchJob, setSearchJob] = useState(GuestJob.NONE);
-  const [searchCompanyName, setSearchCompanyName] = useState("");
-  const [searchJobTitle, setSearchJobTitle] = useState("");
-  const [searchCity, setSearchCity] = useState("");
-  const [searchDistrict, setSearchDistrict] = useState("");
-  const [searchStreet, setSearchStreet] = useState("");
-  const [initialPage, setInitialPage] = useState(0);
-  const [approved, setApproved] = useState(UserApprovedState.ALL);
-  const [active, setActive] = useState(UserActiveState.ALL);
-  const [orderBy, setOrderBy] = useState({});
+  // const [initialPage, setInitialPage] = useState(0);
+  // const [userType, setUserType] = useState(UserTypeConstants.ALL);
+  // const [searchName, setSearchName] = useState("");
+  // const [searchEmployeeName, setSearchEmployeeName] = useState("");
+  // const [searchCertificateName, setSearchCertificateName] = useState("");
+  // const [searchJob, setSearchJob] = useState(GuestJob.NONE);
+  // const [searchCompanyName, setSearchCompanyName] = useState("");
+  // const [searchJobTitle, setSearchJobTitle] = useState("");
+  // const [searchCity, setSearchCity] = useState("");
+  // const [searchDistrict, setSearchDistrict] = useState("");
+  // const [searchStreet, setSearchStreet] = useState("");
+  // const [approved, setApproved] = useState(UserApprovedState.ALL);
+  // const [active, setActive] = useState(UserActiveState.ALL);
+  // const [orderBy, setOrderBy] = useState({});
   const [searchOptionCount, setSearchOptionCount] = useState(0);
 
   // order options
@@ -90,24 +108,28 @@ function AdminUsersPage() {
 
   // add/remove field from orderBy object
   const addOrRemoveField = (field) => {
-    if (field in orderBy) {
-      const obj = { ...orderBy };
+    if (field in pageState.orderBy) {
+      const obj = { ...pageState.orderBy };
       delete obj[field];
-      setOrderBy(obj);
+      dispatch(setOrderBy(obj));
     } else {
-      setOrderBy({
-        ...orderBy,
-        [field]: 1,
-      });
+      dispatch(
+        setOrderBy({
+          ...pageState.orderBy,
+          [field]: 1,
+        })
+      );
     }
   };
 
   // change the order option (ascending, descending) for a specific field
   const changeFieldValue = (field, value) => {
-    setOrderBy({
-      ...orderBy,
-      [field]: value,
-    });
+    dispatch(
+      setOrderBy({
+        ...pageState.orderBy,
+        [field]: value,
+      })
+    );
   };
 
   // guest option
@@ -120,10 +142,10 @@ function AdminUsersPage() {
 
   // change guest job option handler
   const handleGuestJobChange = (val) => {
-    setSearchJob(val);
+    dispatch(setSearchJob(val));
     if (val !== GuestJob.EMPLOYEE) {
-      setSearchCompanyName("");
-      setSearchJobTitle("");
+      dispatch(setSearchCompanyName(""));
+      dispatch(setSearchJobTitle(""));
     }
   };
 
@@ -139,31 +161,31 @@ function AdminUsersPage() {
 
   // handle the change of the User type state
   const handleSearchTypeChange = (val) => {
-    setUserType(val);
+    dispatch(setUserType(val));
     if (
       val === UserTypeConstants.ALL ||
       val === UserTypeConstants.ADMIN ||
       val === UserTypeConstants.COMPANY
     ) {
-      setSearchEmployeeName("");
-      setSearchCertificateName("");
-      setSearchJob(GuestJob.NONE);
-      setSearchCompanyName("");
-      setSearchJobTitle("");
+      dispatch(setSearchEmployeeName(""));
+      dispatch(setSearchCertificateName(""));
+      dispatch(setSearchJob(GuestJob.NONE));
+      dispatch(setSearchCompanyName(""));
+      dispatch(setSearchJobTitle(""));
     }
 
     if (
       val === UserTypeConstants.PHARMACY ||
       val === UserTypeConstants.WAREHOUSE
     ) {
-      setSearchJob(GuestJob.NONE);
-      setSearchCompanyName("");
-      setSearchJobTitle("");
+      dispatch(setSearchJob(GuestJob.NONE));
+      dispatch(setSearchCompanyName(""));
+      dispatch(setSearchJobTitle(""));
     }
 
     if (val === UserTypeConstants.NORMAL) {
-      setSearchEmployeeName("");
-      setSearchCertificateName("");
+      dispatch(setSearchEmployeeName(""));
+      dispatch(setSearchCertificateName(""));
     }
   };
 
@@ -175,7 +197,7 @@ function AdminUsersPage() {
   ];
 
   const handleApproveChange = (val) => {
-    setApproved(val);
+    dispatch(setUserApproved(val));
   };
 
   // options for the SelectCustom (Delete state)
@@ -186,98 +208,23 @@ function AdminUsersPage() {
   ];
 
   const handleActiveChange = (val) => {
-    setActive(val);
+    dispatch(setUserActive(val));
   };
 
   // handle search
   const handleSearch = (page) => {
-    // build the query string
-    const queryString = {};
-
-    queryString.page = page;
-
-    if (userType !== UserTypeConstants.ALL) {
-      queryString.type = userType;
-    }
-
-    if (searchName.trim().length !== 0) {
-      queryString.name = searchName.trim();
-    }
-
-    if (approved === UserApprovedState.APPROVED) {
-      queryString.approve = true;
-    }
-
-    if (approved === UserApprovedState.NOT_APPROVED) {
-      queryString.approve = false;
-    }
-
-    if (active === UserActiveState.ACTIVE) {
-      queryString.active = true;
-    }
-
-    if (active === UserActiveState.INACTIVE) {
-      queryString.active = false;
-    }
-
-    if (searchCity.trim().length !== 0) {
-      queryString.city = searchCity.trim();
-    }
-
-    if (searchDistrict.trim().length !== 0) {
-      queryString.district = searchDistrict.trim();
-    }
-
-    if (searchStreet.trim().length !== 0) {
-      queryString.street = searchStreet.trim();
-    }
-
-    if (searchEmployeeName.trim().length !== 0) {
-      queryString.employeeName = searchEmployeeName.trim();
-    }
-
-    if (searchCertificateName.trim().length !== 0) {
-      queryString.certificateName = searchCertificateName.trim();
-    }
-
-    if (searchCompanyName.trim().length !== 0) {
-      queryString.companyName = searchCompanyName.trim();
-    }
-
-    if (searchJobTitle.trim().length !== 0) {
-      queryString.jobTitle = searchJobTitle.trim();
-    }
-
-    if (searchJob !== GuestJob.NONE) {
-      queryString.job = searchJob;
-    }
-
-    setSearchOptionCount(Object.entries(queryString).length - 1);
-
-    // build sort string
-    let sortArray = [];
-    Object.keys(orderBy).forEach((key) => {
-      if (orderBy[key] === 1) {
-        sortArray.push(`${key}`);
-      } else {
-        sortArray.push(`-${key}`);
-      }
-    });
-
-    if (sortArray.length > 0) {
-      queryString.sort = sortArray.join(",");
-    }
-
-    dispatch(getUsers({ queryString, token }));
-
-    setInitialPage(page - 1);
+    dispatch(setPage(page));
+    dispatch(getUsers({ token }));
   };
 
   // handle for page change in the paginate component
   const handlePageClick = (e) => {
     const { selected } = e;
+
     handleSearch(selected + 1);
-    setInitialPage(selected);
+
+    // setInitialPage(selected);
+    // dispatch(setPage(selected + 1));
     window.scrollTo(0, 0);
   };
 
@@ -287,7 +234,6 @@ function AdminUsersPage() {
   const enterPress = () => {
     handleSearch(1);
     setShowModal(false);
-    setInitialPage(0);
   };
 
   const searchModalOkHandler = () => {
@@ -299,7 +245,10 @@ function AdminUsersPage() {
 
   // dispatch a getUsers after component render for the first time
   useEffect(() => {
-    handleSearch(1);
+    if (refresh) {
+      handleSearch(pageState.page);
+      dispatch(setRefresh(false));
+    }
   }, []);
 
   return user && user.type === UserTypeConstants.ADMIN ? (
@@ -328,7 +277,7 @@ function AdminUsersPage() {
 
           <div onClick={() => setShowOrderModel(true)}>
             <IconWithNumber
-              value={Object.entries(orderBy).length}
+              value={Object.entries(pageState.orderBy).length}
               fillIcon={
                 <div className={generalStyles.icon}>
                   <BiSortAZ size={16} />{" "}
@@ -360,7 +309,7 @@ function AdminUsersPage() {
           previousLabel={t("previous")}
           nextLabel={t("next")}
           pageCount={Math.ceil(count / 9)}
-          forcePage={initialPage}
+          forcePage={pageState.page - 1}
           onPageChange={handlePageClick}
           containerClassName={paginationStyles.pagination}
           previousLinkClassName={paginationStyles.pagination_link}
@@ -396,15 +345,15 @@ function AdminUsersPage() {
                 label="user-name"
                 id="search-name"
                 type="text"
-                value={searchName}
+                value={pageState.searchName}
                 onchange={(e) => {
-                  setSearchName(e.target.value);
+                  dispatch(setSearchName(e.target.value));
                 }}
                 bordered={true}
                 icon={<FaSearch />}
-                placeholder="search"
+                placeholder="search-by-name"
                 onEnterPress={enterPress}
-                resetField={() => setSearchName("")}
+                resetField={() => dispatch(setSearchName(""))}
               />
             </div>
             <div>
@@ -412,15 +361,15 @@ function AdminUsersPage() {
                 label="user-city"
                 id="search-city"
                 type="text"
-                value={searchCity}
+                value={pageState.searchCity}
                 onchange={(e) => {
-                  setSearchCity(e.target.value);
+                  dispatch(setSearchCity(e.target.value));
                 }}
                 bordered={true}
                 icon={<FaSearch />}
-                placeholder="search"
+                placeholder="search-by-city"
                 onEnterPress={enterPress}
-                resetField={() => setSearchCity("")}
+                resetField={() => dispatch(setSearchCity(""))}
               />
             </div>
           </RowWith2Children>
@@ -437,16 +386,16 @@ function AdminUsersPage() {
                 label="user-district"
                 id="search-district"
                 type="text"
-                value={searchDistrict}
+                value={pageState.searchDistrict}
                 onchange={(e) => {
-                  setSearchDistrict(e.target.value);
+                  dispatch(setSearchDistrict(e.target.value));
                 }}
                 bordered={true}
                 icon={<FaSearch />}
-                placeholder="search"
+                placeholder="search-by-district"
                 onEnterPress={enterPress}
                 resetField={(e) => {
-                  setSearchDistrict("");
+                  dispatch(setSearchDistrict(""));
                 }}
               />
             </div>
@@ -455,15 +404,15 @@ function AdminUsersPage() {
                 label="user-street"
                 id="search-street"
                 type="text"
-                value={searchStreet}
+                value={pageState.searchStreet}
                 onchange={(e) => {
-                  setSearchStreet(e.target.value);
+                  dispatch(setSearchStreet(e.target.value));
                 }}
                 bordered={true}
                 icon={<FaSearch />}
-                placeholder="search"
+                placeholder="search-by-street"
                 onEnterPress={enterPress}
-                resetField={() => setSearchStreet("")}
+                resetField={() => dispatch(setSearchStreet(""))}
               />
             </div>
           </RowWith2Children>
@@ -481,8 +430,8 @@ function AdminUsersPage() {
               options={approvedState}
               onchange={handleApproveChange}
               defaultOption={{
-                value: approved,
-                label: t(approved.toLowerCase()),
+                value: pageState.approved,
+                label: t(pageState.approved.toLowerCase()),
               }}
               caption="approved-state"
             />
@@ -492,8 +441,8 @@ function AdminUsersPage() {
               options={deletedState}
               onchange={handleActiveChange}
               defaultOption={{
-                value: active,
-                label: t(active.toLowerCase()),
+                value: pageState.active,
+                label: t(pageState.active.toLowerCase()),
               }}
               caption="approved-state"
             />
@@ -513,12 +462,12 @@ function AdminUsersPage() {
               options={userTypeOptions}
               onchange={handleSearchTypeChange}
               defaultOption={{
-                value: userType,
-                label: t(userType.toLowerCase()),
+                value: pageState.userType,
+                label: t(pageState.userType.toLowerCase()),
               }}
               caption="user-type"
             />
-            {userType === UserTypeConstants.NORMAL ? (
+            {pageState.userType === UserTypeConstants.NORMAL ? (
               <>
                 <SelectCustom
                   bgColor={Colors.SECONDARY_COLOR}
@@ -526,8 +475,8 @@ function AdminUsersPage() {
                   options={guestJobOptions}
                   onchange={handleGuestJobChange}
                   defaultOption={{
-                    value: GuestJob.NONE,
-                    label: t(searchJob.toLowerCase()),
+                    value: pageState.searchJob,
+                    label: t(pageState.searchJob.toLowerCase()),
                   }}
                   caption="user-job"
                 />{" "}
@@ -543,23 +492,23 @@ function AdminUsersPage() {
               margin: "4px 0",
             }}
           ></div>
-          {(userType === UserTypeConstants.WAREHOUSE ||
-            userType === UserTypeConstants.PHARMACY) && (
+          {(pageState.userType === UserTypeConstants.WAREHOUSE ||
+            pageState.userType === UserTypeConstants.PHARMACY) && (
             <RowWith2Children>
               <div>
                 <Input
                   label="user-employee-name"
                   id="search-employee-name"
                   type="text"
-                  value={searchEmployeeName}
+                  value={pageState.searchEmployeeName}
                   onchange={(e) => {
-                    setSearchEmployeeName(e.target.value);
+                    dispatch(setSearchEmployeeName(e.target.value));
                   }}
                   bordered={true}
                   icon={<FaSearch />}
-                  placeholder="search"
+                  placeholder="search-by-employee-name"
                   onEnterPress={enterPress}
-                  resetField={() => setSearchEmployeeName("")}
+                  resetField={() => dispatch(setSearchEmployeeName(""))}
                 />
               </div>
               <div>
@@ -567,36 +516,36 @@ function AdminUsersPage() {
                   label="user-certificate-name"
                   id="search-certificate-name"
                   type="text"
-                  value={searchCertificateName}
+                  value={pageState.searchCertificateName}
                   onchange={(e) => {
-                    setSearchCertificateName(e.target.value);
+                    dispatch(setSearchCertificateName(e.target.value));
                   }}
                   bordered={true}
                   icon={<FaSearch />}
-                  placeholder="search"
+                  placeholder="search-by-certificate"
                   onEnterPress={enterPress}
-                  resetField={() => setSearchCertificateName("")}
+                  resetField={() => dispatch(setSearchCertificateName(""))}
                 />
               </div>
             </RowWith2Children>
           )}
 
-          {searchJob === GuestJob.EMPLOYEE && (
+          {pageState.searchJob === GuestJob.EMPLOYEE && (
             <RowWith2Children>
               <div>
                 <Input
                   label="user-company-name"
                   id="search-company-name"
                   type="text"
-                  value={searchCompanyName}
+                  value={pageState.searchCompanyName}
                   onchange={(e) => {
-                    setSearchCompanyName(e.target.value);
+                    dispatch(setSearchCompanyName(e.target.value));
                   }}
                   bordered={true}
                   icon={<FaSearch />}
-                  placeholder="search"
+                  placeholder="search-by-company-name"
                   onEnterPress={enterPress}
-                  resetField={() => setSearchCompanyName("")}
+                  resetField={() => dispatch(setSearchCompanyName(""))}
                 />
               </div>
               <div>
@@ -604,15 +553,15 @@ function AdminUsersPage() {
                   label="user-job-title"
                   id="search-job-title"
                   type="text"
-                  value={searchJobTitle}
+                  value={pageState.searchJobTitle}
                   onchange={(e) => {
-                    setSearchJobTitle(e.target.value);
+                    dispatch(setSearchJobTitle(e.target.value));
                   }}
                   bordered={true}
                   icon={<FaSearch />}
-                  placeholder="search"
+                  placeholder="search-by-job-title"
                   onEnterPress={enterPress}
-                  resetField={() => setSearchJobTitle("")}
+                  resetField={() => dispatch(setSearchJobTitle(""))}
                 />
               </div>
             </RowWith2Children>
@@ -635,7 +584,7 @@ function AdminUsersPage() {
         >
           <Order
             arr={orderOptions}
-            orderBy={orderBy}
+            orderBy={pageState.orderBy}
             orderChange={(field) => addOrRemoveField(field)}
             valueChanged={(field, value) => changeFieldValue(field, value)}
           />

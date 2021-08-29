@@ -67,3 +67,89 @@
           actionAfterTimeout={() => dispatch(resetUserChangePasswordStatus())}
         />
       )}
+
+handle search on AdminUsersPage
+  // handle search
+  const handleSearch = (page) => {
+    // build the query string
+    const queryString = {};
+
+    // queryString.page = page;
+
+    // if (pageState.userType !== UserTypeConstants.ALL) {
+    //   queryString.type = pageState.userType;
+    // }
+
+    // if (pageState.searchName.trim().length !== 0) {
+    //   queryString.name = pageState.searchName.trim();
+    // }
+
+    // if (pageState.approved === UserApprovedState.APPROVED) {
+    //   queryString.approve = true;
+    // }
+
+    // if (pageState.approved === UserApprovedState.NOT_APPROVED) {
+    //   queryString.approve = false;
+    // }
+
+    // if (pageState.active === UserActiveState.ACTIVE) {
+    //   queryString.active = true;
+    // }
+
+    // if (pageState.active === UserActiveState.INACTIVE) {
+    //   queryString.active = false;
+    // }
+
+    // if (pageState.searchCity.trim().length !== 0) {
+    //   queryString.city = pageState.searchCity.trim();
+    // }
+
+    // if (pageState.searchDistrict.trim().length !== 0) {
+    //   queryString.district = pageState.searchDistrict.trim();
+    // }
+
+    // if (pageState.searchStreet.trim().length !== 0) {
+    //   queryString.street = pageState.searchStreet.trim();
+    // }
+
+    // if (pageState.searchEmployeeName.trim().length !== 0) {
+    //   queryString.employeeName = pageState.searchEmployeeName.trim();
+    // }
+
+    // if (pageState.searchCertificateName.trim().length !== 0) {
+    //   queryString.certificateName = pageState.searchCertificateName.trim();
+    // }
+
+    // if (pageState.searchCompanyName.trim().length !== 0) {
+    //   queryString.companyName = pageState.searchCompanyName.trim();
+    // }
+
+    // if (pageState.searchJobTitle.trim().length !== 0) {
+    //   queryString.jobTitle = pageState.searchJobTitle.trim();
+    // }
+
+    // if (pageState.searchJob !== GuestJob.NONE) {
+    //   queryString.job = pageState.searchJob;
+    // }
+
+    setSearchOptionCount(Object.entries(queryString).length - 1);
+
+    // build sort string
+    // let sortArray = [];
+    // Object.keys(pageState.orderBy).forEach((key) => {
+    //   if (pageState.orderBy[key] === 1) {
+    //     sortArray.push(`${key}`);
+    //   } else {
+    //     sortArray.push(`-${key}`);
+    //   }
+    // });
+
+    // if (sortArray.length > 0) {
+    //   queryString.sort = sortArray.join(",");
+    // }
+    dispatch(setPage(page));
+
+    dispatch(getUsers({ token }));
+
+    // setInitialPage(page - 1);
+  };      

@@ -22,6 +22,8 @@ import SearchContainer from "../../components/search-container/search-container.
 import Button from "../../components/button/button.component";
 import Toast from "../../components/toast/toast.component";
 import NoContent from "../../components/no-content/no-content.component";
+import Icon from "../../components/action-icon/action-icon.component";
+import Loader from "../../components/action-loader/action-loader.component";
 
 // react-icons
 import { FaListUl } from "react-icons/fa";
@@ -46,19 +48,21 @@ import {
   selectCompanies,
   selectCompaniesPageState,
 } from "../../redux/company/companySlice";
-import { selectFavoritesPartners } from "../../redux/favorites/favoritesSlice";
+import {
+  getFavorites,
+  resetFavorites,
+  selectFavoritesPartners,
+} from "../../redux/favorites/favoritesSlice";
 import {
   changeOnlineMsg,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
 
-// constants and uitls
-import { Colors, UserTypeConstants } from "../../utils/constants";
-
 // styles
 import generalStyles from "../../style.module.scss";
-import Icon from "../../components/action-icon/action-icon.component";
-import Loader from "../../components/action-loader/action-loader.component";
+
+// constants and uitls
+import { Colors, UserTypeConstants } from "../../utils/constants";
 
 function CompaniesPage() {
   const { t } = useTranslation();
@@ -124,6 +128,7 @@ function CompaniesPage() {
       dispatch(changeOnlineMsg());
       return;
     }
+
     handleSearch(page);
   };
 
@@ -132,6 +137,13 @@ function CompaniesPage() {
   // 2- search based on the new search engines
   // 3- reset the page to 1
   const handleEnterPress = () => {
+    dispatch(resetCompanies());
+    handleSearch(1);
+  };
+
+  const refreshHandler = () => {
+    dispatch(resetFavorites());
+    dispatch(getFavorites({ token }));
     dispatch(resetCompanies());
     handleSearch(1);
   };
@@ -165,7 +177,6 @@ function CompaniesPage() {
               type="text"
               value={searchName}
               onchange={(e) => {
-                // setSearchName(e.target.value);
                 dispatch(changeSearchName(e.target.value));
               }}
               placeholder="search"
@@ -198,7 +209,7 @@ function CompaniesPage() {
             selected={false}
             foreColor={Colors.SECONDARY_COLOR}
             tooltip={t("refresh-tooltip")}
-            onclick={handleEnterPress}
+            onclick={refreshHandler}
             icon={() => <RiRefreshLine />}
           />
 

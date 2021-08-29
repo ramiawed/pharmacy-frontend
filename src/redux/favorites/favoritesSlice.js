@@ -59,7 +59,7 @@ export const addFavorite = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        "${BASEURL}/favorites/add",
+        `${BASEURL}/favorites/add`,
         { favoriteId: obj.favoriteId },
         {
           timeout: 10000,
@@ -96,7 +96,7 @@ export const removeFavorite = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        "${BASEURL}/favorites/remove",
+        `${BASEURL}/favorites/remove`,
         { favoriteId: obj.favoriteId },
         {
           timeout: 10000,
@@ -133,7 +133,7 @@ export const addFavoriteItem = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        "${BASEURL}/favorites/add/items",
+        `${BASEURL}/favorites/add/items`,
         { favoriteItemId: obj.favoriteItemId },
         {
           timeout: 10000,
@@ -170,7 +170,7 @@ export const removeFavoriteItem = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        "${BASEURL}/favorites/remove/items",
+        `${BASEURL}/favorites/remove/items`,
         { favoriteItemId: obj.favoriteItemId },
         {
           timeout: 10000,

@@ -11,16 +11,18 @@ import {
   selectUsers,
 } from "../../redux/users/usersSlice";
 
+// constants
 import { Colors } from "../../utils/constants";
 
 // components
 import Loader from "../action-loader/action-loader.component";
 import Toast from "../toast/toast.component";
 
-function AdminUsersNotifications({}) {
+function AdminUsersNotifications() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  // selectors
   const {
     status,
     error,

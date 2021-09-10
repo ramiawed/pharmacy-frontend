@@ -10,6 +10,7 @@ import Modal from "../../components/modal/modal.component";
 import Toast from "../../components/toast/toast.component";
 import ExcelTableHeader from "../../components/excel-table-header/excel-table-header.component";
 import Button from "../../components/button/button.component";
+import Loader from "../../components/action-loader/action-loader.component";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -31,7 +32,6 @@ import styles from "./item-excel-page.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
-import Loader from "../../components/action-loader/action-loader.component";
 
 function ItemExcelPage() {
   const user = useSelector(selectUser);

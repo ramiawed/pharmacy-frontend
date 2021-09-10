@@ -19,13 +19,32 @@ const initialState = {
   updateError: "",
   changeLogoStatus: "idle",
   changeLogoError: "",
+  pageState: {
+    searchName: "",
+    searchCompanyName: "",
+    searchWarehouse: "",
+    searchDeletedItems: false,
+    searchActiveItems: false,
+    searchInWarehouse: false,
+    searchOutWarehouse: false,
+    sortNameField: 0,
+    sortCaliberField: 0,
+    sortPriceField: 0,
+    sortCustomerPriceField: 0,
+    sortFields: "",
+    page: 1,
+  },
 };
 
 export const getItems = createAsyncThunk(
   "items/getItems",
-  async ({ queryString, token }, { rejectWithValue }) => {
+  async ({ queryString, token }, { rejectWithValue, getState }) => {
     CancelToken = axios.CancelToken;
     source = CancelToken.source;
+
+    const {
+      items: { pageState },
+    } = getState();
 
     try {
       let buildUrl = `${BASEURL}/items?page=${queryString.page}&limit=9`;
@@ -38,32 +57,36 @@ export const getItems = createAsyncThunk(
         buildUrl = buildUrl + `&warehouseId=${queryString.warehouseId}`;
       }
 
-      if (queryString.name) {
-        buildUrl = buildUrl + `&itemName=${queryString.name}`;
+      if (pageState.searchName.trim() !== "") {
+        buildUrl = buildUrl + `&itemName=${pageState.searchName}`;
       }
 
-      if (queryString.companyName) {
-        buildUrl = buildUrl + `&companyName=${queryString.companyName}`;
+      if (pageState.searchCompanyName.trim() !== "") {
+        buildUrl = buildUrl + `&companyName=${pageState.searchCompanyName}`;
       }
 
-      if (queryString.warehouseName) {
-        buildUrl = buildUrl + `&warehouseName=${queryString.warehouseName}`;
+      if (pageState.searchWarehouse.trim() !== "") {
+        buildUrl = buildUrl + `&warehouseName=${pageState.searchWarehouse}`;
       }
 
-      if (queryString.isActive !== undefined) {
-        buildUrl = buildUrl + `&isActive=${queryString.isActive}`;
+      if (pageState.searchActiveItems) {
+        buildUrl = buildUrl + `&isActive=${true}`;
       }
 
-      if (queryString.sort) {
-        buildUrl = buildUrl + `&sort=${queryString.sort}`;
+      if (pageState.searchDeletedItems) {
+        buildUrl = buildUrl + `&isActive=${false}`;
       }
 
-      if (queryString.inWarehouse) {
+      if (pageState.searchInWarehouse) {
         buildUrl = buildUrl + `&inWarehouse=true`;
       }
 
-      if (queryString.outWarehouse) {
+      if (pageState.searchOutWarehouse) {
         buildUrl = buildUrl + `&outWarehouse=true`;
+      }
+
+      if (pageState.sortFields.length > 0) {
+        buildUrl = buildUrl + `&sort=${pageState.sortFields}`;
       }
 
       const response = await axios.get(buildUrl, {
@@ -194,20 +217,6 @@ export const changeItemActiveState = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      // const http = axios.create({
-      //   baseURL: "${BASEURL}",
-      //   timeout: 10000,
-      //   cancelToken: source.token,
-      //   headers: {
-      //     "Cache-Control": "no-cache",
-      //     Authorization: `Bearer ${token}`,
-      //   },
-      //   adapter: cacheAdapterEnhancer(axios.defaults.adapter, {
-      //     enabledByDefault: false,
-      //     cacheFlag: "useCache",
-      //   }),
-      // });
-
       const response = await axios.post(
         `${BASEURL}/items/active/${obj.itemId}`,
         { action: obj.action },
@@ -327,6 +336,115 @@ export const itemsSlice = createSlice({
       state.changeLogoStatus = "idle";
       state.changeLogoError = "";
     },
+
+    setSearchName: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchName: action.payload,
+      };
+    },
+
+    setSearchCompanyName: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchCompanyName: action.payload,
+      };
+    },
+
+    setSearchWarehouse: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchWarehouse: action.payload,
+      };
+    },
+
+    setSearchDeletedItems: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchDeletedItems: action.payload,
+      };
+    },
+
+    setSearchActiveItems: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchActiveItems: action.payload,
+      };
+    },
+
+    setSearchInWarehouse: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchInWarehouse: action.payload,
+      };
+    },
+
+    setSearchOutWarehouse: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchOutWarehouse: action.payload,
+      };
+    },
+
+    setSortNameField: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        sortNameField: action.payload,
+      };
+    },
+
+    setSortCaliberField: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        sortCaliberField: action.payload,
+      };
+    },
+
+    setSortPriceField: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        sortPriceField: action.payload,
+      };
+    },
+
+    setSortCustomerPriceField: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        sortCustomerPriceField: action.payload,
+      };
+    },
+
+    setSortFields: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        sortFields: action.payload,
+      };
+    },
+
+    setPage: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        page: action.payload,
+      };
+    },
+
+    resetPageState: (state) => {
+      state.pageState = {
+        searchName: "",
+        searchCompanyName: "",
+        searchWarehouse: "",
+        searchDeletedItems: false,
+        searchActiveItems: false,
+        searchInWarehouse: false,
+        searchOutWarehouse: false,
+        sortNameField: 0,
+        sortCaliberField: 0,
+        sortPriceField: 0,
+        sortCustomerPriceField: 0,
+        sortFields: "",
+        page: 1,
+      };
+    },
     itemsSliceSignOut: (state) => {
       state.status = "idle";
       state.items = [];
@@ -340,6 +458,21 @@ export const itemsSlice = createSlice({
       state.updateError = "";
       state.changeLogoStatus = "idle";
       state.changeLogoError = "";
+      state.pageState = {
+        searchName: "",
+        searchCompanyName: "",
+        searchWarehouse: "",
+        searchDeletedItems: false,
+        searchActiveItems: false,
+        searchInWarehouse: false,
+        searchOutWarehouse: false,
+        sortNameField: 0,
+        sortCaliberField: 0,
+        sortPriceField: 0,
+        sortCustomerPriceField: 0,
+        sortFields: "",
+        page: 1,
+      };
     },
   },
   extraReducers: {
@@ -482,6 +615,20 @@ export const {
   resetChangeLogoStatus,
   resetChangeLogoError,
   itemsSliceSignOut,
+  resetPageState,
+  setSearchName,
+  setSearchCompanyName,
+  setSearchWarehouse,
+  setSearchDeletedItems,
+  setSearchActiveItems,
+  setSearchInWarehouse,
+  setSearchOutWarehouse,
+  setSortNameField,
+  setSortCaliberField,
+  setSortPriceField,
+  setSortCustomerPriceField,
+  setSortFields,
+  setPage,
 } = itemsSlice.actions;
 
 export const selectItems = (state) => state.items;

@@ -1,10 +1,19 @@
 @import "../../variables.scss";
 
+.container {
+  display: flex;
+  flex-direction: column;
+
+  min-height: 100vh;
+}
+
 .content_area {
   width: 100%;
   margin: 10px auto;
 
   position: relative;
+
+  flex: 1;
 
   z-index: 1;
 }
@@ -28,12 +37,12 @@
 
 .toTop {
   position: fixed;
-  left: 50px;
-  bottom: 30px;
+  left: 10px;
+  bottom: 10px;
 
   font-size: 2rem;
 
-  color: $secondary-color;
+  color: $yellow-color;
   opacity: 0.6;
 
   cursor: pointer;

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useTranslation } from "react-i18next";
 import { Redirect, useLocation } from "react-router-dom";
@@ -18,12 +18,20 @@ import {
   addItemToWarehouse,
   removeItemFromWarehouse,
 } from "../../redux/companyItems/companyItemsSlices";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
 
 // components
 import CardInfo from "../../components/card-info/card-info.component";
 import Input from "../../components/input/input.component";
 import Toast from "../../components/toast/toast.component";
 import AddToCartModal from "../../components/add-to-cart-modal/add-to-cart-modal.component";
+import OffersModal from "../../components/offers-modal/offers-modal.component";
+import InputFileImage from "../../components/input-file-image/input-file-image.component";
+import Button from "../../components/button/button.component";
+import Loader from "../../components/action-loader/action-loader.component";
 
 // constants and utile
 import { getIcon } from "../../utils/icons";
@@ -34,36 +42,28 @@ import { MdLocalOffer } from "react-icons/md";
 import generalStyles from "../../style.module.scss";
 import styles from "./item-page.module.scss";
 import rowStyles from "../../components/row.module.scss";
-import OffersModal from "../../components/offers-modal/offers-modal.component";
-import InputFileImage from "../../components/input-file-image/input-file-image.component";
-import Button from "../../components/button/button.component";
-import {
-  changeOnlineMsg,
-  selectOnlineStatus,
-} from "../../redux/online/onlineSlice";
-import Loader from "../../components/action-loader/action-loader.component";
 
 function ItemPage() {
   const { t } = useTranslation();
-  const isOnline = useSelector(selectOnlineStatus);
+  const dispatch = useDispatch();
 
   const location = useLocation();
 
   const { from, allowAction, type, itemId, companyId, warehouseId } =
     location.state;
 
-  const dispatch = useDispatch();
+  // selectors
+  const isOnline = useSelector(selectOnlineStatus);
   const { user, token } = useSelector(selectUserData);
   const { addStatus, updateStatus, changeLogoStatus, changeLogoError } =
     useSelector(selectItems);
 
+  // own state
   const [showAddToCartModal, setShowAddToCartModal] = useState(false);
   const [showOfferModal, setShowOfferModal] = useState(false);
   const [selectedWarehouseId, setSelectedWarehouseId] = useState("");
   const [allowEdit, setAllowEdit] = useState(false);
-
   const [itemError, setItemError] = useState({});
-
   const [item, setItem] = useState({
     name: "",
     caliber: "",
@@ -146,10 +146,10 @@ function ItemPage() {
 
         dispatch(addItem({ obj, token }))
           .then(unwrapResult)
-          .then((originalPromiseResult) => {
+          .then(() => {
             resetItem();
           })
-          .catch((rejectedValueOrSerializedError) => {});
+          .catch(() => {});
       } else if (type === "info") {
         // update an existing item
         obj = {
@@ -158,8 +158,8 @@ function ItemPage() {
         };
         // dispatch update item
         dispatch(updateItem({ obj, token }))
-          .then((originalPromiseResult) => {})
-          .catch((rejectedValueOrSerializedError) => {});
+          .then(() => {})
+          .catch(() => {});
       }
     } else {
       setItemError({
@@ -186,8 +186,8 @@ function ItemPage() {
       })
     )
       .then(unwrapResult)
-      .then((result) => getItemFromDB())
-      .catch((err) => {});
+      .then(() => getItemFromDB())
+      .catch(() => {});
   };
 
   // method to handle remove item from warehouse
@@ -208,11 +208,11 @@ function ItemPage() {
       })
     )
       .then(unwrapResult)
-      .then((result) => getItemFromDB())
-      .catch((err) => {});
+      .then(() => getItemFromDB())
+      .catch(() => {});
   };
 
-  const getItemFromDB = () => {
+  const getItemFromDB = useCallback(() => {
     axios
       .get(`/items/item/${itemId}`, {
         headers: {
@@ -220,7 +220,7 @@ function ItemPage() {
         },
       })
       .then((response) => setItem(response.data.data.item));
-  };
+  });
 
   useEffect(() => {
     if (type === "info" && itemId) {
@@ -228,7 +228,7 @@ function ItemPage() {
     }
 
     window.scrollTo(0, 0);
-  }, [itemId, type, changeLogoStatus]);
+  }, [getItemFromDB, itemId, type]);
 
   return user ? (
     <>
@@ -241,8 +241,6 @@ function ItemPage() {
             generalStyles.padding_h_12,
           ].join(" ")}
         >
-          {changeLogoStatus === "loading" && <Loader allowCancel={false} />}
-
           {changeLogoStatus === "succeeded" || changeLogoStatus === "idle" ? (
             <div
               className={styles.logo}
@@ -467,6 +465,8 @@ function ItemPage() {
             />
           </>
         ))}
+
+      {changeLogoStatus === "loading" && <Loader allowCancel={false} />}
 
       {addStatus === "succeeded" && (
         <Toast

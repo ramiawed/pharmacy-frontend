@@ -64,6 +64,7 @@ function CartWarehouse({ warehouse }) {
     }
 
     setShowLoadingModal(true);
+
     let cartItemsToSend = cartItems
       .filter((item) => item.warehouse.warehouse.name === warehouse)
       .map((e) => {

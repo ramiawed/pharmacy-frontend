@@ -31,7 +31,6 @@ import styles from "./item-card.module.scss";
 import rowStyles from "../row.module.scss";
 
 // constants and utils
-import { checkConnection } from "../../utils/checkInternet";
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
 import { Link } from "react-router-dom";
 import { statisticsItemFavorites } from "../../redux/statistics/statisticsSlice";
@@ -40,7 +39,6 @@ import {
   changeOnlineMsg,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
-import ActionIcon from "../action-icon/action-icon.component";
 import Icon from "../action-icon/action-icon.component";
 
 function ItemCard({ companyItem }) {

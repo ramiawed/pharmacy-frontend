@@ -8,27 +8,18 @@
 
 // this component depends on the companySlice
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
 
 // components
-import Header from "../../components/header/header.component";
-import SearchInput from "../../components/search-input/search-input.component";
-import FavoriteRow from "../../components/favorite-row/favorite-row.component";
 import PartnerRow from "../../components/partner-row/partner-row.component";
 import PartnerCard from "../../components/partner-card/partner-card.component";
-import SearchContainer from "../../components/search-container/search-container.component";
 import Button from "../../components/button/button.component";
 import Toast from "../../components/toast/toast.component";
 import NoContent from "../../components/no-content/no-content.component";
-import Icon from "../../components/action-icon/action-icon.component";
 import Loader from "../../components/action-loader/action-loader.component";
-
-// react-icons
-import { FaListUl } from "react-icons/fa";
-import { RiRefreshLine } from "react-icons/ri";
-import { AiFillAppstore, AiFillStar } from "react-icons/ai";
+import CompaniesHeader from "../../components/companies-header/companies-header.component";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -36,14 +27,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
   cancelOperation,
-  changeDisplayType,
   changePage,
-  changeSearchCity,
-  changeSearchName,
+  changeShowFavorites,
   getCompanies,
   resetCompanies,
-  resetSearchCity,
-  resetSearchName,
   resetStatus,
   selectCompanies,
   selectCompaniesPageState,
@@ -51,7 +38,6 @@ import {
 import {
   getFavorites,
   resetFavorites,
-  selectFavoritesPartners,
 } from "../../redux/favorites/favoritesSlice";
 import {
   changeOnlineMsg,
@@ -61,30 +47,21 @@ import {
 // styles
 import generalStyles from "../../style.module.scss";
 
-// constants and uitls
-import { Colors, UserTypeConstants } from "../../utils/constants";
+// constants and utils
+import { Colors } from "../../utils/constants";
 
 function CompaniesPage() {
   const { t } = useTranslation();
-
-  const isOnline = useSelector(selectOnlineStatus);
-
   const dispatch = useDispatch();
 
+  // selectors
   // select from redux store
   // select logged user and it's token from authSlice
   const { token, user } = useSelector(selectUserData);
-
   // select companies from companySlice
   const { companies, count, status, error } = useSelector(selectCompanies);
-  const { searchName, searchCity, displayType, page } = useSelector(
-    selectCompaniesPageState
-  );
-
-  // select favorites from favoriteSlice
-  const favorites = useSelector(selectFavoritesPartners);
-
-  const [showFavorites, setShowFavorites] = useState(false);
+  const { displayType, page } = useSelector(selectCompaniesPageState);
+  const isOnline = useSelector(selectOnlineStatus);
 
   // search handler
   // /users?type=company&page=page&limit=9
@@ -97,24 +74,9 @@ function CompaniesPage() {
   // get the companies from DB
   // depends on the reset field, add one to page, or reset to 1
   const handleSearch = (page) => {
-    // build the query string
-    const queryString = {};
+    dispatch(changeShowFavorites(false));
 
-    queryString.page = page;
-
-    // company approve and active must be true
-    queryString.approve = true;
-    queryString.active = true;
-
-    if (searchName.trim().length !== 0) {
-      queryString.name = searchName;
-    }
-
-    if (searchCity.trim().length !== 0) {
-      queryString.city = searchCity;
-    }
-
-    dispatch(getCompanies({ queryString, token }))
+    dispatch(getCompanies({ token }))
       .then(unwrapResult)
       .then(() => {
         dispatch(changePage(page + 1));
@@ -138,6 +100,7 @@ function CompaniesPage() {
   // 3- reset the page to 1
   const handleEnterPress = () => {
     dispatch(resetCompanies());
+    dispatch(changePage(1));
     handleSearch(1);
   };
 
@@ -145,13 +108,12 @@ function CompaniesPage() {
     dispatch(resetFavorites());
     dispatch(getFavorites({ token }));
     dispatch(resetCompanies());
+    dispatch(changePage(1));
     handleSearch(1);
   };
 
   useEffect(() => {
-    if (user) {
-      if (companies.length === 0) handleSearch(1);
-    }
+    if (companies.length === 0) handleSearch(1);
 
     window.scrollTo(0, 0);
 
@@ -164,121 +126,11 @@ function CompaniesPage() {
 
   return user ? (
     <>
-      <Header>
-        <h2>
-          {t("companies")} <span>{count}</span>
-        </h2>
-
-        <div style={{ position: "relative", height: "50px" }}>
-          <SearchContainer searchAction={handleEnterPress}>
-            <SearchInput
-              label="user-name"
-              id="search-name"
-              type="text"
-              value={searchName}
-              onchange={(e) => {
-                dispatch(changeSearchName(e.target.value));
-              }}
-              placeholder="search"
-              onEnterPress={handleEnterPress}
-              resetField={() => dispatch(resetSearchName())}
-            />
-
-            <SearchInput
-              label="user-city"
-              id="search-city"
-              type="text"
-              value={searchCity}
-              onchange={(e) => {
-                dispatch(changeSearchCity(e.target.value));
-              }}
-              placeholder="search"
-              onEnterPress={handleEnterPress}
-              resetField={() => dispatch(resetSearchCity())}
-            />
-          </SearchContainer>
-        </div>
-
-        <div
-          className={[generalStyles.actions, generalStyles.margin_v_4].join(
-            " "
-          )}
-        >
-          {/* refresh */}
-          <Icon
-            selected={false}
-            foreColor={Colors.SECONDARY_COLOR}
-            tooltip={t("refresh-tooltip")}
-            onclick={refreshHandler}
-            icon={() => <RiRefreshLine />}
-          />
-
-          {/* show favorites */}
-          <div className={generalStyles.relative}>
-            <Icon
-              foreColor={
-                showFavorites ? Colors.SUCCEEDED_COLOR : Colors.SECONDARY_COLOR
-              }
-              tooltip={t("show-favorite-tooltip")}
-              onclick={() => setShowFavorites(!showFavorites)}
-              icon={() => <AiFillStar />}
-            />
-
-            {showFavorites && (
-              <div
-                className={[
-                  generalStyles.favorites_content,
-                  generalStyles.bg_white,
-                ].join(" ")}
-              >
-                {showFavorites &&
-                  favorites &&
-                  favorites
-                    .filter(
-                      (favorite) => favorite.type === UserTypeConstants.COMPANY
-                    )
-                    .map((favorite) => (
-                      <FavoriteRow
-                        key={favorite._id}
-                        user={favorite}
-                        withoutBoxShadow={true}
-                      />
-                    ))}
-              </div>
-            )}
-          </div>
-
-          {/* display card option */}
-          <Icon
-            foreColor={
-              displayType === "card"
-                ? Colors.SUCCEEDED_COLOR
-                : Colors.SECONDARY_COLOR
-            }
-            tooltip={t("show-item-as-card-tooltip")}
-            onclick={() => {
-              dispatch(changeDisplayType("card"));
-              setShowFavorites(false);
-            }}
-            icon={() => <AiFillAppstore />}
-          />
-
-          {/* display list option */}
-          <Icon
-            foreColor={
-              displayType === "list"
-                ? Colors.SUCCEEDED_COLOR
-                : Colors.SECONDARY_COLOR
-            }
-            tooltip={t("show-item-as-row-tooltip")}
-            onclick={() => {
-              dispatch(changeDisplayType("list"));
-              setShowFavorites(false);
-            }}
-            icon={() => <FaListUl />}
-          />
-        </div>
-      </Header>
+      <CompaniesHeader
+        search={handleEnterPress}
+        refreshHandler={refreshHandler}
+        count={count}
+      />
 
       {/* display partner as list */}
       {displayType === "list" &&

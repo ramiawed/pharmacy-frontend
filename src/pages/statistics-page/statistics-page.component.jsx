@@ -1,45 +1,65 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
-import { IoMdMore } from "react-icons/io";
-import { SiAtAndT } from "react-icons/si";
-
-import Header from "../../components/header/header.component";
-import TableHeader from "../../components/table-header/table-header.component";
+// redux stuff
+import { useDispatch, useSelector } from "react-redux";
 import {
   getStatistics,
   resetStatistics,
+  resetStatisticsError,
   selectStatistics,
+  setDateOption,
+  setPage,
+  setSearchDate,
+  setSearchName,
 } from "../../redux/statistics/statisticsSlice";
 
-import tableStyles from "../../components/table.module.scss";
-import rowStyles from "../../components/row.module.scss";
-import generalStyles from "../../style.module.scss";
+// icons
+import { IoMdArrowRoundBack, IoMdMore } from "react-icons/io";
+import { RiRefreshLine } from "react-icons/ri";
+
+// components
+import Header from "../../components/header/header.component";
+import TableHeader from "../../components/table-header/table-header.component";
+import SelectCustom from "../../components/select/select.component";
+import Button from "../../components/button/button.component";
 import Modal from "../../components/modal/modal.component";
 import SearchContainer from "../../components/search-container/search-container.component";
 import SearchInput from "../../components/search-input/search-input.component";
+import NoContent from "../../components/no-content/no-content.component";
+import Loader from "../../components/action-loader/action-loader.component";
+import Toast from "../../components/toast/toast.component";
+import Icon from "../../components/action-icon/action-icon.component";
+
+// styles
+import tableStyles from "../../components/table.module.scss";
+import rowStyles from "../../components/row.module.scss";
+import generalStyles from "../../style.module.scss";
+
+// constants and utils
 import { Colors, DateOptions } from "../../utils/constants";
-import SelectCustom from "../../components/select/select.component";
-import Button from "../../components/button/button.component";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 function StatisticsPage() {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const history = useHistory();
   const location = useLocation();
   const { field, type, title } = location.state;
 
-  const dispatch = useDispatch();
-  const { statistics, count } = useSelector(selectStatistics);
+  // selectors
+  const { statistics, count, pageState, error, status } =
+    useSelector(selectStatistics);
 
-  const [page, setPage] = useState(
-    statistics.length === 0 ? 1 : Math.ceil(statistics.length / 1) + 1
-  );
-  const [searchName, setSearchName] = useState("");
+  // own state
+  // const [page, setPage] = useState(
+  //   statistics.length === 0 ? 1 : Math.ceil(statistics.length / 1) + 1
+  // );
   const [showMoreInfo, setShowMoreInfo] = useState(false);
   const [selectedStatistics, setSelectedStatistics] = useState(null);
-  const [date, setDate] = useState("");
 
   const dateOptions = [
     { value: "", label: t("choose-date") },
@@ -53,11 +73,8 @@ function StatisticsPage() {
     { value: DateOptions.ONE_YEAR, label: t("one-year") },
   ];
 
-  const [dateOption, setDateOption] = useState(dateOptions[0]);
-
   const handleDateOptions = (val) => {
-    console.log(val);
-    setDateOption(val);
+    dispatch(setDateOption(val));
   };
 
   // handle search
@@ -66,181 +83,217 @@ function StatisticsPage() {
       field,
       type,
       page: p,
-      limit: 1,
+      limit: 9,
     };
 
     // build the query string
 
-    if (searchName.trim().length !== 0) {
+    if (pageState.searchName.trim().length !== 0) {
       obj = {
         ...obj,
-        name: searchName,
+        name: pageState.searchName,
       };
     }
 
     // One Day
-    if (dateOption === DateOptions.ONE_DAY) {
-      let nextDay = new Date(date);
+    if (pageState.dateOption === DateOptions.ONE_DAY) {
+      let nextDay = new Date(pageState.date);
       nextDay.setDate(nextDay.getDate() + 1);
       obj = {
         ...obj,
-        date: new Date(date),
+        date: new Date(pageState.date),
         date1: nextDay,
       };
     }
 
     // Three Days
-    if (dateOption === DateOptions.THREE_DAY) {
-      let nextThreeDays = new Date(date);
+    if (pageState.dateOption === DateOptions.THREE_DAY) {
+      let nextThreeDays = new Date(pageState.date);
       nextThreeDays.setDate(nextThreeDays.getDate() + 3);
       obj = {
         ...obj,
-        date: new Date(date),
+        date: new Date(pageState.date),
         date1: nextThreeDays,
       };
     }
 
     // One Week
-    if (dateOption === DateOptions.ONE_WEEK) {
-      let nextWeek = new Date(date);
+    if (pageState.dateOption === DateOptions.ONE_WEEK) {
+      let nextWeek = new Date(pageState.date);
       nextWeek.setDate(nextWeek.getDate() + 7);
       obj = {
         ...obj,
-        date: new Date(date),
+        date: new Date(pageState.date),
         date1: nextWeek,
       };
     }
 
     // Two Week
-    if (dateOption === DateOptions.TWO_WEEK) {
-      let nextTwoWeek = new Date(date);
+    if (pageState.dateOption === DateOptions.TWO_WEEK) {
+      let nextTwoWeek = new Date(pageState.date);
       nextTwoWeek.setDate(nextTwoWeek.getDate() + 14);
       obj = {
         ...obj,
-        date: new Date(date),
+        date: new Date(pageState.date),
         date1: nextTwoWeek,
       };
     }
 
     // One Month
-    if (dateOption === DateOptions.ONE_MONTH) {
-      let nextMonth = new Date(date);
+    if (pageState.dateOption === DateOptions.ONE_MONTH) {
+      let nextMonth = new Date(pageState.date);
       nextMonth.setMonth(nextMonth.getMonth() + 1);
 
       obj = {
         ...obj,
-        date: new Date(date),
+        date: new Date(pageState.date),
         date1: nextMonth,
       };
     }
 
     // Two Month
-    if (dateOption === DateOptions.TWO_MONTH) {
-      let nextTwoMonth = new Date(date);
+    if (pageState.dateOption === DateOptions.TWO_MONTH) {
+      let nextTwoMonth = new Date(pageState.date);
       nextTwoMonth.setMonth(nextTwoMonth.getMonth() + 2);
 
       obj = {
         ...obj,
-        date: new Date(date),
+        date: new Date(pageState.date),
         date1: nextTwoMonth,
       };
     }
 
     // Six Month
-    if (dateOption === DateOptions.SIX_MONTH) {
-      let nextSixMonth = new Date(date);
+    if (pageState.dateOption === DateOptions.SIX_MONTH) {
+      let nextSixMonth = new Date(pageState.date);
       nextSixMonth.setMonth(nextSixMonth.getMonth() + 6);
 
       obj = {
         ...obj,
-        date: new Date(date),
+        date: new Date(pageState.date),
         date1: nextSixMonth,
       };
     }
 
     // One Year
-    if (dateOption === DateOptions.ONE_YEAR) {
-      let nextYear = new Date(date);
+    if (pageState.dateOption === DateOptions.ONE_YEAR) {
+      let nextYear = new Date(pageState.date);
       nextYear.setFullYear(nextYear.getFullYear() + 1);
 
       obj = {
         ...obj,
-        date: new Date(date),
+        date: new Date(pageState.date),
         date1: nextYear,
       };
     }
 
-    dispatch(getStatistics({ obj }));
-    setPage(reset ? 1 : p + 1);
-    setPage(p + 1);
+    dispatch(getStatistics({ obj }))
+      .then(unwrapResult)
+      .then(() => {
+        dispatch(setPage(pageState.page + 1));
+      });
   };
 
   const handleEnterPress = () => {
     dispatch(resetStatistics());
-    handleSearch(1, true);
+    dispatch(setPage(1));
+    handleSearch(1);
   };
 
   const handleMoreResult = () => {
-    handleSearch(page, false);
+    handleSearch(pageState.page);
   };
 
   useEffect(() => {
     if (statistics.length === 0) handleSearch(1);
-
-    return () => {
-      dispatch(resetStatistics());
-    };
   }, []);
 
   return (
     <>
-      <SearchContainer searchAction={handleEnterPress}>
-        <SearchInput
-          label="statistics-name"
-          id="item-name"
-          type="text"
-          value={searchName}
-          onchange={(e) => setSearchName(e.target.value)}
-          placeholder="search"
-          onEnterPress={handleEnterPress}
-          resetField={() => {
-            setSearchName("");
-          }}
-        />
-        <div
-          className={[
-            generalStyles.flex_container,
-            generalStyles.padding_v_6,
-          ].join(" ")}
-        >
-          <label style={{ fontSize: "0.7rem" }}>{t("dates-within")}</label>
-          <SelectCustom
-            bgColor={Colors.SECONDARY_COLOR}
-            foreColor="#fff"
-            options={dateOptions}
-            onchange={handleDateOptions}
-            defaultOption={dateOptions[0]}
-          />
+      <Header>
+        <h2>{title}</h2>
+        <div style={{ position: "relative", height: "50px" }}>
+          <SearchContainer searchAction={handleEnterPress}>
+            <SearchInput
+              label="statistics-name"
+              id="item-name"
+              type="text"
+              value={pageState.searchName}
+              onchange={(e) => dispatch(setSearchName(e.target.value))}
+              placeholder="search"
+              onEnterPress={handleEnterPress}
+              resetField={() => {
+                dispatch(setSearchName(""));
+              }}
+            />
+            <div
+              className={[
+                generalStyles.flex_container,
+                generalStyles.padding_v_6,
+              ].join(" ")}
+            >
+              <label style={{ fontSize: "0.7rem" }}>{t("dates-within")}</label>
+              <SelectCustom
+                bgColor={Colors.SECONDARY_COLOR}
+                foreColor="#fff"
+                options={dateOptions}
+                onchange={handleDateOptions}
+                defaultOption={{
+                  value: pageState.dateOption,
+                  label: t(
+                    `${
+                      dateOptions.find((o) => o.value === pageState.dateOption)
+                        .label
+                    }`
+                  ),
+                }}
+              />
+            </div>
+
+            <div
+              className={[
+                generalStyles.flex_container,
+                generalStyles.padding_v_6,
+              ].join(" ")}
+            >
+              <label style={{ fontSize: "0.7rem" }}>{t("date-label")}</label>
+              <input
+                type="date"
+                value={pageState.date}
+                onChange={(e) => {
+                  dispatch(setSearchDate(e.target.value));
+                }}
+              />
+            </div>
+          </SearchContainer>
         </div>
 
         <div
-          className={[
-            generalStyles.flex_container,
-            generalStyles.padding_v_6,
-          ].join(" ")}
+          className={[generalStyles.actions, generalStyles.margin_v_4].join(
+            " "
+          )}
         >
-          <label style={{ fontSize: "0.7rem" }}>{t("date-label")}</label>
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => {
-              setDate(e.target.value);
+          {/* refresh */}
+          <Icon
+            selected={false}
+            foreColor={Colors.SECONDARY_COLOR}
+            tooltip={t("refresh-tooltip")}
+            onclick={() => {
+              handleEnterPress();
             }}
+            icon={() => <RiRefreshLine />}
+          />
+
+          {/* go back */}
+          <Icon
+            tooltip={t("go-back")}
+            onclick={() => {
+              history.goBack();
+            }}
+            icon={() => <IoMdArrowRoundBack size={20} />}
+            foreColor={Colors.SECONDARY_COLOR}
           />
         </div>
-      </SearchContainer>
-      <Header>
-        <h2>{title}</h2>
       </Header>
 
       {statistics.length > 0 && (
@@ -260,39 +313,34 @@ function StatisticsPage() {
               <label className={tableStyles.label_medium}>{stat.name}</label>
               <label className={tableStyles.label_medium}>{stat.count}</label>
               <label className={tableStyles.label_xsmall}>
-                <div
-                  className={[
-                    generalStyles.icon,
-                    generalStyles.margin_h_auto,
-                  ].join(" ")}
-                  onClick={() => {
+                <Icon
+                  selected={false}
+                  icon={() => <IoMdMore size={20} />}
+                  tooltip={t("statistics-dates")}
+                  onclick={() => {
                     setSelectedStatistics(stat);
                     setShowMoreInfo(true);
                   }}
-                >
-                  <IoMdMore size={20} />
-                  <div className={generalStyles.tooltip}>
-                    {t("statistics-dates")}
-                  </div>
-                </div>
+                />
               </label>
             </div>
           ))}
         </>
       )}
 
-      {statistics.length === 0 ? (
-        <div className={generalStyles.no_content_div}>
-          <SiAtAndT className={generalStyles.no_content_icon} />
-          <p className={generalStyles.fc_white}>{t("no-warehouses")}</p>
-        </div>
-      ) : statistics.length < count ? (
+      {statistics.length === 0 && status !== "loading" && (
+        <NoContent msg={t("no-statistics")} />
+      )}
+
+      {statistics.length < count && (
         <Button
           text={t("more")}
           action={handleMoreResult}
           bgColor={Colors.SECONDARY_COLOR}
         />
-      ) : (
+      )}
+
+      {statistics.length === count && status !== "loading" && count !== 0 && (
         <p
           className={[generalStyles.center, generalStyles.fc_secondary].join(
             " "
@@ -300,6 +348,20 @@ function StatisticsPage() {
         >
           {t("no-more")}
         </p>
+      )}
+
+      {status === "loading" && <Loader allowCancel={false} />}
+
+      {error && (
+        <Toast
+          bgColor={Colors.FAILED_COLOR}
+          foreColor="#fff"
+          actionAfterTimeout={() => {
+            dispatch(resetStatisticsError());
+          }}
+        >
+          {t(error)}
+        </Toast>
       )}
 
       {showMoreInfo && (

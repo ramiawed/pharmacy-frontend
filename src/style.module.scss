@@ -315,3 +315,22 @@
     transform: rotate(360deg);
   }
 }
+
+// no internet connection
+.no_internet_container {
+  position: fixed;
+  bottom: 50px;
+  left: 20px;
+  background: rgba(0, 0, 0, 0.9);
+  box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.5);
+  padding: 6px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  width: 250px;
+  min-width: 250px;
+  z-index: 50;
+  color: #fff;
+}

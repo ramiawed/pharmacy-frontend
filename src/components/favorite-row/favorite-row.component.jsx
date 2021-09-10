@@ -2,9 +2,6 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-// components
-import Toast from "../toast/toast.component";
-
 // react icons
 import { AiFillStar } from "react-icons/ai";
 
@@ -23,20 +20,27 @@ import rowStyles from "../row.module.scss";
 // constants and utils
 import { checkConnection } from "../../utils/checkInternet";
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
 
 function FavoriteRow({ user, withoutBoxShadow }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
+  // selectors
   const favorites = useSelector(selectFavoritesPartners);
   const token = useSelector(selectToken);
+  const isOnline = useSelector(selectOnlineStatus);
 
   const [connectionError, setConnectionError] = useState("");
 
   // method to handle remove company from user's favorite
   const removeCompanyFromFavorite = () => {
     // check the internet connection
-    if (!checkConnection()) {
-      setConnectionError("no-internet-connection");
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
       return;
     }
 
@@ -92,17 +96,6 @@ function FavoriteRow({ user, withoutBoxShadow }) {
           ) : null}
         </div>
       </div>
-      {connectionError && (
-        <Toast
-          bgColor={Colors.FAILED_COLOR}
-          foreColor="#fff"
-          actionAfterTimeout={() => {
-            setConnectionError("");
-          }}
-        >
-          <p>{t(connectionError)}</p>
-        </Toast>
-      )}
     </>
   );
 }

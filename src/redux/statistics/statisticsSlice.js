@@ -10,6 +10,12 @@ const initialState = {
   statistics: [],
   count: 0,
   error: "",
+  pageState: {
+    searchName: "",
+    date: "",
+    dateOption: "",
+    page: 1,
+  },
 };
 
 export const getStatistics = createAsyncThunk(
@@ -338,11 +344,54 @@ export const statisticsSlice = createSlice({
       state.count = 0;
       state.error = "";
     },
+    resetPageState: (state) => {
+      state.pageState = {
+        searchName: "",
+        date: "",
+        dateOption: "",
+        page: 1,
+      };
+    },
+
+    setSearchName: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchName: action.payload,
+      };
+    },
+
+    setSearchDate: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        date: action.payload,
+      };
+    },
+
+    setDateOption: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        dateOption: action.payload,
+      };
+    },
+
+    setPage: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        page: action.payload,
+      };
+    },
+
     statisticsSliceSignOut: (state) => {
       state.status = "idle";
       state.statistics = [];
       state.count = 0;
       state.error = "";
+      state.pageState = {
+        searchName: "",
+        date: "",
+        dateOption: "",
+        page: 1,
+      };
     },
   },
   extraReducers: {
@@ -374,6 +423,11 @@ export const {
   resetStatisticsStatus,
   resetStatisticsError,
   resetStatistics,
+  resetPageState,
+  setSearchName,
+  setSearchDate,
+  setDateOption,
+  setPage,
   statisticsSliceSignOut,
 } = statisticsSlice.actions;
 

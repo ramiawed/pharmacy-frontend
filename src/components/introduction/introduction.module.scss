@@ -1,0 +1,35 @@
+@import "../../variables.scss";
+
+.container {
+  display: flex;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.content h1 {
+  color: $secondary-color;
+  font-size: 3rem;
+  padding: 12px;
+}
+
+.content p {
+  color: rgba($color: $secondary-color, $alpha: 0.5);
+  font-size: 1rem;
+}
+
+.image {
+  flex: 1;
+  background-image: url("http://localhost:8000/pharmacy05.png");
+  background-position: center;
+  background-repeat: no-repeat;
+  height: 400px;
+  background-size: contain;
+}

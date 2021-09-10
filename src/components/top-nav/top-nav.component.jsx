@@ -1,23 +1,12 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 // redux stuff
-import { useDispatch, useSelector } from "react-redux";
-import { selectUser, signOut } from "../../redux/auth/authSlice";
-import {
-  resetFavorites,
-  selectFavorites,
-} from "../../redux/favorites/favoritesSlice";
-import { resetUsers } from "../../redux/users/usersSlice";
-import {
-  resetCompanies,
-  resetCompaniesPageState,
-} from "../../redux/company/companySlice";
-import {
-  resetWarehouse,
-  resetWarehousePageState,
-} from "../../redux/warehouse/warehousesSlice";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/auth/authSlice";
+import { selectFavorites } from "../../redux/favorites/favoritesSlice";
+import { selectCartItemCount } from "../../redux/cart/cartSlice";
 
 // components
 import IconWithNumber from "../icon-with-number/icon-with-number.component";
@@ -31,16 +20,8 @@ import styles from "./top-nav.module.scss";
 
 // constants
 import { TopNavLinks, UserTypeConstants } from "../../utils/constants.js";
-import { resetItems } from "../../redux/items/itemsSlices";
-import { resetCompanyItems } from "../../redux/companyItems/companyItemsSlices";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import {
-  resetCartItems,
-  selectCartItemCount,
-} from "../../redux/cart/cartSlice";
-import { resetWarehouseItems } from "../../redux/warehouseItems/warehouseItemsSlices";
 
-function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
+function TopNav({ onSelectedChange, showTopNav }) {
   const history = useHistory();
   const { t } = useTranslation();
   const allFavorites = useSelector(selectFavorites);
@@ -123,15 +104,6 @@ function TopNav({ selectedOption, onSelectedChange, showTopNav }) {
           </Link>
         )}
 
-        {/* <p
-          className={[
-            styles.link,
-            selectedOption === TopNavLinks.SIGNOUT ? styles.selected : null,
-          ].join(" ")}
-          onClick={() => handleSignout()}
-        >
-          {t("nav-sign-out")}
-        </p> */}
         <p className={styles.link}>{user.name}</p>
         <div
           style={{

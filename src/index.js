@@ -7,6 +7,8 @@ import { persistStore } from "redux-persist";
 import store from "./store";
 import App from "./App";
 import "./i18n/i18n";
+import "./../node_modules/slick-carousel/slick/slick.css";
+import "./../node_modules/slick-carousel/slick/slick-theme.css";
 
 let persistor = persistStore(store);
 

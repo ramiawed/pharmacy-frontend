@@ -20,12 +20,16 @@ function Input({
 }) {
   const { t } = useTranslation();
 
-  const handleKeyPress = (event) => {
-    if (event.key === "Enter") {
+  const keyDownHandler = (event) => {
+    console.log(event);
+
+    if (event.code === "Enter") {
       if (onEnterPress) {
         onEnterPress();
       }
     }
+
+    if (event.code !== "Escape") event.stopPropagation();
   };
 
   return (
@@ -41,7 +45,8 @@ function Input({
         type={type}
         value={value}
         onChange={onchange}
-        onKeyPress={handleKeyPress}
+        onKeyDown={keyDownHandler}
+        // onKeyPress={handleKeyPress}
         disabled={readOnly}
       />
       {resetField && value && (

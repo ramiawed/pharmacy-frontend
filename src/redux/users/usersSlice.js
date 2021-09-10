@@ -53,7 +53,6 @@ export const getUsers = createAsyncThunk(
     const {
       users: { pageState },
     } = getState();
-    console.log(pageState);
 
     try {
       CancelToken = axios.CancelToken;
@@ -451,6 +450,25 @@ export const usersSlice = createSlice({
       };
     },
 
+    resetPageState: (state) => {
+      state.pageState = {
+        searchName: "",
+        searchCity: "",
+        searchDistrict: "",
+        searchStreet: "",
+        searchEmployeeName: "",
+        searchCertificateName: "",
+        searchCompanyName: "",
+        searchJobTitle: "",
+        approved: UserApprovedState.ALL,
+        active: UserActiveState.ALL,
+        userType: UserTypeConstants.ALL,
+        searchJob: GuestJob.NONE,
+        orderBy: {},
+        page: 1,
+      };
+    },
+
     usersSliceSignOut: (state) => {
       state.status = "idle";
       state.users = null;
@@ -614,6 +632,7 @@ export const {
   resetUserChangePasswordStatus,
   resetUserChangePasswordError,
   resetError,
+  resetPageState,
   usersSliceSignOut,
   setSearchName,
   setSearchCity,

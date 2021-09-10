@@ -27,9 +27,9 @@ import { UserTypeConstants } from "../../utils/constants";
 function CartPage() {
   const { t } = useTranslation();
 
+  // selectors
   // get the logged user from redux store
   const user = useSelector(selectUser);
-
   // get the cart warehouses from redux store
   const cartWarehouse = useSelector(selectCartWarehouse);
 

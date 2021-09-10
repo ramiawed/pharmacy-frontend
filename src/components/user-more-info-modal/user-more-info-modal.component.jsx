@@ -7,7 +7,6 @@ import Modal from "../modal/modal.component";
 
 // styles
 import styles from "./user-more-info-modal.module.scss";
-import generalStyles from "../../style.module.scss";
 
 function UserMoreInfoModal({ user, close }) {
   const { t } = useTranslation();
@@ -19,9 +18,7 @@ function UserMoreInfoModal({ user, close }) {
       closeModal={close}
       small={true}
     >
-      <div className={[styles.header, generalStyles.fc_green].join(" ")}>
-        {t("personal-info")}
-      </div>
+      <div className={[styles.header].join(" ")}>{t("personal-info")}</div>
       <div className={styles.row}>
         <label className={styles.label}>{t("user-username")}:</label>
         <label className={styles.label_value}>{user.username}</label>
@@ -34,9 +31,7 @@ function UserMoreInfoModal({ user, close }) {
         </label>
       </div>
 
-      <div className={[styles.header, generalStyles.fc_green].join(" ")}>
-        {t("address-info")}
-      </div>
+      <div className={[styles.header].join(" ")}>{t("address-info")}</div>
       <div className={styles.row}>
         <label className={styles.label}>{t("user-city")}:</label>
         <label className={styles.label_value}>{user.city}</label>
@@ -56,7 +51,7 @@ function UserMoreInfoModal({ user, close }) {
       {user.type === UserTypeConstants.PHARMACY ||
       user.type === UserTypeConstants.WAREHOUSE ? (
         <>
-          <div className={[styles.header, generalStyles.fc_green].join(" ")}>
+          <div className={[styles.header].join(" ")}>
             {t("additional-info")}
           </div>
           <div className={styles.row}>
@@ -74,7 +69,7 @@ function UserMoreInfoModal({ user, close }) {
 
       {user.type === UserTypeConstants.NORMAL ? (
         <>
-          <div className={[styles.header, generalStyles.fc_green].join(" ")}>
+          <div className={[styles.header].join(" ")}>
             {t("additional-info")}
           </div>
           <div className={styles.row}>

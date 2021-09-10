@@ -14,6 +14,7 @@ const initialState = {
     searchName: "",
     searchCity: "",
     displayType: "list",
+    showFavorites: false,
     page: 1,
   },
 };
@@ -26,28 +27,28 @@ export const cancelOperation = () => {
 
 export const getWarehouses = createAsyncThunk(
   "warehouses/getWarehouses",
-  async ({ queryString, token }, { rejectWithValue }) => {
+  async ({ queryString, token }, { rejectWithValue, getState }) => {
+    const {
+      warehouses: { pageState },
+    } = getState();
+
     try {
       CancelToken = axios.CancelToken;
       source = CancelToken.source;
 
-      let buildUrl = `${BASEURL}/users?type=warehouse&page=${queryString.page}&limit=9`;
+      let buildUrl = `${BASEURL}/users?type=warehouse&page=${pageState.page}&limit=9`;
 
-      if (queryString.name) {
-        buildUrl = buildUrl + `&name=${queryString.name}`;
+      if (pageState.searchName.trim() !== "") {
+        buildUrl = buildUrl + `&name=${pageState.searchName}`;
       }
 
-      if (queryString.city) {
-        buildUrl = buildUrl + `&city=${queryString.city}`;
+      if (pageState.searchCity.trim() !== "") {
+        buildUrl = buildUrl + `&city=${pageState.searchCity}`;
       }
 
-      if (queryString.approve !== undefined) {
-        buildUrl = buildUrl + `&isApproved=${queryString.approve}`;
-      }
+      buildUrl = buildUrl + `&isApproved=true`;
 
-      if (queryString.active !== undefined) {
-        buildUrl = buildUrl + `&isActive=${queryString.active}`;
-      }
+      buildUrl = buildUrl + `&isActive=true`;
 
       const response = await axios.get(buildUrl, {
         timeout: 10000,
@@ -86,53 +87,41 @@ export const warehousesSlice = createSlice({
         searchName: action.payload,
       };
     },
-    resetSearchName: (state) => {
-      state.pageState = {
-        ...state.pageState,
-        searchName: "",
-      };
-    },
+
     changeSearchCity: (state, action) => {
       state.pageState = {
         ...state.pageState,
         searchCity: action.payload,
       };
     },
-    resetSearchCity: (state) => {
-      state.pageState = {
-        ...state.pageState,
-        searchCity: "",
-      };
-    },
+
     changeDisplayType: (state, action) => {
       state.pageState = {
         ...state.pageState,
         displayType: action.payload,
       };
     },
-    resetDisplayType: (state) => {
-      state.pageState = {
-        ...state.pageState,
-        displayType: "list",
-      };
-    },
+
     changePage: (state, action) => {
       state.pageState = {
         ...state.pageState,
         page: action.payload,
       };
     },
-    resetPage: (state) => {
+
+    changeShowFavorites: (state, action) => {
       state.pageState = {
         ...state.pageState,
-        page: 1,
+        showFavorites: action.payload,
       };
     },
+
     resetWarehousePageState: (state) => {
       state.pageState = {
         searchName: "",
         searchCity: "",
         displayType: "list",
+        showFavorites: false,
         page: 1,
       };
     },
@@ -161,6 +150,7 @@ export const warehousesSlice = createSlice({
         searchName: "",
         searchCity: "",
         displayType: "list",
+        showFavorites: false,
         page: 1,
       };
     },
@@ -202,10 +192,7 @@ export const {
   changeSearchCity,
   changeDisplayType,
   changePage,
-  resetSearchName,
-  resetSearchCity,
-  resetDisplayType,
-  resetPage,
+  changeShowFavorites,
   warehouseSliceSignOut,
 } = warehousesSlice.actions;
 

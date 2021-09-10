@@ -1,10 +1,10 @@
 // libraries
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-
 import { selectToken, selectUser } from "../../redux/auth/authSlice";
 import {
   userApproveChange,
@@ -12,18 +12,22 @@ import {
   undoDeleteUser,
   resetUserPassword,
 } from "../../redux/users/usersSlice";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
 
 // react-icons
 import { BsFillPersonCheckFill, BsFillPersonDashFill } from "react-icons/bs";
 import { IoMdMore } from "react-icons/io";
 import { AiFillUnlock, AiFillLock, AiFillEdit } from "react-icons/ai";
 
-// component
+// components
 import Modal from "../modal/modal.component";
 import UserMoreInfoModal from "../user-more-info-modal/user-more-info-modal.component";
-import ActionIcon from "../action-icon/action-icon.component";
 import ActinIcon from "../action-icon/action-icon.component";
 import AdminResetUserPasswordModal from "../admin-reset-user-password-modal/admin-reset-user-password-modal";
+import Icon from "../action-icon/action-icon.component";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -31,25 +35,19 @@ import rowStyles from "../row.module.scss";
 import tableStyles from "../table.module.scss";
 
 // constants
-import { checkConnection } from "../../utils/checkInternet";
-import { Link } from "react-router-dom";
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import {
-  changeOnlineMsg,
-  selectOnlineStatus,
-} from "../../redux/online/onlineSlice";
-import Icon from "../action-icon/action-icon.component";
 
 // UserRow component
 function UserRow({ user }) {
   const { t } = useTranslation();
-
   const dispatch = useDispatch();
-  const isOnline = useSelector(selectOnlineStatus);
 
+  // selectors
+  const isOnline = useSelector(selectOnlineStatus);
   const token = useSelector(selectToken);
   const loggedUser = useSelector(selectUser);
 
+  // own states
   const [modalInfo, setModalInfo] = useState({
     header: "",
     body: "",
@@ -61,6 +59,7 @@ function UserRow({ user }) {
   const [showResetUserPasswordModal, setShowResetUserPasswordModal] =
     useState(false);
   const [actionType, setActionType] = useState("");
+
   const [passwordObj, setPasswordObj] = useState({
     newPassword: "",
     newPasswordConfirm: "",
@@ -179,11 +178,7 @@ function UserRow({ user }) {
           ...modalInfo,
           header: "approve-account",
           body: () => {
-            return (
-              <>
-                <p>{t("approve-account-question")}</p>
-              </>
-            );
+            return <p>{t("approve-account-question")}</p>;
           },
         });
       }
@@ -195,11 +190,7 @@ function UserRow({ user }) {
         ...modalInfo,
         header: "disapprove-account",
         body: () => {
-          return (
-            <>
-              <p>{t("disapprove-account-question")}</p>
-            </>
-          );
+          return <p>{t("disapprove-account-question")}</p>;
         },
       });
     }
@@ -210,11 +201,7 @@ function UserRow({ user }) {
         ...modalInfo,
         header: "undo-delete-account",
         body: () => {
-          return (
-            <>
-              <p>{t("undo-delete-account-question")}</p>
-            </>
-          );
+          return <p>{t("undo-delete-account-question")}</p>;
         },
       });
     }
@@ -225,11 +212,7 @@ function UserRow({ user }) {
         ...modalInfo,
         header: "delete-account",
         body: () => {
-          return (
-            <>
-              <p>{t("delete-account-question")}</p>
-            </>
-          );
+          return <p>{t("delete-account-question")}</p>;
         },
       });
     }

@@ -14,6 +14,7 @@ const initialState = {
     searchName: "",
     searchCity: "",
     displayType: "list",
+    showFavorites: false,
     page: 1,
   },
 };
@@ -26,28 +27,28 @@ export const cancelOperation = () => {
 
 export const getCompanies = createAsyncThunk(
   "companies/getCompanies",
-  async ({ queryString, token }, { rejectWithValue }) => {
+  async ({ token }, { rejectWithValue, getState }) => {
+    const {
+      companies: { pageState },
+    } = getState();
+
     try {
       CancelToken = axios.CancelToken;
       source = CancelToken.source;
 
-      let buildUrl = `${BASEURL}/users?type=company&page=${queryString.page}&limit=9`;
+      let buildUrl = `${BASEURL}/users?type=company&page=${pageState.page}&limit=9`;
 
-      if (queryString.name) {
-        buildUrl = buildUrl + `&name=${queryString.name}`;
+      if (pageState.searchName.trim() !== "") {
+        buildUrl = buildUrl + `&name=${pageState.searchName}`;
       }
 
-      if (queryString.city) {
-        buildUrl = buildUrl + `&city=${queryString.city}`;
+      if (pageState.searchCity.trim() !== "") {
+        buildUrl = buildUrl + `&city=${pageState.searchCity}`;
       }
 
-      if (queryString.approve !== undefined) {
-        buildUrl = buildUrl + `&isApproved=${queryString.approve}`;
-      }
+      buildUrl = buildUrl + `&isApproved=true`;
 
-      if (queryString.active !== undefined) {
-        buildUrl = buildUrl + `&isActive=${queryString.active}`;
-      }
+      buildUrl = buildUrl + `&isActive=true`;
 
       const response = await axios.get(buildUrl, {
         timeout: 10000,
@@ -86,48 +87,35 @@ export const companiesSlice = createSlice({
         searchName: action.payload,
       };
     },
-    resetSearchName: (state) => {
-      state.pageState = {
-        ...state.pageState,
-        searchName: "",
-      };
-    },
+
     changeSearchCity: (state, action) => {
       state.pageState = {
         ...state.pageState,
         searchCity: action.payload,
       };
     },
-    resetSearchCity: (state) => {
-      state.pageState = {
-        ...state.pageState,
-        searchCity: "",
-      };
-    },
+
     changeDisplayType: (state, action) => {
       state.pageState = {
         ...state.pageState,
         displayType: action.payload,
       };
     },
-    resetDisplayType: (state) => {
-      state.pageState = {
-        ...state.pageState,
-        displayType: "list",
-      };
-    },
+
     changePage: (state, action) => {
       state.pageState = {
         ...state.pageState,
         page: action.payload,
       };
     },
-    resetPage: (state) => {
+
+    changeShowFavorites: (state, action) => {
       state.pageState = {
         ...state.pageState,
-        page: 1,
+        showFavorites: action.payload,
       };
     },
+
     resetCompaniesPageState: (state) => {
       state.pageState = {
         searchName: "",
@@ -136,22 +124,27 @@ export const companiesSlice = createSlice({
         page: 1,
       };
     },
+
     resetError: (state) => {
       state.error = null;
     },
+
     resetStatus: (state) => {
       state.status = "idle";
       state.error = null;
     },
+
     resetCompanies: (state) => {
       state.status = "idle";
       state.companies = [];
       state.count = 0;
       state.error = null;
     },
+
     resetCount: (state) => {
       state.count = 0;
     },
+
     companySliceSignOut: (state) => {
       state.status = "idle";
       state.companies = [];
@@ -161,6 +154,7 @@ export const companiesSlice = createSlice({
         searchName: "",
         searchCity: "",
         displayType: "list",
+        showFavorites: false,
         page: 1,
       };
     },
@@ -202,11 +196,8 @@ export const {
   changeSearchCity,
   changeDisplayType,
   changePage,
-  resetSearchName,
-  resetSearchCity,
-  resetDisplayType,
-  resetPage,
   companySliceSignOut,
+  changeShowFavorites,
 } = companiesSlice.actions;
 
 export default companiesSlice.reducer;

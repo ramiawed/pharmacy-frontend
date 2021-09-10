@@ -1,16 +1,20 @@
 import React, { useState } from "react";
+import { useTranslation } from "react-i18next";
+import { Link } from "react-router-dom";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import { changeItemActiveState } from "../../redux/items/itemsSlices";
-import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
 
 // components
 import Modal from "../modal/modal.component";
 import OffersModal from "../offers-modal/offers-modal.component";
-import ActionIcon from "../action-icon/action-icon.component";
+import Icon from "../action-icon/action-icon.component";
 
 // react-icons
 import { AiFillUnlock, AiFillLock } from "react-icons/ai";
@@ -23,11 +27,6 @@ import rowStyles from "../row.module.scss";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import {
-  changeOnlineMsg,
-  selectOnlineStatus,
-} from "../../redux/online/onlineSlice";
-import Icon from "../action-icon/action-icon.component";
 
 function CompanyItemRow({
   item,
@@ -39,17 +38,19 @@ function CompanyItemRow({
   deleteItemFromWarehouse,
 }) {
   const { t } = useTranslation();
-  const isOnline = useSelector(selectOnlineStatus);
+  const dispatch = useDispatch();
 
+  // selectors
+  const isOnline = useSelector(selectOnlineStatus);
+  const { token } = useSelector(selectUserData);
+
+  // own state
   const [modalObj, setModalObj] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [showWarningModal, setShowWarningModal] = useState(false);
   const [showOfferModal, setShowOfferModal] = useState(false);
   const [showDeleteFromWarehouseModal, setShowDeleteFromWarehouseModal] =
     useState(false);
-
-  const { token } = useSelector(selectUserData);
-  const dispatch = useDispatch();
 
   const actionButtonPress = (action) => {
     if (action === "delete") {
@@ -121,9 +122,7 @@ function CompanyItemRow({
     }
 
     if (
-      (user.type === UserTypeConstants.ADMIN &&
-        role === UserTypeConstants.COMPANY &&
-        item.company.allowAdmin) ||
+      (user.type === UserTypeConstants.ADMIN && item.company.allowAdmin) ||
       user.type === UserTypeConstants.COMPANY
     ) {
       actionButtonPress("undo-delete");

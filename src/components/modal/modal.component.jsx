@@ -21,8 +21,28 @@ const Modal = ({
 
   useEffect(() => {
     document.body.style.overflow = "hidden";
+
+    const handleEsc = (event) => {
+      if (event.keyCode === 27) {
+        closeModal();
+      }
+    };
+
+    const handleEnter = (event) => {
+      if (event.keyCode === 13) {
+        if (okModal) {
+          okModal();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleEsc);
+    window.addEventListener("keydown", handleEnter);
+
     return () => {
       document.body.style.overflow = "unset";
+      window.removeEventListener("keydown", handleEsc);
+      window.removeEventListener("keydown", handleEnter);
     };
   });
 

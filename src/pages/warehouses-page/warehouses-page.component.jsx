@@ -3,22 +3,13 @@ import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
 
 // components
-import Header from "../../components/header/header.component";
-import SearchInput from "../../components/search-input/search-input.component";
-import FavoriteRow from "../../components/favorite-row/favorite-row.component";
 import PartnerRow from "../../components/partner-row/partner-row.component";
 import PartnerCard from "../../components/partner-card/partner-card.component";
-import SearchContainer from "../../components/search-container/search-container.component";
 import Button from "../../components/button/button.component";
 import Toast from "../../components/toast/toast.component";
 import NoContent from "../../components/no-content/no-content.component";
-import Icon from "../../components/action-icon/action-icon.component";
 import Loader from "../../components/action-loader/action-loader.component";
-
-// react-icons
-import { FaListUl } from "react-icons/fa";
-import { RiRefreshLine } from "react-icons/ri";
-import { AiFillAppstore, AiFillStar } from "react-icons/ai";
+import WarehousesHeader from "../../components/warehouses-header/warehouses-header.component";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -28,19 +19,16 @@ import {
   getWarehouses,
   resetWarehouse,
   selectWarehouses,
-  changeDisplayType,
   changePage,
-  changeSearchCity,
-  changeSearchName,
-  resetSearchCity,
-  resetSearchName,
   selectWarehousesPageState,
   resetStatus,
+  changeShowFavorites,
 } from "../../redux/warehouse/warehousesSlice";
 import {
+  getFavorites,
   resetFavoriteError,
+  resetFavorites,
   selectFavorites,
-  selectFavoritesPartners,
 } from "../../redux/favorites/favoritesSlice";
 import {
   changeOnlineMsg,
@@ -48,52 +36,30 @@ import {
 } from "../../redux/online/onlineSlice";
 
 // constants and utils
-import { Colors, UserTypeConstants } from "../../utils/constants.js";
+import { Colors } from "../../utils/constants.js";
 
 // styles
 import generalStyles from "../../style.module.scss";
 
 function WarehousePage() {
   const { t } = useTranslation();
-
-  const isOnline = useSelector(selectOnlineStatus);
-
   const dispatch = useDispatch();
 
+  // selectors
+  const isOnline = useSelector(selectOnlineStatus);
   const { token, user } = useSelector(selectUserData);
   const { warehouses, count, status, error } = useSelector(selectWarehouses);
-  const { searchName, searchCity, displayType, page } = useSelector(
-    selectWarehousesPageState
-  );
+  const { displayType, page } = useSelector(selectWarehousesPageState);
 
   // select favorites from favoriteSlice
-  const favorites = useSelector(selectFavoritesPartners);
   const { error: favoriteError } = useSelector(selectFavorites);
-
-  // own state
-  // expanded state for expandable container
-  const [showFavorites, setShowFavorites] = useState(false);
 
   // handle search
   const handleSearch = (page) => {
     // build the query string
-    const queryString = {};
+    dispatch(changeShowFavorites());
 
-    queryString.page = page;
-
-    // warehouse approve and active must be true
-    queryString.approve = true;
-    queryString.active = true;
-
-    if (searchName.trim().length !== 0) {
-      queryString.name = searchName;
-    }
-
-    if (searchCity.trim().length !== 0) {
-      queryString.city = searchCity;
-    }
-
-    dispatch(getWarehouses({ queryString, token }))
+    dispatch(getWarehouses({ token }))
       .then(unwrapResult)
       .then(() => {
         dispatch(changePage(page + 1));
@@ -111,129 +77,31 @@ function WarehousePage() {
 
   const handleEnterPress = () => {
     dispatch(resetWarehouse());
+    dispatch(changePage(1));
+    handleSearch(1);
+  };
+
+  const refreshHandler = () => {
+    dispatch(resetFavorites());
+    dispatch(getFavorites({ token }));
+    dispatch(resetWarehouse());
+    dispatch(changePage(1));
     handleSearch(1);
   };
 
   useEffect(() => {
-    if (user) {
-      if (warehouses.length === 0) handleSearch(1);
-    }
+    if (warehouses.length === 0) handleSearch(1);
 
     window.scrollTo(0, 0);
   }, []);
 
   return user ? (
     <>
-      <Header>
-        <h2>
-          {t("warehouses")} <span>{count}</span>
-        </h2>
-
-        <div style={{ position: "relative", height: "50px" }}>
-          <SearchContainer searchAction={handleEnterPress}>
-            <SearchInput
-              label="user-name"
-              id="search-name"
-              type="text"
-              value={searchName}
-              onchange={(e) => {
-                dispatch(changeSearchName(e.target.value));
-              }}
-              placeholder="search"
-              onEnterPress={handleEnterPress}
-              resetField={() => dispatch(resetSearchName())}
-            />
-
-            <SearchInput
-              label="user-city"
-              id="search-city"
-              type="text"
-              value={searchCity}
-              onchange={(e) => {
-                dispatch(changeSearchCity(e.target.value));
-              }}
-              placeholder="search"
-              onEnterPress={handleEnterPress}
-              resetField={() => dispatch(resetSearchCity())}
-            />
-          </SearchContainer>
-        </div>
-
-        <div className={generalStyles.actions}>
-          {/* refresh */}
-          <Icon
-            foreColor={Colors.SECONDARY_COLOR}
-            tooltip={t("refresh-tooltip")}
-            onclick={handleEnterPress}
-            icon={() => <RiRefreshLine />}
-          />
-
-          {/* show favorites */}
-          <div className={generalStyles.relative}>
-            <Icon
-              foreColor={
-                showFavorites ? Colors.SUCCEEDED_COLOR : Colors.SECONDARY_COLOR
-              }
-              tooltip={t("show-favorite-tooltip")}
-              onclick={() => setShowFavorites(!showFavorites)}
-              icon={() => <AiFillStar />}
-            />
-
-            {showFavorites && (
-              <div
-                className={[
-                  generalStyles.favorites_content,
-                  generalStyles.bg_white,
-                ].join(" ")}
-              >
-                {showFavorites &&
-                  favorites
-                    .filter(
-                      (favorite) =>
-                        favorite.type === UserTypeConstants.WAREHOUSE
-                    )
-                    .map((favorite) => (
-                      <FavoriteRow
-                        key={favorite._id}
-                        user={favorite}
-                        withoutBoxShadow={true}
-                      />
-                    ))}
-              </div>
-            )}
-          </div>
-
-          {/* display card option */}
-          <Icon
-            foreColor={
-              displayType === "card"
-                ? Colors.SUCCEEDED_COLOR
-                : Colors.SECONDARY_COLOR
-            }
-            tooltip={t("show-item-as-card-tooltip")}
-            onclick={() => {
-              dispatch(changeDisplayType("card"));
-              setShowFavorites(false);
-            }}
-            icon={() => <AiFillAppstore />}
-          />
-
-          {/* display list option */}
-          <Icon
-            foreColor={
-              displayType === "list"
-                ? Colors.SUCCEEDED_COLOR
-                : Colors.SECONDARY_COLOR
-            }
-            tooltip={t("show-item-as-row-tooltip")}
-            onclick={() => {
-              dispatch(changeDisplayType("list"));
-              setShowFavorites(false);
-            }}
-            icon={() => <FaListUl />}
-          />
-        </div>
-      </Header>
+      <WarehousesHeader
+        count={count}
+        search={handleEnterPress}
+        refreshHandler={refreshHandler}
+      />
 
       {/* display as list */}
       {displayType === "list" &&

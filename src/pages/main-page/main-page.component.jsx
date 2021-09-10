@@ -29,12 +29,14 @@ import ItemExcelPage from "../item-excel-page/item-excel-page.component";
 import StatisticsOptionsPage from "../statistics-options-page/statistics-options-page.component";
 import StatisticsPage from "../statistics-page/statistics-page.component";
 import UserProfilePage from "../user-profile-page/user-profile-page.component";
+import Footer from "../../components/footer/footer.component";
 
 // style
 import styles from "./main-page.module.scss";
 
 // constants
 import { TopNavLinks } from "../../utils/constants";
+import HomePage from "../home-page/home-page.component";
 
 // MainPage
 // you have to sign in first
@@ -82,7 +84,13 @@ function MainPage() {
   }, [user]);
 
   return user ? (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+        minHeight: "100vh",
+      }}
+    >
       <div className={styles.hamburger_menu}>
         <p className={styles.selectedOption}>{t(selectedTopNavOption)}</p>
         <GiHamburgerMenu
@@ -123,6 +131,10 @@ function MainPage() {
       />
 
       <div className={styles.content_area}>
+        <Route exact path="/">
+          <HomePage />
+        </Route>
+
         <Route exact path="/companies">
           <CompaniesPage />
         </Route>
@@ -152,7 +164,6 @@ function MainPage() {
         </Route>
 
         <Route exact path="/profile">
-          {/* <UserProfile /> */}
           <UserProfilePage />
         </Route>
 
@@ -175,11 +186,9 @@ function MainPage() {
         <Route exact path="/admin/statistics/option">
           <StatisticsPage />
         </Route>
-
-        {/* <Route path="/admin/items">
-          <CompanyItemsPage />
-        </Route> */}
       </div>
+
+      <Footer />
 
       {toTopVisible && (
         <FaArrowAltCircleUp

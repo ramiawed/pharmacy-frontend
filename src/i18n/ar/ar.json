@@ -82,6 +82,7 @@
     "nav-advertise": "الإعلانات",
     "nav-offers": "العروض",
     "nav-statistics": "الأحصائيات",
+    "nav-settings": "الإعدادات",
     "search": "بحث",
     "search-by-name": "بحث من خلال اسم الشريك",
     "search-by-city": "بحث من خلال المدينة",
@@ -296,5 +297,15 @@
     "name": "الاسم",
     "email": "البريد الاكتروني",
     "phone": "الهاتف",
-    "app-description": "الموقع الأفضل لطلب الدواء من المستودع بدون وسيط"
+    "app-description": "الموقع الأفضل لطلب الدواء من المستودع بدون وسيط",
+    "most-visited-company": "الشركات المفضلة",
+    "most-favorites-items": "الادوية الأكثر طلبا",
+    "favorites-companies": "الشركات المفضلة",
+    "newest-companies": "الشركات الجديدة",
+    "favorites-items": "الأدوية المفضلة",
+    "newest-items": "الأدوية الجديدة",
+    "most-order-items": "الأدوية الأكثر طلبا",
+    "choose-company": "اختر شركة",
+    "search-for-company": "ابحث عن شركة",
+    "search-empty": "لا يوجد نتائج"
 }

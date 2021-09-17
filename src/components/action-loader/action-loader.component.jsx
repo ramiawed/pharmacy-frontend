@@ -19,8 +19,11 @@ import { useTranslation } from "react-i18next";
 
 // components
 import Button from "../button/button.component";
+
 // style
-import "./action-loader.style.scss";
+import styles from "./action-loader.module.scss";
+
+// constants
 import { Colors } from "../../utils/constants";
 
 function Loader({ onclick, allowCancel }) {
@@ -39,7 +42,7 @@ function Loader({ onclick, allowCancel }) {
 
   return (
     <>
-      <div className="full-size">
+      <div className={styles.full_size}>
         <ReactLoading color="#fff" type="bars" height={75} width={75} />
         {allowCancel && showButton && (
           <Button

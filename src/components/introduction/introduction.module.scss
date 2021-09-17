@@ -2,7 +2,9 @@
 
 .container {
   display: flex;
+  align-items: center;
   width: 100%;
+  height: calc(100vh - 60px);
   margin-bottom: 10px;
 }
 
@@ -15,21 +17,27 @@
 }
 
 .content h1 {
-  color: $secondary-color;
-  font-size: 3rem;
+  color: rgb(59, 191, 107);
+  text-shadow: 2px 2px 8px rgba($color: #000, $alpha: 0.5);
+  font-size: 5rem;
   padding: 12px;
 }
 
 .content p {
-  color: rgba($color: $secondary-color, $alpha: 0.5);
+  color: rgb(78, 148, 195);
+  text-shadow: 1px 1px 4px rgba($color: #000000, $alpha: 0.3);
   font-size: 1rem;
 }
 
 .image {
   flex: 1;
-  background-image: url("http://localhost:8000/pharmacy05.png");
+  background-image: url("http://localhost:8000/pharmacy03.png");
   background-position: center;
   background-repeat: no-repeat;
   height: 400px;
   background-size: contain;
+
+  // border: 1px solid black;
+  border-radius: 50%;
+  box-shadow: -3px 3px 3px rgba($color: $secondary-color, $alpha: 0.5);
 }

@@ -6,8 +6,8 @@ function HomePage() {
   return (
     <div>
       <Introduction />
-      <Offers />
-      <Offers />
+      <Offers title="most-visited-company" />
+      <Offers title="most-favorites-items" />
     </div>
   );
 }

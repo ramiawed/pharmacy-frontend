@@ -1,0 +1,29 @@
+@import "../../variables.scss";
+
+.search_container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+  border-bottom: 1px solid $secondary-color;
+  padding-bottom: 10px;
+}
+
+.search_input {
+  flex: 1;
+  padding: 6px 12px;
+  margin: 0 6px;
+  border: none;
+  outline: none;
+}
+
+.company_row {
+  display: flex;
+  padding: 5px 10px;
+  justify-content: space-between;
+  align-items: center;
+  color: $secondary-color;
+  border-bottom: 1px solid rgba($color: $secondary-color, $alpha: 0.3);
+}

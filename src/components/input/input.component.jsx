@@ -21,8 +21,6 @@ function Input({
   const { t } = useTranslation();
 
   const keyDownHandler = (event) => {
-    console.log(event);
-
     if (event.code === "Enter") {
       if (onEnterPress) {
         onEnterPress();

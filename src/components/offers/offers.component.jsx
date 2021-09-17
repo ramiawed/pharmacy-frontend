@@ -6,8 +6,11 @@ import styles from "./offers.module.scss";
 
 import { Colors } from "../../utils/constants";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import { useTranslation } from "react-i18next";
 
-function Offers() {
+function Offers({ title }) {
+  const { t } = useTranslation();
+
   const settings = {
     dots: true,
     infinite: true,
@@ -22,12 +25,13 @@ function Offers() {
 
   return (
     <div className={styles.container}>
-      <h2> Multiple items </h2>
+      <h2>{t(title)}</h2>
       <Slider {...settings}>
         <div>
           <h1
             style={{
-              background: "red",
+              background: Colors.SECONDARY_COLOR,
+              color: "#fff",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -41,7 +45,8 @@ function Offers() {
         <div>
           <h1
             style={{
-              background: "red",
+              background: Colors.SECONDARY_COLOR,
+              color: "#fff",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -55,7 +60,8 @@ function Offers() {
         <div>
           <h1
             style={{
-              background: "red",
+              background: Colors.SECONDARY_COLOR,
+              color: "#fff",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",
@@ -69,7 +75,8 @@ function Offers() {
         <div>
           <h1
             style={{
-              background: "red",
+              background: Colors.SECONDARY_COLOR,
+              color: "#fff",
               display: "flex",
               alignItems: "center",
               justifyContent: "center",

@@ -42,6 +42,7 @@ export const SideNavLinks = {
   ADVERTISEMENTS: "advertisements",
   OFFERS: "offers",
   PROFILE: "profile",
+  SETTINGS: "settings",
   STATISTICS: "statistics",
 };
 

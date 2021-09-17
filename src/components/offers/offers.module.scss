@@ -1,5 +1,13 @@
 @import "../../variables.scss";
 
 .container {
+  margin-top: 15px;
   margin-bottom: 15px;
+}
+
+.container h2 {
+  color: $secondary-color;
+  font-weight: 200;
+  font-size: 1.1rem;
+  margin-inline-start: 10px;
 }

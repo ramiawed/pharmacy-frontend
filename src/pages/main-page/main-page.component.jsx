@@ -37,6 +37,7 @@ import styles from "./main-page.module.scss";
 // constants
 import { TopNavLinks } from "../../utils/constants";
 import HomePage from "../home-page/home-page.component";
+import SettingsPage from "../settings-page/settings-page.component";
 
 // MainPage
 // you have to sign in first
@@ -177,6 +178,10 @@ function MainPage() {
 
         <Route exact path="/admin/partners">
           <AdminUsersPage />
+        </Route>
+
+        <Route exact path="/admin/settings">
+          <SettingsPage />
         </Route>
 
         <Route exact path="/admin/statistics">

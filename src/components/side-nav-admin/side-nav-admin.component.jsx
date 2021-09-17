@@ -77,6 +77,18 @@ function SideNavAdmin({ selectedOption, onSelectedChange }) {
       <Link
         className={[
           styles.link,
+          selectedOption === SideNavLinks.SETTINGS ? `${styles.selected}` : "",
+        ].join(" ")}
+        onClick={() => {
+          onSelectedChange(SideNavLinks.SETTINGS);
+        }}
+        to="/admin/settings"
+      >
+        {t("nav-settings")}
+      </Link>
+      <Link
+        className={[
+          styles.link,
           selectedOption === SideNavLinks.STATISTICS
             ? `${styles.selected}`
             : "",

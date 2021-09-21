@@ -11,6 +11,10 @@
   transition: all 1s;
 }
 
+.full_width {
+  width: 90% !important;
+}
+
 @media only screen and (min-width: $small) {
   .partner_container {
     width: 31%;

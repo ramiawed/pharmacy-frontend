@@ -7,7 +7,6 @@ function HomePage() {
     <div>
       <Introduction />
       <Offers title="most-visited-company" />
-      <Offers title="most-favorites-items" />
     </div>
   );
 }

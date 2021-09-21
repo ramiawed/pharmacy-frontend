@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 // components
-import Toast from "../toast/toast.component";
 import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
 
 // react icons

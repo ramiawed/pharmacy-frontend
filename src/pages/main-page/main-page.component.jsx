@@ -38,6 +38,7 @@ import styles from "./main-page.module.scss";
 import { TopNavLinks } from "../../utils/constants";
 import HomePage from "../home-page/home-page.component";
 import SettingsPage from "../settings-page/settings-page.component";
+import { getFavoritesCompanies } from "../../redux/advertisements/favoritesCompaniesSlice";
 
 // MainPage
 // you have to sign in first
@@ -68,6 +69,7 @@ function MainPage() {
     if (user) {
       dispatch(resetStatus());
       dispatch(getFavorites({ token }));
+      dispatch(getFavoritesCompanies({ token }));
     }
 
     // show toTop button after scroll more than 500

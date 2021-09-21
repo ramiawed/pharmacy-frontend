@@ -123,7 +123,7 @@ function SignIn() {
 
   // check if the username and password fields are not empty
   // if true, dispatch signin from userSlice
-  const signinHandler = () => {
+  const signInHandler = () => {
     // check if the username and password is not empty
     if (userInfo.username.length === 0 && userInfo.password.length === 0) {
       setPreSignError({
@@ -168,7 +168,7 @@ function SignIn() {
 
   // handle enter press on input
   const pressEnterHandler = () => {
-    signinHandler();
+    signInHandler();
   };
 
   return user ? (
@@ -232,7 +232,7 @@ function SignIn() {
 
         <Button
           text={t("signin")}
-          action={signinHandler}
+          action={signInHandler}
           bgColor={Colors.FAILED_COLOR}
         />
       </div>

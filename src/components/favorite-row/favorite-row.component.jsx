@@ -12,18 +12,19 @@ import {
   removeFavorite,
 } from "../../redux/favorites/favoritesSlice";
 import { selectToken } from "../../redux/auth/authSlice";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
 
 // styles
 import generalStyles from "../../style.module.scss";
 import rowStyles from "../row.module.scss";
 
 // constants and utils
-import { checkConnection } from "../../utils/checkInternet";
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
-import {
-  changeOnlineMsg,
-  selectOnlineStatus,
-} from "../../redux/online/onlineSlice";
+import { VscLoading } from "react-icons/vsc";
+import Icon from "../action-icon/action-icon.component";
 
 function FavoriteRow({ user, withoutBoxShadow }) {
   const { t } = useTranslation();
@@ -34,7 +35,8 @@ function FavoriteRow({ user, withoutBoxShadow }) {
   const token = useSelector(selectToken);
   const isOnline = useSelector(selectOnlineStatus);
 
-  const [connectionError, setConnectionError] = useState("");
+  // own state
+  const [loading, setLoading] = useState(false);
 
   // method to handle remove company from user's favorite
   const removeCompanyFromFavorite = () => {
@@ -43,6 +45,8 @@ function FavoriteRow({ user, withoutBoxShadow }) {
       dispatch(changeOnlineMsg());
       return;
     }
+
+    setLoading(true);
 
     dispatch(removeFavorite({ obj: { favoriteId: user._id }, token }));
   };
@@ -83,16 +87,22 @@ function FavoriteRow({ user, withoutBoxShadow }) {
         {/* <p className={rowStyles.company_name}>{user.name}</p> */}
         <div className={rowStyles.padding_end}>
           {favorites.map((favorite) => favorite._id).includes(user._id) ? (
-            <div
-              className={[generalStyles.icon, generalStyles.fc_yellow].join(
-                " "
-              )}
-            >
-              <AiFillStar size={20} onClick={removeCompanyFromFavorite} />
-              <div className={generalStyles.tooltip}>
-                {t("remove-from-favorite-tooltip")}
-              </div>
-            </div>
+            loading ? (
+              <Icon
+                icon={() => (
+                  <VscLoading className={generalStyles.loading} size={24} />
+                )}
+                onclick={() => {}}
+                foreColor={Colors.YELLOW_COLOR}
+              />
+            ) : (
+              <Icon
+                icon={() => <AiFillStar size={20} />}
+                onclick={removeCompanyFromFavorite}
+                tooltip={t("remove-from-favorite-tooltip")}
+                foreColor={Colors.YELLOW_COLOR}
+              />
+            )
           ) : null}
         </div>
       </div>

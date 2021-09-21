@@ -2,91 +2,42 @@ import React from "react";
 
 import Slider from "react-slick";
 
+import { useSelector } from "react-redux";
+
 import styles from "./offers.module.scss";
 
 import { Colors } from "../../utils/constants";
 import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import { useTranslation } from "react-i18next";
+import { selectFavoritesCompanies } from "../../redux/advertisements/favoritesCompaniesSlice";
+import CompanyFavoriteCard from "../company-favorite-card/company-favorite-card.component";
 
 function Offers({ title }) {
   const { t } = useTranslation();
+  const { favoritesCompanies } = useSelector(selectFavoritesCompanies);
 
   const settings = {
     dots: true,
     infinite: true,
     slidesToShow: 3,
-    slidesToScroll: 1,
+    slidesToScroll: 3,
     autoplay: true,
     autoplaySpeed: 2000,
     rtl: true,
     nextArrow: <SampleNextArrow />,
     prevArrow: <SamplePrevArrow />,
+    centerMode: true,
   };
 
   return (
     <div className={styles.container}>
       <h2>{t(title)}</h2>
       <Slider {...settings}>
-        <div>
-          <h1
-            style={{
-              background: Colors.SECONDARY_COLOR,
-              color: "#fff",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-
-              margin: "10px",
-            }}
-          >
-            1
-          </h1>
-        </div>
-        <div>
-          <h1
-            style={{
-              background: Colors.SECONDARY_COLOR,
-              color: "#fff",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-
-              margin: "10px",
-            }}
-          >
-            2
-          </h1>
-        </div>
-        <div>
-          <h1
-            style={{
-              background: Colors.SECONDARY_COLOR,
-              color: "#fff",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-
-              margin: "10px",
-            }}
-          >
-            3
-          </h1>
-        </div>
-        <div>
-          <h1
-            style={{
-              background: Colors.SECONDARY_COLOR,
-              color: "#fff",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-
-              margin: "10px",
-            }}
-          >
-            4
-          </h1>
-        </div>
+        {favoritesCompanies?.map((company) => (
+          <div key={company._id}>
+            <CompanyFavoriteCard user={company} fullWidth={true} />
+          </div>
+        ))}
       </Slider>
     </div>
   );

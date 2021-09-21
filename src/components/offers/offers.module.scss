@@ -6,8 +6,18 @@
 }
 
 .container h2 {
-  color: $secondary-color;
-  font-weight: 200;
-  font-size: 1.1rem;
-  margin-inline-start: 10px;
+  border-inline-start: 10px solid rgb(59, 191, 107);
+  color: rgb(59, 191, 107);
+
+  font-weight: 600;
+  font-size: 1.2rem;
+
+  padding-inline-start: 20px;
+  width: 30%;
+
+  transition: all 0.3s ease;
+}
+
+.container h2:hover {
+  border-inline-start: 100px solid rgb(59, 191, 107);
 }

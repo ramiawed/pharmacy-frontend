@@ -21,6 +21,7 @@ import { RiWifiOffLine } from "react-icons/ri";
 
 // styles
 import generalStyles from "./style.module.scss";
+import "./slicker.scss";
 
 function App() {
   const { i18n, t } = useTranslation();

@@ -1,11 +1,10 @@
-import React, { useState } from "react";
-import { useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useLocation } from "react-router-dom";
-import { useHistory } from "react-router-dom";
+import { useHistory, Redirect, useLocation } from "react-router-dom";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
+import { unwrapResult } from "@reduxjs/toolkit";
 import {
   getStatistics,
   resetStatistics,
@@ -16,6 +15,7 @@ import {
   setSearchDate,
   setSearchName,
 } from "../../redux/statistics/statisticsSlice";
+import { selectUser } from "../../redux/auth/authSlice.js";
 
 // icons
 import { IoMdArrowRoundBack, IoMdMore } from "react-icons/io";
@@ -40,24 +40,23 @@ import rowStyles from "../../components/row.module.scss";
 import generalStyles from "../../style.module.scss";
 
 // constants and utils
-import { Colors, DateOptions } from "../../utils/constants";
-import { unwrapResult } from "@reduxjs/toolkit";
+import { Colors, DateOptions, UserTypeConstants } from "../../utils/constants";
 
 function StatisticsPage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const { field, type, title } = location.state;
+  const { field, type, title } = location.state
+    ? location.state
+    : { field: null, type: null, title: null };
 
   // selectors
   const { statistics, count, pageState, error, status } =
     useSelector(selectStatistics);
+  const user = useSelector(selectUser);
 
   // own state
-  // const [page, setPage] = useState(
-  //   statistics.length === 0 ? 1 : Math.ceil(statistics.length / 1) + 1
-  // );
   const [showMoreInfo, setShowMoreInfo] = useState(false);
   const [selectedStatistics, setSelectedStatistics] = useState(null);
 
@@ -78,7 +77,7 @@ function StatisticsPage() {
   };
 
   // handle search
-  const handleSearch = (p, reset) => {
+  const handleSearch = (p) => {
     let obj = {
       field,
       type,
@@ -190,7 +189,7 @@ function StatisticsPage() {
     dispatch(getStatistics({ obj }))
       .then(unwrapResult)
       .then(() => {
-        dispatch(setPage(pageState.page + 1));
+        dispatch(setPage(p + 1));
       });
   };
 
@@ -208,7 +207,11 @@ function StatisticsPage() {
     if (statistics.length === 0) handleSearch(1);
   }, []);
 
-  return (
+  return user &&
+    user.type === UserTypeConstants.ADMIN &&
+    title &&
+    type &&
+    field ? (
     <>
       <Header>
         <h2>{title}</h2>
@@ -391,6 +394,8 @@ function StatisticsPage() {
         </Modal>
       )}
     </>
+  ) : (
+    <Redirect to="/signin" />
   );
 }
 

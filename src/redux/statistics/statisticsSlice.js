@@ -20,7 +20,10 @@ const initialState = {
 
 export const getStatistics = createAsyncThunk(
   "statistics/getStatistics",
-  async ({ obj }, { rejectWithValue }) => {
+  async ({ obj }, { rejectWithValue, getState }) => {
+    const {
+      statistics: { pageState },
+    } = getState();
     try {
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
@@ -29,9 +32,9 @@ export const getStatistics = createAsyncThunk(
       let queryString = "";
 
       if (obj.type === "users") {
-        queryString = `${BASEURL}/statistics/users?page=${obj.page}&limit=${obj.limit}&field=${obj.field}`;
+        queryString = `${BASEURL}/statistics/users?page=${pageState.page}&limit=${obj.limit}&field=${obj.field}`;
       } else {
-        queryString = `${BASEURL}/statistics/items?page=${obj.page}&limit=${obj.limit}&field=${obj.field}`;
+        queryString = `${BASEURL}/statistics/items?page=${pageState.page}&limit=${obj.limit}&field=${obj.field}`;
       }
 
       if (obj.name) {

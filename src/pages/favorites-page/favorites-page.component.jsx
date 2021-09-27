@@ -5,17 +5,16 @@
 // 1- favorites
 // 2- favorites_items
 
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect, useHistory } from "react-router-dom";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectFavoritesPartners,
-  selectFavoritesItems,
   resetFavorites,
   getFavorites,
+  selectFavorites,
 } from "../../redux/favorites/favoritesSlice";
 import { selectToken, selectUser } from "../../redux/auth/authSlice";
 
@@ -24,6 +23,7 @@ import CardInfo from "../../components/card-info/card-info.component";
 import Header from "../../components/header/header.component";
 import FavoriteRow from "../../components/favorite-row/favorite-row.component";
 import FavoriteItemRow from "../../components/favorite-item-row/favorite-item-row.component";
+import ActionLoader from "../../components/action-loader/action-loader.component";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -44,13 +44,22 @@ function FavoritesPage() {
   const token = useSelector(selectToken);
 
   // get the favorites partners and favorites items from favoritesSlice
-  const favoritesPartners = useSelector(selectFavoritesPartners);
-  const favoritesItems = useSelector(selectFavoritesItems);
+  // const favoritesPartners = useSelector(selectFavoritesPartners);
+  // const favoritesItems = useSelector(selectFavoritesItems);
+  const {
+    favorites_partners: favoritesPartners,
+    favorites_items: favoritesItems,
+    status,
+  } = useSelector(selectFavorites);
 
   const refreshFavoritesHandler = () => {
     dispatch(resetFavorites());
     dispatch(getFavorites({ token }));
   };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return user ? (
     <>
@@ -120,6 +129,8 @@ function FavoritesPage() {
             />
           ))}
       </CardInfo>
+
+      {status === "loading" && <ActionLoader allowCancel={false} />}
     </>
   ) : (
     <Redirect to="/signin" />

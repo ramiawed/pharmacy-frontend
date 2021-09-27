@@ -5,7 +5,7 @@ import styles from "./statistics-card.module.scss";
 import generalStyles from "../../style.module.scss";
 import rowStyles from "../row.module.scss";
 import { useDispatch } from "react-redux";
-import { resetStatistics } from "../../redux/statistics/statisticsSlice";
+import { statisticsSliceSignOut } from "../../redux/statistics/statisticsSlice";
 
 function StatisticsCard({ title, field, type }) {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ function StatisticsCard({ title, field, type }) {
     <div className={styles.card}>
       <Link
         onClick={() => {
-          dispatch(resetStatistics());
+          dispatch(statisticsSliceSignOut());
         }}
         className={[
           generalStyles.fc_white,

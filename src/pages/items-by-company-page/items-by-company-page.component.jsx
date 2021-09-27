@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Redirect } from "react-router";
+import { Redirect, useHistory } from "react-router";
 import { useParams } from "react-router";
 import axios from "axios";
 
@@ -38,9 +38,11 @@ import searchContainerStyles from "../../components/search-container/search-cont
 
 // constants
 import { Colors, UserTypeConstants, BASEURL } from "../../utils/constants";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 function ItemsByCompanyPage() {
   const { companyId } = useParams();
+  const history = useHistory();
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -240,6 +242,16 @@ function ItemsByCompanyPage() {
             }
             tooltip={t("show-item-as-row-tooltip")}
             onclick={() => setDisplayType("list")}
+          />
+
+          <Icon
+            selected={false}
+            foreColor={Colors.SECONDARY_COLOR}
+            tooltip={t("go-back")}
+            onclick={() => {
+              history.goBack();
+            }}
+            icon={() => <IoMdArrowRoundBack size={20} />}
           />
         </div>
       </Header>

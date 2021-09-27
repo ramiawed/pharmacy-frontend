@@ -298,7 +298,7 @@
     "email": "البريد الاكتروني",
     "phone": "الهاتف",
     "app-description": "الموقع الأفضل لطلب الدواء من المستودع بدون وسيط",
-    "most-visited-company": "الشركات المفضلة",
+    "most-visited-company": "الشركات الاكثر اختياراً",
     "most-favorites-items": "الادوية الأكثر طلبا",
     "favorites-companies": "الشركات المفضلة",
     "newest-companies": "الشركات الجديدة",
@@ -308,5 +308,12 @@
     "choose-company": "اختر شركة",
     "search-for-company": "ابحث عن شركة",
     "search-empty": "لا يوجد نتائج",
-    "remove-company-from-favorites-advertisement": "حذف الشركة من الشركات المفضلة"
+    "remove-company-from-favorites-advertisement": "حذف الشركة من الشركات المفضلة",
+    "loading-data": "تحميل البيانات",
+    "company-added-to-favorite": "تم إضافة الشركة إلي المفضلة",
+    "company-removed-to-favorite": "تم أزالة الشركة من المفضلة",
+    "company-added-to-newest": "تم إضافة الشركة إلي الشركات الجديدة",
+    "company-removed-to-newest": "تم أزالة الشركة من الشركات الجديدة",
+    "show-favorites-companies-in-home-page": "إظهار الشركات المفضلة ضمن الصفحة الرئيسية",
+    "show-newest-companies-in-home-page": "إظهار الشركات الجديدة ضمن الصفحة الرئيسية"
 }

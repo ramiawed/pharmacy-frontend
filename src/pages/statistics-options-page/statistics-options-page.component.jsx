@@ -1,14 +1,22 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { Redirect } from "react-router-dom";
+
+// components
 import StatisticsCard from "../../components/statistics-card/statistics-card.component";
+// redux stuff
+import { selectUser } from "../../redux/auth/authSlice";
+import { useSelector } from "react-redux";
 
 // styles
 import generalStyles from "../../style.module.scss";
+import { UserTypeConstants } from "../../utils/constants";
 
 function StatisticsOptionsPage() {
   const { t } = useTranslation();
+  const user = useSelector(selectUser);
 
-  return (
+  return user && user.type === UserTypeConstants.ADMIN ? (
     <div className={[generalStyles.flex_container].join(" ")}>
       <StatisticsCard
         title={t("statistics-sign-in")}
@@ -46,6 +54,8 @@ function StatisticsOptionsPage() {
         type="items"
       />
     </div>
+  ) : (
+    <Redirect to="/signin" />
   );
 }
 

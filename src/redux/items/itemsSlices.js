@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASEURL } from "../../utils/constants";
-import { cacheAdapterEnhancer } from "axios-extensions";
 
 let CancelToken;
 let source;

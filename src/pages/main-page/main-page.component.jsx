@@ -39,6 +39,8 @@ import { TopNavLinks } from "../../utils/constants";
 import HomePage from "../home-page/home-page.component";
 import SettingsPage from "../settings-page/settings-page.component";
 import { getFavoritesCompanies } from "../../redux/advertisements/favoritesCompaniesSlice";
+import Background from "../../components/background/background.component";
+import { getNewestCompanies } from "../../redux/advertisements/newestCompaniesSlice";
 
 // MainPage
 // you have to sign in first
@@ -70,6 +72,7 @@ function MainPage() {
       dispatch(resetStatus());
       dispatch(getFavorites({ token }));
       dispatch(getFavoritesCompanies({ token }));
+      dispatch(getNewestCompanies({ token }));
     }
 
     // show toTop button after scroll more than 500
@@ -132,6 +135,8 @@ function MainPage() {
           setCollapsedSideNavOption(true);
         }}
       />
+
+      {/* <Background /> */}
 
       <div className={styles.content_area}>
         <Route exact path="/">

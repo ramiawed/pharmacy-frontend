@@ -14,6 +14,8 @@ import cartSlice from "./redux/cart/cartSlice";
 import statisticsSlice from "./redux/statistics/statisticsSlice";
 import onlineSlice from "./redux/online/onlineSlice";
 import favoritesCompaniesSlice from "./redux/advertisements/favoritesCompaniesSlice";
+import newestCompaniesSlice from "./redux/advertisements/newestCompaniesSlice";
+import settingsSlice from "./redux/settings/settingsSlice";
 
 const reducers = combineReducers({
   auth: authSlice,
@@ -28,12 +30,14 @@ const reducers = combineReducers({
   statistics: statisticsSlice,
   online: onlineSlice,
   favoritesCompanies: favoritesCompaniesSlice,
+  newestCompanies: newestCompaniesSlice,
+  settings: settingsSlice,
 });
 
 const persistConfig = {
   key: "root",
   storage,
-  whitelist: ["auth", "cart"],
+  whitelist: ["auth", "cart", "settings"],
   blacklist: [],
 };
 

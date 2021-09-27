@@ -1,6 +1,7 @@
 // libraries
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
+import { Redirect } from "react-router-dom";
 
 // components
 import Header from "../../components/header/header.component";
@@ -60,7 +61,7 @@ function UserProfilePage() {
     window.scrollTo(0, 0);
   }, []);
 
-  return (
+  return user ? (
     <div className={styles.content}>
       <Header>
         <h2>{t("nav-profile")}</h2>
@@ -265,6 +266,8 @@ function UserProfilePage() {
 
       <UserProfileNotifications />
     </div>
+  ) : (
+    <Redirect to="signing" />
   );
 }
 

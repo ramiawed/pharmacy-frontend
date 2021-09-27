@@ -60,7 +60,7 @@ function CartPage() {
       )}
     </>
   ) : (
-    <Redirect to="/" />
+    <Redirect to="/signin" />
   );
 }
 

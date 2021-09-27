@@ -33,6 +33,7 @@ import {
 import Button from "../button/button.component";
 import { Colors } from "../../utils/constants";
 import Loader from "../action-loader/action-loader.component";
+import { getAllSettings } from "../../redux/settings/settingsSlice";
 
 // constants use for motion
 const containerVariant = {
@@ -162,7 +163,10 @@ function SignIn() {
     // dispatch sign
     dispatch(authSign(userInfo))
       .then(unwrapResult)
-      .then((result) => dispatch(statisticsSignin({ token: result.token })))
+      .then((result) => {
+        dispatch(statisticsSignin({ token: result.token }));
+        dispatch(getAllSettings({ token: result.token }));
+      })
       .catch((err) => {});
   };
 

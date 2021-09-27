@@ -1,72 +1,71 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
+import Slider from "react-slick";
 
 // components
-import ChooseCompanyModal from "../choose-company-modal/choose-company-modal.component";
-import CardInfo from "../card-info/card-info.component";
-import Button from "../button/button.component";
+import CompanyFavoriteCard from "../company-favorite-card/company-favorite-card.component";
 
 // redux stuff
-import { useSelector, useDispatch } from "react-redux";
-
-import { selectToken } from "../../redux/auth/authSlice.js";
+import { useSelector } from "react-redux";
+import { selectFavoritesCompanies } from "../../redux/advertisements/favoritesCompaniesSlice";
 
 // styles
-import generalStyles from "../../style.module.scss";
-
-// constants
-import { BASEURL, Colors } from "../../utils/constants";
-import {
-  removeFromFavoritesCompanies,
-  selectFavoritesCompanies,
-} from "../../redux/advertisements/favoritesCompaniesSlice";
-import AdvertisementFavoriteRow from "../advertisement-favorite-row/advertisement-favorite-row.component";
+import styles from "./favorites-companies.module.scss";
 
 function FavoritesCompanies() {
   const { t } = useTranslation();
-  const token = useSelector(selectToken);
-  const dispatch = useDispatch();
   const { favoritesCompanies } = useSelector(selectFavoritesCompanies);
 
-  const [showChooseModal, setShowChooseModal] = useState(false);
-
-  const dispatchFavoriteCompanyStatus = (id) => {
-    dispatch(removeFromFavoritesCompanies({ userId: id, token }));
+  const settings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 4,
+    slidesToScroll: 1,
+    initialSlide: 0,
+    autoplay: true,
+    centerMode: true,
+    autoplaySpeed: 2000,
+    cssEase: "linear",
+    responsive: [
+      {
+        breakpoint: 1024,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          infinite: true,
+          dots: true,
+        },
+      },
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+          initialSlide: 2,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   return (
-    <>
-      <CardInfo headerTitle={t("favorites-companies")}>
-        <div>
-          {favoritesCompanies.map((company) => (
-            <AdvertisementFavoriteRow
-              data={company}
-              key={company._id}
-              tooltip="remove-company-from-favorites-advertisement"
-              action={dispatchFavoriteCompanyStatus}
-            />
-          ))}
-
-          <div className={generalStyles.padding_v_6}>
-            <Button
-              text="add-label"
-              action={() => {
-                setShowChooseModal(true);
-              }}
-              bgColor={Colors.SUCCEEDED_COLOR}
-            />
+    <div className={styles.container}>
+      <h2>{t("most-visited-company")}</h2>
+      <Slider {...settings}>
+        {favoritesCompanies?.map((company) => (
+          <div key={company._id}>
+            <CompanyFavoriteCard user={company} fullWidth={true} />
           </div>
-        </div>
-      </CardInfo>
-
-      {showChooseModal && (
-        <ChooseCompanyModal
-          close={() => setShowChooseModal(false)}
-          chooseAction={dispatchFavoriteCompanyStatus}
-          url={`${BASEURL}/users?limit=40&page=1&isActive=true&type=company&isFavorite=false`}
-        />
-      )}
-    </>
+        ))}
+      </Slider>
+    </div>
   );
 }
 

@@ -8,7 +8,7 @@ const initialState = {
   favoritesCompaniesError: "",
   addFavoritesCompaniesStatus: "",
   addFavoritesCompaniesError: "",
-  removeFavoritesCompaniesStatus: "",
+  removeFavoritesCompaniesStatus: "idle",
   removeFavoritesCompaniesError: "",
   favoritesCompanies: [],
   count: 0,
@@ -55,13 +55,13 @@ export const getFavoritesCompanies = createAsyncThunk(
 
 export const addToFavoritesCompanies = createAsyncThunk(
   "advertisement/addToFavoritesCompanies",
-  async ({ token, userId }, { rejectWithValue }) => {
+  async ({ token, id }, { rejectWithValue }) => {
     try {
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
       const response = await axios.post(
-        `${BASEURL}/users/isFavorite/${userId}`,
+        `${BASEURL}/users/isFavorite/${id}`,
         {
           option: true,
         },
@@ -93,14 +93,14 @@ export const addToFavoritesCompanies = createAsyncThunk(
 );
 
 export const removeFromFavoritesCompanies = createAsyncThunk(
-  "advertisement/addToFavoritesCompanies",
-  async ({ token, userId }, { rejectWithValue }) => {
+  "advertisement/removeFromFavoritesCompanies",
+  async ({ token, id }, { rejectWithValue }) => {
     try {
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
       const response = await axios.post(
-        `${BASEURL}/users/isFavorite/${userId}`,
+        `${BASEURL}/users/isFavorite/${id}`,
         {
           option: false,
         },

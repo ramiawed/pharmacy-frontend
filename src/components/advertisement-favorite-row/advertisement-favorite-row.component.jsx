@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { MdDelete } from "react-icons/md";
 import { VscLoading } from "react-icons/vsc";
@@ -9,11 +9,38 @@ import Icon from "../action-icon/action-icon.component";
 
 import generalStyles from "../../style.module.scss";
 import rowStyles from "../row.module.scss";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
 
 function AdvertisementFavoriteRow({ data, tooltip, action }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+  const isOnline = useSelector(selectOnlineStatus);
+  let timer = useRef();
 
   const [loading, setLoading] = useState(false);
+
+  const removeFromFavorites = () => {
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
+    setLoading(true);
+    timer = setTimeout(() => {
+      setLoading(false);
+    }, 15000);
+    action(data._id);
+  };
+
+  useEffect(() => {
+    return () => {
+      clearTimeout(timer);
+    };
+  }, []);
 
   return (
     <>
@@ -36,10 +63,7 @@ function AdvertisementFavoriteRow({ data, tooltip, action }) {
             <Icon
               icon={() => <MdDelete size={24} />}
               foreColor={Colors.FAILED_COLOR}
-              onclick={() => {
-                setLoading(true);
-                action(data._id);
-              }}
+              onclick={removeFromFavorites}
               tooltip={t(tooltip)}
             />
           )}

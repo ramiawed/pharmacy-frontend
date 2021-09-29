@@ -1,0 +1,37 @@
+@import "../../variables.scss";
+
+.container {
+  width: 100vw;
+  height: calc(100vh - 60px);
+
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.header {
+  width: 20vw;
+  margin: 30px 0;
+  text-align: center;
+  color: #fff;
+
+  border-radius: 15px;
+
+  align-self: stretch;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.header h2 {
+  text-shadow: 2px 2px 5px rgba($color: #000, $alpha: 0.5);
+  font-weight: 600;
+  font-size: 2rem;
+
+  padding: 50px 0;
+}
+
+.slicker {
+  width: 60vw;
+}

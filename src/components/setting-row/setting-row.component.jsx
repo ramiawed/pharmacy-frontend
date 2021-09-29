@@ -15,7 +15,7 @@ import {
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
 
-function AdvertisementFavoriteRow({ data, tooltip, action }) {
+function SettingRow({ data, tooltip, action, type }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const isOnline = useSelector(selectOnlineStatus);
@@ -49,7 +49,18 @@ function AdvertisementFavoriteRow({ data, tooltip, action }) {
           " "
         )}
       >
-        <label className={rowStyles.padding_start}>{data.name}</label>
+        <label
+          style={{ flex: 3, textAlign: "start" }}
+          className={rowStyles.padding_start}
+        >
+          {data.name}
+        </label>
+        {type === "item" && (
+          <>
+            <label style={{ flex: 1 }}>{data.caliber}</label>
+            <label style={{ flex: 1 }}>{data.packing}</label>
+          </>
+        )}
         <div className={rowStyles.padding_end}>
           {loading ? (
             <Icon
@@ -73,4 +84,4 @@ function AdvertisementFavoriteRow({ data, tooltip, action }) {
   );
 }
 
-export default AdvertisementFavoriteRow;
+export default SettingRow;

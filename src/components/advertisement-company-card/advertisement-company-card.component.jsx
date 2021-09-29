@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
 // components
@@ -28,12 +27,12 @@ import {
 
 // styles
 import generalStyles from "../../style.module.scss";
-import styles from "./newest-company-card.module.scss";
+import styles from "./advertisement-company-card.module.scss";
 
 // constants and utils
 import { UserTypeConstants } from "../../utils/constants.js";
 
-function NewestCompanyCard({ user }) {
+function AdvertisementCompanyCard({ user, contentColor }) {
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -105,12 +104,8 @@ function NewestCompanyCard({ user }) {
   };
 
   return (
-    <div className={[styles.partner_container].join(" ")}>
-      <h3 className={styles.partner_name} onClick={displayMedicinesHandler}>
-        {user.name}
-      </h3>
-
-      <div className={styles.actions_div}>
+    <div className={styles.partner_container} onClick={displayMedicinesHandler}>
+      <div>
         {changeFavoriteLoading ? (
           <div
             className={[generalStyles.icon, generalStyles.fc_yellow].join(" ")}
@@ -131,23 +126,28 @@ function NewestCompanyCard({ user }) {
         )}
       </div>
 
-      {user.logo_url?.length > 0 ? (
-        <p
-          style={{
-            backgroundImage: `url("http://localhost:8000/${user.logo_url}")`,
-          }}
-          className={styles.partner_logo}
-        ></p>
-      ) : (
-        <p
-          style={{
-            backgroundImage: 'url("http://localhost:8000/default-logo.png")',
-          }}
-          className={styles.partner_logo}
-        ></p>
-      )}
+      <div
+        className={styles.logo_div}
+        style={{
+          backgroundImage:
+            user.logo_url.length > 0
+              ? `url("http://localhost:8000/${user.logo_url}`
+              : `url("http://localhost:8000/default-logo.png`,
+          backgroundPosition: "center",
+          backgroundSize: "cover",
+        }}
+      ></div>
+
+      <h3
+        className={styles.content}
+        style={{
+          color: contentColor,
+        }}
+      >
+        {user.name}
+      </h3>
     </div>
   );
 }
 
-export default NewestCompanyCard;
+export default AdvertisementCompanyCard;

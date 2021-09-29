@@ -15,7 +15,7 @@ import {
 import Modal from "../modal/modal.component";
 import Button from "../button/button.component";
 import Icon from "../action-icon/action-icon.component";
-import NoContent from "../../components/no-content/no-content.component";
+import NoContent from "../no-content/no-content.component";
 import Loader from "../loader/loader.component";
 
 // icons
@@ -24,18 +24,17 @@ import { GrAddCircle } from "react-icons/gr";
 import { VscLoading } from "react-icons/vsc";
 
 // styles
-import styles from "./choose-company-modal.module.scss";
+import styles from "./choose-item-modal.module.scss";
 import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
 
-function ChooseCompanyModal({ close, chooseAction, url }) {
+function ChooseItemModal({ close, chooseAction, url }) {
   const { t } = useTranslation();
   const token = useSelector(selectToken);
   const dispatch = useDispatch();
 
-  // own state
   const [searchName, setSearchName] = useState("");
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -44,19 +43,19 @@ function ChooseCompanyModal({ close, chooseAction, url }) {
 
   const keyDownHandler = (event) => {
     if (event.code === "Enter") {
-      getCompanies(1);
+      getItems(1);
     }
 
     if (event.code !== "Escape") event.stopPropagation();
   };
 
-  const getCompanies = async (p) => {
+  const getItems = async (p) => {
     try {
       setLoading(true);
       let nameCondition = "";
 
       if (searchName.trim().length > 0) {
-        nameCondition = `&name=${searchName.trim()}`;
+        nameCondition = `&itemName=${searchName.trim()}`;
       }
 
       const response = await axios.get(`${url}&page=${p}${nameCondition}`, {
@@ -65,9 +64,9 @@ function ChooseCompanyModal({ close, chooseAction, url }) {
         },
       });
       if (p === 1) {
-        setData(response.data.data.users);
+        setData(response.data.data.items);
       } else {
-        setData([...data, ...response.data.data.users]);
+        setData([...data, ...response.data.data.items]);
       }
       setCount(response.data.count);
       setLoading(false);
@@ -84,12 +83,12 @@ function ChooseCompanyModal({ close, chooseAction, url }) {
   };
 
   useEffect(() => {
-    getCompanies(1);
+    getItems(1);
   }, []);
 
   return (
     <Modal
-      header="choose-company"
+      header="choose-item"
       cancelLabel="cancel-label"
       closeModal={close}
       small={true}
@@ -102,7 +101,7 @@ function ChooseCompanyModal({ close, chooseAction, url }) {
             <IoIosSearch color={Colors.SECONDARY_COLOR} size={24} />
             <input
               className={styles.search_input}
-              placeholder={t("enter-company-name")}
+              placeholder={t("enter-item-trade-name")}
               value={searchName}
               onChange={(e) => setSearchName(e.target.value)}
               onKeyDown={keyDownHandler}
@@ -110,7 +109,7 @@ function ChooseCompanyModal({ close, chooseAction, url }) {
             <Button
               text="search"
               action={() => {
-                getCompanies(1);
+                getItems(1);
               }}
               bgColor={Colors.SECONDARY_COLOR}
             />
@@ -128,7 +127,7 @@ function ChooseCompanyModal({ close, chooseAction, url }) {
               ))}
 
             {data.length === 0 && searchName.length === 0 && (
-              <NoContent msg={t("search-for-company")} />
+              <NoContent msg={t("search-for-item")} />
             )}
 
             {data.length === 0 && searchName.length !== 0 && (
@@ -141,7 +140,7 @@ function ChooseCompanyModal({ close, chooseAction, url }) {
               <Button
                 text="more"
                 action={() => {
-                  getCompanies(page);
+                  getItems(page);
                 }}
                 bgColor={Colors.SECONDARY_COLOR}
               />
@@ -181,8 +180,10 @@ const Row = ({ data, addAction }) => {
   }, []);
 
   return (
-    <div className={styles.company_row}>
-      <p className={styles.company_name}>{data.name}</p>
+    <div className={styles.item_row}>
+      <p className={styles.item_name}>{data.name}</p>
+      <p className={[styles.small].join(" ")}>{data.caliber}</p>
+      <p className={[styles.small].join(" ")}>{data.packing}</p>
       {loading ? (
         <Icon
           icon={() => (
@@ -202,4 +203,4 @@ const Row = ({ data, addAction }) => {
   );
 };
 
-export default ChooseCompanyModal;
+export default ChooseItemModal;

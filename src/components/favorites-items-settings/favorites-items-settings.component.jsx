@@ -5,18 +5,18 @@ import { useTranslation } from "react-i18next";
 import ChooseCompanyModal from "../choose-company-modal/choose-company-modal.component";
 import CardInfo from "../card-info/card-info.component";
 import Button from "../button/button.component";
+import AdvertisementFavoriteRow from "../setting-row/setting-row.component";
 import Toast from "../toast/toast.component";
-import SettingRow from "../setting-row/setting-row.component";
 
 // redux stuff
 import { useSelector, useDispatch } from "react-redux";
 import {
-  addToFavoritesCompanies,
-  removeFromFavoritesCompanies,
-  resetAddFavoritesCompaniesStatus,
-  resetRemoveFavoritesCompaniesStatus,
-  selectFavoritesCompanies,
-} from "../../redux/advertisements/favoritesCompaniesSlice";
+  addToFavoritesItems,
+  removeFromFavoritesItems,
+  resetAddFavoritesItemsStatus,
+  resetRemoveFavoritesItemsStatus,
+  selectFavoritesItems,
+} from "../../redux/advertisements/favoritesItemsSlice";
 import {
   selectSettings,
   updateSettings,
@@ -30,34 +30,36 @@ import generalStyles from "../../style.module.scss";
 import { BASEURL, Colors } from "../../utils/constants";
 import Loader from "../loader/loader.component";
 import { default as ActionLoader } from "../action-loader/action-loader.component";
+import ChooseItemModal from "../choose-item-modal/choose-item-modal.component";
+import SettingRow from "../setting-row/setting-row.component";
 
-function FavoritesCompaniesSettings() {
+function FavoritesItemsSettings() {
   const { t } = useTranslation();
   const token = useSelector(selectToken);
   const dispatch = useDispatch();
 
   const {
-    favoritesCompanies,
-    favoritesCompaniesStatus,
-    addFavoritesCompaniesStatus,
-    removeFavoritesCompaniesStatus,
-    addFavoritesCompaniesError,
-    removeFavoritesCompaniesError,
-  } = useSelector(selectFavoritesCompanies);
+    favoritesItems,
+    favoritesItemsStatus,
+    addFavoritesItemsStatus,
+    removeFavoritesItemsStatus,
+    addFavoritesItemsError,
+    removeFavoritesItemsError,
+  } = useSelector(selectFavoritesItems);
 
   const { settings, status } = useSelector(selectSettings);
 
   const [showChooseModal, setShowChooseModal] = useState(false);
 
-  const removeCompanyFromFavoritesCompanies = (id) => {
-    dispatch(removeFromFavoritesCompanies({ id: id, token }));
+  const removeItemFromFavoritesItems = (id) => {
+    dispatch(removeFromFavoritesItems({ id: id, token }));
   };
 
   const changeCheckHandler = (e) => {
     dispatch(
       updateSettings({
         obj: {
-          showFavoritesCompanies: !settings.showFavoritesCompanies,
+          showFavoritesItems: !settings.showFavoritesItems,
         },
         token,
       })
@@ -75,27 +77,28 @@ function FavoritesCompaniesSettings() {
       >
         <input
           type="checkbox"
-          value={settings.showFavoritesCompanies}
+          value={settings.showFavoritesItems}
           onChange={changeCheckHandler}
-          checked={settings.showFavoritesCompanies}
+          checked={settings.showFavoritesItems}
         />
         <label style={{ padding: "0 10px" }}>
-          {t("show-favorites-companies-in-home-page")}
+          {t("show-favorites-items-in-home-page")}
         </label>
       </div>
 
-      <CardInfo headerTitle={t("favorites-companies")}>
-        {favoritesCompaniesStatus === "loading" ? (
+      <CardInfo headerTitle={t("favorites-items")}>
+        {favoritesItemsStatus === "loading" ? (
           <Loader />
         ) : (
           <>
             <div>
-              {favoritesCompanies.map((company) => (
+              {favoritesItems.map((item) => (
                 <SettingRow
-                  data={company}
-                  key={company._id}
-                  tooltip="remove-company-from-favorites-advertisement"
-                  action={removeCompanyFromFavoritesCompanies}
+                  data={item}
+                  key={item._id}
+                  tooltip="remove-item-from-favorites-advertisement"
+                  action={removeItemFromFavoritesItems}
+                  type="item"
                 />
               ))}
 
@@ -114,60 +117,52 @@ function FavoritesCompaniesSettings() {
       </CardInfo>
 
       {showChooseModal && (
-        <ChooseCompanyModal
+        <ChooseItemModal
           close={() => setShowChooseModal(false)}
-          chooseAction={addToFavoritesCompanies}
-          url={`${BASEURL}/users?limit=9&isActive=true&type=company&isFavorite=false`}
+          chooseAction={addToFavoritesItems}
+          url={`${BASEURL}/items?limit=9&isActive=true&isFavorite=false`}
         />
       )}
 
       {status === "loading" && <ActionLoader />}
 
-      {addFavoritesCompaniesStatus === "succeeded" && (
+      {addFavoritesItemsStatus === "succeeded" && (
         <Toast
           bgColor={Colors.SUCCEEDED_COLOR}
           foreColor="#fff"
-          toastText={t("company-added-to-favorite")}
-          actionAfterTimeout={() =>
-            dispatch(resetAddFavoritesCompaniesStatus())
-          }
+          toastText={t("item-added-to-favorite")}
+          actionAfterTimeout={() => dispatch(resetAddFavoritesItemsStatus())}
         />
       )}
 
-      {addFavoritesCompaniesStatus === "failed" && (
+      {addFavoritesItemsStatus === "failed" && (
         <Toast
           bgColor={Colors.FAILED_COLOR}
           foreColor="#fff"
-          toastText={t(addFavoritesCompaniesError)}
-          actionAfterTimeout={() =>
-            dispatch(resetAddFavoritesCompaniesStatus())
-          }
+          toastText={t(addFavoritesItemsError)}
+          actionAfterTimeout={() => dispatch(resetAddFavoritesItemsStatus())}
         />
       )}
 
-      {removeFavoritesCompaniesStatus === "succeeded" && (
+      {removeFavoritesItemsStatus === "succeeded" && (
         <Toast
           bgColor={Colors.SUCCEEDED_COLOR}
           foreColor="#fff"
-          toastText={t("company-removed-from-favorite")}
-          actionAfterTimeout={() =>
-            dispatch(resetRemoveFavoritesCompaniesStatus())
-          }
+          toastText={t("item-removed-from-favorite")}
+          actionAfterTimeout={() => dispatch(resetRemoveFavoritesItemsStatus())}
         />
       )}
 
-      {removeFavoritesCompaniesStatus === "failed" && (
+      {removeFavoritesItemsStatus === "failed" && (
         <Toast
           bgColor={Colors.FAILED_COLOR}
           foreColor="#fff"
-          toastText={t(removeFavoritesCompaniesError)}
-          actionAfterTimeout={() =>
-            dispatch(resetRemoveFavoritesCompaniesStatus())
-          }
+          toastText={t(removeFavoritesItemsError)}
+          actionAfterTimeout={() => dispatch(resetRemoveFavoritesItemsStatus())}
         />
       )}
     </>
   );
 }
 
-export default FavoritesCompaniesSettings;
+export default FavoritesItemsSettings;

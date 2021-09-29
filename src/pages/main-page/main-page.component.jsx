@@ -6,7 +6,11 @@ import { useTranslation } from "react-i18next";
 import { resetStatus, selectUserData } from "../../redux/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { getFavorites } from "../../redux/favorites/favoritesSlice";
-
+import { getFavoritesCompanies } from "../../redux/advertisements/favoritesCompaniesSlice";
+import { getNewestCompanies } from "../../redux/advertisements/newestCompaniesSlice";
+import { getFavoritesItems } from "../../redux/advertisements/favoritesItemsSlice";
+import { getNewestItems } from "../../redux/advertisements/newestItemsSlice";
+import { getMostOrderedItems } from "../../redux/advertisements/mostOrderedItemsSlice";
 // components
 import TopNav from "../../components/top-nav/top-nav.component";
 import SideNav from "../../components/side-nav/side-nav.component";
@@ -38,9 +42,6 @@ import styles from "./main-page.module.scss";
 import { TopNavLinks } from "../../utils/constants";
 import HomePage from "../home-page/home-page.component";
 import SettingsPage from "../settings-page/settings-page.component";
-import { getFavoritesCompanies } from "../../redux/advertisements/favoritesCompaniesSlice";
-import Background from "../../components/background/background.component";
-import { getNewestCompanies } from "../../redux/advertisements/newestCompaniesSlice";
 
 // MainPage
 // you have to sign in first
@@ -73,6 +74,9 @@ function MainPage() {
       dispatch(getFavorites({ token }));
       dispatch(getFavoritesCompanies({ token }));
       dispatch(getNewestCompanies({ token }));
+      dispatch(getFavoritesItems({ token }));
+      dispatch(getNewestItems({ token }));
+      dispatch(getMostOrderedItems({ token }));
     }
 
     // show toTop button after scroll more than 500

@@ -55,7 +55,7 @@ function ItemPage() {
   // selectors
   const isOnline = useSelector(selectOnlineStatus);
   const { user, token } = useSelector(selectUserData);
-  const { addStatus, updateStatus, changeLogoStatus, changeLogoError } =
+  const { addStatus, updateStatus, changeLogoStatus } =
     useSelector(selectItems);
 
   // own state
@@ -225,10 +225,9 @@ function ItemPage() {
   useEffect(() => {
     if (type === "info" && itemId) {
       getItemFromDB();
+      window.scrollTo(0, 0);
     }
-
-    window.scrollTo(0, 0);
-  }, [getItemFromDB, itemId, type]);
+  }, [itemId, type]);
 
   return user ? (
     <>

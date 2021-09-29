@@ -1,32 +1,37 @@
 import React, { useEffect } from "react";
 import { Redirect, useHistory } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-import { selectUserData } from "../../redux/auth/authSlice.js";
+import { selectUserData } from "../../redux/auth/authSlice";
+import { getNewestItems } from "../../redux/advertisements/newestItemsSlice";
+import { getMostOrderedItems } from "../../redux/advertisements/mostOrderedItemsSlice";
+import { getNewestCompanies } from "../../redux/advertisements/newestCompaniesSlice";
+import { getFavoritesItems } from "../../redux/advertisements/favoritesItemsSlice";
+import {
+  getFavoritesCompanies,
+  resetFavoritesCompanies,
+} from "../../redux/advertisements/favoritesCompaniesSlice";
 
 // components
-import FavoritesItems from "../../components/favorites-items/favorites-items.component";
-import MostOrderItems from "../../components/most-order-items/most-order-items.component";
-import NewestItems from "../../components/newest-items/newest-items.component";
-import Header from "../../components/header/header.component.jsx";
+import Header from "../../components/header/header.component";
+import Icon from "../../components/action-icon/action-icon.component";
+import FavoritesCompaniesSettings from "../../components/favorites-companies-settings/favorites-companies-settings.component";
+import NewestItemsSettings from "../../components/newest-items-settings/newest-items-settings.component";
+import MostOrderedItemsSettings from "../../components/most-ordered-items-settings/most-ordered-items-settings.component";
+import FavoritesItemsSettings from "../../components/favorites-items-settings/favorites-items-settings.component";
+import NewestCompaniesSettings from "../../components/newest-companies-settings/newest-companies-settings.component";
+
+// icons
+import { RiRefreshLine } from "react-icons/ri";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 // styles
 import generalStyles from "../../style.module.scss";
 
 // constants
-import { Colors, UserTypeConstants } from "../../utils/constants.js";
-import { RiRefreshLine } from "react-icons/ri";
-import { IoMdArrowRoundBack } from "react-icons/io";
-import Icon from "../../components/action-icon/action-icon.component.jsx";
-import {
-  getFavoritesCompanies,
-  resetFavoritesCompanies,
-} from "../../redux/advertisements/favoritesCompaniesSlice.js";
-import { useTranslation } from "react-i18next";
-import FavoritesCompaniesSettings from "../../components/favorites-companies-settings/favorites-companies-settings.component.jsx";
-import NewestCompaniesSettings from "../../components/newest-companies-settings/newest-companies-settings.component";
-import { getNewestCompanies } from "../../redux/advertisements/newestCompaniesSlice";
+import { Colors, UserTypeConstants } from "../../utils/constants";
 
 function SettingsPage() {
   const { t } = useTranslation();
@@ -38,6 +43,9 @@ function SettingsPage() {
     dispatch(resetFavoritesCompanies());
     dispatch(getFavoritesCompanies({ token }));
     dispatch(getNewestCompanies({ token }));
+    dispatch(getFavoritesItems({ token }));
+    dispatch(getNewestItems({ token }));
+    dispatch(getMostOrderedItems({ token }));
   };
 
   useEffect(() => {
@@ -75,9 +83,9 @@ function SettingsPage() {
 
       <FavoritesCompaniesSettings />
       <NewestCompaniesSettings />
-      <FavoritesItems />
-      <NewestItems />
-      <MostOrderItems />
+      <FavoritesItemsSettings />
+      <NewestItemsSettings />
+      <MostOrderedItemsSettings />
     </>
   ) : (
     <Redirect to="/signin" />

@@ -16,6 +16,9 @@ import onlineSlice from "./redux/online/onlineSlice";
 import favoritesCompaniesSlice from "./redux/advertisements/favoritesCompaniesSlice";
 import newestCompaniesSlice from "./redux/advertisements/newestCompaniesSlice";
 import settingsSlice from "./redux/settings/settingsSlice";
+import favoritesItemsSlice from "./redux/advertisements/favoritesItemsSlice";
+import newestItemsSlice from "./redux/advertisements/newestItemsSlice";
+import mostOrderedItemsSlice from "./redux/advertisements/mostOrderedItemsSlice";
 
 const reducers = combineReducers({
   auth: authSlice,
@@ -31,6 +34,9 @@ const reducers = combineReducers({
   online: onlineSlice,
   favoritesCompanies: favoritesCompaniesSlice,
   newestCompanies: newestCompaniesSlice,
+  favoritesItems: favoritesItemsSlice,
+  newestItems: newestItemsSlice,
+  mostOrderedItems: mostOrderedItemsSlice,
   settings: settingsSlice,
 });
 

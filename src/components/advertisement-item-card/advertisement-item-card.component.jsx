@@ -37,8 +37,11 @@ import styles from "./advertisement-item-card.module.scss";
 
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants";
+import { getFavoritesItems } from "../../redux/advertisements/favoritesItemsSlice";
+import { getNewestItems } from "../../redux/advertisements/newestItemsSlice";
+import { getMostOrderedItems } from "../../redux/advertisements/mostOrderedItemsSlice";
 
-function AdvertisementItemCard({ companyItem, dispatchAction, contentColor }) {
+function AdvertisementItemCard({ companyItem, contentColor }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -121,7 +124,9 @@ function AdvertisementItemCard({ companyItem, dispatchAction, contentColor }) {
       .then(unwrapResult)
       .then(() => {
         setChangeAddToWarehouseLoading(false);
-        dispatch(dispatchAction({ token }));
+        dispatch(getFavoritesItems({ token }));
+        dispatch(getNewestItems({ token }));
+        dispatch(getMostOrderedItems({ token }));
       })
       .catch(() => {
         setChangeAddToWarehouseLoading(false);
@@ -150,7 +155,9 @@ function AdvertisementItemCard({ companyItem, dispatchAction, contentColor }) {
       .then(unwrapResult)
       .then(() => {
         setChangeAddToWarehouseLoading(false);
-        dispatch(dispatchAction({ token }));
+        dispatch(getFavoritesItems({ token }));
+        dispatch(getNewestItems({ token }));
+        dispatch(getMostOrderedItems({ token }));
       })
       .catch(() => {
         setChangeAddToWarehouseLoading(false);

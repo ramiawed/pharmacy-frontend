@@ -122,7 +122,7 @@ function ItemsByCompanyPage() {
   }, [companyId]);
 
   return user ? (
-    <>
+    <div className={generalStyles.container}>
       <Header>
         <h2>
           {t("medicines-in-company")} {company?.name} <span>{count}</span>
@@ -299,7 +299,7 @@ function ItemsByCompanyPage() {
       )}
 
       {status === "loading" && <Loader allowCancel={false} />}
-    </>
+    </div>
   ) : (
     <Redirect to="/signin" />
   );

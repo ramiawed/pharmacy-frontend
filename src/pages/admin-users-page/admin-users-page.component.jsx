@@ -27,6 +27,7 @@ import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 
 // styles
 import paginationStyles from "../../components/pagination.module.scss";
+import generalStyles from "../../style.module.scss";
 
 // constants
 import { UserTypeConstants } from "../../utils/constants";
@@ -82,7 +83,7 @@ function AdminUsersPage() {
   }, []);
 
   return user && user.type === UserTypeConstants.ADMIN ? (
-    <>
+    <div className={generalStyles.container}>
       <AdminUsersHeader
         count={count}
         pageState={pageState}
@@ -143,7 +144,7 @@ function AdminUsersPage() {
           }}
         />
       )}
-    </>
+    </div>
   ) : (
     <Redirect to="/" />
   );

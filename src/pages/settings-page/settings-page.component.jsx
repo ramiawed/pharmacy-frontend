@@ -53,7 +53,7 @@ function SettingsPage() {
   }, []);
 
   return user && user.type === UserTypeConstants.ADMIN ? (
-    <>
+    <div className={generalStyles.container}>
       <Header>
         <h2>{t("nav-settings")}</h2>
         <div
@@ -86,7 +86,7 @@ function SettingsPage() {
       <FavoritesItemsSettings />
       <NewestItemsSettings />
       <MostOrderedItemsSettings />
-    </>
+    </div>
   ) : (
     <Redirect to="/signin" />
   );

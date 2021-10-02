@@ -8,18 +8,9 @@ import Introduction from "../../components/introduction/introduction.component";
 import { useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import { selectSettings } from "../../redux/settings/settingsSlice";
-import {
-  getFavoritesItems,
-  selectFavoritesItems,
-} from "../../redux/advertisements/favoritesItemsSlice";
-import {
-  getNewestItems,
-  selectNewestItems,
-} from "../../redux/advertisements/newestItemsSlice";
-import {
-  getMostOrderedItems,
-  selectMostOrderedItems,
-} from "../../redux/advertisements/mostOrderedItemsSlice";
+import { selectFavoritesItems } from "../../redux/advertisements/favoritesItemsSlice";
+import { selectNewestItems } from "../../redux/advertisements/newestItemsSlice";
+import { selectMostOrderedItems } from "../../redux/advertisements/mostOrderedItemsSlice";
 import { selectFavoritesCompanies } from "../../redux/advertisements/favoritesCompaniesSlice";
 import { selectNewestCompanies } from "../../redux/advertisements/newestCompaniesSlice";
 import SectionHomePage from "../../components/section-home-page/section-home-page.component";
@@ -68,7 +59,6 @@ function HomePage() {
           sliderFlex={2}
           header="favorites-items"
           description="favorites-items-paragraph"
-          dispatchAction={getFavoritesItems}
           type="item"
         />
       )}
@@ -82,7 +72,6 @@ function HomePage() {
           sliderFlex={1}
           header="newest-items"
           description="newest-items-paragraph"
-          dispatchAction={getNewestItems}
           type="item"
         />
       )}
@@ -96,7 +85,6 @@ function HomePage() {
           sliderFlex={2}
           header="most-ordered-items"
           description="most-ordered-items-paragraph"
-          dispatchAction={getMostOrderedItems}
           type="item"
         />
       )}

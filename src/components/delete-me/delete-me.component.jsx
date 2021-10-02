@@ -32,6 +32,11 @@ import {
   changeOnlineMsg,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
+import { resetFavoritesCompanies } from "../../redux/advertisements/favoritesCompaniesSlice";
+import { resetNewestCompanies } from "../../redux/advertisements/newestCompaniesSlice";
+import { resetFavoritesItems } from "../../redux/advertisements/favoritesItemsSlice";
+import { resetNewestItems } from "../../redux/advertisements/newestItemsSlice";
+import { resetMostOrderedItems } from "../../redux/advertisements/mostOrderedItemsSlice";
 
 function DeleteMe() {
   const { t } = useTranslation();
@@ -77,6 +82,11 @@ function DeleteMe() {
         dispatch(resetItems());
         dispatch(resetCompanyItems());
         dispatch(resetCartItems());
+        dispatch(resetFavoritesCompanies());
+        dispatch(resetNewestCompanies());
+        dispatch(resetFavoritesItems());
+        dispatch(resetNewestItems());
+        dispatch(resetMostOrderedItems());
       })
       .catch((rejectedValueOrSerializedError) => {
         // on failed, show message below the password input

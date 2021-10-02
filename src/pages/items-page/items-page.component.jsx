@@ -10,6 +10,7 @@ import Toast from "../../components/toast/toast.component";
 import NoContent from "../../components/no-content/no-content.component";
 import ItemsTableHeader from "../../components/items-table-header/items-table-header.component";
 import Loader from "../../components/action-loader/action-loader.component";
+import ItemsPageHeader from "../../components/items-page-header/items-page-header.component";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -34,7 +35,7 @@ import { Colors, UserTypeConstants } from "../../utils/constants";
 
 // styles
 import paginationStyles from "../../components/pagination.module.scss";
-import ItemsPageHeader from "../../components/items-page-header/items-page-header.component";
+import generalStyles from "../../style.module.scss";
 
 function ItemsPage() {
   const { t } = useTranslation();
@@ -117,7 +118,7 @@ function ItemsPage() {
   }, [pageState.sortFields, warehouse, role]);
 
   return user ? (
-    <>
+    <div className={generalStyles.container}>
       <ItemsPageHeader
         user={user}
         role={role}
@@ -206,7 +207,7 @@ function ItemsPage() {
           actionAfterTimeout={() => dispatch(resetActiveStatus())}
         />
       )}
-    </>
+    </div>
   ) : (
     <Redirect to="/signin" />
   );

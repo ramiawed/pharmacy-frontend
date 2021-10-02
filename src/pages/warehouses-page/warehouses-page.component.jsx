@@ -96,7 +96,7 @@ function WarehousePage() {
   }, []);
 
   return user ? (
-    <>
+    <div className={generalStyles.container}>
       <WarehousesHeader
         count={count}
         search={handleEnterPress}
@@ -173,7 +173,7 @@ function WarehousePage() {
           {t(favoriteError)}
         </Toast>
       )}
-    </>
+    </div>
   ) : (
     <Redirect to="/signin" />
   );

@@ -1,20 +1,21 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
-import { VscClose } from "react-icons/vsc";
-import { useDispatch, useSelector } from "react-redux";
-import { authSliceSignOut, selectUser } from "../../redux/auth/authSlice";
-import { UserTypeConstants } from "../../utils/constants";
+
+// components
 import SideNavAdmin from "../side-nav-admin/side-nav-admin.component";
 import SideNavCompany from "../side-nav-company/side-nav-company.component";
 import SideNavGuest from "../side-nav-guest/side-nav-guest.component";
 import SideNavPharmacy from "../side-nav-pharmacy/side-nav-pharmacy.component";
 import SideNavWarehouse from "../side-nav-warehouse/side-nav-warehouse.component";
 
-// styles
-import styles from "./side-nav.module.scss";
-import linkStyles from "../side-nav.module.scss";
+// react-icons
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { VscClose } from "react-icons/vsc";
+
+// redux stuff
+import { useDispatch, useSelector } from "react-redux";
+import { authSliceSignOut, selectUser } from "../../redux/auth/authSlice";
 import { usersSliceSignOut } from "../../redux/users/usersSlice";
 import { favoritesSliceSignOut } from "../../redux/favorites/favoritesSlice";
 import { cartSliceSignOut } from "../../redux/cart/cartSlice";
@@ -24,6 +25,18 @@ import { itemsSliceSignOut } from "../../redux/items/itemsSlices";
 import { statisticsSliceSignOut } from "../../redux/statistics/statisticsSlice";
 import { warehouseSliceSignOut } from "../../redux/warehouse/warehousesSlice";
 import { warehouseItemsSliceSignOut } from "../../redux/warehouseItems/warehouseItemsSlices";
+import { resetFavoritesCompanies } from "../../redux/advertisements/favoritesCompaniesSlice";
+import { resetNewestCompanies } from "../../redux/advertisements/newestCompaniesSlice";
+import { resetFavoritesItems } from "../../redux/advertisements/favoritesItemsSlice";
+import { resetNewestItems } from "../../redux/advertisements/newestItemsSlice";
+import { resetMostOrderedItems } from "../../redux/advertisements/mostOrderedItemsSlice";
+
+// styles
+import styles from "./side-nav.module.scss";
+import linkStyles from "../side-nav.module.scss";
+
+// constants
+import { UserTypeConstants } from "../../utils/constants";
 
 function SideNav({
   collapsed,
@@ -46,6 +59,11 @@ function SideNav({
     dispatch(usersSliceSignOut());
     dispatch(warehouseSliceSignOut());
     dispatch(warehouseItemsSliceSignOut());
+    dispatch(resetFavoritesCompanies());
+    dispatch(resetNewestCompanies());
+    dispatch(resetFavoritesItems());
+    dispatch(resetNewestItems());
+    dispatch(resetMostOrderedItems());
   };
 
   return (

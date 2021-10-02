@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { unwrapResult } from "@reduxjs/toolkit";
 import { useTranslation } from "react-i18next";
 import { Redirect, useLocation } from "react-router-dom";
-import axios from "../../api/pharmacy";
+import axios from "axios";
 
 // redux stuff
+import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
@@ -35,7 +35,7 @@ import Loader from "../../components/action-loader/action-loader.component";
 
 // constants and utile
 import { getIcon } from "../../utils/icons";
-import { Colors, UserTypeConstants } from "../../utils/constants";
+import { Colors, UserTypeConstants, BASEURL } from "../../utils/constants";
 import { MdLocalOffer } from "react-icons/md";
 
 // styles
@@ -214,12 +214,14 @@ function ItemPage() {
 
   const getItemFromDB = useCallback(() => {
     axios
-      .get(`/items/item/${itemId}`, {
+      .get(`${BASEURL}/items/item/${itemId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       })
-      .then((response) => setItem(response.data.data.item));
+      .then((response) => {
+        setItem(response.data.data.item);
+      });
   });
 
   useEffect(() => {
@@ -377,40 +379,45 @@ function ItemPage() {
           </div>
         </CardInfo>
 
-        {item.warehouses?.length > 0 && (
-          <CardInfo headerTitle={t("warehouses")}>
-            {item.warehouses.map((w, index) => (
-              <div
-                className={[
-                  rowStyles.container,
-                  rowStyles.without_box_shadow,
-                  generalStyles.padding_h_6,
-                ].join(" ")}
-              >
-                <label className={generalStyles.padding_v_6}>
-                  {w.warehouse.name}
-                </label>
-
+        {item.warehouses?.length > 0 &&
+          (user.type === UserTypeConstants.ADMIN ||
+            user.type === UserTypeConstants.PHARMACY) && (
+            <CardInfo headerTitle={t("warehouses")}>
+              {item.warehouses.map((w, index) => (
                 <div
-                  className={generalStyles.icon}
-                  onClick={() => {
-                    setSelectedWarehouseId(w.warehouse._id);
-                    setAllowEdit(
-                      (user.type === UserTypeConstants.WAREHOUSE &&
-                        user._id === w.warehouse._id) ||
-                        (user.type === UserTypeConstants.ADMIN &&
-                          w.warehouse.allowAdmin)
-                    );
-                    setShowOfferModal(true);
-                  }}
+                  className={[
+                    rowStyles.container,
+                    rowStyles.without_box_shadow,
+                    generalStyles.padding_h_6,
+                  ].join(" ")}
+                  key={index}
                 >
-                  <MdLocalOffer />
-                  <div className={generalStyles.tooltip}>{t("nav-offers")}</div>
+                  <label className={generalStyles.padding_v_6}>
+                    {w.warehouse.name}
+                  </label>
+
+                  <div
+                    className={generalStyles.icon}
+                    onClick={() => {
+                      setSelectedWarehouseId(w.warehouse._id);
+                      setAllowEdit(
+                        (user.type === UserTypeConstants.WAREHOUSE &&
+                          user._id === w.warehouse._id) ||
+                          (user.type === UserTypeConstants.ADMIN &&
+                            w.warehouse.allowAdmin)
+                      );
+                      setShowOfferModal(true);
+                    }}
+                  >
+                    <MdLocalOffer />
+                    <div className={generalStyles.tooltip}>
+                      {t("nav-offers")}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
-          </CardInfo>
-        )}
+              ))}
+            </CardInfo>
+          )}
 
         {Object.entries(itemError).length > 0 && (
           <ul className={styles.error_ul}>

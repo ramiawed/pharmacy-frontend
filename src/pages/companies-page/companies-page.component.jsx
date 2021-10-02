@@ -125,7 +125,7 @@ function CompaniesPage() {
   }, []);
 
   return user ? (
-    <>
+    <div className={generalStyles.container}>
       <CompaniesHeader
         search={handleEnterPress}
         refreshHandler={refreshHandler}
@@ -188,7 +188,7 @@ function CompaniesPage() {
           {t(error)}
         </Toast>
       )}
-    </>
+    </div>
   ) : (
     <Redirect to="/signin" />
   );

@@ -17,7 +17,6 @@ function SectionHomePage({
   sliderFlex,
   header,
   description,
-  dispatchAction,
   type,
 }) {
   const { t } = useTranslation();
@@ -27,7 +26,7 @@ function SectionHomePage({
     infinite: data.length > 3,
     speed: 300,
     slidesToShow: 2,
-    slidesToScroll: 2,
+    slidesToScroll: 1,
     initialSlide: 0,
     autoplay: true,
     centerMode: true,
@@ -80,7 +79,6 @@ function SectionHomePage({
             <div key={d._id}>
               {type === "item" ? (
                 <AdvertisementItemCard
-                  dispatchAction={dispatchAction}
                   companyItem={d}
                   contentColor={headerBackground}
                 />

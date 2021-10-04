@@ -82,6 +82,9 @@ function SideNav({
             user.logo_url !== ""
               ? `url('http://localhost:8000/${user.logo_url}')`
               : 'url("http://localhost:8000/avatar01.png',
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundSize: "contain",
         }}
         className={styles.profile_img}
       ></div>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // components
@@ -16,6 +16,10 @@ import {
   selectFavoritesItems,
 } from "../../redux/favorites/favoritesSlice";
 import { selectToken, selectUser } from "../../redux/auth/authSlice";
+import {
+  selectOnlineStatus,
+  changeOnlineMsg,
+} from "../../redux/online/onlineSlice";
 
 // rowStyles
 import generalStyles from "../../style.module.scss";
@@ -23,27 +27,29 @@ import rowStyles from "../row.module.scss";
 import tableStyles from "../table.module.scss";
 
 // constants and utils
-import { checkConnection } from "../../utils/checkInternet";
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
 import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
+import Icon from "../action-icon/action-icon.component";
+import { VscLoading } from "react-icons/vsc";
 
 function FavoriteItemRow({ item, withoutBoxShadow }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const isOnline = useSelector(selectOnlineStatus);
   const favorites = useSelector(selectFavoritesItems);
   const token = useSelector(selectToken);
   const user = useSelector(selectUser);
   const [showModal, setShowModal] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const [connectionError, setConnectionError] = useState("");
 
   // method to handle remove company from user's favorite
   const removeItemFromFavorite = () => {
-    // check the internet connection
-    if (!checkConnection()) {
-      setConnectionError("no-internet-connection");
-      return;
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
     }
+    setLoading(true);
 
     dispatch(removeFavoriteItem({ obj: { favoriteItemId: item._id }, token }));
   };
@@ -92,33 +98,41 @@ function FavoriteItemRow({ item, withoutBoxShadow }) {
         <label className={tableStyles.label_small}>{item.packing}</label>
 
         {item.warehouses.length > 0 ? (
-          user.type === UserTypeConstants.PHARMACY && (
-            <div
-              className={[generalStyles.icon, generalStyles.fc_green].join(" ")}
-            >
-              <TiShoppingCart
-                onClick={() => {
-                  setShowModal(true);
-                }}
-                size={20}
-              />
-            </div>
+          user.type === UserTypeConstants.PHARMACY ? (
+            <Icon
+              icon={() => <TiShoppingCart size={24} />}
+              onclick={() => setShowModal(true)}
+              // tooltip={t("remove-from-warehouse-tooltip")}
+              foreColor={Colors.SUCCEEDED_COLOR}
+            />
+          ) : (
+            <div className={tableStyles.label_xsmall}></div>
           )
         ) : (
           <div className={tableStyles.label_xsmall}></div>
         )}
         <div className={rowStyles.padding_end}>
           {favorites.map((favorite) => favorite._id).includes(item._id) ? (
-            <div
-              className={[generalStyles.icon, generalStyles.fc_yellow].join(
-                " "
-              )}
-            >
-              <AiFillStar size={20} onClick={removeItemFromFavorite} />
-            </div>
+            loading ? (
+              <Icon
+                icon={() => (
+                  <VscLoading className={generalStyles.loading} size={24} />
+                )}
+                onclick={() => {}}
+                foreColor={Colors.YELLOW_COLOR}
+              />
+            ) : (
+              <Icon
+                icon={() => <AiFillStar size={20} />}
+                onclick={removeItemFromFavorite}
+                tooltip={t("remove-from-favorite-tooltip")}
+                foreColor={Colors.YELLOW_COLOR}
+              />
+            )
           ) : null}
         </div>
       </div>
+
       {connectionError && (
         <Toast
           bgColor={Colors.FAILED_COLOR}

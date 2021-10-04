@@ -4,13 +4,13 @@ import ReactLoading from "react-loading";
 import { Colors } from "../../utils/constants";
 import styles from "./loader.module.scss";
 
-function Loader() {
+function Loader({ color }) {
   const { t } = useTranslation();
 
   return (
     <div className={styles.loader}>
       <ReactLoading
-        color={Colors.SECONDARY_COLOR}
+        color={color ? color : Colors.SECONDARY_COLOR}
         type="bars"
         height={75}
         width={75}

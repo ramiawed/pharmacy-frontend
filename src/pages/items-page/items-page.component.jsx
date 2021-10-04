@@ -22,10 +22,12 @@ import {
   resetItems,
   selectItems,
   setPage,
+  resetChangeOfferStatus,
 } from "../../redux/items/itemsSlices";
 import {
   changeItemWarehouseMaxQty,
   removeItemFromWarehouse,
+  selectWarehouseItems,
 } from "../../redux/warehouseItems/warehouseItemsSlices";
 import { selectToken } from "../../redux/auth/authSlice";
 import { selectOnlineStatus } from "../../redux/online/onlineSlice";
@@ -46,8 +48,18 @@ function ItemsPage() {
   // selector
   const isOnline = useSelector(selectOnlineStatus);
   const dispatch = useDispatch();
-  const { status, error, count, items, activeStatus, activeError, pageState } =
-    useSelector(selectItems);
+  const {
+    status,
+    error,
+    count,
+    items,
+    activeStatus,
+    activeError,
+    pageState,
+    changeOfferStatus,
+  } = useSelector(selectItems);
+  const { changeOfferStatus: warehouseOfferStatus } =
+    useSelector(selectWarehouseItems);
   const token = useSelector(selectToken);
 
   // handle for page change in the paginate component
@@ -188,7 +200,9 @@ function ItemsPage() {
         />
       )}
 
-      {activeStatus === "loading" && <Loader allowCancel={false} />}
+      {(activeStatus === "loading" ||
+        changeOfferStatus === "loading" ||
+        warehouseOfferStatus === "loading") && <Loader allowCancel={false} />}
 
       {activeStatus === "succeeded" && (
         <Toast
@@ -205,6 +219,15 @@ function ItemsPage() {
           foreColor="#fff"
           toastText={t(activeError)}
           actionAfterTimeout={() => dispatch(resetActiveStatus())}
+        />
+      )}
+
+      {changeOfferStatus === "succeeded" && (
+        <Toast
+          bgColor={Colors.SUCCEEDED_COLOR}
+          foreColor="#fff"
+          toastText={t("update-succeeded")}
+          actionAfterTimeout={() => dispatch(resetChangeOfferStatus())}
         />
       )}
     </div>

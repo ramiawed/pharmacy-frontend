@@ -5,13 +5,16 @@
   height: calc(100vh - 60px);
 
   display: flex;
+  flex-direction: column;
   justify-content: space-around;
   align-items: center;
 }
 
 .header {
-  width: 20vw;
-  margin: 30px 0;
+  width: 90vw;
+  margin: 0 auto;
+  padding: 10px;
+
   text-align: center;
   color: #fff;
 
@@ -25,13 +28,33 @@
 }
 
 .header h2 {
-  text-shadow: 2px 2px 5px rgba($color: #000, $alpha: 0.5);
+  padding: 10px 0;
+
   font-weight: 600;
   font-size: 2rem;
 
-  padding: 50px 0;
+  text-shadow: 2px 2px 5px rgba($color: #000, $alpha: 0.5);
 }
 
 .slicker {
-  width: 60vw;
+  width: 80vw;
+}
+
+@media only screen and (min-width: $medium) {
+  .container {
+    flex-direction: row;
+  }
+
+  .header {
+    width: 20vw;
+    margin: 30px 0;
+  }
+
+  .header h2 {
+    padding: 50px 0;
+  }
+
+  .slicker {
+    width: 60vw;
+  }
 }

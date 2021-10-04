@@ -40,6 +40,18 @@ import {
 } from "../../redux/online/onlineSlice";
 import Icon from "../action-icon/action-icon.component";
 
+const checkOffer = (item) => {
+  let result = false;
+
+  item.warehouses.forEach((w) => {
+    if (w.offer.offers.length > 0) {
+      result = true;
+    }
+  });
+
+  return result;
+};
+
 function ItemCard({ companyItem }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
@@ -53,6 +65,7 @@ function ItemCard({ companyItem }) {
   const [changeFavoriteLoading, setChangeFavoriteLoading] = useState(false);
   const [changeAddToWarehouseLoading, setChangeAddToWarehouseLoading] =
     useState(false);
+  const [hasOffer, setHasOffer] = useState(checkOffer(companyItem));
 
   // method to handle add company to user's favorite
   const addItemToFavoriteItems = () => {
@@ -171,7 +184,12 @@ function ItemCard({ companyItem }) {
     }
   };
   return (
-    <div className={styles.partner_container}>
+    <div
+      className={[
+        styles.partner_container,
+        hasOffer ? styles.partner_container_has_offer : "",
+      ].join(" ")}
+    >
       <div
         className={[
           generalStyles.actions,
@@ -227,7 +245,7 @@ function ItemCard({ companyItem }) {
         {changeFavoriteLoading ? (
           <Icon
             icon={() => (
-              <VscLoading className={generalStyles.loading} size={20} />
+              <VscLoading className={generalStyles.loading} size={24} />
             )}
             onclick={() => {}}
             foreColor={Colors.YELLOW_COLOR}
@@ -236,14 +254,14 @@ function ItemCard({ companyItem }) {
             .map((favorite) => favorite._id)
             .includes(companyItem._id) ? (
           <Icon
-            icon={() => <AiFillStar size={20} />}
+            icon={() => <AiFillStar size={24} />}
             onclick={removeItemFromFavoritesItems}
             tooltip={t("remove-from-favorite-tooltip")}
             foreColor={Colors.YELLOW_COLOR}
           />
         ) : (
           <Icon
-            icon={() => <AiOutlineStar size={20} />}
+            icon={() => <AiOutlineStar size={24} />}
             onclick={addItemToFavoriteItems}
             tooltip={t("add-to-favorite-tooltip")}
             foreColor={Colors.YELLOW_COLOR}
@@ -252,22 +270,27 @@ function ItemCard({ companyItem }) {
       </div>
 
       <div className={styles.logo_div}>
-        {companyItem.logo_url?.length > 0 ? (
-          <p
-            style={{
-              backgroundImage: `url("http://localhost:8000/${companyItem.logo_url}`,
-            }}
-            className={styles.logo}
-          ></p>
-        ) : (
-          <p className={styles.logo}>
-            <GiMedicines color={Colors.SECONDARY_COLOR} size="100" />
-          </p>
-        )}
+        <p
+          style={{
+            backgroundImage:
+              companyItem.logo_url && companyItem.logo_url !== ""
+                ? `url("http://localhost:8000/${companyItem.logo_url}")`
+                : `url("http://localhost:8000/medicine.jpeg")`,
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "contain",
+          }}
+          className={styles.logo}
+        ></p>
       </div>
 
       <div className={styles.content}>
-        <div className={styles.showed_content}>
+        <div
+          className={[
+            styles.showed_content,
+            hasOffer ? styles.has_offer : "",
+          ].join(" ")}
+        >
           <label
             className={[
               generalStyles.fc_white,

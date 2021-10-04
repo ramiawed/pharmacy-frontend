@@ -25,7 +25,9 @@
 .modal_content {
   position: relative;
   width: 90%;
-  // height: 20%;
+  min-width: 500px;
+  overflow: scroll;
+
   background-color: #fff;
   border-radius: 6px;
 

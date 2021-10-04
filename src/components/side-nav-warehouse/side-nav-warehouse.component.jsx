@@ -37,7 +37,7 @@ function SideNavWarehouse({ selectedOption, onSelectedChange }) {
       >
         {t("nav-items")}
       </Link>
-      <Link
+      {/* <Link
         className={[
           styles.link,
           selectedOption === SideNavLinks.OFFERS ? `${styles.selected}` : "",
@@ -48,9 +48,9 @@ function SideNavWarehouse({ selectedOption, onSelectedChange }) {
         to="/warehouse/orders"
       >
         {t("nav-orders")}
-      </Link>
+      </Link> */}
 
-      <Link
+      {/* <Link
         className={[
           styles.link,
           selectedOption === SideNavLinks.OFFERS ? `${styles.selected}` : "",
@@ -61,7 +61,7 @@ function SideNavWarehouse({ selectedOption, onSelectedChange }) {
         to="/warehouse/offers"
       >
         {t("nav-offers")}
-      </Link>
+      </Link> */}
       <Link
         className={[
           styles.link,

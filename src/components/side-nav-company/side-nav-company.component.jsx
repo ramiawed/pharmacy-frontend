@@ -37,7 +37,7 @@ function SideNavCompany({ selectedOption, onSelectedChange }) {
         {t("nav-items")}
       </Link>
 
-      <Link
+      {/* <Link
         className={[
           styles.link,
           selectedOption === SideNavLinks.ADVERTISEMENTS
@@ -50,7 +50,7 @@ function SideNavCompany({ selectedOption, onSelectedChange }) {
         to="/company/advertises"
       >
         {t("nav-advertise")}
-      </Link>
+      </Link> */}
 
       <Link
         className={[

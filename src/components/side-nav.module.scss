@@ -3,36 +3,44 @@
 .link {
   width: 100%;
   text-decoration: none;
-  color: $white-color;
+  color: $main-color;
   cursor: pointer;
   padding: 5px 20px;
+  margin-bottom: 4px;
+
+  font-family: $font3;
+  font-size: 1.2rem;
 
   transition: all 0.2s;
 }
 
-.link.selected {
-  color: $third-color;
-}
+.link.selected,
+.link:hover,
 .link.selected:hover {
-  color: $third-color;
+  background: $third-color;
+  color: $white-color;
+  border-radius: 6px;
 }
+// .link.selected:hover {
+//   color: $third-color;
+// }
 
-.link.selected:lang(ar) {
-  border-right: 3px solid $third-color;
-}
+// .link.selected:lang(ar) {
+//   border-right: 3px solid $third-color;
+// }
 
-.link.selected:hover:lang(ar) {
-  border-right: 3px solid $third-color;
-}
+// .link.selected:hover:lang(ar) {
+//   border-right: 3px solid $third-color;
+// }
 
-.link.selected:lang(en) {
-  border-left: 3px solid $third-color;
-}
+// .link.selected:lang(en) {
+//   border-left: 3px solid $third-color;
+// }
 
-.link.selected:hover:lang(en) {
-  border-left: 3px solid $third-color;
-}
+// .link.selected:hover:lang(en) {
+//   border-left: 3px solid $third-color;
+// }
 
-.link:hover {
-  color: $third-color;
-}
+// .link:hover {
+//   color: $third-color;
+// }

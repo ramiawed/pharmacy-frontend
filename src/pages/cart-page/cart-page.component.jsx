@@ -24,6 +24,9 @@ import NoContent from "../../components/no-content/no-content.component";
 // constants and colors
 import { UserTypeConstants } from "../../utils/constants";
 
+// styles
+import generalStyles from "../../style.module.scss";
+
 function CartPage() {
   const { t } = useTranslation();
 
@@ -36,7 +39,7 @@ function CartPage() {
   // if there is no logged user or user type is not pharmacy
   // redirect to the main page
   return user && user.type === UserTypeConstants.PHARMACY ? (
-    <>
+    <div className={generalStyles.container}>
       {/* if cart contains an item or more */}
       {cartWarehouse.length > 0 && (
         <>
@@ -58,7 +61,7 @@ function CartPage() {
           <NoContent msg={t("empty-cart")} />
         </>
       )}
-    </>
+    </div>
   ) : (
     <Redirect to="/signin" />
   );

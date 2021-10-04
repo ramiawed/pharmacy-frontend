@@ -18,6 +18,8 @@ const initialState = {
   updateError: "",
   changeLogoStatus: "idle",
   changeLogoError: "",
+  changeOfferStatus: "idle",
+  changeOfferError: "",
   pageState: {
     searchName: "",
     searchCompanyName: "",
@@ -282,6 +284,36 @@ export const changeItemLogo = createAsyncThunk(
   }
 );
 
+export const changeItemOffer = createAsyncThunk(
+  "items/changeItemOffer",
+  async ({ _id, token }, { rejectWithValue }) => {
+    try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.get(`${BASEURL}/items/item/${_id}`, {
+        timeout: 10000,
+        cancelToken: source.token,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      return response.data;
+    } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const itemsSlice = createSlice({
   name: "itemsSlice",
   initialState,
@@ -320,6 +352,13 @@ export const itemsSlice = createSlice({
     },
     resetChangeLogoError: (state) => {
       state.changeLogoError = "";
+    },
+    resetChangeOfferStatus: (state) => {
+      state.changeOfferStatus = "idle";
+      state.changeOfferError = "";
+    },
+    resetChangeOfferError: (state) => {
+      state.changeOfferError = "";
     },
     resetItems: (state) => {
       state.status = "idle";
@@ -500,7 +539,6 @@ export const itemsSlice = createSlice({
     },
     [addItem.fulfilled]: (state) => {
       state.addStatus = "succeeded";
-      // state.items = [...state.items, action.payload.data.item];
       state.addError = "";
     },
     [addItem.rejected]: (state, { payload }) => {
@@ -519,7 +557,6 @@ export const itemsSlice = createSlice({
     },
     [addItems.fulfilled]: (state) => {
       state.addStatus = "succeeded";
-      // state.items = [...state.items, action.payload.data.items];
       state.addError = "";
     },
     [addItems.rejected]: (state, { payload }) => {
@@ -598,6 +635,30 @@ export const itemsSlice = createSlice({
         state.changeLogoError = "network failed";
       } else state.changeLogoError = payload.message;
     },
+    [changeItemOffer.pending]: (state) => {
+      state.changeOfferStatus = "loading";
+    },
+    [changeItemOffer.fulfilled]: (state, action) => {
+      state.changeOfferStatus = "succeeded";
+      const newItems = state.items.map((item) => {
+        if (item._id === action.payload.data.item._id) {
+          return action.payload.data.item;
+        } else return item;
+      });
+
+      state.items = newItems;
+    },
+    [changeItemOffer.rejected]: (state, { payload }) => {
+      state.changeOfferStatus = "failed";
+
+      if (payload === "timeout") {
+        state.changeOfferError = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.changeOfferError = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.changeOfferError = "network failed";
+      } else state.changeOfferError = payload.message;
+    },
   },
 });
 
@@ -613,6 +674,8 @@ export const {
   resetUpdateStatus,
   resetChangeLogoStatus,
   resetChangeLogoError,
+  resetChangeOfferStatus,
+  resetChangeOffersError,
   itemsSliceSignOut,
   resetPageState,
   setSearchName,

@@ -62,7 +62,7 @@ function FavoritesPage() {
   }, []);
 
   return user ? (
-    <>
+    <div className={generalStyles.container}>
       <Header>
         <h2>{t("favorites")}</h2>
         <div
@@ -130,8 +130,8 @@ function FavoritesPage() {
           ))}
       </CardInfo>
 
-      {status === "loading" && <ActionLoader allowCancel={false} />}
-    </>
+      {/* {status === "loading" && <ActionLoader allowCancel={false} />} */}
+    </div>
   ) : (
     <Redirect to="/signin" />
   );

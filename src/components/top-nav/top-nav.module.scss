@@ -9,9 +9,11 @@
   top: 60px;
   z-index: 10;
 
-  background-color: $main-color;
+  background-color: $white-color;
+  color: $main-color;
 
-  // box-shadow: 0 2px 5px $secondary-color;
+  // box-shadow: 0 2px 3px $secondary-color;
+  border-bottom: 1px solid $main-color;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -26,14 +28,19 @@ div.end {
 
 div .link {
   text-decoration: none;
-  color: $white-color;
+  color: $main-color;
   cursor: pointer;
+  // font-weight: 100;
+  font-family: $font3;
+  font-size: 1.2rem;
+
+  transition: all 0.1s ease;
 }
 
 div.center .link,
 div.end .link {
   padding: 4px 8px;
-  font-size: 1rem;
+  // font-size: 1rem;
   margin: 0 6px;
 }
 
@@ -41,13 +48,15 @@ div.end .link {
   font-size: 12px;
 }
 
-div .link:hover {
-  border-bottom: 1px solid $third-color;
-  color: $third-color;
+div.center .link:hover,
+div.center .link.selected {
+  background-color: $third-color;
+  color: $white-color;
+  border-radius: 6px;
 }
 
-div .link.selected {
-  border-bottom: 1px solid $third-color;
+div.end .link:hover,
+div.end .link.selected {
   color: $third-color;
 }
 

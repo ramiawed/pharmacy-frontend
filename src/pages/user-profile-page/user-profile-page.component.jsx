@@ -219,7 +219,8 @@ function UserProfilePage() {
         <ChangePassword />
       </CardInfo>
 
-      {user.type !== UserTypeConstants.ADMIN && (
+      {(user.type === UserTypeConstants.COMPANY ||
+        user.type === UserTypeConstants.WAREHOUSE) && (
         <CardInfo
           headerTitle={t("admin-permission")}
           bgColor={Colors.FAILED_COLOR}

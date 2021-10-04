@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Redirect, useLocation } from "react-router-dom";
+import { Redirect, useLocation, useHistory } from "react-router-dom";
 import axios from "axios";
 
 // redux stuff
@@ -46,6 +46,7 @@ import rowStyles from "../../components/row.module.scss";
 function ItemPage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const location = useLocation();
 
@@ -76,19 +77,19 @@ function ItemPage() {
   });
 
   // reset handler
-  const resetItem = () => {
-    setItem({
-      name: "",
-      caliber: "",
-      formula: "",
-      indication: "",
-      composition: "",
-      packing: "",
-      price: "",
-      customer_price: "",
-    });
-    setItemError({});
-  };
+  // const resetItem = () => {
+  //   setItem({
+  //     name: "",
+  //     caliber: "",
+  //     formula: "",
+  //     indication: "",
+  //     composition: "",
+  //     packing: "",
+  //     price: "",
+  //     customer_price: "",
+  //   });
+  //   setItemError({});
+  // };
 
   const handleInputChange = (e) => {
     setItem({
@@ -146,8 +147,18 @@ function ItemPage() {
 
         dispatch(addItem({ obj, token }))
           .then(unwrapResult)
-          .then(() => {
-            resetItem();
+          .then((response) => {
+            history.push({
+              pathname: "/item",
+              state: {
+                from,
+                type: "info",
+                allowAction,
+                itemId: response.data.item._id,
+                companyId,
+                warehouseId,
+              },
+            });
           })
           .catch(() => {});
       } else if (type === "info") {
@@ -248,13 +259,16 @@ function ItemPage() {
               style={{
                 backgroundImage:
                   item.logo_url && item.logo_url !== ""
-                    ? `url("http://localhost:8000/${item.logo_url}`
-                    : `url("http://localhost:8000/medicine.jpeg`,
+                    ? `url("http://localhost:8000/${item.logo_url}")`
+                    : `url("http://localhost:8000/medicine.jpeg")`,
+                backgroundPosition: "center",
+                backgroundRepeat: "no-repeat",
+                backgroundSize: "contain",
               }}
             ></div>
           ) : null}
 
-          {allowAction && (
+          {allowAction && itemId && (
             <div>
               <InputFileImage type="item" item={item} />
             </div>
@@ -433,43 +447,43 @@ function ItemPage() {
       {allowAction &&
         (from === UserTypeConstants.COMPANY ||
           from === UserTypeConstants.ADMIN) && (
-          <>
+          <div className={generalStyles.margin_v_4}>
             <Button
               text={type === "info" ? t("update-item") : t("add-item")}
               bgColor={Colors.SUCCEEDED_COLOR}
               action={handleAddUpdateItem}
             />
-          </>
+          </div>
         )}
 
       {/* show add-to-cart button, if the user's type is PHARMACY and the item is exist in any warehouse */}
       {user.type === UserTypeConstants.PHARMACY && item.warehouses?.length > 0 && (
-        <>
+        <div className={generalStyles.margin_v_4}>
           <Button
             text={t("add-to-cart")}
             action={() => setShowAddToCartModal(true)}
             bgColor={Colors.SUCCEEDED_COLOR}
           />
-        </>
+        </div>
       )}
 
       {user.type === UserTypeConstants.WAREHOUSE &&
         (item.warehouses?.map((w) => w.warehouse._id).includes(user._id) ? (
-          <>
+          <div className={generalStyles.margin_v_4}>
             <Button
               text={t("remove-from-warehouse")}
               action={removeItemFromWarehouseHandler}
               bgColor={Colors.FAILED_COLOR}
             />
-          </>
+          </div>
         ) : (
-          <>
+          <div className={generalStyles.margin_v_4}>
             <Button
               text={t("add-to-warehouse")}
               action={addItemToWarehouseHandler}
               bgColor={Colors.SUCCEEDED_COLOR}
             />
-          </>
+          </div>
         ))}
 
       {changeLogoStatus === "loading" && <Loader allowCancel={false} />}

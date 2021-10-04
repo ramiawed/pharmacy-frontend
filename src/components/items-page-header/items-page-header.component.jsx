@@ -108,7 +108,7 @@ function ItemsPageHeader({
             }}
           />
 
-          {user.type === UserTypeConstants.ADMIN && (
+          {user.type !== UserTypeConstants.COMPANY && (
             <SearchInput
               label="item-company"
               id="item-company"
@@ -123,18 +123,21 @@ function ItemsPageHeader({
             />
           )}
 
-          <SearchInput
-            label="item-warehouse"
-            id="item-warehouse"
-            type="text"
-            value={pageState.searchWarehouse}
-            onchange={(e) => dispatch(setSearchWarehouse(e.target.value))}
-            placeholder="search"
-            onEnterPress={search}
-            resetField={() => {
-              dispatch(setSearchWarehouse(""));
-            }}
-          />
+          {user.type !== UserTypeConstants.WAREHOUSE && (
+            <SearchInput
+              label="item-warehouse"
+              id="item-warehouse"
+              type="text"
+              value={pageState.searchWarehouse}
+              onchange={(e) => dispatch(setSearchWarehouse(e.target.value))}
+              placeholder="search"
+              onEnterPress={search}
+              resetField={() => {
+                dispatch(setSearchWarehouse(""));
+              }}
+            />
+          )}
+
           <div className={searchContainerStyles.checkbox_div}>
             <input
               type="checkbox"
@@ -146,6 +149,7 @@ function ItemsPageHeader({
             />
             <label>{t("deleted-items")}</label>
           </div>
+
           <div className={searchContainerStyles.checkbox_div}>
             <input
               type="checkbox"
@@ -157,28 +161,38 @@ function ItemsPageHeader({
             />
             <label>{t("active-items")}</label>
           </div>
-          <div className={searchContainerStyles.checkbox_div}>
-            <input
-              type="checkbox"
-              checked={pageState.searchInWarehouse}
-              onChange={() => {
-                dispatch(setSearchInWarehouse(!pageState.searchInWarehouse));
-                dispatch(setSearchOutWarehouse(false));
-              }}
-            />
-            <label>{t("warehouse-in-warehouse")}</label>
-          </div>
-          <div className={searchContainerStyles.checkbox_div}>
-            <input
-              type="checkbox"
-              checked={pageState.searchOutWarehouse}
-              onChange={() => {
-                dispatch(setSearchInWarehouse(false));
-                dispatch(setSearchOutWarehouse(!pageState.searchOutWarehouse));
-              }}
-            />
-            <label>{t("warehouse-out-warehouse")}</label>
-          </div>
+
+          {user.type !== UserTypeConstants.WAREHOUSE && (
+            <>
+              <div className={searchContainerStyles.checkbox_div}>
+                <input
+                  type="checkbox"
+                  checked={pageState.searchInWarehouse}
+                  onChange={() => {
+                    dispatch(
+                      setSearchInWarehouse(!pageState.searchInWarehouse)
+                    );
+                    dispatch(setSearchOutWarehouse(false));
+                  }}
+                />
+                <label>{t("warehouse-in-warehouse")}</label>
+              </div>
+
+              <div className={searchContainerStyles.checkbox_div}>
+                <input
+                  type="checkbox"
+                  checked={pageState.searchOutWarehouse}
+                  onChange={() => {
+                    dispatch(setSearchInWarehouse(false));
+                    dispatch(
+                      setSearchOutWarehouse(!pageState.searchOutWarehouse)
+                    );
+                  }}
+                />
+                <label>{t("warehouse-out-warehouse")}</label>
+              </div>
+            </>
+          )}
         </SearchContainer>
       </div>
       <div className={generalStyles.actions}>

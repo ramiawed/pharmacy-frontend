@@ -40,6 +40,18 @@ import tableStyles from "../table.module.scss";
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants";
 
+const checkOffer = (item) => {
+  let result = false;
+
+  item.warehouses.forEach((w) => {
+    if (w.offer.offers.length > 0) {
+      result = true;
+    }
+  });
+
+  return result;
+};
+
 function ItemRow({ companyItem }) {
   const { t } = useTranslation();
 
@@ -57,6 +69,8 @@ function ItemRow({ companyItem }) {
   const [changeAddToWarehouseLoading, setChangeAddToWarehouseLoading] =
     useState(false);
 
+  const [hasOffer, setHasOffer] = useState(checkOffer(companyItem));
+
   // method to handle add company to user's favorite
   const addItemToFavoriteItems = () => {
     // check the internet connection
@@ -71,7 +85,7 @@ function ItemRow({ companyItem }) {
       addFavoriteItem({ obj: { favoriteItemId: companyItem._id }, token })
     )
       .then(unwrapResult)
-      .then((result) => {
+      .then(() => {
         dispatch(
           statisticsItemFavorites({ obj: { itemId: companyItem._id }, token })
         );
@@ -176,7 +190,12 @@ function ItemRow({ companyItem }) {
   // render method
   return (
     <>
-      <div className={rowStyles.container}>
+      <div
+        style={{
+          backgroundColor: hasOffer ? "#0f04" : " #fff",
+        }}
+        className={rowStyles.container}
+      >
         <label
           // style={{ textAlign: "center" }}
           className={[
@@ -193,7 +212,6 @@ function ItemRow({ companyItem }) {
                 from: user.type,
                 type: "info",
                 allowAction: false,
-
                 itemId: companyItem._id,
                 companyId: companyItem.company._id,
                 warehouseId:

@@ -5,7 +5,10 @@ import { Link } from "react-router-dom";
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
-import { changeItemActiveState } from "../../redux/items/itemsSlices";
+import {
+  changeItemActiveState,
+  changeItemOffer,
+} from "../../redux/items/itemsSlices";
 import {
   changeOnlineMsg,
   selectOnlineStatus,
@@ -27,6 +30,19 @@ import rowStyles from "../row.module.scss";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
+import { VscLoading } from "react-icons/vsc";
+
+const checkOffer = (item) => {
+  let result = false;
+
+  item.warehouses.forEach((w) => {
+    if (w.offer.offers.length > 0) {
+      result = true;
+    }
+  });
+
+  return result;
+};
 
 function CompanyItemRow({
   item,
@@ -51,6 +67,7 @@ function CompanyItemRow({
   const [showOfferModal, setShowOfferModal] = useState(false);
   const [showDeleteFromWarehouseModal, setShowDeleteFromWarehouseModal] =
     useState(false);
+  const [deleteLoading, setDeleteLoading] = useState(false);
 
   const actionButtonPress = (action) => {
     if (action === "delete") {
@@ -151,7 +168,12 @@ function CompanyItemRow({
 
   return (
     <>
-      <div className={rowStyles.container}>
+      <div
+        style={{
+          backgroundColor: checkOffer(item) ? "#0f04" : " #fff",
+        }}
+        className={rowStyles.container}
+      >
         <label
           className={[rowStyles.hover_underline, tableStyles.label_medium].join(
             " "
@@ -250,18 +272,32 @@ function CompanyItemRow({
                 generalStyles.flex_center_container,
               ].join(" ")}
             >
-              <Icon
-                icon={() => <MdDelete size={20} />}
-                onclick={deleteFromWarehouseHandler}
-                foreColor={Colors.FAILED_COLOR}
-              />
+              {deleteLoading ? (
+                <Icon
+                  icon={() => (
+                    <VscLoading className={generalStyles.loading} size={24} />
+                  )}
+                  onclick={() => {}}
+                  foreColor={Colors.FAILED_COLOR}
+                />
+              ) : (
+                <Icon
+                  icon={() => <MdDelete size={20} />}
+                  onclick={deleteFromWarehouseHandler}
+                  foreColor={Colors.FAILED_COLOR}
+                />
+              )}
             </label>
 
             <label className={tableStyles.label_xsmall}>
               <Icon
                 icon={() => <MdLocalOffer size={20} />}
                 tooltip={t("nav-offers")}
-                foreColor={Colors.SECONDARY_COLOR}
+                foreColor={
+                  checkOffer(item)
+                    ? Colors.SUCCEEDED_COLOR
+                    : Colors.SECONDARY_COLOR
+                }
                 onclick={() => {
                   setShowOfferModal(true);
                 }}
@@ -308,6 +344,9 @@ function CompanyItemRow({
               role === UserTypeConstants.WAREHOUSE &&
               warehouse.allowAdmin)
           }
+          afterUpdateOffer={() =>
+            dispatch(changeItemOffer({ _id: item._id, token }))
+          }
         />
       )}
 
@@ -316,8 +355,14 @@ function CompanyItemRow({
           header={t("item-delete-header")}
           cancelLabel={t("cancel-label")}
           okLabel={t("ok-label")}
-          okModal={() => handleDeleteItemFromWarehouse()}
-          closeModal={() => setShowDeleteFromWarehouseModal(false)}
+          okModal={() => {
+            handleDeleteItemFromWarehouse();
+            setDeleteLoading(true);
+          }}
+          closeModal={() => {
+            setShowDeleteFromWarehouseModal(false);
+            setDeleteLoading(false);
+          }}
           small={true}
         >
           {<p>{t("item-delete-from-warehouse")}</p>}

@@ -212,7 +212,7 @@ function StatisticsPage() {
     title &&
     type &&
     field ? (
-    <>
+    <div className={generalStyles.container}>
       <Header>
         <h2>{title}</h2>
         <div style={{ position: "relative", height: "50px" }}>
@@ -393,7 +393,7 @@ function StatisticsPage() {
           </div>
         </Modal>
       )}
-    </>
+    </div>
   ) : (
     <Redirect to="/signin" />
   );

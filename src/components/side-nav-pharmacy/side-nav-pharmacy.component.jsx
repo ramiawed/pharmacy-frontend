@@ -12,7 +12,7 @@ function SideNavPharmacy({ selectedOption, onSelectedChange }) {
   const { t } = useTranslation();
   return (
     <>
-      <Link
+      {/* <Link
         className={[
           styles.link,
           selectedOption === SideNavLinks.OFFERS ? `${styles.selected}` : "",
@@ -23,7 +23,7 @@ function SideNavPharmacy({ selectedOption, onSelectedChange }) {
         to="/pharmacy/orders"
       >
         {t("nav-orders")}
-      </Link>
+      </Link> */}
 
       <Link
         className={[

@@ -7,7 +7,7 @@ import { changeItemLogo } from "../../redux/items/itemsSlices";
 // styles
 import generalStyles from "../../style.module.scss";
 
-function InputFileImage({ type, item, readOnly }) {
+function InputFileImage({ type, item, readOnly, onchange }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -31,7 +31,9 @@ function InputFileImage({ type, item, readOnly }) {
       } else {
         data.append(
           "name",
-          `${item.name}${Date.now()}.${uploadedFile.name.split(".").pop()}`
+          `${item.name.replace("%", "")}${Date.now()}.${uploadedFile.name
+            .split(".")
+            .pop()}`
         );
       }
 

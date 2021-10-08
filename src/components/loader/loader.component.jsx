@@ -8,12 +8,15 @@ function Loader({ color }) {
   const { t } = useTranslation();
 
   return (
-    <div className={styles.loader}>
+    <div
+      className={styles.loader}
+      style={{ color: color ? color : Colors.SECONDARY_COLOR }}
+    >
       <ReactLoading
-        color={color ? color : Colors.SECONDARY_COLOR}
         type="bars"
         height={75}
         width={75}
+        color={color ? color : Colors.SECONDARY_COLOR}
       />
       <p>{t("loading-data")}</p>
     </div>

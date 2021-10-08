@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "http://localhost:3000/signin",
   "dependencies": {
+    "@pusher/push-notifications-web": "^1.1.0",
     "@reduxjs/toolkit": "^1.5.1",
     "@testing-library/jest-dom": "^5.12.0",
     "@testing-library/react": "^11.2.6",
@@ -14,6 +15,7 @@
     "i18next": "^20.2.2",
     "i18next-browser-languagedetector": "^6.1.1",
     "node-sass": "^6.0.0",
+    "pusher-js": "^7.0.3",
     "react": "^17.0.2",
     "react-detect-offline": "^2.4.5",
     "react-dom": "^17.0.2",

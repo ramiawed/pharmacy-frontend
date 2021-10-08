@@ -4,7 +4,13 @@ import { BASEURL } from "../../utils/constants";
 
 const initialState = {
   status: "idle",
-  settings: {},
+  settings: {
+    showFavoritesCompanies: true,
+    showNewestCompany: true,
+    showFavoritesItems: true,
+    showNewestItems: true,
+    showMostOrderedItems: true,
+  },
   error: "",
 };
 
@@ -91,7 +97,13 @@ export const settingsSlice = createSlice({
     resetSetting: (state) => {
       state.status = "idle";
       state.error = "";
-      state.settings = {};
+      state.settings = {
+        showFavoritesCompanies: true,
+        showNewestCompany: true,
+        showFavoritesItems: true,
+        showNewestItems: true,
+        showMostOrderedItems: true,
+      };
     },
   },
   extraReducers: {

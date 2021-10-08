@@ -1,22 +1,41 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Redirect } from "react-router-dom";
 
 // components
 import Introduction from "../../components/introduction/introduction.component";
 
 // redux stuff
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
-import { selectSettings } from "../../redux/settings/settingsSlice";
-import { selectFavoritesItems } from "../../redux/advertisements/favoritesItemsSlice";
-import { selectNewestItems } from "../../redux/advertisements/newestItemsSlice";
-import { selectMostOrderedItems } from "../../redux/advertisements/mostOrderedItemsSlice";
-import { selectFavoritesCompanies } from "../../redux/advertisements/favoritesCompaniesSlice";
-import { selectNewestCompanies } from "../../redux/advertisements/newestCompaniesSlice";
+import {
+  getAllSettings,
+  selectSettings,
+} from "../../redux/settings/settingsSlice";
+import {
+  getFavoritesItems,
+  selectFavoritesItems,
+} from "../../redux/advertisements/favoritesItemsSlice";
+import {
+  getNewestItems,
+  selectNewestItems,
+} from "../../redux/advertisements/newestItemsSlice";
+import {
+  getMostOrderedItems,
+  selectMostOrderedItems,
+} from "../../redux/advertisements/mostOrderedItemsSlice";
+import {
+  getFavoritesCompanies,
+  selectFavoritesCompanies,
+} from "../../redux/advertisements/favoritesCompaniesSlice";
+import {
+  getNewestCompanies,
+  selectNewestCompanies,
+} from "../../redux/advertisements/newestCompaniesSlice";
 import SectionHomePage from "../../components/section-home-page/section-home-page.component";
 
 function HomePage() {
-  const { user } = useSelector(selectUserData);
+  const dispatch = useDispatch();
+  const { user, token } = useSelector(selectUserData);
   const { favoritesCompanies } = useSelector(selectFavoritesCompanies);
   const { newestCompanies } = useSelector(selectNewestCompanies);
   const { favoritesItems } = useSelector(selectFavoritesItems);
@@ -24,11 +43,20 @@ function HomePage() {
   const { mostOrderedItems } = useSelector(selectMostOrderedItems);
   const { settings } = useSelector(selectSettings);
 
+  useEffect(() => {
+    dispatch(getAllSettings({ token }));
+    dispatch(getFavoritesCompanies({ token }));
+    dispatch(getNewestCompanies({ token }));
+    dispatch(getFavoritesItems({ token }));
+    dispatch(getNewestItems({ token }));
+    dispatch(getMostOrderedItems({ token }));
+  }, []);
+
   return user ? (
     <div>
       <Introduction />
 
-      {settings.showFavoritesCompanies && favoritesCompanies.length > 0 && (
+      {settings.showFavoritesCompanies && (
         <SectionHomePage
           data={favoritesCompanies}
           containerBackground="#1a535c"
@@ -39,7 +67,7 @@ function HomePage() {
         />
       )}
 
-      {settings.showNewestCompanies && newestCompanies.length > 0 && (
+      {settings.showNewestCompanies && (
         <SectionHomePage
           data={newestCompanies}
           containerBackground="#6D597A"
@@ -50,7 +78,7 @@ function HomePage() {
         />
       )}
 
-      {settings.showFavoritesItems && favoritesItems.length > 0 && (
+      {settings.showFavoritesItems && (
         <SectionHomePage
           data={favoritesItems}
           containerBackground="#3D5A80"
@@ -63,7 +91,7 @@ function HomePage() {
         />
       )}
 
-      {settings.showNewestItems && newestItems.length > 0 && (
+      {settings.showNewestItems && (
         <SectionHomePage
           data={newestItems}
           containerBackground="#E56B6F"
@@ -76,7 +104,7 @@ function HomePage() {
         />
       )}
 
-      {settings.showMostOrderedItems && mostOrderedItems.length > 0 && (
+      {settings.showMostOrderedItems && (
         <SectionHomePage
           data={mostOrderedItems}
           containerBackground="#ffe66d"

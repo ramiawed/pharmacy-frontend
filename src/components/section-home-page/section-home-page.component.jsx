@@ -80,7 +80,7 @@ function SectionHomePage({
       }}
     >
       {data.length === 0 ? (
-        <Loader color={headerBackground} />
+        <Loader color="#fff" />
       ) : (
         <>
           <div

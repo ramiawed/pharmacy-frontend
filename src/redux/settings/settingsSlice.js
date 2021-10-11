@@ -5,11 +5,36 @@ import { BASEURL } from "../../utils/constants";
 const initialState = {
   status: "idle",
   settings: {
-    showFavoritesCompanies: true,
-    showNewestCompany: true,
-    showFavoritesItems: true,
-    showNewestItems: true,
-    showMostOrderedItems: true,
+    companiesSectionOne: {
+      show: true,
+      title: "company section one title",
+      description: "company section one description",
+      order: 1,
+    },
+    companiesSectionTwo: {
+      show: true,
+      title: "company section two title",
+      description: "company section two description",
+      order: 1,
+    },
+    itemsSectionOne: {
+      show: true,
+      title: "item section one title",
+      description: "item section one description",
+      order: 1,
+    },
+    itemsSectionTwo: {
+      show: true,
+      title: "item section two title",
+      description: "company section two description",
+      order: 1,
+    },
+    itemsSectionThree: {
+      show: true,
+      title: "item section three title",
+      description: "item section three description",
+      order: 1,
+    },
   },
   error: "",
 };
@@ -52,18 +77,23 @@ export const getAllSettings = createAsyncThunk(
 
 export const updateSettings = createAsyncThunk(
   "settings/updateSettings",
-  async ({ obj, token, rejectWithValue }) => {
+  async ({ obj, field, token, rejectWithValue }) => {
     try {
+      console.log(obj, field, token);
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      const response = await axios.post(`${BASEURL}/settings`, obj, {
-        timeout: 10000,
-        cancelToken: source.token,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        `${BASEURL}/settings?field=${field}`,
+        obj,
+        {
+          timeout: 10000,
+          cancelToken: source.token,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       return response.data;
     } catch (err) {
@@ -98,11 +128,36 @@ export const settingsSlice = createSlice({
       state.status = "idle";
       state.error = "";
       state.settings = {
-        showFavoritesCompanies: true,
-        showNewestCompany: true,
-        showFavoritesItems: true,
-        showNewestItems: true,
-        showMostOrderedItems: true,
+        companiesSectionOne: {
+          show: true,
+          title: "company section one title",
+          description: "company section one description",
+          order: 1,
+        },
+        companiesSectionTwo: {
+          show: true,
+          title: "company section two title",
+          description: "company section two description",
+          order: 1,
+        },
+        itemsSectionOne: {
+          show: true,
+          title: "item section one title",
+          description: "item section one description",
+          order: 1,
+        },
+        itemsSectionTwo: {
+          show: true,
+          title: "item section two title",
+          description: "company section two description",
+          order: 1,
+        },
+        itemsSectionThree: {
+          show: true,
+          title: "item section three title",
+          description: "item section three description",
+          order: 1,
+        },
       };
     },
   },

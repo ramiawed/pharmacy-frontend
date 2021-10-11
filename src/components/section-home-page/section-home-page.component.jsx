@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useTranslation } from "react-i18next";
 import Slider from "react-slick";
-import AdvertisementCompanyCard from "../advertisement-company-card/advertisement-company-card.component";
 
 // components
 import AdvertisementItemCard from "../advertisement-item-card/advertisement-item-card.component";
+import AdvertisementCompanyCard from "../advertisement-company-card/advertisement-company-card.component";
 import Loader from "../loader/loader.component";
 
 // styles
@@ -19,8 +18,8 @@ function SectionHomePage({
   header,
   description,
   type,
+  order,
 }) {
-  const { t } = useTranslation();
   const [width, setWidth] = useState(window.innerWidth);
 
   useEffect(() => {
@@ -77,6 +76,7 @@ function SectionHomePage({
       className={styles.container}
       style={{
         background: containerBackground,
+        order: order,
       }}
     >
       {data.length === 0 ? (
@@ -90,8 +90,8 @@ function SectionHomePage({
               background: headerBackground,
             }}
           >
-            <h2>{t(header)}</h2>
-            <p>{t(description)}</p>
+            <h2>{header}</h2>
+            <p>{description}</p>
           </div>
           <div
             className={styles.slicker}

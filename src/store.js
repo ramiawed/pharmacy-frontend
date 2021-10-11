@@ -13,12 +13,12 @@ import warehouseItemsSlices from "./redux/warehouseItems/warehouseItemsSlices";
 import cartSlice from "./redux/cart/cartSlice";
 import statisticsSlice from "./redux/statistics/statisticsSlice";
 import onlineSlice from "./redux/online/onlineSlice";
-import favoritesCompaniesSlice from "./redux/advertisements/favoritesCompaniesSlice";
-import newestCompaniesSlice from "./redux/advertisements/newestCompaniesSlice";
 import settingsSlice from "./redux/settings/settingsSlice";
-import favoritesItemsSlice from "./redux/advertisements/favoritesItemsSlice";
-import newestItemsSlice from "./redux/advertisements/newestItemsSlice";
-import mostOrderedItemsSlice from "./redux/advertisements/mostOrderedItemsSlice";
+import companiesSectionOneSlice from "./redux/advertisements/companiesSectionOneSlice";
+import companiesSectionTwoSlice from "./redux/advertisements/companiesSectionTwoSlice";
+import itemsSectionOneSlice from "./redux/advertisements/itemsSectionOneSlice";
+import itemsSectionTwoSlice from "./redux/advertisements/itemsSectionTwoSlice";
+import itemsSectionThreeSlice from "./redux/advertisements/itemsSectionThreeSlice";
 
 const reducers = combineReducers({
   auth: authSlice,
@@ -32,11 +32,11 @@ const reducers = combineReducers({
   cart: cartSlice,
   statistics: statisticsSlice,
   online: onlineSlice,
-  favoritesCompanies: favoritesCompaniesSlice,
-  newestCompanies: newestCompaniesSlice,
-  favoritesItems: favoritesItemsSlice,
-  newestItems: newestItemsSlice,
-  mostOrderedItems: mostOrderedItemsSlice,
+  companiesSectionOne: companiesSectionOneSlice,
+  companiesSectionTwo: companiesSectionTwoSlice,
+  itemsSectionOne: itemsSectionOneSlice,
+  itemsSectionTwo: itemsSectionTwoSlice,
+  itemsSectionThree: itemsSectionThreeSlice,
   settings: settingsSlice,
 });
 

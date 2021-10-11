@@ -34,11 +34,6 @@ import Button from "../button/button.component";
 import { Colors } from "../../utils/constants";
 import Loader from "../action-loader/action-loader.component";
 import { getAllSettings } from "../../redux/settings/settingsSlice";
-import { getFavoritesCompanies } from "../../redux/advertisements/favoritesCompaniesSlice";
-import { getNewestCompanies } from "../../redux/advertisements/newestCompaniesSlice";
-import { getFavoritesItems } from "../../redux/advertisements/favoritesItemsSlice";
-import { getNewestItems } from "../../redux/advertisements/newestItemsSlice";
-import { getMostOrderedItems } from "../../redux/advertisements/mostOrderedItemsSlice";
 
 // constants use for motion
 const containerVariant = {
@@ -170,7 +165,7 @@ function SignIn() {
       .then(unwrapResult)
       .then((result) => {
         dispatch(statisticsSignin({ token: result.token }));
-        // dispatch(getAllSettings({ token: result.token }));
+        dispatch(getAllSettings({ token: result.token }));
       })
       .catch((err) => {});
   };

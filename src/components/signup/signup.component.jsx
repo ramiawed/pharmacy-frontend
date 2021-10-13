@@ -26,6 +26,8 @@ import {
 } from "../../redux/online/onlineSlice";
 import Button from "../button/button.component";
 import Loader from "../action-loader/action-loader.component";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { getAllSettings } from "../../redux/settings/settingsSlice";
 
 const containerVariant = {
   hidden: {
@@ -337,7 +339,11 @@ function SignUp() {
           if (user.type === UserTypeConstants.NORMAL) {
             dispatch(
               authSign({ username: user.username, password: user.password })
-            );
+            )
+              .then(unwrapResult)
+              .then(({ token }) => {
+                dispatch(getAllSettings({ token }));
+              });
             setSignupLoading(false);
           } else {
             // user type is not normal
@@ -533,7 +539,7 @@ function SignUp() {
           <>
             <div className={[styles.input_full_width].join(" ")}>
               <SelectCustom
-                bgColor={Colors.fc_secondary_COLOR}
+                bgColor={Colors.SECONDARY_COLOR}
                 foreColor="#fff"
                 options={guestJobOptions}
                 onchange={guestTypeChangeHandler}

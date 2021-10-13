@@ -236,11 +236,13 @@ function ItemRow({ companyItem }) {
           {companyItem.formula}
         </label>
 
-        <label
-          className={[tableStyles.label_small, tableStyles.center].join(" ")}
-        >
-          {companyItem.price}
-        </label>
+        {user.type !== UserTypeConstants.GUEST && (
+          <label
+            className={[tableStyles.label_small, tableStyles.center].join(" ")}
+          >
+            {companyItem.price}
+          </label>
+        )}
 
         <label
           className={[tableStyles.label_small, tableStyles.center].join(" ")}

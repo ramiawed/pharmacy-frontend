@@ -321,11 +321,13 @@ function ItemCard({ companyItem }) {
               {companyItem.name}
             </Link>
           </label>
-          {/* <p className={styles.item_name}>{companyItem.name}</p> */}
-          <div className={styles.info}>
-            <label>{t("item-price")}:</label>
-            <label className={styles.bigger}>{companyItem.price}</label>
-          </div>
+
+          {user.type !== UserTypeConstants.GUEST && (
+            <div className={styles.info}>
+              <label>{t("item-price")}:</label>
+              <label className={styles.bigger}>{companyItem.price}</label>
+            </div>
+          )}
 
           <div className={styles.info}>
             <label>{t("item-customer-price")}:</label>

@@ -303,7 +303,9 @@ function MedicinesPage() {
         </div>
       </Header>
 
-      {count > 0 && displayType === "list" && <ItemsByCompanyTableHeader />}
+      {count > 0 && displayType === "list" && (
+        <ItemsByCompanyTableHeader user={user} />
+      )}
 
       {displayType === "list" &&
         medicines.map((medicine) => (

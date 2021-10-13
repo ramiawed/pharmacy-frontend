@@ -39,7 +39,6 @@ function SettingSectionHeader({
   const [titleState, setTitleState] = useState(title);
   const [titleError, setTitleError] = useState(false);
   const [descriptionState, setDescriptionState] = useState(description);
-  // const [descriptionError, setDescriptionError] = useState(false);
   const [orderState, setOrderState] = useState(order);
   const [orderError, setOrderError] = useState(false);
 
@@ -82,13 +81,14 @@ function SettingSectionHeader({
       updateAction({
         token,
         obj: {
-          title: titleState,
-          description: descriptionState,
-          order: orderState,
-          show: showState,
-          titleRight: titleRightState,
+          [`${field}`]: {
+            title: titleState,
+            description: descriptionState,
+            order: orderState,
+            show: showState,
+            titleRight: titleRightState,
+          },
         },
-        field,
       })
     )
       .then(unwrapResult)

@@ -67,6 +67,22 @@ function TopNav({ onSelectedChange, showTopNav }) {
         >
           {t("nav-warehouse")}
         </Link>
+        <Link
+          to={{
+            pathname: "/medicines",
+            state: {
+              companyId: null,
+              warehouseId: null,
+            },
+          }}
+          className={[
+            styles.link,
+            history.location.pathname === "/medicines" ? styles.selected : null,
+          ].join(" ")}
+          onClick={() => onSelectedChange(TopNavLinks.MEDICINES)}
+        >
+          {t("nav-medicines")}
+        </Link>
       </div>
       <div className={styles.end}>
         <Link

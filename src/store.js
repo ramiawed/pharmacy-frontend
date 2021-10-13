@@ -19,6 +19,7 @@ import companiesSectionTwoSlice from "./redux/advertisements/companiesSectionTwo
 import itemsSectionOneSlice from "./redux/advertisements/itemsSectionOneSlice";
 import itemsSectionTwoSlice from "./redux/advertisements/itemsSectionTwoSlice";
 import itemsSectionThreeSlice from "./redux/advertisements/itemsSectionThreeSlice";
+import medicinesSlice from "./redux/medicines/medicinesSlices";
 
 const reducers = combineReducers({
   auth: authSlice,
@@ -28,6 +29,7 @@ const reducers = combineReducers({
   favorites: favoritesSlice,
   items: itemsSlice,
   companyItems: companyItemsSlice,
+  medicines: medicinesSlice,
   warehouseItems: warehouseItemsSlices,
   cart: cartSlice,
   statistics: statisticsSlice,

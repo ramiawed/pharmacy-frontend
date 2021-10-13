@@ -38,6 +38,7 @@ import styles from "./main-page.module.scss";
 
 // constants
 import { TopNavLinks } from "../../utils/constants";
+import MedicinesPage from "../medicines-page/medicines-page.component";
 
 // MainPage
 // you have to sign in first
@@ -155,6 +156,10 @@ function MainPage() {
 
         <Route exact path="/companies">
           <CompaniesPage />
+        </Route>
+
+        <Route exact path="/medicines">
+          <MedicinesPage />
         </Route>
 
         <Route path="/companies/:companyId">

@@ -35,6 +35,7 @@ const initialState = {
       description: "item section three description",
       order: 1,
     },
+    showWarehouseItem: false,
   },
   error: "",
 };
@@ -77,23 +78,18 @@ export const getAllSettings = createAsyncThunk(
 
 export const updateSettings = createAsyncThunk(
   "settings/updateSettings",
-  async ({ obj, field, token, rejectWithValue }) => {
+  async ({ obj, token, rejectWithValue }) => {
     try {
-      console.log(obj, field, token);
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      const response = await axios.post(
-        `${BASEURL}/settings?field=${field}`,
-        obj,
-        {
-          timeout: 10000,
-          cancelToken: source.token,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
+      const response = await axios.post(`${BASEURL}/settings`, obj, {
+        timeout: 10000,
+        cancelToken: source.token,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       return response.data;
     } catch (err) {
@@ -186,7 +182,6 @@ export const settingsSlice = createSlice({
     },
     [updateSettings.fulfilled]: (state, action) => {
       state.status = "succeeded";
-      console.log(action.payload.data);
       state.settings = action.payload.data.settings;
     },
     [updateSettings.rejected]: (state, { payload }) => {

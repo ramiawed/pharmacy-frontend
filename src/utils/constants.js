@@ -52,6 +52,7 @@ export const TopNavLinks = {
   WAREHOUSES: "warehouses",
   FAVORITES: "favorites",
   CART: "cart",
+  MEDICINES: "medicines",
   SIGNOUT: "signout",
 };
 

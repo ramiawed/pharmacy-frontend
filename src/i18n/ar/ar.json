@@ -72,6 +72,7 @@
     "nav-main-page": "الصفحة الرئيسية",
     "nav-company": "الشركات",
     "nav-warehouse": "المستودعات",
+    "nav-medicines": "الأدوية",
     "cart": "الحافظة",
     "nav-profile": "الملف الشخصي",
     "nav-sign-out": "تسجيل الخروج",
@@ -325,5 +326,7 @@
     "most-ordered-items-paragraph": "الادوية الاكثر طلباً من قبل الزبائن",
     "section-title": "عنوان القسم:",
     "section-description": "وصف القسم:",
-    "section-order": "ترتيب إظهار القسم ضمن الصفحة الرئيسية:"
+    "section-order": "ترتيب إظهار القسم ضمن الصفحة الرئيسية:",
+    "general-settings": "الاعدادات العامة",
+    "show-warehouse-items-permission": "السماح بعرض الأدوية ضمن المستودعات"
 }

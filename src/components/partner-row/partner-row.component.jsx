@@ -7,7 +7,6 @@ import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { VscLoading } from "react-icons/vsc";
 
 // components
-import ActionIcon from "../action-icon/action-icon.component";
 
 // redux-stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -26,6 +25,7 @@ import {
   changeOnlineMsg,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
+import { selectSettings } from "../../redux/settings/settingsSlice";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -39,6 +39,10 @@ function PartnerRow({ user }) {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
+
+  const {
+    settings: { showWarehouseItem },
+  } = useSelector(selectSettings);
 
   const isOnline = useSelector(selectOnlineStatus);
   const favorites = useSelector(selectFavoritesPartners);
@@ -104,10 +108,19 @@ function PartnerRow({ user }) {
   return (
     <>
       <div className={rowStyles.container}>
-        {user.type === UserTypeConstants.COMPANY && (
+        {user.type === UserTypeConstants.COMPANY ||
+        (user.type === UserTypeConstants.WAREHOUSE && showWarehouseItem) ? (
           <Link
             onClick={dispatchCompanySelectedHandler}
-            to={`/companies/${user._id}`}
+            to={{
+              pathname: `/medicines`,
+              state: {
+                companyId:
+                  user.type === UserTypeConstants.COMPANY ? user._id : null,
+                warehouseId:
+                  user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
+              },
+            }}
             className={[
               rowStyles.hover_underline,
               rowStyles.padding_start,
@@ -115,9 +128,7 @@ function PartnerRow({ user }) {
           >
             {user.name}
           </Link>
-        )}
-
-        {user.type === UserTypeConstants.WAREHOUSE && (
+        ) : (
           <label
             className={[
               rowStyles.hover_underline,

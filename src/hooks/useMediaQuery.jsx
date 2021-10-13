@@ -7,7 +7,6 @@ export const useMediaQuery = (query) => {
   useEffect(() => {
     const handler = (e) => {
       setMatches(e.matches);
-      console.log("resize");
     };
 
     mediaMatch.addEventListener("resize", handler);

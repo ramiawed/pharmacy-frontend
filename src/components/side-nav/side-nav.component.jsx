@@ -25,11 +25,6 @@ import { itemsSliceSignOut } from "../../redux/items/itemsSlices";
 import { statisticsSliceSignOut } from "../../redux/statistics/statisticsSlice";
 import { warehouseSliceSignOut } from "../../redux/warehouse/warehousesSlice";
 import { warehouseItemsSliceSignOut } from "../../redux/warehouseItems/warehouseItemsSlices";
-import { resetFavoritesCompanies } from "../../redux/advertisements/favoritesCompaniesSlice";
-import { resetNewestCompanies } from "../../redux/advertisements/newestCompaniesSlice";
-import { resetFavoritesItems } from "../../redux/advertisements/favoritesItemsSlice";
-import { resetNewestItems } from "../../redux/advertisements/newestItemsSlice";
-import { resetMostOrderedItems } from "../../redux/advertisements/mostOrderedItemsSlice";
 
 // styles
 import styles from "./side-nav.module.scss";
@@ -59,11 +54,6 @@ function SideNav({
     dispatch(usersSliceSignOut());
     dispatch(warehouseSliceSignOut());
     dispatch(warehouseItemsSliceSignOut());
-    dispatch(resetFavoritesCompanies());
-    dispatch(resetNewestCompanies());
-    dispatch(resetFavoritesItems());
-    dispatch(resetNewestItems());
-    dispatch(resetMostOrderedItems());
   };
 
   return (

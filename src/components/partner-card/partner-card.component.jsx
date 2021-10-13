@@ -33,12 +33,17 @@ import styles from "./partner-card.module.scss";
 
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
+import { selectSettings } from "../../redux/settings/settingsSlice";
 
 function PartnerCard({ user, fullWidth }) {
   const { t } = useTranslation();
 
   const history = useHistory();
   const dispatch = useDispatch();
+
+  const {
+    settings: { showWarehouseItem },
+  } = useSelector(selectSettings);
 
   const isOnline = useSelector(selectOnlineStatus);
   const favorites = useSelector(selectFavoritesPartners);
@@ -101,7 +106,14 @@ function PartnerCard({ user, fullWidth }) {
       );
     }
 
-    history.push(`/companies/${user._id}`);
+    history.push({
+      pathname: "medicines",
+      state: {
+        companyId: user.type === UserTypeConstants.COMPANY ? user._id : null,
+        warehouseId:
+          user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
+      },
+    });
   };
 
   return (
@@ -151,7 +163,8 @@ function PartnerCard({ user, fullWidth }) {
           </div>
         )}
 
-        {user.type === UserTypeConstants.COMPANY && (
+        {(user.type === UserTypeConstants.COMPANY ||
+          (user.type === UserTypeConstants.WAREHOUSE && showWarehouseItem)) && (
           <div>
             <Button
               action={displayMedicinesHandler}

@@ -29,6 +29,7 @@ import {
   getItemsSectionThree,
   selectItemsSectionThree,
 } from "../../redux/advertisements/itemsSectionThreeSlice";
+import SearchHome from "../../components/search-home/search-home.component";
 
 function HomePage() {
   const dispatch = useDispatch();
@@ -51,6 +52,7 @@ function HomePage() {
 
   return user ? (
     <div>
+      <SearchHome />
       <Introduction />
 
       <div

@@ -35,7 +35,7 @@ import rowStyles from "../row.module.scss";
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
 import Icon from "../action-icon/action-icon.component";
 
-function PartnerRow({ user }) {
+function PartnerRow({ user, isSearch }) {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -107,7 +107,9 @@ function PartnerRow({ user }) {
 
   return (
     <>
-      <div className={rowStyles.container}>
+      <div
+        className={isSearch ? rowStyles.search_container : rowStyles.container}
+      >
         {user.type === UserTypeConstants.COMPANY ||
         (user.type === UserTypeConstants.WAREHOUSE && showWarehouseItem) ? (
           <Link

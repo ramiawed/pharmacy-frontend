@@ -16,6 +16,18 @@
   border-radius: 6px;
 }
 
+.search_container {
+  width: 100%;
+  padding: 4px 10px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  color: $secondary-color;
+  border-bottom: 1px solid rgba($color: $secondary-color, $alpha: 0.2);
+}
+
 .container.without_box_shadow {
   border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1);
   border-radius: 0;

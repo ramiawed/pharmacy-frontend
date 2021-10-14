@@ -52,7 +52,7 @@ const checkOffer = (item) => {
   return result;
 };
 
-function ItemRow({ companyItem }) {
+function ItemRow({ companyItem, isSearch }) {
   const { t } = useTranslation();
 
   const isOnline = useSelector(selectOnlineStatus);
@@ -194,7 +194,7 @@ function ItemRow({ companyItem }) {
         style={{
           backgroundColor: hasOffer ? "#0f04" : " #fff",
         }}
-        className={rowStyles.container}
+        className={isSearch ? rowStyles.search_container : rowStyles.container}
       >
         <label
           // style={{ textAlign: "center" }}

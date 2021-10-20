@@ -31,15 +31,28 @@ import {
 } from "../../redux/advertisements/itemsSectionThreeSlice";
 import SearchHome from "../../components/search-home/search-home.component";
 
+import styles from "../../components/section-home-page/section-home-page.module.scss";
+import Loader from "../../components/loader/loader.component";
+
 function HomePage() {
   const dispatch = useDispatch();
   const { user, token } = useSelector(selectUserData);
 
-  const { companiesSectionOne } = useSelector(selectCompaniesSectionOne);
-  const { companiesSectionTwo } = useSelector(selectCompaniesSectionTwo);
-  const { itemsSectionOne } = useSelector(selectItemsSectionOne);
-  const { itemsSectionTwo } = useSelector(selectItemsSectionTwo);
-  const { itemsSectionThree } = useSelector(selectItemsSectionThree);
+  const { companiesSectionOne, companiesSectionOneStatus } = useSelector(
+    selectCompaniesSectionOne
+  );
+  const { companiesSectionTwo, companiesSectionTwoStatus } = useSelector(
+    selectCompaniesSectionTwo
+  );
+  const { itemsSectionOne, itemsSectionOneStatus } = useSelector(
+    selectItemsSectionOne
+  );
+  const { itemsSectionTwo, itemsSectionTwoStatus } = useSelector(
+    selectItemsSectionTwo
+  );
+  const { itemsSectionThree, itemsSectionThreeStatus } = useSelector(
+    selectItemsSectionThree
+  );
   const { settings } = useSelector(selectSettings);
 
   useEffect(() => {
@@ -61,33 +74,73 @@ function HomePage() {
           flexDirection: "column",
         }}
       >
-        {settings.companiesSectionOne?.show && (
-          <SectionHomePage
-            data={companiesSectionOne}
-            containerBackground="#1a535c"
-            headerFlex={settings.companiesSectionOne?.titleRight ? 1 : 2}
-            headerBackground="#083137"
-            sliderFlex={settings.companiesSectionOne?.titleRight ? 2 : 1}
-            header={settings.companiesSectionOne?.title}
-            description={settings.companiesSectionOne?.description}
-            order={settings.companiesSectionOne?.order}
-          />
+        {settings.companiesSectionOne?.show &&
+          companiesSectionOneStatus === "loading" && (
+            <div
+              className={styles.container}
+              style={{
+                background: "#1a535c",
+                order: settings.companiesSectionOne?.order,
+              }}
+            >
+              <Loader color="#fff" />
+            </div>
+          )}
+
+        {settings.companiesSectionOne?.show &&
+          companiesSectionOne.length > 0 && (
+            <SectionHomePage
+              data={companiesSectionOne}
+              containerBackground="#1a535c"
+              headerFlex={settings.companiesSectionOne?.titleRight ? 1 : 2}
+              headerBackground="#083137"
+              sliderFlex={settings.companiesSectionOne?.titleRight ? 2 : 1}
+              header={settings.companiesSectionOne?.title}
+              description={settings.companiesSectionOne?.description}
+              order={settings.companiesSectionOne?.order}
+            />
+          )}
+
+        {settings.companiesSectionTwo?.show &&
+          companiesSectionTwoStatus === "loading" && (
+            <div
+              className={styles.container}
+              style={{
+                background: "#6D597A",
+                order: settings.companiesSectionTwo?.order,
+              }}
+            >
+              <Loader color="#fff" />
+            </div>
+          )}
+
+        {settings.companiesSectionTwo?.show &&
+          companiesSectionTwo.length > 0 && (
+            <SectionHomePage
+              data={companiesSectionTwo}
+              containerBackground="#6D597A"
+              headerFlex={settings.companiesSectionTwo?.titleRight ? 1 : 2}
+              headerBackground="#5A4E63"
+              sliderFlex={settings.companiesSectionTwo?.titleRight ? 2 : 1}
+              header={settings.companiesSectionTwo?.title}
+              description={settings.companiesSectionTwo?.description}
+              order={settings.companiesSectionTwo?.order}
+            />
+          )}
+
+        {settings.itemsSectionOne?.show && itemsSectionOneStatus === "loading" && (
+          <div
+            className={styles.container}
+            style={{
+              background: "#3D5A80",
+              order: settings.itemsSectionOne?.order,
+            }}
+          >
+            <Loader color="#fff" />
+          </div>
         )}
 
-        {settings.companiesSectionTwo?.show && (
-          <SectionHomePage
-            data={companiesSectionTwo}
-            containerBackground="#6D597A"
-            headerFlex={settings.companiesSectionTwo?.titleRight ? 1 : 2}
-            headerBackground="#5A4E63"
-            sliderFlex={settings.companiesSectionTwo?.titleRight ? 2 : 1}
-            header={settings.companiesSectionTwo?.title}
-            description={settings.companiesSectionTwo?.description}
-            order={settings.companiesSectionTwo?.order}
-          />
-        )}
-
-        {settings.itemsSectionOne?.show && (
+        {settings.itemsSectionOne?.show && itemsSectionOne.length > 0 && (
           <SectionHomePage
             data={itemsSectionOne}
             containerBackground="#3D5A80"
@@ -100,7 +153,19 @@ function HomePage() {
           />
         )}
 
-        {settings.itemsSectionTwo?.show && (
+        {settings.itemsSectionTwo?.show && itemsSectionTwoStatus === "loading" && (
+          <div
+            className={styles.container}
+            style={{
+              background: "#E56B6F",
+              order: settings.itemsSectionTwo?.order,
+            }}
+          >
+            <Loader color="#fff" />
+          </div>
+        )}
+
+        {settings.itemsSectionTwo?.show && itemsSectionTwo.length > 0 && (
           <SectionHomePage
             data={itemsSectionTwo}
             containerBackground="#E56B6F"
@@ -113,7 +178,20 @@ function HomePage() {
           />
         )}
 
-        {settings.itemsSectionThree?.show && (
+        {settings.itemsSectionThree?.show &&
+          itemsSectionThreeStatus === "loading" && (
+            <div
+              className={styles.container}
+              style={{
+                background: "#ffe66d",
+                order: settings.itemsSectionThree?.order,
+              }}
+            >
+              <Loader color="#fff" />
+            </div>
+          )}
+
+        {settings.itemsSectionThree?.show && itemsSectionThree.length > 0 && (
           <SectionHomePage
             data={itemsSectionThree}
             containerBackground="#ffe66d"

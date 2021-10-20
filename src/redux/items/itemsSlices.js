@@ -182,18 +182,22 @@ export const updateItem = createAsyncThunk(
 
 export const addItems = createAsyncThunk(
   "items/addItems",
-  async ({ obj, token }, { rejectWithValue }) => {
+  async ({ obj, token, withUpdate }, { rejectWithValue }) => {
     try {
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      const response = await axios.post(`${BASEURL}/items/excel`, obj, {
-        timeout: 25000,
-        cancelToken: source.token,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        `${BASEURL}/items/excel?withUpdate=${withUpdate}`,
+        obj,
+        {
+          // timeout: 100000,
+          cancelToken: source.token,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       return response.data;
     } catch (err) {

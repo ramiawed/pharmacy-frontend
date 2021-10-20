@@ -29,6 +29,7 @@ import {
 
 // styles
 import styles from "./item-excel-page.module.scss";
+import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
@@ -46,6 +47,7 @@ function ItemExcelPage() {
 
   const { addError, addStatus } = useSelector(selectItems);
   const isOnline = useSelector(selectOnlineStatus);
+  const [withUpdate, setWithUpdate] = useState(false);
 
   // own state
   const [showModal, setShowModal] = useState(false);
@@ -147,13 +149,60 @@ function ItemExcelPage() {
     }
 
     if (rightItem.length > 0) {
-      dispatch(addItems({ obj: rightItem, token }))
+      dispatch(
+        addItems({
+          obj: rightItem,
+          token,
+          withUpdate: withUpdate ? "addUpdate" : "add",
+        })
+      )
         .then(unwrapResult)
         .then(() => {
           setSuccessMsg(`${t("inserted-items")}: ${rightItem.length}`);
           setFailedMsg(`${t("wrong-items")}: ${wrongItems.length}`);
           setShowModal(true);
           setItems(wrongItems);
+          dispatch(resetStatus());
+        })
+        .catch((rejectedValueOrSerializedError) => {});
+    } else {
+    }
+  };
+
+  const handleInsertFiftyItems = () => {
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
+    let rightItem = [];
+    let wrongItems = [];
+    for (let i = 0; i < 50; i++) {
+      if (!items[i]) {
+        break;
+      }
+
+      if (!items[i].name || !items[i].price || !items[i].customer_price) {
+        wrongItems.push(items[i]);
+      } else {
+        rightItem.push(items[i]);
+      }
+    }
+
+    if (rightItem.length > 0) {
+      dispatch(
+        addItems({
+          obj: rightItem,
+          token,
+          withUpdate: withUpdate ? "addUpdate" : "add",
+        })
+      )
+        .then(unwrapResult)
+        .then(() => {
+          setSuccessMsg(`${t("inserted-items")}: ${rightItem.length}`);
+          setFailedMsg(`${t("wrong-items")}: ${wrongItems.length}`);
+          setShowModal(true);
+          setItems([...wrongItems, ...items.slice(50)]);
           dispatch(resetStatus());
         })
         .catch((rejectedValueOrSerializedError) => {});
@@ -184,7 +233,7 @@ function ItemExcelPage() {
   };
 
   return user && companyId !== 0 ? (
-    <>
+    <div className={generalStyles.container}>
       <div className={styles.actions}>
         {items.length > 0 ? (
           <>
@@ -196,12 +245,26 @@ function ItemExcelPage() {
             </label>
 
             <Button
-              action={handleInsertItems}
+              action={() =>
+                withUpdate ? handleInsertFiftyItems() : handleInsertItems()
+              }
               text={t("add-items")}
               bgColor={Colors.SECONDARY_COLOR}
             />
 
             <InputFile small={true} fileChangedHandler={fileChanged} />
+            <div
+              className={generalStyles.flex_container}
+              style={{ marginInlineStart: "10px" }}
+            >
+              <input
+                type="checkbox"
+                value={withUpdate}
+                checked={withUpdate}
+                onChange={() => setWithUpdate(!withUpdate)}
+              />
+              <label>{t("add-or-update-items")}</label>
+            </div>
           </>
         ) : null}
       </div>
@@ -255,7 +318,7 @@ function ItemExcelPage() {
           }}
         />
       )}
-    </>
+    </div>
   ) : (
     <Redirect to="/signin" />
   );

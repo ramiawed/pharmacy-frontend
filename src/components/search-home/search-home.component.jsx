@@ -251,7 +251,17 @@ function SearchHome() {
               )
             )
           ) : (
-            <p>no data</p>
+            <div
+              style={{
+                flex: 1,
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                color: Colors.SECONDARY_COLOR,
+              }}
+            >
+              <p>{t("no-data-found")}</p>
+            </div>
           )}
         </div>
       )}

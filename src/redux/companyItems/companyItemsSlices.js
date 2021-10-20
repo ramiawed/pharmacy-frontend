@@ -215,6 +215,7 @@ export const companyItemsSlice = createSlice({
       state.addToWarehouseStatus = "loading";
     },
     [addItemToWarehouse.fulfilled]: (state, action) => {
+      // console.log(action.payload);
       state.addToWarehouseStatus = "succeeded";
 
       const newItems = state.companyItems.map((item) => {
@@ -223,7 +224,7 @@ export const companyItemsSlice = createSlice({
         } else return item;
       });
 
-      state.companyItems = newItems;
+      state.companyItems = [...newItems];
     },
     [addItemToWarehouse.rejected]: (state, { error, meta, payload }) => {
       state.addToWarehouseStatus = "failed";

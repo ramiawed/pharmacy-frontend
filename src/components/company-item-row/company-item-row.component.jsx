@@ -58,7 +58,7 @@ function CompanyItemRow({
 
   // selectors
   const isOnline = useSelector(selectOnlineStatus);
-  const { token } = useSelector(selectUserData);
+  const { token, user: loggedUser } = useSelector(selectUserData);
 
   // own state
   const [modalObj, setModalObj] = useState({});
@@ -170,7 +170,7 @@ function CompanyItemRow({
     <>
       <div
         style={{
-          backgroundColor: checkOffer(item) ? "#0f04" : " #fff",
+          backgroundColor: checkOffer(item) ? "#0f04" : "transparent",
         }}
         className={rowStyles.container}
       >

@@ -224,6 +224,7 @@ export const medicinesSlice = createSlice({
       state.addToWarehouseStatus = "loading";
     },
     [addItemToWarehouse.fulfilled]: (state, action) => {
+      console.log(action.payload);
       state.addToWarehouseStatus = "succeeded";
 
       const newItems = state.medicines.map((item) => {

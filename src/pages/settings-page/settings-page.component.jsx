@@ -30,6 +30,7 @@ import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
+import SaveOrdersSettings from "../../components/save-orders-setting/save-orders-setting.component";
 
 function SettingsPage() {
   const { t } = useTranslation();
@@ -86,6 +87,7 @@ function SettingsPage() {
         <h3 style={{ color: Colors.FAILED_COLOR }}>{t("general-settings")}</h3>
       </div>
       <ShowWarehouseItemsSetting />
+      <SaveOrdersSettings />
     </div>
   ) : (
     <Redirect to="/signin" />

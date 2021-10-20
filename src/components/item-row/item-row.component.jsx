@@ -19,10 +19,9 @@ import {
 import {
   addItemToWarehouse,
   removeItemFromWarehouse,
-} from "../../redux/companyItems/companyItemsSlices";
+} from "../../redux/medicines/medicinesSlices";
 
 // components
-import Toast from "../toast/toast.component";
 import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
 import Icon from "../action-icon/action-icon.component";
 

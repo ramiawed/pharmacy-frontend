@@ -4,7 +4,6 @@ import Slider from "react-slick";
 // components
 import AdvertisementItemCard from "../advertisement-item-card/advertisement-item-card.component";
 import AdvertisementCompanyCard from "../advertisement-company-card/advertisement-company-card.component";
-import Loader from "../loader/loader.component";
 
 // styles
 import styles from "./section-home-page.module.scss";
@@ -79,44 +78,38 @@ function SectionHomePage({
         order: order,
       }}
     >
-      {data.length === 0 ? (
-        <Loader color="#fff" />
-      ) : (
-        <>
-          <div
-            className={styles.header}
-            style={{
-              order: width <= "769" ? 1 : headerFlex,
-              background: headerBackground,
-            }}
-          >
-            <h2>{header}</h2>
-            <p>{description}</p>
-          </div>
-          <div
-            className={styles.slicker}
-            style={{ order: width <= "769" ? 2 : sliderFlex }}
-          >
-            <Slider {...settings}>
-              {data?.map((d) => (
-                <div key={d._id}>
-                  {type === "item" ? (
-                    <AdvertisementItemCard
-                      companyItem={d}
-                      contentColor={headerBackground}
-                    />
-                  ) : (
-                    <AdvertisementCompanyCard
-                      user={d}
-                      contentColor={headerBackground}
-                    />
-                  )}
-                </div>
-              ))}
-            </Slider>
-          </div>
-        </>
-      )}
+      <div
+        className={styles.header}
+        style={{
+          order: width <= "769" ? 1 : headerFlex,
+          background: headerBackground,
+        }}
+      >
+        <h2>{header}</h2>
+        <p>{description}</p>
+      </div>
+      <div
+        className={styles.slicker}
+        style={{ order: width <= "769" ? 2 : sliderFlex }}
+      >
+        <Slider {...settings}>
+          {data?.map((d) => (
+            <div key={d._id}>
+              {type === "item" ? (
+                <AdvertisementItemCard
+                  companyItem={d}
+                  contentColor={headerBackground}
+                />
+              ) : (
+                <AdvertisementCompanyCard
+                  user={d}
+                  contentColor={headerBackground}
+                />
+              )}
+            </div>
+          ))}
+        </Slider>
+      </div>
     </div>
   );
 }

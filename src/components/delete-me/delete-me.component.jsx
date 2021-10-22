@@ -18,6 +18,7 @@ import { resetItems } from "../../redux/items/itemsSlices";
 import { resetCompanyItems } from "../../redux/companyItems/companyItemsSlices";
 import { resetCartItems } from "../../redux/cart/cartSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
+import { orderSliceSignout } from "../../redux/orders/ordersSlice";
 
 // components
 import PasswordRow from "../password-row/password-row.component";
@@ -77,6 +78,7 @@ function DeleteMe() {
         dispatch(resetItems());
         dispatch(resetCompanyItems());
         dispatch(resetCartItems());
+        dispatch(orderSliceSignout());
       })
       .catch((rejectedValueOrSerializedError) => {
         // on failed, show message below the password input

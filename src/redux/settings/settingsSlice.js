@@ -36,6 +36,7 @@ const initialState = {
       order: 1,
     },
     showWarehouseItem: false,
+    saveOrders: false,
   },
   error: "",
 };

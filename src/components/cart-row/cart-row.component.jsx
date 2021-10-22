@@ -29,7 +29,7 @@ import tableStyles from "../table.module.scss";
 // constants
 import { Colors, OfferTypes } from "../../utils/constants";
 
-function CartRow({ cartItem }) {
+function CartRow({ cartItem, inOrderDetails }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -41,43 +41,60 @@ function CartRow({ cartItem }) {
       ].join(" ")}
     >
       <label className={tableStyles.label_medium}>{cartItem.item.name}</label>
+
       <label className={tableStyles.label_small}>
         {cartItem.item.company.name}
       </label>
+
       <label className={tableStyles.label_small}>{cartItem.item.formula}</label>
+
       <label className={tableStyles.label_small}>
         {cartItem.item.caliber} / {cartItem.item.packing}
       </label>
+
       <label className={tableStyles.label_small}>
-        {cartItem.item.price} / {cartItem.item.customer_price}
+        {inOrderDetails ? cartItem.price : cartItem.item.price} /{" "}
+        {inOrderDetails
+          ? cartItem.customer_price
+          : cartItem.item.customer_price}
       </label>
-      <label className={tableStyles.label_small}>
-        {cartItem.warehouse.maxQty ? cartItem.warehouse.maxQty : ""}
-      </label>
-      <div className={[tableStyles.label_small, styles.qty].join(" ")}>
-        {!cartItem.bonus && (
-          <AiFillCaretRight
-            onClick={() => {
-              if (cartItem.qty > 0) dispatch(decreaseItemQty(cartItem));
-            }}
-          />
-        )}
-        {cartItem.qty}
-        {!cartItem.bonus && (
-          <AiFillCaretLeft
-            onClick={() => {
-              if (
-                cartItem.warehouse.maxQty !== 0 &&
-                cartItem.qty < cartItem.warehouse.maxQty
-              )
-                dispatch(increaseItemQty(cartItem));
-              else if (cartItem.warehouse.maxQty === 0) {
-                dispatch(increaseItemQty(cartItem));
-              }
-            }}
-          />
-        )}
-      </div>
+
+      {!inOrderDetails && (
+        <label className={tableStyles.label_small}>
+          {cartItem.warehouse.maxQty ? cartItem.warehouse.maxQty : ""}
+        </label>
+      )}
+
+      {inOrderDetails ? (
+        <div className={[tableStyles.label_small, styles.qty].join(" ")}>
+          {cartItem.qty}
+        </div>
+      ) : (
+        <div className={[tableStyles.label_small, styles.qty].join(" ")}>
+          {!cartItem.bonus && (
+            <AiFillCaretRight
+              onClick={() => {
+                if (cartItem.qty > 0) dispatch(decreaseItemQty(cartItem));
+              }}
+            />
+          )}
+          {cartItem.qty}
+          {!cartItem.bonus && (
+            <AiFillCaretLeft
+              onClick={() => {
+                if (
+                  cartItem.warehouse.maxQty !== 0 &&
+                  cartItem.qty < cartItem.warehouse.maxQty
+                )
+                  dispatch(increaseItemQty(cartItem));
+                else if (cartItem.warehouse.maxQty === 0) {
+                  dispatch(increaseItemQty(cartItem));
+                }
+              }}
+            />
+          )}
+        </div>
+      )}
 
       <label className={tableStyles.label_xsmall}>
         {cartItem.bonus && cartItem.bonus}{" "}
@@ -88,19 +105,25 @@ function CartRow({ cartItem }) {
           : "-"}
       </label>
       <label className={tableStyles.label_small}>
-        {cartItem.qty * cartItem.item.price -
+        {cartItem.qty *
+          (inOrderDetails ? cartItem.price : cartItem.item.price) -
           (cartItem.bonus && cartItem.bonusType === OfferTypes.PERCENTAGE
-            ? (cartItem.qty * cartItem.item.price * cartItem.bonus) / 100
+            ? (cartItem.qty *
+                (inOrderDetails ? cartItem.price : cartItem.item.price) *
+                cartItem.bonus) /
+              100
             : 0)}
       </label>
-      <label className={tableStyles.label_xsmall}>
-        <Icon
-          icon={() => <MdDelete />}
-          foreColor={Colors.FAILED_COLOR}
-          tooltip="delete-cart-row"
-          onclick={() => dispatch(removeItemFromCart(cartItem))}
-        />
-      </label>
+      {!inOrderDetails && (
+        <label className={tableStyles.label_xsmall}>
+          <Icon
+            icon={() => <MdDelete />}
+            foreColor={Colors.FAILED_COLOR}
+            tooltip="delete-cart-row"
+            onclick={() => dispatch(removeItemFromCart(cartItem))}
+          />
+        </label>
+      )}
     </div>
   );
 }

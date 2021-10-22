@@ -7,24 +7,31 @@ import styles from "../side-nav.module.scss";
 
 // constants
 import { SideNavLinks } from "../../utils/constants.js";
+import { useSelector } from "react-redux";
+import { selectSettings } from "../../redux/settings/settingsSlice";
 
 function SideNavPharmacy({ selectedOption, onSelectedChange }) {
   const { t } = useTranslation();
+  const {
+    settings: { saveOrders },
+  } = useSelector(selectSettings);
+
   return (
     <>
-      {/* <Link
-        className={[
-          styles.link,
-          selectedOption === SideNavLinks.OFFERS ? `${styles.selected}` : "",
-        ].join(" ")}
-        onClick={() => {
-          onSelectedChange(SideNavLinks.OFFERS);
-        }}
-        to="/pharmacy/orders"
-      >
-        {t("nav-orders")}
-      </Link> */}
-
+      {saveOrders && (
+        <Link
+          className={[
+            styles.link,
+            selectedOption === SideNavLinks.ORDERS ? `${styles.selected}` : "",
+          ].join(" ")}
+          onClick={() => {
+            onSelectedChange(SideNavLinks.ORDERS);
+          }}
+          to="/orders"
+        >
+          {t("nav-orders")}
+        </Link>
+      )}
       <Link
         className={[
           styles.link,

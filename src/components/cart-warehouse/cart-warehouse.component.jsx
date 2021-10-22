@@ -24,6 +24,8 @@ import styles from "./cart-warehouse.module.scss";
 
 // constants
 import { Colors, OfferTypes } from "../../utils/constants";
+import { selectSettings } from "../../redux/settings/settingsSlice";
+import { saveOrder, setRefresh } from "../../redux/orders/ordersSlice";
 
 function CartWarehouse({ warehouse }) {
   const { t } = useTranslation();
@@ -31,8 +33,11 @@ function CartWarehouse({ warehouse }) {
 
   // selectors
   const isOnline = useSelector(selectOnlineStatus);
-  const { token } = useSelector(selectUserData);
+  const { token, user } = useSelector(selectUserData);
   const cartItems = useSelector(selectCartItems);
+  const {
+    settings: { saveOrders },
+  } = useSelector(selectSettings);
 
   // own state
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -89,11 +94,34 @@ function CartWarehouse({ warehouse }) {
         };
       });
 
-    cartItemsToSend = cartItemsToSend.sort((a, b) => {
-      if (a.warehouseName > b.warehouseName) return 1;
-      if (a.warehouseName < b.warehouseName) return -1;
-      return 0;
-    });
+    if (saveOrders) {
+      let obj = {
+        pharmacy: user._id,
+        warehouse: cartItems.filter(
+          (item) => item.warehouse.warehouse.name === warehouse
+        )[0].warehouse.warehouse._id,
+        items: cartItems
+          .filter((item) => item.warehouse.warehouse.name === warehouse)
+          .map((e) => {
+            return {
+              item: e.item._id,
+              qty: e.qty,
+              bonus: e.bonus,
+              bonusType: e.bonusType,
+              price: e.item.price,
+              customer_price: e.item.customer_price,
+            };
+          }),
+      };
+
+      dispatch(saveOrder({ obj, token }));
+      dispatch(setRefresh(true));
+    }
+    // cartItemsToSend = cartItemsToSend.sort((a, b) => {
+    //   if (a.warehouseName > b.warehouseName) return 1;
+    //   if (a.warehouseName < b.warehouseName) return -1;
+    //   return 0;
+    // });
 
     cartItemsToSend = [
       ...cartItemsToSend,
@@ -117,7 +145,7 @@ function CartWarehouse({ warehouse }) {
         "http://localhost:8000/api/v1/users/sendemail",
         { cartItems: cartItemsToSend },
         {
-          timeout: 10000,
+          timeout: 25000,
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -128,7 +156,8 @@ function CartWarehouse({ warehouse }) {
         setShowLoadingModal(false);
         setShowSuccessModal(true);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log(err);
         setShowLoadingModal(false);
         setShowFailedModal(true);
       });

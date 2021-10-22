@@ -1,0 +1,32 @@
+@import "../../variables.scss";
+
+.basic_details_container {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: start;
+  color: $secondary-color;
+}
+
+.label {
+  font-size: 0.8rem;
+}
+
+.name {
+  background-color: rgba($color: $secondary-color, $alpha: 0.7);
+  color: $white-color;
+  padding: 6px 12px;
+  border-radius: 6px;
+  margin-inline-start: 10px;
+}
+
+.total_price {
+  text-align: left;
+  color: $green-color;
+  padding-left: 6px;
+}

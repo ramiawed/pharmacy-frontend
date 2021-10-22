@@ -152,6 +152,8 @@
     "add-item": "إضافة دواء",
     "add-items": "إضافة الأدوية",
     "update-item": "تعديل دواء",
+    "pharmacy-name": "الصيدلية",
+    "warehouse-name": "المستودع",
     "item-name": "اسم الدواء",
     "item-trade-name": "الاسم التجاري",
     "item-packing": "التعبئة",
@@ -201,6 +203,7 @@
     "item-undo-delete-error": "حدث خطأ أثناء استعادة الدواء",
     "item-operation-complete": "تمت العملية بنجاح",
     "no-items-found": "لم يتم العثور على دواء مطابق لشروط البحث",
+    "no-orders-found": "لم يتم العثور على طلبات مطابقة لشروط البحث",
     "tooltip-item-delete": "حذف دواء",
     "tooltip-item-undo-delete": "استعادة دواء",
     "deleted-items": "الأدوية المحذوفة",
@@ -333,5 +336,6 @@
     "show-warehouse-items-permission": "السماح بعرض الأدوية ضمن المستودعات",
     "save-orders-in-database-permission": "السماح بتخزين الطلبات ضمن قاعدة البيانات",
     "add-or-update-items": "تعديل الدواء في حال كان موجود مسبقاً",
-    "no-data-found": "لا يوجد نتائج مطابقة لمحرك البحث"
+    "no-data-found": "لا يوجد نتائج مطابقة لمحرك البحث",
+    "order-details": "تفاصيل الطلبية"
 }

@@ -7,12 +7,16 @@ import styles from "../side-nav.module.scss";
 
 // constants
 import { SideNavLinks, UserTypeConstants } from "../../utils/constants.js";
+import { selectSettings } from "../../redux/settings/settingsSlice";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/auth/authSlice";
 
 function SideNavAdmin({ selectedOption, onSelectedChange }) {
   const { t } = useTranslation();
   const user = useSelector(selectUser);
+  const {
+    settings: { saveOrders },
+  } = useSelector(selectSettings);
   return (
     <>
       <Link
@@ -62,6 +66,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange }) {
       >
         {t("nav-advertise")}
       </Link>
+
       <Link
         className={[
           styles.link,
@@ -74,6 +79,22 @@ function SideNavAdmin({ selectedOption, onSelectedChange }) {
       >
         {t("nav-offers")}
       </Link>
+
+      {saveOrders && (
+        <Link
+          className={[
+            styles.link,
+            selectedOption === SideNavLinks.ORDERS ? `${styles.selected}` : "",
+          ].join(" ")}
+          onClick={() => {
+            onSelectedChange(SideNavLinks.ORDERS);
+          }}
+          to="/orders"
+        >
+          {t("nav-orders")}
+        </Link>
+      )}
+
       <Link
         className={[
           styles.link,

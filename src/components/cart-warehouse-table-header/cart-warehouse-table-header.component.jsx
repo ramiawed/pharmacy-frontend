@@ -5,7 +5,7 @@ import TableHeader from "../table-header/table-header.component";
 
 import tableStyles from "../table.module.scss";
 
-function CartWarehouseTableHeader() {
+function CartWarehouseTableHeader({ withoutMaxQty }) {
   const { t } = useTranslation();
 
   return (
@@ -19,11 +19,14 @@ function CartWarehouseTableHeader() {
         {t("item-caliber")}/{t("item-packing")}
       </label>
       <label className={tableStyles.label_small}>{t("price")}</label>
-      <label className={tableStyles.label_small}>{t("item-max-qty")}</label>
+      {!withoutMaxQty && (
+        <label className={tableStyles.label_small}>{t("item-max-qty")}</label>
+      )}
+
       <label className={tableStyles.label_small}>{t("selected-qty")}</label>
       <label className={tableStyles.label_xsmall}>{t("offer-label")}</label>
       <label className={tableStyles.label_small}>{t("total-price")}</label>
-      <label className={tableStyles.label_xsmall}></label>
+      {!withoutMaxQty && <label className={tableStyles.label_xsmall}></label>}
     </TableHeader>
   );
 }

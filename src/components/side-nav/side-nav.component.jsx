@@ -32,6 +32,7 @@ import linkStyles from "../side-nav.module.scss";
 
 // constants
 import { UserTypeConstants } from "../../utils/constants";
+import { orderSliceSignout } from "../../redux/orders/ordersSlice";
 
 function SideNav({
   collapsed,
@@ -54,6 +55,7 @@ function SideNav({
     dispatch(usersSliceSignOut());
     dispatch(warehouseSliceSignOut());
     dispatch(warehouseItemsSliceSignOut());
+    dispatch(orderSliceSignout());
   };
 
   return (

@@ -39,6 +39,8 @@ import styles from "./main-page.module.scss";
 // constants
 import { TopNavLinks } from "../../utils/constants";
 import MedicinesPage from "../medicines-page/medicines-page.component";
+import OrdersPage from "../orders-page/orders-page.component";
+import OrderDetailsPage from "../order-details-page/order-details-page.component";
 
 // MainPage
 // you have to sign in first
@@ -184,6 +186,14 @@ function MainPage() {
 
         <Route exact path="/cart">
           <CartPage />
+        </Route>
+
+        <Route exact path="/orders">
+          <OrdersPage />
+        </Route>
+
+        <Route exact path="/order-details">
+          <OrderDetailsPage />
         </Route>
 
         <Route exact path="/profile">

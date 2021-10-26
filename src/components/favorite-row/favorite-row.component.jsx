@@ -25,6 +25,7 @@ import rowStyles from "../row.module.scss";
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
 import { VscLoading } from "react-icons/vsc";
 import Icon from "../action-icon/action-icon.component";
+import { selectSettings } from "../../redux/settings/settingsSlice";
 
 function FavoriteRow({ user, withoutBoxShadow }) {
   const { t } = useTranslation();
@@ -34,6 +35,9 @@ function FavoriteRow({ user, withoutBoxShadow }) {
   const favorites = useSelector(selectFavoritesPartners);
   const token = useSelector(selectToken);
   const isOnline = useSelector(selectOnlineStatus);
+  const {
+    settings: { showWarehouseItem },
+  } = useSelector(selectSettings);
 
   // own state
   const [loading, setLoading] = useState(false);
@@ -59,10 +63,19 @@ function FavoriteRow({ user, withoutBoxShadow }) {
           withoutBoxShadow ? rowStyles.without_box_shadow : "",
         ].join(" ")}
       >
-        {user.type === UserTypeConstants.COMPANY && (
+        {user.type === UserTypeConstants.COMPANY ||
+        (user.type === UserTypeConstants.WAREHOUSE && showWarehouseItem) ? (
           <label>
             <Link
-              to={`/companies/${user._id}`}
+              to={{
+                pathname: `/medicines`,
+                state: {
+                  companyId:
+                    user.type === UserTypeConstants.COMPANY ? user._id : null,
+                  warehouseId:
+                    user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
+                },
+              }}
               className={[
                 rowStyles.hover_underline,
                 rowStyles.padding_start,
@@ -71,9 +84,7 @@ function FavoriteRow({ user, withoutBoxShadow }) {
               {user.name}
             </Link>
           </label>
-        )}
-
-        {user.type === UserTypeConstants.WAREHOUSE && (
+        ) : (
           <label
             className={[
               rowStyles.hover_underline,
@@ -83,6 +94,17 @@ function FavoriteRow({ user, withoutBoxShadow }) {
             {user.name}
           </label>
         )}
+
+        {/* {user.type === UserTypeConstants.WAREHOUSE && (
+          <label
+            className={[
+              rowStyles.hover_underline,
+              rowStyles.padding_start,
+            ].join(" ")}
+          >
+            {user.name}
+          </label>
+        )} */}
 
         {/* <p className={rowStyles.company_name}>{user.name}</p> */}
         <div className={rowStyles.padding_end}>

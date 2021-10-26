@@ -4,11 +4,11 @@ import React from "react";
 import SignUp from "../../components/signup/signup.component";
 
 // styles
-import styles from "./sign-up-page.module.scss";
+import generalStyles from "../../style.module.scss";
 
 function SignUpPage() {
   return (
-    <div className={styles.container}>
+    <div className={generalStyles.sign_container}>
       <SignUp />
     </div>
   );

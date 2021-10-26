@@ -23,7 +23,14 @@ const initialState = {
 export const cancelOperation = () => {
   if (source) {
     source.cancel("operation canceled by user");
+    source = null;
+    CancelToken = null;
   }
+};
+
+const resetCancelAndSource = () => {
+  CancelToken = null;
+  source = null;
 };
 
 export const authSign = createAsyncThunk(
@@ -45,8 +52,11 @@ export const authSign = createAsyncThunk(
         }
       );
 
+      resetCancelAndSource();
+
       return response.data;
     } catch (err) {
+      resetCancelAndSource();
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }
@@ -63,38 +73,6 @@ export const authSign = createAsyncThunk(
   }
 );
 
-// export const authSignup = createAsyncThunk(
-//   "auth/signup",
-//   async ({ obj, token }, { rejectWithValue }) => {
-//     try {
-//       CancelToken = axios.CancelToken;
-//       source = CancelToken.source();
-
-//       const response = await axios.post(
-//         "${BASEURL}/users/signup",
-//         obj,
-//         {
-//           timeout: 10000,
-//           cancelToken: source.token,
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         }
-//       );
-
-//       return response.data;
-//     } catch (err) {
-//       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
-//         return rejectWithValue("timeout");
-//       }
-//       if (axios.isCancel(err)) {
-//         return rejectWithValue("cancel");
-//       }
-//       return rejectWithValue(err.response.data);
-//     }
-//   }
-// );
-
 export const updateUserInfo = createAsyncThunk(
   "auth/updateUser",
   async ({ obj, token }, { rejectWithValue }) => {
@@ -110,8 +88,10 @@ export const updateUserInfo = createAsyncThunk(
         },
       });
 
+      resetCancelAndSource();
       return response.data;
     } catch (err) {
+      resetCancelAndSource();
       // timeout finished
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
@@ -152,8 +132,10 @@ export const changeMyPassword = createAsyncThunk(
         }
       );
 
+      resetCancelAndSource();
       return response.data;
     } catch (err) {
+      resetCancelAndSource();
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }
@@ -183,8 +165,10 @@ export const deleteMe = createAsyncThunk(
         },
       });
 
+      resetCancelAndSource();
       return response.data;
     } catch (err) {
+      resetCancelAndSource();
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }
@@ -213,8 +197,11 @@ export const changeLogo = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       });
+
+      resetCancelAndSource();
       return response.data;
     } catch (err) {
+      resetCancelAndSource();
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }

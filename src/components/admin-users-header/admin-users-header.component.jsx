@@ -83,6 +83,7 @@ function AdminUsersHeader({
           icon={() => <RiRefreshLine />}
           onclick={refreshHandler}
         />
+
         <div onClick={showSearchModalHandler}>
           <IconWithNumber
             value={0}

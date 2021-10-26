@@ -5,6 +5,15 @@
   margin: 10px auto;
 }
 
+.sign_container {
+  background-image: url("./background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 100vw;
+  min-height: 100vh;
+}
+
 // coloring
 .fc_green {
   color: $green-color;

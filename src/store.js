@@ -29,7 +29,7 @@ const reducers = combineReducers({
   warehouses: warehousesSlice,
   favorites: favoritesSlice,
   items: itemsSlice,
-  companyItems: companyItemsSlice,
+  // companyItems: companyItemsSlice,
   medicines: medicinesSlice,
   warehouseItems: warehouseItemsSlices,
   cart: cartSlice,

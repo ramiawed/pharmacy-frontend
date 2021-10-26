@@ -4,11 +4,11 @@ import React from "react";
 import SignIn from "../../components/signin/signin.component";
 
 // styles
-import styles from "./sign-in-page.module.scss";
+import generalStyles from "../../style.module.scss";
 
 function SignInPage() {
   return (
-    <div className={styles.container}>
+    <div className={generalStyles.sign_container}>
       <SignIn />
     </div>
   );

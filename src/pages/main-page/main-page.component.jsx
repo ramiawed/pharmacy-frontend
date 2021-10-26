@@ -10,6 +10,10 @@ import { getFavorites } from "../../redux/favorites/favoritesSlice";
 // components
 import TopNav from "../../components/top-nav/top-nav.component";
 import SideNav from "../../components/side-nav/side-nav.component";
+import MedicinesPage from "../medicines-page/medicines-page.component";
+import OrdersPage from "../orders-page/orders-page.component";
+import OrderDetailsPage from "../order-details-page/order-details-page.component";
+import Footer from "../../components/footer/footer.component";
 
 // react-icons
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -29,7 +33,7 @@ import ItemExcelPage from "../item-excel-page/item-excel-page.component";
 import StatisticsOptionsPage from "../statistics-options-page/statistics-options-page.component";
 import StatisticsPage from "../statistics-page/statistics-page.component";
 import UserProfilePage from "../user-profile-page/user-profile-page.component";
-import Footer from "../../components/footer/footer.component";
+
 import HomePage from "../home-page/home-page.component";
 import SettingsPage from "../settings-page/settings-page.component";
 
@@ -38,14 +42,16 @@ import styles from "./main-page.module.scss";
 
 // constants
 import { TopNavLinks } from "../../utils/constants";
-import MedicinesPage from "../medicines-page/medicines-page.component";
-import OrdersPage from "../orders-page/orders-page.component";
-import OrderDetailsPage from "../order-details-page/order-details-page.component";
 
 // MainPage
 // you have to sign in first
 function MainPage() {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
+  // selectors
+  // get the user and the token from redux-store-auth
+  const { user, token } = useSelector(selectUserData);
 
   // state uses in the TopNav component
   const [selectedTopNavOption, setSelectedTopNavOption] = useState(
@@ -59,11 +65,6 @@ function MainPage() {
   // state uses in the SideNav component
   const [selectedSideNavOption, setSelectedSideNavOption] = useState("");
   const [collapsedSideNavOption, setCollapsedSideNavOption] = useState(true);
-
-  // get the user and the token from redux-store-auth
-  const { user, token } = useSelector(selectUserData);
-
-  const dispatch = useDispatch();
 
   // for first render reset the auth status and error
   // get the favorite for login user
@@ -89,27 +90,8 @@ function MainPage() {
   }, [user]);
 
   return user ? (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        minHeight: "100vh",
-      }}
-    >
-      <div
-        style={{
-          position: "fixed",
-          top: 0,
-          left: 0,
-          width: "100vw",
-          height: "100vh",
-          backgroundImage: "url(http://localhost:8000/background01.png)",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "cover",
-          opacity: 0.15,
-        }}
-      ></div>
+    <div className={styles.container}>
+      <div className={styles.background_div}></div>
       <div className={styles.hamburger_menu}>
         <p className={styles.selectedOption}>{t(selectedTopNavOption)}</p>
         <GiHamburgerMenu

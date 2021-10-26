@@ -33,7 +33,7 @@ function Loader({ onclick, allowCancel }) {
   useEffect(() => {
     const time = setTimeout(() => {
       setShowButton(true);
-    }, 3000);
+    }, 100);
 
     return () => {
       clearTimeout(time);

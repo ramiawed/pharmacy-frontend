@@ -17,7 +17,8 @@ import {
 import {
   addItemToWarehouse,
   removeItemFromWarehouse,
-} from "../../redux/companyItems/companyItemsSlices";
+  selectMedicines,
+} from "../../redux/medicines/medicinesSlices";
 import {
   changeOnlineMsg,
   selectOnlineStatus,
@@ -42,6 +43,9 @@ import { MdLocalOffer } from "react-icons/md";
 import generalStyles from "../../style.module.scss";
 import styles from "./item-page.module.scss";
 import rowStyles from "../../components/row.module.scss";
+import { RiRefreshLine } from "react-icons/ri";
+import Icon from "../../components/action-icon/action-icon.component";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 function ItemPage() {
   const { t } = useTranslation();
@@ -58,6 +62,8 @@ function ItemPage() {
   const { user, token } = useSelector(selectUserData);
   const { addStatus, updateStatus, changeLogoStatus } =
     useSelector(selectItems);
+  const { addToWarehouseStatus, removeFromWarehouseStatus } =
+    useSelector(selectMedicines);
 
   // own state
   const [showAddToCartModal, setShowAddToCartModal] = useState(false);
@@ -270,9 +276,44 @@ function ItemPage() {
 
           {allowAction && itemId && (
             <div>
-              <InputFileImage type="item" item={item} />
+              <InputFileImage
+                type="item"
+                item={item}
+                onchange={() => {
+                  getItemFromDB();
+                }}
+              />
             </div>
           )}
+        </div>
+
+        <div
+          className={[
+            generalStyles.flex_center_container,
+            generalStyles.margin_v_4,
+          ].join(" ")}
+        >
+          <Icon
+            selected={false}
+            foreColor={Colors.SECONDARY_COLOR}
+            tooltip={t("refresh-tooltip")}
+            icon={() => <RiRefreshLine />}
+            onclick={() => {
+              if (type === "info" && itemId) {
+                getItemFromDB();
+                window.scrollTo(0, 0);
+              }
+            }}
+          />
+
+          <Icon
+            tooltip={t("go-back")}
+            onclick={() => {
+              history.goBack();
+            }}
+            icon={() => <IoMdArrowRoundBack size={16} />}
+            foreColor={Colors.SECONDARY_COLOR}
+          />
         </div>
 
         <CardInfo headerTitle={t("item-main-info")}>
@@ -487,6 +528,11 @@ function ItemPage() {
         ))}
 
       {changeLogoStatus === "loading" && <Loader allowCancel={false} />}
+
+      {addToWarehouseStatus === "loading" && <Loader allowCancel={false} />}
+      {removeFromWarehouseStatus === "loading" && (
+        <Loader allowCancel={false} />
+      )}
 
       {addStatus === "succeeded" && (
         <Toast

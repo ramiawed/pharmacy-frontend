@@ -69,7 +69,7 @@ export const getStatistics = createAsyncThunk(
 );
 
 // user sign in
-export const statisticsSignin = createAsyncThunk(
+export const statisticsSignIn = createAsyncThunk(
   "statistics/signin",
   async ({ token }, { rejectWithValue }) => {
     try {

@@ -1,8 +1,12 @@
 {
-    "signup-sentence": "إذا لم يكن لديك حساب، قم بإنشاء حساب خاص",
-    "signin-sentence": "إذا كان لديك حساب خاص، قم بتسجيل الدخول",
-    "signup": "حساب جديد",
-    "signin": "تسجيل دخول",
+    "enter-username": "ادخل اسم الدخول",
+    "enter-password": "ادخل كلمة السر",
+    "sign-up": "حساب جديد",
+    "sign-in": "تسجيل دخول",
+    "sign-up-sentence": "إذا لم يكن لديك حساب، قم بإنشاء حساب خاص",
+    "sign-in-sentence": "إذا كان لديك حساب خاص، قم بتسجيل الدخول",
+    
+    
     "app-name": "فارما لينك",
     "user-more-info-title": "معلومات اكثر",
     "user-name": "الاسم",
@@ -54,8 +58,8 @@
     "approve-message": "سوف تصلك رسالة تأكيد خلال ٢٤ ساعة",
     "hour-serving": "موجودين لخدمتك ٧/٢٤",
     "enter-name": "ادخل الاسم",
-    "enter-username": "ادخل اسم الدخول",
-    "enter-password": "ادخل كلمة السر",
+    
+    
     "enter-password-confirm": "ادخل تاكيد كلمة السر",
     "enter-username-password": "ادخل اسم الدخول و كلمة السر",
     "enter-old-password": "ادخل كلمة السر القديمة",

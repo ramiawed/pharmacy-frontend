@@ -1,3 +1,4 @@
+import { unwrapResult } from "@reduxjs/toolkit";
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,10 +41,22 @@ function InputFileImage({ type, item, readOnly, onchange }) {
       data.append("file", uploadedFile);
 
       if (type === "partner") {
-        dispatch(changeLogo({ data, token }));
+        dispatch(changeLogo({ data, token }))
+          .then(unwrapResult)
+          .then(() => {
+            if (onchange) {
+              onchange();
+            }
+          });
       } else {
         const { _id } = item;
-        dispatch(changeItemLogo({ data, _id, token }));
+        dispatch(changeItemLogo({ data, _id, token }))
+          .then(unwrapResult)
+          .then(() => {
+            if (onchange) {
+              onchange();
+            }
+          });
       }
     }
   };

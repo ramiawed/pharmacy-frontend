@@ -23,7 +23,10 @@ import {
   setRefresh,
 } from "../../redux/users/usersSlice";
 import { selectUserData } from "../../redux/auth/authSlice";
-import { selectOnlineStatus } from "../../redux/online/onlineSlice";
+import {
+  selectOnlineStatus,
+  changeOnlineMsg,
+} from "../../redux/online/onlineSlice";
 
 // styles
 import paginationStyles from "../../components/pagination.module.scss";
@@ -48,6 +51,11 @@ function AdminUsersPage() {
 
   // handle search
   const handleSearch = (page) => {
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
     dispatch(setPage(page));
     dispatch(getUsers({ token }));
   };
@@ -65,6 +73,11 @@ function AdminUsersPage() {
   // fire when the enter key press
   // start search
   const enterPress = () => {
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
     handleSearch(1);
     setShowModal(false);
   };

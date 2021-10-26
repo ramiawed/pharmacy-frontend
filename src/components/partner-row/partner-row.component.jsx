@@ -34,6 +34,7 @@ import rowStyles from "../row.module.scss";
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
 import Icon from "../action-icon/action-icon.component";
+import { resetMedicines } from "../../redux/medicines/medicinesSlices";
 
 function PartnerRow({ user, isSearch }) {
   const { t } = useTranslation();
@@ -103,6 +104,7 @@ function PartnerRow({ user, isSearch }) {
         })
       );
     }
+    dispatch(resetMedicines());
   };
 
   return (

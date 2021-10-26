@@ -10,8 +10,8 @@ import { RiLockPasswordLine } from "react-icons/ri";
 
 // component
 import Input from "../input/input.component";
-
-// loading
+import Button from "../button/button.component";
+import Loader from "../action-loader/action-loader.component";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
@@ -20,20 +20,20 @@ import {
   authSign,
   selectUserData,
   resetError,
+  cancelOperation,
 } from "../../redux/auth/authSlice";
-import { statisticsSignin } from "../../redux/statistics/statisticsSlice";
-// styles
-import styles from "./signin.module.scss";
-
-// constants
+import { statisticsSignIn } from "../../redux/statistics/statisticsSlice";
 import {
   changeOnlineMsg,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
-import Button from "../button/button.component";
-import { Colors } from "../../utils/constants";
-import Loader from "../action-loader/action-loader.component";
 import { getAllSettings } from "../../redux/settings/settingsSlice";
+
+// styles
+import styles from "./signin.module.scss";
+
+// constants
+import { Colors } from "../../utils/constants";
 
 // constants use for motion
 const containerVariant = {
@@ -53,11 +53,12 @@ const containerVariant = {
 // Sign in component
 function SignIn() {
   const { t } = useTranslation();
-
-  const history = useHistory();
-  const isOnline = useSelector(selectOnlineStatus);
   const dispatch = useDispatch();
+  const history = useHistory();
 
+  // selectors
+  // state that indicates if there is a internet connection or not
+  const isOnline = useSelector(selectOnlineStatus);
   // state from user state redux
   const { status, user, error } = useSelector(selectUserData);
 
@@ -119,12 +120,19 @@ function SignIn() {
     if (error) {
       dispatch(resetError());
     }
+
     history.push("/signup");
   };
 
   // check if the username and password fields are not empty
   // if true, dispatch signin from userSlice
   const signInHandler = () => {
+    // check the internet connection
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
     // check if the username and password is not empty
     if (userInfo.username.length === 0 && userInfo.password.length === 0) {
       setPreSignError({
@@ -153,18 +161,12 @@ function SignIn() {
       return;
     }
 
-    // check the internet connection
-    if (!isOnline) {
-      dispatch(changeOnlineMsg());
-      return;
-    }
-
     // username and password is not empty
     // dispatch sign
     dispatch(authSign(userInfo))
       .then(unwrapResult)
       .then((result) => {
-        dispatch(statisticsSignin({ token: result.token }));
+        dispatch(statisticsSignIn({ token: result.token }));
         dispatch(getAllSettings({ token: result.token }));
       })
       .catch((err) => {});
@@ -173,6 +175,10 @@ function SignIn() {
   // handle enter press on input
   const pressEnterHandler = () => {
     signInHandler();
+  };
+
+  const cancelOperationHandler = () => {
+    cancelOperation();
   };
 
   return user ? (
@@ -186,14 +192,15 @@ function SignIn() {
     >
       <div className={styles.info}>
         <div className={styles.signup}>
-          <p>{t("signup-sentence")}</p>
+          <p>{t("sign-up-sentence")}</p>
           <p className={styles.button} onClick={signupHandler}>
-            {t("signup")}
+            {t("sign-up")}
           </p>
         </div>
 
-        <h3>{t("signin")}</h3>
+        <h3>{t("sign-in")}</h3>
 
+        {/* username */}
         <Input
           icon={<HiUser className={styles.icons} />}
           type="text"
@@ -206,6 +213,7 @@ function SignIn() {
           resetField={resetFieldHandler}
         />
 
+        {/* password */}
         <Input
           icon={<RiLockPasswordLine className={styles.icon} />}
           type="password"
@@ -235,13 +243,15 @@ function SignIn() {
         </>
 
         <Button
-          text={t("signin")}
+          text={t("sign-in")}
           action={signInHandler}
           bgColor={Colors.FAILED_COLOR}
         />
       </div>
 
-      {status === "loading" && <Loader allowCancel={true} />}
+      {status === "loading" && (
+        <Loader allowCancel={true} onclick={cancelOperationHandler} />
+      )}
     </motion.div>
   );
 }

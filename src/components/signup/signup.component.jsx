@@ -9,10 +9,18 @@ import axios from "../../api/pharmacy";
 import SelectCustom from "../select/select.component";
 import Input from "../input/input.component";
 import Toast from "../toast/toast.component";
+import Button from "../button/button.component";
+import Loader from "../action-loader/action-loader.component";
 
 // redux
-import { authSign, selectUserData } from "../../redux/auth/authSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
+import { authSign, selectUserData } from "../../redux/auth/authSlice";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
+import { getAllSettings } from "../../redux/settings/settingsSlice";
 
 // Constants && utils
 import { Colors, GuestJob, UserTypeConstants } from "../../utils/constants";
@@ -20,14 +28,6 @@ import { getIcon } from "../../utils/icons.js";
 
 // styles
 import styles from "./signup.module.scss";
-import {
-  changeOnlineMsg,
-  selectOnlineStatus,
-} from "../../redux/online/onlineSlice";
-import Button from "../button/button.component";
-import Loader from "../action-loader/action-loader.component";
-import { unwrapResult } from "@reduxjs/toolkit";
-import { getAllSettings } from "../../redux/settings/settingsSlice";
 
 const containerVariant = {
   hidden: {
@@ -46,25 +46,17 @@ const containerVariant = {
 // Sign up component
 function SignUp() {
   const { t } = useTranslation();
-
-  const isOnline = useSelector(selectOnlineStatus);
-  const history = useHistory();
   const dispatch = useDispatch();
+  const history = useHistory();
 
-  const [networkError, setNetworkError] = useState("");
-
+  // selectors
+  const isOnline = useSelector(selectOnlineStatus);
   // state from user state redux
   const { user: signinUser } = useSelector(selectUserData);
 
-  const guestJobOptions = [
-    { value: GuestJob.NONE, label: t("user-job") },
-    { value: GuestJob.STUDENT, label: t("student") },
-    { value: GuestJob.PHARMACIST, label: t("pharmacist") },
-    { value: GuestJob.EMPLOYEE, label: t("employee") },
-  ];
-
+  // own state
+  const [networkError, setNetworkError] = useState("");
   const [signupLoading, setSignupLoading] = useState(false);
-
   // state to determine that the sign up process succeeded or not
   const [signupSucceeded, setSignupSucceeded] = useState(false);
 
@@ -106,7 +98,7 @@ function SignUp() {
   });
 
   // reset all state to default
-  const resetUserAndError = () => {
+  const signInHandler = () => {
     // reset user
     setUser({
       name: "",
@@ -147,6 +139,13 @@ function SignUp() {
     history.push("/signin");
   };
 
+  // guest options and its change handler
+  const guestJobOptions = [
+    { value: GuestJob.NONE, label: t("user-job") },
+    { value: GuestJob.STUDENT, label: t("student") },
+    { value: GuestJob.PHARMACIST, label: t("pharmacist") },
+    { value: GuestJob.EMPLOYEE, label: t("employee") },
+  ];
   // Guest types are (Student, Pharmacist, Employee)
   // uses with the SelectCustom
   const guestTypeChangeHandler = (val) => {
@@ -386,13 +385,13 @@ function SignUp() {
     >
       {/* top left */}
       <div className={styles.signup}>
-        <p>{t("signin-sentence")}</p>
-        <p className={styles.button} onClick={resetUserAndError}>
-          {t("signin")}
+        <p>{t("sign-in-sentence")}</p>
+        <p className={styles.button} onClick={signInHandler}>
+          {t("sign-in")}
         </p>
       </div>
 
-      <h3>{t("signup")}</h3>
+      <h3>{t("sign-up")}</h3>
 
       <div className={styles.info_div}>
         {/* name */}
@@ -681,7 +680,7 @@ function SignUp() {
       )}
 
       <Button
-        text={t("signup")}
+        text={t("sign-up")}
         action={createAccountHandler}
         bgColor={Colors.FAILED_COLOR}
       />

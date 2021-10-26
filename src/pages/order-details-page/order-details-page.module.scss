@@ -3,7 +3,7 @@
 .basic_details_container {
   display: flex;
   align-items: center;
-  justify-content: space-around;
+  justify-content: start;
 }
 
 .row {
@@ -22,7 +22,7 @@
   color: $white-color;
   padding: 6px 12px;
   border-radius: 6px;
-  margin-inline-start: 10px;
+  margin-inline: 10px;
 }
 
 .total_price {

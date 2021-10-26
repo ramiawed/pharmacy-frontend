@@ -98,6 +98,7 @@ function SearchHome() {
 
   const changeOptionHandler = (opt) => {
     if (!loading) {
+      setData([]);
       setOption(opt);
     }
   };

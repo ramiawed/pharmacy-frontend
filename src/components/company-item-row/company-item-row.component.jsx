@@ -170,7 +170,7 @@ function CompanyItemRow({
     <>
       <div
         style={{
-          backgroundColor: checkOffer(item) ? "#0f04" : "transparent",
+          backgroundColor: checkOffer(item) ? "#0f04" : "#fff",
         }}
         className={rowStyles.container}
       >

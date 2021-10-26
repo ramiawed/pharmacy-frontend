@@ -246,10 +246,10 @@ export const medicinesSlice = createSlice({
       } else state.addToWarehouseError = payload.message;
     },
     [removeItemFromWarehouse.pending]: (state, action) => {
-      state.RemoveFromWarehouseStatus = "loading";
+      state.removeFromWarehouseStatus = "loading";
     },
     [removeItemFromWarehouse.fulfilled]: (state, action) => {
-      state.RemoveFromWarehouseStatus = "succeeded";
+      state.removeFromWarehouseStatus = "succeeded";
       const newItems = state.medicines.map((item) => {
         if (item._id === action.payload.data.item._id) {
           return action.payload.data.item;
@@ -259,7 +259,7 @@ export const medicinesSlice = createSlice({
       state.medicines = newItems;
     },
     [removeItemFromWarehouse.rejected]: (state, { error, meta, payload }) => {
-      state.RemoveFromWarehouseStatus = "failed";
+      state.removeFromWarehouseStatus = "failed";
 
       if (payload === "timeout") {
         state.removeFromWarehouseError = payload;
@@ -277,6 +277,10 @@ export const {
   resetError,
   resetMedicines,
   medicinesSliceSignOut,
+  resetAddToWarehouseStatus,
+  resetAddToWarehouseError,
+  resetRemoveFromWarehouseStatus,
+  resetRemoveFromWarehouseError,
 } = medicinesSlice.actions;
 
 export const selectMedicines = (state) => state.medicines;

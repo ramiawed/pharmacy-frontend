@@ -34,6 +34,7 @@ import styles from "./partner-card.module.scss";
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
 import { selectSettings } from "../../redux/settings/settingsSlice";
+import { resetMedicines } from "../../redux/medicines/medicinesSlices";
 
 function PartnerCard({ user, fullWidth }) {
   const { t } = useTranslation();
@@ -106,6 +107,8 @@ function PartnerCard({ user, fullWidth }) {
       );
     }
 
+    dispatch(resetMedicines());
+
     history.push({
       pathname: "medicines",
       state: {
@@ -123,6 +126,8 @@ function PartnerCard({ user, fullWidth }) {
         fullWidth ? styles.full_width : "",
       ].join(" ")}
     >
+      <p className={styles.partner_name}>{user.name}</p>
+
       {user.logo_url?.length > 0 ? (
         <p
           style={{
@@ -139,11 +144,7 @@ function PartnerCard({ user, fullWidth }) {
         ></p>
       )}
 
-      <p className={styles.partner_name}>{user.name}</p>
-
       <div className={styles.from_top}>
-        <div className={styles.name}>{user.name}</div>
-
         {changeFavoriteLoading ? (
           <div
             className={[generalStyles.icon, generalStyles.fc_yellow].join(" ")}

@@ -120,13 +120,15 @@ function MedicinesPage() {
   };
 
   useEffect(() => {
-    handleSearch(1);
+    if (medicines.length === 0) {
+      handleSearch(1);
+    }
 
     window.scrollTo(0, 0);
 
-    return () => {
-      dispatch(resetMedicines());
-    };
+    // return () => {
+    //   dispatch(resetMedicines());
+    // };
   }, []);
 
   return user ? (

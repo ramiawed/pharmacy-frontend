@@ -48,6 +48,8 @@ function SelectCustom({
       ...provided,
       color: state.isSelected ? bgColor : foreColor,
       background: state.isSelected ? foreColor : bgColor,
+      height: "25px",
+      fontSize: "0.7rem",
     }),
     valueContainer: (provided, state) => ({
       ...provided,

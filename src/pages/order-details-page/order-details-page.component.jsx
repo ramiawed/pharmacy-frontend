@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { withRouter } from "react-router";
+import { useHistory, withRouter } from "react-router";
 import axios from "axios";
-import { BASEURL, OfferTypes } from "../../utils/constants";
+import { BASEURL, Colors, OfferTypes } from "../../utils/constants";
 
 // components
 import CartWarehouseTableHeader from "../../components/cart-warehouse-table-header/cart-warehouse-table-header.component";
@@ -17,15 +17,20 @@ import { selectToken } from "../../redux/auth/authSlice";
 import generalStyles from "../../style.module.scss";
 import styles from "./order-details-page.module.scss";
 import Header from "../../components/header/header.component";
+import Icon from "../../components/action-icon/action-icon.component";
+import { RiRefreshLine } from "react-icons/ri";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 function OrderDetailsPage({ location }) {
   const { t } = useTranslation();
+  const history = useHistory();
   const orderId = location?.search.slice(1);
   const token = useSelector(selectToken);
   const [orderDetails, setOrderDetails] = useState(null);
   const [loading, setLoading] = useState(true);
 
   const getOrderDetails = async () => {
+    setLoading(true);
     const response = await axios.get(
       `${BASEURL}/orders/details?id=${orderId}`,
       {
@@ -36,7 +41,6 @@ function OrderDetailsPage({ location }) {
     );
 
     setOrderDetails(response.data.data.order);
-    console.log(response.data.data.order);
     setLoading(false);
   };
 
@@ -67,6 +71,23 @@ function OrderDetailsPage({ location }) {
         <div className={generalStyles.container}>
           <Header>
             <h2>{t("order-details")}</h2>
+            <div className={generalStyles.flex_center_container}>
+              <Icon
+                icon={() => <RiRefreshLine />}
+                foreColor={Colors.SECONDARY_COLOR}
+                tooltip={t("refresh-tooltip")}
+                onclick={getOrderDetails}
+              />
+              <Icon
+                selected={false}
+                foreColor={Colors.SECONDARY_COLOR}
+                tooltip={t("go-back")}
+                onclick={() => {
+                  history.goBack();
+                }}
+                icon={() => <IoMdArrowRoundBack size={20} />}
+              />
+            </div>
           </Header>
           <div className={styles.basic_details_container}>
             <div className={styles.row}>

@@ -125,10 +125,6 @@ function MedicinesPage() {
     }
 
     window.scrollTo(0, 0);
-
-    // return () => {
-    //   dispatch(resetMedicines());
-    // };
   }, []);
 
   return user ? (

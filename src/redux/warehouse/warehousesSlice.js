@@ -36,7 +36,7 @@ export const getWarehouses = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source;
 
-      let buildUrl = `${BASEURL}/users?type=warehouse&page=${pageState.page}&limit=9`;
+      let buildUrl = `${BASEURL}/users?type=warehouse&city=${queryString.city}&page=${pageState.page}&limit=9`;
 
       if (pageState.searchName.trim() !== "") {
         buildUrl = buildUrl + `&name=${pageState.searchName}`;
@@ -49,6 +49,8 @@ export const getWarehouses = createAsyncThunk(
       buildUrl = buildUrl + `&isApproved=true`;
 
       buildUrl = buildUrl + `&isActive=true`;
+
+      console.log(buildUrl);
 
       const response = await axios.get(buildUrl, {
         timeout: 10000,

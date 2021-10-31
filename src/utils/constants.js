@@ -27,6 +27,23 @@ export const GuestJob = {
   NONE: "user-job",
 };
 
+export const CitiesName = {
+  ALEPPO: "aleppo",
+  DAMASCUS: "damascus",
+  DARAA: "daraa",
+  DEIR_EZ_ZOR: "deir_ez_zor",
+  HAMA: "hama",
+  AL_HASAKAH: "al_hasakah",
+  HOMS: "homs",
+  IDLIB: "idlib",
+  LATAKIA: "latakia",
+  QUNEITRA: "guneitra",
+  RAQQA: "RAQQA",
+  AL_SUWAYDA: "al_suwayda",
+  TARTUS: "tartus",
+  NONE: "city-name",
+};
+
 export const Colors = {
   MAIN_COLOR: "#3d425c",
   SECONDARY_COLOR: "#566092",

@@ -23,7 +23,12 @@ import {
 import { getAllSettings } from "../../redux/settings/settingsSlice";
 
 // Constants && utils
-import { Colors, GuestJob, UserTypeConstants } from "../../utils/constants";
+import {
+  CitiesName,
+  Colors,
+  GuestJob,
+  UserTypeConstants,
+} from "../../utils/constants";
 import { getIcon } from "../../utils/icons.js";
 
 // styles
@@ -69,7 +74,7 @@ function SignUp() {
     email: "",
     phone: "",
     mobile: "",
-    city: "",
+    city: CitiesName.NONE,
     district: "",
     street: "",
     type: UserTypeConstants.NORMAL,
@@ -134,6 +139,7 @@ function SignUp() {
       job: "",
       companyName: "",
       jobTitle: "",
+      city: "",
     });
 
     history.push("/signin");
@@ -180,6 +186,40 @@ function SignUp() {
       employeeName: "",
       certificateName: "",
       jobTitle: "",
+    });
+  };
+
+  // guest options and its change handler
+  const citiesOptions = [
+    { value: CitiesName.NONE, label: t("city-name") },
+    { value: CitiesName.ALEPPO, label: t("aleppo") },
+    { value: CitiesName.DAMASCUS, label: t("damascus") },
+    { value: CitiesName.DARAA, label: t("daraa") },
+    { value: CitiesName.DEIR_EZ_ZOR, label: t("deir_ez_zor") },
+    { value: CitiesName.HAMA, label: t("hama") },
+    { value: CitiesName.AL_HASAKAH, label: t("al_hasakah") },
+    { value: CitiesName.HOMS, label: t("homs") },
+    { value: CitiesName.IDLIB, label: t("idlib") },
+    { value: CitiesName.LATAKIA, label: t("latakia") },
+    { value: CitiesName.QUNEITRA, label: t("quneitra") },
+    { value: CitiesName.RAQQA, label: t("raqqa") },
+    { value: CitiesName.AL_SUWAYDA, label: t("al_suwayda") },
+    { value: CitiesName.TARTUS, label: t("tartus") },
+  ];
+  // Guest types are (Student, Pharmacist, Employee)
+  // uses with the SelectCustom
+  const citiesNameChangeHandler = (val) => {
+    // if the user type is Normal and the job is Student or Pharmacist
+    // so the user doesn't contains info about company name and job title
+    setUser({
+      ...user,
+      city: val,
+    });
+
+    // reset the error
+    setError({
+      ...error,
+      city: "",
     });
   };
 
@@ -284,6 +324,10 @@ function SignUp() {
 
     if (user.mobile.length === 0) {
       errorObj["mobile"] = "enter-mobile";
+    }
+
+    if (user.city === CitiesName.NONE) {
+      errorObj["city"] = "enter-city";
     }
 
     // if the user type is Pharmacy or Warehouse
@@ -632,13 +676,23 @@ function SignUp() {
             styles.margintop,
           ].join(" ")}
         >
-          <Input
+          {/* <Input
             icon={getIcon("city")}
             type="text"
             label="user-city"
             id="city"
             value={user.city}
             onchange={inputChangeHandler}
+          /> */}
+          <SelectCustom
+            bgColor={Colors.SECONDARY_COLOR}
+            foreColor="#fff"
+            options={citiesOptions}
+            onchange={citiesNameChangeHandler}
+            defaultOption={{
+              value: "NONE",
+              label: t("city-name"),
+            }}
           />
         </div>
 

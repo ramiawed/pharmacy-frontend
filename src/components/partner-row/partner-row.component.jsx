@@ -143,6 +143,8 @@ function PartnerRow({ user, isSearch }) {
           </label>
         )}
 
+        <label>{user.city}</label>
+
         {changeFavoriteLoading ? (
           <div className={rowStyles.padding_end}>
             <Icon

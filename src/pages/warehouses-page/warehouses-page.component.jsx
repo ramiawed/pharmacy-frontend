@@ -59,7 +59,14 @@ function WarehousePage() {
     // build the query string
     dispatch(changeShowFavorites());
 
-    dispatch(getWarehouses({ token }))
+    dispatch(
+      getWarehouses({
+        queryString: {
+          city: user.city,
+        },
+        token,
+      })
+    )
       .then(unwrapResult)
       .then(() => {
         dispatch(changePage(page + 1));

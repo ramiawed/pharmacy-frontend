@@ -5,8 +5,21 @@
     "sign-in": "تسجيل دخول",
     "sign-up-sentence": "إذا لم يكن لديك حساب، قم بإنشاء حساب خاص",
     "sign-in-sentence": "إذا كان لديك حساب خاص، قم بتسجيل الدخول",
-    
-    
+    "aleppo": "حلب",
+    "damascus": "دمشق",
+    "daraa":"درعا",
+    "deir_ez_zor": "دير الزور",
+    "hama": "حماه",
+    "al_hasakah": "الحسكة",
+    "homs": "حمص",
+    "idlib": "ادلب",
+    "latakia": "اللاذقية",
+    "quneitra": "القنيطرة",
+    "raqqa": "الرقة",
+    "al_suwayda": "السويداء",
+    "tartus": "طرطوس",
+    "city-name": "اختر المدينة",
+    "enter-city": "الرجاء ادخل المدينة",
     "app-name": "فارما لينك",
     "user-more-info-title": "معلومات اكثر",
     "user-name": "الاسم",
@@ -58,7 +71,6 @@
     "approve-message": "سوف تصلك رسالة تأكيد خلال ٢٤ ساعة",
     "hour-serving": "موجودين لخدمتك ٧/٢٤",
     "enter-name": "ادخل الاسم",
-    
     
     "enter-password-confirm": "ادخل تاكيد كلمة السر",
     "enter-username-password": "ادخل اسم الدخول و كلمة السر",

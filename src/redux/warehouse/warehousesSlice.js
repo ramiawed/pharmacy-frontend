@@ -50,8 +50,6 @@ export const getWarehouses = createAsyncThunk(
 
       buildUrl = buildUrl + `&isActive=true`;
 
-      console.log(buildUrl);
-
       const response = await axios.get(buildUrl, {
         timeout: 10000,
         cancelToken: source.token,

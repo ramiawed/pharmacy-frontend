@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
 
@@ -36,7 +36,7 @@ import {
 } from "../../redux/online/onlineSlice";
 
 // constants and utils
-import { Colors } from "../../utils/constants.js";
+import { Colors, UserTypeConstants } from "../../utils/constants.js";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -62,7 +62,7 @@ function WarehousePage() {
     dispatch(
       getWarehouses({
         queryString: {
-          city: user.city,
+          city: user.type === UserTypeConstants.ADMIN ? "" : user.city,
         },
         token,
       })

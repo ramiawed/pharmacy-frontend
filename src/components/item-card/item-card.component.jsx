@@ -6,7 +6,6 @@ import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
 
 // react icons
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
-import { GiMedicines } from "react-icons/gi";
 import { MdDelete, MdAddCircle } from "react-icons/md";
 import { TiShoppingCart } from "react-icons/ti";
 import { VscLoading } from "react-icons/vsc";
@@ -65,7 +64,6 @@ function ItemCard({ companyItem }) {
   const [changeFavoriteLoading, setChangeFavoriteLoading] = useState(false);
   const [changeAddToWarehouseLoading, setChangeAddToWarehouseLoading] =
     useState(false);
-  const [hasOffer, setHasOffer] = useState(checkOffer(companyItem));
 
   // method to handle add company to user's favorite
   const addItemToFavoriteItems = () => {
@@ -187,7 +185,7 @@ function ItemCard({ companyItem }) {
     <div
       className={[
         styles.partner_container,
-        hasOffer ? styles.partner_container_has_offer : "",
+        checkOffer(companyItem) ? styles.partner_container_has_offer : "",
       ].join(" ")}
     >
       <div
@@ -288,7 +286,7 @@ function ItemCard({ companyItem }) {
         <div
           className={[
             styles.showed_content,
-            hasOffer ? styles.has_offer : "",
+            checkOffer(companyItem) ? styles.has_offer : "",
           ].join(" ")}
         >
           <label

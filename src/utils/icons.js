@@ -7,7 +7,6 @@ import {
   AiFillSafetyCertificate,
 } from "react-icons/ai";
 import { GiMedicines, GiCreditsCurrency } from "react-icons/gi";
-import { GrCurrency } from "react-icons/gr";
 
 // choose the icon based on the id of the input
 export const getIcon = (type) => {

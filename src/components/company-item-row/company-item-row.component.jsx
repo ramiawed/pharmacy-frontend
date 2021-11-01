@@ -58,7 +58,7 @@ function CompanyItemRow({
 
   // selectors
   const isOnline = useSelector(selectOnlineStatus);
-  const { token, user: loggedUser } = useSelector(selectUserData);
+  const { token } = useSelector(selectUserData);
 
   // own state
   const [modalObj, setModalObj] = useState({});

@@ -68,8 +68,6 @@ function ItemRow({ companyItem, isSearch }) {
   const [changeAddToWarehouseLoading, setChangeAddToWarehouseLoading] =
     useState(false);
 
-  const [hasOffer, setHasOffer] = useState(checkOffer(companyItem));
-
   // method to handle add company to user's favorite
   const addItemToFavoriteItems = () => {
     // check the internet connection
@@ -191,7 +189,7 @@ function ItemRow({ companyItem, isSearch }) {
     <>
       <div
         style={{
-          backgroundColor: hasOffer ? "#0f04" : " #fff",
+          backgroundColor: checkOffer(companyItem) ? "#0f04" : " #fff",
         }}
         className={isSearch ? rowStyles.search_container : rowStyles.container}
       >

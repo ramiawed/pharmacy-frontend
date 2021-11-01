@@ -23,7 +23,6 @@ import CardInfo from "../../components/card-info/card-info.component";
 import Header from "../../components/header/header.component";
 import FavoriteRow from "../../components/favorite-row/favorite-row.component";
 import FavoriteItemRow from "../../components/favorite-item-row/favorite-item-row.component";
-import ActionLoader from "../../components/action-loader/action-loader.component";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -49,7 +48,6 @@ function FavoritesPage() {
   const {
     favorites_partners: favoritesPartners,
     favorites_items: favoritesItems,
-    status,
   } = useSelector(selectFavorites);
 
   const refreshFavoritesHandler = () => {

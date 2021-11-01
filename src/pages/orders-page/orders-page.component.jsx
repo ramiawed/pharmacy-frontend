@@ -15,10 +15,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
   getOrders,
-  resetOrders,
   resetStatus,
   selectOrders,
-  setDateOption,
   setPage,
   setRefresh,
 } from "../../redux/orders/ordersSlice";
@@ -30,7 +28,7 @@ import generalStyles from "../../style.module.scss";
 import tableStyles from "../../components/table.module.scss";
 
 // constants and utils
-import { Colors, DateOptions, UserTypeConstants } from "../../utils/constants";
+import { Colors, UserTypeConstants } from "../../utils/constants";
 import TableHeader from "../../components/table-header/table-header.component";
 
 function OrdersPage() {

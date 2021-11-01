@@ -3,13 +3,13 @@
 .basic_details_container {
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .row {
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
   color: $secondary-color;
 }
 

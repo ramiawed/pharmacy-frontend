@@ -26,7 +26,6 @@ import AdminUsersPage from "../admin-users-page/admin-users-page.component";
 import FavoritesPage from "../favorites-page/favorites-page.component";
 import WarehousePage from "../warehouses-page/warehouses-page.component";
 import ItemsPage from "../items-page/items-page.component";
-import ItemsByCompanyPage from "../items-by-company-page/items-by-company-page.component";
 import WarehouseItemsPage from "../warehouse-items-page/warehouse-items-page.component";
 import ItemPage from "../item-page/item-page.component";
 import ItemExcelPage from "../item-excel-page/item-excel-page.component";
@@ -144,10 +143,6 @@ function MainPage() {
 
         <Route exact path="/medicines">
           <MedicinesPage />
-        </Route>
-
-        <Route path="/companies/:companyId">
-          <ItemsByCompanyPage />
         </Route>
 
         <Route path="/warehouse/items">

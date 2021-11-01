@@ -26,6 +26,7 @@ import { Colors, UserTypeConstants } from "../../utils/constants.js";
 import { VscLoading } from "react-icons/vsc";
 import Icon from "../action-icon/action-icon.component";
 import { selectSettings } from "../../redux/settings/settingsSlice";
+import { resetMedicines } from "../../redux/medicines/medicinesSlices";
 
 function FavoriteRow({ user, withoutBoxShadow }) {
   const { t } = useTranslation();
@@ -80,6 +81,7 @@ function FavoriteRow({ user, withoutBoxShadow }) {
                 rowStyles.hover_underline,
                 rowStyles.padding_start,
               ].join(" ")}
+              onClick={() => dispatch(resetMedicines())}
             >
               {user.name}
             </Link>

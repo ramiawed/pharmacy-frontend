@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useHistory } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Link, useHistory } from "react-router-dom";
 
 // components
 
@@ -20,6 +20,7 @@ import {
   statisticsCompanySelected,
   statisticsUserFavorites,
 } from "../../redux/statistics/statisticsSlice";
+import { resetMedicines } from "../../redux/medicines/medicinesSlices";
 import {
   changeOnlineMsg,
   selectOnlineStatus,
@@ -103,8 +104,26 @@ function AdvertisementCompanyCard({ user, contentColor }) {
     history.push(`/companies/${user._id}`);
   };
 
+  const dispatchCompanySelectedHandler = () => {
+    // if the user type is pharmacy or normal, change the selectedCount
+    // and selectedDates for this company
+    console.log("click");
+    if (
+      loggedUser.type === UserTypeConstants.PHARMACY ||
+      loggedUser.type === UserTypeConstants.NORMAL
+    ) {
+      dispatch(
+        statisticsCompanySelected({
+          obj: { companyId: user._id },
+          token,
+        })
+      );
+    }
+    dispatch(resetMedicines());
+  };
+
   return (
-    <div className={styles.partner_container} onClick={displayMedicinesHandler}>
+    <div className={styles.partner_container}>
       <div>
         {changeFavoriteLoading ? (
           <div
@@ -138,14 +157,24 @@ function AdvertisementCompanyCard({ user, contentColor }) {
         }}
       ></div>
 
-      <h3
+      <Link
         className={styles.content}
         style={{
           color: contentColor,
         }}
+        onClick={dispatchCompanySelectedHandler}
+        to={{
+          pathname: `/medicines`,
+          state: {
+            companyId:
+              user.type === UserTypeConstants.COMPANY ? user._id : null,
+            warehouseId:
+              user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
+          },
+        }}
       >
         {user.name}
-      </h3>
+      </Link>
     </div>
   );
 }

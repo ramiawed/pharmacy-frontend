@@ -69,7 +69,7 @@ export const removeItemFromWarehouse = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        `${BASEURL}/items/warehouse/remove-item/${obj.itemId}`,
+        `${BASEURL}/items/warehouse/remove-item/${obj.itemId}/${obj.city}`,
         { warehouseId: obj.warehouseId },
         {
           timeout: 10000,

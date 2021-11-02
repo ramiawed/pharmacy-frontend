@@ -32,9 +32,10 @@ function UserMoreInfoModal({ user, close }) {
       </div>
 
       <div className={[styles.header].join(" ")}>{t("address-info")}</div>
+
       <div className={styles.row}>
         <label className={styles.label}>{t("user-city")}:</label>
-        <label className={styles.label_value}>{user.city}</label>
+        <label className={styles.label_value}>{t(user.city)}</label>
       </div>
 
       <div className={styles.row}>

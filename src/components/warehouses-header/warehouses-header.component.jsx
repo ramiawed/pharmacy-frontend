@@ -63,7 +63,7 @@ function WarehousesHeader({ search, refreshHandler, count }) {
             resetField={() => dispatch(changeSearchName(""))}
           />
 
-          <SearchInput
+          {/* <SearchInput
             label="user-city"
             id="search-city"
             type="text"
@@ -74,7 +74,7 @@ function WarehousesHeader({ search, refreshHandler, count }) {
             placeholder="search"
             onEnterPress={search}
             resetField={() => dispatch(changeSearchCity(""))}
-          />
+          /> */}
         </SearchContainer>
       </div>
 

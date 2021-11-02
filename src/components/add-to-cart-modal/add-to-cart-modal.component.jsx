@@ -15,7 +15,7 @@ import InfoRow from "../info-row/info-row.component";
 
 // redux stuff
 import { addItemToCart } from "../../redux/cart/cartSlice";
-import { selectToken } from "../../redux/auth/authSlice";
+import { selectToken, selectUserData } from "../../redux/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { statisticsItemAddedToCart } from "../../redux/statistics/statisticsSlice";
 import { selectOnlineStatus } from "../../redux/online/onlineSlice";
@@ -60,7 +60,7 @@ const checkOfferQty = (selectedWarehouse, qty) => {
 function AddToCartModal({ item, close }) {
   const { t } = useTranslation();
 
-  const token = useSelector(selectToken);
+  const { token, user } = useSelector(selectUserData);
   const isOnline = useSelector(selectOnlineStatus);
 
   const dispatch = useDispatch();
@@ -68,21 +68,25 @@ function AddToCartModal({ item, close }) {
   // build the warehouse option array that contains this item
   // get all the warehouse that contains this item
   // put asterisk after warehouse name if the warehouse has an offer
-  const itemWarehousesOption = item.warehouses.map((w) => {
-    const asterisk = w.offer.offers.length > 0 ? "*" : "";
+  const itemWarehousesOption = item.warehouses
+    .filter((w) => w.warehouse.city === user.city)
+    .map((w) => {
+      const asterisk = w.offer.offers.length > 0 ? "*" : "";
 
-    return {
-      label: `${w.warehouse.name} ${asterisk}`,
-      value: w.warehouse._id,
-    };
-  });
+      return {
+        label: `${w.warehouse.name} ${asterisk}`,
+        value: w.warehouse._id,
+      };
+    });
 
   // select the first warehouse in the list
   const [selectedWarehouse, setSelectedWarehouse] = useState(
-    item.warehouses[0]
+    item.warehouses.filter((w) => w.warehouse.city === user.city)[0]
   );
 
-  const [offer, setOffer] = useState(item.warehouses[0].offer);
+  const [offer, setOffer] = useState(
+    item.warehouses.filter((w) => w.warehouse.city === user.city)[0].offer
+  );
   const [qty, setQty] = useState(0);
   const [qtyError, setQtyError] = useState(false);
 

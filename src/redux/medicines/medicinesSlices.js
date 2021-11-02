@@ -53,6 +53,10 @@ export const getMedicines = createAsyncThunk(
         buildUrl = buildUrl + `&outWarehouse=true`;
       }
 
+      if (queryString.city) {
+        buildUrl = buildUrl + `&city=${queryString.city}`;
+      }
+
       const response = await axios.get(buildUrl, {
         timeout: 10000,
         cancelToken: source.token,
@@ -87,7 +91,7 @@ export const addItemToWarehouse = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        `${BASEURL}/items/warehouse/add-item/${obj.itemId}`,
+        `${BASEURL}/items/warehouse/add-item/${obj.itemId}/${obj.city}`,
         { warehouseId: obj.warehouseId },
         {
           timeout: 10000,
@@ -124,7 +128,7 @@ export const removeItemFromWarehouse = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        `${BASEURL}/items/warehouse/remove-item/${obj.itemId}`,
+        `${BASEURL}/items/warehouse/remove-item/${obj.itemId}/${obj.city}`,
         { warehouseId: obj.warehouseId },
         {
           timeout: 10000,

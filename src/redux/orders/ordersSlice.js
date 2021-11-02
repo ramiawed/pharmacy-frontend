@@ -176,8 +176,6 @@ export const saveOrder = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      console.log(obj);
-
       const response = await axios.post(`${BASEURL}/orders`, obj, {
         timeout: 10000,
         cancelToken: source.token,
@@ -188,7 +186,6 @@ export const saveOrder = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      console.log(err);
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }

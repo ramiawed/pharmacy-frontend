@@ -12,10 +12,7 @@ import { VscLoading } from "react-icons/vsc";
 
 // redux-stuff
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addItemToWarehouse,
-  removeItemFromWarehouse,
-} from "../../redux/companyItems/companyItemsSlices";
+
 import {
   addFavoriteItem,
   removeFavoriteItem,
@@ -38,6 +35,10 @@ import {
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
 import Icon from "../action-icon/action-icon.component";
+import {
+  addItemToWarehouse,
+  removeItemFromWarehouse,
+} from "../../redux/medicines/medicinesSlices";
 
 const checkOffer = (item) => {
   let result = false;

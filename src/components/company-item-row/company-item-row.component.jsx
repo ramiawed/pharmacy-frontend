@@ -111,7 +111,11 @@ function CompanyItemRow({
       dispatch(changeOnlineMsg());
       return;
     }
-    deleteItemFromWarehouse({ itemId: item._id, warehouseId: warehouse._id });
+    deleteItemFromWarehouse({
+      itemId: item._id,
+      warehouseId: warehouse._id,
+      city: warehouse.city,
+    });
 
     setShowDeleteFromWarehouseModal(false);
   };

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
@@ -14,18 +14,18 @@ import { VscLoading } from "react-icons/vsc";
 
 // redux-stuff
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addItemToWarehouse,
-  removeItemFromWarehouse,
-} from "../../redux/companyItems/companyItemsSlices";
+// import {
+//   addItemToWarehouse,
+//   removeItemFromWarehouse,
+// } from "../../redux/companyItems/companyItemsSlices";
 import {
   addFavoriteItem,
   removeFavoriteItem,
   selectFavoritesItems,
 } from "../../redux/favorites/favoritesSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
 import { selectToken, selectUser } from "../../redux/auth/authSlice";
 import { statisticsItemFavorites } from "../../redux/statistics/statisticsSlice";
-import { unwrapResult } from "@reduxjs/toolkit";
 import {
   changeOnlineMsg,
   selectOnlineStatus,
@@ -37,6 +37,10 @@ import styles from "./advertisement-item-card.module.scss";
 
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants";
+import {
+  addItemToWarehouse,
+  removeItemFromWarehouse,
+} from "../../redux/medicines/medicinesSlices";
 
 function AdvertisementItemCard({ companyItem, contentColor }) {
   const { t } = useTranslation();
@@ -72,7 +76,7 @@ function AdvertisementItemCard({ companyItem, contentColor }) {
         );
         setChangeFavoriteLoading(false);
       })
-      .catch(() => {
+      .catch((error) => {
         setChangeFavoriteLoading(false);
       });
   };
@@ -168,6 +172,7 @@ function AdvertisementItemCard({ companyItem, contentColor }) {
       );
     }
   };
+
   return (
     <div className={styles.partner_container}>
       <div

@@ -36,7 +36,7 @@ export const getCompanies = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source;
 
-      let buildUrl = `${BASEURL}/users?type=company&page=${pageState.page}&limit=9`;
+      let buildUrl = `${BASEURL}/users?type=company&page=${pageState.page}&limit=9&details=some`;
 
       if (pageState.searchName.trim() !== "") {
         buildUrl = buildUrl + `&name=${pageState.searchName}`;

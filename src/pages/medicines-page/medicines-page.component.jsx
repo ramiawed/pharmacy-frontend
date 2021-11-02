@@ -105,6 +105,10 @@ function MedicinesPage() {
       queryString.searchOutWarehouse = isOutWarehouse;
     }
 
+    if (user.type === UserTypeConstants.PHARMACY) {
+      queryString.city = user.city;
+    }
+
     dispatch(getMedicines({ queryString, token }));
     setPage(reset ? 1 : page + 1);
     setPage(page + 1);

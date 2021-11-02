@@ -150,6 +150,7 @@ function HomePage() {
             header={settings.itemsSectionOne?.title}
             description={settings.itemsSectionOne?.description}
             order={settings.itemsSectionOne?.order}
+            type="item"
           />
         )}
 
@@ -175,6 +176,7 @@ function HomePage() {
             header={settings.itemsSectionTwo?.title}
             description={settings.itemsSectionTwo?.description}
             order={settings.itemsSectionTwo?.order}
+            type="item"
           />
         )}
 
@@ -201,6 +203,7 @@ function HomePage() {
             header={settings.itemsSectionThree?.title}
             description={settings.itemsSectionThree?.description}
             order={settings.itemsSectionThree?.order}
+            type="item"
           />
         )}
       </div>

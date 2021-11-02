@@ -20,7 +20,6 @@ import { usersSliceSignOut } from "../../redux/users/usersSlice";
 import { favoritesSliceSignOut } from "../../redux/favorites/favoritesSlice";
 import { cartSliceSignOut } from "../../redux/cart/cartSlice";
 import { companySliceSignOut } from "../../redux/company/companySlice";
-import { companyItemsSliceSignOut } from "../../redux/companyItems/companyItemsSlices";
 import { itemsSliceSignOut } from "../../redux/items/itemsSlices";
 import { statisticsSliceSignOut } from "../../redux/statistics/statisticsSlice";
 import { warehouseSliceSignOut } from "../../redux/warehouse/warehousesSlice";
@@ -33,6 +32,7 @@ import linkStyles from "../side-nav.module.scss";
 // constants
 import { UserTypeConstants } from "../../utils/constants";
 import { orderSliceSignout } from "../../redux/orders/ordersSlice";
+import { resetMedicines } from "../../redux/medicines/medicinesSlices";
 
 function SideNav({
   collapsed,
@@ -48,7 +48,6 @@ function SideNav({
     dispatch(authSliceSignOut());
     dispatch(cartSliceSignOut());
     dispatch(companySliceSignOut());
-    dispatch(companyItemsSliceSignOut());
     dispatch(favoritesSliceSignOut());
     dispatch(itemsSliceSignOut());
     dispatch(statisticsSliceSignOut());
@@ -56,6 +55,7 @@ function SideNav({
     dispatch(warehouseSliceSignOut());
     dispatch(warehouseItemsSliceSignOut());
     dispatch(orderSliceSignout());
+    dispatch(resetMedicines());
   };
 
   return (

@@ -15,7 +15,6 @@ import {
   resetWarehousePageState,
 } from "../../redux/warehouse/warehousesSlice";
 import { resetItems } from "../../redux/items/itemsSlices";
-import { resetCompanyItems } from "../../redux/companyItems/companyItemsSlices";
 import { resetCartItems } from "../../redux/cart/cartSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { orderSliceSignout } from "../../redux/orders/ordersSlice";
@@ -33,6 +32,7 @@ import {
   changeOnlineMsg,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
+import { resetMedicines } from "../../redux/medicines/medicinesSlices";
 
 function DeleteMe() {
   const { t } = useTranslation();
@@ -76,9 +76,9 @@ function DeleteMe() {
         dispatch(resetWarehouse());
         dispatch(resetWarehousePageState());
         dispatch(resetItems());
-        dispatch(resetCompanyItems());
         dispatch(resetCartItems());
         dispatch(orderSliceSignout());
+        dispatch(resetMedicines());
       })
       .catch((rejectedValueOrSerializedError) => {
         // on failed, show message below the password input

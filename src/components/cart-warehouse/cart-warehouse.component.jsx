@@ -157,7 +157,6 @@ function CartWarehouse({ warehouse }) {
         setShowSuccessModal(true);
       })
       .catch((err) => {
-        console.log(err);
         setShowLoadingModal(false);
         setShowFailedModal(true);
       });

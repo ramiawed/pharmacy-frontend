@@ -39,14 +39,41 @@ import tableStyles from "../table.module.scss";
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants";
 
-const checkOffer = (item) => {
+const checkOffer = (item, user) => {
+  if (
+    user.type === UserTypeConstants.GUEST ||
+    user.type === UserTypeConstants.COMPANY
+  ) {
+    return false;
+  }
+
   let result = false;
 
-  item.warehouses.forEach((w) => {
-    if (w.offer.offers.length > 0) {
-      result = true;
-    }
-  });
+  if (user.type === UserTypeConstants.ADMIN) {
+    item.warehouses.forEach((w) => {
+      if (w.offer.offers.length > 0) {
+        result = true;
+      }
+    });
+  }
+
+  if (user.type === UserTypeConstants.WAREHOUSE) {
+    item.warehouses
+      .filter((w) => w.warehouse._id === user._id)
+      .forEach((w) => {
+        if (w.offer.offers.length > 0) {
+          result = true;
+        }
+      });
+  }
+
+  if (user.type === UserTypeConstants.PHARMACY) {
+    item.warehouses.forEach((w) => {
+      if (w.warehouse.city === user.city && w.offer.offers.length > 0) {
+        result = true;
+      }
+    });
+  }
 
   return result;
 };
@@ -130,6 +157,7 @@ function ItemRow({ companyItem, isSearch }) {
         obj: {
           itemId: companyItem._id,
           warehouseId: user._id,
+          city: user.city,
         },
         token,
       })
@@ -158,6 +186,7 @@ function ItemRow({ companyItem, isSearch }) {
         obj: {
           itemId: companyItem._id,
           warehouseId: user._id,
+          city: user.city,
         },
         token,
       })
@@ -189,7 +218,7 @@ function ItemRow({ companyItem, isSearch }) {
     <>
       <div
         style={{
-          backgroundColor: checkOffer(companyItem) ? "#0f04" : " #fff",
+          backgroundColor: checkOffer(companyItem, user) ? "#0f04" : " #fff",
         }}
         className={isSearch ? rowStyles.search_container : rowStyles.container}
       >
@@ -280,7 +309,7 @@ function ItemRow({ companyItem, isSearch }) {
           )}
 
           {user.type === UserTypeConstants.PHARMACY &&
-          companyItem.warehouses.length > 0 ? (
+          companyItem.existing_place[user.city] > 0 ? (
             <Icon
               icon={() => <TiShoppingCart size={20} />}
               onclick={() => {

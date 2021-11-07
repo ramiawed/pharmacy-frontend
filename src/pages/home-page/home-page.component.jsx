@@ -18,6 +18,10 @@ import {
   selectCompaniesSectionTwo,
 } from "../../redux/advertisements/companiesSectionTwoSlice";
 import {
+  getWarehousesSectionOne,
+  selectWarehousesSectionOne,
+} from "../../redux/advertisements/warehousesSectionOneSlice";
+import {
   getItemsSectionOne,
   selectItemsSectionOne,
 } from "../../redux/advertisements/itemsSectionOneSlice";
@@ -44,6 +48,9 @@ function HomePage() {
   const { companiesSectionTwo, companiesSectionTwoStatus } = useSelector(
     selectCompaniesSectionTwo
   );
+  const { warehousesSectionOne, warehousesSectionOneStatus } = useSelector(
+    selectWarehousesSectionOne
+  );
   const { itemsSectionOne, itemsSectionOneStatus } = useSelector(
     selectItemsSectionOne
   );
@@ -61,6 +68,7 @@ function HomePage() {
     dispatch(getItemsSectionOne({ token }));
     dispatch(getItemsSectionTwo({ token }));
     dispatch(getItemsSectionThree({ token }));
+    dispatch(getWarehousesSectionOne({ token }));
   }, []);
 
   return user ? (
@@ -125,6 +133,33 @@ function HomePage() {
               header={settings.companiesSectionTwo?.title}
               description={settings.companiesSectionTwo?.description}
               order={settings.companiesSectionTwo?.order}
+            />
+          )}
+
+        {settings.companiesSectionOne?.show &&
+          companiesSectionOneStatus === "loading" && (
+            <div
+              className={styles.container}
+              style={{
+                background: "#0B86B2",
+                order: settings.companiesSectionOne?.order,
+              }}
+            >
+              <Loader color="#fff" />
+            </div>
+          )}
+
+        {settings.warehousesSectionOne?.show &&
+          warehousesSectionOne.length > 0 && (
+            <SectionHomePage
+              data={warehousesSectionOne}
+              containerBackground="#0B86B2"
+              headerFlex={settings.warehousesSectionOne?.titleRight ? 1 : 2}
+              headerBackground="#205D73"
+              sliderFlex={settings.warehousesSectionOne?.titleRight ? 2 : 1}
+              header={settings.warehousesSectionOne?.title}
+              description={settings.warehousesSectionOne?.description}
+              order={settings.warehousesSectionOne?.order}
             />
           )}
 

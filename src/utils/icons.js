@@ -1,3 +1,4 @@
+import React from "react";
 import { FaUserAlt, FaMobile } from "react-icons/fa";
 import { RiLockPasswordFill, RiUserReceived2Fill } from "react-icons/ri";
 import { MdEmail } from "react-icons/md";

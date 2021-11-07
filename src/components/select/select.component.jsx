@@ -8,6 +8,7 @@
 // -	orderChange: (handler) handler to execute when change the selected option in the Select Component
 
 // 3-party component
+import React from "react";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
 

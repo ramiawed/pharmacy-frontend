@@ -40,14 +40,41 @@ import {
   removeItemFromWarehouse,
 } from "../../redux/medicines/medicinesSlices";
 
-const checkOffer = (item) => {
+const checkOffer = (item, user) => {
+  if (
+    user.type === UserTypeConstants.GUEST ||
+    user.type === UserTypeConstants.COMPANY
+  ) {
+    return false;
+  }
+
   let result = false;
 
-  item.warehouses.forEach((w) => {
-    if (w.offer.offers.length > 0) {
-      result = true;
-    }
-  });
+  if (user.type === UserTypeConstants.ADMIN) {
+    item.warehouses.forEach((w) => {
+      if (w.offer.offers.length > 0) {
+        result = true;
+      }
+    });
+  }
+
+  if (user.type === UserTypeConstants.WAREHOUSE) {
+    item.warehouses
+      .filter((w) => w.warehouse._id === user._id)
+      .forEach((w) => {
+        if (w.offer.offers.length > 0) {
+          result = true;
+        }
+      });
+  }
+
+  if (user.type === UserTypeConstants.PHARMACY) {
+    item.warehouses.forEach((w) => {
+      if (w.warehouse.city === user.city && w.offer.offers.length > 0) {
+        result = true;
+      }
+    });
+  }
 
   return result;
 };
@@ -186,7 +213,7 @@ function ItemCard({ companyItem }) {
     <div
       className={[
         styles.partner_container,
-        checkOffer(companyItem) ? styles.partner_container_has_offer : "",
+        checkOffer(companyItem, user) ? styles.partner_container_has_offer : "",
       ].join(" ")}
     >
       <div
@@ -287,7 +314,7 @@ function ItemCard({ companyItem }) {
         <div
           className={[
             styles.showed_content,
-            checkOffer(companyItem) ? styles.has_offer : "",
+            checkOffer(companyItem, user) ? styles.has_offer : "",
           ].join(" ")}
         >
           <label

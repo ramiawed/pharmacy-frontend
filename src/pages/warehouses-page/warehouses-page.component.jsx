@@ -113,7 +113,7 @@ function WarehousePage() {
       {/* display as list */}
       {displayType === "list" &&
         warehouses.map((warehouse) => (
-          <PartnerRow key={warehouse._id} user={warehouse} />
+          <PartnerRow key={warehouse._id} user={warehouse} type="warehouse" />
         ))}
 
       {/* display as card */}

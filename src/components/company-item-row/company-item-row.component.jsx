@@ -32,14 +32,30 @@ import rowStyles from "../row.module.scss";
 import { Colors, UserTypeConstants } from "../../utils/constants";
 import { VscLoading } from "react-icons/vsc";
 
-const checkOffer = (item) => {
+const checkOffer = (item, user) => {
+  if (user.type === UserTypeConstants.COMPANY) {
+    return false;
+  }
+
   let result = false;
 
-  item.warehouses.forEach((w) => {
-    if (w.offer.offers.length > 0) {
-      result = true;
-    }
-  });
+  if (user.type === UserTypeConstants.WAREHOUSE) {
+    item.warehouses
+      .filter((w) => w.warehouse._id === user._id)
+      .forEach((w) => {
+        if (w.offer.offers.length > 0) {
+          result = true;
+        }
+      });
+  }
+
+  if (user.type === UserTypeConstants.ADMIN) {
+    item.warehouses.forEach((w) => {
+      if (w.offer.offers.length > 0) {
+        result = true;
+      }
+    });
+  }
 
   return result;
 };
@@ -174,7 +190,7 @@ function CompanyItemRow({
     <>
       <div
         style={{
-          backgroundColor: checkOffer(item) ? "#0f04" : "#fff",
+          backgroundColor: checkOffer(item, user) ? "#0f04" : "#fff",
         }}
         className={rowStyles.container}
       >
@@ -298,7 +314,7 @@ function CompanyItemRow({
                 icon={() => <MdLocalOffer size={20} />}
                 tooltip={t("nav-offers")}
                 foreColor={
-                  checkOffer(item)
+                  checkOffer(item, user)
                     ? Colors.SUCCEEDED_COLOR
                     : Colors.SECONDARY_COLOR
                 }

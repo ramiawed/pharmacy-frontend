@@ -135,7 +135,7 @@ function CompaniesPage() {
       {/* display partner as list */}
       {displayType === "list" &&
         companies.map((company) => (
-          <PartnerRow key={company._id} user={company} />
+          <PartnerRow key={company._id} user={company} type="company" />
         ))}
 
       {/* display partner as a card */}

@@ -15,6 +15,7 @@ import onlineSlice from "./redux/online/onlineSlice";
 import settingsSlice from "./redux/settings/settingsSlice";
 import companiesSectionOneSlice from "./redux/advertisements/companiesSectionOneSlice";
 import companiesSectionTwoSlice from "./redux/advertisements/companiesSectionTwoSlice";
+import warehousesSectionOneSlice from "./redux/advertisements/warehousesSectionOneSlice";
 import itemsSectionOneSlice from "./redux/advertisements/itemsSectionOneSlice";
 import itemsSectionTwoSlice from "./redux/advertisements/itemsSectionTwoSlice";
 import itemsSectionThreeSlice from "./redux/advertisements/itemsSectionThreeSlice";
@@ -35,6 +36,7 @@ const reducers = combineReducers({
   online: onlineSlice,
   companiesSectionOne: companiesSectionOneSlice,
   companiesSectionTwo: companiesSectionTwoSlice,
+  warehousesSectionOne: warehousesSectionOneSlice,
   itemsSectionOne: itemsSectionOneSlice,
   itemsSectionTwo: itemsSectionTwoSlice,
   itemsSectionThree: itemsSectionThreeSlice,

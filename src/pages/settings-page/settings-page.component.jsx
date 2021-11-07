@@ -31,6 +31,8 @@ import generalStyles from "../../style.module.scss";
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
 import SaveOrdersSettings from "../../components/save-orders-setting/save-orders-setting.component";
+import WarehousesSectionOneSettings from "../../components/warehouses-section-one-settings/warehouses-section-one-settings.component";
+import { getWarehousesSectionOne } from "../../redux/advertisements/warehousesSectionOneSlice";
 
 function SettingsPage() {
   const { t } = useTranslation();
@@ -44,11 +46,12 @@ function SettingsPage() {
     dispatch(getItemsSectionOne({ token }));
     dispatch(getItemsSectionTwo({ token }));
     dispatch(getItemsSectionThree({ token }));
+    dispatch(getWarehousesSectionOne({ token }));
   };
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+  }, [dispatch]);
 
   return user && user.type === UserTypeConstants.ADMIN ? (
     <div className={generalStyles.container}>
@@ -80,6 +83,7 @@ function SettingsPage() {
       </Header>
       <CompaniesSectionOneSettings />
       <CompaniesSectionTwoSettings />
+      <WarehousesSectionOneSettings />
       <ItemsSectionOneSettings />
       <ItemsSectionTwoSettings />
       <ItemsSectionThreeSettings />

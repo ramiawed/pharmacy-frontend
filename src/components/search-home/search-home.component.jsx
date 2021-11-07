@@ -247,7 +247,12 @@ function SearchHome() {
               option === "medicines" ? (
                 <ItemRow key={d._id} companyItem={d} isSearch={true} />
               ) : (
-                <PartnerRow key={d._id} user={d} isSearch={true} />
+                <PartnerRow
+                  key={d._id}
+                  user={d}
+                  isSearch={true}
+                  type={option === "companies" ? "company" : "warehouse"}
+                />
               )
             )
           ) : (

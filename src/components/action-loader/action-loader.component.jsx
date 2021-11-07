@@ -13,7 +13,7 @@
 // - show: boolean that indicates to show cancel button or not
 
 // style
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
 import { useTranslation } from "react-i18next";
 

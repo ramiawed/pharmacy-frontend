@@ -36,7 +36,7 @@ import { Colors, UserTypeConstants } from "../../utils/constants.js";
 import Icon from "../action-icon/action-icon.component";
 import { resetMedicines } from "../../redux/medicines/medicinesSlices";
 
-function PartnerRow({ user, isSearch }) {
+function PartnerRow({ user, isSearch, type }) {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -112,17 +112,15 @@ function PartnerRow({ user, isSearch }) {
       <div
         className={isSearch ? rowStyles.search_container : rowStyles.container}
       >
-        {user.type === UserTypeConstants.COMPANY ||
-        (user.type === UserTypeConstants.WAREHOUSE && showWarehouseItem) ? (
+        {type === "company" || (type === "warehouse" && showWarehouseItem) ? (
           <Link
             onClick={dispatchCompanySelectedHandler}
             to={{
               pathname: `/medicines`,
               state: {
-                companyId:
-                  user.type === UserTypeConstants.COMPANY ? user._id : null,
+                companyId: type === UserTypeConstants.COMPANY ? user._id : null,
                 warehouseId:
-                  user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
+                  type === UserTypeConstants.WAREHOUSE ? user._id : null,
               },
             }}
             className={[

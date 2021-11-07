@@ -26,6 +26,8 @@ import {
   changeOnlineMsg,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
+import { selectSettings } from "../../redux/settings/settingsSlice";
+import { resetMedicines } from "../../redux/medicines/medicinesSlices";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -33,8 +35,6 @@ import styles from "./partner-card.module.scss";
 
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
-import { selectSettings } from "../../redux/settings/settingsSlice";
-import { resetMedicines } from "../../redux/medicines/medicinesSlices";
 
 function PartnerCard({ user, fullWidth }) {
   const { t } = useTranslation();
@@ -164,8 +164,7 @@ function PartnerCard({ user, fullWidth }) {
           </div>
         )}
 
-        {(user.type === UserTypeConstants.COMPANY ||
-          (user.type === UserTypeConstants.WAREHOUSE && showWarehouseItem)) && (
+        {
           <div>
             <Button
               action={displayMedicinesHandler}
@@ -173,7 +172,7 @@ function PartnerCard({ user, fullWidth }) {
               bgColor={Colors.FAILED_COLOR}
             />
           </div>
-        )}
+        }
       </div>
     </div>
   );

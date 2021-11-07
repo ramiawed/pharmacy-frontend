@@ -434,43 +434,84 @@ function ItemPage() {
           </div>
         </CardInfo>
 
-        {item.warehouses?.length > 0 &&
-          (user.type === UserTypeConstants.ADMIN ||
-            user.type === UserTypeConstants.PHARMACY) && (
-            <CardInfo headerTitle={t("warehouses")}>
-              {item.warehouses.map((w, index) => (
-                <div
-                  className={[
-                    rowStyles.container,
-                    rowStyles.without_box_shadow,
-                    generalStyles.padding_h_6,
-                  ].join(" ")}
-                  key={index}
-                >
-                  <label className={generalStyles.padding_v_6}>
-                    {w.warehouse.name}
-                  </label>
+        {/* IF THE USER TYPE IS ADMIN */}
+        {/* show each warehouses */}
+        {item.warehouses?.length > 0 && user.type === UserTypeConstants.ADMIN && (
+          <CardInfo headerTitle={t("warehouses")}>
+            {item.warehouses.map((w, index) => (
+              <div
+                className={[
+                  rowStyles.container,
+                  rowStyles.without_box_shadow,
+                  generalStyles.padding_h_6,
+                ].join(" ")}
+                key={index}
+              >
+                <label className={generalStyles.padding_v_6}>
+                  {w.warehouse.name}
+                </label>
 
+                <div
+                  className={generalStyles.icon}
+                  onClick={() => {
+                    setSelectedWarehouseId(w.warehouse._id);
+                    setAllowEdit(
+                      (user.type === UserTypeConstants.WAREHOUSE &&
+                        user._id === w.warehouse._id) ||
+                        (user.type === UserTypeConstants.ADMIN &&
+                          w.warehouse.allowAdmin)
+                    );
+                    setShowOfferModal(true);
+                  }}
+                >
+                  <MdLocalOffer />
+                  <div className={generalStyles.tooltip}>{t("nav-offers")}</div>
+                </div>
+              </div>
+            ))}
+          </CardInfo>
+        )}
+
+        {/* IF USER TYPE IS PHARMACY */}
+        {/* show warehouses which are in the same city with user */}
+        {item.warehouses?.length > 0 &&
+          user.type === UserTypeConstants.PHARMACY && (
+            <CardInfo headerTitle={t("warehouses")}>
+              {item.warehouses
+                .filter((w) => w.warehouse.city === user.city)
+                .map((w, index) => (
                   <div
-                    className={generalStyles.icon}
-                    onClick={() => {
-                      setSelectedWarehouseId(w.warehouse._id);
-                      setAllowEdit(
-                        (user.type === UserTypeConstants.WAREHOUSE &&
-                          user._id === w.warehouse._id) ||
-                          (user.type === UserTypeConstants.ADMIN &&
-                            w.warehouse.allowAdmin)
-                      );
-                      setShowOfferModal(true);
-                    }}
+                    className={[
+                      rowStyles.container,
+                      rowStyles.without_box_shadow,
+                      generalStyles.padding_h_6,
+                    ].join(" ")}
+                    key={index}
                   >
-                    <MdLocalOffer />
-                    <div className={generalStyles.tooltip}>
-                      {t("nav-offers")}
+                    <label className={generalStyles.padding_v_6}>
+                      {w.warehouse.name}
+                    </label>
+
+                    <div
+                      className={generalStyles.icon}
+                      onClick={() => {
+                        setSelectedWarehouseId(w.warehouse._id);
+                        setAllowEdit(
+                          (user.type === UserTypeConstants.WAREHOUSE &&
+                            user._id === w.warehouse._id) ||
+                            (user.type === UserTypeConstants.ADMIN &&
+                              w.warehouse.allowAdmin)
+                        );
+                        setShowOfferModal(true);
+                      }}
+                    >
+                      <MdLocalOffer />
+                      <div className={generalStyles.tooltip}>
+                        {t("nav-offers")}
+                      </div>
                     </div>
                   </div>
-                </div>
-              ))}
+                ))}
             </CardInfo>
           )}
 

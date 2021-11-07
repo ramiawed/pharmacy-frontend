@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
@@ -30,7 +30,7 @@ import styles from "./side-nav.module.scss";
 import linkStyles from "../side-nav.module.scss";
 
 // constants
-import { UserTypeConstants } from "../../utils/constants";
+import { BASEURL, UserTypeConstants } from "../../utils/constants";
 import { orderSliceSignout } from "../../redux/orders/ordersSlice";
 import { resetMedicines } from "../../redux/medicines/medicinesSlices";
 
@@ -68,18 +68,13 @@ function SideNav({
       <div className={styles.close_icon} onClick={onCollapsedChange}>
         <VscClose size={32} />
       </div>
-      <div
-        style={{
-          backgroundImage:
-            user.logo_url !== ""
-              ? `url('http://localhost:8000/${user.logo_url}')`
-              : 'url("http://localhost:8000/avatar01.png',
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundSize: "contain",
-        }}
-        className={styles.profile_img}
-      ></div>
+      <div className={styles.profile_img}>
+        <div
+          style={{
+            backgroundImage: `url("http://localhost:8000/${user.logo_url}")`,
+          }}
+        ></div>
+      </div>
       <div className={styles.links}>
         {user.type === UserTypeConstants.ADMIN && (
           <SideNavAdmin
@@ -111,7 +106,13 @@ function SideNav({
             onSelectedChange={onSelectedChange}
           />
         )}
-        <Link className={linkStyles.link} onClick={handleSignOut}>
+        <Link
+          className={linkStyles.link}
+          to={{
+            pathname: "/",
+          }}
+          onClick={handleSignOut}
+        >
           {t("nav-sign-out")}
         </Link>
       </div>
@@ -137,3 +138,5 @@ function SideNav({
 }
 
 export default SideNav;
+
+// pharmacy-frontend

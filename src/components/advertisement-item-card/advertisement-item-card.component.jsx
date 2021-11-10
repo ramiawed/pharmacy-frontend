@@ -8,7 +8,8 @@ import Icon from "../action-icon/action-icon.component";
 
 // react icons
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
-import { MdDelete, MdAddCircle } from "react-icons/md";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+import { MdAddCircle } from "react-icons/md";
 import { TiShoppingCart } from "react-icons/ti";
 import { VscLoading } from "react-icons/vsc";
 
@@ -194,7 +195,7 @@ function AdvertisementItemCard({ companyItem, contentColor }) {
             .map((w) => w.warehouse._id)
             .includes(user._id) ? (
             <Icon
-              icon={() => <MdDelete size={32} />}
+              icon={() => <RiDeleteBin5Fill size={32} />}
               onclick={removeItemFromWarehouseHandler}
               tooltip={t("remove-from-warehouse-tooltip")}
               foreColor={Colors.FAILED_COLOR}

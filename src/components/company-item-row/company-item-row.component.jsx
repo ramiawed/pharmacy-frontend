@@ -21,7 +21,8 @@ import Icon from "../action-icon/action-icon.component";
 
 // react-icons
 import { AiFillUnlock, AiFillLock } from "react-icons/ai";
-import { MdDelete, MdLocalOffer } from "react-icons/md";
+import { MdLocalOffer } from "react-icons/md";
+import { RiDeleteBin5Fill } from "react-icons/ri";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -302,7 +303,7 @@ function CompanyItemRow({
                 />
               ) : (
                 <Icon
-                  icon={() => <MdDelete size={20} />}
+                  icon={() => <RiDeleteBin5Fill size={20} />}
                   onclick={deleteFromWarehouseHandler}
                   foreColor={Colors.FAILED_COLOR}
                 />

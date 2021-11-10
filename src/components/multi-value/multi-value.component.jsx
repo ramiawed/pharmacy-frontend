@@ -2,7 +2,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 // react-icons
-import { MdAddCircle, MdDelete } from "react-icons/md";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+import { MdAddCircle } from "react-icons/md";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -81,7 +82,10 @@ function MultiValue({
               <div
                 className={[generalStyles.icon, generalStyles.fc_red].join(" ")}
               >
-                <MdDelete size={20} onClick={() => deleteHandler(value.key)} />
+                <RiDeleteBin5Fill
+                  size={20}
+                  onClick={() => deleteHandler(value.key)}
+                />
                 <div className={generalStyles.tooltip}>
                   {t("remove-offer-tooltip")}
                 </div>

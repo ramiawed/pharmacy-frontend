@@ -59,10 +59,19 @@ function WarehousePage() {
     // build the query string
     dispatch(changeShowFavorites());
 
+    let city = "";
+
+    if (
+      user.type === UserTypeConstants.PHARMACY ||
+      user.type === UserTypeConstants.GUEST
+    ) {
+      city = user.city;
+    }
+
     dispatch(
       getWarehouses({
         queryString: {
-          city: user.type === UserTypeConstants.ADMIN ? "" : user.city,
+          city: city,
         },
         token,
       })
@@ -125,7 +134,11 @@ function WarehousePage() {
           ].join(" ")}
         >
           {warehouses.map((warehouse) => (
-            <PartnerCard key={warehouse._id} user={warehouse} />
+            <PartnerCard
+              key={warehouse._id}
+              user={warehouse}
+              type="warehouse"
+            />
           ))}
         </div>
       )}

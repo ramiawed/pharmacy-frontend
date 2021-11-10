@@ -10,7 +10,8 @@ import Modal from "../modal/modal.component";
 import OffersModal from "../offers-modal/offers-modal.component";
 
 // react-icons
-import { MdDelete, MdLocalOffer } from "react-icons/md";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+import { MdLocalOffer } from "react-icons/md";
 
 // styles
 // import styles from "./warehouse-item-row.module.scss";
@@ -94,7 +95,7 @@ function WarehouseItemRow({ item, deleteItem, changeItemMaxQty }) {
               generalStyles.margin_h_auto,
             ].join(" ")}
           >
-            <MdDelete onClick={() => actionButtonPress()} size={20} />
+            <RiDeleteBin5Fill onClick={() => actionButtonPress()} size={20} />
           </div>
         </label>
         <label className={tableStyles.label_xsmall}>

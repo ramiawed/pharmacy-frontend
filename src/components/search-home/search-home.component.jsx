@@ -4,7 +4,7 @@ import ReactLoading from "react-loading";
 import axios from "axios";
 
 import { useSelector } from "react-redux";
-import { selectToken } from "../../redux/auth/authSlice";
+import { selectToken, selectUserData } from "../../redux/auth/authSlice";
 
 // react icons
 import { FiSearch } from "react-icons/fi";
@@ -20,14 +20,14 @@ import PartnerRow from "../partner-row/partner-row.component";
 import styles from "./search-home.module.scss";
 
 // constants
-import { Colors, BASEURL } from "../../utils/constants";
+import { Colors, BASEURL, UserTypeConstants } from "../../utils/constants";
 
 let CancelToken;
 let source;
 
 function SearchHome() {
   const { t } = useTranslation();
-  const token = useSelector(selectToken);
+  const { user, token } = useSelector(selectUserData);
   const [searchName, setSearchName] = useState("");
   const [option, setOption] = useState("medicines");
 
@@ -61,9 +61,15 @@ function SearchHome() {
     }
 
     if (option === "warehouses") {
-      buildUrl =
-        buildUrl +
-        `/users?type=warehouse&page=1&limit=25&isActive=true&name=${searchName}`;
+      let queryString = `/users?type=warehouse&page=1&limit=25&isActive=true&name=${searchName}`;
+      if (
+        user.type === UserTypeConstants.WAREHOUSE ||
+        user.type === UserTypeConstants.PHARMACY ||
+        user.type === UserTypeConstants.GUEST
+      ) {
+        queryString = queryString + `&city=${user.city}`;
+      }
+      buildUrl = buildUrl + queryString;
     }
 
     try {

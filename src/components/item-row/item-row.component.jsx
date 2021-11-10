@@ -27,8 +27,9 @@ import Icon from "../action-icon/action-icon.component";
 
 // react icons
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
-import { TiShoppingCart } from "react-icons/ti";
-import { MdDelete, MdAddCircle } from "react-icons/md";
+import { GiShoppingCart } from "react-icons/gi";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+import { MdAddCircle } from "react-icons/md";
 import { VscLoading } from "react-icons/vsc";
 
 // styles
@@ -293,7 +294,7 @@ function ItemRow({ companyItem, isSearch }) {
               .map((w) => w.warehouse._id)
               .includes(user._id) ? (
               <Icon
-                icon={() => <MdDelete size={24} />}
+                icon={() => <RiDeleteBin5Fill size={24} />}
                 onclick={removeItemFromWarehouseHandler}
                 tooltip={t("remove-from-warehouse-tooltip")}
                 foreColor={Colors.FAILED_COLOR}
@@ -311,7 +312,7 @@ function ItemRow({ companyItem, isSearch }) {
           {user.type === UserTypeConstants.PHARMACY &&
           companyItem.existing_place[user.city] > 0 ? (
             <Icon
-              icon={() => <TiShoppingCart size={20} />}
+              icon={() => <GiShoppingCart size={20} />}
               onclick={() => {
                 setShowModal(true);
               }}

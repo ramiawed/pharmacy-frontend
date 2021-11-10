@@ -68,7 +68,7 @@ function WarehousesSectionOneSettings() {
         order={order}
         titleRight={titleRight}
         header="القسم الاول / مستودعات /"
-        checkboxLabel="show-section-one-warehouse-in-home-page"
+        checkboxLabel="show-section-one-warehouses-in-home-page"
         updateAction={updateSettings}
         field="warehousesSectionOne"
       />

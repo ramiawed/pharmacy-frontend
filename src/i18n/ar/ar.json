@@ -324,6 +324,7 @@
     "most-favorites-items": "الادوية الأكثر طلبا",
     "section-one-companies": "القسم الاول شركات",
     "section-two-companies": "القسم الثاني شركات",
+    "section-one-warehouses": "القسم الاول مستودعات",
     "section-one-items": "القسم الأول الأدوية",
     "section-two-items": "القسم الثاني الأدوية",
     "section-three-items": "القسم الثالث الأدوية",
@@ -339,6 +340,7 @@
     "item-removed": "تم إزالة الدواء",
     "show-section-one-companies-in-home-page": "إظهار القسم الاول / شركات / ضمن الصفحة الرئيسية",
     "show-section-two-companies-in-home-page": "إظهار القسم الثاني / شركات / ضمن الصفحة الرئيسية",
+    "show-section-one-warehouses-in-home-page": "إظهار القسم الاول / مستودعات / ضمن الصفحة الرئيسية",
     "show-section-one-items-in-home-page": "إظهار القسم الاول / الأدوية / ضمن الصفحة الرئيسية",
     "show-section-two-items-in-home-page": "إظهار القسم الثاني / الأدوية / ضمن الصفحة الرئيسية",
     "show-section-three-items-in-home-page": "إظهار القسم الثالث / الأدوية / ضمن الصفحة الرئيسية",
@@ -353,5 +355,10 @@
     "save-orders-in-database-permission": "السماح بتخزين الطلبات ضمن قاعدة البيانات",
     "add-or-update-items": "تعديل الدواء في حال كان موجود مسبقاً",
     "no-data-found": "لا يوجد نتائج مطابقة لمحرك البحث",
-    "order-details": "تفاصيل الطلبية"
+    "order-details": "تفاصيل الطلبية",
+    "show-medicines": "رؤية الادوية",
+    "show-warehouse-medicines": "هل تريد السماح برؤية الأدوية ضمن هذا المستودع؟",
+    "undo-show-warehouse-medicines": "هل تريد عدم السماح برؤية الأدوية ضمن هذا المستودع؟",
+    "tooltip-undo-show-medicines": "عدم السماح برؤية الأدوية",
+    "tooltip-show-medicines": "السماح برؤية الأدوية"
 }

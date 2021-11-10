@@ -12,7 +12,7 @@ import { selectCartItemCount } from "../../redux/cart/cartSlice";
 import IconWithNumber from "../icon-with-number/icon-with-number.component";
 
 // icons
-import { TiShoppingCart } from "react-icons/ti";
+import { GiShoppingCart } from "react-icons/gi";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 
 // style
@@ -113,10 +113,10 @@ function TopNav({ onSelectedChange, showTopNav }) {
           >
             <IconWithNumber
               value={total}
-              fillIcon={<TiShoppingCart size={20} />}
-              noFillIcon={<TiShoppingCart size={20} />}
+              fillIcon={<GiShoppingCart size={20} />}
+              noFillIcon={<GiShoppingCart size={20} />}
             />
-            {/* <TiShoppingCart size={20} /> */}
+            {/* <GiShoppingCart size={20} /> */}
           </Link>
         )}
 

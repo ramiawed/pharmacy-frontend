@@ -11,7 +11,7 @@ import {
   selectFavoritesPartners,
   removeFavorite,
 } from "../../redux/favorites/favoritesSlice";
-import { selectToken } from "../../redux/auth/authSlice";
+import { selectToken, selectUser } from "../../redux/auth/authSlice";
 import {
   changeOnlineMsg,
   selectOnlineStatus,
@@ -35,6 +35,7 @@ function FavoriteRow({ user, withoutBoxShadow }) {
   // selectors
   const favorites = useSelector(selectFavoritesPartners);
   const token = useSelector(selectToken);
+  const loggedUser = useSelector(selectUser);
   const isOnline = useSelector(selectOnlineStatus);
   const {
     settings: { showWarehouseItem },
@@ -64,8 +65,11 @@ function FavoriteRow({ user, withoutBoxShadow }) {
           withoutBoxShadow ? rowStyles.without_box_shadow : "",
         ].join(" ")}
       >
-        {user.type === UserTypeConstants.COMPANY ||
-        (user.type === UserTypeConstants.WAREHOUSE && showWarehouseItem) ? (
+        {loggedUser.type === UserTypeConstants.ADMIN ||
+        user.type === UserTypeConstants.COMPANY ||
+        (user.type === UserTypeConstants.WAREHOUSE &&
+          showWarehouseItem &&
+          user.allowShowingMedicines) ? (
           <label>
             <Link
               to={{

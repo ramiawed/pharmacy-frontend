@@ -7,7 +7,7 @@ import Toast from "../toast/toast.component";
 
 // react icons
 import { AiFillStar } from "react-icons/ai";
-import { TiShoppingCart } from "react-icons/ti";
+import { GiShoppingCart } from "react-icons/gi";
 
 // redux-stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -100,7 +100,7 @@ function FavoriteItemRow({ item, withoutBoxShadow }) {
         {item.warehouses.length > 0 ? (
           user.type === UserTypeConstants.PHARMACY ? (
             <Icon
-              icon={() => <TiShoppingCart size={24} />}
+              icon={() => <GiShoppingCart size={20} />}
               onclick={() => setShowModal(true)}
               // tooltip={t("remove-from-warehouse-tooltip")}
               foreColor={Colors.SUCCEEDED_COLOR}

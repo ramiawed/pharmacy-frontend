@@ -36,7 +36,7 @@ import { Colors, UserTypeConstants } from "../../utils/constants.js";
 import Icon from "../action-icon/action-icon.component";
 import { resetMedicines } from "../../redux/medicines/medicinesSlices";
 
-function PartnerRow({ user, isSearch, type }) {
+function PartnerRow({ user, isSearch }) {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -112,15 +112,20 @@ function PartnerRow({ user, isSearch, type }) {
       <div
         className={isSearch ? rowStyles.search_container : rowStyles.container}
       >
-        {type === "company" || (type === "warehouse" && showWarehouseItem) ? (
+        {loggedUser.type === UserTypeConstants.ADMIN ||
+        user.type === UserTypeConstants.COMPANY ||
+        (user.type === UserTypeConstants.WAREHOUSE &&
+          showWarehouseItem &&
+          user.allowShowingMedicines) ? (
           <Link
             onClick={dispatchCompanySelectedHandler}
             to={{
               pathname: `/medicines`,
               state: {
-                companyId: type === UserTypeConstants.COMPANY ? user._id : null,
+                companyId:
+                  user.type === UserTypeConstants.COMPANY ? user._id : null,
                 warehouseId:
-                  type === UserTypeConstants.WAREHOUSE ? user._id : null,
+                  user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
               },
             }}
             className={[
@@ -136,12 +141,13 @@ function PartnerRow({ user, isSearch, type }) {
               rowStyles.hover_underline,
               rowStyles.padding_start,
             ].join(" ")}
+            style={{
+              fontSize: "16px",
+            }}
           >
             {user.name}
           </label>
         )}
-
-        <label>{user.city}</label>
 
         {changeFavoriteLoading ? (
           <div className={rowStyles.padding_end}>

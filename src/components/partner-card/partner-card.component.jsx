@@ -164,7 +164,11 @@ function PartnerCard({ user, fullWidth }) {
           </div>
         )}
 
-        {
+        {(loggedUser.type === UserTypeConstants.ADMIN ||
+          user.type === UserTypeConstants.COMPANY ||
+          (user.type === UserTypeConstants.WAREHOUSE &&
+            showWarehouseItem &&
+            user.allowShowingMedicines)) && (
           <div>
             <Button
               action={displayMedicinesHandler}
@@ -172,7 +176,7 @@ function PartnerCard({ user, fullWidth }) {
               bgColor={Colors.FAILED_COLOR}
             />
           </div>
-        }
+        )}
       </div>
     </div>
   );

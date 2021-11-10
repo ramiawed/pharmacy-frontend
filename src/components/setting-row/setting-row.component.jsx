@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { MdDelete } from "react-icons/md";
+import { RiDeleteBin5Fill } from "react-icons/ri";
 import { VscLoading } from "react-icons/vsc";
 
 // styles
@@ -72,7 +72,7 @@ function SettingRow({ data, tooltip, action, type }) {
             />
           ) : (
             <Icon
-              icon={() => <MdDelete size={24} />}
+              icon={() => <RiDeleteBin5Fill size={24} />}
               foreColor={Colors.FAILED_COLOR}
               onclick={removeFromFavorites}
               tooltip={t(tooltip)}

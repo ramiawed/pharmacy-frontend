@@ -6,8 +6,9 @@ import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
 
 // react icons
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
-import { MdDelete, MdAddCircle } from "react-icons/md";
-import { TiShoppingCart } from "react-icons/ti";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+import { MdAddCircle } from "react-icons/md";
+import { GiShoppingCart } from "react-icons/gi";
 import { VscLoading } from "react-icons/vsc";
 
 // redux-stuff
@@ -237,7 +238,7 @@ function ItemCard({ companyItem }) {
             .map((w) => w.warehouse._id)
             .includes(user._id) ? (
             <Icon
-              icon={() => <MdDelete size={24} />}
+              icon={() => <RiDeleteBin5Fill size={24} />}
               onclick={removeItemFromWarehouseHandler}
               tooltip={t("remove-from-warehouse-tooltip")}
               foreColor={Colors.FAILED_COLOR}
@@ -264,7 +265,7 @@ function ItemCard({ companyItem }) {
                 setShowModal(true);
               }}
             >
-              <TiShoppingCart size={24} />
+              <GiShoppingCart size={24} />
             </div>
           )}
 
@@ -301,10 +302,7 @@ function ItemCard({ companyItem }) {
             backgroundImage:
               companyItem.logo_url && companyItem.logo_url !== ""
                 ? `url("http://localhost:8000/${companyItem.logo_url}")`
-                : `url("http://localhost:8000/medicine.jpeg")`,
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "contain",
+                : `url("http://localhost:8000/default-medicine.png")`,
           }}
           className={styles.logo}
         ></p>

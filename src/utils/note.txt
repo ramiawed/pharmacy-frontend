@@ -121,7 +121,7 @@ import Loader from "../../components/action-loader/action-loader.component";
 // constants and utile
 import { getIcon } from "../../utils/icons";
 import { Colors, UserTypeConstants, BASEURL } from "../../utils/constants";
-import { MdLocalOffer } from "react-icons/md";
+import { MdLocalOffer } from "react-icons/ri";
 
 // styles
 import generalStyles from "../../style.module.scss";

@@ -147,7 +147,7 @@ function CompaniesPage() {
           ].join(" ")}
         >
           {companies.map((company) => (
-            <PartnerCard key={company._id} user={company} />
+            <PartnerCard key={company._id} user={company} type="company" />
           ))}
         </div>
       )}

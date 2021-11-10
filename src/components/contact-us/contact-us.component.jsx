@@ -2,7 +2,7 @@ import React from "react";
 import styles from "./contact-us.module.scss";
 
 import { FaUser, FaPhoneAlt } from "react-icons/fa";
-import { MdEmail } from "react-icons/md";
+import { MdEmail } from "react-icons/ri";
 
 function ContactUs() {
   return (

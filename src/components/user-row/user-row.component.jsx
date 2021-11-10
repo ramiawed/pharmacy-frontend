@@ -11,6 +11,7 @@ import {
   deleteUser,
   undoDeleteUser,
   resetUserPassword,
+  updateUser,
 } from "../../redux/users/usersSlice";
 import {
   changeOnlineMsg,
@@ -20,6 +21,7 @@ import {
 // react-icons
 import { BsFillPersonCheckFill, BsFillPersonDashFill } from "react-icons/bs";
 import { IoMdMore } from "react-icons/io";
+import { BiShow, BiHide } from "react-icons/bi";
 import { AiFillUnlock, AiFillLock, AiFillEdit } from "react-icons/ai";
 
 // components
@@ -196,7 +198,7 @@ function UserRow({ user }) {
     }
 
     if (type === "undo-delete") {
-      setActionType("delete");
+      setActionType("undoDelete");
       setModalInfo({
         ...modalInfo,
         header: "undo-delete-account",
@@ -207,7 +209,7 @@ function UserRow({ user }) {
     }
 
     if (type === "delete") {
-      setActionType("undo-delete");
+      setActionType("delete");
       setModalInfo({
         ...modalInfo,
         header: "delete-account",
@@ -217,13 +219,33 @@ function UserRow({ user }) {
       });
     }
 
+    if (type === "showMedicines") {
+      setActionType("showMedicines");
+      setModalInfo({
+        ...modalInfo,
+        header: "show-medicines",
+        body: () => {
+          return <p>{t("show-warehouse-medicines")}</p>;
+        },
+      });
+    }
+
+    if (type === "undoShowMedicines") {
+      setActionType("undoShowMedicines");
+      setModalInfo({
+        ...modalInfo,
+        header: "show-medicines",
+        body: () => {
+          return <p>{t("undo-show-warehouse-medicines")}</p>;
+        },
+      });
+    }
+
     setShowModal(true);
   };
 
   // handle press ok in the modal
   // this handler based on the actionType state
-  // if the actionType === approve dispatch disapprove action
-  // if the actionType === disapprove dispatch approve action
   const handlePressOkOnModal = () => {
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -233,10 +255,12 @@ function UserRow({ user }) {
     // dispatch disapprove action from usersSlice
     if (actionType === "approve") {
       dispatch(
-        userApproveChange({
-          status: "disable",
+        updateUser({
+          body: {
+            isApproved: false,
+          },
           userId: user._id,
-          token: token,
+          token,
         })
       );
     }
@@ -244,20 +268,63 @@ function UserRow({ user }) {
     // dispatch approve action from usesSlice
     if (actionType === "disapprove") {
       dispatch(
-        userApproveChange({
-          status: "enable",
+        updateUser({
+          body: {
+            isApproved: true,
+          },
           userId: user._id,
-          token: token,
+          token,
+        })
+      );
+    }
+
+    if (actionType === "undoDelete") {
+      dispatch(
+        updateUser({
+          body: {
+            isActive: true,
+          },
+          userId: user._id,
+          token,
         })
       );
     }
 
     if (actionType === "delete") {
-      dispatch(undoDeleteUser({ userId: user._id, token: token }));
+      dispatch(
+        updateUser({
+          body: {
+            isActive: false,
+            isApproved: false,
+          },
+          userId: user._id,
+          token,
+        })
+      );
     }
 
-    if (actionType === "undo-delete") {
-      dispatch(deleteUser({ userId: user._id, token: token }));
+    if (actionType === "undoShowMedicines") {
+      dispatch(
+        updateUser({
+          body: {
+            allowShowingMedicines: false,
+          },
+          userId: user._id,
+          token,
+        })
+      );
+    }
+
+    if (actionType === "showMedicines") {
+      dispatch(
+        updateUser({
+          body: {
+            allowShowingMedicines: true,
+          },
+          userId: user._id,
+          token,
+        })
+      );
     }
 
     setShowModal(false);
@@ -348,6 +415,32 @@ function UserRow({ user }) {
               icon={() => <BsFillPersonDashFill size={16} />}
               foreColor={Colors.FAILED_COLOR}
             />
+          )}
+        </label>
+        <label
+          className={[
+            tableStyles.label_small,
+            generalStyles.flex_center_container,
+          ].join(" ")}
+        >
+          {user.type === UserTypeConstants.WAREHOUSE ? (
+            user.allowShowingMedicines ? (
+              <Icon
+                tooltip={t("tooltip-undo-show-medicines")}
+                onclick={() => handleActionIconClick("undoShowMedicines")}
+                icon={() => <BiShow size={16} />}
+                foreColor={Colors.SUCCEEDED_COLOR}
+              />
+            ) : (
+              <Icon
+                tooltip={t("tooltip-show-medicines")}
+                onclick={() => handleActionIconClick("showMedicines")}
+                icon={() => <BiHide size={16} />}
+                foreColor={Colors.FAILED_COLOR}
+              />
+            )
+          ) : (
+            <></>
           )}
         </label>
         <label className={tableStyles.label_large}> {user.email}</label>

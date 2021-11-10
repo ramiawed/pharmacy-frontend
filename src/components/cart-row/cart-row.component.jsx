@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 
 // react icons
 import { AiFillCaretLeft, AiFillCaretRight } from "react-icons/ai";
-import { MdDelete } from "react-icons/md";
+import { RiDeleteBin5Fill } from "react-icons/ri";
 
 // component
 import Icon from "../action-icon/action-icon.component";
@@ -117,7 +117,7 @@ function CartRow({ cartItem, inOrderDetails }) {
       {!inOrderDetails && (
         <label className={tableStyles.label_xsmall}>
           <Icon
-            icon={() => <MdDelete />}
+            icon={() => <RiDeleteBin5Fill size={20} />}
             foreColor={Colors.FAILED_COLOR}
             tooltip="delete-cart-row"
             onclick={() => dispatch(removeItemFromCart(cartItem))}

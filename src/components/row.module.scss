@@ -116,6 +116,10 @@
   color: $green-color;
 }
 
+.small_font {
+  font-size: 0.7rem !important;
+}
+
 @media only screen and (min-width: $small) {
   .container {
     width: 100%;

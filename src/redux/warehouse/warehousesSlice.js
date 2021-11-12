@@ -2,8 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASEURL } from "../../utils/constants";
 
-let CancelToken;
-let source;
+let CancelToken = null;
+let source = null;
 
 const initialState = {
   status: "idle",
@@ -20,9 +20,14 @@ const initialState = {
 };
 
 export const cancelOperation = () => {
-  if (source) {
+  if (source !== null) {
     source.cancel("operation canceled by user");
   }
+};
+
+const resetCancelAndSource = () => {
+  CancelToken = null;
+  source = null;
 };
 
 export const getWarehouses = createAsyncThunk(
@@ -34,7 +39,7 @@ export const getWarehouses = createAsyncThunk(
 
     try {
       CancelToken = axios.CancelToken;
-      source = CancelToken.source;
+      source = CancelToken.source();
 
       let buildUrl = `${BASEURL}/users?type=warehouse&city=${queryString.city}&page=${pageState.page}&limit=9&details=some`;
 
@@ -58,6 +63,8 @@ export const getWarehouses = createAsyncThunk(
         },
       });
 
+      resetCancelAndSource();
+
       return response.data;
     } catch (err) {
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
@@ -72,6 +79,7 @@ export const getWarehouses = createAsyncThunk(
         return rejectWithValue("network failed");
       }
 
+      resetCancelAndSource();
       return rejectWithValue(err.response.data);
     }
   }

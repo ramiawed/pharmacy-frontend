@@ -22,6 +22,9 @@ function SearchContainer({ children, searchAction }) {
         styles.expanded,
         moreSearchOptions ? styles.expanded_with_options : "",
       ].join(" ")}
+      style={{
+        paddingLeft: childrenArray.length === 1 ? "32px" : "",
+      }}
     >
       <div className={styles.expanded_div}>
         <div
@@ -29,7 +32,6 @@ function SearchContainer({ children, searchAction }) {
             " "
           )}
           onClick={() => {
-            // setExpanded(!expanded);
             setMoreSearchOptions(false);
           }}
         >

@@ -50,6 +50,8 @@ export const Colors = {
   SUCCEEDED_COLOR: "#2aa70b",
   FAILED_COLOR: "#ff787e",
   YELLOW_COLOR: "#e9b93f",
+  OFFER_COLOR: "#0f04",
+  WHITE_COLOR: "#fff",
 };
 
 export const SideNavLinks = {

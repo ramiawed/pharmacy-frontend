@@ -16,13 +16,12 @@ import {
   getFavorites,
   selectFavorites,
 } from "../../redux/favorites/favoritesSlice";
-import { selectToken, selectUser } from "../../redux/auth/authSlice";
+import { selectUserData } from "../../redux/auth/authSlice";
 
 // components
 import CardInfo from "../../components/card-info/card-info.component";
 import Header from "../../components/header/header.component";
-import FavoriteRow from "../../components/favorite-row/favorite-row.component";
-import FavoriteItemRow from "../../components/favorite-item-row/favorite-item-row.component";
+import PartnerRow from "../../components/partner-row/partner-row.component";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -32,15 +31,16 @@ import { Colors, UserTypeConstants } from "../../utils/constants.js";
 import Icon from "../../components/action-icon/action-icon.component";
 import { RiRefreshLine } from "react-icons/ri";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import ItemRow from "../../components/item-row/item-row.component";
 
 function FavoritesPage() {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
 
+  // selectors
   // get the logged user
-  const user = useSelector(selectUser);
-  const token = useSelector(selectToken);
+  const { user, token } = useSelector(selectUserData);
 
   // get the favorites partners and favorites items from favoritesSlice
   // const favoritesPartners = useSelector(selectFavoritesPartners);
@@ -94,9 +94,9 @@ function FavoritesPage() {
           favoritesPartners
             .filter((favorite) => favorite.type === UserTypeConstants.COMPANY)
             .map((favorite) => (
-              <FavoriteRow
+              <PartnerRow
                 key={favorite._id}
-                user={favorite}
+                partner={favorite}
                 withoutBoxShadow={true}
               />
             ))}
@@ -108,9 +108,9 @@ function FavoritesPage() {
           favoritesPartners
             .filter((favorite) => favorite.type === UserTypeConstants.WAREHOUSE)
             .map((favorite) => (
-              <FavoriteRow
+              <PartnerRow
                 key={favorite._id}
-                user={favorite}
+                partner={favorite}
                 withoutBoxShadow={true}
               />
             ))}
@@ -120,10 +120,11 @@ function FavoritesPage() {
       <CardInfo headerTitle={t("nav-items")}>
         {favoritesItems &&
           favoritesItems.map((item) => (
-            <FavoriteItemRow
+            <ItemRow
               key={item._id}
               item={item}
               withoutBoxShadow={true}
+              isFavorite={true}
             />
           ))}
       </CardInfo>

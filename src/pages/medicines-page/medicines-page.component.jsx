@@ -4,7 +4,6 @@ import { Redirect, useHistory, useLocation } from "react-router";
 
 // components
 import Header from "../../components/header/header.component";
-import FavoriteItemRow from "../../components/favorite-item-row/favorite-item-row.component";
 import ItemCard from "../../components/item-card/item-card.component";
 import SearchContainer from "../../components/search-container/search-container.component";
 import SearchInput from "../../components/search-input/search-input.component";
@@ -23,7 +22,7 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-import { selectToken, selectUser } from "../../redux/auth/authSlice";
+import { selectUserData } from "../../redux/auth/authSlice";
 import { selectFavoritesItems } from "../../redux/favorites/favoritesSlice.js";
 import {
   getMedicines,
@@ -39,15 +38,14 @@ import searchContainerStyles from "../../components/search-container/search-cont
 import { Colors, UserTypeConstants } from "../../utils/constants";
 
 function MedicinesPage() {
-  const history = useHistory();
   const { t } = useTranslation();
+  const history = useHistory();
   const dispatch = useDispatch();
   const location = useLocation();
   const { companyId, warehouseId } = location.state;
 
-  // select from redux store
-  const token = useSelector(selectToken);
-  const user = useSelector(selectUser);
+  // selectors
+  const { token, user } = useSelector(selectUserData);
   const { medicines, count, status } = useSelector(selectMedicines);
   const favoritesItems = useSelector(selectFavoritesItems);
 
@@ -261,10 +259,11 @@ function MedicinesPage() {
               >
                 {showFavorites &&
                   favoritesItems.map((item) => (
-                    <FavoriteItemRow
+                    <ItemRow
                       key={item._id}
                       item={item}
-                      withoutBoxShadow={true}
+                      isFavorite={true}
+                      isSmallFavorite={true}
                     />
                   ))}
               </div>
@@ -311,7 +310,7 @@ function MedicinesPage() {
 
       {displayType === "list" &&
         medicines.map((medicine) => (
-          <ItemRow key={medicine._id} companyItem={medicine} />
+          <ItemRow key={medicine._id} item={medicine} />
         ))}
 
       {displayType === "card" && (

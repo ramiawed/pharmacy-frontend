@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import { statisticsItemFavorites } from "../../redux/statistics/statisticsSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-import { selectToken, selectUser } from "../../redux/auth/authSlice";
+import { selectUserData } from "../../redux/auth/authSlice";
 import {
   changeOnlineMsg,
   selectOnlineStatus,
@@ -40,7 +40,15 @@ import tableStyles from "../table.module.scss";
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants";
 
+// if logged user is
+// 1- ADMIN: highlight the row by green color if the medicine has an offer.
+// 2- COMPANY: don't highlight the row never.
+// 3- GUEST: don't highlight the row never.
+// 4- WAREHOUSE: highlight the row by green if the medicine has an offer by logging warehouse.
+// 5- PHARMACY: highlight the row by green if the medicine has an offer by any warehouse
+// in the same city with the logging user
 const checkOffer = (item, user) => {
+  // don't show the offer if the logged user is GUEST or COMPANY
   if (
     user.type === UserTypeConstants.GUEST ||
     user.type === UserTypeConstants.COMPANY
@@ -79,15 +87,13 @@ const checkOffer = (item, user) => {
   return result;
 };
 
-function ItemRow({ companyItem, isSearch }) {
+function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
   const { t } = useTranslation();
-
-  const isOnline = useSelector(selectOnlineStatus);
-  // get the logged user and it's token
-  const user = useSelector(selectUser);
-  const token = useSelector(selectToken);
-
   const dispatch = useDispatch();
+
+  // selectors
+  const isOnline = useSelector(selectOnlineStatus);
+  const { user, token } = useSelector(selectUserData);
   const favoritesItems = useSelector(selectFavoritesItems);
 
   // own state
@@ -97,7 +103,7 @@ function ItemRow({ companyItem, isSearch }) {
     useState(false);
 
   // method to handle add company to user's favorite
-  const addItemToFavoriteItems = () => {
+  const addItemToFavoriteItemsHandler = () => {
     // check the internet connection
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -106,14 +112,10 @@ function ItemRow({ companyItem, isSearch }) {
 
     setChangeFavoriteLoading(true);
 
-    dispatch(
-      addFavoriteItem({ obj: { favoriteItemId: companyItem._id }, token })
-    )
+    dispatch(addFavoriteItem({ obj: { favoriteItemId: item._id }, token }))
       .then(unwrapResult)
       .then(() => {
-        dispatch(
-          statisticsItemFavorites({ obj: { itemId: companyItem._id }, token })
-        );
+        dispatch(statisticsItemFavorites({ obj: { itemId: item._id }, token }));
         setChangeFavoriteLoading(false);
       })
       .catch(() => {
@@ -122,7 +124,7 @@ function ItemRow({ companyItem, isSearch }) {
   };
 
   // method to handle remove company from user's favorite
-  const removeItemFromFavoritesItems = () => {
+  const removeItemFromFavoritesItemsHandler = () => {
     // check the internet connection
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -131,9 +133,7 @@ function ItemRow({ companyItem, isSearch }) {
 
     setChangeFavoriteLoading(true);
 
-    dispatch(
-      removeFavoriteItem({ obj: { favoriteItemId: companyItem._id }, token })
-    )
+    dispatch(removeFavoriteItem({ obj: { favoriteItemId: item._id }, token }))
       .then(unwrapResult)
       .then(() => {
         setChangeFavoriteLoading(false);
@@ -156,7 +156,7 @@ function ItemRow({ companyItem, isSearch }) {
     dispatch(
       addItemToWarehouse({
         obj: {
-          itemId: companyItem._id,
+          itemId: item._id,
           warehouseId: user._id,
           city: user.city,
         },
@@ -185,7 +185,7 @@ function ItemRow({ companyItem, isSearch }) {
     dispatch(
       removeItemFromWarehouse({
         obj: {
-          itemId: companyItem._id,
+          itemId: item._id,
           warehouseId: user._id,
           city: user.city,
         },
@@ -208,7 +208,7 @@ function ItemRow({ companyItem, isSearch }) {
     ) {
       dispatch(
         statisticsItemFavorites({
-          obj: { itemId: companyItem._id },
+          obj: { itemId: item._id },
           token,
         })
       );
@@ -219,16 +219,23 @@ function ItemRow({ companyItem, isSearch }) {
     <>
       <div
         style={{
-          backgroundColor: checkOffer(companyItem, user) ? "#0f04" : " #fff",
+          backgroundColor: checkOffer(item, user)
+            ? Colors.OFFER_COLOR
+            : Colors.WHITE_COLOR,
         }}
-        className={isSearch ? rowStyles.search_container : rowStyles.container}
+        className={[
+          isSearch || isFavorite
+            ? rowStyles.search_container
+            : rowStyles.container,
+        ].join(" ")}
       >
         <label
-          // style={{ textAlign: "center" }}
           className={[
             tableStyles.label_medium,
-            tableStyles.center,
+            !isFavorite ? tableStyles.center : "",
             tableStyles.underline,
+            isFavorite ? rowStyles.align_start : "",
+            isSmallFavorite ? rowStyles.small_font : "",
           ].join(" ")}
         >
           <Link
@@ -239,43 +246,53 @@ function ItemRow({ companyItem, isSearch }) {
                 from: user.type,
                 type: "info",
                 allowAction: false,
-                itemId: companyItem._id,
-                companyId: companyItem.company._id,
+                itemId: item._id,
+                companyId: item.company._id,
                 warehouseId:
                   user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
               },
             }}
             className={rowStyles.hover_underline}
           >
-            {companyItem.name}
+            {item.name}
           </Link>
         </label>
 
         <label
-          className={[tableStyles.label_small, tableStyles.center].join(" ")}
+          className={[
+            tableStyles.label_small,
+            tableStyles.center,
+            isSmallFavorite ? rowStyles.small_font : "",
+          ].join(" ")}
         >
-          {companyItem.caliber}
+          {item.caliber}
         </label>
 
         <label
-          className={[tableStyles.label_small, tableStyles.center].join(" ")}
+          className={[
+            tableStyles.label_small,
+            tableStyles.center,
+            isSmallFavorite ? rowStyles.small_font : "",
+          ].join(" ")}
         >
-          {companyItem.formula}
+          {item.formula}
         </label>
 
-        {user.type !== UserTypeConstants.GUEST && (
+        {user.type !== UserTypeConstants.GUEST && !isFavorite && (
           <label
             className={[tableStyles.label_small, tableStyles.center].join(" ")}
           >
-            {companyItem.price}
+            {item.price}
           </label>
         )}
 
-        <label
-          className={[tableStyles.label_small, tableStyles.center].join(" ")}
-        >
-          {companyItem.customer_price}
-        </label>
+        {!isFavorite && (
+          <label
+            className={[tableStyles.label_small, tableStyles.center].join(" ")}
+          >
+            {item.customer_price}
+          </label>
+        )}
 
         <label
           className={[tableStyles.label_xsmall, tableStyles.center].join(" ")}
@@ -290,9 +307,7 @@ function ItemRow({ companyItem, isSearch }) {
             />
           ) : (
             user.type === UserTypeConstants.WAREHOUSE &&
-            (companyItem.warehouses
-              .map((w) => w.warehouse._id)
-              .includes(user._id) ? (
+            (item.warehouses.map((w) => w.warehouse._id).includes(user._id) ? (
               <Icon
                 icon={() => <RiDeleteBin5Fill size={24} />}
                 onclick={removeItemFromWarehouseHandler}
@@ -310,7 +325,7 @@ function ItemRow({ companyItem, isSearch }) {
           )}
 
           {user.type === UserTypeConstants.PHARMACY &&
-          companyItem.existing_place[user.city] > 0 ? (
+          item.existing_place[user.city] > 0 ? (
             <Icon
               icon={() => <GiShoppingCart size={20} />}
               onclick={() => {
@@ -336,17 +351,17 @@ function ItemRow({ companyItem, isSearch }) {
             />
           ) : favoritesItems
               .map((favorite) => favorite._id)
-              .includes(companyItem._id) ? (
+              .includes(item._id) ? (
             <Icon
               icon={() => <AiFillStar size={20} />}
-              onclick={removeItemFromFavoritesItems}
+              onclick={removeItemFromFavoritesItemsHandler}
               tooltip={t("remove-from-favorite-tooltip")}
               foreColor={Colors.YELLOW_COLOR}
             />
           ) : (
             <Icon
               icon={() => <AiOutlineStar size={20} />}
-              onclick={addItemToFavoriteItems}
+              onclick={addItemToFavoriteItemsHandler}
               tooltip={t("add-to-favorite-tooltip")}
               foreColor={Colors.YELLOW_COLOR}
             />
@@ -355,7 +370,7 @@ function ItemRow({ companyItem, isSearch }) {
       </div>
 
       {showModal && (
-        <AddToCartModal item={companyItem} close={() => setShowModal(false)} />
+        <AddToCartModal item={item} close={() => setShowModal(false)} />
       )}
     </>
   );

@@ -118,9 +118,7 @@ function CompaniesPage() {
     window.scrollTo(0, 0);
 
     return () => {
-      if (status === "loading") {
-        cancelOperation();
-      }
+      cancelOperation();
     };
   }, []);
 
@@ -135,7 +133,7 @@ function CompaniesPage() {
       {/* display partner as list */}
       {displayType === "list" &&
         companies.map((company) => (
-          <PartnerRow key={company._id} user={company} type="company" />
+          <PartnerRow key={company._id} partner={company} />
         ))}
 
       {/* display partner as a card */}
@@ -147,7 +145,7 @@ function CompaniesPage() {
           ].join(" ")}
         >
           {companies.map((company) => (
-            <PartnerCard key={company._id} user={company} type="company" />
+            <PartnerCard key={company._id} partner={company} />
           ))}
         </div>
       )}

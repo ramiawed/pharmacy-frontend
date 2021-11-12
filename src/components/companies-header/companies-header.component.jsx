@@ -18,7 +18,7 @@ import Header from "../header/header.component";
 import SearchContainer from "../search-container/search-container.component";
 import SearchInput from "../search-input/search-input.component";
 import Icon from "../action-icon/action-icon.component";
-import FavoriteRow from "../favorite-row/favorite-row.component";
+import PartnerRow from "../partner-row/partner-row.component";
 
 // react icons
 import { RiRefreshLine } from "react-icons/ri";
@@ -118,9 +118,9 @@ function CompaniesHeader({ search, refreshHandler, count }) {
                     (favorite) => favorite.type === UserTypeConstants.COMPANY
                   )
                   .map((favorite) => (
-                    <FavoriteRow
+                    <PartnerRow
                       key={favorite._id}
-                      user={favorite}
+                      partner={favorite}
                       withoutBoxShadow={true}
                     />
                   ))}

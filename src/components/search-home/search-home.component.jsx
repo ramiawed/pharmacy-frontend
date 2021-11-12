@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import ReactLoading from "react-loading";
 import axios from "axios";
 
+// redux stuff
 import { useSelector } from "react-redux";
-import { selectToken, selectUserData } from "../../redux/auth/authSlice";
+import { selectUserData } from "../../redux/auth/authSlice";
 
 // react icons
 import { FiSearch } from "react-icons/fi";
@@ -15,6 +15,7 @@ import { RiCloseLine } from "react-icons/ri";
 import Button from "../button/button.component";
 import ItemRow from "../item-row/item-row.component";
 import PartnerRow from "../partner-row/partner-row.component";
+import ReactLoading from "react-loading";
 
 // styles
 import styles from "./search-home.module.scss";
@@ -22,26 +23,30 @@ import styles from "./search-home.module.scss";
 // constants
 import { Colors, BASEURL, UserTypeConstants } from "../../utils/constants";
 
-let CancelToken;
-let source;
+let CancelToken = null;
+let source = null;
 
 function SearchHome() {
   const { t } = useTranslation();
-  const { user, token } = useSelector(selectUserData);
-  const [searchName, setSearchName] = useState("");
-  const [option, setOption] = useState("medicines");
 
-  const [data, setData] = useState([]);
+  // selectors
+  const { user, token } = useSelector(selectUserData);
+
+  // own states
+  const [searchName, setSearchName] = useState("");
+  // this option can be medicines, companies, warehouses
+  const [option, setOption] = useState("medicines");
   const [loading, setLoading] = useState(false);
   const [showResult, setShowResult] = useState(false);
+  const [data, setData] = useState([]);
 
   const searchHandler = async () => {
-    if (searchName.trim().length === 0) {
-      return;
-    }
+    // if (searchName.trim().length === 0) {
+    //   return;
+    // }
 
     CancelToken = axios.CancelToken;
-    source = CancelToken.source;
+    source = CancelToken.source();
 
     setShowResult(true);
     setLoading(true);
@@ -95,10 +100,10 @@ function SearchHome() {
           setData(data.users);
         }
       }
-
       setLoading(false);
     } catch (err) {
-      setLoading(false);
+      // setLoading(false);
+      setData([]);
     }
   };
 
@@ -111,13 +116,20 @@ function SearchHome() {
 
   const keyDownHandler = (event) => {
     if (event.code === "Enter") {
-      searchHandler(option);
+      searchHandler();
     }
+  };
+
+  const keyUpHandler = (event) => {
+    if (source !== null) {
+      source.cancel("cancel");
+    }
+    searchHandler();
   };
 
   const clearResultHandler = () => {
     if (source) {
-      source().cancel("operation canceled by user");
+      source.cancel("operation canceled by user");
     }
 
     setSearchName("");
@@ -128,7 +140,7 @@ function SearchHome() {
   useEffect(() => {
     if (searchName.length > 0) {
       if (source) {
-        source().cancel("operation canceled by user");
+        source.cancel("operation canceled by user");
       }
 
       searchHandler();
@@ -136,7 +148,7 @@ function SearchHome() {
 
     return () => {
       if (source) {
-        source().cancel("operation canceled by user");
+        source.cancel("operation canceled by user");
       }
     };
   }, [option]);
@@ -220,6 +232,7 @@ function SearchHome() {
               : t("search-by-warehouse-name")
           }
           onKeyDown={keyDownHandler}
+          onKeyUp={keyUpHandler}
         />
         <Button
           text={t("search")}
@@ -251,11 +264,11 @@ function SearchHome() {
           ) : data.length > 0 ? (
             data.map((d) =>
               option === "medicines" ? (
-                <ItemRow key={d._id} companyItem={d} isSearch={true} />
+                <ItemRow key={d._id} item={d} isSearch={true} />
               ) : (
                 <PartnerRow
                   key={d._id}
-                  user={d}
+                  partner={d}
                   isSearch={true}
                   type={option === "companies" ? "company" : "warehouse"}
                 />

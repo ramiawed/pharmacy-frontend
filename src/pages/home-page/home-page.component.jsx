@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom";
 // components
 import Introduction from "../../components/introduction/introduction.component";
 import SectionHomePage from "../../components/section-home-page/section-home-page.component";
+import Loader from "../../components/loader/loader.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -35,13 +36,14 @@ import {
 } from "../../redux/advertisements/itemsSectionThreeSlice";
 import SearchHome from "../../components/search-home/search-home.component";
 
+// styles
 import styles from "../../components/section-home-page/section-home-page.module.scss";
-import Loader from "../../components/loader/loader.component";
 
 function HomePage() {
   const dispatch = useDispatch();
-  const { user, token } = useSelector(selectUserData);
 
+  // selectors
+  const { user, token } = useSelector(selectUserData);
   const { companiesSectionOne, companiesSectionOneStatus } = useSelector(
     selectCompaniesSectionOne
   );
@@ -65,23 +67,18 @@ function HomePage() {
   useEffect(() => {
     dispatch(getCompaniesSectionOne({ token }));
     dispatch(getCompaniesSectionTwo({ token }));
+    dispatch(getWarehousesSectionOne({ token }));
     dispatch(getItemsSectionOne({ token }));
     dispatch(getItemsSectionTwo({ token }));
     dispatch(getItemsSectionThree({ token }));
-    dispatch(getWarehousesSectionOne({ token }));
   }, []);
 
   return user ? (
     <div>
       <SearchHome />
-      <Introduction />
+      {/* <Introduction /> */}
 
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
+      <div className={styles.advertisement_container}>
         {settings.companiesSectionOne?.show &&
           companiesSectionOneStatus === "loading" && (
             <div
@@ -137,7 +134,7 @@ function HomePage() {
           )}
 
         {settings.companiesSectionOne?.show &&
-          companiesSectionOneStatus === "loading" && (
+          warehousesSectionOneStatus === "loading" && (
             <div
               className={styles.container}
               style={{

@@ -7,6 +7,7 @@ import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { VscLoading } from "react-icons/vsc";
 
 // components
+import Icon from "../action-icon/action-icon.component";
 
 // redux-stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +17,7 @@ import {
   selectFavoritesPartners,
   removeFavorite,
 } from "../../redux/favorites/favoritesSlice";
-import { selectToken, selectUser } from "../../redux/auth/authSlice";
+import { selectUserData } from "../../redux/auth/authSlice";
 import {
   statisticsCompanySelected,
   statisticsUserFavorites,
@@ -26,6 +27,7 @@ import {
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
 import { selectSettings } from "../../redux/settings/settingsSlice";
+import { resetMedicines } from "../../redux/medicines/medicinesSlices";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -33,26 +35,34 @@ import rowStyles from "../row.module.scss";
 
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
-import Icon from "../action-icon/action-icon.component";
-import { resetMedicines } from "../../redux/medicines/medicinesSlices";
 
-function PartnerRow({ user, isSearch }) {
+function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
 
+  // selectors
   const {
     settings: { showWarehouseItem },
   } = useSelector(selectSettings);
-
   const isOnline = useSelector(selectOnlineStatus);
   const favorites = useSelector(selectFavoritesPartners);
-  const token = useSelector(selectToken);
-  const loggedUser = useSelector(selectUser);
+  const { token, user } = useSelector(selectUserData);
+
+  // own state
+  // state to display a loader icon when partner dispatch addToFavorite or removeFromFavorite
   const [changeFavoriteLoading, setChangeFavoriteLoading] = useState(false);
 
-  // method to handle add company to user's favorite
-  const addCompanyToFavorite = () => {
+  // determine if the partner can see the medicines in specific warehouse
+  const allowShowingWarehouseMedicines =
+    user.type === UserTypeConstants.ADMIN ||
+    partner.type === UserTypeConstants.COMPANY ||
+    (partner.type === UserTypeConstants.WAREHOUSE &&
+      showWarehouseItem &&
+      partner.allowShowingMedicines);
+
+  // method to handle add company to partner's favorite
+  const addPartnerToFavorite = () => {
     // check the internet connection
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -61,19 +71,21 @@ function PartnerRow({ user, isSearch }) {
 
     setChangeFavoriteLoading(true);
 
-    dispatch(addFavorite({ obj: { favoriteId: user._id }, token }))
+    dispatch(addFavorite({ obj: { favoriteId: partner._id }, token }))
       .then(unwrapResult)
       .then(() => {
         setChangeFavoriteLoading(false);
-        dispatch(statisticsUserFavorites({ obj: { userId: user._id }, token }));
+        dispatch(
+          statisticsUserFavorites({ obj: { partnerId: partner._id }, token })
+        );
       })
       .catch(() => {
         setChangeFavoriteLoading(false);
       });
   };
 
-  // method to handle remove company from user's favorite
-  const removeCompanyFromFavorite = () => {
+  // method to handle remove company from partner's favorite
+  const removePartnerFromFavoriteHandler = () => {
     // check the internet connection
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -82,7 +94,7 @@ function PartnerRow({ user, isSearch }) {
 
     setChangeFavoriteLoading(true);
 
-    dispatch(removeFavorite({ obj: { favoriteId: user._id }, token }))
+    dispatch(removeFavorite({ obj: { favoriteId: partner._id }, token }))
       .then(unwrapResult)
       .then(() => {
         setChangeFavoriteLoading(false);
@@ -90,16 +102,17 @@ function PartnerRow({ user, isSearch }) {
       .catch(() => setChangeFavoriteLoading(false));
   };
 
+  // statistics -> company selected
   const dispatchCompanySelectedHandler = () => {
-    // if the user type is pharmacy or normal, change the selectedCount
+    // if the partner type is pharmacy or normal, change the selectedCount
     // and selectedDates for this company
     if (
-      loggedUser.type === UserTypeConstants.PHARMACY ||
-      loggedUser.type === UserTypeConstants.NORMAL
+      user.type === UserTypeConstants.PHARMACY ||
+      user.type === UserTypeConstants.NORMAL
     ) {
       dispatch(
         statisticsCompanySelected({
-          obj: { companyId: user._id },
+          obj: { companyId: partner._id },
           token,
         })
       );
@@ -110,22 +123,25 @@ function PartnerRow({ user, isSearch }) {
   return (
     <>
       <div
-        className={isSearch ? rowStyles.search_container : rowStyles.container}
+        className={[
+          isSearch ? rowStyles.search_container : rowStyles.container,
+          withoutBoxShadow ? rowStyles.without_box_shadow : "",
+        ].join(" ")}
       >
-        {loggedUser.type === UserTypeConstants.ADMIN ||
-        user.type === UserTypeConstants.COMPANY ||
-        (user.type === UserTypeConstants.WAREHOUSE &&
-          showWarehouseItem &&
-          user.allowShowingMedicines) ? (
+        {allowShowingWarehouseMedicines ? (
           <Link
             onClick={dispatchCompanySelectedHandler}
             to={{
               pathname: `/medicines`,
               state: {
                 companyId:
-                  user.type === UserTypeConstants.COMPANY ? user._id : null,
+                  partner.type === UserTypeConstants.COMPANY
+                    ? partner._id
+                    : null,
                 warehouseId:
-                  user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
+                  partner.type === UserTypeConstants.WAREHOUSE
+                    ? partner._id
+                    : null,
               },
             }}
             className={[
@@ -133,7 +149,7 @@ function PartnerRow({ user, isSearch }) {
               rowStyles.padding_start,
             ].join(" ")}
           >
-            {user.name}
+            {partner.name}
           </Link>
         ) : (
           <label
@@ -145,7 +161,7 @@ function PartnerRow({ user, isSearch }) {
               fontSize: "16px",
             }}
           >
-            {user.name}
+            {partner.name}
           </label>
         )}
 
@@ -162,17 +178,17 @@ function PartnerRow({ user, isSearch }) {
         ) : (
           <div className={rowStyles.padding_end}>
             {favorites &&
-            favorites.map((favorite) => favorite._id).includes(user._id) ? (
+            favorites.map((favorite) => favorite._id).includes(partner._id) ? (
               <Icon
                 icon={() => <AiFillStar size={20} />}
-                onclick={removeCompanyFromFavorite}
+                onclick={removePartnerFromFavoriteHandler}
                 foreColor={Colors.YELLOW_COLOR}
                 tooltip={t("remove-from-favorite-tooltip")}
               />
             ) : (
               <Icon
                 icon={() => <AiOutlineStar size={20} />}
-                onclick={addCompanyToFavorite}
+                onclick={addPartnerToFavorite}
                 foreColor={Colors.YELLOW_COLOR}
                 tooltip={t("add-to-favorite-tooltip")}
               />

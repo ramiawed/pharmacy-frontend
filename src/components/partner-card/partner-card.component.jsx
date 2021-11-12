@@ -17,7 +17,7 @@ import {
   selectFavoritesPartners,
   removeFavorite,
 } from "../../redux/favorites/favoritesSlice";
-import { selectToken, selectUser } from "../../redux/auth/authSlice";
+import { selectUserData } from "../../redux/auth/authSlice";
 import {
   statisticsCompanySelected,
   statisticsUserFavorites,
@@ -36,26 +36,35 @@ import styles from "./partner-card.module.scss";
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
 
-function PartnerCard({ user, fullWidth }) {
+function PartnerCard({ partner, fullWidth }) {
   const { t } = useTranslation();
 
   const history = useHistory();
   const dispatch = useDispatch();
 
+  // selectors
   const {
     settings: { showWarehouseItem },
   } = useSelector(selectSettings);
 
   const isOnline = useSelector(selectOnlineStatus);
   const favorites = useSelector(selectFavoritesPartners);
-  const token = useSelector(selectToken);
-  const loggedUser = useSelector(selectUser);
+  const { token, user } = useSelector(selectUserData);
 
-  // state to display a loader icon when user dispatch addToFavorite or removeFromFavorite
+  // own state
+  // state to display a loader icon when partner dispatch addToFavorite or removeFromFavorite
   const [changeFavoriteLoading, setChangeFavoriteLoading] = useState(false);
 
-  // method to handle add company to user's favorite
-  const addCompanyToFavorite = () => {
+  // determine if the partner can see the medicines in specific warehouse
+  const allowShowingWarehouseMedicines =
+    user.type === UserTypeConstants.ADMIN ||
+    partner.type === UserTypeConstants.COMPANY ||
+    (partner.type === UserTypeConstants.WAREHOUSE &&
+      showWarehouseItem &&
+      partner.allowShowingMedicines);
+
+  // method to handle add company to partner's favorite
+  const addPartnerToFavoriteHandler = () => {
     // check the internet connection
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -64,19 +73,21 @@ function PartnerCard({ user, fullWidth }) {
 
     setChangeFavoriteLoading(true);
 
-    dispatch(addFavorite({ obj: { favoriteId: user._id }, token }))
+    dispatch(addFavorite({ obj: { favoriteId: partner._id }, token }))
       .then(unwrapResult)
       .then(() => {
         setChangeFavoriteLoading(false);
-        dispatch(statisticsUserFavorites({ obj: { userId: user._id }, token }));
+        dispatch(
+          statisticsUserFavorites({ obj: { partnerId: partner._id }, token })
+        );
       })
       .catch(() => {
         setChangeFavoriteLoading(false);
       });
   };
 
-  // method to handle remove company from user's favorite
-  const removeCompanyFromFavorite = () => {
+  // method to handle remove company from partner's favorite
+  const removePartnerFromFavoriteHandler = () => {
     // check the internet connection
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -85,7 +96,7 @@ function PartnerCard({ user, fullWidth }) {
 
     setChangeFavoriteLoading(true);
 
-    dispatch(removeFavorite({ obj: { favoriteId: user._id }, token }))
+    dispatch(removeFavorite({ obj: { favoriteId: partner._id }, token }))
       .then(unwrapResult)
       .then(() => {
         changeFavoriteLoading(false);
@@ -96,12 +107,12 @@ function PartnerCard({ user, fullWidth }) {
   // dispatch companySelected statistics and go to medicine page
   const displayMedicinesHandler = () => {
     if (
-      loggedUser.type === UserTypeConstants.PHARMACY ||
-      loggedUser.type === UserTypeConstants.NORMAL
+      user.type === UserTypeConstants.PHARMACY ||
+      user.type === UserTypeConstants.NORMAL
     ) {
       dispatch(
         statisticsCompanySelected({
-          obj: { companyId: user._id },
+          obj: { companyId: partner._id },
           token,
         })
       );
@@ -112,9 +123,10 @@ function PartnerCard({ user, fullWidth }) {
     history.push({
       pathname: "medicines",
       state: {
-        companyId: user.type === UserTypeConstants.COMPANY ? user._id : null,
+        companyId:
+          partner.type === UserTypeConstants.COMPANY ? partner._id : null,
         warehouseId:
-          user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
+          partner.type === UserTypeConstants.WAREHOUSE ? partner._id : null,
       },
     });
   };
@@ -126,12 +138,12 @@ function PartnerCard({ user, fullWidth }) {
         fullWidth ? styles.full_width : "",
       ].join(" ")}
     >
-      <p className={styles.partner_name}>{user.name}</p>
+      <p className={styles.partner_name}>{partner.name}</p>
 
-      {user.logo_url?.length > 0 ? (
+      {partner.logo_url?.length > 0 ? (
         <p
           style={{
-            backgroundImage: `url("http://localhost:8000/${user.logo_url}")`,
+            backgroundImage: `url("http://localhost:8000/${partner.logo_url}")`,
           }}
           className={styles.partner_logo}
         ></p>
@@ -156,19 +168,18 @@ function PartnerCard({ user, fullWidth }) {
             className={[generalStyles.icon, generalStyles.fc_yellow].join(" ")}
           >
             {favorites &&
-            favorites.map((favorite) => favorite._id).includes(user._id) ? (
-              <AiFillStar size={24} onClick={removeCompanyFromFavorite} />
+            favorites.map((favorite) => favorite._id).includes(partner._id) ? (
+              <AiFillStar
+                size={24}
+                onClick={removePartnerFromFavoriteHandler}
+              />
             ) : (
-              <AiOutlineStar size={24} onClick={addCompanyToFavorite} />
+              <AiOutlineStar size={24} onClick={addPartnerToFavoriteHandler} />
             )}
           </div>
         )}
 
-        {(loggedUser.type === UserTypeConstants.ADMIN ||
-          user.type === UserTypeConstants.COMPANY ||
-          (user.type === UserTypeConstants.WAREHOUSE &&
-            showWarehouseItem &&
-            user.allowShowingMedicines)) && (
+        {allowShowingWarehouseMedicines && (
           <div>
             <Button
               action={displayMedicinesHandler}

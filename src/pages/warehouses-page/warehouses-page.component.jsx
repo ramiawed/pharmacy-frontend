@@ -23,6 +23,7 @@ import {
   selectWarehousesPageState,
   resetStatus,
   changeShowFavorites,
+  cancelOperation,
 } from "../../redux/warehouse/warehousesSlice";
 import {
   getFavorites,
@@ -109,6 +110,10 @@ function WarehousePage() {
     if (warehouses.length === 0) handleSearch(1);
 
     window.scrollTo(0, 0);
+
+    return () => {
+      cancelOperation();
+    };
   }, []);
 
   return user ? (
@@ -122,7 +127,7 @@ function WarehousePage() {
       {/* display as list */}
       {displayType === "list" &&
         warehouses.map((warehouse) => (
-          <PartnerRow key={warehouse._id} user={warehouse} type="warehouse" />
+          <PartnerRow key={warehouse._id} partner={warehouse} />
         ))}
 
       {/* display as card */}
@@ -134,11 +139,7 @@ function WarehousePage() {
           ].join(" ")}
         >
           {warehouses.map((warehouse) => (
-            <PartnerCard
-              key={warehouse._id}
-              user={warehouse}
-              type="warehouse"
-            />
+            <PartnerCard key={warehouse._id} partner={warehouse} />
           ))}
         </div>
       )}

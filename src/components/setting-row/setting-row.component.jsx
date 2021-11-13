@@ -1,26 +1,39 @@
 import React, { useState, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+
+// icons
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { VscLoading } from "react-icons/vsc";
 
-// styles
-import { Colors } from "../../utils/constants";
-import Icon from "../action-icon/action-icon.component";
-
-import generalStyles from "../../style.module.scss";
-import rowStyles from "../row.module.scss";
+// redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeOnlineMsg,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
 
+// components
+import Icon from "../action-icon/action-icon.component";
+
+// constants
+import { Colors } from "../../utils/constants";
+
+// styles
+import generalStyles from "../../style.module.scss";
+import rowStyles from "../row.module.scss";
+
 function SettingRow({ data, tooltip, action, type }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
+  // selectors
   const isOnline = useSelector(selectOnlineStatus);
+
+  // this variable uses to reset the loading state
+  // if the action does not complete
   let timer = useRef();
 
+  // own state
   const [loading, setLoading] = useState(false);
 
   const removeFromFavorites = () => {
@@ -72,7 +85,7 @@ function SettingRow({ data, tooltip, action, type }) {
             />
           ) : (
             <Icon
-              icon={() => <RiDeleteBin5Fill size={24} />}
+              icon={() => <RiDeleteBin5Fill size={20} />}
               foreColor={Colors.FAILED_COLOR}
               onclick={removeFromFavorites}
               tooltip={t(tooltip)}

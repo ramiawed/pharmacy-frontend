@@ -11,6 +11,7 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
+import ReactLoading from "react-loading";
 
 // components
 import PartnerRow from "../../components/partner-row/partner-row.component";
@@ -154,6 +155,12 @@ function CompaniesPage() {
         <NoContent msg={t("no-companies")} />
       )}
 
+      {status === "loading" && (
+        <div className={generalStyles.flex_container}>
+          <ReactLoading color={Colors.SECONDARY_COLOR} type="cylon" />
+        </div>
+      )}
+
       {companies.length < count && (
         <Button
           text={t("more")}
@@ -173,7 +180,7 @@ function CompaniesPage() {
       )}
 
       {/* show loading animation when data is loading */}
-      {status === "loading" && <Loader allowCancel={false} />}
+      {/* {status === "loading" && <Loader allowCancel={false} />} */}
 
       {error && (
         <Toast

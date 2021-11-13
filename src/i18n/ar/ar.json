@@ -329,6 +329,7 @@
     "section-two-items": "القسم الثاني الأدوية",
     "section-three-items": "القسم الثالث الأدوية",
     "choose-company": "اختر شركة",
+    "choose-warehouse": "اختر مستودع",
     "choose-item": "اختر الدواء",
     "search-for-company": "ابحث عن شركة",
     "search-for-item": "ابحث عن دواء",
@@ -360,5 +361,7 @@
     "show-warehouse-medicines": "هل تريد السماح برؤية الأدوية ضمن هذا المستودع؟",
     "undo-show-warehouse-medicines": "هل تريد عدم السماح برؤية الأدوية ضمن هذا المستودع؟",
     "tooltip-undo-show-medicines": "عدم السماح برؤية الأدوية",
-    "tooltip-show-medicines": "السماح برؤية الأدوية"
+    "tooltip-show-medicines": "السماح برؤية الأدوية",
+    "new-advertisement": "إضافة دعاية",
+    "image-label": "الصورة"
 }

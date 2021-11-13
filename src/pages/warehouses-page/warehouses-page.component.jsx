@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
+import ReactLoading from "react-loading";
 
 // components
 import PartnerRow from "../../components/partner-row/partner-row.component";
@@ -145,12 +146,18 @@ function WarehousePage() {
       )}
 
       {/* show loading indicator when data loading from db */}
-      {status === "loading" && <Loader allowCancel={false} />}
+      {/* {status === "loading" && <Loader allowCancel={false} />} */}
 
       {warehouses.length === 0 && status !== "loading" && (
         <>
           <NoContent msg={t("no-warehouses")} />
         </>
+      )}
+
+      {status === "loading" && (
+        <div className={generalStyles.flex_container}>
+          <ReactLoading color={Colors.SECONDARY_COLOR} type="cylon" />
+        </div>
       )}
 
       {warehouses.length < count && (

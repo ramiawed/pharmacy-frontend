@@ -41,6 +41,7 @@ import styles from "./main-page.module.scss";
 
 // constants
 import { TopNavLinks } from "../../utils/constants";
+import AdvertisementsPage from "../advertisements-page/advertisements-page.component";
 
 // MainPage
 // you have to sign in first
@@ -183,6 +184,10 @@ function MainPage() {
 
         <Route exact path="/items">
           <ItemsPage />
+        </Route>
+
+        <Route exact path="/admin/advertisements">
+          <AdvertisementsPage />
         </Route>
 
         <Route exact path="/admin/partners">

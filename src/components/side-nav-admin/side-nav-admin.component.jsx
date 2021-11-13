@@ -62,7 +62,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange }) {
         onClick={() => {
           onSelectedChange(SideNavLinks.ADVERTISEMENTS);
         }}
-        to="/admin/advertises"
+        to="/admin/advertisements"
       >
         {t("nav-advertise")}
       </Link>

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect, useHistory, useLocation } from "react-router";
+import ReactLoading from "react-loading";
 
 // components
 import Header from "../../components/header/header.component";
@@ -330,6 +331,12 @@ function MedicinesPage() {
         <NoContent msg={t("no-medicines")} />
       )}
 
+      {status === "loading" && (
+        <div className={generalStyles.flex_container}>
+          <ReactLoading color={Colors.SECONDARY_COLOR} type="cylon" />
+        </div>
+      )}
+
       {medicines.length < count && status !== "loading" && (
         <Button
           text={t("more")}
@@ -348,7 +355,7 @@ function MedicinesPage() {
         </p>
       )}
 
-      {status === "loading" && <Loader allowCancel={false} />}
+      {/* {status === "loading" && <Loader allowCancel={false} />} */}
     </div>
   ) : (
     <Redirect to="/signin" />

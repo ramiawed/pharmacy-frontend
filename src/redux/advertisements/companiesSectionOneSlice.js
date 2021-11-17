@@ -14,8 +14,8 @@ const initialState = {
   count: 0,
 };
 
-let CancelToken;
-let source;
+let CancelToken = null;
+let source = null;
 
 export const getCompaniesSectionOne = createAsyncThunk(
   "advertisement/companiesSectionOne",

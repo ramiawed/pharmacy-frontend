@@ -5,6 +5,7 @@ import { Redirect } from "react-router-dom";
 import Introduction from "../../components/introduction/introduction.component";
 import SectionHomePage from "../../components/section-home-page/section-home-page.component";
 import Loader from "../../components/loader/loader.component";
+import SearchHome from "../../components/search-home/search-home.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -34,10 +35,15 @@ import {
   getItemsSectionThree,
   selectItemsSectionThree,
 } from "../../redux/advertisements/itemsSectionThreeSlice";
-import SearchHome from "../../components/search-home/search-home.component";
+
+import {
+  getAllAdvertisements,
+  selectAdvertisements,
+} from "../../redux/advertisements/advertisementsSlice";
 
 // styles
 import styles from "../../components/section-home-page/section-home-page.module.scss";
+import AdvertisementHomePage from "../../components/advertisement-home-page/advertisement-home-page.component";
 
 function HomePage() {
   const dispatch = useDispatch();
@@ -62,6 +68,8 @@ function HomePage() {
   const { itemsSectionThree, itemsSectionThreeStatus } = useSelector(
     selectItemsSectionThree
   );
+
+  const { advertisements } = useSelector(selectAdvertisements);
   const { settings } = useSelector(selectSettings);
 
   useEffect(() => {
@@ -71,12 +79,14 @@ function HomePage() {
     dispatch(getItemsSectionOne({ token }));
     dispatch(getItemsSectionTwo({ token }));
     dispatch(getItemsSectionThree({ token }));
+    dispatch(getAllAdvertisements({ token }));
   }, []);
 
   return user ? (
     <div>
       <SearchHome />
       {/* <Introduction /> */}
+      <AdvertisementHomePage data={advertisements} />
 
       <div className={styles.advertisement_container}>
         {settings.companiesSectionOne?.show &&

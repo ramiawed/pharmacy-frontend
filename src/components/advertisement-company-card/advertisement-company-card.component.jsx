@@ -107,7 +107,6 @@ function AdvertisementCompanyCard({ user, contentColor }) {
   const dispatchCompanySelectedHandler = () => {
     // if the user type is pharmacy or normal, change the selectedCount
     // and selectedDates for this company
-    console.log("click");
     if (
       loggedUser.type === UserTypeConstants.PHARMACY ||
       loggedUser.type === UserTypeConstants.NORMAL

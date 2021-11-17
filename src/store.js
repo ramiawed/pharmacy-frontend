@@ -21,6 +21,7 @@ import itemsSectionTwoSlice from "./redux/advertisements/itemsSectionTwoSlice";
 import itemsSectionThreeSlice from "./redux/advertisements/itemsSectionThreeSlice";
 import medicinesSlice from "./redux/medicines/medicinesSlices";
 import ordersSlice from "./redux/orders/ordersSlice";
+import advertisementsSlice from "./redux/advertisements/advertisementsSlice";
 
 const reducers = combineReducers({
   auth: authSlice,
@@ -42,6 +43,7 @@ const reducers = combineReducers({
   itemsSectionThree: itemsSectionThreeSlice,
   settings: settingsSlice,
   orders: ordersSlice,
+  advertisements: advertisementsSlice,
 });
 
 const persistConfig = {

@@ -82,21 +82,6 @@ function ItemPage() {
     customer_price: 0,
   });
 
-  // reset handler
-  // const resetItem = () => {
-  //   setItem({
-  //     name: "",
-  //     caliber: "",
-  //     formula: "",
-  //     indication: "",
-  //     composition: "",
-  //     packing: "",
-  //     price: "",
-  //     customer_price: "",
-  //   });
-  //   setItemError({});
-  // };
-
   const handleInputChange = (e) => {
     setItem({
       ...item,

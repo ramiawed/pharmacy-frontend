@@ -1,21 +1,38 @@
 import React, { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { BASEURL, Colors } from "../../utils/constants";
+
+// redux stuff
+import { useDispatch, useSelector } from "react-redux";
+import { addAdvertisement } from "../../redux/advertisements/advertisementsSlice";
+import { selectUserData } from "../../redux/auth/authSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
+
+// components
 import Icon from "../action-icon/action-icon.component";
 import Button from "../button/button.component";
-import { MdAddCircle } from "react-icons/md";
-import { AiFillCloseCircle } from "react-icons/ai";
-
-import styles from "./new-advertisement.module.scss";
-import { BiImage } from "react-icons/bi";
 import SelectPartnerModal from "../select-partner-modal/select-partner-modal.component";
 import SelectMedicineModal from "../select-medicine-modal/select-medicine-modal.component";
 
-function NewAdvertisement() {
+// icons
+import { MdAddCircle } from "react-icons/md";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+import { BiImage } from "react-icons/bi";
+
+// styles
+import styles from "./new-advertisement.module.scss";
+
+// constants
+import { BASEURL, Colors } from "../../utils/constants";
+
+function NewAdvertisement({ isNew, setIsNew }) {
   const { t } = useTranslation();
   const inputFileRef = useRef(null);
+  const dispatch = useDispatch();
 
-  const [isNew, setIsNew] = useState(false);
+  //  selectors
+  const { token } = useSelector(selectUserData);
+
+  // const [isNew, setIsNew] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [selectedWarehouse, setSelectedWarehouse] = useState(null);
   const [selectedMedicine, setSelectedMedicine] = useState(null);
@@ -61,20 +78,38 @@ function NewAdvertisement() {
     setSelectedCompany(null);
   };
 
+  const addAdvertisementHandler = () => {
+    if (selectedImage) {
+      const data = new FormData();
+      data.append(
+        "name",
+        `${Date.now()}.${selectedImage.name.split(".").pop()}`
+      );
+      data.append("company", selectedCompany ? selectedCompany._id : null);
+      data.append(
+        "warehouse",
+        selectedWarehouse ? selectedWarehouse._id : null
+      );
+      data.append("medicine", selectedMedicine ? selectedMedicine._id : null);
+      data.append("file", selectedImage);
+
+      dispatch(addAdvertisement({ data, token }))
+        .then(unwrapResult)
+        .then(() => {
+          resetState();
+        });
+    }
+  };
+
   return (
     <div>
-      {!isNew ? (
-        <>
-          <Button
-            action={() => {
-              setIsNew(true);
-            }}
-            text={t("new-advertisement")}
-            bgColor={Colors.SUCCEEDED_COLOR}
-          />
-        </>
-      ) : (
-        <div className={styles.new_advertisement_div}>
+      {isNew && (
+        <div
+          className={styles.new_advertisement_div}
+          style={{
+            marginBottom: "10px",
+          }}
+        >
           <div className={styles.content}>
             <div className={styles.links}>
               <div className={styles.row}>
@@ -89,7 +124,17 @@ function NewAdvertisement() {
                     icon={() => <MdAddCircle size={24} />}
                   />
                 ) : (
-                  <p>{selectedCompany.name}</p>
+                  <>
+                    <p>{selectedCompany.name}</p>
+                    <Icon
+                      selected={false}
+                      foreColor={Colors.FAILED_COLOR}
+                      onclick={() => {
+                        setSelectedCompany(null);
+                      }}
+                      icon={() => <RiDeleteBin5Fill size={24} />}
+                    />
+                  </>
                 )}
               </div>
               <div className={styles.row}>
@@ -104,7 +149,17 @@ function NewAdvertisement() {
                     icon={() => <MdAddCircle size={24} />}
                   />
                 ) : (
-                  <p>{selectedWarehouse.name}</p>
+                  <>
+                    <p>{selectedWarehouse.name}</p>
+                    <Icon
+                      selected={false}
+                      foreColor={Colors.FAILED_COLOR}
+                      onclick={() => {
+                        setSelectedWarehouse(null);
+                      }}
+                      icon={() => <RiDeleteBin5Fill size={24} />}
+                    />
+                  </>
                 )}
               </div>
               <div className={styles.row}>
@@ -119,7 +174,17 @@ function NewAdvertisement() {
                     icon={() => <MdAddCircle size={24} />}
                   />
                 ) : (
-                  <p>{selectedMedicine.name}</p>
+                  <>
+                    <p>{selectedMedicine.name}</p>
+                    <Icon
+                      selected={false}
+                      foreColor={Colors.FAILED_COLOR}
+                      onclick={() => {
+                        setSelectedMedicine(null);
+                      }}
+                      icon={() => <RiDeleteBin5Fill size={24} />}
+                    />
+                  </>
                 )}
               </div>
               <div className={styles.row}>
@@ -143,7 +208,7 @@ function NewAdvertisement() {
                   </>
                 ) : (
                   <Icon
-                    icon={() => <AiFillCloseCircle size={24} />}
+                    icon={() => <RiDeleteBin5Fill size={24} />}
                     selected={false}
                     foreColor={Colors.FAILED_COLOR}
                     onclick={() => setSelectedImage(null)}
@@ -160,14 +225,21 @@ function NewAdvertisement() {
                 />
               ) : (
                 <div>
-                  <BiImage size={128} color={Colors.SECONDARY_COLOR} />
+                  <BiImage
+                    size={128}
+                    color={Colors.SECONDARY_COLOR}
+                    onClick={handleAddImageClick}
+                    style={{
+                      cursor: "pointer",
+                    }}
+                  />
                 </div>
               )}
             </div>
           </div>
           <div className={styles.actions}>
             <Button
-              action={() => {}}
+              action={addAdvertisementHandler}
               text={t("add-label")}
               bgColor={Colors.SUCCEEDED_COLOR}
             />

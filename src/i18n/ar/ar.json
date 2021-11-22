@@ -97,7 +97,7 @@
     "nav-orders": "الطلبات",
     "nav-guests": "الضيوف",
     "nav-advertise": "الإعلانات",
-    "nav-offers": "العروض",
+    "nav-notifications": "الإشعارات",
     "nav-statistics": "الأحصائيات",
     "nav-settings": "الإعدادات",
     "search": "بحث",
@@ -363,5 +363,7 @@
     "tooltip-undo-show-medicines": "عدم السماح برؤية الأدوية",
     "tooltip-show-medicines": "السماح برؤية الأدوية",
     "new-advertisement": "إضافة دعاية",
-    "image-label": "الصورة"
+    "image-label": "الصورة",
+    "header": "العنوان",
+    "body": "المضمون"
 }

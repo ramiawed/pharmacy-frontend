@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 // redux stufff
@@ -31,6 +31,10 @@ function AdvertisementsPage() {
 
   // own states
   const [isNew, setIsNew] = useState(false);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <>

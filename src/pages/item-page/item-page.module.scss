@@ -10,7 +10,7 @@
   color: $secondary-color;
 }
 
-textarea {
+.textarea {
   min-width: 100%;
   min-height: 60px;
   outline: none;
@@ -20,7 +20,7 @@ textarea {
   color: $secondary-color;
 }
 
-textarea:disabled {
+.textarea:disabled {
   color: gray;
 }
 

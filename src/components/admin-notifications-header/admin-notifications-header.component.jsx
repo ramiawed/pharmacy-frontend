@@ -2,39 +2,42 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router";
 
-// redux stuff
-import { useDispatch, useSelector } from "react-redux";
-import { getAllAdvertisements } from "../../redux/advertisements/advertisementsSlice";
-import { selectToken } from "../../redux/auth/authSlice";
-
 // icons
 import { IoMdArrowRoundBack } from "react-icons/io";
-import { RiRefreshLine } from "react-icons/ri";
 import { MdAddCircle } from "react-icons/md";
+import { RiRefreshLine } from "react-icons/ri";
 
 // components
-import Icon from "../action-icon/action-icon.component";
 import Header from "../header/header.component";
+import Icon from "../action-icon/action-icon.component";
 
 // styles
 import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllNotifications,
+  resetNotifications,
+} from "../../redux/notifications/notificationsSlice";
+import { selectToken } from "../../redux/auth/authSlice";
 
-function AdvertisementPageHeader({ isNew, setIsNew }) {
+function AdminNotificationsHeader({ isNew, setIsNew }) {
   const { t } = useTranslation();
   const history = useHistory();
-  const token = useSelector(selectToken);
   const dispatch = useDispatch();
 
+  const token = useSelector(selectToken);
+
   const refreshHandler = () => {
-    dispatch(getAllAdvertisements({ token }));
+    dispatch(resetNotifications());
+    dispatch(getAllNotifications({ token }));
   };
 
   return (
     <Header>
-      <h2>{t("nav-advertise")}</h2>
+      <h2>{t("nav-notifications")}</h2>
 
       <div
         className={[generalStyles.actions, generalStyles.margin_v_4].join(" ")}
@@ -58,7 +61,6 @@ function AdvertisementPageHeader({ isNew, setIsNew }) {
           tooltip={t("refresh-tooltip")}
           onclick={() => {
             refreshHandler();
-            // dispatch(changeShowFavorites(false));
           }}
           icon={() => <RiRefreshLine />}
         />
@@ -77,4 +79,4 @@ function AdvertisementPageHeader({ isNew, setIsNew }) {
   );
 }
 
-export default AdvertisementPageHeader;
+export default AdminNotificationsHeader;

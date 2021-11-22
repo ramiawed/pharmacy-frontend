@@ -70,14 +70,16 @@ function SideNavAdmin({ selectedOption, onSelectedChange }) {
       <Link
         className={[
           styles.link,
-          selectedOption === SideNavLinks.OFFERS ? `${styles.selected}` : "",
+          selectedOption === SideNavLinks.NOTIFICATIONS
+            ? `${styles.selected}`
+            : "",
         ].join(" ")}
         onClick={() => {
-          onSelectedChange(SideNavLinks.OFFERS);
+          onSelectedChange(SideNavLinks.NOTIFICATIONS);
         }}
-        to="/admin/offers"
+        to="/admin/notifications"
       >
-        {t("nav-offers")}
+        {t("nav-notifications")}
       </Link>
 
       {saveOrders && (

@@ -398,6 +398,7 @@ function ItemPage() {
         <CardInfo headerTitle={t("item-composition")}>
           <div>
             <textarea
+              className={styles.textarea}
               placeholder={t("enter-composition")}
               id="composition"
               value={item.composition}
@@ -410,6 +411,7 @@ function ItemPage() {
         <CardInfo headerTitle={t("item-indication")}>
           <div>
             <textarea
+              className={styles.textarea}
               placeholder={t("enter-indication")}
               id="indication"
               value={item.indication}

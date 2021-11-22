@@ -42,6 +42,7 @@ import styles from "./main-page.module.scss";
 // constants
 import { TopNavLinks } from "../../utils/constants";
 import AdvertisementsPage from "../advertisements-page/advertisements-page.component";
+import AdminNotificationPage from "../admin-notification-page/admin-notification-page.component";
 
 // MainPage
 // you have to sign in first
@@ -204,6 +205,10 @@ function MainPage() {
 
         <Route exact path="/admin/statistics/option">
           <StatisticsPage />
+        </Route>
+
+        <Route exact path="/admin/notifications">
+          <AdminNotificationPage />
         </Route>
       </div>
 

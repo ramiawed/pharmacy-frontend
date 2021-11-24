@@ -19,7 +19,6 @@ import Notifications from "../../components/notifications/notificatioins.compone
 import Loader from "../../components/action-loader/action-loader.component";
 
 // styles
-import styles from "./admin-notification-page.module.scss";
 import paginationStyles from "../../components/pagination.module.scss";
 import generalStyles from "../../style.module.scss";
 import {

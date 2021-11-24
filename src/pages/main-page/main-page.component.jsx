@@ -43,6 +43,8 @@ import styles from "./main-page.module.scss";
 import { TopNavLinks } from "../../utils/constants";
 import AdvertisementsPage from "../advertisements-page/advertisements-page.component";
 import AdminNotificationPage from "../admin-notification-page/admin-notification-page.component";
+import UserNotificationPage from "../user-notification-page/user-notification-page.component";
+import NotificationPage from "../notification-page/notification-page.component";
 
 // MainPage
 // you have to sign in first
@@ -185,6 +187,14 @@ function MainPage() {
 
         <Route exact path="/items">
           <ItemsPage />
+        </Route>
+
+        <Route exact path="/notifications">
+          <UserNotificationPage />
+        </Route>
+
+        <Route exact path="/notification/:notificationId">
+          <NotificationPage />
         </Route>
 
         <Route exact path="/admin/advertisements">

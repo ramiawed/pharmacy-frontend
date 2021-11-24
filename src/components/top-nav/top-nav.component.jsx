@@ -14,6 +14,7 @@ import IconWithNumber from "../icon-with-number/icon-with-number.component";
 // icons
 import { GiShoppingCart } from "react-icons/gi";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
+import { IoMdNotifications, IoMdNotificationsOutline } from "react-icons/io";
 
 // style
 import styles from "./top-nav.module.scss";
@@ -102,6 +103,24 @@ function TopNav({ onSelectedChange, showTopNav }) {
             noFillIcon={<AiOutlineStar size={20} />}
           />
         </Link>
+        {user.type !== UserTypeConstants.ADMIN && (
+          <Link
+            to="/notifications"
+            className={[
+              styles.link,
+              history.location.pathname === "/notifications"
+                ? styles.selected
+                : null,
+            ].join(" ")}
+            onClick={() => onSelectedChange(TopNavLinks.NOTIFICATIONS)}
+          >
+            <IconWithNumber
+              value={10}
+              fillIcon={<IoMdNotifications size={20} />}
+              noFillIcon={<IoMdNotificationsOutline size={20} />}
+            />
+          </Link>
+        )}
         {user.type === UserTypeConstants.PHARMACY && (
           <Link
             to="/cart"

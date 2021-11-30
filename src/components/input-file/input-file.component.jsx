@@ -32,9 +32,11 @@ function InputFile({ fileChangedHandler, small }) {
         </div>
       ) : (
         <div
-          className={[styles.icon_container, generalStyles.margin_h_auto].join(
-            " "
-          )}
+          className={[
+            styles.icon_container,
+            generalStyles.margin_h_auto,
+            generalStyles.flex_center_container,
+          ].join(" ")}
           onClick={handleClick}
         >
           <SiMicrosoftexcel size={250} />

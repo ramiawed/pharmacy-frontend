@@ -7,7 +7,7 @@
 
   width: 250px;
   margin: auto;
-  margin-bottom: 10px;
+  margin-block-end: 10px;
 
   // border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
@@ -18,7 +18,7 @@
   align-items: center;
 
   color: $secondary-color;
-  padding-bottom: 10px;
+  padding-block-end: 10px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 

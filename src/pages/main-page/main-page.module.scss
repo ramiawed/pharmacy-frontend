@@ -1,21 +1,26 @@
 @import "../../variables.scss";
 
 .container {
+  min-height: 100vh;
+
   display: flex;
   flex-direction: column;
-  min-height: 100vh;
 }
 
 .background_div {
+  width: 100vw;
+  height: 100vh;
+
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;
-  height: 100vh;
+
+  
   background-image: url(http://localhost:8000/background01.png);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+
   opacity: 0.15;
 }
 
@@ -27,13 +32,17 @@
 }
 
 .hamburger_menu {
+  height: 60px;
+
   background-color: $main-color;
+
   display: flex;
   justify-content: space-between;
   align-items: center;
+
   position: sticky;
   top: 0;
-  height: 60px;
+  
   z-index: 10;
 }
 
@@ -71,8 +80,4 @@
   }
 }
 
-@media only screen and (min-width: $medium) {
-  .content_area {
-    // width: 80%;
-  }
-}
+

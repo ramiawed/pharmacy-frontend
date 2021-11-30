@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/auth/authSlice";
 import { selectFavorites } from "../../redux/favorites/favoritesSlice";
 import { selectCartItemCount } from "../../redux/cart/cartSlice";
+import { selectUserNotifications } from "../../redux/userNotifications/userNotificationsSlice";
 
 // components
 import IconWithNumber from "../icon-with-number/icon-with-number.component";
@@ -25,8 +26,9 @@ import { TopNavLinks, UserTypeConstants } from "../../utils/constants.js";
 function TopNav({ onSelectedChange, showTopNav }) {
   const history = useHistory();
   const { t } = useTranslation();
-  const allFavorites = useSelector(selectFavorites);
 
+  const { unReadNotificationCount } = useSelector(selectUserNotifications);
+  const allFavorites = useSelector(selectFavorites);
   const user = useSelector(selectUser);
   const total = useSelector(selectCartItemCount);
 
@@ -115,7 +117,7 @@ function TopNav({ onSelectedChange, showTopNav }) {
             onClick={() => onSelectedChange(TopNavLinks.NOTIFICATIONS)}
           >
             <IconWithNumber
-              value={10}
+              value={unReadNotificationCount}
               fillIcon={<IoMdNotifications size={20} />}
               noFillIcon={<IoMdNotificationsOutline size={20} />}
             />

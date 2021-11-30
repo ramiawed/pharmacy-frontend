@@ -1,9 +1,10 @@
 import React from "react";
+import { useHistory } from "react-router";
 
+// styles
 import rowStyles from "../row.module.scss";
 import tableStyles from "../table.module.scss";
 import generalStyles from "../../style.module.scss";
-import { useHistory } from "react-router";
 
 function OrderRow({ order }) {
   const history = useHistory();

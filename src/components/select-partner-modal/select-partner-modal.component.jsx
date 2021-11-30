@@ -18,7 +18,7 @@ import { IoIosSearch } from "react-icons/io";
 import { GrAddCircle } from "react-icons/gr";
 
 // styles
-import styles from "./select-company-modal.module.scss";
+import styles from "./select-partner-modal.module.scss";
 import generalStyles from "../../style.module.scss";
 
 // constants
@@ -88,7 +88,12 @@ function SelectPartnerModal({ close, chooseAction, url, header }) {
         <Loader />
       ) : (
         <>
-          <div className={styles.search_container}>
+          <div
+            className={[
+              styles.search_container,
+              generalStyles.flex_center_container,
+            ].join(" ")}
+          >
             <IoIosSearch color={Colors.SECONDARY_COLOR} size={24} />
             <input
               className={styles.search_input}

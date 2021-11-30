@@ -60,8 +60,6 @@ export const addNotification = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      console.log(token);
-
       const response = await axios.post(`${BASEURL}/notifications/add`, data, {
         timeout: 10000,
         cancelToken: source.token,
@@ -72,7 +70,6 @@ export const addNotification = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      console.log(err.response.data);
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }
@@ -110,7 +107,6 @@ export const deleteNotification = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      console.log(err.response);
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }
@@ -156,7 +152,10 @@ export const NotificationsSlice = createSlice({
     },
     [addNotification.fulfilled]: (state, action) => {
       state.status = "succeeded";
-      state.notifications = [action.payload.data, ...state.notifications];
+      state.notifications = [
+        action.payload.data.notification,
+        ...state.notifications,
+      ];
     },
     [addNotification.rejected]: (state) => {
       state.status = "failed";
@@ -181,17 +180,6 @@ export const NotificationsSlice = createSlice({
       state.notifications = action.payload.data.notifications;
       state.count = action.payload.count;
       state.error = "";
-    },
-    [getAllNotifications.rejected]: (state, { payload }) => {
-      state.status = "failed";
-
-      if (payload === "timeout") {
-        state.error = "timeout-msg";
-      } else if (payload === "cancel") {
-        state.error = "cancel-operation-msg";
-      } else if (payload === "network failed") {
-        state.error = "network failed";
-      } else state.error = payload.message;
     },
   },
 });

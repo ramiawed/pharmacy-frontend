@@ -367,5 +367,9 @@
     "new-advertisement": "إضافة دعاية",
     "image-label": "الصورة",
     "header": "العنوان",
-    "body": "المضمون"
+    "body": "المضمون",
+    "add-notification-msg": "تم إضافة الاشعار بنجاح",
+    "delete-notification-msg": "تم حذف الاشعار بنجاح",
+    "delete-notification-confirm-msg": "هل تريد حذف هذا الإشعار؟",
+    "delete-notification": "حذف الإشعار"
 }

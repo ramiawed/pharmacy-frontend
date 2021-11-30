@@ -3,13 +3,8 @@ import { useTranslation } from "react-i18next";
 import axios from "axios";
 
 // redux stuff
-import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { selectToken } from "../../redux/auth/authSlice";
-import {
-  changeOnlineMsg,
-  selectOnlineStatus,
-} from "../../redux/online/onlineSlice";
 
 // components
 import Modal from "../modal/modal.component";
@@ -21,7 +16,6 @@ import Loader from "../loader/loader.component";
 // icons
 import { IoIosSearch } from "react-icons/io";
 import { GrAddCircle } from "react-icons/gr";
-import { VscLoading } from "react-icons/vsc";
 
 // styles
 import styles from "./select-medicine-modal.module.scss";
@@ -33,7 +27,6 @@ import { Colors } from "../../utils/constants";
 function SelectMedicineModal({ close, chooseAction, url }) {
   const { t } = useTranslation();
   const token = useSelector(selectToken);
-  const dispatch = useDispatch();
 
   const [searchName, setSearchName] = useState("");
   const [data, setData] = useState([]);
@@ -94,7 +87,12 @@ function SelectMedicineModal({ close, chooseAction, url }) {
         <Loader />
       ) : (
         <>
-          <div className={styles.search_container}>
+          <div
+            className={[
+              styles.search_container,
+              generalStyles.flex_center_container,
+            ].join(" ")}
+          >
             <IoIosSearch color={Colors.SECONDARY_COLOR} size={24} />
             <input
               className={styles.search_input}

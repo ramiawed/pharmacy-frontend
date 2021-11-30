@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
 
@@ -6,6 +6,13 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteNotification } from "../../redux/notifications/notificationsSlice";
 import { selectUserData } from "../../redux/auth/authSlice";
+import {
+  decreaseUnreadNotificationsCount,
+  setNotificationRead,
+} from "../../redux/userNotifications/userNotificationsSlice";
+
+// components
+import Modal from "../modal/modal.component";
 
 // icons
 import { RiDeleteBin5Fill } from "react-icons/ri";
@@ -17,14 +24,16 @@ import styles from "./notification-row.module.scss";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import { setNotificationRead } from "../../redux/userNotifications/userNotificationsSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
 
-function NotificationRow({ notification, index }) {
+function NotificationRow({ notification, index, setSuccessDeletingMsg }) {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
 
+  // selectors
   const { token, user } = useSelector(selectUserData);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const showNotificationDetails = () => {
     if (
@@ -34,9 +43,19 @@ function NotificationRow({ notification, index }) {
       dispatch(
         setNotificationRead({ token, notificationId: notification._id })
       );
+      dispatch(decreaseUnreadNotificationsCount());
     }
 
     history.push(`/notification/${notification._id}`);
+  };
+
+  const deleteNotificationHandler = () => {
+    setShowDeleteModal(false);
+    dispatch(deleteNotification({ id: notification._id, token }))
+      .then(unwrapResult)
+      .then(() => {
+        setSuccessDeletingMsg("delete-notification-msg");
+      });
   };
 
   return (
@@ -45,7 +64,6 @@ function NotificationRow({ notification, index }) {
       style={{
         animationDuration: (0.3 * index) / 10 + "s",
       }}
-      onClick={showNotificationDetails}
     >
       <div className={styles.img}>
         {notification.logo_url !== "" ? (
@@ -60,10 +78,10 @@ function NotificationRow({ notification, index }) {
         )}
       </div>
 
-      <div className={styles.inner_container}>
+      <div className={styles.inner_container} onClick={showNotificationDetails}>
         <div className={styles.row}>
           <label>{t("header")}</label>
-          <p>{notification.header}</p>
+          <p className={styles.header}>{notification.header}</p>
         </div>
         <div className={styles.row}>
           <label>{t("body")}</label>
@@ -72,13 +90,13 @@ function NotificationRow({ notification, index }) {
       </div>
 
       {user.type === UserTypeConstants.ADMIN && (
-        <div className={styles.delete}>
-          <RiDeleteBin5Fill
-            size={24}
-            onClick={() => {
-              dispatch(deleteNotification({ id: notification._id, token }));
-            }}
-          />
+        <div
+          className={styles.delete}
+          onClick={() => {
+            setShowDeleteModal(true);
+          }}
+        >
+          <RiDeleteBin5Fill size={24} />
         </div>
       )}
 
@@ -90,6 +108,21 @@ function NotificationRow({ notification, index }) {
             <BsFillCircleFill color={Colors.SECONDARY_COLOR} size={24} />
           )}
         </div>
+      )}
+
+      {showDeleteModal && (
+        <Modal
+          header="delete-notification"
+          cancelLabel="close-label"
+          okLabel="ok-label"
+          closeModal={() => {
+            setShowDeleteModal(false);
+          }}
+          small={true}
+          okModal={deleteNotificationHandler}
+        >
+          <p>{t("delete-notification-confirm-msg")}</p>
+        </Modal>
       )}
     </div>
   );

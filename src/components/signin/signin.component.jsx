@@ -31,6 +31,7 @@ import { getAllSettings } from "../../redux/settings/settingsSlice";
 
 // styles
 import styles from "./signin.module.scss";
+import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
@@ -185,7 +186,9 @@ function SignIn() {
     <Redirect to="/" />
   ) : (
     <motion.div
-      className={styles.container}
+      className={[styles.container, generalStyles.flex_center_container].join(
+        " "
+      )}
       variants={containerVariant}
       initial="hidden"
       animate="visible"

@@ -62,27 +62,6 @@ function AdminUsersNotifications() {
         />
       )}
 
-      {/* show toast to display successfully or failed message */}
-      {/* {activationDeleteStatus === "succeeded" && (
-        <Toast
-          bgColor={Colors.SUCCEEDED_COLOR}
-          foreColor="#fff"
-          toastText={t(activationDeleteStatusMsg)}
-          actionAfterTimeout={() => {
-            dispatch(resetActivationDeleteStatus());
-          }}
-        />
-      )} */}
-
-      {/* {activationDeleteStatus === "failed" && (
-        <Toast
-          bgColor={Colors.FAILED_COLOR}
-          foreColor="#fff"
-          toastText={t(activationDeleteStatusMsg)}
-          actionAfterTimeout={() => dispatch(resetActivationDeleteStatus())}
-        />
-      )} */}
-
       {/* show toast to display successfully or failed update password */}
       {resetUserPasswordStatus === "succeeded" && (
         <Toast

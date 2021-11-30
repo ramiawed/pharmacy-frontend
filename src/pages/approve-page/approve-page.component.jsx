@@ -6,6 +6,7 @@ import { motion } from "framer-motion";
 
 // styles
 import styles from "./approve-page.module.scss";
+import generalStyles from "../../style.module.scss";
 
 const containerVariant = {
   hidden: {
@@ -26,12 +27,16 @@ function ApprovePage() {
   const { t } = useTranslation();
 
   return (
-    <div className={styles.container}>
+    <div
+      className={[styles.container, generalStyles.flex_center_container].join(
+        " "
+      )}
+    >
       <motion.div
         variants={containerVariant}
         initial="hidden"
         animate="visible"
-        className={styles.info}
+        className={[styles.info, generalStyles.flex_center_container].join(" ")}
       >
         <p>{t("believed-partner")}</p>
         <p className={styles.strong}>{t("thank-message")}</p>

@@ -10,6 +10,7 @@ import { getCompaniesSectionTwo } from "../../redux/advertisements/companiesSect
 import { getItemsSectionOne } from "../../redux/advertisements/itemsSectionOneSlice";
 import { getItemsSectionTwo } from "../../redux/advertisements/itemsSectionTwoSlice";
 import { getItemsSectionThree } from "../../redux/advertisements/itemsSectionThreeSlice";
+import { getWarehousesSectionOne } from "../../redux/advertisements/warehousesSectionOneSlice";
 
 // components
 import Header from "../../components/header/header.component";
@@ -20,6 +21,8 @@ import ItemsSectionThreeSettings from "../../components/items-section-three-sett
 import ItemsSectionOneSettings from "../../components/items-section-one-settings/items-section-one-settings.component";
 import ItemsSectionTwoSettings from "../../components/items-section-two-settings/items-section-two-settings.component";
 import ShowWarehouseItemsSetting from "../../components/show-warehouse-items-setting/show-warehouse-items-setting.component";
+import SaveOrdersSettings from "../../components/save-orders-setting/save-orders-setting.component";
+import WarehousesSectionOneSettings from "../../components/warehouses-section-one-settings/warehouses-section-one-settings.component";
 
 // icons
 import { RiRefreshLine } from "react-icons/ri";
@@ -30,9 +33,6 @@ import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import SaveOrdersSettings from "../../components/save-orders-setting/save-orders-setting.component";
-import WarehousesSectionOneSettings from "../../components/warehouses-section-one-settings/warehouses-section-one-settings.component";
-import { getWarehousesSectionOne } from "../../redux/advertisements/warehousesSectionOneSlice";
 
 function SettingsPage() {
   const { t } = useTranslation();

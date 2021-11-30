@@ -16,7 +16,6 @@ import Toast from "../../components/toast/toast.component";
 import AdvertisementCard from "../../components/advertisement-card/advertisement-card.component";
 
 // styles
-import styles from "./advertisements-page.module.scss";
 import generalStyles from "../../style.module.scss";
 
 // constants

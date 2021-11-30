@@ -15,7 +15,7 @@
 .search_container.expanded {
   width: 300px;
   padding: 8px 4px;
-  padding-left: 3px;
+  padding-inline-start: 3px;
 
   box-shadow: 0 0 3px rgba($color: #000000, $alpha: 0.5);
   border-radius: 6px;
@@ -42,5 +42,5 @@
 
 .checkbox_div label {
   font-size: 0.7rem;
-  padding-right: 10px;
+  padding-inline-end: 10px;
 }

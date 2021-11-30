@@ -6,6 +6,7 @@ import { useTranslation } from "react-i18next";
 import { resetStatus, selectUserData } from "../../redux/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { getFavorites } from "../../redux/favorites/favoritesSlice";
+import { getUnreadNotification } from "../../redux/userNotifications/userNotificationsSlice";
 
 // components
 import TopNav from "../../components/top-nav/top-nav.component";
@@ -32,6 +33,10 @@ import ItemExcelPage from "../item-excel-page/item-excel-page.component";
 import StatisticsOptionsPage from "../statistics-options-page/statistics-options-page.component";
 import StatisticsPage from "../statistics-page/statistics-page.component";
 import UserProfilePage from "../user-profile-page/user-profile-page.component";
+import AdvertisementsPage from "../advertisements-page/advertisements-page.component";
+import AdminNotificationPage from "../admin-notification-page/admin-notification-page.component";
+import UserNotificationPage from "../user-notification-page/user-notification-page.component";
+import NotificationPage from "../notification-page/notification-page.component";
 
 import HomePage from "../home-page/home-page.component";
 import SettingsPage from "../settings-page/settings-page.component";
@@ -41,10 +46,6 @@ import styles from "./main-page.module.scss";
 
 // constants
 import { TopNavLinks } from "../../utils/constants";
-import AdvertisementsPage from "../advertisements-page/advertisements-page.component";
-import AdminNotificationPage from "../admin-notification-page/admin-notification-page.component";
-import UserNotificationPage from "../user-notification-page/user-notification-page.component";
-import NotificationPage from "../notification-page/notification-page.component";
 
 // MainPage
 // you have to sign in first
@@ -75,6 +76,7 @@ function MainPage() {
     if (user) {
       dispatch(resetStatus());
       dispatch(getFavorites({ token }));
+      dispatch(getUnreadNotification({ token }));
     }
 
     // show toTop button after scroll more than 500
@@ -86,10 +88,17 @@ function MainPage() {
       }
     };
 
+    const timer = setInterval(() => {
+      dispatch(getUnreadNotification({ token }));
+    }, 60000);
+
     window.addEventListener("scroll", toggleToTopVisible);
     window.scrollTo(0, 0);
 
-    return () => window.removeEventListener("scroll", toggleToTopVisible);
+    return () => {
+      window.removeEventListener("scroll", toggleToTopVisible);
+      clearInterval(timer);
+    };
   }, [user]);
 
   return user ? (

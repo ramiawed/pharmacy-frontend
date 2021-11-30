@@ -1,13 +1,14 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
 import axios from "axios";
-import { MdElectricalServices } from "react-icons/md";
 import { BASEURL } from "../../utils/constants";
 
 const initialState = {
   status: "idle",
   userNotifications: [],
   count: 0,
+  unReadNotificationCount: 0,
+  refresh: true,
   error: "",
   page: 1,
 };
@@ -35,6 +36,39 @@ export const getAllNotifications = createAsyncThunk(
           },
         }
       );
+
+      return response.data;
+    } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const getUnreadNotification = createAsyncThunk(
+  "notification/getUnreadNotification",
+  async ({ token }, { rejectWithValue }) => {
+    try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.get(`${BASEURL}/notifications/unread`, {
+        timeout: 10000,
+        cancelToken: source.token,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
 
       return response.data;
     } catch (err) {
@@ -113,8 +147,16 @@ export const UserNotificationsSlice = createSlice({
       state.status = "idle";
       state.error = "";
       state.userNotifications = [];
+      state.refresh = true;
+      state.unReadNotificationCount = 0;
       state.count = 0;
       state.page = 1;
+    },
+    setRefresh: (state, action) => {
+      state.refresh = action.payload;
+    },
+    decreaseUnreadNotificationsCount: (state) => {
+      state.unReadNotificationCount = state.unReadNotificationCount - 1;
     },
   },
   extraReducers: {
@@ -167,11 +209,37 @@ export const UserNotificationsSlice = createSlice({
         state.error = "network failed";
       } else state.error = payload.message;
     },
+    [getAllNotifications.rejected]: (state, { payload }) => {
+      state.status = "failed";
+
+      if (payload === "timeout") {
+        state.error = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.error = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.error = "network failed";
+      } else state.error = payload.message;
+    },
+    [getUnreadNotification.pending]: () => {},
+    [getUnreadNotification.fulfilled]: (state, action) => {
+      if (action.payload.data.count > state.unReadNotificationCount) {
+        state.unReadNotificationCount = action.payload.data.count;
+        state.userNotifications = [];
+        state.refresh = true;
+      }
+    },
+    [getUnreadNotification.rejected]: () => {},
   },
 });
 
-export const { resetError, resetStatus, resetNotifications, setPage } =
-  UserNotificationsSlice.actions;
+export const {
+  resetError,
+  resetStatus,
+  resetNotifications,
+  setPage,
+  decreaseUnreadNotificationsCount,
+  setRefresh,
+} = UserNotificationsSlice.actions;
 
 export const selectUserNotifications = (state) => state.userNotifications;
 

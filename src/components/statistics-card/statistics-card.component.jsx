@@ -1,17 +1,22 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
+// redux stuff
+import { useDispatch } from "react-redux";
+import { statisticsSliceSignOut } from "../../redux/statistics/statisticsSlice";
+
+// styles
 import styles from "./statistics-card.module.scss";
 import generalStyles from "../../style.module.scss";
 import rowStyles from "../row.module.scss";
-import { useDispatch } from "react-redux";
-import { statisticsSliceSignOut } from "../../redux/statistics/statisticsSlice";
 
 function StatisticsCard({ title, field, type }) {
   const dispatch = useDispatch();
 
   return (
-    <div className={styles.card}>
+    <div
+      className={[styles.card, generalStyles.flex_center_container].join(" ")}
+    >
       <Link
         onClick={() => {
           dispatch(statisticsSliceSignOut());

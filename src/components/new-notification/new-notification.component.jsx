@@ -1,29 +1,41 @@
-import { unwrapResult } from "@reduxjs/toolkit";
 import React, { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import { BiImage } from "react-icons/bi";
-import { MdAddCircle } from "react-icons/md";
-import { RiDeleteBin5Fill } from "react-icons/ri";
-import { useDispatch, useSelector } from "react-redux";
+
+// redux stuff
 import { selectToken } from "../../redux/auth/authSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { useDispatch, useSelector } from "react-redux";
 import { addNotification } from "../../redux/notifications/notificationsSlice";
-import { Colors } from "../../utils/constants";
+
+// components
 import Icon from "../action-icon/action-icon.component";
 import Button from "../button/button.component";
 
+// icons
+import { BiImage } from "react-icons/bi";
+import { MdAddCircle } from "react-icons/md";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+
+// styles
 import styles from "./new-notification.module.scss";
 
-function NewNotification({ setIsNew }) {
-  const { t } = useTranslation();
-  const inputFileRef = useRef(null);
+// constants
+import { Colors } from "../../utils/constants";
 
+function NewNotification({ setIsNew, setSuccessAddingMsg }) {
+  const inputFileRef = useRef(null);
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
+  // selectors
   const token = useSelector(selectToken);
 
+  // own states
   const [header, setHeader] = useState("");
   const [body, setBody] = useState("");
   const [selectedImage, setSelectedImage] = useState(null);
+  const [headerError, setHeaderError] = useState("");
+  const [bodyError, setBodyError] = useState("");
 
   const resetState = () => {
     setHeader("");
@@ -44,6 +56,14 @@ function NewNotification({ setIsNew }) {
 
   const addHandler = () => {
     if (header.trim().length === 0 || body.trim().length === 0) {
+      if (header.trim().length === 0) {
+        setHeaderError("error");
+      }
+
+      if (body.trim().length === 0) {
+        setBodyError("error");
+      }
+
       return;
     }
 
@@ -66,27 +86,39 @@ function NewNotification({ setIsNew }) {
         setBody("");
         setHeader("");
         setSelectedImage(null);
+        setSuccessAddingMsg("add-notification-msg");
       });
   };
 
   return (
     <div className={styles.new_notification_div}>
-      <div className={styles.row}>
+      <div
+        className={[
+          styles.row,
+          headerError === "error" ? styles.error : "",
+        ].join(" ")}
+      >
         <label>{t("header")}</label>
         <input
           type="text"
           value={header}
           onChange={(e) => {
             setHeader(e.target.value);
+            setHeaderError("");
           }}
         />
       </div>
-      <div className={styles.row}>
+      <div
+        className={[styles.row, bodyError === "error" ? styles.error : ""].join(
+          " "
+        )}
+      >
         <label>{t("body")}</label>
         <textarea
           value={body}
           onChange={(e) => {
             setBody(e.target.value);
+            setBodyError("");
           }}
         />
       </div>

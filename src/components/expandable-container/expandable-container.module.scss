@@ -5,11 +5,13 @@
 }
 
 .header_label {
+  padding: 6px;
+
+  color: $secondary-color;
+
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  padding: 6px;
-  color: $secondary-color;
 }
 
 .expanded {

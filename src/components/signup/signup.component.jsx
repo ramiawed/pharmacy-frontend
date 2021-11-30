@@ -33,6 +33,7 @@ import { getIcon } from "../../utils/icons.js";
 
 // styles
 import styles from "./signup.module.scss";
+import generalStyles from "../../style.module.scss";
 
 const containerVariant = {
   hidden: {
@@ -422,7 +423,9 @@ function SignUp() {
     <Redirect to="/approve" />
   ) : (
     <motion.div
-      className={styles.container}
+      className={[styles.container, generalStyles.flex_center_container].join(
+        " "
+      )}
       variants={containerVariant}
       initial="hidden"
       animate="visible"

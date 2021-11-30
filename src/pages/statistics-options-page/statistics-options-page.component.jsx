@@ -4,12 +4,15 @@ import { Redirect } from "react-router-dom";
 
 // components
 import StatisticsCard from "../../components/statistics-card/statistics-card.component";
+
 // redux stuff
 import { selectUser } from "../../redux/auth/authSlice";
 import { useSelector } from "react-redux";
 
 // styles
 import generalStyles from "../../style.module.scss";
+
+// constants
 import { UserTypeConstants } from "../../utils/constants";
 
 function StatisticsOptionsPage() {

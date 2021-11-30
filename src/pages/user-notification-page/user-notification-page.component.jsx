@@ -1,6 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router";
 import ReactLoading from "react-loading";
+
+// components
+import Button from "../../components/button/button.component";
+import NoContent from "../../components/no-content/no-content.component";
+import NotificationRow from "../../components/notification-row/notification-row.component";
+import Icon from "../../components/action-icon/action-icon.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -13,9 +19,11 @@ import { useTranslation } from "react-i18next";
 import Header from "../../components/header/header.component";
 import {
   getAllNotifications,
+  getUnreadNotification,
   resetNotifications,
   selectUserNotifications,
   setPage,
+  setRefresh,
 } from "../../redux/userNotifications/userNotificationsSlice";
 
 // icons
@@ -24,11 +32,9 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 
 // styles
 import generalStyles from "../../style.module.scss";
-import Icon from "../../components/action-icon/action-icon.component";
+
+// constants
 import { Colors } from "../../utils/constants";
-import Button from "../../components/button/button.component";
-import NoContent from "../../components/no-content/no-content.component";
-import NotificationRow from "../../components/notification-row/notification-row.component";
 
 function UserNotificationPage() {
   const { t } = useTranslation();
@@ -36,9 +42,8 @@ function UserNotificationPage() {
   const dispatch = useDispatch();
 
   const token = useSelector(selectToken);
-  const { status, error, page, count, userNotifications } = useSelector(
-    selectUserNotifications
-  );
+  const { status, error, page, count, userNotifications, refresh } =
+    useSelector(selectUserNotifications);
   const isOnline = useSelector(selectOnlineStatus);
 
   const handleSearch = (page) => {
@@ -63,21 +68,15 @@ function UserNotificationPage() {
   const refreshHandler = () => {
     dispatch(resetNotifications());
     dispatch(getAllNotifications({ token }));
-  };
-
-  const handlePageClick = (e) => {
-    const { selected } = e;
-
-    handleSearch(selected + 1);
-
-    window.scrollTo(0, 0);
+    dispatch(getUnreadNotification({ token }));
   };
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
-    if (userNotifications.length === 0) {
-      handleSearch(page);
+    if (refresh) {
+      handleSearch(1);
+      dispatch(setRefresh(false));
     }
   }, []);
 

@@ -24,15 +24,16 @@ import { itemsSliceSignOut } from "../../redux/items/itemsSlices";
 import { statisticsSliceSignOut } from "../../redux/statistics/statisticsSlice";
 import { warehouseSliceSignOut } from "../../redux/warehouse/warehousesSlice";
 import { warehouseItemsSliceSignOut } from "../../redux/warehouseItems/warehouseItemsSlices";
+import { orderSliceSignout } from "../../redux/orders/ordersSlice";
+import { resetMedicines } from "../../redux/medicines/medicinesSlices";
 
 // styles
 import styles from "./side-nav.module.scss";
 import linkStyles from "../side-nav.module.scss";
+import generalStyles from "../../style.module.scss";
 
 // constants
 import { BASEURL, UserTypeConstants } from "../../utils/constants";
-import { orderSliceSignout } from "../../redux/orders/ordersSlice";
-import { resetMedicines } from "../../redux/medicines/medicinesSlices";
 
 function SideNav({
   collapsed,
@@ -68,7 +69,12 @@ function SideNav({
       <div className={styles.close_icon} onClick={onCollapsedChange}>
         <VscClose size={32} />
       </div>
-      <div className={styles.profile_img}>
+      <div
+        className={[
+          styles.profile_img,
+          generalStyles.flex_center_container,
+        ].join(" ")}
+      >
         <div
           style={{
             backgroundImage: `url("http://localhost:8000/${user.logo_url}")`,

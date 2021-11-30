@@ -10,6 +10,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
+
   color: $secondary-color;
 }
 
@@ -20,9 +21,11 @@
 .name {
   background-color: rgba($color: $secondary-color, $alpha: 0.7);
   color: $white-color;
+
   padding: 6px 12px;
-  border-radius: 6px;
   margin-inline: 10px;
+  
+  border-radius: 6px;
 }
 
 .total_price {

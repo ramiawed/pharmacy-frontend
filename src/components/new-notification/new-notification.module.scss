@@ -80,6 +80,10 @@
   border-radius: 12px;
 }
 
+.row.error {
+  border: 3px solid rgba($color: $third-color, $alpha: 1.0);
+}
+
 .row label {
   width: 75px;
   font-size: 0.8rem;

@@ -4,27 +4,28 @@
 .pagination {
   position: relative;
 
-  margin-top: 10px;
+  margin-block-start: 10px;
 
   display: flex;
   justify-content: center;
+
   list-style: none;
+
   cursor: pointer;
 }
 
 .pagination a {
   font-size: 0.8rem;
+
   padding: 5px;
-  border-radius: 6px;
-  // border: 1px solid $secondary-color;
-  box-shadow: 0 0 2px rgba($color: #000000, $alpha: 0.4);
-  color: $secondary-color;
   margin: 0 2px;
+
+  border-radius: 6px;
+  box-shadow: 0 0 2px rgba($color: #000000, $alpha: 0.4);
+
+  color: $secondary-color;
 }
 
-// .pagination_link {
-//   font-weight: bold;
-// }
 
 .pagination_link_active a {
   color: #fff;

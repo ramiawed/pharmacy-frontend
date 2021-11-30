@@ -19,6 +19,7 @@ import ReactLoading from "react-loading";
 
 // styles
 import styles from "./search-home.module.scss";
+import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors, BASEURL, UserTypeConstants } from "../../utils/constants";
@@ -156,7 +157,11 @@ function SearchHome() {
   return (
     <div className={styles.container}>
       <h3>{t("app-name")}</h3>
-      <div className={styles.options}>
+      <div
+        className={[styles.options, generalStyles.flex_center_container].join(
+          " "
+        )}
+      >
         <div
           className={[
             styles.option,

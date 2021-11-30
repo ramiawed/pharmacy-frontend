@@ -1,25 +1,26 @@
 @import "../../variables.scss";
 
 .partner_container {
-  // background: rgba($color: #cdd2ba, $alpha: 1);
+  width: 90%;
+  min-height: 300px;
+
+  margin-block-end: 20px;
+
   background: #fff;
 
   position: relative;
-  width: 90%;
-  min-height: 300px;
-  margin-bottom: 20px;
+
   box-shadow: 2px 2px 5px rgba($color: $black-color, $alpha: 0.7);
   border-radius: 6px;
 
   display: flex;
   flex-direction: column;
-
   align-items: center;
   justify-content: space-around;
 
-  transition: all 1s;
-
   overflow: hidden;
+
+  transition: all 1s;
 }
 
 .logo_div {

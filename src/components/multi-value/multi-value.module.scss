@@ -16,14 +16,14 @@
   justify-content: space-between;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
   padding: 4px 4px;
-  margin-bottom: 8px;
+  margin-block-end: 8px;
   width: 100%;
 }
 
 .header {
   display: flex;
   align-items: center;
-  margin-bottom: 4px;
+  margin-block-end: 4px;
 }
 
 .header p {

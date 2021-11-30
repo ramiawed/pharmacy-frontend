@@ -97,7 +97,12 @@ function ChooseItemModal({ close, chooseAction, url }) {
         <Loader />
       ) : (
         <>
-          <div className={styles.search_container}>
+          <div
+            className={[
+              styles.search_container,
+              generalStyles.flex_center_container,
+            ].join(" ")}
+          >
             <IoIosSearch color={Colors.SECONDARY_COLOR} size={24} />
             <input
               className={styles.search_input}

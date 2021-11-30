@@ -3,7 +3,8 @@
 .nav {
   width: 100%;
   min-height: 60px;
-  margin-bottom: auto;
+
+  margin-block-end: auto;
 
   position: sticky;
   top: 60px;
@@ -12,12 +13,13 @@
   background-color: $white-color;
   color: $main-color;
 
-  // box-shadow: 0 2px 3px $secondary-color;
   border-bottom: 1px solid $main-color;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
+
 
 div.center,
 div.end {
@@ -28,11 +30,13 @@ div.end {
 
 div .link {
   text-decoration: none;
+  
   color: $main-color;
-  cursor: pointer;
-  // font-weight: 100;
+  
   font-family: $font3;
   font-size: 1.2rem;
+  
+  cursor: pointer;
 
   transition: all 0.1s ease;
 }
@@ -40,7 +44,6 @@ div .link {
 div.center .link,
 div.end .link {
   padding: 4px 8px;
-  // font-size: 1rem;
   margin: 0 6px;
 }
 
@@ -93,7 +96,7 @@ div.end .link.selected {
   background-position: center;
   background-size: contain;
   width: 32px;
-  padding-top: 32px;
+  padding-block-start: 32px;
   border-radius: 50%;
 
   margin: 0 10px;

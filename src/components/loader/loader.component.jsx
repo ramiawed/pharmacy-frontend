@@ -1,7 +1,11 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import ReactLoading from "react-loading";
+
+// constants
 import { Colors } from "../../utils/constants";
+
+// styles
 import styles from "./loader.module.scss";
 
 function Loader({ color }) {

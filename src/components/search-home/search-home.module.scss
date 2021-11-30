@@ -62,6 +62,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  
   background-color: rgba($color: rgb(34, 165, 231), $alpha: 1);
   color: $white-color;
   padding: 8px 50px;
@@ -80,7 +81,6 @@
 }
 
 .result_div {
-  // padding-top: 100px;
   width: 80%;
   min-height: 50px;
   max-height: 250px;

@@ -9,6 +9,7 @@ import Button from "../button/button.component";
 
 // styles
 import styles from "./info-row.module.scss";
+import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
@@ -159,7 +160,7 @@ function InfoRow({ labelText, value, onInputChange, action, field, editable }) {
               />
             </div>
           ) : (
-            <div className={styles.actions}>
+            <div className={generalStyles.flex_center_container}>
               <Button
                 text="edit-label"
                 action={() => {

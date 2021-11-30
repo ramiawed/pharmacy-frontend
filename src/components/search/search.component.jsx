@@ -2,6 +2,8 @@ import React from "react";
 
 // components
 import Input from "../input/input.component";
+
+// icons
 import { FaSearch } from "react-icons/fa";
 
 function Search({ value, onchange, onEnterPress }) {

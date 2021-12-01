@@ -6,7 +6,7 @@ import { BASEURL } from "../../utils/constants";
 const initialState = {
   warehousesSectionOneStatus: "idle",
   warehousesSectionOneError: "",
-  addWarehouseToSectionOneStatus: "",
+  addWarehouseToSectionOneStatus: "idle",
   addWarehouseToSectionOneError: "",
   removeWarehouseFromSectionOneStatus: "idle",
   removeWarehouseFromSectionOneError: "",
@@ -172,6 +172,17 @@ export const warehousesSectionOneSlice = createSlice({
       state.warehousesSectionOne = [];
       state.count = 0;
     },
+
+    warehousesSectionOneSignOut: (state) => {
+      state.warehousesSectionOneStatus = "idle";
+      state.warehousesSectionOneError = "";
+      state.addWarehouseToSectionOneStatus = "idle";
+      state.addWarehouseToSectionOneError = "";
+      state.removeWarehouseFromSectionOneStatus = "idle";
+      state.removeWarehouseFromSectionOneError = "";
+      state.warehousesSectionOne = [];
+      state.count = 0;
+    },
   },
 
   extraReducers: {
@@ -245,6 +256,7 @@ export const warehousesSectionOneSlice = createSlice({
 export const selectWarehousesSectionOne = (state) => state.warehousesSectionOne;
 
 export const {
+  warehousesSectionOneSignOut,
   resetWarehousesSectionOneStatus,
   resetWarehousesSectionOneError,
   resetAddWarehouseToSectionOneStatus,

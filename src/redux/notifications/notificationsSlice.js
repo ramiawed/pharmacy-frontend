@@ -145,6 +145,13 @@ export const NotificationsSlice = createSlice({
       state.count = 0;
       state.page = 1;
     },
+    notificationsSignOut: (state) => {
+      state.status = "idle";
+      state.error = "";
+      state.notifications = [];
+      state.count = 0;
+      state.page = 1;
+    },
   },
   extraReducers: {
     [addNotification.pending]: (state) => {
@@ -184,8 +191,13 @@ export const NotificationsSlice = createSlice({
   },
 });
 
-export const { resetError, resetStatus, resetNotifications, setPage } =
-  NotificationsSlice.actions;
+export const {
+  resetError,
+  resetStatus,
+  resetNotifications,
+  setPage,
+  notificationsSignOut,
+} = NotificationsSlice.actions;
 
 export const selectNotifications = (state) => state.notifications;
 

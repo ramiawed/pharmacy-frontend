@@ -6,7 +6,7 @@ import { BASEURL } from "../../utils/constants";
 const initialState = {
   itemsSectionTwoStatus: "idle",
   itemsSectionTwoError: "",
-  addItemToSectionTwoStatus: "",
+  addItemToSectionTwoStatus: "idle",
   addItemToSectionTwoError: "",
   removeItemFromSectionTwoStatus: "idle",
   removeItemFromSectionTwoError: "",
@@ -172,6 +172,17 @@ export const itemsSectionTwoSlice = createSlice({
       state.itemsSectionTwo = [];
       state.count = 0;
     },
+
+    itemsSectionTwoSignOut: (state) => {
+      state.itemsSectionTwoStatus = "idle";
+      state.itemsSectionTwoError = "";
+      state.addItemToSectionTwoStatus = "idle";
+      state.addItemToSectionTwoError = "";
+      state.removeItemFromSectionTwoStatus = "idle";
+      state.removeItemFromSectionTwoError = "";
+      state.itemsSectionTwo = [];
+      state.count = 0;
+    },
   },
 
   extraReducers: {
@@ -245,6 +256,7 @@ export const itemsSectionTwoSlice = createSlice({
 export const selectItemsSectionTwo = (state) => state.itemsSectionTwo;
 
 export const {
+  itemsSectionTwoSignOut,
   resetItemsSectionTwoStatus,
   resetItemsSectionTwoError,
   resetAddItemToSectionTwoStatus,

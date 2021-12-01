@@ -6,7 +6,7 @@ import { BASEURL } from "../../utils/constants";
 const initialState = {
   companiesSectionTwoStatus: "idle",
   companiesSectionTwoError: "",
-  addCompanyToSectionTwoStatus: "",
+  addCompanyToSectionTwoStatus: "idle",
   addCompanyToSectionTwoError: "",
   removeCompanyFromSectionTwoStatus: "idle",
   removeCompanyFromSectionTwoError: "",
@@ -172,6 +172,17 @@ export const companiesSectionTwoSlice = createSlice({
       state.companiesSectionTwo = [];
       state.count = 0;
     },
+
+    companiesSectionTwoSignOut: (state) => {
+      state.companiesSectionTwoStatus = "idle";
+      state.companiesSectionTwoError = "";
+      state.addCompanyToSectionTwoStatus = "idle";
+      state.addCompanyToSectionTwoError = "";
+      state.removeCompanyFromSectionTwoStatus = "idle";
+      state.removeCompanyFromSectionTwoError = "";
+      state.companiesSectionTwo = [];
+      state.count = 0;
+    },
   },
 
   extraReducers: {
@@ -245,6 +256,7 @@ export const companiesSectionTwoSlice = createSlice({
 export const selectCompaniesSectionTwo = (state) => state.companiesSectionTwo;
 
 export const {
+  companiesSectionTwoSignOut,
   resetCompaniesSectionTwoStatus,
   resetCompaniesSectionTwoError,
   resetAddCompanyToSectionTwoStatus,

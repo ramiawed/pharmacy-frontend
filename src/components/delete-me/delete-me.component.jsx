@@ -3,21 +3,39 @@ import { useTranslation } from "react-i18next";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-import { deleteMe, selectUserData, signOut } from "../../redux/auth/authSlice";
-import { resetUsers } from "../../redux/users/usersSlice";
-import { resetFavorites } from "../../redux/favorites/favoritesSlice";
-import {
-  resetCompanies,
-  resetCompaniesPageState,
-} from "../../redux/company/companySlice";
-import {
-  resetWarehouse,
-  resetWarehousePageState,
-} from "../../redux/warehouse/warehousesSlice";
-import { resetItems } from "../../redux/items/itemsSlices";
-import { resetCartItems } from "../../redux/cart/cartSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
-import { orderSliceSignout } from "../../redux/orders/ordersSlice";
+import {
+  authSliceSignOut,
+  deleteMe,
+  selectUserData,
+} from "../../redux/auth/authSlice";
+import { usersSliceSignOut } from "../../redux/users/usersSlice";
+import { favoritesSliceSignOut } from "../../redux/favorites/favoritesSlice";
+import { companySliceSignOut } from "../../redux/company/companySlice";
+import { warehouseSliceSignOut } from "../../redux/warehouse/warehousesSlice";
+import { itemsSliceSignOut } from "../../redux/items/itemsSlices";
+import { cartSliceSignOut } from "../../redux/cart/cartSlice";
+import { orderSliceSignOut } from "../../redux/orders/ordersSlice";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
+import {
+  medicinesSliceSignOut,
+  resetMedicines,
+} from "../../redux/medicines/medicinesSlices";
+import { statisticsSliceSignOut } from "../../redux/statistics/statisticsSlice";
+import { warehouseItemsSliceSignOut } from "../../redux/warehouseItems/warehouseItemsSlices";
+import { advertisementsSignOut } from "../../redux/advertisements/advertisementsSlice";
+import { companiesSectionOneSignOut } from "../../redux/advertisements/companiesSectionOneSlice";
+import { companiesSectionTwoSignOut } from "../../redux/advertisements/companiesSectionTwoSlice";
+import { itemsSectionOneSignOut } from "../../redux/advertisements/itemsSectionOneSlice";
+import { itemsSectionThreeSignOut } from "../../redux/advertisements/itemsSectionThreeSlice";
+import { itemsSectionTwoSignOut } from "../../redux/advertisements/itemsSectionTwoSlice";
+import { warehousesSectionOneSignOut } from "../../redux/advertisements/warehousesSectionOneSlice";
+import { notificationsSignOut } from "../../redux/notifications/notificationsSlice";
+import { settingsSignOut } from "../../redux/settings/settingsSlice";
+import { usersNotificationsSignOut } from "../../redux/userNotifications/userNotificationsSlice";
 
 // components
 import PasswordRow from "../password-row/password-row.component";
@@ -28,11 +46,6 @@ import generalStyles from "../../style.module.scss";
 
 // constants and utils
 import { Colors } from "../../utils/constants";
-import {
-  changeOnlineMsg,
-  selectOnlineStatus,
-} from "../../redux/online/onlineSlice";
-import { resetMedicines } from "../../redux/medicines/medicinesSlices";
 
 function DeleteMe() {
   const { t } = useTranslation();
@@ -68,19 +81,30 @@ function DeleteMe() {
       .then(unwrapResult)
       .then(() => {
         // on succeeded sign out and reset redux's store
-        dispatch(signOut());
-        dispatch(resetUsers());
-        dispatch(resetFavorites());
-        dispatch(resetCompanies());
-        dispatch(resetCompaniesPageState());
-        dispatch(resetWarehouse());
-        dispatch(resetWarehousePageState());
-        dispatch(resetItems());
-        dispatch(resetCartItems());
-        dispatch(orderSliceSignout());
+        dispatch(authSliceSignOut());
+        dispatch(cartSliceSignOut());
+        dispatch(companySliceSignOut());
+        dispatch(favoritesSliceSignOut());
+        dispatch(itemsSliceSignOut());
+        dispatch(statisticsSliceSignOut());
+        dispatch(usersSliceSignOut());
+        dispatch(warehouseSliceSignOut());
+        dispatch(warehouseItemsSliceSignOut());
+        dispatch(orderSliceSignOut());
         dispatch(resetMedicines());
+        dispatch(advertisementsSignOut());
+        dispatch(companiesSectionOneSignOut());
+        dispatch(companiesSectionTwoSignOut());
+        dispatch(itemsSectionOneSignOut());
+        dispatch(itemsSectionThreeSignOut());
+        dispatch(itemsSectionTwoSignOut());
+        dispatch(warehousesSectionOneSignOut());
+        dispatch(medicinesSliceSignOut());
+        dispatch(notificationsSignOut());
+        dispatch(settingsSignOut());
+        dispatch(usersNotificationsSignOut());
       })
-      .catch((rejectedValueOrSerializedError) => {
+      .catch(() => {
         // on failed, show message below the password input
         setPasswordForDeleteError(t(deleteError));
       });

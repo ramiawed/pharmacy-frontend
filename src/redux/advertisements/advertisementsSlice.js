@@ -136,6 +136,11 @@ export const advertisementsSlice = createSlice({
       state.error = "";
       state.advertisements = [];
     },
+    advertisementsSignOut: (state) => {
+      state.status = "idle";
+      state.error = "";
+      state.advertisements = [];
+    },
   },
   extraReducers: {
     [addAdvertisement.pending]: (state) => {
@@ -184,8 +189,12 @@ export const advertisementsSlice = createSlice({
   },
 });
 
-export const { resetError, resetStatus, resetAdvertisements } =
-  advertisementsSlice.actions;
+export const {
+  resetError,
+  resetStatus,
+  resetAdvertisements,
+  advertisementsSignOut,
+} = advertisementsSlice.actions;
 
 export const selectAdvertisements = (state) => state.advertisements;
 

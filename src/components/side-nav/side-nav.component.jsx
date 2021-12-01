@@ -24,8 +24,21 @@ import { itemsSliceSignOut } from "../../redux/items/itemsSlices";
 import { statisticsSliceSignOut } from "../../redux/statistics/statisticsSlice";
 import { warehouseSliceSignOut } from "../../redux/warehouse/warehousesSlice";
 import { warehouseItemsSliceSignOut } from "../../redux/warehouseItems/warehouseItemsSlices";
-import { orderSliceSignout } from "../../redux/orders/ordersSlice";
-import { resetMedicines } from "../../redux/medicines/medicinesSlices";
+import { orderSliceSignOut } from "../../redux/orders/ordersSlice";
+import { advertisementsSignOut } from "../../redux/advertisements/advertisementsSlice";
+import { companiesSectionOneSignOut } from "../../redux/advertisements/companiesSectionOneSlice";
+import { companiesSectionTwoSignOut } from "../../redux/advertisements/companiesSectionTwoSlice";
+import { itemsSectionOneSignOut } from "../../redux/advertisements/itemsSectionOneSlice";
+import { itemsSectionThreeSignOut } from "../../redux/advertisements/itemsSectionThreeSlice";
+import { itemsSectionTwoSignOut } from "../../redux/advertisements/itemsSectionTwoSlice";
+import { warehousesSectionOneSignOut } from "../../redux/advertisements/warehousesSectionOneSlice";
+import { notificationsSignOut } from "../../redux/notifications/notificationsSlice";
+import { settingsSignOut } from "../../redux/settings/settingsSlice";
+import { usersNotificationsSignOut } from "../../redux/userNotifications/userNotificationsSlice";
+import {
+  medicinesSliceSignOut,
+  resetMedicines,
+} from "../../redux/medicines/medicinesSlices";
 
 // styles
 import styles from "./side-nav.module.scss";
@@ -33,7 +46,7 @@ import linkStyles from "../side-nav.module.scss";
 import generalStyles from "../../style.module.scss";
 
 // constants
-import { BASEURL, UserTypeConstants } from "../../utils/constants";
+import { UserTypeConstants } from "../../utils/constants";
 
 function SideNav({
   collapsed,
@@ -42,8 +55,10 @@ function SideNav({
   onSelectedChange,
 }) {
   const { t } = useTranslation();
-  const user = useSelector(selectUser);
   const dispatch = useDispatch();
+
+  // selectors
+  const user = useSelector(selectUser);
 
   const handleSignOut = () => {
     dispatch(authSliceSignOut());
@@ -55,8 +70,19 @@ function SideNav({
     dispatch(usersSliceSignOut());
     dispatch(warehouseSliceSignOut());
     dispatch(warehouseItemsSliceSignOut());
-    dispatch(orderSliceSignout());
+    dispatch(orderSliceSignOut());
     dispatch(resetMedicines());
+    dispatch(advertisementsSignOut());
+    dispatch(companiesSectionOneSignOut());
+    dispatch(companiesSectionTwoSignOut());
+    dispatch(itemsSectionOneSignOut());
+    dispatch(itemsSectionThreeSignOut());
+    dispatch(itemsSectionTwoSignOut());
+    dispatch(warehousesSectionOneSignOut());
+    dispatch(medicinesSliceSignOut());
+    dispatch(notificationsSignOut());
+    dispatch(settingsSignOut());
+    dispatch(usersNotificationsSignOut());
   };
 
   return (

@@ -9,7 +9,6 @@ import PartnerCard from "../../components/partner-card/partner-card.component";
 import Button from "../../components/button/button.component";
 import Toast from "../../components/toast/toast.component";
 import NoContent from "../../components/no-content/no-content.component";
-import Loader from "../../components/action-loader/action-loader.component";
 import WarehousesHeader from "../../components/warehouses-header/warehouses-header.component";
 
 // redux stuff

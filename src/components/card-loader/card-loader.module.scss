@@ -1,0 +1,60 @@
+@import '../../variables.scss';
+
+.card {
+  width: 60%;
+  min-height: 300px;
+
+  background-color: $white-color;
+
+  margin-block-end: 20px;
+
+  position: relative;
+
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  border-radius: 6px;
+
+  overflow: hidden;
+  
+  transition: all 1s;
+}
+
+.card::before {
+  content: '';
+  width: 400px;
+  height: 300px;
+
+  background-color: rgba($color: #aba9a9, $alpha: 0.05);
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+
+  transform: skew(-10deg);
+
+  animation-name: animated-row;
+  animation-iteration-count: infinite;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes animated-row {
+  0% {
+    left: -110%;
+  }
+
+  100% {
+    left: 110%;
+  }
+}
+
+@media only screen and (min-width: $small) {
+  .card {
+    width: 31%;
+  }
+}
+
+@media only screen and (min-width: $medium) {
+  .card {
+    width: 23%;
+  }
+}

@@ -62,7 +62,7 @@ function UserProfilePage() {
   }, []);
 
   return user ? (
-    <div className={styles.content}>
+    <div className={generalStyles.container}>
       <Header>
         <h2>{t("nav-profile")}</h2>
       </Header>

@@ -1,0 +1,46 @@
+@import '../../variables.scss';
+
+.row {
+  width: 100%;
+  height: 40px;
+
+  background-color: $white-color;
+
+  box-shadow: 0 0 3px rgba($color: #000000, $alpha: 0.3);
+  border-radius: 6px;
+
+  margin-block-end: 6px;
+
+  position: relative;
+
+  overflow: hidden;
+}
+
+.row::before {
+  content: '';
+  width: 50%;
+  height: 50px;
+
+  background-color: rgba($color: #aba9a9, $alpha: 0.05);
+
+  position: absolute;
+  top: 0;
+  bottom: 0;
+
+  transform: skewX(135deg);
+
+  animation-name: animated-row;
+  animation-iteration-count: infinite;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes animated-row {
+  0% {
+    left: -50%;
+  }
+
+  100% {
+    left: 100%;
+  }
+}

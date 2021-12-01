@@ -263,7 +263,7 @@ export const ordersSlice = createSlice({
         page: 1,
       };
     },
-    orderSliceSignout: (state) => {
+    orderSliceSignOut: (state) => {
       state.status = "idle";
       state.orders = [];
       state.count = 0;
@@ -316,7 +316,7 @@ export const {
   setRefresh,
   setDateOption,
   setSearchDate,
-  orderSliceSignout,
+  orderSliceSignOut,
 } = ordersSlice.actions;
 
 export default ordersSlice.reducer;

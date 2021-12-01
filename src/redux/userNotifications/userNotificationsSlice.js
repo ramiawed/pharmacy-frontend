@@ -152,6 +152,15 @@ export const UserNotificationsSlice = createSlice({
       state.count = 0;
       state.page = 1;
     },
+    usersNotificationsSignOut: (state) => {
+      state.status = "idle";
+      state.error = "";
+      state.userNotifications = [];
+      state.refresh = true;
+      state.unReadNotificationCount = 0;
+      state.count = 0;
+      state.page = 1;
+    },
     setRefresh: (state, action) => {
       state.refresh = action.payload;
     },
@@ -239,6 +248,7 @@ export const {
   setPage,
   decreaseUnreadNotificationsCount,
   setRefresh,
+  usersNotificationsSignOut,
 } = UserNotificationsSlice.actions;
 
 export const selectUserNotifications = (state) => state.userNotifications;

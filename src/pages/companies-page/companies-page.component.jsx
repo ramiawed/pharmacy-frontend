@@ -20,6 +20,8 @@ import Button from "../../components/button/button.component";
 import Toast from "../../components/toast/toast.component";
 import NoContent from "../../components/no-content/no-content.component";
 import CompaniesHeader from "../../components/companies-header/companies-header.component";
+import RowLoader from "../../components/row-loader/row-loader.component";
+import CardLoader from "../../components/card-loader/card-loader.component";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";

@@ -51,11 +51,13 @@ function ItemExcelPage() {
 
   // own state
   const [showModal, setShowModal] = useState(false);
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [fileName, setFileName] = useState("");
   const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(false);
   const [successMsg, setSuccessMsg] = useState("");
   const [failedMsg, setFailedMsg] = useState("");
+  const [itemsSelectValue, setItemsSelectValue] = useState("all");
 
   const fileChanged = (file) => {
     // if file is null
@@ -80,14 +82,24 @@ function ItemExcelPage() {
       const completeData = data.map((d) => {
         let obj = {
           ...d,
+          selected: true,
           company: companyId,
           isActive: true,
         };
+
+        if (!d.name) {
+          obj = {
+            ...obj,
+            name: "",
+            selected: false,
+          };
+        }
 
         if (!d.price) {
           obj = {
             ...obj,
             price: 0,
+            selected: false,
           };
         }
 
@@ -95,6 +107,7 @@ function ItemExcelPage() {
           obj = {
             ...obj,
             customer_price: 0,
+            selected: false,
           };
         }
 
@@ -133,6 +146,7 @@ function ItemExcelPage() {
   };
 
   const handleInsertItems = () => {
+    setShowConfirmModal(false);
     if (!isOnline) {
       dispatch(changeOnlineMsg());
       return;
@@ -140,11 +154,17 @@ function ItemExcelPage() {
 
     let rightItem = [];
     let wrongItems = [];
+    let unSelectedItems = [];
+
     for (let item of items) {
-      if (!item.name || !item.price || !item.customer_price) {
-        wrongItems.push(item);
+      if (item.selected) {
+        if (!item.name || !item.price || !item.customer_price) {
+          wrongItems.push(item);
+        } else {
+          rightItem.push(item);
+        }
       } else {
-        rightItem.push(item);
+        unSelectedItems.push(item);
       }
     }
 
@@ -161,32 +181,45 @@ function ItemExcelPage() {
           setSuccessMsg(`${t("inserted-items")}: ${rightItem.length}`);
           setFailedMsg(`${t("wrong-items")}: ${wrongItems.length}`);
           setShowModal(true);
-          setItems(wrongItems);
+          setItems([...wrongItems, ...unSelectedItems]);
+          checkItemsSelectionStatus([...wrongItems, ...unSelectedItems]);
           dispatch(resetStatus());
         })
-        .catch((rejectedValueOrSerializedError) => {});
+        .catch(() => {});
     } else {
     }
   };
 
-  const handleInsertFiftyItems = () => {
+  const handleInsertTenItems = () => {
+    setShowConfirmModal(false);
     if (!isOnline) {
       dispatch(changeOnlineMsg());
       return;
     }
 
+    let count = 0;
+    let index = 0;
+
     let rightItem = [];
     let wrongItems = [];
-    for (let i = 0; i < 50; i++) {
-      if (!items[i]) {
-        break;
-      }
+    let unselectedItems = [];
 
-      if (!items[i].name || !items[i].price || !items[i].customer_price) {
-        wrongItems.push(items[i]);
+    while (count < 10 && items[index]) {
+      if (items[index].selected) {
+        if (
+          !items[index].name ||
+          !items[index].price ||
+          !items[index].customer_price
+        ) {
+          wrongItems.push(items[index]);
+        } else {
+          rightItem.push(items[index]);
+          count++;
+        }
       } else {
-        rightItem.push(items[i]);
+        unselectedItems.push(items[index]);
       }
+      index++;
     }
 
     if (rightItem.length > 0) {
@@ -202,10 +235,15 @@ function ItemExcelPage() {
           setSuccessMsg(`${t("inserted-items")}: ${rightItem.length}`);
           setFailedMsg(`${t("wrong-items")}: ${wrongItems.length}`);
           setShowModal(true);
-          setItems([...wrongItems, ...items.slice(50)]);
+          setItems([...wrongItems, ...items.slice(index), ...unselectedItems]);
+          checkItemsSelectionStatus([
+            ...wrongItems,
+            ...items.slice(index),
+            ...unselectedItems,
+          ]);
           dispatch(resetStatus());
         })
-        .catch((rejectedValueOrSerializedError) => {});
+        .catch(() => {});
     } else {
     }
   };
@@ -213,9 +251,19 @@ function ItemExcelPage() {
   const handleInputChange = (e, index) => {
     const updatedItems = items.map((item, i) => {
       if (index === i) {
+        // if there is an error set the selection of the item to false
+        let newSelection = item.selected;
+        if (item.selected) {
+          newSelection =
+            item.name === "" ||
+            item.price * 1 === 0 ||
+            item.customer_price * 1 === 0;
+        }
+
         return {
           ...item,
           [e.target.id]: e.target.value,
+          selected: newSelection,
         };
       } else {
         return {
@@ -225,11 +273,87 @@ function ItemExcelPage() {
     });
 
     setItems(updatedItems);
+
+    checkItemsSelectionStatus(updatedItems);
+  };
+
+  const selectedChangeHandler = (index) => {
+    const updatedItems = items.map((item, i) => {
+      if (index === i) {
+        return {
+          ...item,
+          selected: !item.selected,
+        };
+      } else {
+        return {
+          ...item,
+        };
+      }
+    });
+
+    setItems(updatedItems);
+    checkItemsSelectionStatus(updatedItems);
+  };
+
+  const itemsSelectionChangeHandler = () => {
+    if (itemsSelectValue === "all") {
+      setItemsSelectValue("none");
+      const updatedItems = items.map((item) => {
+        return {
+          ...item,
+          selected: false,
+        };
+      });
+
+      setItems(updatedItems);
+    }
+
+    if (itemsSelectValue === "none" || itemsSelectValue === "some") {
+      setItemsSelectValue("all");
+
+      const updatedItems = items.map((item) => {
+        if (
+          item.name === "" ||
+          item.price * 1 === 0 ||
+          item.customer_price * 1 === 0
+        ) {
+          return {
+            ...item,
+          };
+        } else
+          return {
+            ...item,
+            selected: true,
+          };
+      });
+
+      setItems(updatedItems);
+
+      checkItemsSelectionStatus(updatedItems);
+    }
   };
 
   const handleDeleteItem = (index) => {
     const updatedItems = items.filter((item, i) => index !== i);
     setItems(updatedItems);
+  };
+
+  const withUpdateChangeHandler = () => {
+    setWithUpdate(!withUpdate);
+  };
+
+  const checkItemsSelectionStatus = (updatedItems) => {
+    let itemsSelectedCount = 0;
+
+    updatedItems.forEach((item) => {
+      if (item.selected === true) {
+        itemsSelectedCount++;
+      }
+    });
+
+    if (itemsSelectedCount === updatedItems.length) setItemsSelectValue("all");
+    else if (itemsSelectedCount === 0) setItemsSelectValue("none");
+    else setItemsSelectValue("some");
   };
 
   return user && companyId !== 0 ? (
@@ -238,21 +362,44 @@ function ItemExcelPage() {
         {items.length > 0 ? (
           <>
             <label>
-              {t("file-name")}: {fileName}
+              <span
+                style={{
+                  fontSize: "0.7rem",
+                }}
+              >
+                {t("file-name")}:
+              </span>
+              <span
+                style={{
+                  border: `1px solid ${Colors.SECONDARY_COLOR}`,
+                  borderRadius: "6px",
+                  padding: "4px",
+                  marginInline: "4px",
+                }}
+              >
+                {fileName}
+              </span>
             </label>
             <label>
-              {t("items-count")}: {items.length}
+              <span
+                style={{
+                  fontSize: "0.7rem",
+                }}
+              >
+                {t("items-count")}:
+              </span>
+              <span
+                style={{
+                  border: `1px solid ${Colors.SECONDARY_COLOR}`,
+                  borderRadius: "6px",
+                  padding: "4px",
+                  marginInline: "4px",
+                }}
+              >
+                {items.length}
+              </span>
             </label>
 
-            <Button
-              action={() =>
-                withUpdate ? handleInsertFiftyItems() : handleInsertItems()
-              }
-              text={t("add-items")}
-              bgColor={Colors.SECONDARY_COLOR}
-            />
-
-            <InputFile small={true} fileChangedHandler={fileChanged} />
             <div
               className={generalStyles.flex_container}
               style={{ marginInlineStart: "10px" }}
@@ -261,10 +408,20 @@ function ItemExcelPage() {
                 type="checkbox"
                 value={withUpdate}
                 checked={withUpdate}
-                onChange={() => setWithUpdate(!withUpdate)}
+                onChange={withUpdateChangeHandler}
               />
               <label>{t("add-or-update-items")}</label>
             </div>
+            <Button
+              action={() =>
+                withUpdate
+                  ? setShowConfirmModal(true)
+                  : setShowConfirmModal(true)
+              }
+              text={t("add-items")}
+              bgColor={Colors.SECONDARY_COLOR}
+            />
+            <InputFile small={true} fileChangedHandler={fileChanged} />
           </>
         ) : null}
       </div>
@@ -279,7 +436,11 @@ function ItemExcelPage() {
       )}
 
       {items.length > 0 ? (
-        <ExcelTableHeader deleteAllItem={() => setItems([])} />
+        <ExcelTableHeader
+          deleteAllItem={() => setItems([])}
+          selectValue={itemsSelectValue}
+          itemsSelectionChange={itemsSelectionChangeHandler}
+        />
       ) : null}
 
       {items.length > 0 &&
@@ -287,6 +448,7 @@ function ItemExcelPage() {
           <ItemExcelRow
             onDelete={() => handleDeleteItem(index)}
             onchange={handleInputChange}
+            onSelectedChanged={selectedChangeHandler}
             key={index}
             item={item}
             index={index}
@@ -296,13 +458,31 @@ function ItemExcelPage() {
       {showModal && (
         <Modal
           header="add-items"
-          cancelLabel="cancel-label"
-          okLabel="ok-label"
-          okModal={() => setShowModal(false)}
+          cancelLabel="close-label"
           closeModal={() => setShowModal(false)}
+          small={true}
         >
           <p>{successMsg}</p>
           <p>{failedMsg}</p>
+        </Modal>
+      )}
+
+      {showConfirmModal && (
+        <Modal
+          header="add-items"
+          cancelLabel="cancel-label"
+          okLabel="ok-label"
+          okModal={() =>
+            withUpdate ? handleInsertTenItems() : handleInsertItems()
+          }
+          closeModal={() => setShowConfirmModal(false)}
+          small={true}
+        >
+          {withUpdate ? (
+            <p>{t("insert-update-items-msg")}</p>
+          ) : (
+            <p>{t("insert-items-msg")}</p>
+          )}
         </Modal>
       )}
 

@@ -2,7 +2,7 @@
 
 .row_container {
   border-radius: 6px;
-  background-color: rgba($color: $secondary-color, $alpha: 0.2);
+  background-color: rgba($color: $green-color, $alpha: 0.2);
   padding: 10px;
   margin-bottom: 10px;
 
@@ -16,11 +16,18 @@
   animation-name: animateOpacity;
   // animation-duration: 0.3s;
   animation-fill-mode: forwards;
-
 }
 
 .row_container:hover {
-  background: rgba($color: $secondary-color, $alpha: 0.8);
+  background: rgba($color: $green-color, $alpha: 0.8);
+}
+
+.row_unread {
+  background: rgba($color: $yellow-color, $alpha: 0.5);
+}
+
+.row_unread:hover {
+  background: rgba($color: $yellow-color, $alpha: 0.8);
 }
 
 .inner_container {

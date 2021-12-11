@@ -21,7 +21,7 @@ import Icon from "../../components/action-icon/action-icon.component";
 import { RiRefreshLine } from "react-icons/ri";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
-function OrderDetailsPage({ location }) {
+function OrderDetailsPage({ location, onSelectedChange }) {
   const { t } = useTranslation();
   const history = useHistory();
   const orderId = location?.search.slice(1);
@@ -61,6 +61,8 @@ function OrderDetailsPage({ location }) {
 
   useEffect(() => {
     getOrderDetails();
+
+    onSelectedChange();
   }, []);
 
   return (

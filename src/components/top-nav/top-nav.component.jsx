@@ -27,67 +27,151 @@ function TopNav({ onSelectedChange, showTopNav }) {
   const history = useHistory();
   const { t } = useTranslation();
 
+  // selectors
   const { unReadNotificationCount } = useSelector(selectUserNotifications);
   const allFavorites = useSelector(selectFavorites);
   const user = useSelector(selectUser);
   const total = useSelector(selectCartItemCount);
 
   return (
-    <div
-      className={[styles.nav, showTopNav ? styles.show : styles.hide].join(" ")}
-    >
-      <div className={styles.start}>{/* <p>start 1</p> */}</div>
-      <div className={styles.center}>
-        <Link
-          to="/"
-          className={[
-            styles.link,
-            history.location.pathname === "/" ? styles.selected : null,
-          ].join(" ")}
-          onClick={() => onSelectedChange(TopNavLinks.HOME)}
-        >
-          {t("nav-main-page")}
-        </Link>
-        <Link
-          to="/companies"
-          className={[
-            styles.link,
-            history.location.pathname === "/companies" ? styles.selected : null,
-          ].join(" ")}
-          onClick={() => onSelectedChange(TopNavLinks.COMPANIES)}
-        >
-          {t("nav-company")}
-        </Link>
-        <Link
-          to="/warehouses"
-          className={[
-            styles.link,
-            history.location.pathname === "/warehouses"
-              ? styles.selected
-              : null,
-          ].join(" ")}
-          onClick={() => onSelectedChange(TopNavLinks.WAREHOUSES)}
-        >
-          {t("nav-warehouse")}
-        </Link>
-        <Link
-          to={{
-            pathname: "/medicines",
-            state: {
-              companyId: null,
-              warehouseId: null,
-            },
-          }}
-          className={[
-            styles.link,
-            history.location.pathname === "/medicines" ? styles.selected : null,
-          ].join(" ")}
-          onClick={() => onSelectedChange(TopNavLinks.MEDICINES)}
-        >
-          {t("nav-medicines")}
-        </Link>
+    <>
+      <div
+        className={[styles.nav, showTopNav ? styles.show : styles.hide].join(
+          " "
+        )}
+      >
+        <div className={styles.center}>
+          <Link
+            to="/"
+            className={[
+              styles.link,
+              history.location.pathname === "/" ? styles.selected : null,
+            ].join(" ")}
+            onClick={() => onSelectedChange(TopNavLinks.HOME)}
+          >
+            {t("nav-main-page")}
+          </Link>
+
+          <Link
+            to="/companies"
+            className={[
+              styles.link,
+              history.location.pathname === "/companies"
+                ? styles.selected
+                : null,
+            ].join(" ")}
+            onClick={() => onSelectedChange(TopNavLinks.COMPANIES)}
+          >
+            {t("nav-company")}
+          </Link>
+
+          <Link
+            to="/warehouses"
+            className={[
+              styles.link,
+              history.location.pathname === "/warehouses"
+                ? styles.selected
+                : null,
+            ].join(" ")}
+            onClick={() => onSelectedChange(TopNavLinks.WAREHOUSES)}
+          >
+            {t("nav-warehouse")}
+          </Link>
+
+          <Link
+            to={{
+              pathname: "/medicines",
+              state: {
+                companyId: null,
+                warehouseId: null,
+              },
+            }}
+            className={[
+              styles.link,
+              history.location.pathname === "/medicines"
+                ? styles.selected
+                : null,
+            ].join(" ")}
+            onClick={() => onSelectedChange(TopNavLinks.MEDICINES)}
+          >
+            {t("nav-medicines")}
+          </Link>
+        </div>
+
+        <div className={styles.end}>
+          <Link
+            to="/favorites"
+            className={[
+              styles.link,
+              history.location.pathname === "/favorites"
+                ? styles.selected
+                : null,
+            ].join(" ")}
+            onClick={() => onSelectedChange(TopNavLinks.FAVORITES)}
+          >
+            <IconWithNumber
+              value={
+                allFavorites.favorites_partners.length +
+                allFavorites.favorites_items.length
+              }
+              fillIcon={<AiFillStar size={20} />}
+              noFillIcon={<AiOutlineStar size={20} />}
+            />
+          </Link>
+
+          {user.type !== UserTypeConstants.ADMIN && (
+            <Link
+              to="/notifications"
+              className={[
+                styles.link,
+                history.location.pathname === "/notifications"
+                  ? styles.selected
+                  : null,
+              ].join(" ")}
+              onClick={() => onSelectedChange(TopNavLinks.NOTIFICATIONS)}
+            >
+              <IconWithNumber
+                value={unReadNotificationCount}
+                fillIcon={<IoMdNotifications size={20} />}
+                noFillIcon={<IoMdNotificationsOutline size={20} />}
+              />
+            </Link>
+          )}
+          {user.type === UserTypeConstants.PHARMACY && (
+            <Link
+              to="/cart"
+              className={[
+                styles.link,
+                history.location.pathname === "/cart" ? styles.selected : null,
+              ].join(" ")}
+              onClick={() => onSelectedChange(TopNavLinks.CART)}
+            >
+              <IconWithNumber
+                value={total}
+                fillIcon={<GiShoppingCart size={20} />}
+                noFillIcon={<GiShoppingCart size={20} />}
+              />
+              {/* <GiShoppingCart size={20} /> */}
+            </Link>
+          )}
+
+          {/* <p className={styles.link}>{user.name}</p>
+          <div
+            style={{
+              backgroundImage:
+                user.logo_url !== ""
+                  ? `url('http://localhost:8000/${user.logo_url}')`
+                  : 'url("http://localhost:8000/avatar01.png',
+              backgroundPosition: "center",
+              backgroundRepeat: "no-repeat",
+              backgroundSize: "contain",
+            }}
+            className={styles.profile_img}
+          ></div> */}
+        </div>
       </div>
-      <div className={styles.end}>
+
+      <div className={styles.float_div}>
         <Link
           to="/favorites"
           className={[
@@ -105,6 +189,7 @@ function TopNav({ onSelectedChange, showTopNav }) {
             noFillIcon={<AiOutlineStar size={20} />}
           />
         </Link>
+
         {user.type !== UserTypeConstants.ADMIN && (
           <Link
             to="/notifications"
@@ -141,7 +226,7 @@ function TopNav({ onSelectedChange, showTopNav }) {
           </Link>
         )}
 
-        <p className={styles.link}>{user.name}</p>
+        {/* <p className={styles.link}>{user.name}</p>
         <div
           style={{
             backgroundImage:
@@ -153,9 +238,9 @@ function TopNav({ onSelectedChange, showTopNav }) {
             backgroundSize: "contain",
           }}
           className={styles.profile_img}
-        ></div>
+        ></div> */}
       </div>
-    </div>
+    </>
   );
 }
 

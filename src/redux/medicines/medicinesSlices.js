@@ -22,7 +22,7 @@ export const getMedicines = createAsyncThunk(
     try {
       CancelToken = axios.CancelToken;
       source = CancelToken.source;
-      let buildUrl = `${BASEURL}/items?page=${queryString.page}&limit=9`;
+      let buildUrl = `${BASEURL}/items?isActive=true&page=${queryString.page}&limit=9`;
 
       if (queryString.companyId) {
         buildUrl = buildUrl + `&companyId=${queryString.companyId}`;

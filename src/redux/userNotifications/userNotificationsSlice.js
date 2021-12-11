@@ -27,7 +27,7 @@ export const getAllNotifications = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.get(
-        `${BASEURL}/notifications?page=${page}&limit=3`,
+        `${BASEURL}/notifications?page=${page}&limit=9`,
         {
           timeout: 10000,
           cancelToken: source.token,
@@ -143,11 +143,13 @@ export const UserNotificationsSlice = createSlice({
     setPage: (state, action) => {
       state.page = action.payload;
     },
+    resetNotificationsData: (state) => {
+      state.userNotifications = [];
+    },
     resetNotifications: (state) => {
       state.status = "idle";
       state.error = "";
       state.userNotifications = [];
-      state.refresh = true;
       state.unReadNotificationCount = 0;
       state.count = 0;
       state.page = 1;
@@ -180,6 +182,7 @@ export const UserNotificationsSlice = createSlice({
       ];
       state.count = action.payload.count;
       state.error = "";
+      state.refresh = false;
     },
     [getAllNotifications.rejected]: (state, { payload }) => {
       state.status = "failed";
@@ -231,7 +234,7 @@ export const UserNotificationsSlice = createSlice({
     },
     [getUnreadNotification.pending]: () => {},
     [getUnreadNotification.fulfilled]: (state, action) => {
-      if (action.payload.data.count > state.unReadNotificationCount) {
+      if (action.payload.data.count !== state.unReadNotificationCount) {
         state.unReadNotificationCount = action.payload.data.count;
         state.userNotifications = [];
         state.refresh = true;
@@ -249,6 +252,7 @@ export const {
   decreaseUnreadNotificationsCount,
   setRefresh,
   usersNotificationsSignOut,
+  resetNotificationsData,
 } = UserNotificationsSlice.actions;
 
 export const selectUserNotifications = (state) => state.userNotifications;

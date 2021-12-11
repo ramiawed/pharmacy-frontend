@@ -21,6 +21,7 @@ import {
   getAllNotifications,
   getUnreadNotification,
   resetNotifications,
+  resetNotificationsData,
   selectUserNotifications,
   setPage,
   setRefresh,
@@ -36,15 +37,15 @@ import generalStyles from "../../style.module.scss";
 // constants
 import { Colors } from "../../utils/constants";
 
-function UserNotificationPage() {
+function UserNotificationPage({ onSelectedChange }) {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
 
   const token = useSelector(selectToken);
+  const isOnline = useSelector(selectOnlineStatus);
   const { status, error, page, count, userNotifications, refresh } =
     useSelector(selectUserNotifications);
-  const isOnline = useSelector(selectOnlineStatus);
 
   const handleSearch = (page) => {
     if (!isOnline) {
@@ -52,6 +53,9 @@ function UserNotificationPage() {
       return;
     }
 
+    if (page === 1) {
+      dispatch(resetNotificationsData());
+    }
     dispatch(setPage(page));
     dispatch(getAllNotifications({ token }));
   };
@@ -66,19 +70,19 @@ function UserNotificationPage() {
   };
 
   const refreshHandler = () => {
-    dispatch(resetNotifications());
-    dispatch(getAllNotifications({ token }));
+    dispatch(setRefresh(true));
     dispatch(getUnreadNotification({ token }));
   };
 
   useEffect(() => {
     window.scrollTo(0, 0);
 
+    onSelectedChange();
+
     if (refresh) {
       handleSearch(1);
-      dispatch(setRefresh(false));
     }
-  }, []);
+  }, [refresh]);
 
   return (
     <div className={generalStyles.container}>

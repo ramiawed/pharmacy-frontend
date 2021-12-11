@@ -99,7 +99,7 @@
     "nav-advertise": "الإعلانات",
     "nav-notifications": "الإشعارات",
     "notification-label": "الإشعار",
-    "nav-statistics": "الأحصائيات",
+    "nav-statistics": "الإحصائيات",
     "nav-settings": "الإعدادات",
     "search": "بحث",
     "search-by-name": "بحث من خلال اسم الشريك",
@@ -371,5 +371,18 @@
     "add-notification-msg": "تم إضافة الاشعار بنجاح",
     "delete-notification-msg": "تم حذف الاشعار بنجاح",
     "delete-notification-confirm-msg": "هل تريد حذف هذا الإشعار؟",
-    "delete-notification": "حذف الإشعار"
+    "delete-advertisement-confirm-msg": "هل تريد حذف هذا الإعلان؟",
+    "delete-notification": "حذف الإشعار",
+    "delete-advertisement": "حذف الإعلان",
+    "insert-items-msg": "سوف يتم إضافة الادوية المحددة والمطابقة للشروط، هل تريد متابعة العملية",
+    "insert-update-items-msg": "هذه العملية تقوم باخذ اول ١٠ ادوية من الادوية المحددة> يتم إضافة الدواء في حال لم يكن الدواء موجود مسبقا، او يتم تعديل الدواء هل تريد متابعة العملية",
+    "items": "الأدوية",
+    "advertisements": "الإعلانات",
+    "notifications": "الإشعارات",
+    "orders": "الطلبات",
+    "settings": "الإعدادات",
+    "statistics": "الإحصائيات",
+    "profile": "الملف الشخصي",
+    "choose-image-msg": "الرجاء اختر صورة"
+
 }

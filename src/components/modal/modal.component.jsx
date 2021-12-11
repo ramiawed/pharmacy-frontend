@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 // styles
 import styles from "./modal.module.scss";
 import generalStyles from "../../style.module.scss";
+import { Colors } from "../../utils/constants";
 
 const Modal = ({
   closeModal,
@@ -16,6 +17,8 @@ const Modal = ({
   small,
   warning,
   green,
+  red,
+  color,
 }) => {
   const { t } = useTranslation();
 
@@ -58,22 +61,37 @@ const Modal = ({
         <header
           className={[
             styles.modal_header,
-            warning ? generalStyles.bg_yellow : "",
-            green ? generalStyles.bg_green : "",
+            // warning ? generalStyles.bg_yellow : "",
+            // green ? generalStyles.bg_green : "",
+            // red ? generalStyles.bg_red : "",
           ].join(" ")}
-          r
+          style={{
+            backgroundColor: color,
+          }}
         >
           {t(header)}
         </header>
         <main className={styles.modal_body}>{children}</main>
         <footer className={styles.modal_footer}>
           {okModal && (
-            <button className={styles.ok_button} onClick={okModal}>
+            <button
+              className={styles.ok_button}
+              onClick={okModal}
+              style={{
+                backgroundColor: color,
+              }}
+            >
               {t(okLabel)}
             </button>
           )}
 
-          <button className={styles.cancel_button} onClick={closeModal}>
+          <button
+            className={styles.cancel_button}
+            onClick={closeModal}
+            style={{
+              color: color,
+            }}
+          >
             {t(cancelLabel)}
           </button>
         </footer>

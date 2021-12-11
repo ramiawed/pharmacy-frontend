@@ -22,18 +22,21 @@ import { selectUserData } from "../../redux/auth/authSlice";
 import CardInfo from "../../components/card-info/card-info.component";
 import Header from "../../components/header/header.component";
 import PartnerRow from "../../components/partner-row/partner-row.component";
+import Icon from "../../components/action-icon/action-icon.component";
+import ItemRow from "../../components/item-row/item-row.component";
+import ActionLoader from "../../components/action-loader/action-loader.component";
+
+// icons
+import { RiRefreshLine } from "react-icons/ri";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 // styles
 import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
-import Icon from "../../components/action-icon/action-icon.component";
-import { RiRefreshLine } from "react-icons/ri";
-import { IoMdArrowRoundBack } from "react-icons/io";
-import ItemRow from "../../components/item-row/item-row.component";
 
-function FavoritesPage() {
+function FavoritesPage({ onSelectedChange }) {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -48,6 +51,7 @@ function FavoritesPage() {
   const {
     favorites_partners: favoritesPartners,
     favorites_items: favoritesItems,
+    status,
   } = useSelector(selectFavorites);
 
   const refreshFavoritesHandler = () => {
@@ -57,6 +61,7 @@ function FavoritesPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    onSelectedChange();
   }, []);
 
   return user ? (
@@ -88,6 +93,19 @@ function FavoritesPage() {
         </div>
       </Header>
 
+      {/* favorites items */}
+      <CardInfo headerTitle={t("nav-items")}>
+        {favoritesItems &&
+          favoritesItems.map((item) => (
+            <ItemRow
+              key={item._id}
+              item={item}
+              withoutBoxShadow={true}
+              isFavorite={true}
+            />
+          ))}
+      </CardInfo>
+
       {/* favorite companies */}
       <CardInfo headerTitle={t("companies")}>
         {favoritesPartners &&
@@ -116,20 +134,7 @@ function FavoritesPage() {
             ))}
       </CardInfo>
 
-      {/* favorites items */}
-      <CardInfo headerTitle={t("nav-items")}>
-        {favoritesItems &&
-          favoritesItems.map((item) => (
-            <ItemRow
-              key={item._id}
-              item={item}
-              withoutBoxShadow={true}
-              isFavorite={true}
-            />
-          ))}
-      </CardInfo>
-
-      {/* {status === "loading" && <ActionLoader allowCancel={false} />} */}
+      {status === "loading" && <ActionLoader allowCancel={false} />}
     </div>
   ) : (
     <Redirect to="/signin" />

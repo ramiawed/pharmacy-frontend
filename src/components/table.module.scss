@@ -12,7 +12,7 @@
 
 .label_medium {
   flex: 2;
-  font-size: 0.7rem;
+  font-size: 0.5rem;
 }
 
 .label_large {
@@ -28,6 +28,14 @@
   text-decoration: underline;
 }
 
+.hide_on_small {
+  display: none;
+}
+
+.hide_on_medium {
+  display: none;
+}
+
 @media only screen and (min-width: $small) {
   .label_small {
     font-size: 0.7em;
@@ -38,12 +46,19 @@
   }
 
   .label_medium {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
 
   .label_large {
-    font-size: 0.8rem;
+    font-size: 0.7rem;
   }
+
+  .hide_on_small {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+ 
 }
 
 @media only screen and (min-width: $medium) {
@@ -61,5 +76,17 @@
 
   .label_large {
     font-size: 1rem;
+  }
+
+  .hide_on_medium {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .hide_on_small {
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 }

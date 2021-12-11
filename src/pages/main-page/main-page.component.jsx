@@ -45,7 +45,7 @@ import SettingsPage from "../settings-page/settings-page.component";
 import styles from "./main-page.module.scss";
 
 // constants
-import { TopNavLinks } from "../../utils/constants";
+import { SideNavLinks, TopNavLinks } from "../../utils/constants";
 
 // MainPage
 // you have to sign in first
@@ -105,7 +105,10 @@ function MainPage() {
     <div className={styles.container}>
       <div className={styles.background_div}></div>
       <div className={styles.hamburger_menu}>
-        <p className={styles.selectedOption}>{t(selectedTopNavOption)}</p>
+        <p className={styles.selectedOption}>
+          {t(selectedTopNavOption)}
+          {t(selectedSideNavOption)}
+        </p>
         <GiHamburgerMenu
           color="white"
           size={32}
@@ -147,23 +150,58 @@ function MainPage() {
 
       <div className={styles.content_area}>
         <Route exact path="/">
-          <HomePage />
+          <HomePage
+            onSelectedChange={() => {
+              setSelectedTopNavOption(TopNavLinks.HOME);
+              setCollapsedSideNavOption(true);
+              setSelectedSideNavOption("");
+              setShowTopNav(false);
+            }}
+          />
         </Route>
 
         <Route exact path="/companies">
-          <CompaniesPage />
+          <CompaniesPage
+            onSelectedChange={() => {
+              setSelectedTopNavOption(TopNavLinks.COMPANIES);
+              setCollapsedSideNavOption(true);
+              setSelectedSideNavOption("");
+              setShowTopNav(false);
+            }}
+          />
         </Route>
 
         <Route exact path="/medicines">
-          <MedicinesPage />
+          <MedicinesPage
+            onSelectedChange={() => {
+              setSelectedTopNavOption(TopNavLinks.MEDICINES);
+              setCollapsedSideNavOption(true);
+              setSelectedSideNavOption("");
+              setShowTopNav(false);
+            }}
+          />
         </Route>
 
         <Route path="/warehouse/items">
-          <WarehouseItemsPage />
+          <WarehouseItemsPage
+            onSelectedChange={() => {
+              setSelectedTopNavOption(TopNavLinks.MEDICINES);
+              setCollapsedSideNavOption(true);
+              setSelectedSideNavOption("");
+              setShowTopNav(false);
+            }}
+          />
         </Route>
 
         <Route exact path="/warehouses">
-          <WarehousePage />
+          <WarehousePage
+            onSelectedChange={() => {
+              setSelectedTopNavOption(TopNavLinks.WAREHOUSES);
+              setCollapsedSideNavOption(true);
+              setSelectedSideNavOption("");
+              setShowTopNav(false);
+            }}
+          />
         </Route>
 
         <Route exact path="/item">
@@ -175,59 +213,157 @@ function MainPage() {
         </Route>
 
         <Route exact path="/cart">
-          <CartPage />
+          <CartPage
+            onSelectedChange={() => {
+              setSelectedTopNavOption(TopNavLinks.CART);
+              setCollapsedSideNavOption(true);
+              setSelectedSideNavOption("");
+              setShowTopNav(false);
+            }}
+          />
         </Route>
 
         <Route exact path="/orders">
-          <OrdersPage />
+          <OrdersPage
+            onSelectedChange={() => {
+              setSelectedTopNavOption("");
+              setCollapsedSideNavOption(true);
+              setSelectedSideNavOption(SideNavLinks.ORDERS);
+              setShowTopNav(false);
+            }}
+          />
         </Route>
 
         <Route exact path="/order-details">
-          <OrderDetailsPage />
+          <OrderDetailsPage
+            onSelectedChange={() => {
+              setSelectedTopNavOption("");
+              setCollapsedSideNavOption(true);
+              setSelectedSideNavOption(SideNavLinks.ORDERS);
+              setShowTopNav(false);
+            }}
+          />
         </Route>
 
         <Route exact path="/profile">
-          <UserProfilePage />
+          <UserProfilePage
+            onSelectedChange={() => {
+              setSelectedTopNavOption("");
+              setCollapsedSideNavOption(true);
+              setSelectedSideNavOption(SideNavLinks.PROFILE);
+              setShowTopNav(false);
+            }}
+          />
         </Route>
 
         <Route exact path="/favorites">
-          <FavoritesPage />
+          <FavoritesPage
+            onSelectedChange={() => {
+              setSelectedTopNavOption(TopNavLinks.FAVORITES);
+              setCollapsedSideNavOption(true);
+              setSelectedSideNavOption("");
+              setShowTopNav(false);
+            }}
+          />
         </Route>
 
         <Route exact path="/items">
-          <ItemsPage />
+          <ItemsPage
+            onSelectedChange={() => {
+              setSelectedTopNavOption("");
+              setCollapsedSideNavOption(true);
+              setSelectedSideNavOption(SideNavLinks.ITEMS);
+              setShowTopNav(false);
+            }}
+          />
         </Route>
 
         <Route exact path="/notifications">
-          <UserNotificationPage />
+          <UserNotificationPage
+            onSelectedChange={() => {
+              setSelectedTopNavOption("");
+              setCollapsedSideNavOption(true);
+              setSelectedSideNavOption(SideNavLinks.NOTIFICATIONS);
+              setShowTopNav(false);
+            }}
+          />
         </Route>
 
         <Route exact path="/notification/:notificationId">
-          <NotificationPage />
+          <NotificationPage
+            onSelectedChange={() => {
+              setSelectedTopNavOption("");
+              setCollapsedSideNavOption(true);
+              setSelectedSideNavOption(SideNavLinks.NOTIFICATIONS);
+              setShowTopNav(false);
+            }}
+          />
         </Route>
 
         <Route exact path="/admin/advertisements">
-          <AdvertisementsPage />
+          <AdvertisementsPage
+            onSelectedChange={() => {
+              setSelectedTopNavOption("");
+              setCollapsedSideNavOption(true);
+              setSelectedSideNavOption(SideNavLinks.ADVERTISEMENTS);
+              setShowTopNav(false);
+            }}
+          />
         </Route>
 
         <Route exact path="/admin/partners">
-          <AdminUsersPage />
+          <AdminUsersPage
+            onSelectedChange={() => {
+              setSelectedTopNavOption("");
+              setCollapsedSideNavOption(true);
+              setSelectedSideNavOption(SideNavLinks.PARTNERS);
+              setShowTopNav(false);
+            }}
+          />
         </Route>
 
         <Route exact path="/admin/settings">
-          <SettingsPage />
+          <SettingsPage
+            onSelectedChange={() => {
+              setSelectedTopNavOption("");
+              setCollapsedSideNavOption(true);
+              setSelectedSideNavOption(SideNavLinks.SETTINGS);
+              setShowTopNav(false);
+            }}
+          />
         </Route>
 
         <Route exact path="/admin/statistics">
-          <StatisticsOptionsPage />
+          <StatisticsOptionsPage
+            onSelectedChange={() => {
+              setSelectedTopNavOption("");
+              setCollapsedSideNavOption(true);
+              setSelectedSideNavOption(SideNavLinks.STATISTICS);
+              setShowTopNav(false);
+            }}
+          />
         </Route>
 
         <Route exact path="/admin/statistics/option">
-          <StatisticsPage />
+          <StatisticsPage
+            onSelectedChange={() => {
+              setSelectedTopNavOption("");
+              setCollapsedSideNavOption(true);
+              setSelectedSideNavOption(SideNavLinks.STATISTICS);
+              setShowTopNav(false);
+            }}
+          />
         </Route>
 
         <Route exact path="/admin/notifications">
-          <AdminNotificationPage />
+          <AdminNotificationPage
+            onSelectedChange={() => {
+              setSelectedTopNavOption("");
+              setCollapsedSideNavOption(true);
+              setSelectedSideNavOption(SideNavLinks.NOTIFICATIONS);
+              setShowTopNav(false);
+            }}
+          />
         </Route>
       </div>
 

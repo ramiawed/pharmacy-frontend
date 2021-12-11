@@ -23,6 +23,7 @@ import styles from "./new-advertisement.module.scss";
 
 // constants
 import { BASEURL, Colors } from "../../utils/constants";
+import Toast from "../toast/toast.component";
 
 function NewAdvertisement({ isNew, setIsNew }) {
   const { t } = useTranslation();
@@ -41,6 +42,7 @@ function NewAdvertisement({ isNew, setIsNew }) {
   const [showSelectWarehouseModal, setShowSelectWarehouseModal] =
     useState(false);
   const [showSelectMedicineModal, setShowSelectMedicineModal] = useState(false);
+  const [imageErrorMsg, setImageErrorMsg] = useState("");
 
   const resetState = () => {
     setIsNew(false);
@@ -79,6 +81,11 @@ function NewAdvertisement({ isNew, setIsNew }) {
   };
 
   const addAdvertisementHandler = () => {
+    if (!selectedImage) {
+      setImageErrorMsg("choose-image-msg");
+      return;
+    }
+
     if (selectedImage) {
       const data = new FormData();
       data.append(
@@ -250,6 +257,17 @@ function NewAdvertisement({ isNew, setIsNew }) {
             />
           </div>
         </div>
+      )}
+
+      {imageErrorMsg && (
+        <Toast
+          bgColor={Colors.FAILED_COLOR}
+          foreColor="#fff"
+          toastText={t(imageErrorMsg)}
+          actionAfterTimeout={() => {
+            setImageErrorMsg("");
+          }}
+        />
       )}
 
       {showSelectCompanyModal && (

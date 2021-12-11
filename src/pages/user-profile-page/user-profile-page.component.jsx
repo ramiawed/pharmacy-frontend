@@ -29,7 +29,7 @@ import { UserTypeConstants, Colors } from "../../utils/constants";
 import Button from "../../components/button/button.component";
 import UserProfileNotifications from "../../components/user-profile-notifications/user-profile-notifications.component";
 
-function UserProfilePage() {
+function UserProfilePage({ onSelectedChange }) {
   const { t } = useTranslation();
   const isOnline = useSelector(selectOnlineStatus);
   const dispatch = useDispatch();
@@ -59,6 +59,7 @@ function UserProfilePage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    onSelectedChange();
   }, []);
 
   return user ? (

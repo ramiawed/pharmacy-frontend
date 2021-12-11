@@ -42,7 +42,7 @@ import generalStyles from "../../style.module.scss";
 // constants and utils
 import { Colors, DateOptions, UserTypeConstants } from "../../utils/constants";
 
-function StatisticsPage() {
+function StatisticsPage({ onSelectedChange }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -205,6 +205,7 @@ function StatisticsPage() {
 
   useEffect(() => {
     if (statistics.length === 0) handleSearch(1);
+    onSelectedChange();
   }, []);
 
   return user &&

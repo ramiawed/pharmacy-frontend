@@ -247,11 +247,13 @@ function SearchHome() {
 
         {showResult && (
           <RiCloseLine
-            size={20}
+            size={24}
             color={Colors.FAILED_COLOR}
             style={{
               marginInline: "5px",
               cursor: "pointer",
+              width: "32px",
+              height: "32px",
             }}
             onClick={clearResultHandler}
           />

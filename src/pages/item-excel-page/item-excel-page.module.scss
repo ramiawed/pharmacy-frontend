@@ -4,6 +4,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
+
   padding: 4px;
 
   min-width: 450px;
@@ -15,7 +17,7 @@
 }
 
 .actions label {
-  margin: 0 8px;
+  margin: 8px;
 }
 
 .button {
@@ -78,4 +80,10 @@
 
 .excel_icon .icon:hover {
   color: rgba($color: #000000, $alpha: 1);
+}
+
+@media only screen and (min-width: $medium) {
+  .actions {
+    flex-direction: row;
+  }
 }

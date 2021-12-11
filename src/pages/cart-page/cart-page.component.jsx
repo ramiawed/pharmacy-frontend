@@ -7,7 +7,7 @@
 // 1- cartWarehouse: all warehouse that user buy medicine from it
 // 2- cartItems: all the item that user buy it
 
-import React from "react";
+import React, { useEffect } from "react";
 import { Redirect } from "react-router";
 import { useTranslation } from "react-i18next";
 
@@ -27,7 +27,7 @@ import { UserTypeConstants } from "../../utils/constants";
 // styles
 import generalStyles from "../../style.module.scss";
 
-function CartPage() {
+function CartPage({ onSelectedChange }) {
   const { t } = useTranslation();
 
   // selectors
@@ -36,17 +36,20 @@ function CartPage() {
   // get the cart warehouses from redux store
   const cartWarehouse = useSelector(selectCartWarehouse);
 
+  useEffect(() => {
+    onSelectedChange();
+  }, []);
+
   // if there is no logged user or user type is not pharmacy
   // redirect to the main page
   return user && user.type === UserTypeConstants.PHARMACY ? (
     <div className={generalStyles.container}>
+      <Header>
+        <h2>{t("cart")}</h2>
+      </Header>
       {/* if cart contains an item or more */}
       {cartWarehouse.length > 0 && (
         <>
-          <Header>
-            <h2>{t("cart")}</h2>
-          </Header>
-
           <div>
             {cartWarehouse.map((w, index) => (
               <CartWarehouse warehouse={w} key={index} />

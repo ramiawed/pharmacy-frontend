@@ -1,8 +1,9 @@
 @import '../../variables.scss';
 
 .content_div {
-  width: 60%;
-  margin: 10px auto;
+  width: 100%;
+  // margin: 10px auto;
+  margin-inline: auto;
 }
 
 .row {
@@ -52,5 +53,11 @@
 
 .body {
   color: #919191;
+}
+
+@media only screen and (min-width: $small) {
+  .content_div {
+    width: 80%;
+  }
 }
 

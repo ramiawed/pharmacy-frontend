@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 // icons
 import { AiFillDelete } from "react-icons/ai";
@@ -7,9 +8,8 @@ import { AiFillDelete } from "react-icons/ai";
 import generalStyles from "../../style.module.scss";
 import tableStyles from "../table.module.scss";
 import rowStyles from "../row.module.scss";
-import { useTranslation } from "react-i18next";
 
-function ItemExcelRow({ item, index, onchange, onDelete }) {
+function ItemExcelRow({ item, index, onchange, onDelete, onSelectedChanged }) {
   const { t } = useTranslation();
 
   const error =
@@ -19,6 +19,20 @@ function ItemExcelRow({ item, index, onchange, onDelete }) {
     <div
       className={[rowStyles.container, error ? rowStyles.error : ""].join(" ")}
     >
+      <div
+        className={[
+          tableStyles.label_xsmall,
+          generalStyles.flex_center_container,
+        ].join(" ")}
+      >
+        <input
+          type="checkbox"
+          value={item.selected}
+          checked={item.selected}
+          disabled={error}
+          onChange={() => onSelectedChanged(index)}
+        />
+      </div>
       <div className={tableStyles.label_medium}>
         <input
           className={rowStyles.input}
@@ -29,7 +43,7 @@ function ItemExcelRow({ item, index, onchange, onDelete }) {
         />
       </div>
 
-      <div className={tableStyles.label_small}>
+      <div className={tableStyles.label_medium}>
         <input
           className={rowStyles.input}
           id="formula"
@@ -58,7 +72,7 @@ function ItemExcelRow({ item, index, onchange, onDelete }) {
         />
       </div>
 
-      <div className={tableStyles.label_small}>
+      <div className={tableStyles.label_medium}>
         <input
           className={rowStyles.input}
           id="price"
@@ -69,7 +83,7 @@ function ItemExcelRow({ item, index, onchange, onDelete }) {
         />
       </div>
 
-      <div className={tableStyles.label_small}>
+      <div className={tableStyles.label_medium}>
         <input
           className={rowStyles.input}
           id="customer_price"

@@ -9,15 +9,25 @@
   flex-direction: column;
   justify-content: center;
 
-  background-color: $main-color;
+  // background-color: $white-color;
+  // background: linear-gradient(135deg, hsla(239, 100%, 67%, 0.5) 0%, hsla(187, 100%, 89%, 1) 100%);
+
 }
 
 .container h3 {
   padding: 12px;
   font-size: 3rem;
-  color: rgb(59, 191, 107);
+  font-weight: bolder;
+  background-image: linear-gradient(135deg, hsla(43, 91%, 69%, 1) 25%, hsla(212, 74%, 50%, 1) 100%);
 
-  text-shadow: 2px 2px 5px rgba($color: #fff, $alpha: 0.5);
+  background-size: 100%;
+
+  background-clip: text;
+  -webkit-text-fill-color: transparent; 
+  -moz-background-clip: text;
+  -moz-text-fill-color: transparent;
+
+  // text-shadow: 2px 2px 5px rgba($color: #000, $alpha: 0.5);
 }
 
 .search_div {
@@ -28,6 +38,7 @@
 
   background-color: rgba($color: $white-color, $alpha: 1);
 
+  border: 1px solid $secondary-color;
   border-radius: 12px;
 
   padding: 10px 20px;
@@ -84,8 +95,11 @@
   width: 80%;
   min-height: 50px;
   max-height: 250px;
+
   background-color: rgba($color: $white-color, $alpha: 1);
 
+  border: 1px solid $secondary-color;
+  border-top: none;
   border-radius: 0 0 12px 12px;
 
   display: flex;

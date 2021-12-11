@@ -34,7 +34,7 @@ function SectionHomePage({
 
   const settings = {
     dots: true,
-    infinite: data.length > 3,
+    infinite: true,
     speed: 300,
     slidesToShow: 2,
     slidesToScroll: 1,

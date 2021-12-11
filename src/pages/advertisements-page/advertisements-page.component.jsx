@@ -21,7 +21,7 @@ import generalStyles from "../../style.module.scss";
 // constants
 import { Colors } from "../../utils/constants";
 
-function AdvertisementsPage() {
+function AdvertisementsPage({ onSelectedChange }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -33,6 +33,7 @@ function AdvertisementsPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    onSelectedChange();
   }, []);
 
   return (

@@ -60,7 +60,13 @@ function NotificationRow({ notification, index, setSuccessDeletingMsg }) {
 
   return (
     <div
-      className={styles.row_container}
+      className={[
+        styles.row_container,
+        !notification.users.includes(user._id) &&
+        user.type !== UserTypeConstants.ADMIN
+          ? styles.row_unread
+          : "",
+      ].join(" ")}
       style={{
         animationDuration: (0.3 * index) / 10 + "s",
       }}
@@ -100,16 +106,6 @@ function NotificationRow({ notification, index, setSuccessDeletingMsg }) {
         </div>
       )}
 
-      {user.type !== UserTypeConstants.ADMIN && (
-        <div className={styles.unread}>
-          {notification.users.includes(user._id) ? (
-            <BsCheck color={Colors.SUCCEEDED_COLOR} size={24} />
-          ) : (
-            <BsFillCircleFill color={Colors.SECONDARY_COLOR} size={24} />
-          )}
-        </div>
-      )}
-
       {showDeleteModal && (
         <Modal
           header="delete-notification"
@@ -120,6 +116,7 @@ function NotificationRow({ notification, index, setSuccessDeletingMsg }) {
           }}
           small={true}
           okModal={deleteNotificationHandler}
+          color={Colors.FAILED_COLOR}
         >
           <p>{t("delete-notification-confirm-msg")}</p>
         </Modal>
@@ -129,3 +126,13 @@ function NotificationRow({ notification, index, setSuccessDeletingMsg }) {
 }
 
 export default NotificationRow;
+
+// {user.type !== UserTypeConstants.ADMIN && (
+//   <div className={styles.unread}>
+//     {notification.users.includes(user._id) ? (
+//       <BsCheck color={Colors.SUCCEEDED_COLOR} size={24} />
+//     ) : (
+//       <BsFillCircleFill color={Colors.SECONDARY_COLOR} size={24} />
+//     )}
+//   </div>
+// )}

@@ -18,7 +18,7 @@ import styles from "./notification-page.module.scss";
 // constants
 import { BASEURL } from "../../utils/constants";
 
-function NotificationPage() {
+function NotificationPage({ onSelectedChange }) {
   const { t } = useTranslation();
   const { notificationId } = useParams();
   const token = useSelector(selectToken);
@@ -40,6 +40,7 @@ function NotificationPage() {
 
   useEffect(() => {
     getNotification();
+    onSelectedChange();
   }, []);
 
   return (

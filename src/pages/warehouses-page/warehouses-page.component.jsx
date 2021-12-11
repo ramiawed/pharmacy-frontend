@@ -42,7 +42,7 @@ import { Colors, UserTypeConstants } from "../../utils/constants.js";
 // styles
 import generalStyles from "../../style.module.scss";
 
-function WarehousePage() {
+function WarehousePage({ onSelectedChange }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -110,6 +110,8 @@ function WarehousePage() {
     if (warehouses.length === 0) handleSearch(1);
 
     window.scrollTo(0, 0);
+
+    onSelectedChange();
 
     return () => {
       cancelOperation();

@@ -31,7 +31,7 @@ import tableStyles from "../../components/table.module.scss";
 import { Colors, UserTypeConstants } from "../../utils/constants";
 import TableHeader from "../../components/table-header/table-header.component";
 
-function OrdersPage() {
+function OrdersPage({ onSelectedChange }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const { token, user } = useSelector(selectUserData);
@@ -74,6 +74,8 @@ function OrdersPage() {
       handleSearch(1);
       dispatch(setRefresh(false));
     }
+
+    onSelectedChange();
   }, []);
 
   return user ? (

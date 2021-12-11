@@ -30,7 +30,7 @@ import { Colors, UserTypeConstants } from "../../utils/constants";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { Redirect } from "react-router-dom";
 
-function WarehouseItemsPage() {
+function WarehouseItemsPage({ onSelectedChange }) {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
@@ -74,23 +74,25 @@ function WarehouseItemsPage() {
   const deleteItem = (obj) => {
     dispatch(removeItemFromWarehouse({ obj, token }))
       .then(unwrapResult)
-      .then((originalPromiseResult) => {
+      .then(() => {
         handleSearch(initialPage + 1);
       })
-      .catch((rejectedValueOrSerializedError) => {});
+      .catch(() => {});
   };
 
   const changeItemMaxQty = (obj) => {
     dispatch(changeItemWarehouseMaxQty({ obj, token }))
       .then(unwrapResult)
-      .then((originalPromiseResult) => {
+      .then(() => {
         handleSearch(initialPage + 1);
       })
-      .catch((rejectedValueOrSerializedError) => {});
+      .catch(() => {});
   };
 
   useEffect(() => {
     handleSearch(1);
+
+    onSelectedChange();
   }, []);
 
   return user ? (

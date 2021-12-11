@@ -38,12 +38,13 @@ import searchContainerStyles from "../../components/search-container/search-cont
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
 
-function MedicinesPage() {
+function MedicinesPage({ onSelectedChange }) {
   const { t } = useTranslation();
   const history = useHistory();
-  const dispatch = useDispatch();
   const location = useLocation();
   const { companyId, warehouseId } = location.state;
+
+  const dispatch = useDispatch();
 
   // selectors
   const { token, user } = useSelector(selectUserData);
@@ -127,6 +128,8 @@ function MedicinesPage() {
       handleSearch(1);
     }
 
+    onSelectedChange();
+
     window.scrollTo(0, 0);
   }, []);
 
@@ -154,7 +157,7 @@ function MedicinesPage() {
                 setSearchName("");
               }}
             />
-            {companyId === null && (
+            {user.type !== UserTypeConstants.GUEST && companyId === null && (
               <SearchInput
                 label="item-company"
                 id="item-company"
@@ -172,7 +175,7 @@ function MedicinesPage() {
               />
             )}
 
-            {warehouseId === null && (
+            {user.type !== UserTypeConstants.GUEST && warehouseId === null && (
               <SearchInput
                 label="item-warehouse"
                 id="item-warehouse"
@@ -190,7 +193,7 @@ function MedicinesPage() {
               />
             )}
 
-            {warehouseId === null && (
+            {user.type !== UserTypeConstants.GUEST && warehouseId === null && (
               <div className={searchContainerStyles.checkbox_div}>
                 <input
                   type="checkbox"
@@ -210,7 +213,7 @@ function MedicinesPage() {
               </div>
             )}
 
-            {warehouseId === null && (
+            {user.type !== UserTypeConstants.GUEST && warehouseId === null && (
               <div className={searchContainerStyles.checkbox_div}>
                 <input
                   type="checkbox"

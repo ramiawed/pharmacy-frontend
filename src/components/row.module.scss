@@ -50,7 +50,7 @@
 
 .container label {
   text-align: center;
-  font-size: 0.8rem;
+  // font-size: 0.8rem;
 }
 
 .container label.align_start {
@@ -61,6 +61,8 @@
   width: 100%;
 
   padding: 4px 2px;
+  
+  font-size: 0.6rem;
 
   text-align: center;
 
@@ -75,6 +77,8 @@
 }
 
 .input:focus {
+  border-bottom: 1px solid $secondary-color;
+  border-radius: 0;
   color: black;
 }
 
@@ -132,10 +136,18 @@
   .container {
     width: 100%;
   }
+
+  .container .input {
+    font-size: 0.8rem;
+  }
 }
 
 @media only screen and (min-width: $medium) {
   .container {
     width: 100%;
+  }
+
+  .container .input {
+    font-size: 1rem;
   }
 }

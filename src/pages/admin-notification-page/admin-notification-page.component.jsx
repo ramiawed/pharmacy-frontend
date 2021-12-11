@@ -34,7 +34,7 @@ import generalStyles from "../../style.module.scss";
 import { Colors, UserTypeConstants } from "../../utils/constants";
 import Toast from "../../components/toast/toast.component";
 
-function AdminNotificationPage() {
+function AdminNotificationPage({ onSelectedChange }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -71,6 +71,8 @@ function AdminNotificationPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+
+    onSelectedChange();
 
     handleSearch(page);
   }, []);

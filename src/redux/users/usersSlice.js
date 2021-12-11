@@ -44,7 +44,14 @@ const initialState = {
 };
 
 export const cancelOperation = () => {
-  source.cancel("operation canceled by user");
+  if (source) {
+    source.cancel("operation canceled by user");
+  }
+};
+
+const resetCancelAndSource = () => {
+  CancelToken = null;
+  source = null;
 };
 
 // get the users
@@ -144,8 +151,11 @@ export const getUsers = createAsyncThunk(
         },
       });
 
+      resetCancelAndSource();
+
       return response.data;
     } catch (err) {
+      resetCancelAndSource();
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }
@@ -180,8 +190,13 @@ export const updateUser = createAsyncThunk(
           },
         }
       );
+
+      resetCancelAndSource();
+
       return response.data;
     } catch (err) {
+      resetCancelAndSource();
+
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }
@@ -197,121 +212,6 @@ export const updateUser = createAsyncThunk(
     }
   }
 );
-
-// change the approve state for a specific user
-// export const userApproveChange = createAsyncThunk(
-//   "users/approve",
-//   async ({ status, userId, token }, { rejectWithValue }) => {
-//     try {
-//       CancelToken = axios.CancelToken;
-//       source = CancelToken.source();
-
-//       const response = await axios.post(
-//         `${BASEURL}/users/approve/${userId}`,
-//         {
-//           action: status,
-//         },
-//         {
-//           timeout: 10000,
-//           cancelToken: source.token,
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         }
-//       );
-//       return response.data;
-//     } catch (err) {
-//       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
-//         return rejectWithValue("timeout");
-//       }
-//       if (axios.isCancel(err)) {
-//         return rejectWithValue("cancel");
-//       }
-
-//       if (!err.response) {
-//         return rejectWithValue("network failed");
-//       }
-
-//       return rejectWithValue(err.response.data);
-//     }
-//   }
-// );
-
-// delete a user
-// export const deleteUser = createAsyncThunk(
-//   "users/delete",
-//   async ({ userId, token }, { rejectWithValue }) => {
-//     try {
-//       CancelToken = axios.CancelToken;
-//       source = CancelToken.source();
-
-//       const response = await axios.post(
-//         `${BASEURL}/users/delete/${userId}`,
-//         {},
-//         {
-//           timeout: 10000,
-//           cancelToken: source.token,
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         }
-//       );
-
-//       return response.data;
-//     } catch (err) {
-//       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
-//         return rejectWithValue("timeout");
-//       }
-//       if (axios.isCancel(err)) {
-//         return rejectWithValue("cancel");
-//       }
-
-//       if (!err.response) {
-//         return rejectWithValue("network failed");
-//       }
-
-//       return rejectWithValue(err.response.data);
-//     }
-//   }
-// );
-
-// undo delete a user
-// export const undoDeleteUser = createAsyncThunk(
-//   "users/undoDelete",
-//   async ({ userId, token }, { rejectWithValue }) => {
-//     try {
-//       CancelToken = axios.CancelToken;
-//       source = CancelToken.source();
-
-//       const response = await axios.post(
-//         `${BASEURL}/users/reactivate/${userId}`,
-//         {},
-//         {
-//           timeout: 10000,
-//           cancelToken: source.token,
-//           headers: {
-//             Authorization: `Bearer ${token}`,
-//           },
-//         }
-//       );
-
-//       return response.data;
-//     } catch (err) {
-//       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
-//         return rejectWithValue("timeout");
-//       }
-//       if (axios.isCancel(err)) {
-//         return rejectWithValue("cancel");
-//       }
-
-//       if (!err.response) {
-//         return rejectWithValue("network failed");
-//       }
-
-//       return rejectWithValue(err.response.data);
-//     }
-//   }
-// );
 
 export const resetUserPassword = createAsyncThunk(
   "users/resetPassword",
@@ -339,8 +239,12 @@ export const resetUserPassword = createAsyncThunk(
         }
       );
 
+      resetCancelAndSource();
+
       return response.data;
     } catch (err) {
+      resetCancelAndSource();
+
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }

@@ -23,8 +23,6 @@ const initialState = {
 export const cancelOperation = () => {
   if (source) {
     source.cancel("operation canceled by user");
-    source = null;
-    CancelToken = null;
   }
 };
 

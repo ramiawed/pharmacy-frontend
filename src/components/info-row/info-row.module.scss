@@ -11,17 +11,19 @@
 }
 
 .info_row .label {
-  width: 100px;
-  min-width: 100px;
+  width: 75px;
+  min-width: 75px;
 
-  color: $secondary-color;
+  color: #9d9d9d;
   
-  font-size: 12px;
+  font-size: 0.6rem;
 }
 
 .info_row .value {
   flex: 1;
   color: $secondary-color;
+
+  font-size: 0.8rem;
 }
 
 .value input {
@@ -44,4 +46,19 @@
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@media only screen and (min-width: $small) {
+  .info_row .label {
+    width: 100px;
+    min-width: 100px;
+  
+    color: #9d9d9d;
+    
+    font-size: 0.8rem;
+  }
+  
+  .info_row .value {
+    font-size: 1rem;
+  }
 }

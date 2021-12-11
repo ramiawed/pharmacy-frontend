@@ -31,6 +31,22 @@ function UserMoreInfoModal({ user, close }) {
         </label>
       </div>
 
+      <div className={[styles.header].join(" ")}>{t("communication-info")}</div>
+      <div className={styles.row}>
+        <label className={styles.label}>{t("user-email")}:</label>
+        <label className={styles.label_value}>{user.email}</label>
+      </div>
+
+      <div className={styles.row}>
+        <label className={styles.label}>{t("user-phone")}:</label>
+        <label className={styles.label_value}>{user.phone}</label>
+      </div>
+
+      <div className={styles.row}>
+        <label className={styles.label}>{t("user-mobile")}:</label>
+        <label className={styles.label_value}>{user.mobile}</label>
+      </div>
+
       <div className={[styles.header].join(" ")}>{t("address-info")}</div>
 
       <div className={styles.row}>
@@ -75,7 +91,9 @@ function UserMoreInfoModal({ user, close }) {
           </div>
           <div className={styles.row}>
             <label className={styles.label}>{t("user-job")}:</label>
-            <label>{t(`${user.guestDetails.job.toLowerCase()}`)}</label>
+            <label className={styles.label_value}>
+              {t(`${user.guestDetails.job.toLowerCase()}`)}
+            </label>
           </div>
           {user.guestDetails.job === GuestJob.EMPLOYEE ? (
             <>
@@ -83,11 +101,15 @@ function UserMoreInfoModal({ user, close }) {
                 <label className={styles.label}>
                   {t("user-company-name")}:
                 </label>
-                <label>{user.guestDetails.companyName}</label>
+                <label className={styles.label_value}>
+                  {user.guestDetails.companyName}
+                </label>
               </div>
               <div className={styles.row}>
                 <label className={styles.label}>{t("user-job-title")}:</label>
-                <label>{user.guestDetails.jobTitle}</label>
+                <label className={styles.label_value}>
+                  {user.guestDetails.jobTitle}
+                </label>
               </div>
             </>
           ) : null}

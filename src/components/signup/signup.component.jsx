@@ -52,13 +52,14 @@ const containerVariant = {
 // Sign up component
 function SignUp() {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
   const history = useHistory();
+
+  const dispatch = useDispatch();
 
   // selectors
   const isOnline = useSelector(selectOnlineStatus);
   // state from user state redux
-  const { user: signinUser } = useSelector(selectUserData);
+  const { user: authUser } = useSelector(selectUserData);
 
   // own state
   const [networkError, setNetworkError] = useState("");
@@ -376,7 +377,7 @@ function SignUp() {
       setSignupLoading(true);
       axios
         .post("/users/signup", user, { timeout: 10000 })
-        .then((response) => {
+        .then(() => {
           // if create user succeeded
 
           // check if user type is normal
@@ -417,7 +418,7 @@ function SignUp() {
     }
   };
 
-  return signinUser ? (
+  return authUser ? (
     <Redirect to="/" />
   ) : signupSucceeded ? (
     <Redirect to="/approve" />

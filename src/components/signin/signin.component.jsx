@@ -22,11 +22,11 @@ import {
   resetError,
   cancelOperation,
 } from "../../redux/auth/authSlice";
-import { statisticsSignIn } from "../../redux/statistics/statisticsSlice";
 import {
   changeOnlineMsg,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
+import { statisticsSignIn } from "../../redux/statistics/statisticsSlice";
 import { getAllSettings } from "../../redux/settings/settingsSlice";
 
 // styles

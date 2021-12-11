@@ -52,7 +52,7 @@ import generalStyles from "../../style.module.scss";
 // constants and utils
 import { Colors } from "../../utils/constants";
 
-function CompaniesPage() {
+function CompaniesPage({ onSelectedChange }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -118,6 +118,8 @@ function CompaniesPage() {
     if (companies.length === 0) handleSearch(1);
 
     window.scrollTo(0, 0);
+
+    onSelectedChange();
 
     return () => {
       cancelOperation();

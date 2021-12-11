@@ -39,7 +39,7 @@ import { Colors, UserTypeConstants } from "../../utils/constants";
 import paginationStyles from "../../components/pagination.module.scss";
 import generalStyles from "../../style.module.scss";
 
-function ItemsPage() {
+function ItemsPage({ onSelectedChange }) {
   const { t } = useTranslation();
 
   const location = useLocation();
@@ -123,6 +123,8 @@ function ItemsPage() {
 
   useEffect(() => {
     handleSearch(1);
+
+    onSelectedChange();
 
     return () => {
       dispatch(resetItems());

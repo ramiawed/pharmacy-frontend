@@ -6,13 +6,7 @@ import { Link } from "react-router-dom";
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import { selectToken, selectUser } from "../../redux/auth/authSlice";
-import {
-  userApproveChange,
-  deleteUser,
-  undoDeleteUser,
-  resetUserPassword,
-  updateUser,
-} from "../../redux/users/usersSlice";
+import { resetUserPassword, updateUser } from "../../redux/users/usersSlice";
 import {
   changeOnlineMsg,
   selectOnlineStatus,
@@ -382,14 +376,14 @@ function UserRow({ user }) {
             <Icon
               tooltip={t("tooltip-disapprove")}
               onclick={() => handleActionIconClick("disapprove")}
-              icon={() => <AiFillUnlock size={16} />}
+              icon={() => <AiFillUnlock />}
               foreColor={Colors.SUCCEEDED_COLOR}
             />
           ) : (
             <Icon
               tooltip={t("tooltip-approve")}
               onclick={() => handleActionIconClick("approve")}
-              icon={() => <AiFillLock size={16} />}
+              icon={() => <AiFillLock />}
               foreColor={Colors.FAILED_COLOR}
             />
           )}
@@ -405,14 +399,14 @@ function UserRow({ user }) {
             <Icon
               tooltip={t("tooltip-delete")}
               onclick={() => handleActionIconClick("delete")}
-              icon={() => <BsFillPersonCheckFill size={16} />}
+              icon={() => <BsFillPersonCheckFill />}
               foreColor={Colors.SUCCEEDED_COLOR}
             />
           ) : (
             <Icon
               tooltip={t("tooltip-undo-delete")}
               onclick={() => handleActionIconClick("undo-delete")}
-              icon={() => <BsFillPersonDashFill size={16} />}
+              icon={() => <BsFillPersonDashFill />}
               foreColor={Colors.FAILED_COLOR}
             />
           )}
@@ -428,14 +422,14 @@ function UserRow({ user }) {
               <Icon
                 tooltip={t("tooltip-undo-show-medicines")}
                 onclick={() => handleActionIconClick("undoShowMedicines")}
-                icon={() => <BiShow size={16} />}
+                icon={() => <BiShow />}
                 foreColor={Colors.SUCCEEDED_COLOR}
               />
             ) : (
               <Icon
                 tooltip={t("tooltip-show-medicines")}
                 onclick={() => handleActionIconClick("showMedicines")}
-                icon={() => <BiHide size={16} />}
+                icon={() => <BiHide />}
                 foreColor={Colors.FAILED_COLOR}
               />
             )
@@ -443,9 +437,29 @@ function UserRow({ user }) {
             <></>
           )}
         </label>
-        <label className={tableStyles.label_large}> {user.email}</label>
-        <label className={tableStyles.label_medium}>{user.phone}</label>
-        <label className={tableStyles.label_medium}>{user.mobile}</label>
+        <label
+          className={[tableStyles.label_large, tableStyles.hide_on_small].join(
+            " "
+          )}
+        >
+          {user.email}
+        </label>
+        <label
+          className={[
+            tableStyles.label_medium,
+            tableStyles.hide_on_medium,
+          ].join(" ")}
+        >
+          {user.phone}
+        </label>
+        <label
+          className={[
+            tableStyles.label_medium,
+            tableStyles.hide_on_medium,
+          ].join(" ")}
+        >
+          {user.mobile}
+        </label>
         <label
           className={[
             tableStyles.label_xsmall,
@@ -463,7 +477,7 @@ function UserRow({ user }) {
           <ActinIcon
             tooltip={t("user-more-info-title")}
             onclick={() => setShowMoreInfo(true)}
-            icon={() => <IoMdMore size={20} />}
+            icon={() => <IoMdMore />}
             foreColor={Colors.SECONDARY_COLOR}
           />
         </label>

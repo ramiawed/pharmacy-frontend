@@ -149,7 +149,10 @@ export const advertisementsSlice = createSlice({
     [addAdvertisement.fulfilled]: (state, action) => {
       state.status = "succeeded";
       console.log(action.payload);
-      state.advertisements = [...state.advertisements, action.payload.data];
+      state.advertisements = [
+        ...state.advertisements,
+        action.payload.data.advertisement,
+      ];
     },
     [addAdvertisement.rejected]: (state) => {
       state.status = "failed";

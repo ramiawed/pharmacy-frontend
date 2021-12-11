@@ -36,7 +36,7 @@ import generalStyles from "../../style.module.scss";
 import { UserTypeConstants } from "../../utils/constants";
 
 // AdminUsers component
-function AdminUsersPage() {
+function AdminUsersPage({ onSelectedChange }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -93,6 +93,8 @@ function AdminUsersPage() {
       handleSearch(pageState.page);
       dispatch(setRefresh(false));
     }
+
+    onSelectedChange();
   }, []);
 
   return user && user.type === UserTypeConstants.ADMIN ? (

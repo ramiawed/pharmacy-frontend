@@ -45,7 +45,7 @@ import {
 import styles from "../../components/section-home-page/section-home-page.module.scss";
 import AdvertisementHomePage from "../../components/advertisement-home-page/advertisement-home-page.component";
 
-function HomePage() {
+function HomePage({ onSelectedChange }) {
   const dispatch = useDispatch();
 
   // selectors
@@ -80,6 +80,8 @@ function HomePage() {
     dispatch(getItemsSectionTwo({ token }));
     dispatch(getItemsSectionThree({ token }));
     dispatch(getAllAdvertisements({ token }));
+
+    onSelectedChange();
   }, []);
 
   return user ? (

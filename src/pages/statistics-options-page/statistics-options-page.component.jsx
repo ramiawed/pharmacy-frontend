@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router-dom";
 
@@ -15,9 +15,13 @@ import generalStyles from "../../style.module.scss";
 // constants
 import { UserTypeConstants } from "../../utils/constants";
 
-function StatisticsOptionsPage() {
+function StatisticsOptionsPage({ onSelectedChange }) {
   const { t } = useTranslation();
   const user = useSelector(selectUser);
+
+  useEffect(() => {
+    onSelectedChange();
+  }, []);
 
   return user && user.type === UserTypeConstants.ADMIN ? (
     <div className={[generalStyles.flex_container].join(" ")}>

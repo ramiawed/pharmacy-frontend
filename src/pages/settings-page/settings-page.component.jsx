@@ -34,7 +34,7 @@ import generalStyles from "../../style.module.scss";
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
 
-function SettingsPage() {
+function SettingsPage({ onSelectedChange }) {
   const { t } = useTranslation();
   const { user, token } = useSelector(selectUserData);
   const history = useHistory();
@@ -51,6 +51,7 @@ function SettingsPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    onSelectedChange();
   }, [dispatch]);
 
   return user && user.type === UserTypeConstants.ADMIN ? (

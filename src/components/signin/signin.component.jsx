@@ -12,6 +12,7 @@ import { RiLockPasswordLine } from "react-icons/ri";
 import Input from "../input/input.component";
 import Button from "../button/button.component";
 import Loader from "../action-loader/action-loader.component";
+import Modal from "../modal/modal.component";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
@@ -69,6 +70,7 @@ function SignIn() {
     username: "",
     password: "",
   });
+  const [showForgetPasswordModal, setShowForgetPasswordModal] = useState(false);
 
   // error object contains error message and fields that has the error
   const [preSignError, setPreSignError] = useState({
@@ -185,77 +187,104 @@ function SignIn() {
   return user ? (
     <Redirect to="/" />
   ) : (
-    <motion.div
-      className={[styles.container, generalStyles.flex_center_container].join(
-        " "
-      )}
-      variants={containerVariant}
-      initial="hidden"
-      animate="visible"
-    >
-      <div className={styles.info}>
-        <div className={styles.signup}>
-          <p>{t("sign-up-sentence")}</p>
-          <p className={styles.button} onClick={signupHandler}>
-            {t("sign-up")}
+    <>
+      <motion.div
+        className={[styles.container, generalStyles.flex_center_container].join(
+          " "
+        )}
+        variants={containerVariant}
+        initial="hidden"
+        animate="visible"
+      >
+        <div className={styles.info}>
+          <div className={styles.signup}>
+            <p>{t("sign-up-sentence")}</p>
+            <p className={styles.button} onClick={signupHandler}>
+              {t("sign-up")}
+            </p>
+          </div>
+
+          <h3>{t("sign-in")}</h3>
+
+          {/* username */}
+          <Input
+            icon={<HiUser className={styles.icons} />}
+            type="text"
+            placeholder="user-username"
+            id="username"
+            value={userInfo.username}
+            onchange={inputChangeHandler}
+            error={preSignError.username?.length > 0 || error}
+            onEnterPress={pressEnterHandler}
+            resetField={resetFieldHandler}
+          />
+
+          {/* password */}
+          <Input
+            icon={<RiLockPasswordLine className={styles.icon} />}
+            type="password"
+            placeholder="user-password"
+            id="password"
+            value={userInfo.password}
+            onchange={inputChangeHandler}
+            error={preSignError.password?.length > 0 || error}
+            onEnterPress={pressEnterHandler}
+            resetField={resetFieldHandler}
+          />
+
+          <p
+            className={styles.forget_password}
+            onClick={() => {
+              setShowForgetPasswordModal(true);
+            }}
+          >
+            {t("forget-password")}
           </p>
+
+          {/* Error sections */}
+          <>
+            {Object.keys(preSignError).map((key) => {
+              if (preSignError[key].length > 0) {
+                return (
+                  <p className={styles.error} key={key}>
+                    {t(`${preSignError[key]}`)}
+                  </p>
+                );
+              } else {
+                return null;
+              }
+            })}
+            {error && <p className={styles.error}>{t(error)}</p>}
+          </>
+
+          <Button
+            text={t("sign-in")}
+            action={signInHandler}
+            bgColor={Colors.FAILED_COLOR}
+          />
         </div>
 
-        <h3>{t("sign-in")}</h3>
-
-        {/* username */}
-        <Input
-          icon={<HiUser className={styles.icons} />}
-          type="text"
-          placeholder="user-username"
-          id="username"
-          value={userInfo.username}
-          onchange={inputChangeHandler}
-          error={preSignError.username?.length > 0 || error}
-          onEnterPress={pressEnterHandler}
-          resetField={resetFieldHandler}
-        />
-
-        {/* password */}
-        <Input
-          icon={<RiLockPasswordLine className={styles.icon} />}
-          type="password"
-          placeholder="user-password"
-          id="password"
-          value={userInfo.password}
-          onchange={inputChangeHandler}
-          error={preSignError.password?.length > 0 || error}
-          onEnterPress={pressEnterHandler}
-          resetField={resetFieldHandler}
-        />
-
-        {/* Error sections */}
-        <>
-          {Object.keys(preSignError).map((key) => {
-            if (preSignError[key].length > 0) {
-              return (
-                <p className={styles.error} key={key}>
-                  {t(`${preSignError[key]}`)}
-                </p>
-              );
-            } else {
-              return null;
-            }
-          })}
-          {error && <p className={styles.error}>{t(error)}</p>}
-        </>
-
-        <Button
-          text={t("sign-in")}
-          action={signInHandler}
-          bgColor={Colors.FAILED_COLOR}
-        />
-      </div>
-
-      {status === "loading" && (
-        <Loader allowCancel={true} onclick={cancelOperationHandler} />
+        {status === "loading" && (
+          <Loader allowCancel={true} onclick={cancelOperationHandler} />
+        )}
+      </motion.div>
+      {showForgetPasswordModal && (
+        <Modal
+          closeModal={() => {
+            setShowForgetPasswordModal(false);
+          }}
+          header={t("contact-us")}
+          cancelLabel={t("close-label")}
+          small={true}
+          green={true}
+        >
+          <p>
+            {t("forget-password-msg")}
+            {t("contact-us-through-whatsapp")}: ٠٠٩٦٩٣٢٣٤٥٢٥٣٠
+          </p>
+        </Modal>
       )}
-    </motion.div>
+    </>
   );
 }
 

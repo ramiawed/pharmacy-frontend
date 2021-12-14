@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
-import Slider from "react-slick";
-import { Colors } from "../../utils/constants";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
-import AdvertisementCard from "../advertisement-card/advertisement-card.component";
+import Slider from "react-slick";
+import { selectUser } from "../../redux/auth/authSlice";
 
 import styles from "./advertisement-home-page.module.scss";
 
 function AdvertisementHomePage({ data }) {
   const [width, setWidth] = useState(window.innerWidth);
+  const history = useHistory();
+
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     const changeWidthHandler = () => {
@@ -34,6 +38,43 @@ function AdvertisementHomePage({ data }) {
     rtl: true,
   };
 
+  const advertisementClickHandler = (d) => {
+    console.log(d);
+    if (d.warehouse && d.warehouse.allowShowingMedicines) {
+      history.push({
+        pathname: "/medicines",
+        state: {
+          companyId: null,
+          warehouseId: d.warehouse._id,
+        },
+      });
+    }
+
+    if (d.company) {
+      history.push({
+        pathname: "/medicines",
+        state: {
+          companyId: d.company._id,
+          warehouseId: null,
+        },
+      });
+    }
+
+    if (d.medicine) {
+      history.push({
+        pathname: "/item",
+        state: {
+          from: user,
+          type: "info",
+          allowAction: false,
+          itemId: d.medicine._id,
+          companyId: null,
+          warehouseId: null,
+        },
+      });
+    }
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.slicker}>
@@ -47,6 +88,10 @@ function AdvertisementHomePage({ data }) {
                   style={{
                     width: "100%",
                     height: "350px",
+                    cursor: "pointer",
+                  }}
+                  onClick={() => {
+                    advertisementClickHandler(d);
                   }}
                 />
               </div>

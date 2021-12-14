@@ -35,7 +35,16 @@ function Input({
       className={[styles.input_div, bordered ? styles.bordered : ""].join(" ")}
     >
       {icon && icon}
-      {label && <label htmlFor={id}>{t(label)}</label>}
+      {label && (
+        <label
+          style={{
+            color: "#9d9d9d",
+          }}
+          htmlFor={id}
+        >
+          {t(label)}
+        </label>
+      )}
 
       <input
         placeholder={placeholder ? t(`${placeholder}`) : ""}

@@ -63,6 +63,20 @@
   }
 }
 
+.forget_password {
+  color: $third-color;
+
+  margin-inline-start: auto;
+
+  font-size: 0.7rem; 
+  
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .info {
   width: 90%;
 

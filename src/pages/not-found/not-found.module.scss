@@ -1,0 +1,18 @@
+@import '../../variables.scss';
+
+.link {
+  background: $secondary-color;
+  color: $white-color;
+  text-decoration: none;
+
+  padding-inline: 10px;
+  padding-block: 6px;
+
+  border-radius: 6px;
+
+  display: block;
+  margin-inline: auto;
+
+  width: 150px;
+  text-align: center;
+}

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 import { useTranslation } from "react-i18next";
 
@@ -10,17 +11,25 @@ import { selectToken } from "../../redux/auth/authSlice";
 // components
 import Loader from "../../components/action-loader/action-loader.component";
 import Header from "../../components/header/header.component";
+import Icon from "../../components/action-icon/action-icon.component";
+
+// icons
+import { RiRefreshLine } from "react-icons/ri";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 // styles
 import generalStyles from "../../style.module.scss";
 import styles from "./notification-page.module.scss";
 
 // constants
-import { BASEURL } from "../../utils/constants";
+import { BASEURL, Colors } from "../../utils/constants";
 
 function NotificationPage({ onSelectedChange }) {
   const { t } = useTranslation();
   const { notificationId } = useParams();
+  const history = useHistory();
+
+  // selectors
   const token = useSelector(selectToken);
 
   const [notification, setNotification] = useState(null);
@@ -49,6 +58,29 @@ function NotificationPage({ onSelectedChange }) {
         <>
           <Header>
             <h2>{t("notification-label")}</h2>
+            <div
+              className={[generalStyles.actions, generalStyles.margin_v_4].join(
+                " "
+              )}
+            >
+              <Icon
+                selected={false}
+                foreColor={Colors.SECONDARY_COLOR}
+                tooltip={t("refresh-tooltip")}
+                icon={() => <RiRefreshLine />}
+                onclick={getNotification}
+              />
+
+              {/* go back */}
+              <Icon
+                tooltip={t("go-back")}
+                onclick={() => {
+                  history.goBack();
+                }}
+                icon={() => <IoMdArrowRoundBack size={16} />}
+                foreColor={Colors.SECONDARY_COLOR}
+              />
+            </div>
           </Header>
 
           <div className={styles.content_div}>

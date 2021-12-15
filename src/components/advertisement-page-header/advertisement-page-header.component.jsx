@@ -8,7 +8,6 @@ import { getAllAdvertisements } from "../../redux/advertisements/advertisementsS
 import { selectToken } from "../../redux/auth/authSlice";
 
 // icons
-import { IoMdArrowRoundBack } from "react-icons/io";
 import { RiRefreshLine } from "react-icons/ri";
 import { MdAddCircle } from "react-icons/md";
 
@@ -61,16 +60,6 @@ function AdvertisementPageHeader({ isNew, setIsNew }) {
             // dispatch(changeShowFavorites(false));
           }}
           icon={() => <RiRefreshLine />}
-        />
-
-        {/* go back */}
-        <Icon
-          tooltip={t("go-back")}
-          onclick={() => {
-            history.goBack();
-          }}
-          icon={() => <IoMdArrowRoundBack size={20} />}
-          foreColor={Colors.SECONDARY_COLOR}
         />
       </div>
     </Header>

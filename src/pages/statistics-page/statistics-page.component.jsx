@@ -18,7 +18,7 @@ import {
 import { selectUser } from "../../redux/auth/authSlice.js";
 
 // icons
-import { IoMdArrowRoundBack, IoMdMore } from "react-icons/io";
+import { IoMdMore } from "react-icons/io";
 import { RiRefreshLine } from "react-icons/ri";
 
 // components
@@ -273,9 +273,11 @@ function StatisticsPage({ onSelectedChange }) {
         </div>
 
         <div
-          className={[generalStyles.actions, generalStyles.margin_v_4].join(
-            " "
-          )}
+          style={{
+            position: "absolute",
+            top: "16px",
+            left: "42px",
+          }}
         >
           {/* refresh */}
           <Icon
@@ -286,16 +288,6 @@ function StatisticsPage({ onSelectedChange }) {
               handleEnterPress();
             }}
             icon={() => <RiRefreshLine />}
-          />
-
-          {/* go back */}
-          <Icon
-            tooltip={t("go-back")}
-            onclick={() => {
-              history.goBack();
-            }}
-            icon={() => <IoMdArrowRoundBack size={20} />}
-            foreColor={Colors.SECONDARY_COLOR}
           />
         </div>
       </Header>
@@ -371,7 +363,7 @@ function StatisticsPage({ onSelectedChange }) {
       {showMoreInfo && (
         <Modal
           header="statistics-dates"
-          cancelLabel="cancel-label"
+          cancelLabel="close-label"
           closeModal={() => {
             setShowMoreInfo(false);
             setSelectedStatistics(null);

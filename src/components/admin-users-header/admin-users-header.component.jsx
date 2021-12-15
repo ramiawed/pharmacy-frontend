@@ -14,7 +14,6 @@ import Icon from "../action-icon/action-icon.component";
 
 // react icons
 import { BiSortAZ } from "react-icons/bi";
-import { IoMdArrowRoundBack } from "react-icons/io";
 import { RiRefreshLine } from "react-icons/ri";
 import { HiOutlineSearch } from "react-icons/hi";
 
@@ -119,16 +118,6 @@ function AdminUsersHeader({
             tooltip={t("sort-results")}
           />
         </div>
-
-        {/* go back */}
-        <Icon
-          tooltip={t("go-back")}
-          onclick={() => {
-            history.goBack();
-          }}
-          icon={() => <IoMdArrowRoundBack size={16} />}
-          foreColor={Colors.SECONDARY_COLOR}
-        />
       </div>
     </Header>
   );

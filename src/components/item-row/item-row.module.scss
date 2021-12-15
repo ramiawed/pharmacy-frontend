@@ -1,0 +1,56 @@
+@import '../../variables.scss';
+
+
+.name {
+  flex: 3;
+  font-size: 0.7rem;
+}
+
+.align_center {
+  text-align: center;
+}
+
+.align_start {
+  text-align: start;
+}
+
+.details {
+  flex: 1;
+  font-size: 0.6rem;
+}
+
+.icon {
+  width: 32px;
+  font-size: 1rem;
+}
+
+
+@media only screen and (min-width: $small) {
+  .name {
+    font-size: 0.8rem;
+  }
+  
+  .details {
+    font-size: 0.7rem;
+  }
+
+  .icon {
+    width: 40px;
+    font-size: 1.2rem;
+  }
+}
+ 
+ @media only screen and (min-width: $medium) {
+ .name {
+  font-size: 1rem;
+ }
+
+ .details {
+  font-size: 0.8rem;
+}
+   
+}
+
+.small_font {
+  font-size: 0.7rem !important;
+}

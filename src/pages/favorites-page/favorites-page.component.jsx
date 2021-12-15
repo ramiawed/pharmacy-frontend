@@ -28,7 +28,6 @@ import ActionLoader from "../../components/action-loader/action-loader.component
 
 // icons
 import { RiRefreshLine } from "react-icons/ri";
-import { IoMdArrowRoundBack } from "react-icons/io";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -79,16 +78,6 @@ function FavoritesPage({ onSelectedChange }) {
             tooltip={t("refresh-tooltip")}
             onclick={refreshFavoritesHandler}
             icon={() => <RiRefreshLine />}
-          />
-
-          <Icon
-            selected={false}
-            foreColor={Colors.SECONDARY_COLOR}
-            tooltip={t("go-back")}
-            onclick={() => {
-              history.goBack();
-            }}
-            icon={() => <IoMdArrowRoundBack size={20} />}
           />
         </div>
       </Header>

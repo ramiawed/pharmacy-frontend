@@ -141,19 +141,17 @@ function PartnerCard({ partner, fullWidth }) {
       <p className={styles.partner_name}>{partner.name}</p>
 
       {partner.logo_url?.length > 0 ? (
-        <p
-          style={{
-            backgroundImage: `url("http://localhost:8000/${partner.logo_url}")`,
-          }}
+        <img
+          src={`http://localhost:8000/${partner.logo_url}`}
           className={styles.partner_logo}
-        ></p>
+          alt="thumb"
+        />
       ) : (
-        <p
-          style={{
-            backgroundImage: 'url("http://localhost:8000/default-logo.jpg")',
-          }}
+        <img
+          src={`http://localhost:8000/default-logo.jpg`}
           className={styles.partner_logo}
-        ></p>
+          alt="thumb"
+        />
       )}
 
       <div className={styles.from_top}>

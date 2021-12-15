@@ -36,6 +36,7 @@ import { VscLoading } from "react-icons/vsc";
 import generalStyles from "../../style.module.scss";
 import rowStyles from "../row.module.scss";
 import tableStyles from "../table.module.scss";
+import styles from "./item-row.module.scss";
 
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants";
@@ -231,11 +232,10 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
       >
         <label
           className={[
-            tableStyles.label_medium,
-            !isFavorite ? tableStyles.center : "",
-            tableStyles.underline,
-            isFavorite ? rowStyles.align_start : "",
-            isSmallFavorite ? rowStyles.small_font : "",
+            styles.name,
+            !isFavorite ? styles.align_center : "",
+            isFavorite ? styles.align_start : "",
+            isSmallFavorite ? styles.small_font : "",
           ].join(" ")}
         >
           <Link
@@ -260,9 +260,9 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
 
         <label
           className={[
-            tableStyles.label_small,
-            tableStyles.center,
-            isSmallFavorite ? rowStyles.small_font : "",
+            styles.details,
+            styles.center,
+            isSmallFavorite ? styles.small_font : "",
           ].join(" ")}
         >
           {item.caliber}
@@ -270,38 +270,40 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
 
         <label
           className={[
-            tableStyles.label_small,
-            tableStyles.center,
-            isSmallFavorite ? rowStyles.small_font : "",
+            styles.details,
+            styles.center,
+            isSmallFavorite ? styles.small_font : "",
+          ].join(" ")}
+        >
+          {item.packing}
+        </label>
+
+        <label
+          className={[
+            styles.details,
+            styles.center,
+            isSmallFavorite ? styles.small_font : "",
           ].join(" ")}
         >
           {item.formula}
         </label>
 
         {user.type !== UserTypeConstants.GUEST && !isFavorite && (
-          <label
-            className={[tableStyles.label_small, tableStyles.center].join(" ")}
-          >
+          <label className={[styles.details, styles.center].join(" ")}>
             {item.price}
           </label>
         )}
 
         {!isFavorite && (
-          <label
-            className={[tableStyles.label_small, tableStyles.center].join(" ")}
-          >
+          <label className={[styles.details, styles.center].join(" ")}>
             {item.customer_price}
           </label>
         )}
 
-        <label
-          className={[tableStyles.label_xsmall, tableStyles.center].join(" ")}
-        >
+        <label className={[styles.center, styles.icon].join(" ")}>
           {changeAddToWarehouseLoading ? (
             <Icon
-              icon={() => (
-                <VscLoading className={generalStyles.loading} size={20} />
-              )}
+              icon={() => <VscLoading className={generalStyles.loading} />}
               onclick={() => {}}
               foreColor={Colors.SECONDARY_COLOR}
             />
@@ -309,14 +311,14 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
             user.type === UserTypeConstants.WAREHOUSE &&
             (item.warehouses.map((w) => w.warehouse._id).includes(user._id) ? (
               <Icon
-                icon={() => <RiDeleteBin5Fill size={24} />}
+                icon={() => <RiDeleteBin5Fill />}
                 onclick={removeItemFromWarehouseHandler}
                 tooltip={t("remove-from-warehouse-tooltip")}
                 foreColor={Colors.FAILED_COLOR}
               />
             ) : (
               <Icon
-                icon={() => <MdAddCircle size={24} />}
+                icon={() => <MdAddCircle />}
                 onclick={addItemToWarehouseHandler}
                 tooltip={t("add-to-warehouse-tooltip")}
                 foreColor={Colors.SUCCEEDED_COLOR}
@@ -327,7 +329,7 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
           {user.type === UserTypeConstants.PHARMACY &&
           item.existing_place[user.city] > 0 ? (
             <Icon
-              icon={() => <GiShoppingCart size={20} />}
+              icon={() => <GiShoppingCart />}
               onclick={() => {
                 setShowModal(true);
               }}
@@ -338,14 +340,10 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
           )}
         </label>
 
-        <label
-          className={[tableStyles.label_xsmall, tableStyles.center].join(" ")}
-        >
+        <label className={[styles.icon, styles.align_center].join(" ")}>
           {changeFavoriteLoading ? (
             <Icon
-              icon={() => (
-                <VscLoading className={generalStyles.loading} size={20} />
-              )}
+              icon={() => <VscLoading className={generalStyles.loading} />}
               onclick={() => {}}
               foreColor={Colors.YELLOW_COLOR}
             />
@@ -353,14 +351,14 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
               .map((favorite) => favorite._id)
               .includes(item._id) ? (
             <Icon
-              icon={() => <AiFillStar size={20} />}
+              icon={() => <AiFillStar />}
               onclick={removeItemFromFavoritesItemsHandler}
               tooltip={t("remove-from-favorite-tooltip")}
               foreColor={Colors.YELLOW_COLOR}
             />
           ) : (
             <Icon
-              icon={() => <AiOutlineStar size={20} />}
+              icon={() => <AiOutlineStar />}
               onclick={addItemToFavoriteItemsHandler}
               tooltip={t("add-to-favorite-tooltip")}
               foreColor={Colors.YELLOW_COLOR}

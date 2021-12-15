@@ -29,7 +29,6 @@ import {
 
 // icons
 import { RiRefreshLine } from "react-icons/ri";
-import { IoMdArrowRoundBack } from "react-icons/io";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -103,16 +102,6 @@ function UserNotificationPage({ onSelectedChange }) {
               refreshHandler();
             }}
             icon={() => <RiRefreshLine />}
-          />
-
-          {/* go back */}
-          <Icon
-            tooltip={t("go-back")}
-            onclick={() => {
-              history.goBack();
-            }}
-            icon={() => <IoMdArrowRoundBack size={20} />}
-            foreColor={Colors.SECONDARY_COLOR}
           />
         </div>
       </Header>

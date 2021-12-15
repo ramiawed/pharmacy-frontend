@@ -22,9 +22,9 @@ function SearchContainer({ children, searchAction }) {
         styles.expanded,
         moreSearchOptions ? styles.expanded_with_options : "",
       ].join(" ")}
-      style={{
-        paddingLeft: childrenArray.length === 1 ? "32px" : "",
-      }}
+      // style={{
+      //   paddingInlineEnd: childrenArray.length === 1 ? "32px" : "",
+      // }}
     >
       <div className={styles.expanded_div}>
         <div
@@ -79,6 +79,31 @@ function SearchContainer({ children, searchAction }) {
                 onClick={() => setMoreSearchOptions(!moreSearchOptions)}
               >
                 <VscSettings />
+              </div>
+            )}
+
+            {childrenArray.length === 1 && (
+              <div
+                className={[generalStyles.icon, generalStyles.margin_h_4].join(
+                  " "
+                )}
+                onClick={() => {
+                  searchAction();
+                  setMoreSearchOptions(false);
+                }}
+              >
+                <button
+                  className={[
+                    generalStyles.button,
+                    generalStyles.bg_secondary,
+                    generalStyles.fc_white,
+                    generalStyles.block,
+                    generalStyles.padding_v_6,
+                    generalStyles.padding_h_8,
+                  ].join(" ")}
+                >
+                  {t("search")}
+                </button>
               </div>
             )}
           </>

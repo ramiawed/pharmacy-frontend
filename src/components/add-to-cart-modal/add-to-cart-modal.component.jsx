@@ -15,7 +15,7 @@ import InfoRow from "../info-row/info-row.component";
 
 // redux stuff
 import { addItemToCart } from "../../redux/cart/cartSlice";
-import { selectToken, selectUserData } from "../../redux/auth/authSlice";
+import { selectUserData } from "../../redux/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { statisticsItemAddedToCart } from "../../redux/statistics/statisticsSlice";
 import { selectOnlineStatus } from "../../redux/online/onlineSlice";
@@ -139,7 +139,7 @@ function AddToCartModal({ item, close }) {
       okModal={handleAddItemToCart}
       small={true}
     >
-      <InfoRow
+      {/* <InfoRow
         editable={false}
         field="item-name"
         labelText={t("item-name")}
@@ -182,36 +182,40 @@ function AddToCartModal({ item, close }) {
         value={item.customer_price}
         onInputChange={() => {}}
         action={() => {}}
-      />
+      /> */}
 
-      <div className={styles.warehouse_row}>
+      {/* <div className={styles.warehouse_row}> */}
+      <div className={styles.select_warehouse}>
+        <label>{t("item-warehouse")}</label>
         <SelectCustom
           bgColor={Colors.SECONDARY_COLOR}
           foreColor="#fff"
           options={itemWarehousesOption}
           onchange={handleWarehouseChange}
           defaultOption={itemWarehousesOption[0]}
-          caption="item-warehouse"
+          // caption="item-warehouse"
         />
-        <div className={styles.max_qty_div}>
-          <p>{t("item-max-qty")}</p>
-          <p>
-            {selectedWarehouse.maxQty === 0
-              ? t("no-limit-qty")
-              : selectedWarehouse.maxQty}
-          </p>
-        </div>
-        <div className={styles.max_qty_div}>
-          <p>{t("selected-qty")}</p>
-          <input
-            className={qtyError ? styles.error : ""}
-            type="number"
-            min={0}
-            value={qty}
-            onChange={quantityChange}
-          />
-        </div>
       </div>
+
+      <div className={styles.max_qty_div}>
+        <label>{t("item-max-qty")}</label>
+        <p>
+          {selectedWarehouse.maxQty === 0
+            ? t("no-limit-qty")
+            : selectedWarehouse.maxQty}
+        </p>
+      </div>
+      <div className={styles.max_qty_div}>
+        <label>{t("selected-qty")}</label>
+        <input
+          className={qtyError ? styles.error : ""}
+          type="number"
+          min={0}
+          value={qty}
+          onChange={quantityChange}
+        />
+      </div>
+      {/* </div> */}
 
       {offer.offers.length > 0 &&
         offer.offers.map((o, index) => (

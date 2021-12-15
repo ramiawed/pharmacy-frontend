@@ -45,7 +45,6 @@ import styles from "./item-page.module.scss";
 import rowStyles from "../../components/row.module.scss";
 import { RiRefreshLine } from "react-icons/ri";
 import Icon from "../../components/action-icon/action-icon.component";
-import { IoMdArrowRoundBack } from "react-icons/io";
 
 function ItemPage() {
   const { t } = useTranslation();
@@ -76,6 +75,7 @@ function ItemPage() {
     caliber: "",
     formula: "",
     indication: "",
+    barcode: "",
     composition: "",
     packing: "",
     price: 0,
@@ -290,15 +290,6 @@ function ItemPage() {
               }
             }}
           />
-
-          <Icon
-            tooltip={t("go-back")}
-            onclick={() => {
-              history.goBack();
-            }}
-            icon={() => <IoMdArrowRoundBack size={16} />}
-            foreColor={Colors.SECONDARY_COLOR}
-          />
         </div>
 
         <CardInfo headerTitle={t("item-main-info")}>
@@ -353,6 +344,19 @@ function ItemPage() {
             icon={getIcon("medicine")}
             onchange={handleInputChange}
             error={itemError.packing?.length > 0}
+            readOnly={!allowAction}
+          />
+
+          <div className={styles.horizontal_div}></div>
+
+          <Input
+            label="item-barcode"
+            id="barcode"
+            type="text"
+            value={item.barcode}
+            bordered={false}
+            icon={getIcon("medicine")}
+            onchange={handleInputChange}
             readOnly={!allowAction}
           />
         </CardInfo>

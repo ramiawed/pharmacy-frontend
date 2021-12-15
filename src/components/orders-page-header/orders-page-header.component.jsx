@@ -5,10 +5,18 @@ import { useTranslation } from "react-i18next";
 import Header from "../header/header.component";
 import SearchContainer from "../search-container/search-container.component";
 import SearchInput from "../search-input/search-input.component";
+import SelectCustom from "../select/select.component";
+import Icon from "../action-icon/action-icon.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/auth/authSlice";
+import {
+  setDateOption,
+  setSearchDate,
+  setSearchPharmacyName,
+  setSearchWarehouseName,
+} from "../../redux/orders/ordersSlice";
 
 // icons
 import { RiRefreshLine } from "react-icons/ri";
@@ -18,21 +26,12 @@ import { Colors, DateOptions, UserTypeConstants } from "../../utils/constants";
 
 // styles
 import generalStyles from "../../style.module.scss";
-import Icon from "../action-icon/action-icon.component";
-import { IoMdArrowRoundBack } from "react-icons/io";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
-import {
-  setDateOption,
-  setSearchDate,
-  setSearchPharmacyName,
-  setSearchWarehouseName,
-} from "../../redux/orders/ordersSlice";
-import SelectCustom from "../select/select.component";
 
 function OrderPageHeader({ count, pageState, search }) {
   const { t } = useTranslation();
-  const history = useHistory();
   const dispatch = useDispatch();
+
+  // selectors
   const user = useSelector(selectUser);
 
   const dateOptions = [
@@ -132,21 +131,19 @@ function OrderPageHeader({ count, pageState, search }) {
           </div>
         </SearchContainer>
       </div>
-      <div className={generalStyles.actions}>
+      <div
+        style={{
+          position: "absolute",
+          top: "16px",
+          left: "46px",
+        }}
+      >
         <Icon
           foreColor={Colors.SECONDARY_COLOR}
           selected={false}
           icon={() => <RiRefreshLine />}
           tooltip={t("refresh-tooltip")}
           onclick={search}
-        />
-
-        <Icon
-          foreColor={Colors.SECONDARY_COLOR}
-          selected={false}
-          icon={() => <IoMdArrowRoundBack size={20} />}
-          tooltip={t("go-back")}
-          onclick={() => history.goBack()}
         />
       </div>
     </Header>

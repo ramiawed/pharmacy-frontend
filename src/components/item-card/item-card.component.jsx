@@ -304,7 +304,20 @@ function ItemCard({ companyItem }) {
       </div>
 
       <div className={styles.logo_div}>
-        <p
+        {companyItem.logo_url && companyItem.logo_url !== "" ? (
+          <img
+            src={`http://localhost:8000/${companyItem.logo_url}`}
+            className={styles.logo}
+            alt="thumb"
+          />
+        ) : (
+          <img
+            src={`http://localhost:8000/default-medicine.png`}
+            className={styles.logo}
+            alt="thumb"
+          />
+        )}
+        {/* <p
           style={{
             backgroundImage:
               companyItem.logo_url && companyItem.logo_url !== ""
@@ -312,7 +325,7 @@ function ItemCard({ companyItem }) {
                 : `url("http://localhost:8000/default-medicine.png")`,
           }}
           className={styles.logo}
-        ></p>
+        ></p> */}
       </div>
 
       <div className={styles.content}>

@@ -19,7 +19,6 @@ import styles from "./order-details-page.module.scss";
 import Header from "../../components/header/header.component";
 import Icon from "../../components/action-icon/action-icon.component";
 import { RiRefreshLine } from "react-icons/ri";
-import { IoMdArrowRoundBack } from "react-icons/io";
 
 function OrderDetailsPage({ location, onSelectedChange }) {
   const { t } = useTranslation();
@@ -79,15 +78,6 @@ function OrderDetailsPage({ location, onSelectedChange }) {
                 foreColor={Colors.SECONDARY_COLOR}
                 tooltip={t("refresh-tooltip")}
                 onclick={getOrderDetails}
-              />
-              <Icon
-                selected={false}
-                foreColor={Colors.SECONDARY_COLOR}
-                tooltip={t("go-back")}
-                onclick={() => {
-                  history.goBack();
-                }}
-                icon={() => <IoMdArrowRoundBack size={20} />}
               />
             </div>
           </Header>

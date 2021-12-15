@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router";
 
 // icons
-import { IoMdArrowRoundBack } from "react-icons/io";
 import { MdAddCircle } from "react-icons/md";
 import { RiRefreshLine } from "react-icons/ri";
 
@@ -63,16 +62,6 @@ function AdminNotificationsHeader({ isNew, setIsNew }) {
             refreshHandler();
           }}
           icon={() => <RiRefreshLine />}
-        />
-
-        {/* go back */}
-        <Icon
-          tooltip={t("go-back")}
-          onclick={() => {
-            history.goBack();
-          }}
-          icon={() => <IoMdArrowRoundBack size={20} />}
-          foreColor={Colors.SECONDARY_COLOR}
         />
       </div>
     </Header>

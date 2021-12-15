@@ -26,7 +26,6 @@ import WarehousesSectionOneSettings from "../../components/warehouses-section-on
 
 // icons
 import { RiRefreshLine } from "react-icons/ri";
-import { IoMdArrowRoundBack } from "react-icons/io";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -59,9 +58,14 @@ function SettingsPage({ onSelectedChange }) {
       <Header>
         <h2>{t("nav-settings")}</h2>
         <div
-          className={[generalStyles.actions, generalStyles.margin_v_4].join(
-            " "
-          )}
+          // className={[generalStyles.actions, generalStyles.margin_v_4].join(
+          //   " "
+          // )}
+          style={{
+            position: "absolute",
+            top: "16px",
+            left: "42px",
+          }}
         >
           <Icon
             selected={false}
@@ -69,16 +73,6 @@ function SettingsPage({ onSelectedChange }) {
             tooltip={t("refresh-tooltip")}
             onclick={refreshHandler}
             icon={() => <RiRefreshLine />}
-          />
-
-          <Icon
-            selected={false}
-            foreColor={Colors.SECONDARY_COLOR}
-            tooltip={t("go-back")}
-            onclick={() => {
-              history.goBack();
-            }}
-            icon={() => <IoMdArrowRoundBack size={20} />}
           />
         </div>
       </Header>

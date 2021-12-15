@@ -100,12 +100,16 @@ function SideNav({
           styles.profile_img,
           generalStyles.flex_center_container,
         ].join(" ")}
+        style={{
+          flexDirection: "column",
+        }}
       >
-        <div
-          style={{
-            backgroundImage: `url("http://localhost:8000/${user.logo_url}")`,
-          }}
-        ></div>
+        {user.logo_url.length > 0 && (
+          <img src={`http://localhost:8000/${user.logo_url}`} alt="thumb" />
+        )}
+
+        <h3>{user.name}</h3>
+        <p>{t(user.type)}</p>
       </div>
       <div className={styles.links}>
         {user.type === UserTypeConstants.ADMIN && (

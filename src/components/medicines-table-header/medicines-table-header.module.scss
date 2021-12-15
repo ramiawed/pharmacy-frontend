@@ -1,0 +1,66 @@
+@import '../../variables.scss';
+
+.small {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 0.6rem;
+}
+
+.large {
+  display: none;
+  font-size: 0.6rem;
+}
+
+.normal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 0.6rem;
+}
+
+.icon {
+  width: 32px;
+}
+
+
+@media only screen and (min-width: $small) {
+
+ .small {
+   display: none;
+ }
+
+ .large {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 0.7rem;
+ }
+
+ .normal {
+   font-size: 0.8rem;
+ }
+
+ .icon {
+   width: 40px
+ }
+ 
+}
+
+@media only screen and (min-width: $medium) {
+
+  .large {
+   display: flex;
+   align-items: center;
+   justify-content: center;
+
+   font-size: 0.8rem;
+  }
+  
+}
+
+
+

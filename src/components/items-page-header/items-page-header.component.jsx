@@ -30,7 +30,6 @@ import { Colors, UserTypeConstants } from "../../utils/constants";
 import generalStyles from "../../style.module.scss";
 import searchContainerStyles from "../search-container/search-container.module.scss";
 import Icon from "../action-icon/action-icon.component";
-import { IoMdArrowRoundBack } from "react-icons/io";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function ItemsPageHeader({
@@ -267,13 +266,6 @@ function ItemsPageHeader({
         ) : (
           <></>
         )}
-        <Icon
-          foreColor={Colors.SECONDARY_COLOR}
-          selected={false}
-          icon={() => <IoMdArrowRoundBack size={20} />}
-          tooltip={t("go-back")}
-          onclick={() => history.goBack()}
-        />
       </div>
     </Header>
   );

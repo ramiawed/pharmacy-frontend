@@ -24,7 +24,6 @@ import PartnerRow from "../partner-row/partner-row.component";
 import { RiRefreshLine } from "react-icons/ri";
 import { AiFillAppstore, AiFillStar } from "react-icons/ai";
 import { FaListUl } from "react-icons/fa";
-import { IoMdArrowRoundBack } from "react-icons/io";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -151,19 +150,6 @@ function WarehousesHeader({ search, refreshHandler, count }) {
             dispatch(changeShowFavorites(false));
           }}
           icon={() => <FaListUl />}
-        />
-
-        {/* go back */}
-        <Icon
-          tooltip={t("go-back")}
-          onclick={() => {
-            history.goBack();
-            if (showFavorites) {
-              dispatch(changeShowFavorites(false));
-            }
-          }}
-          icon={() => <IoMdArrowRoundBack size={20} />}
-          foreColor={Colors.SECONDARY_COLOR}
         />
       </div>
     </Header>

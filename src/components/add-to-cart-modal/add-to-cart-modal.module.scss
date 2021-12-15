@@ -2,12 +2,20 @@
 
 .warehouse_row {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-evenly;
+  flex-direction: column;
   color: $secondary-color;
   padding: 4px 0;
 
   border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1);
+}
+
+@media only screen and (min-width: $small) {
+  .warehouse_row {
+    flex-direction: row;
+    align-items: center;
+  }
 }
 
 .offer {
@@ -33,9 +41,32 @@
 
 .max_qty_div {
   display: flex;
+  align-items: center;
 
-  justify-content: center;
+  margin-block: 5px;
 }
+
+.select_warehouse {
+  display: flex;
+  align-items: center;
+
+}
+
+.max_qty_div label, .select_warehouse label {
+  color: #9d9d9d;
+
+  font-size: 0.7rem;
+
+  margin-inline-end: 4px;
+
+  min-width: 100px;
+
+  text-align: end;
+}
+
+// .select_warehouse label {
+  
+// }
 
 .max_qty_div p {
   margin: 0 5px;
@@ -53,6 +84,3 @@
   border: 1px solid rgba($color: #ff0000, $alpha: 1);
 }
 
-// .offer {
-//   border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1);
-// }

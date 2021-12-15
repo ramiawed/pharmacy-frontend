@@ -9,17 +9,15 @@ import ItemCard from "../../components/item-card/item-card.component";
 import SearchContainer from "../../components/search-container/search-container.component";
 import SearchInput from "../../components/search-input/search-input.component";
 import ItemRow from "../../components/item-row/item-row.component";
-import ItemsByCompanyTableHeader from "../../components/items-by-company-table-header/items-by-company-table-header.component";
+import MedicinesTableHeader from "../../components/medicines-table-header/medicines-table-header.component";
 import NoContent from "../../components/no-content/no-content.component";
 import Button from "../../components/button/button.component";
 import Icon from "../../components/action-icon/action-icon.component";
-import Loader from "../../components/action-loader/action-loader.component";
 
 // react-icons
 import { FaSearch, FaListUl } from "react-icons/fa";
 import { RiRefreshLine } from "react-icons/ri";
 import { AiFillAppstore, AiFillStar } from "react-icons/ai";
-import { IoMdArrowRoundBack } from "react-icons/io";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -295,21 +293,11 @@ function MedicinesPage({ onSelectedChange }) {
             tooltip={t("show-item-as-row-tooltip")}
             onclick={() => setDisplayType("list")}
           />
-
-          <Icon
-            selected={false}
-            foreColor={Colors.SECONDARY_COLOR}
-            tooltip={t("go-back")}
-            onclick={() => {
-              history.goBack();
-            }}
-            icon={() => <IoMdArrowRoundBack size={20} />}
-          />
         </div>
       </Header>
 
       {count > 0 && displayType === "list" && (
-        <ItemsByCompanyTableHeader user={user} />
+        <MedicinesTableHeader user={user} />
       )}
 
       {displayType === "list" &&

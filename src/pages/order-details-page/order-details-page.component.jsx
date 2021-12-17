@@ -22,9 +22,13 @@ import { RiRefreshLine } from "react-icons/ri";
 
 function OrderDetailsPage({ location, onSelectedChange }) {
   const { t } = useTranslation();
-  const history = useHistory();
+
   const orderId = location?.search.slice(1);
+
+  // selectors
   const token = useSelector(selectToken);
+
+  // own states
   const [orderDetails, setOrderDetails] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -40,6 +44,7 @@ function OrderDetailsPage({ location, onSelectedChange }) {
     );
 
     setOrderDetails(response.data.data.order);
+
     setLoading(false);
   };
 
@@ -72,7 +77,13 @@ function OrderDetailsPage({ location, onSelectedChange }) {
         <div className={generalStyles.container}>
           <Header>
             <h2>{t("order-details")}</h2>
-            <div className={generalStyles.flex_center_container}>
+            <div
+              style={{
+                position: "absolute",
+                top: "16px",
+                left: "42px",
+              }}
+            >
               <Icon
                 icon={() => <RiRefreshLine />}
                 foreColor={Colors.SECONDARY_COLOR}

@@ -41,6 +41,9 @@ function SearchHome() {
   const [showResult, setShowResult] = useState(false);
   const [data, setData] = useState([]);
 
+  //
+  const [tryBooom, setTryBooom] = useState(false);
+
   const searchHandler = async () => {
     // if (searchName.trim().length === 0) {
     //   return;
@@ -154,8 +157,20 @@ function SearchHome() {
     };
   }, [option]);
 
+  function Bomb() {
+    throw new Error("💥 CABOOM 💥");
+  }
+
   return (
     <div className={styles.container}>
+      <button
+        onClick={() => {
+          setTryBooom(true);
+        }}
+      >
+        Click Me
+      </button>
+      {tryBooom ? <Bomb /> : null}
       <h3>{t("app-name")}</h3>
       <div
         className={[styles.options, generalStyles.flex_center_container].join(
@@ -221,7 +236,9 @@ function SearchHome() {
           " "
         )}
       >
-        <FiSearch size={24} color={Colors.SECONDARY_COLOR} />
+        <div className={styles.icon}>
+          <FiSearch color={Colors.SECONDARY_COLOR} />
+        </div>
         <input
           className={styles.input}
           type="text"
@@ -246,17 +263,12 @@ function SearchHome() {
         />
 
         {showResult && (
-          <RiCloseLine
-            size={24}
-            color={Colors.FAILED_COLOR}
-            style={{
-              marginInline: "5px",
-              cursor: "pointer",
-              width: "32px",
-              height: "32px",
-            }}
-            onClick={clearResultHandler}
-          />
+          <div className={styles.icon}>
+            <RiCloseLine
+              color={Colors.FAILED_COLOR}
+              onClick={clearResultHandler}
+            />
+          </div>
         )}
       </div>
       {showResult && (

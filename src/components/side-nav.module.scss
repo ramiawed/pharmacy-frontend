@@ -9,10 +9,10 @@
 
   padding: 5px 20px;
   margin-block-end: 4px;
-  
+
   font-family: $font3;
   font-size: 1.2rem;
-  
+
   cursor: pointer;
 
   transition: all 0.2s;
@@ -23,7 +23,6 @@
 .link.selected:hover {
   background: $third-color;
   color: $white-color;
-  
+
   border-radius: 6px;
 }
-

@@ -33,22 +33,27 @@ import OffersModal from "../../components/offers-modal/offers-modal.component";
 import InputFileImage from "../../components/input-file-image/input-file-image.component";
 import Button from "../../components/button/button.component";
 import Loader from "../../components/action-loader/action-loader.component";
+import Icon from "../../components/action-icon/action-icon.component";
 
-// constants and utile
+// constants and utils
 import { getIcon } from "../../utils/icons";
 import { Colors, UserTypeConstants, BASEURL } from "../../utils/constants";
+
+// icons
 import { MdLocalOffer } from "react-icons/md";
+import { RiRefreshLine } from "react-icons/ri";
 
 // styles
 import generalStyles from "../../style.module.scss";
 import styles from "./item-page.module.scss";
 import rowStyles from "../../components/row.module.scss";
-import { RiRefreshLine } from "react-icons/ri";
-import Icon from "../../components/action-icon/action-icon.component";
+import { IoMdArrowRoundBack } from "react-icons/io";
+import Modal from "../../components/modal/modal.component";
 
 function ItemPage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
   const history = useHistory();
 
   const location = useLocation();
@@ -69,7 +74,10 @@ function ItemPage() {
   const [showOfferModal, setShowOfferModal] = useState(false);
   const [selectedWarehouseId, setSelectedWarehouseId] = useState("");
   const [allowEdit, setAllowEdit] = useState(false);
+  const [showUpdateConfirmModal, setShowUpdateConfirmModal] = useState(false);
+  const [loadingItem, setLoadingItem] = useState("idle");
   const [itemError, setItemError] = useState({});
+
   const [item, setItem] = useState({
     name: "",
     caliber: "",
@@ -160,13 +168,18 @@ function ItemPage() {
         };
         // dispatch update item
         dispatch(updateItem({ obj, token }))
-          .then(() => {})
-          .catch(() => {});
+          .then(() => {
+            setShowUpdateConfirmModal(false);
+          })
+          .catch(() => {
+            setShowUpdateConfirmModal(false);
+          });
       }
     } else {
       setItemError({
         ...errorObj,
       });
+      setShowUpdateConfirmModal(false);
     }
   };
 
@@ -215,6 +228,7 @@ function ItemPage() {
   };
 
   const getItemFromDB = useCallback(() => {
+    setLoadingItem("loading");
     axios
       .get(`${BASEURL}/items/item/${itemId}`, {
         headers: {
@@ -223,6 +237,10 @@ function ItemPage() {
       })
       .then((response) => {
         setItem(response.data.data.item);
+        setLoadingItem("idle");
+      })
+      .catch((err) => {
+        setLoadingItem("idle");
       });
   });
 
@@ -289,6 +307,15 @@ function ItemPage() {
                 window.scrollTo(0, 0);
               }
             }}
+          />
+
+          <Icon
+            tooltip={t("go-back")}
+            onclick={() => {
+              history.goBack();
+            }}
+            icon={() => <IoMdArrowRoundBack />}
+            foreColor={Colors.SECONDARY_COLOR}
           />
         </div>
 
@@ -524,7 +551,7 @@ function ItemPage() {
             <Button
               text={type === "info" ? t("update-item") : t("add-item")}
               bgColor={Colors.SUCCEEDED_COLOR}
-              action={handleAddUpdateItem}
+              action={() => setShowUpdateConfirmModal(true)}
             />
           </div>
         )}
@@ -563,6 +590,9 @@ function ItemPage() {
 
       {addToWarehouseStatus === "loading" && <Loader allowCancel={false} />}
       {removeFromWarehouseStatus === "loading" && (
+        <Loader allowCancel={false} />
+      )}
+      {(updateStatus === "loading" || loadingItem === "loading") && (
         <Loader allowCancel={false} />
       )}
 
@@ -610,6 +640,25 @@ function ItemPage() {
           }}
           afterUpdateOffer={getItemFromDB}
         />
+      )}
+
+      {showUpdateConfirmModal && (
+        <Modal
+          header={type === "info" ? "update-item" : "add-item"}
+          cancelLabel="cancel-label"
+          okLabel="ok-label"
+          closeModal={() => {
+            setShowUpdateConfirmModal(false);
+          }}
+          small={true}
+          okModal={handleAddUpdateItem}
+        >
+          {type === "info" ? (
+            <p>{t("update-item-confirm-msg")}</p>
+          ) : (
+            <p>{t("add-item-confirm-msg")}</p>
+          )}
+        </Modal>
       )}
     </>
   ) : (

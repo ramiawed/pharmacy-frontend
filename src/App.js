@@ -1,26 +1,34 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Route, Switch } from "react-router-dom";
+import { Detector } from "react-detect-offline";
 
+// components
 import MainPage from "./pages/main-page/main-page.component";
-import styles from "./app.module.scss";
 import ApprovePage from "./pages/approve-page/approve-page.component";
 import SignInPage from "./pages/sign-in-page/sign-in-page.component";
 import SignUpPage from "./pages/sign-up-page/sign-up-page.component";
+import Toast from "./components/toast/toast.component";
 
+// redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeOnlineStatus,
   resetOnlineMsg,
   selectOnlineMsg,
 } from "./redux/online/onlineSlice";
-import Toast from "./components/toast/toast.component";
-import { Colors } from "./utils/constants";
-import { Detector } from "react-detect-offline";
+
+// icons
 import { RiWifiOffLine } from "react-icons/ri";
+
+// constants
+import { Colors } from "./utils/constants";
 
 // styles
 import generalStyles from "./style.module.scss";
+import styles from "./app.module.scss";
+
+// slicker
 import "./slicker.scss";
 
 function App() {

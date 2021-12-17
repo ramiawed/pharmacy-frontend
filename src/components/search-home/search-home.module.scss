@@ -35,13 +35,14 @@
 
   display: flex;
   align-items: center;
+  justify-content: center;
 
   background-color: rgba($color: $white-color, $alpha: 1);
 
   border: 1px solid $secondary-color;
   border-radius: 12px;
 
-  padding: 10px 20px;
+  padding: 10px;
 }
 
 .search_div.has_value {
@@ -49,17 +50,29 @@
   border-radius: 12px 12px 0 0;
 }
 
+
+
 .input {
   background-color: transparent;
+
   flex: 1;
+
   border: none;
   outline: none;
 
   padding: 0 20px;
 
-  font-size: 1.2rem;
+  // font-size: 1.2rem;
 
   color: $secondary-color;
+}
+
+.icon {
+  font-size: 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .options {

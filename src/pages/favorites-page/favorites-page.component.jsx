@@ -68,9 +68,11 @@ function FavoritesPage({ onSelectedChange }) {
       <Header>
         <h2>{t("favorites")}</h2>
         <div
-          className={[generalStyles.actions, generalStyles.margin_v_4].join(
-            " "
-          )}
+          style={{
+            position: "absolute",
+            top: "16px",
+            left: "42px",
+          }}
         >
           <Icon
             selected={false}

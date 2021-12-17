@@ -132,6 +132,13 @@ function ItemExcelPage() {
           };
         }
 
+        if (!d.barcode) {
+          obj = {
+            ...obj,
+            barcode: "",
+          };
+        }
+
         return obj;
       });
 
@@ -362,42 +369,12 @@ function ItemExcelPage() {
         {items.length > 0 ? (
           <>
             <label>
-              <span
-                style={{
-                  fontSize: "0.7rem",
-                }}
-              >
-                {t("file-name")}:
-              </span>
-              <span
-                style={{
-                  border: `1px solid ${Colors.SECONDARY_COLOR}`,
-                  borderRadius: "6px",
-                  padding: "4px",
-                  marginInline: "4px",
-                }}
-              >
-                {fileName}
-              </span>
+              <span className={styles.label}>{t("file-name")}:</span>
+              <span className={styles.value}>{fileName}</span>
             </label>
             <label>
-              <span
-                style={{
-                  fontSize: "0.7rem",
-                }}
-              >
-                {t("items-count")}:
-              </span>
-              <span
-                style={{
-                  border: `1px solid ${Colors.SECONDARY_COLOR}`,
-                  borderRadius: "6px",
-                  padding: "4px",
-                  marginInline: "4px",
-                }}
-              >
-                {items.length}
-              </span>
+              <span className={styles.label}>{t("items-count")}:</span>
+              <span className={styles.value}>{items.length}</span>
             </label>
 
             <div

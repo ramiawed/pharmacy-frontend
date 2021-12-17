@@ -57,7 +57,7 @@ function ItemsPageHeader({
           <p
             className={[
               generalStyles.center,
-              generalStyles.fc_yellow,
+              generalStyles.fc_secondary,
               generalStyles.margin_v_4,
             ].join(" ")}
           >
@@ -76,7 +76,7 @@ function ItemsPageHeader({
           <p
             className={[
               generalStyles.center,
-              generalStyles.fc_yellow,
+              generalStyles.fc_secondary,
               generalStyles.margin_v_4,
             ].join(" ")}
           >

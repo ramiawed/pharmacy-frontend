@@ -187,7 +187,7 @@ function ItemsPage({ onSelectedChange }) {
 
       {count === 0 && status !== "loading" && (
         <>
-          <NoContent msg={t("no-items-found")} />
+          <NoContent msg={t("no-medicines")} />
         </>
       )}
 

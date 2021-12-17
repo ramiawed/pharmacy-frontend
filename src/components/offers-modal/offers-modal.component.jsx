@@ -126,7 +126,7 @@ function OffersModal({
   return (
     <Modal
       header="nav-offers"
-      cancelLabel="cancel-label"
+      cancelLabel="close-label"
       okLabel="add-label"
       closeModal={close}
       okModal={

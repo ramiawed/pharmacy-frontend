@@ -20,18 +20,15 @@
   margin: 8px;
 }
 
-.button {
-  padding: 8px 12px;
-  margin: 0 8px;
+.label {
+  font-size: 0.7rem;
+}
 
-  background-color: $green-color;
-  color: $white-color;
-
-  border: none;
-  outline: none;
+.value {
+  border: 1px solid $secondary-color;
   border-radius: 6px;
-
-  cursor: pointer;
+  padding: 4px;
+  margin-inline: 4px;
 }
 
 .loading {
@@ -44,25 +41,6 @@
   align-items: center;
 }
 
-.toTop {
-  position: fixed;
-  left: 50px;
-  bottom: 30px;
-
-  font-size: 2rem;
-
-  color: $secondary-color;
-  opacity: 0.9;
-
-  cursor: pointer;
-
-  transition: all 0.3s;
-}
-
-.toTop:hover {
-  opacity: 1;
-  transform: scale(1.1);
-}
 
 .excel_icon {
   display: flex;

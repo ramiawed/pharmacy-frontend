@@ -93,6 +93,16 @@ function ItemExcelRow({ item, index, onchange, onDelete, onSelectedChanged }) {
         />
       </div>
 
+      <div className={tableStyles.label_medium}>
+        <input
+          className={rowStyles.input}
+          id="barcode"
+          type="text"
+          value={item.barcode}
+          onChange={(e) => onchange(e, index)}
+        />
+      </div>
+
       <div className={tableStyles.label_large}>
         <input
           className={rowStyles.input}

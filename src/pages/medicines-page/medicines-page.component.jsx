@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect, useHistory, useLocation } from "react-router";
 import ReactLoading from "react-loading";
@@ -13,6 +13,7 @@ import MedicinesTableHeader from "../../components/medicines-table-header/medici
 import NoContent from "../../components/no-content/no-content.component";
 import Button from "../../components/button/button.component";
 import Icon from "../../components/action-icon/action-icon.component";
+import MedicinesSearchString from "../../components/medicines-search-string/medicines-search-string.component";
 
 // react-icons
 import { FaSearch, FaListUl } from "react-icons/fa";
@@ -25,8 +26,16 @@ import { selectUserData } from "../../redux/auth/authSlice";
 import { selectFavoritesItems } from "../../redux/favorites/favoritesSlice.js";
 import {
   getMedicines,
-  resetMedicines,
   selectMedicines,
+  cancelOperation,
+  setSearchName,
+  setSearchCompanyName,
+  setSearchWarehouseName,
+  setSearchInWarehouse,
+  setSearchOutWarehouse,
+  setCity,
+  setDisplayType,
+  resetMedicinesArray,
 } from "../../redux/medicines/medicinesSlices";
 
 // styles
@@ -36,94 +45,58 @@ import searchContainerStyles from "../../components/search-container/search-cont
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
 
+let timer = null;
+
 function MedicinesPage({ onSelectedChange }) {
   const { t } = useTranslation();
-  const history = useHistory();
-  const location = useLocation();
-  const { companyId, warehouseId } = location.state;
 
   const dispatch = useDispatch();
 
   // selectors
   const { token, user } = useSelector(selectUserData);
-  const { medicines, count, status } = useSelector(selectMedicines);
+  const { medicines, count, status, pageState } = useSelector(selectMedicines);
   const favoritesItems = useSelector(selectFavoritesItems);
 
   // own state
-  // expanded state for expandable container
-  const [searchName, setSearchName] = useState("");
-  const [searchCompanyName, setSearchCompanyName] = useState("");
-  const [searchWarehouseName, setSearchWarehouseName] = useState("");
-  const [displayType, setDisplayType] = useState("list");
   const [showFavorites, setShowFavorites] = useState(false);
-  const [isInWarehouse, setIsInWarehouse] = useState(
-    user.type === UserTypeConstants.PHARMACY
-  );
-  const [isOutWarehouse, setIsOutWarehouse] = useState(false);
-
-  // if companies doesn't contains any info set the page to 1
-  // if companies have an info set the page to the next page
-  const [page, setPage] = useState(
-    medicines.length === 0 ? 1 : Math.ceil(medicines.length / 9) + 1
-  );
 
   // handle search
-  const handleSearch = (page, reset) => {
-    // build the query string
-    const queryString = {};
-
-    if (companyId) {
-      queryString.companyId = companyId;
-    }
-
-    if (warehouseId) {
-      queryString.warehouseId = warehouseId;
-    }
-
-    // queryString.companyId = companyId;
-    queryString.page = page;
-
-    if (searchName.trim().length !== 0) {
-      queryString.name = searchName;
-    }
-
-    if (searchCompanyName.trim().length !== 0) {
-      queryString.searchCompanyName = searchCompanyName;
-    }
-
-    if (searchWarehouseName.trim().length !== 0) {
-      queryString.searchWarehouseName = searchWarehouseName;
-    }
-
-    if (isInWarehouse) {
-      queryString.searchInWarehouse = isInWarehouse;
-    }
-
-    if (isOutWarehouse) {
-      queryString.searchOutWarehouse = isOutWarehouse;
-    }
-
+  const handleSearch = () => {
     if (user.type === UserTypeConstants.PHARMACY) {
-      queryString.city = user.city;
+      dispatch(setCity(user.city));
+    } else {
+      dispatch(setCity(""));
     }
 
-    dispatch(getMedicines({ queryString, token }));
-    setPage(reset ? 1 : page + 1);
-    setPage(page + 1);
+    dispatch(getMedicines({ token }));
   };
 
   const handleMoreResult = () => {
-    handleSearch(page, false);
+    handleSearch();
   };
 
   const handleEnterPress = () => {
-    dispatch(resetMedicines());
-    handleSearch(1, true);
+    dispatch(resetMedicinesArray());
+    handleSearch();
+  };
+
+  const keyUpHandler = () => {
+    cancelOperation();
+
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    timer = setTimeout(() => {
+      dispatch(resetMedicinesArray());
+
+      handleSearch();
+    }, 200);
   };
 
   useEffect(() => {
     if (medicines.length === 0) {
-      handleSearch(1);
+      handleSearch();
     }
 
     onSelectedChange();
@@ -138,68 +111,76 @@ function MedicinesPage({ onSelectedChange }) {
           {t("nav-medicines")} <span>{count}</span>
         </h2>
 
+        <MedicinesSearchString pageState={pageState} user={user} />
+
         <div style={{ position: "relative", height: "50px" }}>
           <SearchContainer searchAction={handleEnterPress}>
             <SearchInput
               label="user-name"
               id="search-name"
               type="text"
-              value={searchName}
+              value={pageState.searchName}
               onchange={(e) => {
-                setSearchName(e.target.value);
+                dispatch(setSearchName(e.target.value));
               }}
               icon={<FaSearch />}
               placeholder="search"
               onEnterPress={handleEnterPress}
               resetField={() => {
-                setSearchName("");
+                dispatch(setSearchName(""));
               }}
+              onkeyup={keyUpHandler}
             />
-            {user.type !== UserTypeConstants.GUEST && companyId === null && (
+            {/* // {user.type !== UserTypeConstants.GUEST && companyId === null && ( */}
+            {user.type !== UserTypeConstants.GUEST && (
               <SearchInput
                 label="item-company"
                 id="item-company"
                 type="text"
-                value={searchCompanyName}
+                value={pageState.searchCompanyName}
                 onchange={(e) => {
-                  setSearchCompanyName(e.target.value);
+                  dispatch(setSearchCompanyName(e.target.value));
                 }}
                 icon={<FaSearch />}
                 placeholder="search"
                 onEnterPress={handleEnterPress}
                 resetField={() => {
-                  setSearchCompanyName("");
+                  dispatch(setSearchCompanyName(""));
                 }}
               />
             )}
 
-            {user.type !== UserTypeConstants.GUEST && warehouseId === null && (
+            {/* {user.type !== UserTypeConstants.GUEST && warehouseId === null && ( */}
+            {user.type !== UserTypeConstants.GUEST && (
               <SearchInput
                 label="item-warehouse"
                 id="item-warehouse"
                 type="text"
-                value={searchWarehouseName}
+                value={pageState.searchWarehouseName}
                 onchange={(e) => {
-                  setSearchWarehouseName(e.target.value);
+                  dispatch(setSearchWarehouseName(e.target.value));
                 }}
                 icon={<FaSearch />}
                 placeholder="search"
                 onEnterPress={handleEnterPress}
                 resetField={() => {
-                  setSearchWarehouseName("");
+                  dispatch(setSearchWarehouseName(""));
                 }}
               />
             )}
 
-            {user.type !== UserTypeConstants.GUEST && warehouseId === null && (
+            {/* {user.type !== UserTypeConstants.GUEST && warehouseId === null && ( */}
+            {user.type !== UserTypeConstants.GUEST && (
               <div className={searchContainerStyles.checkbox_div}>
                 <input
                   type="checkbox"
-                  value={isInWarehouse}
-                  checked={isInWarehouse}
+                  value={pageState.searchInWarehouse}
+                  checked={pageState.searchInWarehouse}
                   onChange={() => {
-                    setIsInWarehouse(!isInWarehouse);
-                    setIsOutWarehouse(false);
+                    dispatch(
+                      setSearchInWarehouse(!pageState.searchInWarehouse)
+                    );
+                    dispatch(setSearchOutWarehouse(false));
                   }}
                 />
                 {user.type === UserTypeConstants.WAREHOUSE && (
@@ -211,15 +192,18 @@ function MedicinesPage({ onSelectedChange }) {
               </div>
             )}
 
-            {user.type !== UserTypeConstants.GUEST && warehouseId === null && (
+            {/* {user.type !== UserTypeConstants.GUEST && warehouseId === null && ( */}
+            {user.type !== UserTypeConstants.GUEST && (
               <div className={searchContainerStyles.checkbox_div}>
                 <input
                   type="checkbox"
-                  value={isOutWarehouse}
-                  checked={isOutWarehouse}
+                  value={pageState.searchOutWarehouse}
+                  checked={pageState.searchOutWarehouse}
                   onChange={() => {
-                    setIsOutWarehouse(!isOutWarehouse);
-                    setIsInWarehouse(false);
+                    dispatch(
+                      setSearchOutWarehouse(!pageState.searchOutWarehouse)
+                    );
+                    dispatch(setSearchInWarehouse(false));
                   }}
                 />
                 {user.type === UserTypeConstants.WAREHOUSE && (
@@ -275,37 +259,37 @@ function MedicinesPage({ onSelectedChange }) {
           <Icon
             icon={() => <AiFillAppstore />}
             foreColor={
-              displayType === "card"
+              pageState.displayType === "card"
                 ? Colors.SUCCEEDED_COLOR
                 : Colors.SECONDARY_COLOR
             }
             tooltip={t("show-item-as-card-tooltip")}
-            onclick={() => setDisplayType("card")}
+            onclick={() => dispatch(setDisplayType("card"))}
           />
 
           <Icon
             icon={() => <FaListUl />}
             foreColor={
-              displayType === "list"
+              pageState.displayType === "list"
                 ? Colors.SUCCEEDED_COLOR
                 : Colors.SECONDARY_COLOR
             }
             tooltip={t("show-item-as-row-tooltip")}
-            onclick={() => setDisplayType("list")}
+            onclick={() => dispatch(setDisplayType("list"))}
           />
         </div>
       </Header>
 
-      {count > 0 && displayType === "list" && (
+      {count > 0 && pageState.displayType === "list" && (
         <MedicinesTableHeader user={user} />
       )}
 
-      {displayType === "list" &&
+      {pageState.displayType === "list" &&
         medicines.map((medicine) => (
           <ItemRow key={medicine._id} item={medicine} />
         ))}
 
-      {displayType === "card" && (
+      {pageState.displayType === "card" && (
         <div
           className={[
             generalStyles.flex_container,
@@ -345,8 +329,6 @@ function MedicinesPage({ onSelectedChange }) {
           {t("no-more")}
         </p>
       )}
-
-      {/* {status === "loading" && <Loader allowCancel={false} />} */}
     </div>
   ) : (
     <Redirect to="/signin" />

@@ -1,0 +1,20 @@
+@import '../../variables.scss';
+
+.div_search_str {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 4px;
+}
+
+.div_search_str .label {
+  font-size: 0.6rem;
+  color: $white-color;
+}
+
+.div_search_str .value {
+  font-size: 0.7rem;
+  color: $secondary-color;
+  margin-inline: 4px;
+}

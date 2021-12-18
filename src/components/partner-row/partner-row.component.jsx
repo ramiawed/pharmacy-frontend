@@ -27,7 +27,11 @@ import {
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
 import { selectSettings } from "../../redux/settings/settingsSlice";
-import { resetMedicines } from "../../redux/medicines/medicinesSlices";
+import {
+  resetMedicines,
+  setSearchCompanyName,
+  setSearchWarehouseName,
+} from "../../redux/medicines/medicinesSlices";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -118,6 +122,13 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
       );
     }
     dispatch(resetMedicines());
+    if (partner.type === UserTypeConstants.COMPANY) {
+      dispatch(setSearchCompanyName(partner.name));
+    }
+
+    if (partner.type === UserTypeConstants.WAREHOUSE) {
+      dispatch(setSearchWarehouseName(partner.name));
+    }
   };
 
   return (
@@ -133,16 +144,16 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
             onClick={dispatchCompanySelectedHandler}
             to={{
               pathname: `/medicines`,
-              state: {
-                companyId:
-                  partner.type === UserTypeConstants.COMPANY
-                    ? partner._id
-                    : null,
-                warehouseId:
-                  partner.type === UserTypeConstants.WAREHOUSE
-                    ? partner._id
-                    : null,
-              },
+              // state: {
+              //   companyId:
+              //     partner.type === UserTypeConstants.COMPANY
+              //       ? partner._id
+              //       : null,
+              //   warehouseId:
+              //     partner.type === UserTypeConstants.WAREHOUSE
+              //       ? partner._id
+              //       : null,
+              // },
             }}
             className={[
               rowStyles.hover_underline,

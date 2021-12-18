@@ -13,6 +13,7 @@ function SearchInput({
   placeholder,
   onEnterPress,
   resetField,
+  onkeyup,
 }) {
   const { t } = useTranslation();
 
@@ -35,6 +36,7 @@ function SearchInput({
         value={value}
         onChange={onchange}
         onKeyPress={handleKeyPress}
+        onKeyUp={onkeyup && onkeyup}
       />
       {resetField && value && (
         <AiFillCloseCircle

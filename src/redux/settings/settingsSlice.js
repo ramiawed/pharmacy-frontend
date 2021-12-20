@@ -17,6 +17,12 @@ const initialState = {
       description: "company section two description",
       order: 1,
     },
+    warehousesSectionOne: {
+      show: true,
+      title: "warehouse section one title",
+      description: "warehouse section one description",
+      order: 1,
+    },
     itemsSectionOne: {
       show: true,
       title: "item section one title",
@@ -35,6 +41,7 @@ const initialState = {
       description: "item section three description",
       order: 1,
     },
+    showAdvertisements: false,
     showWarehouseItem: false,
     saveOrders: false,
   },
@@ -61,7 +68,6 @@ export const getAllSettings = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      console.log(err);
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }
@@ -138,6 +144,12 @@ export const settingsSlice = createSlice({
           description: "company section two description",
           order: 1,
         },
+        warehousesSectionOne: {
+          show: true,
+          title: "warehouse section one title",
+          description: "warehouse section one description",
+          order: 1,
+        },
         itemsSectionOne: {
           show: true,
           title: "item section one title",
@@ -172,6 +184,12 @@ export const settingsSlice = createSlice({
           show: true,
           title: "company section two title",
           description: "company section two description",
+          order: 1,
+        },
+        warehousesSectionOne: {
+          show: true,
+          title: "warehouse section one title",
+          description: "warehouse section one description",
           order: 1,
         },
         itemsSectionOne: {

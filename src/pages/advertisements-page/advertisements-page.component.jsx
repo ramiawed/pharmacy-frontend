@@ -40,12 +40,16 @@ function AdvertisementsPage({ onSelectedChange }) {
     <>
       <div className={generalStyles.container}>
         <AdvertisementPageHeader isNew={isNew} setIsNew={setIsNew} />
+
         <NewAdvertisement isNew={isNew} setIsNew={setIsNew} />
+
         {advertisements.map((adv) => (
           <AdvertisementCard advertisement={adv} key={adv._id} />
         ))}
       </div>
+
       {status === "loading" && <Loader />}
+
       {error && (
         <Toast
           bgColor={Colors.FAILED_COLOR}

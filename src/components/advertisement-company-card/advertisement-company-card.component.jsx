@@ -20,7 +20,11 @@ import {
   statisticsCompanySelected,
   statisticsUserFavorites,
 } from "../../redux/statistics/statisticsSlice";
-import { resetMedicines } from "../../redux/medicines/medicinesSlices";
+import {
+  resetMedicines,
+  setSearchCompanyName,
+  setSearchWarehouseName,
+} from "../../redux/medicines/medicinesSlices";
 import {
   changeOnlineMsg,
   selectOnlineStatus,
@@ -119,6 +123,13 @@ function AdvertisementCompanyCard({ user, contentColor }) {
       );
     }
     dispatch(resetMedicines());
+    if (user.type === UserTypeConstants.COMPANY) {
+      dispatch(setSearchCompanyName(user.name));
+    }
+
+    if (user.type === UserTypeConstants.WAREHOUSE) {
+      dispatch(setSearchWarehouseName(user.name));
+    }
   };
 
   return (

@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { Redirect } from "react-router-dom";
 
 // components
-import Introduction from "../../components/introduction/introduction.component";
 import SectionHomePage from "../../components/section-home-page/section-home-page.component";
 import Loader from "../../components/loader/loader.component";
 import SearchHome from "../../components/search-home/search-home.component";
@@ -50,6 +49,26 @@ function HomePage({ onSelectedChange }) {
 
   // selectors
   const { user, token } = useSelector(selectUserData);
+  // const {
+  //   settings: {
+  //     companiesSectionOne: { show: companiesSectionOneShow },
+  //     companiesSectionTwo: { show: companiesSectionTwoShow },
+  //     warehousesSectionOne: { show: warehousesSectionOneShow },
+  //     itemsSectionOne: { show: itemsSectionOneShow },
+  //     itemsSectionTwo: { show: itemsSectionTwoShow },
+  //     itemsSectionThree: { show: itemsSectionThreeShow },
+  //   },
+  // } = useSelector(selectSettings);
+
+  // const {
+  //   companiesSectionOne: { show: companiesSectionOneShow },
+  //   companiesSectionTwo: { show: companiesSectionTwoShow },
+  //   warehousesSectionOne: { show: warehousesSectionOneShow },
+  //   itemsSectionOne: { show: itemsSectionOneShow },
+  //   itemsSectionTwo: { show: itemsSectionTwoShow },
+  //   itemsSectionThree: { show: itemsSectionThreeShow },
+  // } = useSelector(selectSettings);
+
   const { companiesSectionOne, companiesSectionOneStatus } = useSelector(
     selectCompaniesSectionOne
   );
@@ -73,12 +92,21 @@ function HomePage({ onSelectedChange }) {
   const { settings } = useSelector(selectSettings);
 
   useEffect(() => {
-    dispatch(getCompaniesSectionOne({ token }));
-    dispatch(getCompaniesSectionTwo({ token }));
-    dispatch(getWarehousesSectionOne({ token }));
-    dispatch(getItemsSectionOne({ token }));
-    dispatch(getItemsSectionTwo({ token }));
-    dispatch(getItemsSectionThree({ token }));
+    if (settings.companiesSectionOne.show)
+      dispatch(getCompaniesSectionOne({ token }));
+
+    if (settings.companiesSectionTwo.show)
+      dispatch(getCompaniesSectionTwo({ token }));
+
+    if (settings.warehousesSectionOne.show)
+      dispatch(getWarehousesSectionOne({ token }));
+
+    if (settings.itemsSectionOne.show) dispatch(getItemsSectionOne({ token }));
+
+    if (settings.itemsSectionTwo.show) dispatch(getItemsSectionTwo({ token }));
+
+    if (settings.itemsSectionThree.show)
+      dispatch(getItemsSectionThree({ token }));
     dispatch(getAllAdvertisements({ token }));
 
     onSelectedChange();
@@ -87,24 +115,26 @@ function HomePage({ onSelectedChange }) {
   return user ? (
     <div>
       <SearchHome />
-      {/* <Introduction /> */}
-      <AdvertisementHomePage data={advertisements} />
+
+      {settings.showAdvertisements && (
+        <AdvertisementHomePage data={advertisements} />
+      )}
+
+      {settings.companiesSectionOne.show &&
+        companiesSectionOneStatus === "loading" && (
+          <div
+            className={styles.container}
+            style={{
+              background: "#1a535c",
+              order: settings.companiesSectionOne?.order,
+            }}
+          >
+            <Loader color="#fff" />
+          </div>
+        )}
 
       <div className={styles.advertisement_container}>
-        {settings.companiesSectionOne?.show &&
-          companiesSectionOneStatus === "loading" && (
-            <div
-              className={styles.container}
-              style={{
-                background: "#1a535c",
-                order: settings.companiesSectionOne?.order,
-              }}
-            >
-              <Loader color="#fff" />
-            </div>
-          )}
-
-        {settings.companiesSectionOne?.show &&
+        {settings.companiesSectionOne.show &&
           companiesSectionOne.length > 0 && (
             <SectionHomePage
               data={companiesSectionOne}
@@ -118,13 +148,13 @@ function HomePage({ onSelectedChange }) {
             />
           )}
 
-        {settings.companiesSectionTwo?.show &&
+        {settings.companiesSectionTwo.show &&
           companiesSectionTwoStatus === "loading" && (
             <div
               className={styles.container}
               style={{
                 background: "#6D597A",
-                order: settings.companiesSectionTwo?.order,
+                order: settings.companiesSectionTwo.order,
               }}
             >
               <Loader color="#fff" />

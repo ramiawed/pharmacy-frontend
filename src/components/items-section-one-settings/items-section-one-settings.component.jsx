@@ -8,7 +8,6 @@ import Toast from "../toast/toast.component";
 import SettingRow from "../setting-row/setting-row.component";
 import SettingSectionHeader from "../setting-section-header/setting-section-header.component";
 import Loader from "../loader/loader.component";
-import { default as ActionLoader } from "../action-loader/action-loader.component";
 
 // redux stuff
 import { useSelector, useDispatch } from "react-redux";
@@ -50,7 +49,6 @@ function ItemsSectionOneSettings() {
     settings: {
       itemsSectionOne: { show, title, description, order, titleRight },
     },
-    status,
   } = useSelector(selectSettings);
 
   const [showChooseModal, setShowChooseModal] = useState(false);
@@ -110,8 +108,6 @@ function ItemsSectionOneSettings() {
           url={`${BASEURL}/items?limit=9&isActive=true&inSectionOne=false`}
         />
       )}
-
-      {status === "loading" && <ActionLoader />}
 
       {addItemToSectionOneStatus === "succeeded" && (
         <Toast

@@ -148,7 +148,6 @@ export const advertisementsSlice = createSlice({
     },
     [addAdvertisement.fulfilled]: (state, action) => {
       state.status = "succeeded";
-      console.log(action.payload);
       state.advertisements = [
         ...state.advertisements,
         action.payload.data.advertisement,
@@ -162,7 +161,6 @@ export const advertisementsSlice = createSlice({
     },
     [deleteAdvertisement.fulfilled]: (state, action) => {
       state.status = "succeeded";
-      console.log(action);
       state.advertisements = state.advertisements.filter(
         (adv) => adv._id !== action.payload.data.advertisement._id
       );

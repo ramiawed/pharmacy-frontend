@@ -4,6 +4,11 @@ import { useTranslation } from "react-i18next";
 // components
 import Icon from "../action-icon/action-icon.component";
 
+// redux stuff
+import { useDispatch, useSelector } from "react-redux";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { selectToken } from "../../redux/auth/authSlice";
+
 // icons
 import { AiFillCloseCircle, AiFillEdit } from "react-icons/ai";
 import { IoCheckmarkDoneCircle } from "react-icons/io5";
@@ -14,9 +19,6 @@ import styles from "./setting-section-header.module.scss";
 
 // constants and utils
 import { Colors } from "../../utils/constants";
-import { useDispatch, useSelector } from "react-redux";
-import { unwrapResult } from "@reduxjs/toolkit";
-import { selectToken } from "../../redux/auth/authSlice";
 
 function SettingSectionHeader({
   show,
@@ -142,7 +144,7 @@ function SettingSectionHeader({
           justifyContent: "start",
         }}
       >
-        <label style={{ minWidth: "100px" }}>عنوان القسم</label>
+        <label className={styles.label}>عنوان القسم</label>
         {edit ? (
           <input
             className={[styles.input, titleError ? styles.error : ""].join(" ")}
@@ -165,7 +167,7 @@ function SettingSectionHeader({
           justifyContent: "start",
         }}
       >
-        <label style={{ minWidth: "100px" }}>وصف القسم</label>
+        <label className={styles.label}>وصف القسم</label>
         {edit ? (
           <input
             className={[styles.input].join(" ")}
@@ -188,7 +190,7 @@ function SettingSectionHeader({
           justifyContent: "start",
         }}
       >
-        <label style={{ minWidth: "100px" }}>ترتيب القسم</label>
+        <label className={styles.label}>ترتيب القسم</label>
         {edit ? (
           <input
             type="number"
@@ -220,7 +222,7 @@ function SettingSectionHeader({
           disabled={!edit}
           onChange={() => setShowState(!showState)}
         />
-        <label style={{ padding: "0 10px" }}>{t(checkboxLabel)}</label>
+        <label className={styles.checkbox_label}>{t(checkboxLabel)}</label>
       </div>
 
       <div
@@ -239,7 +241,7 @@ function SettingSectionHeader({
           disabled={!edit}
           onChange={() => setTitleRightState(!titleRightState)}
         />
-        <label style={{ padding: "0 10px" }}>
+        <label className={styles.checkbox_label}>
           قسم العناوين موجود محاذاة طرف اليمين
         </label>
       </div>

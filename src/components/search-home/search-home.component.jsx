@@ -163,14 +163,14 @@ function SearchHome() {
 
   return (
     <div className={styles.container}>
-      <button
+      {/* <button
         onClick={() => {
           setTryBooom(true);
         }}
       >
         Click Me
       </button>
-      {tryBooom ? <Bomb /> : null}
+      {tryBooom ? <Bomb /> : null} */}
       <h3>{t("app-name")}</h3>
       <div
         className={[styles.options, generalStyles.flex_center_container].join(

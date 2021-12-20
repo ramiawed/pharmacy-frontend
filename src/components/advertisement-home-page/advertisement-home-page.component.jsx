@@ -1,14 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import Slider from "react-slick";
 import { selectUser } from "../../redux/auth/authSlice";
+import {
+  resetMedicines,
+  setSearchCompanyName,
+  setSearchWarehouseName,
+} from "../../redux/medicines/medicinesSlices";
 
 import styles from "./advertisement-home-page.module.scss";
 
 function AdvertisementHomePage({ data }) {
   const [width, setWidth] = useState(window.innerWidth);
+  const dispatch = useDispatch();
   const history = useHistory();
 
   const user = useSelector(selectUser);
@@ -39,24 +45,18 @@ function AdvertisementHomePage({ data }) {
   };
 
   const advertisementClickHandler = (d) => {
-    console.log(d);
+    dispatch(resetMedicines());
     if (d.warehouse && d.warehouse.allowShowingMedicines) {
+      dispatch(setSearchWarehouseName(d.warehouse.name));
       history.push({
         pathname: "/medicines",
-        state: {
-          companyId: null,
-          warehouseId: d.warehouse._id,
-        },
       });
     }
 
     if (d.company) {
+      dispatch(setSearchCompanyName(d.company.name));
       history.push({
         pathname: "/medicines",
-        state: {
-          companyId: d.company._id,
-          warehouseId: null,
-        },
       });
     }
 
@@ -75,7 +75,7 @@ function AdvertisementHomePage({ data }) {
     }
   };
 
-  return (
+  return data.length === 0 ? null : (
     <div className={styles.container}>
       <div className={styles.slicker}>
         <Slider {...settings}>

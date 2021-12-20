@@ -9,7 +9,6 @@ import Toast from "../toast/toast.component";
 import SettingRow from "../setting-row/setting-row.component";
 import SettingSectionHeader from "../setting-section-header/setting-section-header.component";
 import Loader from "../loader/loader.component";
-import { default as ActionLoader } from "../action-loader/action-loader.component";
 
 // redux stuff
 import { useSelector, useDispatch } from "react-redux";
@@ -50,7 +49,6 @@ function CompaniesSectionTwoSettings() {
     settings: {
       companiesSectionTwo: { show, title, description, order },
     },
-    status,
   } = useSelector(selectSettings);
 
   const [showChooseModal, setShowChooseModal] = useState(false);
@@ -108,8 +106,6 @@ function CompaniesSectionTwoSettings() {
           url={`${BASEURL}/users?limit=9&isActive=true&type=company&inSectionTwo=false`}
         />
       )}
-
-      {status === "loading" && <ActionLoader />}
 
       {addCompanyToSectionTwoStatus === "succeeded" && (
         <Toast

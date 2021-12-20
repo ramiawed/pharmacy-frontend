@@ -36,6 +36,7 @@ import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
+import { getFavorites } from "../../redux/favorites/favoritesSlice";
 
 // constants use for motion
 const containerVariant = {
@@ -171,8 +172,9 @@ function SignIn() {
       .then((result) => {
         dispatch(statisticsSignIn({ token: result.token }));
         dispatch(getAllSettings({ token: result.token }));
+        dispatch(getFavorites({ token: result.token }));
       })
-      .catch((err) => {});
+      .catch(() => {});
   };
 
   // handle enter press on input
@@ -280,7 +282,7 @@ function SignIn() {
         >
           <p>
             {t("forget-password-msg")}
-            {t("contact-us-through-whatsapp")}: ٠٠٩٦٩٣٢٣٤٥٢٥٣٠
+            {t("contact-us-through-whatsapp")}: {t("contact-phone-number")}
           </p>
         </Modal>
       )}

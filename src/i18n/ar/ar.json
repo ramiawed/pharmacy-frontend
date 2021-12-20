@@ -400,5 +400,7 @@
   "forget-password-msg": "في حال نسيت كلمة السر يرجى ",
   "error-msg": "حدث خطأ ما أثناء القيام بآخر عملية",
   "add-item-confirm-msg": "هل تريد إضافة الدواء؟",
-  "update-item-confirm-msg": "هل تريد تعديل الدواء؟"
+  "update-item-confirm-msg": "هل تريد تعديل الدواء؟",
+  "show-advertisement-on-home-page": "إظهار الإعلانات على الصفحة الرئيسية",
+  "contact-phone-number": "٠٠٩٦٣٩٣٢٤٥٢٥٣٠"
 }

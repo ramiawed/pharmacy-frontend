@@ -200,7 +200,6 @@ export const UserNotificationsSlice = createSlice({
     },
     [setNotificationRead.fulfilled]: (state, action) => {
       const { updatedNotification } = action.payload.data;
-      console.log(updatedNotification);
       state.status = "succeeded";
       const notifications = state.userNotifications.map((note) => {
         if (note._id === updatedNotification._id) return updatedNotification;

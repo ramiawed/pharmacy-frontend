@@ -73,8 +73,6 @@ export const getMedicines = createAsyncThunk(
         buildUrl = buildUrl + `&city=${pageState.city}`;
       }
 
-      console.log(buildUrl);
-
       const response = await axios.get(buildUrl, {
         timeout: 10000,
         cancelToken: source.token,

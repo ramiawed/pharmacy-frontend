@@ -32,9 +32,9 @@ function AdvertisementHomePage({ data }) {
 
   const settings = {
     dots: true,
-    infinite: data.length > 2,
+    infinite: true,
     speed: 300,
-    slidesToShow: 1,
+    slidesToShow: 2,
     slidesToScroll: 1,
     initialSlide: 1,
     autoplay: true,
@@ -42,6 +42,23 @@ function AdvertisementHomePage({ data }) {
     autoplaySpeed: 2000,
     cssEase: "linear",
     rtl: true,
+    responsive: [
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          initialSlide: 1,
+        },
+      },
+      {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
 
   const advertisementClickHandler = (d) => {

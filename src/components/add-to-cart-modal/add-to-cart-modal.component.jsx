@@ -217,7 +217,7 @@ function AddToCartModal({ item, close }) {
       </div>
       {/* </div> */}
 
-      {offer.offers.length > 0 &&
+      {offer?.offers.length > 0 &&
         offer.offers.map((o, index) => (
           <div className={styles.offer} key={index}>
             <p>

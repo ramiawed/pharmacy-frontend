@@ -265,6 +265,16 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
             isSmallFavorite ? styles.small_font : "",
           ].join(" ")}
         >
+          {item.company.name}
+        </label>
+
+        <label
+          className={[
+            styles.details,
+            styles.center,
+            isSmallFavorite ? styles.small_font : "",
+          ].join(" ")}
+        >
           {item.caliber}
         </label>
 

@@ -35,7 +35,7 @@ import generalStyles from "../../style.module.scss";
 import styles from "./advertisement-company-card.module.scss";
 
 // constants and utils
-import { UserTypeConstants } from "../../utils/constants.js";
+import { SERVER_URL, UserTypeConstants } from "../../utils/constants.js";
 
 function AdvertisementCompanyCard({ user, contentColor }) {
   const history = useHistory();
@@ -160,8 +160,8 @@ function AdvertisementCompanyCard({ user, contentColor }) {
         style={{
           backgroundImage:
             user.logo_url.length > 0
-              ? `url("http://localhost:8000/${user.logo_url}`
-              : `url("http://localhost:8000/default-logo.png`,
+              ? `url("${SERVER_URL}/${user.logo_url}")`
+              : `url("${SERVER_URL}/default-logo.png")`,
           backgroundPosition: "center",
           backgroundSize: "cover",
         }}

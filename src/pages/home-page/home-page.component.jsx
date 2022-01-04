@@ -49,25 +49,6 @@ function HomePage({ onSelectedChange }) {
 
   // selectors
   const { user, token } = useSelector(selectUserData);
-  // const {
-  //   settings: {
-  //     companiesSectionOne: { show: companiesSectionOneShow },
-  //     companiesSectionTwo: { show: companiesSectionTwoShow },
-  //     warehousesSectionOne: { show: warehousesSectionOneShow },
-  //     itemsSectionOne: { show: itemsSectionOneShow },
-  //     itemsSectionTwo: { show: itemsSectionTwoShow },
-  //     itemsSectionThree: { show: itemsSectionThreeShow },
-  //   },
-  // } = useSelector(selectSettings);
-
-  // const {
-  //   companiesSectionOne: { show: companiesSectionOneShow },
-  //   companiesSectionTwo: { show: companiesSectionTwoShow },
-  //   warehousesSectionOne: { show: warehousesSectionOneShow },
-  //   itemsSectionOne: { show: itemsSectionOneShow },
-  //   itemsSectionTwo: { show: itemsSectionTwoShow },
-  //   itemsSectionThree: { show: itemsSectionThreeShow },
-  // } = useSelector(selectSettings);
 
   const { companiesSectionOne, companiesSectionOneStatus } = useSelector(
     selectCompaniesSectionOne

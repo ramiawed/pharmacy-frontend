@@ -75,10 +75,11 @@
   align-items: center;
 
   width: 90%;
+  height: calc(100vh - 170px);
 
   text-align: center;
 
-  overflow: hidden;
+  overflow: scroll;
 }
 
 .side_nav_container button {

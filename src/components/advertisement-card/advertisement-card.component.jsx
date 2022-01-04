@@ -8,7 +8,7 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteAdvertisement } from "../../redux/advertisements/advertisementsSlice";
 import { selectToken } from "../../redux/auth/authSlice";
-import { Colors } from "../../utils/constants";
+import { Colors, SERVER_URL } from "../../utils/constants";
 import Modal from "../modal/modal.component";
 
 // styles
@@ -69,7 +69,7 @@ function AdvertisementCard({ advertisement }) {
           </div>
           <div className={styles.img}>
             <img
-              src={`http://localhost:8000/${advertisement.logo_url}`}
+              src={`${SERVER_URL}/${advertisement.logo_url}`}
               className={styles.image}
               alt="Thumb"
             />

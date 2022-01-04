@@ -154,20 +154,6 @@ function TopNav({ onSelectedChange, showTopNav }) {
               {/* <GiShoppingCart size={20} /> */}
             </Link>
           )}
-
-          {/* <p className={styles.link}>{user.name}</p>
-          <div
-            style={{
-              backgroundImage:
-                user.logo_url !== ""
-                  ? `url('http://localhost:8000/${user.logo_url}')`
-                  : 'url("http://localhost:8000/avatar01.png',
-              backgroundPosition: "center",
-              backgroundRepeat: "no-repeat",
-              backgroundSize: "contain",
-            }}
-            className={styles.profile_img}
-          ></div> */}
         </div>
       </div>
 
@@ -225,20 +211,6 @@ function TopNav({ onSelectedChange, showTopNav }) {
             {/* <GiShoppingCart size={20} /> */}
           </Link>
         )}
-
-        {/* <p className={styles.link}>{user.name}</p>
-        <div
-          style={{
-            backgroundImage:
-              user.logo_url !== ""
-                ? `url('http://localhost:8000/${user.logo_url}')`
-                : 'url("http://localhost:8000/avatar01.png',
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "contain",
-          }}
-          className={styles.profile_img}
-        ></div> */}
       </div>
     </>
   );

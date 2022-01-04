@@ -231,83 +231,86 @@ function SearchHome() {
         </div>
       </div>
 
-      <div
-        className={[styles.search_div, showResult ? styles.has_value : ""].join(
-          " "
-        )}
-      >
-        <div className={styles.icon}>
-          <FiSearch color={Colors.SECONDARY_COLOR} />
-        </div>
-        <input
-          className={styles.input}
-          type="text"
-          value={searchName}
-          onChange={(e) => {
-            setSearchName(e.target.value);
-          }}
-          placeholder={
-            option === "medicines"
-              ? t("search-by-item-name")
-              : option === "companies"
-              ? t("search-by-company-name")
-              : t("search-by-warehouse-name")
-          }
-          onKeyDown={keyDownHandler}
-          onKeyUp={keyUpHandler}
-        />
-        <Button
-          text={t("search")}
-          bgColor={Colors.FAILED_COLOR}
-          action={() => searchHandler(option)}
-        />
-
-        {showResult && (
+      <div className={styles.search_container}>
+        <div
+          className={[
+            styles.search_div,
+            showResult ? styles.has_value : "",
+          ].join(" ")}
+        >
           <div className={styles.icon}>
-            <RiCloseLine
-              color={Colors.FAILED_COLOR}
-              onClick={clearResultHandler}
-            />
+            <FiSearch color={Colors.SECONDARY_COLOR} />
           </div>
-        )}
-      </div>
-      {showResult && (
-        <div className={styles.result_div}>
-          {loading ? (
-            <ReactLoading
-              type="bars"
-              height={75}
-              width={75}
-              color={Colors.SECONDARY_COLOR}
-            />
-          ) : data.length > 0 ? (
-            data.map((d) =>
-              option === "medicines" ? (
-                <ItemRow key={d._id} item={d} isSearch={true} />
-              ) : (
-                <PartnerRow
-                  key={d._id}
-                  partner={d}
-                  isSearch={true}
-                  type={option === "companies" ? "company" : "warehouse"}
-                />
-              )
-            )
-          ) : (
-            <div
-              style={{
-                flex: 1,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-                color: Colors.SECONDARY_COLOR,
-              }}
-            >
-              <p>{t("no-data-found")}</p>
+          <input
+            className={styles.input}
+            type="text"
+            value={searchName}
+            onChange={(e) => {
+              setSearchName(e.target.value);
+            }}
+            placeholder={
+              option === "medicines"
+                ? t("search-by-item-name")
+                : option === "companies"
+                ? t("search-by-company-name")
+                : t("search-by-warehouse-name")
+            }
+            onKeyDown={keyDownHandler}
+            onKeyUp={keyUpHandler}
+          />
+          <Button
+            text={t("search")}
+            bgColor={Colors.FAILED_COLOR}
+            action={() => searchHandler(option)}
+          />
+
+          {showResult && (
+            <div className={styles.icon}>
+              <RiCloseLine
+                color={Colors.FAILED_COLOR}
+                onClick={clearResultHandler}
+              />
             </div>
           )}
         </div>
-      )}
+        {showResult && (
+          <div className={styles.result_div}>
+            {loading ? (
+              <ReactLoading
+                type="bars"
+                height={75}
+                width={75}
+                color={Colors.SECONDARY_COLOR}
+              />
+            ) : data.length > 0 ? (
+              data.map((d) =>
+                option === "medicines" ? (
+                  <ItemRow key={d._id} item={d} isSearch={true} />
+                ) : (
+                  <PartnerRow
+                    key={d._id}
+                    partner={d}
+                    isSearch={true}
+                    type={option === "companies" ? "company" : "warehouse"}
+                  />
+                )
+              )
+            ) : (
+              <div
+                style={{
+                  flex: 1,
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  color: Colors.SECONDARY_COLOR,
+                }}
+              >
+                <p>{t("no-data-found")}</p>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

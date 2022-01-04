@@ -9,6 +9,7 @@ import {
   setSearchCompanyName,
   setSearchWarehouseName,
 } from "../../redux/medicines/medicinesSlices";
+import { SERVER_URL } from "../../utils/constants";
 
 import styles from "./advertisement-home-page.module.scss";
 
@@ -100,11 +101,11 @@ function AdvertisementHomePage({ data }) {
             <div key={d._id}>
               <div className={styles.img}>
                 <img
-                  src={`http://localhost:8000/${d.logo_url}`}
+                  src={`${SERVER_URL}/${d.logo_url}`}
                   alt="Thumb"
                   style={{
                     width: "100%",
-                    height: "350px",
+                    height: "200px",
                     cursor: "pointer",
                   }}
                   onClick={() => {

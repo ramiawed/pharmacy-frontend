@@ -23,7 +23,7 @@ import Loader from "../action-loader/action-loader.component";
 import styles from "./cart-warehouse.module.scss";
 
 // constants
-import { Colors, OfferTypes } from "../../utils/constants";
+import { BASEURL, Colors, OfferTypes } from "../../utils/constants";
 import { selectSettings } from "../../redux/settings/settingsSlice";
 import { saveOrder, setRefresh } from "../../redux/orders/ordersSlice";
 
@@ -142,7 +142,7 @@ function CartWarehouse({ warehouse }) {
 
     axios
       .post(
-        "http://localhost:8000/api/v1/users/sendemail",
+        `${BASEURL}/users/sendemail`,
         { cartItems: cartItemsToSend },
         {
           timeout: 25000,

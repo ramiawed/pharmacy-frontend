@@ -223,7 +223,7 @@ export const favoritesSlice = createSlice({
   extraReducers: {
     [getFavorites.pending]: (state) => {
       state.status = "loading";
-      state.error = null;
+      state.error = "";
     },
     [getFavorites.fulfilled]: (state, action) => {
       state.status = "success";
@@ -231,7 +231,7 @@ export const favoritesSlice = createSlice({
         state.favorites_partners = action.payload.data.favorites.favorites;
         state.favorites_items = action.payload.data.favorites.favorites_items;
       }
-      state.error = null;
+      state.error = "";
     },
     [getFavorites.rejected]: (state, { payload }) => {
       state.status = "failed";
@@ -245,7 +245,7 @@ export const favoritesSlice = createSlice({
     },
     [addFavorite.pending]: (state) => {
       state.status = "loading";
-      state.error = null;
+      state.error = "";
     },
     [addFavorite.fulfilled]: (state, action) => {
       state.status = "success";
@@ -253,7 +253,7 @@ export const favoritesSlice = createSlice({
         ...state.favorites_partners,
         action.payload.data.favorite,
       ];
-      state.error = null;
+      state.error = "";
     },
     [addFavorite.rejected]: (state, { payload }) => {
       state.status = "failed";
@@ -267,7 +267,7 @@ export const favoritesSlice = createSlice({
     },
     [addFavoriteItem.pending]: (state) => {
       state.status = "loading";
-      state.error = null;
+      state.error = "";
     },
     [addFavoriteItem.fulfilled]: (state, action) => {
       state.status = "success";
@@ -275,7 +275,7 @@ export const favoritesSlice = createSlice({
         ...state.favorites_items,
         action.payload.data.favorite,
       ];
-      state.error = null;
+      state.error = "";
     },
     [addFavorite.rejected]: (state, { payload }) => {
       state.status = "failed";
@@ -289,14 +289,14 @@ export const favoritesSlice = createSlice({
     },
     [removeFavorite.pending]: (state) => {
       state.status = "loading";
-      state.error = null;
+      state.error = "";
     },
     [removeFavorite.fulfilled]: (state, action) => {
       state.status = "success";
       state.favorites_partners = state.favorites_partners.filter(
         (fa) => fa._id !== action.payload.data.favorite
       );
-      state.error = null;
+      state.error = "";
     },
     [removeFavorite.rejected]: (state, { payload }) => {
       state.status = "failed";
@@ -310,14 +310,14 @@ export const favoritesSlice = createSlice({
     },
     [removeFavoriteItem.pending]: (state, action) => {
       state.status = "loading";
-      state.error = null;
+      state.error = "";
     },
     [removeFavoriteItem.fulfilled]: (state, action) => {
       state.status = "success";
       state.favorites_items = state.favorites_items.filter(
         (fa) => fa._id !== action.payload.data.favorite
       );
-      state.error = null;
+      state.error = "";
     },
     [removeFavoriteItem.rejected]: (state, { payload }) => {
       state.status = "failed";
@@ -339,5 +339,6 @@ export const selectFavoritesPartners = (state) =>
   state.favorites.favorites_partners;
 export const selectFavoritesItems = (state) => state.favorites.favorites_items;
 export const selectFavorites = (state) => state.favorites;
+export const selectFavoritesError = (state) => state.favorites.error;
 
 export default favoritesSlice.reducer;

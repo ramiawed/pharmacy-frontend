@@ -25,7 +25,7 @@ import rowStyles from "../../components/row.module.scss";
 import generalStyles from "../../style.module.scss";
 
 // constants, and utile
-import { UserTypeConstants, Colors } from "../../utils/constants";
+import { UserTypeConstants, Colors, SERVER_URL } from "../../utils/constants";
 import Button from "../../components/button/button.component";
 import UserProfileNotifications from "../../components/user-profile-notifications/user-profile-notifications.component";
 
@@ -81,8 +81,8 @@ function UserProfilePage({ onSelectedChange }) {
           style={{
             backgroundImage:
               user.logo_url && user.logo_url !== ""
-                ? `url("http://localhost:8000/${user.logo_url}`
-                : `url("http://localhost:8000/avatar01.png`,
+                ? `url("${SERVER_URL}/${user.logo_url}")`
+                : `url("${SERVER_URL}/avatar01.png")`,
           }}
         ></div>
 

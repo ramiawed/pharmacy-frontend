@@ -21,7 +21,7 @@ import generalStyles from "../../style.module.scss";
 import styles from "./notification-page.module.scss";
 
 // constants
-import { BASEURL, Colors } from "../../utils/constants";
+import { BASEURL, Colors, SERVER_URL } from "../../utils/constants";
 
 function NotificationPage({ onSelectedChange }) {
   const { t } = useTranslation();
@@ -92,7 +92,7 @@ function NotificationPage({ onSelectedChange }) {
               >
                 <img
                   className={styles.image}
-                  src={`http://localhost:8000/${notification.logo_url}`}
+                  src={`${SERVER_URL}/${notification.logo_url}`}
                 />
               </div>
             )}

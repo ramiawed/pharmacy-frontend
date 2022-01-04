@@ -104,4 +104,5 @@ export const DateOptions = {
   ONE_YEAR: "1Y",
 };
 
-export const BASEURL = "http://localhost:8000/api/v1";
+export const BASEURL = "http://localhost:5000/api/v1";
+export const SERVER_URL = "http://localhost:5000";

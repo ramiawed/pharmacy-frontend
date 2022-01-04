@@ -37,7 +37,12 @@ import Icon from "../../components/action-icon/action-icon.component";
 
 // constants and utils
 import { getIcon } from "../../utils/icons";
-import { Colors, UserTypeConstants, BASEURL } from "../../utils/constants";
+import {
+  Colors,
+  UserTypeConstants,
+  BASEURL,
+  SERVER_URL,
+} from "../../utils/constants";
 
 // icons
 import { MdLocalOffer } from "react-icons/md";
@@ -268,8 +273,8 @@ function ItemPage() {
               style={{
                 backgroundImage:
                   item.logo_url && item.logo_url !== ""
-                    ? `url("http://localhost:8000/${item.logo_url}")`
-                    : `url("http://localhost:8000/medicine.jpeg")`,
+                    ? `url("${SERVER_URL}/${item.logo_url}")`
+                    : `url("${SERVER_URL}/medicine.jpeg")`,
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
                 backgroundSize: "contain",

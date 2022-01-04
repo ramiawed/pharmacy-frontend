@@ -37,7 +37,7 @@ import generalStyles from "../../style.module.scss";
 import styles from "./advertisement-item-card.module.scss";
 
 // constants and utils
-import { Colors, UserTypeConstants } from "../../utils/constants";
+import { Colors, SERVER_URL, UserTypeConstants } from "../../utils/constants";
 import {
   addItemToWarehouse,
   removeItemFromWarehouse,
@@ -254,8 +254,8 @@ function AdvertisementItemCard({ companyItem, contentColor }) {
         style={{
           backgroundImage:
             companyItem.logo_url.length > 0
-              ? `url("http://localhost:8000/${companyItem.logo_url}`
-              : `url("http://localhost:8000/default-logo.png`,
+              ? `url("${SERVER_URL}/${companyItem.logo_url}")`
+              : `url("${SERVER_URL}/default-logo.png")`,
           backgroundPosition: "center",
           backgroundSize: "cover",
         }}

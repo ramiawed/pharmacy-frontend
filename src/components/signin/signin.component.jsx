@@ -172,7 +172,7 @@ function SignIn() {
       .then((result) => {
         dispatch(statisticsSignIn({ token: result.token }));
         dispatch(getAllSettings({ token: result.token }));
-        dispatch(getFavorites({ token: result.token }));
+        // dispatch(getFavorites({ token: result.token }));
       })
       .catch(() => {});
   };

@@ -16,6 +16,7 @@ import {
   addFavorite,
   selectFavoritesPartners,
   removeFavorite,
+  selectFavoritesError,
 } from "../../redux/favorites/favoritesSlice";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
@@ -34,7 +35,11 @@ import generalStyles from "../../style.module.scss";
 import styles from "./partner-card.module.scss";
 
 // constants and utils
-import { Colors, UserTypeConstants } from "../../utils/constants.js";
+import {
+  Colors,
+  SERVER_URL,
+  UserTypeConstants,
+} from "../../utils/constants.js";
 
 function PartnerCard({ partner, fullWidth }) {
   const { t } = useTranslation();
@@ -49,6 +54,7 @@ function PartnerCard({ partner, fullWidth }) {
 
   const isOnline = useSelector(selectOnlineStatus);
   const favorites = useSelector(selectFavoritesPartners);
+  const favoritesError = useSelector(selectFavoritesError);
   const { token, user } = useSelector(selectUserData);
 
   // own state
@@ -142,40 +148,51 @@ function PartnerCard({ partner, fullWidth }) {
 
       {partner.logo_url?.length > 0 ? (
         <img
-          src={`http://localhost:8000/${partner.logo_url}`}
+          src={`${SERVER_URL}/${partner.logo_url}`}
           className={styles.partner_logo}
           alt="thumb"
         />
       ) : (
         <img
-          src={`http://localhost:8000/default-logo.jpg`}
+          src={`${SERVER_URL}/default-logo.jpg`}
           className={styles.partner_logo}
           alt="thumb"
         />
       )}
 
       <div className={styles.from_top}>
-        {changeFavoriteLoading ? (
-          <div
-            className={[generalStyles.icon, generalStyles.fc_yellow].join(" ")}
-          >
-            <VscLoading className={generalStyles.loading} size={20} />
-          </div>
-        ) : (
-          <div
-            className={[generalStyles.icon, generalStyles.fc_yellow].join(" ")}
-          >
-            {favorites &&
-            favorites.map((favorite) => favorite._id).includes(partner._id) ? (
-              <AiFillStar
-                size={24}
-                onClick={removePartnerFromFavoriteHandler}
-              />
-            ) : (
-              <AiOutlineStar size={24} onClick={addPartnerToFavoriteHandler} />
-            )}
-          </div>
-        )}
+        {favoritesError === "" ? (
+          changeFavoriteLoading ? (
+            <div
+              className={[generalStyles.icon, generalStyles.fc_yellow].join(
+                " "
+              )}
+            >
+              <VscLoading className={generalStyles.loading} size={20} />
+            </div>
+          ) : (
+            <div
+              className={[generalStyles.icon, generalStyles.fc_yellow].join(
+                " "
+              )}
+            >
+              {favorites &&
+              favorites
+                .map((favorite) => favorite._id)
+                .includes(partner._id) ? (
+                <AiFillStar
+                  size={24}
+                  onClick={removePartnerFromFavoriteHandler}
+                />
+              ) : (
+                <AiOutlineStar
+                  size={24}
+                  onClick={addPartnerToFavoriteHandler}
+                />
+              )}
+            </div>
+          )
+        ) : null}
 
         {allowShowingWarehouseMedicines && (
           <div>

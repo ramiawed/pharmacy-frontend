@@ -27,7 +27,11 @@ import styles from "./item-card.module.scss";
 import rowStyles from "../row.module.scss";
 
 // constants and utils
-import { Colors, UserTypeConstants } from "../../utils/constants.js";
+import {
+  Colors,
+  SERVER_URL,
+  UserTypeConstants,
+} from "../../utils/constants.js";
 import { Link } from "react-router-dom";
 import { statisticsItemFavorites } from "../../redux/statistics/statisticsSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -306,26 +310,17 @@ function ItemCard({ companyItem }) {
       <div className={styles.logo_div}>
         {companyItem.logo_url && companyItem.logo_url !== "" ? (
           <img
-            src={`http://localhost:8000/${companyItem.logo_url}`}
+            src={`${SERVER_URL}/${companyItem.logo_url}`}
             className={styles.logo}
             alt="thumb"
           />
         ) : (
           <img
-            src={`http://localhost:8000/default-medicine.png`}
+            src={`${SERVER_URL}/default-medicine.png`}
             className={styles.logo}
             alt="thumb"
           />
         )}
-        {/* <p
-          style={{
-            backgroundImage:
-              companyItem.logo_url && companyItem.logo_url !== ""
-                ? `url("http://localhost:8000/${companyItem.logo_url}")`
-                : `url("http://localhost:8000/default-medicine.png")`,
-          }}
-          className={styles.logo}
-        ></p> */}
       </div>
 
       <div className={styles.content}>

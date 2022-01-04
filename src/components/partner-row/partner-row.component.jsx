@@ -16,6 +16,7 @@ import {
   addFavorite,
   selectFavoritesPartners,
   removeFavorite,
+  selectFavoritesError,
 } from "../../redux/favorites/favoritesSlice";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
@@ -51,6 +52,7 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
   } = useSelector(selectSettings);
   const isOnline = useSelector(selectOnlineStatus);
   const favorites = useSelector(selectFavoritesPartners);
+  const favoritesError = useSelector(selectFavoritesError);
   const { token, user } = useSelector(selectUserData);
 
   // own state
@@ -122,6 +124,7 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
       );
     }
     dispatch(resetMedicines());
+
     if (partner.type === UserTypeConstants.COMPANY) {
       dispatch(setSearchCompanyName(partner.name));
     }
@@ -144,16 +147,6 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
             onClick={dispatchCompanySelectedHandler}
             to={{
               pathname: `/medicines`,
-              // state: {
-              //   companyId:
-              //     partner.type === UserTypeConstants.COMPANY
-              //       ? partner._id
-              //       : null,
-              //   warehouseId:
-              //     partner.type === UserTypeConstants.WAREHOUSE
-              //       ? partner._id
-              //       : null,
-              // },
             }}
             className={[
               rowStyles.hover_underline,
@@ -188,22 +181,26 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
           </div>
         ) : (
           <div className={rowStyles.padding_end}>
-            {favorites &&
-            favorites.map((favorite) => favorite._id).includes(partner._id) ? (
-              <Icon
-                icon={() => <AiFillStar size={20} />}
-                onclick={removePartnerFromFavoriteHandler}
-                foreColor={Colors.YELLOW_COLOR}
-                tooltip={t("remove-from-favorite-tooltip")}
-              />
-            ) : (
-              <Icon
-                icon={() => <AiOutlineStar size={20} />}
-                onclick={addPartnerToFavorite}
-                foreColor={Colors.YELLOW_COLOR}
-                tooltip={t("add-to-favorite-tooltip")}
-              />
-            )}
+            {favoritesError === "" ? (
+              favorites &&
+              favorites
+                .map((favorite) => favorite._id)
+                .includes(partner._id) ? (
+                <Icon
+                  icon={() => <AiFillStar size={20} />}
+                  onclick={removePartnerFromFavoriteHandler}
+                  foreColor={Colors.YELLOW_COLOR}
+                  tooltip={t("remove-from-favorite-tooltip")}
+                />
+              ) : (
+                <Icon
+                  icon={() => <AiOutlineStar size={20} />}
+                  onclick={addPartnerToFavorite}
+                  foreColor={Colors.YELLOW_COLOR}
+                  tooltip={t("add-to-favorite-tooltip")}
+                />
+              )
+            ) : null}
           </div>
         )}
       </div>

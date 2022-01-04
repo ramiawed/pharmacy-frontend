@@ -23,7 +23,7 @@ import { BsCheck, BsFillCircleFill } from "react-icons/bs";
 import styles from "./notification-row.module.scss";
 
 // constants
-import { Colors, UserTypeConstants } from "../../utils/constants";
+import { Colors, SERVER_URL, UserTypeConstants } from "../../utils/constants";
 import { unwrapResult } from "@reduxjs/toolkit";
 
 function NotificationRow({ notification, index, setSuccessDeletingMsg }) {
@@ -75,7 +75,7 @@ function NotificationRow({ notification, index, setSuccessDeletingMsg }) {
         {notification.logo_url !== "" ? (
           <img
             className={styles.image}
-            src={`http://localhost:8000/${notification.logo_url}`}
+            src={`${SERVER_URL}/${notification.logo_url}`}
           />
         ) : (
           <>

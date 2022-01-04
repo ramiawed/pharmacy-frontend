@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
 import ReactLoading from "react-loading";
@@ -54,6 +54,8 @@ function WarehousePage({ onSelectedChange }) {
 
   // select favorites from favoriteSlice
   const { error: favoriteError } = useSelector(selectFavorites);
+
+  const [favoritesError, setFavoritesError] = useState(favoriteError);
 
   // handle search
   const handleSearch = (page) => {
@@ -191,12 +193,12 @@ function WarehousePage({ onSelectedChange }) {
         </Toast>
       )}
 
-      {favoriteError && (
+      {favoritesError && (
         <Toast
           bgColor={Colors.FAILED_COLOR}
           foreColor="#fff"
           actionAfterTimeout={() => {
-            dispatch(resetFavoriteError());
+            setFavoritesError("");
           }}
         >
           {t(favoriteError)}

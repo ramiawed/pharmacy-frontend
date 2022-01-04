@@ -2,7 +2,7 @@
 
 .container {
   width: 100vw;
-  min-height: calc(100vh - 60px);
+  min-height: calc(50vh - 60px);
 
   display: flex;
   align-items: center;
@@ -26,13 +26,20 @@
   -webkit-text-fill-color: transparent;
   -moz-background-clip: text;
   -moz-text-fill-color: transparent;
+}
 
-  // text-shadow: 2px 2px 5px rgba($color: #000, $alpha: 0.5);
+.search_container {
+  display: flex;
+  flex-direction: column;
+
+  width: 80%;
+
+  margin-inline: auto;
+
+  position: relative;
 }
 
 .search_div {
-  width: 80%;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -50,8 +57,6 @@
   border-radius: 12px 12px 0 0;
 }
 
-
-
 .input {
   background-color: transparent;
 
@@ -61,8 +66,6 @@
   outline: none;
 
   padding: 0 20px;
-
-  // font-size: 1.2rem;
 
   color: $secondary-color;
 }
@@ -105,9 +108,13 @@
 }
 
 .result_div {
-  width: 80%;
+  width: 100%;
   min-height: 50px;
   max-height: 250px;
+
+  position: absolute;
+  top: 49px;
+  z-index: 100;
 
   background-color: rgba($color: $white-color, $alpha: 1);
 

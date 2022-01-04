@@ -52,7 +52,7 @@ import SettingsPage from "../settings-page/settings-page.component";
 import styles from "./main-page.module.scss";
 
 // constants
-import { SideNavLinks, TopNavLinks } from "../../utils/constants";
+import { SERVER_URL, SideNavLinks, TopNavLinks } from "../../utils/constants";
 import { selectSettings } from "../../redux/settings/settingsSlice";
 
 // MainPage
@@ -85,7 +85,7 @@ function MainPage() {
   useEffect(() => {
     if (user) {
       dispatch(resetStatus());
-      // dispatch(getFavorites({ token }));
+      dispatch(getFavorites({ token }));
       dispatch(getUnreadNotification({ token }));
     }
 
@@ -117,7 +117,12 @@ function MainPage() {
         <HomePageLoader />
       ) : (
         <div className={styles.container}>
-          <div className={styles.background_div}></div>
+          <div
+            className={styles.background_div}
+            style={{
+              backgroundImage: `url("${SERVER_URL}/background001.jpg")`,
+            }}
+          ></div>
           <div className={styles.hamburger_menu}>
             <p className={styles.selectedOption}>
               {t(selectedTopNavOption)}

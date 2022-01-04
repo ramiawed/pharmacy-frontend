@@ -46,7 +46,7 @@ import linkStyles from "../side-nav.module.scss";
 import generalStyles from "../../style.module.scss";
 
 // constants
-import { UserTypeConstants } from "../../utils/constants";
+import { SERVER_URL, UserTypeConstants } from "../../utils/constants";
 
 function SideNav({
   collapsed,
@@ -105,7 +105,7 @@ function SideNav({
         }}
       >
         {user.logo_url.length > 0 && (
-          <img src={`http://localhost:8000/${user.logo_url}`} alt="thumb" />
+          <img src={`${SERVER_URL}/${user.logo_url}`} alt="thumb" />
         )}
 
         <h3>{user.name}</h3>

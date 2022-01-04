@@ -20,6 +20,24 @@ function MedicinesTableHeader({ user }) {
         {t("item-trade-name")}
       </label>
 
+      {/* company name */}
+      <label
+        className={styles.large}
+        style={{
+          flex: 1,
+        }}
+      >
+        {t("user-company-name")}
+      </label>
+      <label
+        className={styles.small}
+        style={{
+          flex: 1,
+        }}
+      >
+        {t("user-company-name-small")}
+      </label>
+
       {/* caliber */}
       <label
         className={styles.large}

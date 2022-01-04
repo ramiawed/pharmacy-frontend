@@ -104,5 +104,5 @@ export const DateOptions = {
   ONE_YEAR: "1Y",
 };
 
-export const BASEURL = "http://localhost:5000/api/v1";
-export const SERVER_URL = "http://localhost:5000";
+export const BASEURL = "https://salty-brook-65681.herokuapp.com/api/v1";
+export const SERVER_URL = "https://salty-brook-65681.herokuapp.com";

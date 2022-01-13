@@ -46,7 +46,7 @@ export const getStatistics = createAsyncThunk(
       }
 
       response = await axios.get(queryString, {
-        timeout: 10000,
+        // timeout: 10000,
         cancelToken: source.token,
       });
 
@@ -80,7 +80,7 @@ export const statisticsSignIn = createAsyncThunk(
         `${BASEURL}/statistics/signin`,
         {},
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -118,7 +118,7 @@ export const statisticsCompanySelected = createAsyncThunk(
         `${BASEURL}/statistics/selectedCompany`,
         obj,
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -156,7 +156,7 @@ export const statisticsOrders = createAsyncThunk(
         `${BASEURL}/statistics/orders`,
         {},
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -191,7 +191,7 @@ export const statisticsUserFavorites = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(`${BASEURL}/statistics/favorite`, obj, {
-        timeout: 10000,
+        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -228,7 +228,7 @@ export const statisticsItemFavorites = createAsyncThunk(
         `${BASEURL}/statistics/favoriteItem`,
         obj,
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -266,7 +266,7 @@ export const statisticsItemAddedToCart = createAsyncThunk(
         `${BASEURL}/statistics/itemAddedToCart`,
         obj,
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -304,7 +304,7 @@ export const statisticsItemSelected = createAsyncThunk(
         `${BASEURL}/statistics/selectedItem`,
         obj,
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,

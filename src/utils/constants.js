@@ -42,6 +42,7 @@ export const CitiesName = {
   AL_SUWAYDA: "al_suwayda",
   TARTUS: "tartus",
   NONE: "city-name",
+  ALL: "all-cities",
 };
 
 export const Colors = {

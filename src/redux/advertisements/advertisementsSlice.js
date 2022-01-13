@@ -20,7 +20,7 @@ export const getAllAdvertisements = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.get(`${BASEURL}/advertisement`, {
-        timeout: 10000,
+        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -56,7 +56,7 @@ export const addAdvertisement = createAsyncThunk(
         `${BASEURL}/advertisement/upload`,
         data,
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -93,7 +93,7 @@ export const deleteAdvertisement = createAsyncThunk(
         `${BASEURL}/advertisement/${id}`,
         {},
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,

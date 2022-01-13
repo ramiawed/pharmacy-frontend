@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory, Redirect, useLocation } from "react-router-dom";
+import { Redirect, useLocation } from "react-router-dom";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -45,7 +45,6 @@ import { Colors, DateOptions, UserTypeConstants } from "../../utils/constants";
 function StatisticsPage({ onSelectedChange }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
   const location = useLocation();
   const { field, type, title } = location.state
     ? location.state
@@ -215,7 +214,7 @@ function StatisticsPage({ onSelectedChange }) {
     field ? (
     <div className={generalStyles.container}>
       <Header>
-        <h2>{title}</h2>
+        <h2 className={generalStyles.header_title}>{title}</h2>
         <div style={{ position: "relative", height: "50px" }}>
           <SearchContainer searchAction={handleEnterPress}>
             <SearchInput

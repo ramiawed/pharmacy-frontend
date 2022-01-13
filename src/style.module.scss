@@ -222,6 +222,7 @@
 .margin_v_4 {
   margin: 4px 0;
 }
+
 // end padding style
 
 .block {
@@ -332,19 +333,38 @@
 
 // no internet connection
 .no_internet_container {
+  width: 250px;
+  min-width: 250px;
+
   position: fixed;
   bottom: 50px;
   left: 20px;
+
+  color: #fff;
   background: rgba(0, 0, 0, 0.9);
   box-shadow: 2px 2px 3px 0 rgba(0, 0, 0, 0.5);
+
   padding: 6px;
+
   border-radius: 6px;
+
   display: flex;
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-  width: 250px;
-  min-width: 250px;
+
   z-index: 50;
-  color: #fff;
+}
+
+.header_title {
+  margin-top: 16px !important;
+  font-size: 0.9rem;
+}
+
+@media only screen and (min-width: $medium) {
+  .header_title {
+    font-size: 1.5rem;
+  }
+
+
 }

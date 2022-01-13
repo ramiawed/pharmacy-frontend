@@ -1,20 +1,19 @@
 @import "../../variables.scss";
 
 .partner_container {
-  width: 60%;
+  width: 75%;
   min-height: 300px;
 
-  background-color: $white-color;
-
+  background-color: rgba($color: $secondary-color, $alpha: 0.1);
   margin-block-end: 20px;
 
   position: relative;
 
-  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.1);
   border-radius: 6px;
 
   overflow: hidden;
-  
+
   transition: all 1s;
 }
 
@@ -43,8 +42,8 @@
   height: 200px;
 
   border-radius: 12px;
-  
-  background: #e3e3e3;
+
+  background: rgba($color: $secondary-color, $alpha: 0.2);
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
 
   display: flex;
@@ -61,7 +60,6 @@
 .partner_name {
   position: relative;
   font-size: 1.5rem;
-  // background: $secondary-color;
   color: $secondary-color;
 
   display: flex;
@@ -95,13 +93,13 @@
   opacity: 0.9;
 }
 
-.from_top > div {
+.from_top>div {
   z-index: 10;
   margin: 8px;
   // color: $white-color;
 }
 
-.from_top > div.name {
+.from_top>div.name {
   color: $white-color;
 }
 

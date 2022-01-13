@@ -56,7 +56,7 @@ export const getCompanies = createAsyncThunk(
       buildUrl = buildUrl + `&isActive=true`;
 
       const response = await axios.get(buildUrl, {
-        timeout: 10000,
+        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,

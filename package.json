@@ -2,7 +2,7 @@
   "name": "pharmacy-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://ramiawed.github.io/pharmacy-frontend",
+  "homepage": "http://localhost:3000/",
   "dependencies": {
     "@pusher/push-notifications-web": "^1.1.0",
     "@reduxjs/toolkit": "^1.5.1",

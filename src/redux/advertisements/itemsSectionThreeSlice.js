@@ -27,7 +27,7 @@ export const getItemsSectionThree = createAsyncThunk(
       const response = await axios.get(
         `${BASEURL}/items?isActive=true&inSectionThree=true&page=1&limit=25`,
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -66,7 +66,7 @@ export const addItemToSectionThree = createAsyncThunk(
           inSectionThree: true,
         },
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -105,7 +105,7 @@ export const removeItemFromSectionThree = createAsyncThunk(
           inSectionThree: false,
         },
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,

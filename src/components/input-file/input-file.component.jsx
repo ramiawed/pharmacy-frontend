@@ -39,7 +39,7 @@ function InputFile({ fileChangedHandler, small }) {
           ].join(" ")}
           onClick={handleClick}
         >
-          <SiMicrosoftexcel size={250} />
+          <SiMicrosoftexcel size={125} />
           <p>{t("items-from-excel")}</p>
           <p>{t("press-here")}</p>
         </div>

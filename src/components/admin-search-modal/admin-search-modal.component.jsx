@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import {
+  CitiesName,
   Colors,
   GuestJob,
   UserActiveState,
@@ -121,6 +122,31 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
     dispatch(setUserApproved(val));
   };
 
+  // guest options and its change handler
+  const citiesOptions = [
+    { value: CitiesName.ALL, label: t("all-cities") },
+    { value: CitiesName.ALEPPO, label: t("aleppo") },
+    { value: CitiesName.DAMASCUS, label: t("damascus") },
+    { value: CitiesName.DARAA, label: t("daraa") },
+    { value: CitiesName.DEIR_EZ_ZOR, label: t("deir_ez_zor") },
+    { value: CitiesName.HAMA, label: t("hama") },
+    { value: CitiesName.AL_HASAKAH, label: t("al_hasakah") },
+    { value: CitiesName.HOMS, label: t("homs") },
+    { value: CitiesName.IDLIB, label: t("idlib") },
+    { value: CitiesName.LATAKIA, label: t("latakia") },
+    { value: CitiesName.QUNEITRA, label: t("quneitra") },
+    { value: CitiesName.RAQQA, label: t("raqqa") },
+    { value: CitiesName.AL_SUWAYDA, label: t("al_suwayda") },
+    { value: CitiesName.TARTUS, label: t("tartus") },
+  ];
+  // Guest types are (Student, Pharmacist, Employee)
+  // uses with the SelectCustom
+  const citiesNameChangeHandler = (val) => {
+    // if the user type is Normal and the job is Student or Pharmacist
+    // so the user doesn't contains info about company name and job title
+    dispatch(setSearchCity(val));
+  };
+
   // options for the SelectCustom (Delete state)
   const deletedState = [
     { value: UserActiveState.INACTIVE, label: t("deleted-account") },
@@ -159,19 +185,16 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
           />
         </div>
         <div>
-          <Input
-            label="user-city"
-            id="search-city"
-            type="text"
-            value={pageState.searchCity}
-            onchange={(e) => {
-              dispatch(setSearchCity(e.target.value));
+          <SelectCustom
+            bgColor={Colors.SECONDARY_COLOR}
+            foreColor="#fff"
+            options={citiesOptions}
+            onchange={citiesNameChangeHandler}
+            defaultOption={{
+              value: pageState.searchCity,
+              label: t(pageState.searchCity),
             }}
-            bordered={true}
-            icon={<FaSearch />}
-            placeholder="search-by-city"
-            onEnterPress={enterPress}
-            resetField={() => dispatch(setSearchCity(""))}
+            caption="user-city"
           />
         </div>
       </RowWith2Children>

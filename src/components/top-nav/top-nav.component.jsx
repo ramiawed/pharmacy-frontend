@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
 
 // redux stuff
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/auth/authSlice";
 import { selectFavorites } from "../../redux/favorites/favoritesSlice";
 import { selectCartItemCount } from "../../redux/cart/cartSlice";
@@ -22,10 +22,15 @@ import styles from "./top-nav.module.scss";
 
 // constants
 import { TopNavLinks, UserTypeConstants } from "../../utils/constants.js";
+import {
+  resetMedicines,
+  resetMedicinesArray,
+} from "../../redux/medicines/medicinesSlices";
 
 function TopNav({ onSelectedChange, showTopNav }) {
   const history = useHistory();
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   // selectors
   const { unReadNotificationCount } = useSelector(selectUserNotifications);
@@ -92,7 +97,13 @@ function TopNav({ onSelectedChange, showTopNav }) {
                 ? styles.selected
                 : null,
             ].join(" ")}
-            onClick={() => onSelectedChange(TopNavLinks.MEDICINES)}
+            onClick={() => {
+              onSelectedChange(TopNavLinks.MEDICINES);
+              if (history.location.pathname !== "/medicines") {
+                dispatch(resetMedicinesArray());
+                dispatch(resetMedicines());
+              }
+            }}
           >
             {t("nav-medicines")}
           </Link>

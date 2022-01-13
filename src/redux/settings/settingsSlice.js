@@ -59,7 +59,7 @@ export const getAllSettings = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.get(`${BASEURL}/settings`, {
-        timeout: 10000,
+        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -92,7 +92,7 @@ export const updateSettings = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(`${BASEURL}/settings`, obj, {
-        timeout: 10000,
+        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,

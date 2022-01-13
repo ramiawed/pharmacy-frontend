@@ -170,7 +170,7 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
         )}
 
         {changeFavoriteLoading ? (
-          <div className={rowStyles.padding_end}>
+          <div className={[rowStyles.padding_end].join(" ")}>
             <Icon
               icon={() => (
                 <VscLoading className={generalStyles.loading} size={20} />
@@ -180,7 +180,7 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
             />
           </div>
         ) : (
-          <div className={rowStyles.padding_end}>
+          <div className={[rowStyles.padding_end].join(" ")}>
             {favoritesError === "" ? (
               favorites &&
               favorites

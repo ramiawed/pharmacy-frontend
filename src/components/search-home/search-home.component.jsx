@@ -83,7 +83,7 @@ function SearchHome() {
 
     try {
       const response = await axios.get(buildUrl, {
-        timeout: 10000,
+        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,

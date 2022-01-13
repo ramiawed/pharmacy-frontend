@@ -26,7 +26,7 @@ export const getFavorites = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.get(`${BASEURL}/favorites`, {
-        timeout: 10000,
+        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -62,7 +62,7 @@ export const addFavorite = createAsyncThunk(
         `${BASEURL}/favorites/add`,
         { favoriteId: obj.favoriteId },
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -99,7 +99,7 @@ export const removeFavorite = createAsyncThunk(
         `${BASEURL}/favorites/remove`,
         { favoriteId: obj.favoriteId },
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -136,7 +136,7 @@ export const addFavoriteItem = createAsyncThunk(
         `${BASEURL}/favorites/add/items`,
         { favoriteItemId: obj.favoriteItemId },
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -173,7 +173,7 @@ export const removeFavoriteItem = createAsyncThunk(
         `${BASEURL}/favorites/remove/items`,
         { favoriteItemId: obj.favoriteItemId },
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,

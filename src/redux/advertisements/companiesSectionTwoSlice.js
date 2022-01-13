@@ -27,7 +27,7 @@ export const getCompaniesSectionTwo = createAsyncThunk(
       const response = await axios.get(
         `${BASEURL}/users?type=company&isActive=true&inSectionTwo=true&page=1&limit=25`,
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -66,7 +66,7 @@ export const addCompanyToSectionTwo = createAsyncThunk(
           option: true,
         },
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -105,7 +105,7 @@ export const removeCompanyFromSectionTwo = createAsyncThunk(
           option: false,
         },
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,

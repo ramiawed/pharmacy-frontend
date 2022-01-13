@@ -91,7 +91,7 @@ export const getItems = createAsyncThunk(
       }
 
       const response = await axios.get(buildUrl, {
-        timeout: 10000,
+        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -122,7 +122,7 @@ export const addItem = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(`${BASEURL}/items`, obj, {
-        timeout: 10000,
+        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -156,7 +156,7 @@ export const updateItem = createAsyncThunk(
         `${BASEURL}/items/item/${obj._id}`,
         { ...obj },
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -226,7 +226,7 @@ export const changeItemActiveState = createAsyncThunk(
         `${BASEURL}/items/active/${obj.itemId}`,
         { action: obj.action },
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
 
           headers: {
@@ -265,7 +265,7 @@ export const changeItemLogo = createAsyncThunk(
         `${BASEURL}/items/upload/${_id}`,
         data,
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -296,7 +296,7 @@ export const changeItemOffer = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.get(`${BASEURL}/items/item/${_id}`, {
-        timeout: 10000,
+        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,

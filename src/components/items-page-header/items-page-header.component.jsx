@@ -30,7 +30,6 @@ import { Colors, UserTypeConstants } from "../../utils/constants";
 import generalStyles from "../../style.module.scss";
 import searchContainerStyles from "../search-container/search-container.module.scss";
 import Icon from "../action-icon/action-icon.component";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 function ItemsPageHeader({
   user,
@@ -42,7 +41,6 @@ function ItemsPageHeader({
   search,
 }) {
   const { t } = useTranslation();
-  const history = useHistory();
   const dispatch = useDispatch();
 
   return (

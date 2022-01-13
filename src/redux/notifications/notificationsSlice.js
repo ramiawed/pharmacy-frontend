@@ -27,7 +27,7 @@ export const getAllNotifications = createAsyncThunk(
       const response = await axios.get(
         `${BASEURL}/notifications?page=${page}&limit=9`,
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -61,7 +61,7 @@ export const addNotification = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(`${BASEURL}/notifications/add`, data, {
-        timeout: 10000,
+        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -97,7 +97,7 @@ export const deleteNotification = createAsyncThunk(
         `${BASEURL}/notifications/delete/${id}`,
         {},
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,

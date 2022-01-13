@@ -144,7 +144,7 @@ export const getOrders = createAsyncThunk(
       }
 
       const response = await axios.get(buildUrl, {
-        timeout: 10000,
+        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -177,7 +177,7 @@ export const saveOrder = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(`${BASEURL}/orders`, obj, {
-        timeout: 10000,
+        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,

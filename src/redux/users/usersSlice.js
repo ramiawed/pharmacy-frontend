@@ -4,6 +4,7 @@ import axios from "axios";
 
 import {
   BASEURL,
+  CitiesName,
   GuestJob,
   UserActiveState,
   UserApprovedState,
@@ -21,7 +22,7 @@ const initialState = {
   refresh: true,
   pageState: {
     searchName: "",
-    searchCity: "",
+    searchCity: CitiesName.ALL,
     searchDistrict: "",
     searchStreet: "",
     searchEmployeeName: "",
@@ -72,7 +73,7 @@ export const getUsers = createAsyncThunk(
         buildUrl = buildUrl + `&name=${pageState.searchName}`;
       }
 
-      if (pageState.searchCity.trim() !== "") {
+      if (pageState.searchCity.trim() !== CitiesName.ALL) {
         buildUrl = buildUrl + `&city=${pageState.searchCity}`;
       }
 
@@ -144,7 +145,7 @@ export const getUsers = createAsyncThunk(
       }
 
       const response = await axios.get(`${BASEURL}${buildUrl}`, {
-        timeout: 10000,
+        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -183,7 +184,7 @@ export const updateUser = createAsyncThunk(
         `${BASEURL}/users/update/${userId}`,
         body,
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -231,7 +232,7 @@ export const resetUserPassword = createAsyncThunk(
           newPasswordConfirm,
         },
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,

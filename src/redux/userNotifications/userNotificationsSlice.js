@@ -29,7 +29,7 @@ export const getAllNotifications = createAsyncThunk(
       const response = await axios.get(
         `${BASEURL}/notifications?page=${page}&limit=9`,
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -63,7 +63,7 @@ export const getUnreadNotification = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.get(`${BASEURL}/notifications/unread`, {
-        timeout: 10000,
+        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -91,9 +91,6 @@ export const getUnreadNotification = createAsyncThunk(
 export const setNotificationRead = createAsyncThunk(
   "userNotifications/setNotificationRead",
   async ({ token, notificationId }, { rejectWithValue, getState }) => {
-    const {
-      userNotifications: { page },
-    } = getState();
     try {
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
@@ -102,7 +99,7 @@ export const setNotificationRead = createAsyncThunk(
         `${BASEURL}/notifications/setread?notificationId=${notificationId}`,
         {},
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,

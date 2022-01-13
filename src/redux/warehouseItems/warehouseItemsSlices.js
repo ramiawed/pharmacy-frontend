@@ -36,7 +36,7 @@ export const getWarehouseItems = createAsyncThunk(
       }
 
       const response = await axios.get(buildUrl, {
-        timeout: 10000,
+        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -72,7 +72,7 @@ export const removeItemFromWarehouse = createAsyncThunk(
         `${BASEURL}/items/warehouse/remove-item/${obj.itemId}/${obj.city}`,
         { warehouseId: obj.warehouseId },
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -109,7 +109,7 @@ export const changeItemWarehouseMaxQty = createAsyncThunk(
         `${BASEURL}/items/warehouse/change-max-qty/${obj.itemId}`,
         { warehouseId: obj.warehouseId, qty: obj.qty },
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -146,7 +146,7 @@ export const changeItemWarehouseOffer = createAsyncThunk(
         `${BASEURL}/items/warehouse/change-offer/${obj.itemId}`,
         { warehouseId: obj.warehouseId, offer: obj.offer },
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,

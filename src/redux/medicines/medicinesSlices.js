@@ -74,7 +74,7 @@ export const getMedicines = createAsyncThunk(
       }
 
       const response = await axios.get(buildUrl, {
-        timeout: 10000,
+        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -114,7 +114,7 @@ export const addItemToWarehouse = createAsyncThunk(
         `${BASEURL}/items/warehouse/add-item/${obj.itemId}/${obj.city}`,
         { warehouseId: obj.warehouseId },
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -155,7 +155,7 @@ export const removeItemFromWarehouse = createAsyncThunk(
         `${BASEURL}/items/warehouse/remove-item/${obj.itemId}/${obj.city}`,
         { warehouseId: obj.warehouseId },
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -331,7 +331,7 @@ export const medicinesSlice = createSlice({
       state.error = "";
       state.pageState = {
         ...state.pageState,
-        page: Math.ceil(state.medicines.length / 3) + 1,
+        page: Math.ceil(state.medicines.length / 9) + 1,
       };
     },
     [getMedicines.rejected]: (state, { error, meta, payload }) => {

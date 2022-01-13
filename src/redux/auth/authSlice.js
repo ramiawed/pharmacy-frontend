@@ -45,7 +45,7 @@ export const authSign = createAsyncThunk(
           password,
         },
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
         }
       );
@@ -55,6 +55,7 @@ export const authSign = createAsyncThunk(
       return response.data;
     } catch (err) {
       resetCancelAndSource();
+      console.log(err);
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }
@@ -79,7 +80,7 @@ export const updateUserInfo = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(`${BASEURL}/users/updateMe`, obj, {
-        timeout: 10000,
+        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -122,7 +123,7 @@ export const changeMyPassword = createAsyncThunk(
         `${BASEURL}/users/changeMyPassword`,
         obj,
         {
-          timeout: 10000,
+          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -156,7 +157,7 @@ export const deleteMe = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(`${BASEURL}/users/deleteMe`, obj, {
-        timeout: 10000,
+        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -189,7 +190,7 @@ export const changeLogo = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(`${BASEURL}/users/upload`, data, {
-        timeout: 10000,
+        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,

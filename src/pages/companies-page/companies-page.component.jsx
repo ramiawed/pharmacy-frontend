@@ -136,7 +136,7 @@ function CompaniesPage({ onSelectedChange }) {
 
       {/* display partner as list */}
       {displayType === "list" &&
-        companies.map((company) => (
+        companies.map((company, index) => (
           <PartnerRow key={company._id} partner={company} />
         ))}
 

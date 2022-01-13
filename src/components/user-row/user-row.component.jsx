@@ -374,14 +374,14 @@ function UserRow({ user }) {
         >
           {user.isApproved ? (
             <Icon
-              tooltip={t("tooltip-disapprove")}
+              tooltip={t("tooltip-approve")}
               onclick={() => handleActionIconClick("disapprove")}
               icon={() => <AiFillUnlock />}
               foreColor={Colors.SUCCEEDED_COLOR}
             />
           ) : (
             <Icon
-              tooltip={t("tooltip-approve")}
+              tooltip={t("tooltip-disapprove")}
               onclick={() => handleActionIconClick("approve")}
               icon={() => <AiFillLock />}
               foreColor={Colors.FAILED_COLOR}
@@ -397,14 +397,14 @@ function UserRow({ user }) {
         >
           {user.isActive ? (
             <Icon
-              tooltip={t("tooltip-delete")}
+              tooltip={t("tooltip-undo-delete")}
               onclick={() => handleActionIconClick("delete")}
               icon={() => <BsFillPersonCheckFill />}
               foreColor={Colors.SUCCEEDED_COLOR}
             />
           ) : (
             <Icon
-              tooltip={t("tooltip-undo-delete")}
+              tooltip={t("tooltip-delete")}
               onclick={() => handleActionIconClick("undo-delete")}
               icon={() => <BsFillPersonDashFill />}
               foreColor={Colors.FAILED_COLOR}
@@ -420,14 +420,14 @@ function UserRow({ user }) {
           {user.type === UserTypeConstants.WAREHOUSE ? (
             user.allowShowingMedicines ? (
               <Icon
-                tooltip={t("tooltip-undo-show-medicines")}
+                tooltip={t("tooltip-show-medicines")}
                 onclick={() => handleActionIconClick("undoShowMedicines")}
                 icon={() => <BiShow />}
                 foreColor={Colors.SUCCEEDED_COLOR}
               />
             ) : (
               <Icon
-                tooltip={t("tooltip-show-medicines")}
+                tooltip={t("tooltip-undo-show-medicines")}
                 onclick={() => handleActionIconClick("showMedicines")}
                 icon={() => <BiHide />}
                 foreColor={Colors.FAILED_COLOR}

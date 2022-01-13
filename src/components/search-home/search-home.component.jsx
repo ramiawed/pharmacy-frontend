@@ -36,18 +36,22 @@ function SearchHome() {
   // own states
   const [searchName, setSearchName] = useState("");
   // this option can be medicines, companies, warehouses
-  const [option, setOption] = useState("medicines");
+  // const [option, setOption] = useState("medicines");
   const [loading, setLoading] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [data, setData] = useState([]);
+  const [companiesData, setCompaniesData] = useState([]);
+  const [warehousesData, setWarehousesData] = useState([]);
 
   //
   const [tryBooom, setTryBooom] = useState(false);
 
   const searchHandler = async () => {
-    // if (searchName.trim().length === 0) {
-    //   return;
-    // }
+    if (searchName.trim().length === 0) {
+      setLoading(false);
+      setShowResult(false);
+      return;
+    }
 
     CancelToken = axios.CancelToken;
     source = CancelToken.source();
@@ -56,38 +60,48 @@ function SearchHome() {
     setLoading(true);
 
     let buildUrl = `${BASEURL}`;
+    let companiesBuildUrl = `${BASEURL}`;
+    let warehousesBuildUrl = `${BASEURL}`;
 
-    if (option === "medicines") {
-      buildUrl =
-        buildUrl +
-        `/items?page=1&limit=25&isActive=true&itemName=${searchName}`;
-    }
+    // if (option === "medicines") {
+    buildUrl =
+      buildUrl + `/items?page=1&limit=25&isActive=true&itemName=${searchName}`;
+    // }
 
-    if (option === "companies") {
-      buildUrl =
-        buildUrl +
-        `/users?type=company&page=1&limit=25&isActive=true&name=${searchName}`;
-    }
+    // if (option === "companies") {
+    companiesBuildUrl =
+      companiesBuildUrl +
+      `/users?type=company&page=1&limit=25&isActive=true&name=${searchName}`;
+    // }
 
-    if (option === "warehouses") {
-      let queryString = `/users?type=warehouse&page=1&limit=25&isActive=true&name=${searchName}`;
-      if (
-        user.type === UserTypeConstants.WAREHOUSE ||
-        user.type === UserTypeConstants.PHARMACY ||
-        user.type === UserTypeConstants.GUEST
-      ) {
-        queryString = queryString + `&city=${user.city}`;
-      }
-      buildUrl = buildUrl + queryString;
+    // if (option === "warehouses") {
+    let queryString = `/users?type=warehouse&page=1&limit=25&isActive=true&name=${searchName}`;
+    if (
+      user.type === UserTypeConstants.WAREHOUSE ||
+      user.type === UserTypeConstants.PHARMACY ||
+      user.type === UserTypeConstants.GUEST
+    ) {
+      queryString = queryString + `&city=${user.city}`;
     }
+    warehousesBuildUrl = warehousesBuildUrl + queryString;
+    // }
 
     try {
       const response = await axios.get(buildUrl, {
-        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
         },
+      });
+
+      const companiesResponse = await axios.get(companiesBuildUrl, {
+        cancelToken: source.token,
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      const warehousesResponse = await axios.get(warehousesBuildUrl, {
+        cancelToken: source.token,
+        headers: { Authorization: `Bearer ${token}` },
       });
 
       CancelToken = null;
@@ -97,26 +111,49 @@ function SearchHome() {
         data: { data, status },
       } = response;
 
+      const {
+        data: { data: companiesResponseData, status: companiesResponseStatus },
+      } = companiesResponse;
+
+      const {
+        data: {
+          data: warehousesResponseData,
+          status: warehousesResponseStatus,
+        },
+      } = warehousesResponse;
+
       if (status === "success") {
-        if (option === "medicines") {
-          setData(data.items);
-        } else {
-          setData(data.users);
-        }
+        setData(data.items);
+        // if (option === "medicines") {
+        //   setData(data.items);
+        // } else {
+        //   setData(data.users);
+        // }
       }
+
+      if (companiesResponseStatus === "success") {
+        setCompaniesData(companiesResponseData.users);
+      }
+
+      if (warehousesResponseStatus === "success") {
+        setWarehousesData(warehousesResponseData.users);
+      }
+
       setLoading(false);
     } catch (err) {
       // setLoading(false);
       setData([]);
+      setCompaniesData([]);
+      setWarehousesData([]);
     }
   };
 
-  const changeOptionHandler = (opt) => {
-    if (!loading) {
-      setData([]);
-      setOption(opt);
-    }
-  };
+  // const changeOptionHandler = (opt) => {
+  //   if (!loading) {
+  //     setData([]);
+  //     // setOption(opt);
+  //   }
+  // };
 
   const keyDownHandler = (event) => {
     if (event.code === "Enter") {
@@ -141,21 +178,21 @@ function SearchHome() {
     setShowResult(false);
   };
 
-  useEffect(() => {
-    if (searchName.length > 0) {
-      if (source) {
-        source.cancel("operation canceled by user");
-      }
+  // useEffect(() => {
+  //   if (searchName.length > 0) {
+  //     if (source) {
+  //       source.cancel("operation canceled by user");
+  //     }
 
-      searchHandler();
-    }
+  //     searchHandler();
+  //   }
 
-    return () => {
-      if (source) {
-        source.cancel("operation canceled by user");
-      }
-    };
-  }, [option]);
+  //   return () => {
+  //     if (source) {
+  //       source.cancel("operation canceled by user");
+  //     }
+  //   };
+  // }, []);
 
   function Bomb() {
     throw new Error("💥 CABOOM 💥");
@@ -172,7 +209,7 @@ function SearchHome() {
       </button>
       {tryBooom ? <Bomb /> : null} */}
       <h3>{t("app-name")}</h3>
-      <div
+      {/* <div
         className={[styles.options, generalStyles.flex_center_container].join(
           " "
         )}
@@ -229,7 +266,7 @@ function SearchHome() {
             {t("nav-warehouse")}
           </label>
         </div>
-      </div>
+      </div> */}
 
       <div className={styles.search_container}>
         <div
@@ -248,20 +285,14 @@ function SearchHome() {
             onChange={(e) => {
               setSearchName(e.target.value);
             }}
-            placeholder={
-              option === "medicines"
-                ? t("search-by-item-name")
-                : option === "companies"
-                ? t("search-by-company-name")
-                : t("search-by-warehouse-name")
-            }
+            placeholder={t("search-home-placeholder")}
             onKeyDown={keyDownHandler}
             onKeyUp={keyUpHandler}
           />
           <Button
             text={t("search")}
             bgColor={Colors.FAILED_COLOR}
-            action={() => searchHandler(option)}
+            action={() => searchHandler()}
           />
 
           {showResult && (
@@ -282,19 +313,40 @@ function SearchHome() {
                 width={75}
                 color={Colors.SECONDARY_COLOR}
               />
-            ) : data.length > 0 ? (
-              data.map((d) =>
-                option === "medicines" ? (
+            ) : data.length > 0 ||
+              companiesData.length > 0 ||
+              warehousesData.length > 0 ? (
+              <>
+                {data.length > 0 && (
+                  <div className={styles.header}>{t("items")}</div>
+                )}
+                {data.map((d) => (
                   <ItemRow key={d._id} item={d} isSearch={true} />
-                ) : (
+                ))}
+                {companiesData.length > 0 && (
+                  <div className={styles.header}>{t("companies")}</div>
+                )}
+                {companiesData.map((company) => (
                   <PartnerRow
-                    key={d._id}
-                    partner={d}
+                    key={company._id}
+                    partner={company}
                     isSearch={true}
-                    type={option === "companies" ? "company" : "warehouse"}
+                    type="company"
                   />
-                )
-              )
+                ))}
+
+                {warehousesData.length > 0 && (
+                  <div className={styles.header}>{t("warehouses")}</div>
+                )}
+                {warehousesData.map((warehouse) => (
+                  <PartnerRow
+                    key={warehouse._id}
+                    partner={warehouse}
+                    isSearch={true}
+                    type="warehouse"
+                  />
+                ))}
+              </>
             ) : (
               <div
                 style={{
@@ -316,3 +368,14 @@ function SearchHome() {
 }
 
 export default SearchHome;
+
+// option === "medicines" ? (
+//   <ItemRow key={d._id} item={d} isSearch={true} />
+// ) : (
+//   <PartnerRow
+//     key={d._id}
+//     partner={d}
+//     isSearch={true}
+//     type={option === "companies" ? "company" : "warehouse"}
+//   />
+// )

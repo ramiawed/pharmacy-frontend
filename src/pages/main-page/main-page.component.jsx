@@ -64,7 +64,6 @@ function MainPage() {
   // selectors
   // get the user and the token from redux-store-auth
   const { user, token } = useSelector(selectUserData);
-  const { status: favoritesStatus } = useSelector(selectFavorites);
   const { status: settingsStatus } = useSelector(selectSettings);
 
   // state uses in the TopNav component
@@ -116,7 +115,12 @@ function MainPage() {
       {settingsStatus === "loading" ? (
         <HomePageLoader />
       ) : (
-        <div className={styles.container}>
+        <div
+          className={styles.container}
+          onClick={() => {
+            if (!collapsedSideNavOption) setCollapsedSideNavOption(true);
+          }}
+        >
           <div
             className={styles.background_div}
             style={{

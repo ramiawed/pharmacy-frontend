@@ -12,11 +12,11 @@ import { useDispatch } from "react-redux";
 import {
   setSearchName,
   setSearchCompanyName,
-  setSearchWarehouse,
   setSearchDeletedItems,
   setSearchActiveItems,
   setSearchInWarehouse,
   setSearchOutWarehouse,
+  setSearchWarehouseName,
 } from "../../redux/items/itemsSlices";
 
 // icons
@@ -105,7 +105,9 @@ function ItemsPageHeader({
             }}
           />
 
-          {user.type !== UserTypeConstants.COMPANY && (
+          {(user.type === UserTypeConstants.WAREHOUSE ||
+            (user.type === UserTypeConstants.ADMIN &&
+              pageState.role !== UserTypeConstants.COMPANY)) && (
             <SearchInput
               label="item-company"
               id="item-company"
@@ -120,17 +122,19 @@ function ItemsPageHeader({
             />
           )}
 
-          {user.type !== UserTypeConstants.WAREHOUSE && (
+          {(user.type === UserTypeConstants.COMPANY ||
+            (user.type === UserTypeConstants.ADMIN &&
+              pageState.role !== UserTypeConstants.WAREHOUSE)) && (
             <SearchInput
               label="item-warehouse"
               id="item-warehouse"
               type="text"
-              value={pageState.searchWarehouse}
-              onchange={(e) => dispatch(setSearchWarehouse(e.target.value))}
+              value={pageState.searchWarehouseName}
+              onchange={(e) => dispatch(setSearchWarehouseName(e.target.value))}
               placeholder="search"
               onEnterPress={search}
               resetField={() => {
-                dispatch(setSearchWarehouse(""));
+                dispatch(setSearchWarehouseName(""));
               }}
             />
           )}

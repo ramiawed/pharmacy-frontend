@@ -288,6 +288,19 @@ export const medicinesSlice = createSlice({
       };
     },
 
+    resetMedicinesPageState: (state) => {
+      state.pageState = {
+        searchName: "",
+        searchCompanyName: "",
+        searchWarehouseName: "",
+        searchInWarehouse: false,
+        searchOutWarehouse: false,
+        city: "",
+        displayType: "list",
+        page: 1,
+      };
+    },
+
     resetMedicines: (state) => {
       state.status = "idle";
       state.medicines = [];
@@ -415,6 +428,7 @@ export const {
   setCity,
   setDisplayType,
   resetMedicinesArray,
+  resetMedicinesPageState,
 } = medicinesSlice.actions;
 
 export const selectMedicines = (state) => state.medicines;

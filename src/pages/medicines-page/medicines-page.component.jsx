@@ -36,6 +36,7 @@ import {
   setCity,
   setDisplayType,
   resetMedicinesArray,
+  resetMedicinesPageState,
 } from "../../redux/medicines/medicinesSlices";
 
 // styles
@@ -44,6 +45,7 @@ import searchContainerStyles from "../../components/search-container/search-cont
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
+import { VscClearAll } from "react-icons/vsc";
 
 let timer = null;
 
@@ -224,6 +226,23 @@ function MedicinesPage({ onSelectedChange }) {
             tooltip={t("refresh-tooltip")}
             onclick={handleEnterPress}
           />
+          {(pageState.searchName.length > 0 ||
+            pageState.searchCompanyName.length > 0 ||
+            pageState.searchWarehouseName.length > 0 ||
+            pageState.searchInWarehouse ||
+            pageState.searchOutWarehouse) && (
+            <Icon
+              selected={false}
+              foreColor={Colors.SECONDARY_COLOR}
+              tooltip={t("clear-filter-tooltip")}
+              onclick={() => {
+                dispatch(resetMedicinesPageState());
+                handleEnterPress();
+                setShowFavorites(false);
+              }}
+              icon={() => <VscClearAll />}
+            />
+          )}
 
           <div className={generalStyles.relative}>
             <Icon

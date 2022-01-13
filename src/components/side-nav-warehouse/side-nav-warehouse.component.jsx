@@ -7,12 +7,20 @@ import styles from "../side-nav.module.scss";
 
 // constants
 import { SideNavLinks, UserTypeConstants } from "../../utils/constants.js";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/auth/authSlice";
 import { selectSettings } from "../../redux/settings/settingsSlice";
+import {
+  setCompany,
+  setRole,
+  setSearchWarehouseName,
+  setWarehouse,
+} from "../../redux/items/itemsSlices";
 
 function SideNavWarehouse({ selectedOption, onSelectedChange }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
   const user = useSelector(selectUser);
   const {
     settings: { saveOrders },
@@ -27,6 +35,10 @@ function SideNavWarehouse({ selectedOption, onSelectedChange }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.ITEMS);
+          dispatch(setCompany(null));
+          dispatch(setWarehouse(user));
+          dispatch(setSearchWarehouseName(""));
+          dispatch(setRole(UserTypeConstants.WAREHOUSE));
         }}
         // to="/warehouse/items"
         to={{

@@ -32,6 +32,11 @@ import tableStyles from "../table.module.scss";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
+import {
+  setCompany,
+  setRole,
+  setWarehouse,
+} from "../../redux/items/itemsSlices";
 
 // UserRow component
 function UserRow({ user }) {
@@ -343,18 +348,37 @@ function UserRow({ user }) {
           {user.type === UserTypeConstants.COMPANY ||
           user.type === UserTypeConstants.WAREHOUSE ? (
             <Link
+              onClick={() => {
+                dispatch(
+                  setCompany(
+                    user.type === UserTypeConstants.COMPANY ? user : null
+                  )
+                );
+                dispatch(
+                  setWarehouse(
+                    user.type === UserTypeConstants.WAREHOUSE ? user : null
+                  )
+                );
+                dispatch(
+                  setRole(
+                    user.type === UserTypeConstants.COMPANY
+                      ? UserTypeConstants.COMPANY
+                      : UserTypeConstants.WAREHOUSE
+                  )
+                );
+              }}
               to={{
                 pathname: "/items",
                 state: {
                   user: loggedUser,
-                  company:
-                    user.type === UserTypeConstants.COMPANY ? user : null,
-                  warehouse:
-                    user.type === UserTypeConstants.WAREHOUSE ? user : null,
-                  role:
-                    user.type === UserTypeConstants.COMPANY
-                      ? UserTypeConstants.COMPANY
-                      : UserTypeConstants.WAREHOUSE,
+                  // company:
+                  //   user.type === UserTypeConstants.COMPANY ? user : null,
+                  // warehouse:
+                  //   user.type === UserTypeConstants.WAREHOUSE ? user : null,
+                  // role:
+                  //   user.type === UserTypeConstants.COMPANY
+                  //     ? UserTypeConstants.COMPANY
+                  //     : UserTypeConstants.WAREHOUSE,
                 },
               }}
               className={rowStyles.hover_underline}

@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Redirect, useLocation } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 
 // components
@@ -29,11 +29,11 @@ import {
   removeItemFromWarehouse,
   selectWarehouseItems,
 } from "../../redux/warehouseItems/warehouseItemsSlices";
-import { selectToken } from "../../redux/auth/authSlice";
+import { selectToken, selectUser } from "../../redux/auth/authSlice";
 import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 
 // constant
-import { Colors, UserTypeConstants } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 
 // styles
 import paginationStyles from "../../components/pagination.module.scss";
@@ -41,9 +41,10 @@ import generalStyles from "../../style.module.scss";
 
 function ItemsPage({ onSelectedChange }) {
   const { t } = useTranslation();
+  const user = useSelector(selectUser);
 
-  const location = useLocation();
-  const { user, company, warehouse, role } = location.state;
+  // const location = useLocation();
+  // const { user, company, warehouse, role } = location.state;
 
   // selector
   const isOnline = useSelector(selectOnlineStatus);
@@ -66,41 +67,22 @@ function ItemsPage({ onSelectedChange }) {
   const handlePageClick = (e) => {
     const { selected } = e;
 
-    handleSearch(selected + 1);
+    dispatch(setPage(selected + 1));
+    handleSearch();
     // setInitialPage(selected);
     window.scrollTo(0, 0);
   };
 
   // enter pressed handler
   const handleEnterPress = () => {
-    handleSearch(1);
+    dispatch(resetItems());
+    dispatch(setPage(1));
+    handleSearch();
   };
 
   // search handler
-  const handleSearch = (page) => {
-    const queryString = {};
-
-    queryString.page = page;
-
-    // the user is company or admin and have permission to update the company items
-    if (
-      user.type === UserTypeConstants.COMPANY ||
-      (user.type === UserTypeConstants.ADMIN && company !== null)
-    ) {
-      queryString.companyId = company._id;
-    }
-
-    if (
-      user.type === UserTypeConstants.WAREHOUSE ||
-      (user.type === UserTypeConstants.ADMIN && warehouse !== null)
-    ) {
-      queryString.warehouseId = warehouse._id;
-    }
-
-    dispatch(setPage(page));
-
-    dispatch(getItems({ queryString, token }));
-    // setInitialPage(page - 1);
+  const handleSearch = () => {
+    dispatch(getItems({ token }));
   };
 
   const deleteItemFromWarehouse = (obj) => {
@@ -122,23 +104,23 @@ function ItemsPage({ onSelectedChange }) {
   };
 
   useEffect(() => {
-    handleSearch(1);
+    handleSearch();
 
     onSelectedChange();
 
     return () => {
       dispatch(resetItems());
     };
-  }, [pageState.sortFields, warehouse, role]);
+  }, [pageState.sortFields, pageState.warehouse, pageState.role]);
 
   return user ? (
     <div className={generalStyles.container}>
       <ItemsPageHeader
         user={user}
-        role={role}
-        warehouse={warehouse}
+        role={pageState.role}
+        warehouse={pageState.warehouse}
         count={count}
-        company={company}
+        company={pageState.company}
         pageState={pageState}
         search={handleEnterPress}
       />
@@ -146,7 +128,7 @@ function ItemsPage({ onSelectedChange }) {
       {count > 0 && (
         <ItemsTableHeader
           user={user}
-          role={role}
+          role={pageState.role}
           pageState={pageState}
           sortNameField={pageState.sortNameField}
           sortCaliberField={pageState.sortCaliberField}
@@ -161,9 +143,9 @@ function ItemsPage({ onSelectedChange }) {
           key={uuidv4()}
           item={item}
           user={user}
-          company={company}
-          warehouse={warehouse}
-          role={role}
+          company={pageState.company}
+          warehouse={pageState.warehouse}
+          role={pageState.role}
           deleteItemFromWarehouse={deleteItemFromWarehouse}
           changeItemMaxQty={changeItemMaxQty}
         />

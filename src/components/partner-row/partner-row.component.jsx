@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 // react icons
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
@@ -43,7 +43,7 @@ import { Colors, UserTypeConstants } from "../../utils/constants.js";
 
 function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
   const { t } = useTranslation();
-
+  const history = useHistory();
   const dispatch = useDispatch();
 
   // selectors
@@ -68,7 +68,7 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
       partner.allowShowingMedicines);
 
   // method to handle add company to partner's favorite
-  const addPartnerToFavorite = () => {
+  const addPartnerToFavorite = (e) => {
     // check the internet connection
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -88,10 +88,12 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
       .catch(() => {
         setChangeFavoriteLoading(false);
       });
+
+    e.stopPropagation();
   };
 
   // method to handle remove company from partner's favorite
-  const removePartnerFromFavoriteHandler = () => {
+  const removePartnerFromFavoriteHandler = (e) => {
     // check the internet connection
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -106,6 +108,8 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
         setChangeFavoriteLoading(false);
       })
       .catch(() => setChangeFavoriteLoading(false));
+
+    e.stopPropagation();
   };
 
   // statistics -> company selected
@@ -141,33 +145,23 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
           isSearch ? rowStyles.search_container : rowStyles.container,
           withoutBoxShadow ? rowStyles.without_box_shadow : "",
         ].join(" ")}
+        onClick={() => {
+          if (allowShowingWarehouseMedicines) {
+            dispatchCompanySelectedHandler();
+            history.push("/medicines");
+          }
+        }}
       >
-        {allowShowingWarehouseMedicines ? (
-          <Link
-            onClick={dispatchCompanySelectedHandler}
-            to={{
-              pathname: `/medicines`,
-            }}
-            className={[
-              rowStyles.hover_underline,
-              rowStyles.padding_start,
-            ].join(" ")}
-          >
-            {partner.name}
-          </Link>
-        ) : (
-          <label
-            className={[
-              rowStyles.hover_underline,
-              rowStyles.padding_start,
-            ].join(" ")}
-            style={{
-              fontSize: "16px",
-            }}
-          >
-            {partner.name}
-          </label>
-        )}
+        <label
+          className={[rowStyles.hover_underline, rowStyles.padding_start].join(
+            " "
+          )}
+          style={{
+            fontSize: "16px",
+          }}
+        >
+          {partner.name}
+        </label>
 
         {changeFavoriteLoading ? (
           <div className={[rowStyles.padding_end].join(" ")}>

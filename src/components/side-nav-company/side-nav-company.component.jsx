@@ -7,11 +7,17 @@ import styles from "../side-nav.module.scss";
 
 // constants
 import { SideNavLinks, UserTypeConstants } from "../../utils/constants.js";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/auth/authSlice";
+import {
+  setCompany,
+  setRole,
+  setWarehouse,
+} from "../../redux/items/itemsSlices";
 
 function SideNavCompany({ selectedOption, onSelectedChange }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const user = useSelector(selectUser);
   return (
     <>
@@ -22,6 +28,9 @@ function SideNavCompany({ selectedOption, onSelectedChange }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.ITEMS);
+          dispatch(setCompany(user));
+          dispatch(setWarehouse(null));
+          dispatch(setRole(UserTypeConstants.COMPANY));
         }}
         // to="/company/items"
         to={{

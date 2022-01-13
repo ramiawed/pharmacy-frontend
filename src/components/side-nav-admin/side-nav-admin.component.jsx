@@ -8,15 +8,25 @@ import styles from "../side-nav.module.scss";
 // constants
 import { SideNavLinks, UserTypeConstants } from "../../utils/constants.js";
 import { selectSettings } from "../../redux/settings/settingsSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/auth/authSlice";
+import {
+  setCompany,
+  setCompanyId,
+  setRole,
+  setWarehouse,
+  setWarehouseId,
+} from "../../redux/items/itemsSlices";
 
 function SideNavAdmin({ selectedOption, onSelectedChange }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
   const user = useSelector(selectUser);
   const {
     settings: { saveOrders },
   } = useSelector(selectSettings);
+
   return (
     <>
       <Link
@@ -38,6 +48,9 @@ function SideNavAdmin({ selectedOption, onSelectedChange }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.ITEMS);
+          dispatch(setCompany(null));
+          dispatch(setWarehouse(null));
+          dispatch(setRole(UserTypeConstants.ADMIN));
         }}
         to={{
           pathname: "/items",

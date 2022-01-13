@@ -9,6 +9,7 @@ import {
   changeSearchCity,
   changeSearchName,
   changeShowFavorites,
+  resetWarehousePageState,
   selectWarehousesPageState,
 } from "../../redux/warehouse/warehousesSlice";
 import { selectFavoritesPartners } from "../../redux/favorites/favoritesSlice";
@@ -24,6 +25,7 @@ import PartnerRow from "../partner-row/partner-row.component";
 import { RiRefreshLine } from "react-icons/ri";
 import { AiFillAppstore, AiFillStar } from "react-icons/ai";
 import { FaListUl } from "react-icons/fa";
+import { VscClearAll } from "react-icons/vsc";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -33,7 +35,6 @@ import { Colors, UserTypeConstants } from "../../utils/constants";
 
 function WarehousesHeader({ search, refreshHandler, count }) {
   const { t } = useTranslation();
-  const history = useHistory();
   const dispatch = useDispatch();
 
   const { searchName, searchCity, displayType, showFavorites } = useSelector(
@@ -87,6 +88,20 @@ function WarehousesHeader({ search, refreshHandler, count }) {
           onclick={refreshHandler}
           icon={() => <RiRefreshLine />}
         />
+
+        {(searchName.length > 0 || searchCity.length > 0) && (
+          <Icon
+            selected={false}
+            foreColor={Colors.SECONDARY_COLOR}
+            tooltip={t("clear-filter-tooltip")}
+            onclick={() => {
+              dispatch(resetWarehousePageState());
+              refreshHandler();
+              dispatch(changeShowFavorites(false));
+            }}
+            icon={() => <VscClearAll />}
+          />
+        )}
 
         {/* show favorites */}
         <div className={generalStyles.relative}>

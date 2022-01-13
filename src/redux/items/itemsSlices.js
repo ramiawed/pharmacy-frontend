@@ -21,9 +21,12 @@ const initialState = {
   changeOfferStatus: "idle",
   changeOfferError: "",
   pageState: {
+    role: null,
+    company: null,
+    warehouse: null,
     searchName: "",
     searchCompanyName: "",
-    searchWarehouse: "",
+    searchWarehouseName: "",
     searchDeletedItems: false,
     searchActiveItems: false,
     searchInWarehouse: false,
@@ -39,7 +42,7 @@ const initialState = {
 
 export const getItems = createAsyncThunk(
   "items/getItems",
-  async ({ queryString, token }, { rejectWithValue, getState }) => {
+  async ({ token }, { rejectWithValue, getState }) => {
     CancelToken = axios.CancelToken;
     source = CancelToken.source;
 
@@ -48,14 +51,14 @@ export const getItems = createAsyncThunk(
     } = getState();
 
     try {
-      let buildUrl = `${BASEURL}/items?page=${queryString.page}&limit=9`;
+      let buildUrl = `${BASEURL}/items?page=${pageState.page}&limit=9`;
 
-      if (queryString.companyId) {
-        buildUrl = buildUrl + `&companyId=${queryString.companyId}`;
+      if (pageState.company) {
+        buildUrl = buildUrl + `&companyId=${pageState.company._id}`;
       }
 
-      if (queryString.warehouseId) {
-        buildUrl = buildUrl + `&warehouseId=${queryString.warehouseId}`;
+      if (pageState.warehouse) {
+        buildUrl = buildUrl + `&warehouseId=${pageState.warehouse._id}`;
       }
 
       if (pageState.searchName.trim() !== "") {
@@ -66,8 +69,8 @@ export const getItems = createAsyncThunk(
         buildUrl = buildUrl + `&companyName=${pageState.searchCompanyName}`;
       }
 
-      if (pageState.searchWarehouse.trim() !== "") {
-        buildUrl = buildUrl + `&warehouseName=${pageState.searchWarehouse}`;
+      if (pageState.searchWarehouseName.trim() !== "") {
+        buildUrl = buildUrl + `&warehouseName=${pageState.searchWarehouseName}`;
       }
 
       if (pageState.searchActiveItems) {
@@ -393,10 +396,10 @@ export const itemsSlice = createSlice({
       };
     },
 
-    setSearchWarehouse: (state, action) => {
+    setSearchWarehouseName: (state, action) => {
       state.pageState = {
         ...state.pageState,
-        searchWarehouse: action.payload,
+        searchWarehouseName: action.payload,
       };
     },
 
@@ -470,11 +473,35 @@ export const itemsSlice = createSlice({
       };
     },
 
+    setRole: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        role: action.payload,
+      };
+    },
+
+    setCompany: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        company: action.payload,
+      };
+    },
+
+    setWarehouse: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        warehouse: action.payload,
+      };
+    },
+
     resetPageState: (state) => {
       state.pageState = {
+        role: null,
+        company: null,
+        warehouse: null,
         searchName: "",
         searchCompanyName: "",
-        searchWarehouse: "",
+        searchWarehouseName: "",
         searchDeletedItems: false,
         searchActiveItems: false,
         searchInWarehouse: false,
@@ -501,9 +528,12 @@ export const itemsSlice = createSlice({
       state.changeLogoStatus = "idle";
       state.changeLogoError = "";
       state.pageState = {
+        role: null,
+        company: null,
+        warehouse: null,
         searchName: "",
         searchCompanyName: "",
-        searchWarehouse: "",
+        searchWarehouseName: "",
         searchDeletedItems: false,
         searchActiveItems: false,
         searchInWarehouse: false,
@@ -526,6 +556,10 @@ export const itemsSlice = createSlice({
       state.items = action.payload.data.items;
       state.count = action.payload.count;
       state.error = "";
+      // state.pageState = {
+      //   ...state.pageState,
+      //   page: Math.ceil(state.items.length / 9) + 1,
+      // };
     },
     [getItems.rejected]: (state, { payload }) => {
       state.status = "failed";
@@ -684,7 +718,7 @@ export const {
   resetPageState,
   setSearchName,
   setSearchCompanyName,
-  setSearchWarehouse,
+  setSearchWarehouseName,
   setSearchDeletedItems,
   setSearchActiveItems,
   setSearchInWarehouse,
@@ -695,6 +729,9 @@ export const {
   setSortCustomerPriceField,
   setSortFields,
   setPage,
+  setRole,
+  setCompany,
+  setWarehouse,
 } = itemsSlice.actions;
 
 export const selectItems = (state) => state.items;

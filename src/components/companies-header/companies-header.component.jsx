@@ -9,6 +9,7 @@ import {
   changeSearchCity,
   changeSearchName,
   changeShowFavorites,
+  resetCompaniesPageState,
   selectCompaniesPageState,
 } from "../../redux/company/companySlice";
 import { selectFavoritesPartners } from "../../redux/favorites/favoritesSlice";
@@ -24,6 +25,7 @@ import PartnerRow from "../partner-row/partner-row.component";
 import { RiRefreshLine } from "react-icons/ri";
 import { AiFillAppstore, AiFillStar } from "react-icons/ai";
 import { FaListUl } from "react-icons/fa";
+import { VscClearAll } from "react-icons/vsc";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -34,7 +36,6 @@ import { Colors, UserTypeConstants } from "../../utils/constants";
 function CompaniesHeader({ search, refreshHandler, count }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
 
   const { searchName, searchCity, displayType, showFavorites } = useSelector(
     selectCompaniesPageState
@@ -91,6 +92,20 @@ function CompaniesHeader({ search, refreshHandler, count }) {
           }}
           icon={() => <RiRefreshLine />}
         />
+
+        {(searchName.length > 0 || searchCity.length > 0) && (
+          <Icon
+            selected={false}
+            foreColor={Colors.SECONDARY_COLOR}
+            tooltip={t("clear-filter-tooltip")}
+            onclick={() => {
+              dispatch(resetCompaniesPageState());
+              refreshHandler();
+              dispatch(changeShowFavorites(false));
+            }}
+            icon={() => <VscClearAll />}
+          />
+        )}
 
         {/* show favorites */}
         <div className={generalStyles.relative}>

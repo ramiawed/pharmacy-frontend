@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -71,6 +71,7 @@ function CompanyItemRow({
   deleteItemFromWarehouse,
 }) {
   const { t } = useTranslation();
+  const history = useHistory();
   const dispatch = useDispatch();
 
   // selectors
@@ -123,7 +124,7 @@ function CompanyItemRow({
     setModalObj({});
   };
 
-  const handleDeleteItemFromWarehouse = () => {
+  const handleDeleteItemFromWarehouse = (e) => {
     if (!isOnline) {
       dispatch(changeOnlineMsg());
       return;
@@ -135,9 +136,11 @@ function CompanyItemRow({
     });
 
     setShowDeleteFromWarehouseModal(false);
+
+    e.stopPropagation();
   };
 
-  const deleteItemHandler = () => {
+  const deleteItemHandler = (e) => {
     if (!isOnline) {
       dispatch(changeOnlineMsg());
       return;
@@ -151,9 +154,11 @@ function CompanyItemRow({
     } else {
       setShowWarningModal(true);
     }
+
+    e.stopPropagation();
   };
 
-  const undoDeleteItemHandler = () => {
+  const undoDeleteItemHandler = (e) => {
     if (!isOnline) {
       dispatch(changeOnlineMsg());
       return;
@@ -167,9 +172,11 @@ function CompanyItemRow({
     } else {
       setShowWarningModal(true);
     }
+
+    e.stopPropagation();
   };
 
-  const deleteFromWarehouseHandler = () => {
+  const deleteFromWarehouseHandler = (e) => {
     if (!isOnline) {
       dispatch(changeOnlineMsg());
       return;
@@ -185,22 +192,38 @@ function CompanyItemRow({
     } else {
       setShowWarningModal(true);
     }
+
+    e.stopPropagation();
   };
 
   return (
     <>
       <div
+        className={rowStyles.container}
         style={{
           backgroundColor: checkOffer(item, user) ? "#0f04" : "#fff",
+          cursor: "pointer",
         }}
-        className={rowStyles.container}
+        onClick={() => {
+          history.push("item", {
+            from: user.type,
+            type: "info",
+            allowAction:
+              user.type === UserTypeConstants.COMPANY ||
+              (user.type === UserTypeConstants.ADMIN &&
+                item.company.allowAdmin),
+            itemId: item._id,
+            companyId: item.company._id,
+            warehouseId: warehouse?._id,
+          });
+        }}
       >
         <label
           className={[rowStyles.hover_underline, tableStyles.label_medium].join(
             " "
           )}
         >
-          <Link
+          {/* <Link
             className={rowStyles.hover_underline}
             to={{
               pathname: "/item",
@@ -217,8 +240,8 @@ function CompanyItemRow({
               },
             }}
           >
-            {item.name}
-          </Link>
+          </Link> */}
+          {item.name}
         </label>
 
         {((user.type === UserTypeConstants.ADMIN &&

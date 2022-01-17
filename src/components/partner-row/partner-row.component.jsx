@@ -145,6 +145,9 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
           isSearch ? rowStyles.search_container : rowStyles.container,
           withoutBoxShadow ? rowStyles.without_box_shadow : "",
         ].join(" ")}
+        style={{
+          cursor: "pointer",
+        }}
         onClick={() => {
           if (allowShowingWarehouseMedicines) {
             dispatchCompanySelectedHandler();

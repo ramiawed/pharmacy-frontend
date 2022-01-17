@@ -31,6 +31,13 @@ function UserMoreInfoModal({ user, close }) {
         </label>
       </div>
 
+      <div className={styles.row}>
+        <label className={styles.label}>{t("user-created-at")}:</label>
+        <label className={styles.label_value}>
+          {user.createdAt.split("T")[0]}
+        </label>
+      </div>
+
       <div className={[styles.header].join(" ")}>{t("communication-info")}</div>
       <div className={styles.row}>
         <label className={styles.label}>{t("user-email")}:</label>

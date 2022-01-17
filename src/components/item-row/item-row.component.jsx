@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 // react-redux stuff
 import { statisticsItemFavorites } from "../../redux/statistics/statisticsSlice";
@@ -90,6 +90,7 @@ const checkOffer = (item, user) => {
 
 function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
   const { t } = useTranslation();
+  const history = useHistory();
   const dispatch = useDispatch();
 
   // selectors
@@ -104,7 +105,7 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
     useState(false);
 
   // method to handle add company to user's favorite
-  const addItemToFavoriteItemsHandler = () => {
+  const addItemToFavoriteItemsHandler = (e) => {
     // check the internet connection
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -122,10 +123,12 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
       .catch(() => {
         setChangeFavoriteLoading(false);
       });
+
+    e.stopPropagation();
   };
 
   // method to handle remove company from user's favorite
-  const removeItemFromFavoritesItemsHandler = () => {
+  const removeItemFromFavoritesItemsHandler = (e) => {
     // check the internet connection
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -142,10 +145,12 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
       .catch(() => {
         setChangeFavoriteLoading(false);
       });
+
+    e.stopPropagation();
   };
 
   // method to handle add item to warehouse
-  const addItemToWarehouseHandler = () => {
+  const addItemToWarehouseHandler = (e) => {
     // check the internet connection
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -171,10 +176,12 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
       .catch(() => {
         setChangeAddToWarehouseLoading(false);
       });
+
+    e.stopPropagation();
   };
 
   // method to handle remove item from warehouse
-  const removeItemFromWarehouseHandler = () => {
+  const removeItemFromWarehouseHandler = (e) => {
     // check the internet connection
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -200,6 +207,8 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
       .catch(() => {
         setChangeAddToWarehouseLoading(false);
       });
+
+    e.stopPropagation();
   };
 
   const dispatchStatisticsHandler = () => {
@@ -215,6 +224,7 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
       );
     }
   };
+
   // render method
   return (
     <>
@@ -223,12 +233,26 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
           backgroundColor: checkOffer(item, user)
             ? Colors.OFFER_COLOR
             : Colors.WHITE_COLOR,
+          cursor: "pointer",
         }}
         className={[
           isSearch || isFavorite
             ? rowStyles.search_container
             : rowStyles.container,
         ].join(" ")}
+        onClick={() => {
+          dispatchStatisticsHandler();
+
+          history.push("/item", {
+            from: user.type,
+            type: "info",
+            allowAction: false,
+            itemId: item._id,
+            companyId: item.company._id,
+            warehouseId:
+              user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
+          });
+        }}
       >
         <label
           className={[
@@ -238,7 +262,7 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
             isSmallFavorite ? styles.small_font : "",
           ].join(" ")}
         >
-          <Link
+          {/* <Link
             onClick={dispatchStatisticsHandler}
             to={{
               pathname: "/item",
@@ -254,8 +278,8 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
             }}
             className={rowStyles.hover_underline}
           >
-            {item.name}
-          </Link>
+          </Link> */}
+          {item.name}
         </label>
 
         <label

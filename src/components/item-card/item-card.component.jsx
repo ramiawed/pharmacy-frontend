@@ -32,7 +32,7 @@ import {
   SERVER_URL,
   UserTypeConstants,
 } from "../../utils/constants.js";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { statisticsItemFavorites } from "../../redux/statistics/statisticsSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import {
@@ -93,6 +93,7 @@ const checkOffer = (item, user) => {
 
 function ItemCard({ companyItem }) {
   const { t } = useTranslation();
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const isOnline = useSelector(selectOnlineStatus);
@@ -106,7 +107,7 @@ function ItemCard({ companyItem }) {
     useState(false);
 
   // method to handle add company to user's favorite
-  const addItemToFavoriteItems = () => {
+  const addItemToFavoriteItems = (e) => {
     // check the internet connection
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -128,10 +129,12 @@ function ItemCard({ companyItem }) {
       .catch(() => {
         setChangeFavoriteLoading(false);
       });
+
+    e.stopPropagation();
   };
 
   // method to handle remove company from user's favorite
-  const removeItemFromFavoritesItems = () => {
+  const removeItemFromFavoritesItems = (e) => {
     // check the internet connection
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -150,10 +153,12 @@ function ItemCard({ companyItem }) {
       .catch(() => {
         setChangeFavoriteLoading(false);
       });
+
+    e.stopPropagation();
   };
 
   // method to handle add item to warehouse
-  const addItemToWarehouseHandler = () => {
+  const addItemToWarehouseHandler = (e) => {
     // check the internet connection
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -178,10 +183,12 @@ function ItemCard({ companyItem }) {
       .catch(() => {
         setChangeAddToWarehouseLoading(false);
       });
+
+    e.stopPropagation();
   };
 
   // method to handle remove item from warehouse
-  const removeItemFromWarehouseHandler = () => {
+  const removeItemFromWarehouseHandler = (e) => {
     // check the internet connection
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -206,6 +213,8 @@ function ItemCard({ companyItem }) {
       .catch(() => {
         setChangeAddToWarehouseLoading(false);
       });
+
+    e.stopPropagation();
   };
 
   const dispatchStatisticsHandler = () => {
@@ -227,6 +236,20 @@ function ItemCard({ companyItem }) {
         styles.partner_container,
         checkOffer(companyItem, user) ? styles.partner_container_has_offer : "",
       ].join(" ")}
+      onClick={() => {
+        dispatchStatisticsHandler();
+
+        history.push("item", {
+          from: user.type,
+          type: "info",
+          allowAction: false,
+
+          itemId: companyItem._id,
+          companyId: companyItem.company._id,
+          warehouseId:
+            user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
+        });
+      }}
     >
       <div
         className={[
@@ -337,7 +360,7 @@ function ItemCard({ companyItem }) {
               generalStyles.block,
             ].join(" ")}
           >
-            <Link
+            {/* <Link
               onClick={dispatchStatisticsHandler}
               to={{
                 pathname: "/item",
@@ -357,8 +380,8 @@ function ItemCard({ companyItem }) {
                 generalStyles.fc_white,
               ].join(" ")}
             >
-              {companyItem.name}
-            </Link>
+            </Link> */}
+            {companyItem.name}
           </label>
 
           {user.type !== UserTypeConstants.GUEST && (

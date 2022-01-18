@@ -139,6 +139,13 @@ function ItemExcelPage() {
           };
         }
 
+        if (!d.indication) {
+          obj = {
+            ...obj,
+            indication: "",
+          };
+        }
+
         return obj;
       });
 

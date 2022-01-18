@@ -6,6 +6,7 @@ import {
   BASEURL,
   CitiesName,
   GuestJob,
+  ShowWarehouseItems,
   UserActiveState,
   UserApprovedState,
   UserTypeConstants,
@@ -33,6 +34,7 @@ const initialState = {
     active: UserActiveState.ALL,
     userType: UserTypeConstants.ALL,
     searchJob: GuestJob.NONE,
+    showItems: ShowWarehouseItems.ALL,
     orderBy: {},
     page: 1,
   },
@@ -118,6 +120,14 @@ export const getUsers = createAsyncThunk(
         buildUrl = buildUrl + `&isApproved=${false}`;
       }
 
+      if (pageState.showItems.trim() === ShowWarehouseItems.SHOW) {
+        buildUrl = buildUrl + `&allowShowingMedicines=${true}`;
+      }
+
+      if (pageState.showItems.trim() === ShowWarehouseItems.DONT_SHOW) {
+        buildUrl = buildUrl + `&allowShowingMedicines=${false}`;
+      }
+
       if (pageState.active === UserActiveState.ACTIVE) {
         buildUrl = buildUrl + `&isActive=${true}`;
       }
@@ -125,6 +135,8 @@ export const getUsers = createAsyncThunk(
       if (pageState.active === UserActiveState.INACTIVE) {
         buildUrl = buildUrl + `&isActive=${false}`;
       }
+
+      console.log(buildUrl);
 
       let sortArray = [];
       let sort;
@@ -367,6 +379,13 @@ export const usersSlice = createSlice({
       };
     },
 
+    setShowItems: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        showItems: action.payload,
+      };
+    },
+
     setSearchJob: (state, action) => {
       state.pageState = {
         ...state.pageState,
@@ -406,6 +425,7 @@ export const usersSlice = createSlice({
         active: UserActiveState.ALL,
         userType: UserTypeConstants.ALL,
         searchJob: GuestJob.NONE,
+        showItems: ShowWarehouseItems.ALL,
         orderBy: {},
         page: 1,
       };
@@ -435,6 +455,7 @@ export const usersSlice = createSlice({
         active: UserActiveState.ALL,
         userType: UserTypeConstants.ALL,
         searchJob: GuestJob.NONE,
+        showItems: ShowWarehouseItems.ALL,
         orderBy: {},
         page: 1,
       };
@@ -613,6 +634,7 @@ export const {
   setUserActive,
   setUserType,
   setSearchJob,
+  setShowItems,
   setPage,
   setRefresh,
   setOrderBy,

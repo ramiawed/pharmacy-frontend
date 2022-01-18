@@ -24,6 +24,7 @@ import { getAllSettings } from "../../redux/settings/settingsSlice";
 
 // Constants && utils
 import {
+  BASEURL,
   CitiesName,
   Colors,
   GuestJob,
@@ -376,7 +377,7 @@ function SignUp() {
 
       setSignupLoading(true);
       axios
-        .post("/users/signup", user, { timeout: 10000 })
+        .post(`${BASEURL}/users/signup`, user, { timeout: 10000 })
         .then(() => {
           // if create user succeeded
 
@@ -398,6 +399,7 @@ function SignUp() {
           }
         })
         .catch((err) => {
+          console.log(err);
           if (
             err.code === "ECONNABORTED" &&
             err.message.startsWith("timeout")

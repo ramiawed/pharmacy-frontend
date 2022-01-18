@@ -45,6 +45,7 @@ function ExcelTableHeader({
         {t("item-customer-price")}
       </label>
       <label className={tableStyles.label_medium}>{t("item-barcode")}</label>
+      <label className={tableStyles.label_large}>{t("item-indication")}</label>
       <label className={tableStyles.label_large}>{t("item-composition")}</label>
       <label className={tableStyles.label_xsmall}>
         <div

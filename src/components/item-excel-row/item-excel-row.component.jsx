@@ -106,8 +106,18 @@ function ItemExcelRow({ item, index, onchange, onDelete, onSelectedChanged }) {
       <div className={tableStyles.label_large}>
         <input
           className={rowStyles.input}
+          id="indication"
+          style={{ overflow: "none", fontSize: "0.7rem" }}
+          value={item.indication}
+          onChange={(e) => onchange(e, index)}
+        />
+      </div>
+
+      <div className={tableStyles.label_large}>
+        <input
+          className={rowStyles.input}
           id="composition"
-          style={{ overflow: "none" }}
+          style={{ overflow: "none", fontSize: "0.7rem" }}
           value={item.composition}
           onChange={(e) => onchange(e, index)}
         />

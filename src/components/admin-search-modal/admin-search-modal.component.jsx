@@ -4,6 +4,7 @@ import {
   CitiesName,
   Colors,
   GuestJob,
+  ShowWarehouseItems,
   UserActiveState,
   UserApprovedState,
   UserTypeConstants,
@@ -30,6 +31,7 @@ import {
   setSearchJobTitle,
   setSearchName,
   setSearchStreet,
+  setShowItems,
   setUserActive,
   setUserApproved,
   setUserType,
@@ -84,6 +86,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
   // handle the change of the User type state
   const handleSearchTypeChange = (val) => {
     dispatch(setUserType(val));
+    dispatch(setShowItems(ShowWarehouseItems.ALL));
     if (
       val === UserTypeConstants.ALL ||
       val === UserTypeConstants.ADMIN ||
@@ -120,6 +123,16 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
 
   const handleApproveChange = (val) => {
     dispatch(setUserApproved(val));
+  };
+
+  const showWarehouseItems = [
+    { value: ShowWarehouseItems.SHOW, label: t("show-items") },
+    { value: ShowWarehouseItems.DONT_SHOW, label: t("dont-show-items") },
+    { value: ShowWarehouseItems.ALL, label: t("all") },
+  ];
+
+  const handleShowItems = (val) => {
+    dispatch(setShowItems(val));
   };
 
   // guest options and its change handler
@@ -198,71 +211,8 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
           />
         </div>
       </RowWith2Children>
-      <Separator />
-      <RowWith2Children>
-        <div>
-          <Input
-            label="user-district"
-            id="search-district"
-            type="text"
-            value={pageState.searchDistrict}
-            onchange={(e) => {
-              dispatch(setSearchDistrict(e.target.value));
-            }}
-            bordered={true}
-            icon={<FaSearch />}
-            placeholder="search-by-district"
-            onEnterPress={enterPress}
-            resetField={(e) => {
-              dispatch(setSearchDistrict(""));
-            }}
-          />
-        </div>
-        <div>
-          <Input
-            label="user-street"
-            id="search-street"
-            type="text"
-            value={pageState.searchStreet}
-            onchange={(e) => {
-              dispatch(setSearchStreet(e.target.value));
-            }}
-            bordered={true}
-            icon={<FaSearch />}
-            placeholder="search-by-street"
-            onEnterPress={enterPress}
-            resetField={() => dispatch(setSearchStreet(""))}
-          />
-        </div>
-      </RowWith2Children>
-      <Separator />
-      <RowWith2Children>
-        <SelectCustom
-          bgColor={Colors.SECONDARY_COLOR}
-          foreColor="#fff"
-          options={approvedState}
-          onchange={handleApproveChange}
-          defaultOption={{
-            value: pageState.approved,
-            label: t(pageState.approved.toLowerCase()),
-          }}
-          caption="approved-state"
-        />
-        <SelectCustom
-          bgColor={Colors.SECONDARY_COLOR}
-          foreColor="#fff"
-          options={deletedState}
-          onchange={handleActiveChange}
-          defaultOption={{
-            value: pageState.active,
-            label: t(pageState.active.toLowerCase()),
-          }}
-          caption="approved-state"
-        />
-      </RowWith2Children>
 
       <Separator />
-
       <RowWith2Children>
         <SelectCustom
           bgColor={Colors.SECONDARY_COLOR}
@@ -293,7 +243,56 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
           <div></div>
         )}
       </RowWith2Children>
+
       <Separator />
+
+      {pageState.userType === UserTypeConstants.WAREHOUSE && (
+        <>
+          <RowWith2Children>
+            <SelectCustom
+              bgColor={Colors.SECONDARY_COLOR}
+              foreColor="#fff"
+              options={showWarehouseItems}
+              onchange={handleShowItems}
+              defaultOption={{
+                value: pageState.showItems,
+                label: t(pageState.showItems.toLowerCase()),
+              }}
+              caption="show-warehouse-items"
+            />
+            <div></div>
+          </RowWith2Children>
+          <Separator />
+        </>
+      )}
+
+      <RowWith2Children>
+        <SelectCustom
+          bgColor={Colors.SECONDARY_COLOR}
+          foreColor="#fff"
+          options={approvedState}
+          onchange={handleApproveChange}
+          defaultOption={{
+            value: pageState.approved,
+            label: t(pageState.approved.toLowerCase()),
+          }}
+          caption="approved-state"
+        />
+        <SelectCustom
+          bgColor={Colors.SECONDARY_COLOR}
+          foreColor="#fff"
+          options={deletedState}
+          onchange={handleActiveChange}
+          defaultOption={{
+            value: pageState.active,
+            label: t(pageState.active.toLowerCase()),
+          }}
+          caption="approved-state"
+        />
+      </RowWith2Children>
+
+      <Separator />
+
       {(pageState.userType === UserTypeConstants.WAREHOUSE ||
         pageState.userType === UserTypeConstants.PHARMACY) && (
         <RowWith2Children>
@@ -333,41 +332,81 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
       )}
 
       {pageState.searchJob === GuestJob.EMPLOYEE && (
-        <RowWith2Children>
-          <div>
-            <Input
-              label="user-company-name"
-              id="search-company-name"
-              type="text"
-              value={pageState.searchCompanyName}
-              onchange={(e) => {
-                dispatch(setSearchCompanyName(e.target.value));
-              }}
-              bordered={true}
-              icon={<FaSearch />}
-              placeholder="search-by-company-name"
-              onEnterPress={enterPress}
-              resetField={() => dispatch(setSearchCompanyName(""))}
-            />
-          </div>
-          <div>
-            <Input
-              label="user-job-title"
-              id="search-job-title"
-              type="text"
-              value={pageState.searchJobTitle}
-              onchange={(e) => {
-                dispatch(setSearchJobTitle(e.target.value));
-              }}
-              bordered={true}
-              icon={<FaSearch />}
-              placeholder="search-by-job-title"
-              onEnterPress={enterPress}
-              resetField={() => dispatch(setSearchJobTitle(""))}
-            />
-          </div>
-        </RowWith2Children>
+        <>
+          <RowWith2Children>
+            <div>
+              <Input
+                label="user-company-name"
+                id="search-company-name"
+                type="text"
+                value={pageState.searchCompanyName}
+                onchange={(e) => {
+                  dispatch(setSearchCompanyName(e.target.value));
+                }}
+                bordered={true}
+                icon={<FaSearch />}
+                placeholder="search-by-company-name"
+                onEnterPress={enterPress}
+                resetField={() => dispatch(setSearchCompanyName(""))}
+              />
+            </div>
+            <div>
+              <Input
+                label="user-job-title"
+                id="search-job-title"
+                type="text"
+                value={pageState.searchJobTitle}
+                onchange={(e) => {
+                  dispatch(setSearchJobTitle(e.target.value));
+                }}
+                bordered={true}
+                icon={<FaSearch />}
+                placeholder="search-by-job-title"
+                onEnterPress={enterPress}
+                resetField={() => dispatch(setSearchJobTitle(""))}
+              />
+            </div>
+          </RowWith2Children>
+          <Separator />
+        </>
       )}
+
+      <RowWith2Children>
+        <div>
+          <Input
+            label="user-district"
+            id="search-district"
+            type="text"
+            value={pageState.searchDistrict}
+            onchange={(e) => {
+              dispatch(setSearchDistrict(e.target.value));
+            }}
+            bordered={true}
+            icon={<FaSearch />}
+            placeholder="search-by-district"
+            onEnterPress={enterPress}
+            resetField={(e) => {
+              dispatch(setSearchDistrict(""));
+            }}
+          />
+        </div>
+        <div>
+          <Input
+            label="user-street"
+            id="search-street"
+            type="text"
+            value={pageState.searchStreet}
+            onchange={(e) => {
+              dispatch(setSearchStreet(e.target.value));
+            }}
+            bordered={true}
+            icon={<FaSearch />}
+            placeholder="search-by-street"
+            onEnterPress={enterPress}
+            resetField={() => dispatch(setSearchStreet(""))}
+          />
+        </div>
+      </RowWith2Children>
     </Modal>
   );
 }

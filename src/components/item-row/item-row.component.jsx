@@ -35,7 +35,6 @@ import { VscLoading } from "react-icons/vsc";
 // styles
 import generalStyles from "../../style.module.scss";
 import rowStyles from "../row.module.scss";
-import tableStyles from "../table.module.scss";
 import styles from "./item-row.module.scss";
 
 // constants and utils
@@ -364,8 +363,9 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
           item.existing_place[user.city] > 0 ? (
             <Icon
               icon={() => <GiShoppingCart />}
-              onclick={() => {
+              onclick={(e) => {
                 setShowModal(true);
+                e.stopPropagation();
               }}
               foreColor={Colors.SUCCEEDED_COLOR}
             />

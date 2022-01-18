@@ -14,6 +14,12 @@ export const UserApprovedState = {
   ALL: "all",
 };
 
+export const ShowWarehouseItems = {
+  SHOW: "show-items",
+  DONT_SHOW: "dont-show-items",
+  ALL: "all",
+};
+
 export const UserActiveState = {
   ACTIVE: "not-deleted-account",
   INACTIVE: "deleted-account",
@@ -105,7 +111,7 @@ export const DateOptions = {
   ONE_YEAR: "1Y",
 };
 
-export const BASEURL = "https://salty-brook-65681.herokuapp.com/api/v1";
-// export const BASEURL = "http://localhost:8000/api/v1";
-export const SERVER_URL = "https://salty-brook-65681.herokuapp.com";
-// export const SERVER_URL = "http://localhost:8000";
+// export const BASEURL = "https://salty-brook-65681.herokuapp.com/api/v1";
+export const BASEURL = "http://localhost:8000/api/v1";
+// export const SERVER_URL = "https://salty-brook-65681.herokuapp.com";
+export const SERVER_URL = "http://localhost:8000";

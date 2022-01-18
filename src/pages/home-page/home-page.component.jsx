@@ -94,7 +94,12 @@ function HomePage({ onSelectedChange }) {
   }, []);
 
   return user ? (
-    <div>
+    <div
+      style={{
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
       <SearchHome />
 
       {settings.showAdvertisements && (

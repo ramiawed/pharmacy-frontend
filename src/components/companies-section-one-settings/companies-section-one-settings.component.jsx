@@ -81,7 +81,6 @@ function CompaniesSectionOneSettings() {
                 <SettingRow
                   data={company}
                   key={company._id}
-                  // tooltip="remove-company-from-favorites-advertisement"
                   action={removeFromSectionOne}
                 />
               ))}

@@ -56,7 +56,7 @@ function SettingsPage({ onSelectedChange }) {
   useEffect(() => {
     window.scrollTo(0, 0);
     onSelectedChange();
-  }, [dispatch]);
+  }, []);
 
   return user && user.type === UserTypeConstants.ADMIN ? (
     <>

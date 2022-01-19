@@ -22,7 +22,6 @@ function SectionHomePage({
   const [width, setWidth] = useState(window.innerWidth);
 
   useEffect(() => {
-    console.log(order, header);
     const changeWidthHandler = () => {
       setWidth(document.documentElement.clientWidth);
     };
@@ -31,7 +30,7 @@ function SectionHomePage({
     return () => {
       window.removeEventListener("resize", changeWidthHandler);
     };
-  });
+  }, []);
 
   const settings = {
     dots: true,

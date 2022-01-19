@@ -2,7 +2,8 @@
 
 .partner_container {
   width: 90%;
-  min-height: 300px;
+  height: 200px;
+  // min-height: 300px;
 
   margin-block-end: 20px;
 
@@ -24,10 +25,10 @@
 }
 
 .logo_div {
-  width: 200px;
-  height: 200px;
+  width: 150px;
+  height: 150px;
 
-  border-radius: 50%;
+  border-radius: 6px;
 }
 
 .content {

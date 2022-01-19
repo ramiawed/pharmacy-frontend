@@ -41,7 +41,7 @@ import {
 } from "../../redux/advertisements/advertisementsSlice";
 
 // styles
-import styles from "../../components/section-home-page/section-home-page.module.scss";
+import styles from "./home-page.module.scss";
 import AdvertisementHomePage from "../../components/advertisement-home-page/advertisement-home-page.component";
 
 function HomePage({ onSelectedChange }) {
@@ -94,32 +94,27 @@ function HomePage({ onSelectedChange }) {
   }, []);
 
   return user ? (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
+    <div>
       <SearchHome />
 
       {settings.showAdvertisements && (
         <AdvertisementHomePage data={advertisements} />
       )}
 
-      {settings.companiesSectionOne.show &&
-        companiesSectionOneStatus === "loading" && (
-          <div
-            className={styles.container}
-            style={{
-              background: "#1a535c",
-              order: settings.companiesSectionOne?.order,
-            }}
-          >
-            <Loader color="#fff" />
-          </div>
-        )}
-
       <div className={styles.advertisement_container}>
+        {settings.companiesSectionOne.show &&
+          companiesSectionOneStatus === "loading" && (
+            <div
+              className={styles.container}
+              style={{
+                background: "#1a535c",
+                order: settings.companiesSectionOne?.order,
+              }}
+            >
+              <Loader color="#fff" />
+            </div>
+          )}
+
         {settings.companiesSectionOne.show &&
           companiesSectionOne.length > 0 && (
             <SectionHomePage

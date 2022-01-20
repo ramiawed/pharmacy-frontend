@@ -28,7 +28,11 @@ import {
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
 import { selectSettings } from "../../redux/settings/settingsSlice";
-import { resetMedicines } from "../../redux/medicines/medicinesSlices";
+import {
+  resetMedicines,
+  setSearchCompanyName,
+  setSearchWarehouseName,
+} from "../../redux/medicines/medicinesSlices";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -43,7 +47,6 @@ import {
 
 function PartnerCard({ partner, fullWidth }) {
   const { t } = useTranslation();
-
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -51,7 +54,6 @@ function PartnerCard({ partner, fullWidth }) {
   const {
     settings: { showWarehouseItem },
   } = useSelector(selectSettings);
-
   const isOnline = useSelector(selectOnlineStatus);
   const favorites = useSelector(selectFavoritesPartners);
   const favoritesError = useSelector(selectFavoritesError);
@@ -70,7 +72,7 @@ function PartnerCard({ partner, fullWidth }) {
       partner.allowShowingMedicines);
 
   // method to handle add company to partner's favorite
-  const addPartnerToFavoriteHandler = () => {
+  const addPartnerToFavoriteHandler = (e) => {
     // check the internet connection
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -90,10 +92,12 @@ function PartnerCard({ partner, fullWidth }) {
       .catch(() => {
         setChangeFavoriteLoading(false);
       });
+
+    e.stopPropagation();
   };
 
   // method to handle remove company from partner's favorite
-  const removePartnerFromFavoriteHandler = () => {
+  const removePartnerFromFavoriteHandler = (e) => {
     // check the internet connection
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -108,6 +112,36 @@ function PartnerCard({ partner, fullWidth }) {
         changeFavoriteLoading(false);
       })
       .catch(() => setChangeFavoriteLoading(false));
+
+    e.stopPropagation();
+  };
+
+  const partnerCardClickHandler = () => {
+    if (allowShowingWarehouseMedicines) {
+      // if the partner type is pharmacy or normal, change the selectedCount
+      // and selectedDates for this company
+      if (
+        user.type === UserTypeConstants.PHARMACY ||
+        user.type === UserTypeConstants.NORMAL
+      ) {
+        dispatch(
+          statisticsCompanySelected({
+            obj: { companyId: partner._id },
+            token,
+          })
+        );
+      }
+      dispatch(resetMedicines());
+
+      if (partner.type === UserTypeConstants.COMPANY) {
+        dispatch(setSearchCompanyName(partner.name));
+      }
+
+      if (partner.type === UserTypeConstants.WAREHOUSE) {
+        dispatch(setSearchWarehouseName(partner.name));
+      }
+      history.push("/medicines");
+    }
   };
 
   // dispatch companySelected statistics and go to medicine page
@@ -197,7 +231,7 @@ function PartnerCard({ partner, fullWidth }) {
         {allowShowingWarehouseMedicines && (
           <div>
             <Button
-              action={displayMedicinesHandler}
+              action={partnerCardClickHandler}
               text={t("medicines")}
               bgColor={Colors.FAILED_COLOR}
             />

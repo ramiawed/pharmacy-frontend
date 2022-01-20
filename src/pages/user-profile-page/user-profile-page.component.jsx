@@ -151,21 +151,14 @@ function UserProfilePage({ onSelectedChange }) {
           onInputChange={handleInputChange}
           action={() => updateFieldHandler("city")}
         />
+
         <InfoRow
           editable={true}
-          field="district"
-          labelText={t("user-district")}
-          value={userObj.district}
+          field="addressDetails"
+          labelText={t("user-address-details")}
+          value={userObj.addressDetails}
           onInputChange={handleInputChange}
-          action={() => updateFieldHandler("district")}
-        />
-        <InfoRow
-          editable={true}
-          field="street"
-          labelText={t("user-street")}
-          value={userObj.street}
-          onInputChange={handleInputChange}
-          action={() => updateFieldHandler("street")}
+          action={() => updateFieldHandler("addressDetails")}
         />
       </CardInfo>
 

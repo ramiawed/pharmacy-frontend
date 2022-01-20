@@ -151,6 +151,10 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
     { value: CitiesName.RAQQA, label: t("raqqa") },
     { value: CitiesName.AL_SUWAYDA, label: t("al_suwayda") },
     { value: CitiesName.TARTUS, label: t("tartus") },
+    {
+      value: CitiesName.DAMASCUS_COUNTRYSIDE,
+      label: t("damascus_countryside"),
+    },
   ];
   // Guest types are (Student, Pharmacist, Employee)
   // uses with the SelectCustom

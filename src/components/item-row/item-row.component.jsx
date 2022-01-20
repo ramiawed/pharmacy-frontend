@@ -3,7 +3,10 @@ import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
 
 // react-redux stuff
-import { statisticsItemFavorites } from "../../redux/statistics/statisticsSlice";
+import {
+  statisticsItemFavorites,
+  statisticsItemSelected,
+} from "../../redux/statistics/statisticsSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
@@ -216,7 +219,7 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
       user.type === UserTypeConstants.NORMAL
     ) {
       dispatch(
-        statisticsItemFavorites({
+        statisticsItemSelected({
           obj: { itemId: item._id },
           token,
         })

@@ -47,6 +47,7 @@ export const CitiesName = {
   RAQQA: "RAQQA",
   AL_SUWAYDA: "al_suwayda",
   TARTUS: "tartus",
+  DAMASCUS_COUNTRYSIDE: "damascus_countryside",
   NONE: "city-name",
   ALL: "all-cities",
 };

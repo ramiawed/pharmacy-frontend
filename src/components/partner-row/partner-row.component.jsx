@@ -112,6 +112,34 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
     e.stopPropagation();
   };
 
+  const partnerRowClickHandler = () => {
+    if (allowShowingWarehouseMedicines) {
+      // if the partner type is pharmacy or normal, change the selectedCount
+      // and selectedDates for this company
+      if (
+        user.type === UserTypeConstants.PHARMACY ||
+        user.type === UserTypeConstants.NORMAL
+      ) {
+        dispatch(
+          statisticsCompanySelected({
+            obj: { companyId: partner._id },
+            token,
+          })
+        );
+      }
+      dispatch(resetMedicines());
+
+      if (partner.type === UserTypeConstants.COMPANY) {
+        dispatch(setSearchCompanyName(partner.name));
+      }
+
+      if (partner.type === UserTypeConstants.WAREHOUSE) {
+        dispatch(setSearchWarehouseName(partner.name));
+      }
+      history.push("/medicines");
+    }
+  };
+
   // statistics -> company selected
   const dispatchCompanySelectedHandler = () => {
     // if the partner type is pharmacy or normal, change the selectedCount
@@ -148,12 +176,7 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
         style={{
           cursor: "pointer",
         }}
-        onClick={() => {
-          if (allowShowingWarehouseMedicines) {
-            dispatchCompanySelectedHandler();
-            history.push("/medicines");
-          }
-        }}
+        onClick={partnerRowClickHandler}
       >
         <label
           className={[rowStyles.hover_underline, rowStyles.padding_start].join(

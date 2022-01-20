@@ -62,13 +62,8 @@ function UserMoreInfoModal({ user, close }) {
       </div>
 
       <div className={styles.row}>
-        <label className={styles.label}>{t("user-district")}:</label>
-        <label className={styles.label_value}>{user.district}</label>
-      </div>
-
-      <div className={styles.row}>
-        <label className={styles.label}>{t("user-street")}:</label>
-        <label className={styles.label_value}>{user.street}</label>
+        <label className={styles.label}>{t("user-address-details")}:</label>
+        <label className={styles.label_value}>{user.addressDetails}</label>
       </div>
 
       {/* if the user type is pharmacy or warehouse display employee name and certificate name */}

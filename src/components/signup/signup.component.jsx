@@ -78,8 +78,9 @@ function SignUp() {
     phone: "",
     mobile: "",
     city: CitiesName.NONE,
-    district: "",
-    street: "",
+    addressDetails: "",
+    // district: "",
+    // street: "",
     type: UserTypeConstants.NORMAL,
     employeeName: "",
     certificateName: "",
@@ -103,6 +104,8 @@ function SignUp() {
     certificateName: "",
     companyName: "",
     jobTitle: "",
+    addressDetails: "",
+    city: "",
   });
 
   // reset all state to default
@@ -117,8 +120,9 @@ function SignUp() {
       phone: "",
       mobile: "",
       city: "",
-      district: "",
-      street: "",
+      addressDetails: "",
+      // district: "",
+      // street: "",
       type: UserTypeConstants.NORMAL,
       employeeName: "",
       certificateName: "",
@@ -142,6 +146,7 @@ function SignUp() {
       job: "",
       companyName: "",
       jobTitle: "",
+      addressDetails: "",
       city: "",
     });
 
@@ -208,6 +213,10 @@ function SignUp() {
     { value: CitiesName.RAQQA, label: t("raqqa") },
     { value: CitiesName.AL_SUWAYDA, label: t("al_suwayda") },
     { value: CitiesName.TARTUS, label: t("tartus") },
+    {
+      value: CitiesName.DAMASCUS_COUNTRYSIDE,
+      label: t("damascus_countryside"),
+    },
   ];
   // Guest types are (Student, Pharmacist, Employee)
   // uses with the SelectCustom
@@ -333,6 +342,10 @@ function SignUp() {
       errorObj["city"] = "enter-city";
     }
 
+    if (user.addressDetails.length === 0) {
+      errorObj["addressDetails"] = "enter-address-details";
+    }
+
     // if the user type is Pharmacy or Warehouse
     // employee name and certificate name are required
     if (
@@ -376,8 +389,9 @@ function SignUp() {
       }
 
       setSignupLoading(true);
+      console.log(user);
       axios
-        .post(`${BASEURL}/users/signup`, user, { timeout: 10000 })
+        .post(`${BASEURL}/users/signup`, user, {})
         .then(() => {
           // if create user succeeded
 
@@ -682,14 +696,6 @@ function SignUp() {
             styles.margintop,
           ].join(" ")}
         >
-          {/* <Input
-            icon={getIcon("city")}
-            type="text"
-            label="user-city"
-            id="city"
-            value={user.city}
-            onchange={inputChangeHandler}
-          /> */}
           <SelectCustom
             bgColor={Colors.SECONDARY_COLOR}
             foreColor="#fff"
@@ -702,27 +708,16 @@ function SignUp() {
           />
         </div>
 
-        {/* district */}
-        <div className={styles.input_div}>
+        {/* address details */}
+        <div className={styles.input_div} style={{ width: "98%" }}>
           <Input
             icon={getIcon("district")}
             type="text"
-            label="user-district"
-            id="district"
-            value={user.district}
+            label="user-address-details"
+            id="addressDetails"
+            value={user.addressDetails}
             onchange={inputChangeHandler}
-          />
-        </div>
-
-        {/* street */}
-        <div className={styles.input_div}>
-          <Input
-            icon={getIcon("street")}
-            type="text"
-            label="user-street"
-            id="street"
-            value={user.street}
-            onchange={inputChangeHandler}
+            error={error.addressDetails?.length > 0}
           />
         </div>
       </div>

@@ -70,18 +70,20 @@ function TopNav({ onSelectedChange, showTopNav }) {
             {t("nav-company")}
           </Link>
 
-          <Link
-            to="/warehouses"
-            className={[
-              styles.link,
-              history.location.pathname === "/warehouses"
-                ? styles.selected
-                : null,
-            ].join(" ")}
-            onClick={() => onSelectedChange(TopNavLinks.WAREHOUSES)}
-          >
-            {t("nav-warehouse")}
-          </Link>
+          {user.type !== UserTypeConstants.GUEST && (
+            <Link
+              to="/warehouses"
+              className={[
+                styles.link,
+                history.location.pathname === "/warehouses"
+                  ? styles.selected
+                  : null,
+              ].join(" ")}
+              onClick={() => onSelectedChange(TopNavLinks.WAREHOUSES)}
+            >
+              {t("nav-warehouse")}
+            </Link>
+          )}
 
           <Link
             to={{

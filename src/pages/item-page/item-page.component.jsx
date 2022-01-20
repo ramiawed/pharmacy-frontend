@@ -394,23 +394,26 @@ function ItemPage() {
         </CardInfo>
 
         <CardInfo headerTitle={t("item-price")}>
-          <div
-            style={{
-              width: "300px",
-            }}
-          >
-            <Input
-              label="item-price"
-              id="price"
-              type="number"
-              value={item.price}
-              bordered={false}
-              icon={getIcon("price")}
-              onchange={handleInputChange}
-              error={itemError.price?.length > 0}
-              readOnly={!allowAction}
-            />
-          </div>
+          {user.type !== UserTypeConstants.GUEST && (
+            <div
+              style={{
+                width: "300px",
+              }}
+            >
+              <Input
+                label="item-price"
+                id="price"
+                type="number"
+                value={item.price}
+                bordered={false}
+                icon={getIcon("price")}
+                onchange={handleInputChange}
+                error={itemError.price?.length > 0}
+                readOnly={!allowAction}
+              />
+            </div>
+          )}
+
           <div className={styles.horizontal_div}></div>
           <div
             style={{

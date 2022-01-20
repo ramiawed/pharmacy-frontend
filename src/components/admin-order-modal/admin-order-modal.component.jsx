@@ -26,8 +26,6 @@ function AdminUsersOrderModal({ close, okHandler }) {
     { value: OrderOptions.ACTIVE, label: t("deleted-account") },
     { value: OrderOptions.APPROVED, label: t("approved-state") },
     { value: OrderOptions.CITY, label: t("user-city") },
-    { value: OrderOptions.DISTRICT, label: t("user-district") },
-    { value: OrderOptions.STREET, label: t("user-street") },
   ];
 
   // add/remove field from orderBy object

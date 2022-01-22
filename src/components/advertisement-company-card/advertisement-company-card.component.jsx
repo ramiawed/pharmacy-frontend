@@ -95,7 +95,7 @@ function AdvertisementCompanyCard({ user, contentColor }) {
   const displayMedicinesHandler = () => {
     if (
       loggedUser.type === UserTypeConstants.PHARMACY ||
-      loggedUser.type === UserTypeConstants.NORMAL
+      loggedUser.type === UserTypeConstants.GUEST
     ) {
       dispatch(
         statisticsCompanySelected({
@@ -113,7 +113,7 @@ function AdvertisementCompanyCard({ user, contentColor }) {
     // and selectedDates for this company
     if (
       loggedUser.type === UserTypeConstants.PHARMACY ||
-      loggedUser.type === UserTypeConstants.NORMAL
+      loggedUser.type === UserTypeConstants.GUEST
     ) {
       dispatch(
         statisticsCompanySelected({

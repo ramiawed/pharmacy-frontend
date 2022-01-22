@@ -42,6 +42,7 @@ import {
   UserTypeConstants,
   BASEURL,
   SERVER_URL,
+  toEnglishNumber,
 } from "../../utils/constants";
 
 // icons
@@ -98,7 +99,10 @@ function ItemPage() {
   const handleInputChange = (e) => {
     setItem({
       ...item,
-      [e.target.id]: e.target.value,
+      [e.target.id]:
+        e.target.id === "price" || e.target.id === "customer_price"
+          ? toEnglishNumber(e.target.value)
+          : e.target.value,
     });
 
     setItemError({

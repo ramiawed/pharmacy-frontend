@@ -81,7 +81,7 @@ function SignUp() {
     addressDetails: "",
     // district: "",
     // street: "",
-    type: UserTypeConstants.NORMAL,
+    type: UserTypeConstants.GUEST,
     employeeName: "",
     certificateName: "",
     guestDetails: {
@@ -123,7 +123,7 @@ function SignUp() {
       addressDetails: "",
       // district: "",
       // street: "",
-      type: UserTypeConstants.NORMAL,
+      type: UserTypeConstants.GUEST,
       employeeName: "",
       certificateName: "",
       guestDetails: {
@@ -364,7 +364,7 @@ function SignUp() {
     // if user type is normal
     // 1- the job required
     // 2- if the job is employee (job title, company name are required)
-    if (user.type === UserTypeConstants.NORMAL) {
+    if (user.type === UserTypeConstants.GUEST) {
       if (user.guestDetails.job === GuestJob.EMPLOYEE) {
         if (user.guestDetails.jobTitle.trim().length === 0) {
           errorObj["jobTitle"] = "enter-job-title";
@@ -396,7 +396,7 @@ function SignUp() {
           // if create user succeeded
 
           // check if user type is normal
-          if (user.type === UserTypeConstants.NORMAL) {
+          if (user.type === UserTypeConstants.GUEST) {
             dispatch(
               authSign({ username: user.username, password: user.password })
             )
@@ -559,8 +559,8 @@ function SignUp() {
             <input
               id="type"
               type="radio"
-              value={UserTypeConstants.NORMAL}
-              checked={user.type === UserTypeConstants.NORMAL}
+              value={UserTypeConstants.GUEST}
+              checked={user.type === UserTypeConstants.GUEST}
               onChange={inputChangeHandler}
             />
             <label>{t("normal")}</label>
@@ -598,7 +598,7 @@ function SignUp() {
           <></>
         )}
 
-        {user.type === UserTypeConstants.NORMAL ? (
+        {user.type === UserTypeConstants.GUEST ? (
           <>
             <div className={[styles.input_full_width].join(" ")}>
               <SelectCustom

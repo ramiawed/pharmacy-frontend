@@ -169,7 +169,9 @@ export const selectCartItems = (state) => state.cart.cartItems;
 export const selectCartWarehouse = (state) => state.cart.cartWarehouse;
 export const selectCartItemCount = (state) => {
   let total = 0;
-  state.cart.cartItems.forEach((item) => (total = total + item.qty));
+  state.cart.cartItems.forEach(
+    (item) => (total = Number.parseInt(total) + Number.parseInt(item.qty))
+  );
   return total;
 };
 

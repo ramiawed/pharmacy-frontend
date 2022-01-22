@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -30,7 +30,12 @@ import tableStyles from "../table.module.scss";
 import rowStyles from "../row.module.scss";
 
 // constants
-import { Colors, UserTypeConstants } from "../../utils/constants";
+import {
+  Colors,
+  onKeyPressForNumberInput,
+  toEnglishNumber,
+  UserTypeConstants,
+} from "../../utils/constants";
 import { VscLoading } from "react-icons/vsc";
 
 const checkOffer = (item, user) => {
@@ -71,7 +76,6 @@ function CompanyItemRow({
   deleteItemFromWarehouse,
 }) {
   const { t } = useTranslation();
-  const history = useHistory();
   const dispatch = useDispatch();
 
   // selectors
@@ -86,6 +90,11 @@ function CompanyItemRow({
   const [showDeleteFromWarehouseModal, setShowDeleteFromWarehouseModal] =
     useState(false);
   const [deleteLoading, setDeleteLoading] = useState(false);
+  const [maxQty, setMaxQty] = useState(
+    warehouse
+      ? item.warehouses.find((w) => w.warehouse._id === warehouse._id).maxQty
+      : 0
+  );
 
   const actionButtonPress = (action) => {
     if (action === "delete") {
@@ -196,34 +205,42 @@ function CompanyItemRow({
     e.stopPropagation();
   };
 
+  // const onKeyPress = (event) => {
+  //   return event.charCode >= 48 && event.charCode <= 57;
+  // };
+
+  const maxQtyChangeHandler = (event) => {
+    const value = Number.parseInt(toEnglishNumber(event.target.value));
+    setMaxQty(isNaN(value) ? "" : value);
+  };
+
   return (
     <>
       <div
         className={rowStyles.container}
         style={{
           backgroundColor: checkOffer(item, user) ? "#0f04" : "#fff",
-          cursor: "pointer",
         }}
-        onClick={() => {
-          history.push("item", {
-            from: user.type,
-            type: "info",
-            allowAction:
-              user.type === UserTypeConstants.COMPANY ||
-              (user.type === UserTypeConstants.ADMIN &&
-                item.company.allowAdmin),
-            itemId: item._id,
-            companyId: item.company._id,
-            warehouseId: warehouse?._id,
-          });
-        }}
+        // onClick={() => {
+        //   history.push("item", {
+        //     from: user.type,
+        //     type: "info",
+        //     allowAction:
+        //       user.type === UserTypeConstants.COMPANY ||
+        //       (user.type === UserTypeConstants.ADMIN &&
+        //         item.company.allowAdmin),
+        //     itemId: item._id,
+        //     companyId: item.company._id,
+        //     warehouseId: warehouse?._id,
+        //   });
+        // }}
       >
         <label
           className={[rowStyles.hover_underline, tableStyles.label_medium].join(
             " "
           )}
         >
-          {/* <Link
+          <Link
             className={rowStyles.hover_underline}
             to={{
               pathname: "/item",
@@ -240,8 +257,8 @@ function CompanyItemRow({
               },
             }}
           >
-          </Link> */}
-          {item.name}
+            {item.name}
+          </Link>
         </label>
 
         {((user.type === UserTypeConstants.ADMIN &&
@@ -287,18 +304,17 @@ function CompanyItemRow({
           <>
             <label className={tableStyles.label_small}>
               <input
-                type="number"
+                // type="number"
                 className={rowStyles.input}
-                min={0}
-                defaultValue={
-                  item.warehouses.find((w) => w.warehouse._id === warehouse._id)
-                    .maxQty
-                }
+                // min={0}
+                onKeyPress={onKeyPressForNumberInput}
+                value={maxQty}
+                onChange={maxQtyChangeHandler}
                 onBlur={(e) =>
                   changeItemMaxQty({
                     itemId: item._id,
                     warehouseId: warehouse._id,
-                    qty: e.target.value,
+                    qty: Number.parseInt(maxQty),
                   })
                 }
                 disabled={

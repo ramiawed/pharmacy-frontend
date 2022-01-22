@@ -1,7 +1,6 @@
 export const UserTypeConstants = {
   COMPANY: "company",
   WAREHOUSE: "warehouse",
-  NORMAL: "normal",
   ADMIN: "admin",
   GUEST: "normal",
   PHARMACY: "pharmacy",
@@ -110,6 +109,18 @@ export const DateOptions = {
   TWO_MONTH: "2M",
   SIX_MONTH: "6M",
   ONE_YEAR: "1Y",
+};
+
+export const toEnglishNumber = (strNum) => {
+  var ar = "٠١٢٣٤٥٦٧٨٩".split("");
+  var en = "0123456789".split("");
+  strNum = strNum.replace(/[٠١٢٣٤٥٦٧٨٩]/g, (x) => en[ar.indexOf(x)]);
+  strNum = strNum.replace(/[^\d]/g, "");
+  return strNum;
+};
+
+export const onKeyPressForNumberInput = (event) => {
+  return event.charCode >= 48 && event.charCode <= 57;
 };
 
 // export const BASEURL = "https://salty-brook-65681.herokuapp.com/api/v1";

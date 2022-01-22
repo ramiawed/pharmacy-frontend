@@ -32,7 +32,7 @@ const resetCancelAndSource = () => {
 
 export const getWarehouses = createAsyncThunk(
   "warehouses/getWarehouses",
-  async ({ queryString, token }, { rejectWithValue, getState }) => {
+  async ({ token }, { rejectWithValue, getState }) => {
     const {
       warehouses: { pageState },
     } = getState();
@@ -41,7 +41,7 @@ export const getWarehouses = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      let buildUrl = `${BASEURL}/users?type=warehouse&city=${queryString.city}&page=${pageState.page}&limit=9&details=some`;
+      let buildUrl = `${BASEURL}/users?type=warehouse&page=${pageState.page}&limit=9&details=some`;
 
       if (pageState.searchName.trim() !== "") {
         buildUrl = buildUrl + `&name=${pageState.searchName}`;

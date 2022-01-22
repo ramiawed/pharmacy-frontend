@@ -78,7 +78,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
     { value: UserTypeConstants.COMPANY, label: t("company") },
     { value: UserTypeConstants.WAREHOUSE, label: t("warehouse") },
     { value: UserTypeConstants.PHARMACY, label: t("pharmacy") },
-    { value: UserTypeConstants.NORMAL, label: t("normal") },
+    { value: UserTypeConstants.GUEST, label: t("normal") },
     { value: UserTypeConstants.ADMIN, label: t("admin") },
     { value: UserTypeConstants.ALL, label: t("all") },
   ];
@@ -108,7 +108,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
       dispatch(setSearchJobTitle(""));
     }
 
-    if (val === UserTypeConstants.NORMAL) {
+    if (val === UserTypeConstants.GUEST) {
       dispatch(setSearchEmployeeName(""));
       dispatch(setSearchCertificateName(""));
     }
@@ -229,7 +229,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
           }}
           caption="user-type"
         />
-        {pageState.userType === UserTypeConstants.NORMAL ? (
+        {pageState.userType === UserTypeConstants.GUEST ? (
           <>
             <SelectCustom
               bgColor={Colors.SECONDARY_COLOR}

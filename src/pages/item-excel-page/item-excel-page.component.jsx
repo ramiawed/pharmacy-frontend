@@ -32,7 +32,7 @@ import styles from "./item-excel-page.module.scss";
 import generalStyles from "../../style.module.scss";
 
 // constants
-import { Colors } from "../../utils/constants";
+import { Colors, toEnglishNumber } from "../../utils/constants";
 
 function ItemExcelPage() {
   const user = useSelector(selectUser);
@@ -276,7 +276,10 @@ function ItemExcelPage() {
 
         return {
           ...item,
-          [e.target.id]: e.target.value,
+          [e.target.id]:
+            e.target.id === "price" || e.target.id === "customer_price"
+              ? toEnglishNumber(e.target.value)
+              : e.target.value,
           selected: newSelection,
         };
       } else {

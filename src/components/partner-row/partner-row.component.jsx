@@ -113,12 +113,18 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
   };
 
   const partnerRowClickHandler = () => {
+    if (
+      partner.type === UserTypeConstants.WAREHOUSE &&
+      user.type === UserTypeConstants.WAREHOUSE
+    ) {
+      return;
+    }
     if (allowShowingWarehouseMedicines) {
       // if the partner type is pharmacy or normal, change the selectedCount
       // and selectedDates for this company
       if (
         user.type === UserTypeConstants.PHARMACY ||
-        user.type === UserTypeConstants.NORMAL
+        user.type === UserTypeConstants.GUEST
       ) {
         dispatch(
           statisticsCompanySelected({
@@ -141,30 +147,30 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
   };
 
   // statistics -> company selected
-  const dispatchCompanySelectedHandler = () => {
-    // if the partner type is pharmacy or normal, change the selectedCount
-    // and selectedDates for this company
-    if (
-      user.type === UserTypeConstants.PHARMACY ||
-      user.type === UserTypeConstants.NORMAL
-    ) {
-      dispatch(
-        statisticsCompanySelected({
-          obj: { companyId: partner._id },
-          token,
-        })
-      );
-    }
-    dispatch(resetMedicines());
+  // const dispatchCompanySelectedHandler = () => {
+  //   // if the partner type is pharmacy or normal, change the selectedCount
+  //   // and selectedDates for this company
+  //   if (
+  //     user.type === UserTypeConstants.PHARMACY ||
+  //     user.type === UserTypeConstants.GUEST
+  //   ) {
+  //     dispatch(
+  //       statisticsCompanySelected({
+  //         obj: { companyId: partner._id },
+  //         token,
+  //       })
+  //     );
+  //   }
+  //   dispatch(resetMedicines());
 
-    if (partner.type === UserTypeConstants.COMPANY) {
-      dispatch(setSearchCompanyName(partner.name));
-    }
+  //   if (partner.type === UserTypeConstants.COMPANY) {
+  //     dispatch(setSearchCompanyName(partner.name));
+  //   }
 
-    if (partner.type === UserTypeConstants.WAREHOUSE) {
-      dispatch(setSearchWarehouseName(partner.name));
-    }
-  };
+  //   if (partner.type === UserTypeConstants.WAREHOUSE) {
+  //     dispatch(setSearchWarehouseName(partner.name));
+  //   }
+  // };
 
   return (
     <>

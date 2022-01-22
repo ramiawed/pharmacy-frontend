@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import { AiOutlineExclamationCircle, AiFillCloseCircle } from "react-icons/ai";
+import { onKeyPressForNumberInput } from "../../utils/constants";
 
 import styles from "./input.module.scss";
 
@@ -30,6 +31,10 @@ function Input({
     if (event.code !== "Escape") event.stopPropagation();
   };
 
+  // const onKeyPress = (event) => {
+  //   return event.charCode >= 48 && event.charCode <= 57;
+  // };
+
   return (
     <div
       className={[styles.input_div, bordered ? styles.bordered : ""].join(" ")}
@@ -49,11 +54,15 @@ function Input({
       <input
         placeholder={placeholder ? t(`${placeholder}`) : ""}
         id={id}
-        type={type}
+        type={type === "password" ? "password" : "text"}
         value={value}
         onChange={onchange}
         onKeyDown={keyDownHandler}
-        // onKeyPress={handleKeyPress}
+        onKeyPress={(event) => {
+          if (type === "number") {
+            onKeyPressForNumberInput(event);
+          }
+        }}
         disabled={readOnly}
       />
       {resetField && value && (

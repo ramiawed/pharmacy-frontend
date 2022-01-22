@@ -163,7 +163,7 @@ function AdvertisementItemCard({ companyItem, contentColor }) {
   const dispatchStatisticsHandler = () => {
     if (
       user.type === UserTypeConstants.PHARMACY ||
-      user.type === UserTypeConstants.NORMAL
+      user.type === UserTypeConstants.GUEST
     ) {
       dispatch(
         statisticsItemFavorites({

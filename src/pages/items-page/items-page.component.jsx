@@ -95,12 +95,14 @@ function ItemsPage({ onSelectedChange }) {
   };
 
   const changeItemMaxQty = (obj) => {
-    dispatch(changeItemWarehouseMaxQty({ obj, token }))
-      .then(unwrapResult)
-      .then(() => {
-        handleSearch(pageState.page);
-      })
-      .catch(() => {});
+    if (obj.qty) {
+      dispatch(changeItemWarehouseMaxQty({ obj, token }))
+        .then(unwrapResult)
+        .then(() => {
+          handleSearch(pageState.page);
+        })
+        .catch(() => {});
+    }
   };
 
   useEffect(() => {

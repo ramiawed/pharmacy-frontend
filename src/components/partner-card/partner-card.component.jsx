@@ -117,12 +117,19 @@ function PartnerCard({ partner, fullWidth }) {
   };
 
   const partnerCardClickHandler = () => {
+    if (
+      partner.type === UserTypeConstants.WAREHOUSE &&
+      user.type === UserTypeConstants.WAREHOUSE
+    ) {
+      return;
+    }
+
     if (allowShowingWarehouseMedicines) {
       // if the partner type is pharmacy or normal, change the selectedCount
       // and selectedDates for this company
       if (
         user.type === UserTypeConstants.PHARMACY ||
-        user.type === UserTypeConstants.NORMAL
+        user.type === UserTypeConstants.GUEST
       ) {
         dispatch(
           statisticsCompanySelected({
@@ -145,31 +152,31 @@ function PartnerCard({ partner, fullWidth }) {
   };
 
   // dispatch companySelected statistics and go to medicine page
-  const displayMedicinesHandler = () => {
-    if (
-      user.type === UserTypeConstants.PHARMACY ||
-      user.type === UserTypeConstants.NORMAL
-    ) {
-      dispatch(
-        statisticsCompanySelected({
-          obj: { companyId: partner._id },
-          token,
-        })
-      );
-    }
+  // const displayMedicinesHandler = () => {
+  //   if (
+  //     user.type === UserTypeConstants.PHARMACY ||
+  //     user.type === UserTypeConstants.GUEST
+  //   ) {
+  //     dispatch(
+  //       statisticsCompanySelected({
+  //         obj: { companyId: partner._id },
+  //         token,
+  //       })
+  //     );
+  //   }
 
-    dispatch(resetMedicines());
+  //   dispatch(resetMedicines());
 
-    history.push({
-      pathname: "medicines",
-      state: {
-        companyId:
-          partner.type === UserTypeConstants.COMPANY ? partner._id : null,
-        warehouseId:
-          partner.type === UserTypeConstants.WAREHOUSE ? partner._id : null,
-      },
-    });
-  };
+  //   history.push({
+  //     pathname: "medicines",
+  //     state: {
+  //       companyId:
+  //         partner.type === UserTypeConstants.COMPANY ? partner._id : null,
+  //       warehouseId:
+  //         partner.type === UserTypeConstants.WAREHOUSE ? partner._id : null,
+  //     },
+  //   });
+  // };
 
   return (
     <div
@@ -228,7 +235,9 @@ function PartnerCard({ partner, fullWidth }) {
           )
         ) : null}
 
-        {allowShowingWarehouseMedicines && (
+        {(partner.type === UserTypeConstants.COMPANY ||
+          (partner.type === UserTypeConstants.WAREHOUSE &&
+            user.type !== UserTypeConstants.WAREHOUSE)) && (
           <div>
             <Button
               action={partnerCardClickHandler}

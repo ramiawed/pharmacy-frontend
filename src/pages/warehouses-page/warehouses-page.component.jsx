@@ -24,6 +24,7 @@ import {
   resetStatus,
   changeShowFavorites,
   cancelOperation,
+  changeSearchCity,
 } from "../../redux/warehouse/warehousesSlice";
 import {
   getFavorites,
@@ -59,23 +60,18 @@ function WarehousePage({ onSelectedChange }) {
 
   // handle search
   const handleSearch = (page) => {
-    // build the query string
     dispatch(changeShowFavorites());
-
-    let city = "";
 
     if (
       user.type === UserTypeConstants.PHARMACY ||
-      user.type === UserTypeConstants.GUEST
+      user.type === UserTypeConstants.GUEST ||
+      user.type === UserTypeConstants.WAREHOUSE
     ) {
-      city = user.city;
+      dispatch(changeSearchCity(user.city));
     }
 
     dispatch(
       getWarehouses({
-        queryString: {
-          city: city,
-        },
         token,
       })
     )

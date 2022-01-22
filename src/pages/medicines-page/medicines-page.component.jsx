@@ -153,7 +153,8 @@ function MedicinesPage({ onSelectedChange }) {
             )}
 
             {/* {user.type !== UserTypeConstants.GUEST && warehouseId === null && ( */}
-            {user.type !== UserTypeConstants.GUEST && (
+            {(user.type === UserTypeConstants.ADMIN ||
+              user.type === UserTypeConstants.PHARMACY) && (
               <SearchInput
                 label="item-warehouse"
                 id="item-warehouse"

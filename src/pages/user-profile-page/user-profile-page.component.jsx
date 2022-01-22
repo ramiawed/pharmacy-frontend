@@ -186,7 +186,7 @@ function UserProfilePage({ onSelectedChange }) {
         <></>
       )}
 
-      {user.type === UserTypeConstants.NORMAL ? (
+      {user.type === UserTypeConstants.GUEST ? (
         <CardInfo headerTitle={t("additional-info")}>
           <InfoRow
             editable={true}

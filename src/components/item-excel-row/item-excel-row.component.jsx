@@ -8,12 +8,17 @@ import { AiFillDelete } from "react-icons/ai";
 import generalStyles from "../../style.module.scss";
 import tableStyles from "../table.module.scss";
 import rowStyles from "../row.module.scss";
+import { onKeyPressForNumberInput } from "../../utils/constants";
 
 function ItemExcelRow({ item, index, onchange, onDelete, onSelectedChanged }) {
   const { t } = useTranslation();
 
   const error =
     item.name === "" || item.price * 1 === 0 || item.customer_price * 1 === 0;
+
+  // const onKeyPress = (event) => {
+  //   return event.charCode >= 48 && event.charCode <= 57;
+  // };
 
   return (
     <div
@@ -76,8 +81,9 @@ function ItemExcelRow({ item, index, onchange, onDelete, onSelectedChanged }) {
         <input
           className={rowStyles.input}
           id="price"
-          min="0"
-          type="number"
+          // min="0"
+          // type="number"
+          onKeyPress={onKeyPressForNumberInput}
           value={item.price}
           onChange={(e) => onchange(e, index)}
         />
@@ -87,7 +93,8 @@ function ItemExcelRow({ item, index, onchange, onDelete, onSelectedChanged }) {
         <input
           className={rowStyles.input}
           id="customer_price"
-          type="number"
+          // type="number"
+          onKeyPress={onKeyPressForNumberInput}
           value={item.customer_price}
           onChange={(e) => onchange(e, index)}
         />

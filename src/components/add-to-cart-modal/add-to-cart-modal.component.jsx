@@ -11,7 +11,6 @@ import { useTranslation } from "react-i18next";
 // components
 import Modal from "../modal/modal.component";
 import SelectCustom from "../select/select.component";
-import InfoRow from "../info-row/info-row.component";
 
 // redux stuff
 import { addItemToCart } from "../../redux/cart/cartSlice";
@@ -21,7 +20,12 @@ import { statisticsItemAddedToCart } from "../../redux/statistics/statisticsSlic
 import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 
 // constants and utils
-import { Colors, OfferTypes } from "../../utils/constants";
+import {
+  Colors,
+  OfferTypes,
+  onKeyPressForNumberInput,
+  toEnglishNumber,
+} from "../../utils/constants";
 
 // styles
 import styles from "./add-to-cart-modal.module.scss";
@@ -87,7 +91,7 @@ function AddToCartModal({ item, close }) {
   const [offer, setOffer] = useState(
     item.warehouses.filter((w) => w.warehouse.city === user.city)[0].offer
   );
-  const [qty, setQty] = useState(0);
+  const [qty, setQty] = useState();
   const [qtyError, setQtyError] = useState(false);
 
   const handleWarehouseChange = (val) => {
@@ -95,13 +99,18 @@ function AddToCartModal({ item, close }) {
     setOffer(item.warehouses.find((w) => w.warehouse._id == val).offer);
   };
 
+  // const onKeyPress = (event) => {
+  //   return event.charCode >= 48 && event.charCode <= 57;
+  // };
+
   const quantityChange = (e) => {
-    setQty(e.target.value * 1);
+    const value = Number.parseInt(toEnglishNumber(e.target.value));
+    setQty(isNaN(value) ? "" : value);
     setQtyError(false);
   };
 
   const handleAddItemToCart = () => {
-    if (qty === 0) {
+    if (qty === "") {
       setQtyError(true);
       return;
     }
@@ -139,51 +148,6 @@ function AddToCartModal({ item, close }) {
       okModal={handleAddItemToCart}
       small={true}
     >
-      {/* <InfoRow
-        editable={false}
-        field="item-name"
-        labelText={t("item-name")}
-        value={item.name}
-        onInputChange={() => {}}
-        action={() => {}}
-      />
-
-      <InfoRow
-        editable={false}
-        field="item-caliber"
-        labelText={t("item-caliber")}
-        value={item.caliber}
-        onInputChange={() => {}}
-        action={() => {}}
-      />
-
-      <InfoRow
-        editable={false}
-        field="item-formula"
-        labelText={t("item-formula")}
-        value={item.formula}
-        onInputChange={() => {}}
-        action={() => {}}
-      />
-
-      <InfoRow
-        editable={false}
-        field="item-price"
-        labelText={t("item-price")}
-        value={item.price}
-        onInputChange={() => {}}
-        action={() => {}}
-      />
-
-      <InfoRow
-        editable={false}
-        field="item-customer-price"
-        labelText={t("item-customer-price")}
-        value={item.customer_price}
-        onInputChange={() => {}}
-        action={() => {}}
-      /> */}
-
       {/* <div className={styles.warehouse_row}> */}
       <div className={styles.select_warehouse}>
         <label>{t("item-warehouse")}</label>
@@ -209,9 +173,10 @@ function AddToCartModal({ item, close }) {
         <label>{t("selected-qty")}</label>
         <input
           className={qtyError ? styles.error : ""}
-          type="number"
-          min={0}
+          // type="number"
+          // min={0}
           value={qty}
+          onKeyPress={onKeyPressForNumberInput}
           onChange={quantityChange}
         />
       </div>

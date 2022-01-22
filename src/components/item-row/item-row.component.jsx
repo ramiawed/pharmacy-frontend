@@ -216,7 +216,7 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
   const dispatchStatisticsHandler = () => {
     if (
       user.type === UserTypeConstants.PHARMACY ||
-      user.type === UserTypeConstants.NORMAL
+      user.type === UserTypeConstants.GUEST
     ) {
       dispatch(
         statisticsItemSelected({
@@ -264,23 +264,6 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
             isSmallFavorite ? styles.small_font : "",
           ].join(" ")}
         >
-          {/* <Link
-            onClick={dispatchStatisticsHandler}
-            to={{
-              pathname: "/item",
-              state: {
-                from: user.type,
-                type: "info",
-                allowAction: false,
-                itemId: item._id,
-                companyId: item.company._id,
-                warehouseId:
-                  user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
-              },
-            }}
-            className={rowStyles.hover_underline}
-          >
-          </Link> */}
           {item.name}
         </label>
 

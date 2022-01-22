@@ -86,7 +86,7 @@ function UserMoreInfoModal({ user, close }) {
         </>
       ) : null}
 
-      {user.type === UserTypeConstants.NORMAL ? (
+      {user.type === UserTypeConstants.GUEST ? (
         <>
           <div className={[styles.header].join(" ")}>
             {t("additional-info")}

@@ -94,34 +94,29 @@ function CartWarehouse({ warehouse }) {
         };
       });
 
-    if (saveOrders) {
-      let obj = {
-        pharmacy: user._id,
-        warehouse: cartItems.filter(
-          (item) => item.warehouse.warehouse.name === warehouse
-        )[0].warehouse.warehouse._id,
-        items: cartItems
-          .filter((item) => item.warehouse.warehouse.name === warehouse)
-          .map((e) => {
-            return {
-              item: e.item._id,
-              qty: e.qty,
-              bonus: e.bonus,
-              bonusType: e.bonusType,
-              price: e.item.price,
-              customer_price: e.item.customer_price,
-            };
-          }),
-      };
+    // if (saveOrders) {
+    //   let obj = {
+    //     pharmacy: user._id,
+    //     warehouse: cartItems.filter(
+    //       (item) => item.warehouse.warehouse.name === warehouse
+    //     )[0].warehouse.warehouse._id,
+    //     items: cartItems
+    //       .filter((item) => item.warehouse.warehouse.name === warehouse)
+    //       .map((e) => {
+    //         return {
+    //           item: e.item._id,
+    //           qty: e.qty,
+    //           bonus: e.bonus,
+    //           bonusType: e.bonusType,
+    //           price: e.item.price,
+    //           customer_price: e.item.customer_price,
+    //         };
+    //       }),
+    //   };
 
-      dispatch(saveOrder({ obj, token }));
-      dispatch(setRefresh(true));
-    }
-    // cartItemsToSend = cartItemsToSend.sort((a, b) => {
-    //   if (a.warehouseName > b.warehouseName) return 1;
-    //   if (a.warehouseName < b.warehouseName) return -1;
-    //   return 0;
-    // });
+    //   dispatch(saveOrder({ obj, token }));
+    //   dispatch(setRefresh(true));
+    // }
 
     cartItemsToSend = [
       ...cartItemsToSend,
@@ -155,6 +150,29 @@ function CartWarehouse({ warehouse }) {
         dispatch(statisticsOrders({ token }));
         setShowLoadingModal(false);
         setShowSuccessModal(true);
+        if (saveOrders) {
+          let obj = {
+            pharmacy: user._id,
+            warehouse: cartItems.filter(
+              (item) => item.warehouse.warehouse.name === warehouse
+            )[0].warehouse.warehouse._id,
+            items: cartItems
+              .filter((item) => item.warehouse.warehouse.name === warehouse)
+              .map((e) => {
+                return {
+                  item: e.item._id,
+                  qty: e.qty,
+                  bonus: e.bonus,
+                  bonusType: e.bonusType,
+                  price: e.item.price,
+                  customer_price: e.item.customer_price,
+                };
+              }),
+          };
+
+          dispatch(saveOrder({ obj, token }));
+          dispatch(setRefresh(true));
+        }
       })
       .catch((err) => {
         setShowLoadingModal(false);

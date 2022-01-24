@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { AiTwotoneIdcard } from "react-icons/ai";
 import { BASEURL, DateOptions } from "../../utils/constants";
 
 const initialState = {
@@ -7,6 +8,7 @@ const initialState = {
   orders: [],
   count: 0,
   unreadCount: 0,
+  unreadMsg: "",
   error: "",
   refresh: true,
   pageState: {
@@ -195,10 +197,21 @@ export const saveOrder = createAsyncThunk(
   }
 );
 
-export const unreadOrder = createAsyncThunk(
-  "orders/unreadOrders",
+export const getUnreadOrders = createAsyncThunk(
+  "orders/getUnreadOrders",
   async ({ token }, { rejectWithValue }) => {
     try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.get(`${BASEURL}/orders/unread`, {
+        cancelToken: source.token,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return response.data;
     } catch (err) {
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
@@ -268,6 +281,11 @@ export const ordersSlice = createSlice({
         page: action.payload,
       };
     },
+
+    setUnreadMsg: (state) => {
+      state.unreadMsg = "";
+    },
+
     resetPageState: (state) => {
       state.pageState = {
         searchPharmacyName: "",
@@ -282,6 +300,8 @@ export const ordersSlice = createSlice({
       state.orders = [];
       state.count = 0;
       state.error = "";
+      state.unreadCount = 0;
+      state.unreadMsg = "";
       state.refresh = true;
       state.pageState = {
         searchPharmacyName: "",
@@ -314,6 +334,14 @@ export const ordersSlice = createSlice({
         state.error = "network failed";
       } else state.error = payload.message;
     },
+    [getUnreadOrders.fulfilled]: (state, action) => {
+      if (state.unreadCount !== action.payload.data.count) {
+        if (state.unreadCount < action.payload.data.count) {
+          state.unreadMsg = "you have new orders";
+        }
+        state.unreadCount = action.payload.data.count;
+      }
+    },
   },
 });
 
@@ -329,6 +357,7 @@ export const {
   resetPageState,
   setRefresh,
   setDateOption,
+  setUnreadMsg,
   setSearchDate,
   orderSliceSignOut,
 } = ordersSlice.actions;

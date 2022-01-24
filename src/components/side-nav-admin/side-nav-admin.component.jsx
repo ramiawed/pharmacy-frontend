@@ -21,21 +21,10 @@ function SideNavAdmin({ selectedOption, onSelectedChange }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const { user, token } = useSelector(selectUserData);
+  const { user } = useSelector(selectUserData);
   const {
     settings: { saveOrders },
   } = useSelector(selectSettings);
-  const { unreadCount, unreadCountDiff, unreadMsg } = useSelector(selectOrders);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      dispatch(getUnreadOrders({ token }));
-    }, 60000);
-
-    return () => {
-      clearInterval(timer);
-    };
-  }, []);
 
   return (
     <>

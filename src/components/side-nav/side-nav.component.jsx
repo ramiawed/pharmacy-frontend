@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
@@ -15,7 +15,11 @@ import { VscClose } from "react-icons/vsc";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-import { authSliceSignOut, selectUser } from "../../redux/auth/authSlice";
+import {
+  authSliceSignOut,
+  selectUser,
+  selectUserData,
+} from "../../redux/auth/authSlice";
 import { usersSliceSignOut } from "../../redux/users/usersSlice";
 import { favoritesSliceSignOut } from "../../redux/favorites/favoritesSlice";
 import { cartSliceSignOut } from "../../redux/cart/cartSlice";
@@ -24,7 +28,11 @@ import { itemsSliceSignOut } from "../../redux/items/itemsSlices";
 import { statisticsSliceSignOut } from "../../redux/statistics/statisticsSlice";
 import { warehouseSliceSignOut } from "../../redux/warehouse/warehousesSlice";
 import { warehouseItemsSliceSignOut } from "../../redux/warehouseItems/warehouseItemsSlices";
-import { orderSliceSignOut } from "../../redux/orders/ordersSlice";
+import {
+  getUnreadOrders,
+  orderSliceSignOut,
+  selectOrders,
+} from "../../redux/orders/ordersSlice";
 import { advertisementsSignOut } from "../../redux/advertisements/advertisementsSlice";
 import { companiesSectionOneSignOut } from "../../redux/advertisements/companiesSectionOneSlice";
 import { companiesSectionTwoSignOut } from "../../redux/advertisements/companiesSectionTwoSlice";
@@ -58,7 +66,8 @@ function SideNav({
   const dispatch = useDispatch();
 
   // selectors
-  const user = useSelector(selectUser);
+  const { user, token } = useSelector(selectUserData);
+  const { unreadCount, unreadCountDiff, unreadMsg } = useSelector(selectOrders);
 
   const handleSignOut = () => {
     dispatch(authSliceSignOut());
@@ -84,6 +93,24 @@ function SideNav({
     dispatch(settingsSignOut());
     dispatch(usersNotificationsSignOut());
   };
+
+  useEffect(() => {
+    let timer;
+    if (
+      user.type === UserTypeConstants.ADMIN ||
+      user.type === UserTypeConstants.WAREHOUSE
+    ) {
+      timer = setInterval(() => {
+        dispatch(getUnreadOrders({ token }));
+      }, 60000);
+    }
+
+    return () => {
+      if (timer) {
+        clearInterval(timer);
+      }
+    };
+  }, []);
 
   return (
     <div

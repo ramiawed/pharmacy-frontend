@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { AiTwotoneIdcard } from "react-icons/ai";
 import { BASEURL, DateOptions } from "../../utils/constants";
 
 const initialState = {
@@ -8,6 +7,7 @@ const initialState = {
   orders: [],
   count: 0,
   unreadCount: 0,
+  unreadCountDiff: 0,
   unreadMsg: "",
   error: "",
   refresh: true,
@@ -301,6 +301,7 @@ export const ordersSlice = createSlice({
       state.count = 0;
       state.error = "";
       state.unreadCount = 0;
+      state.unreadCountDiff = 0;
       state.unreadMsg = "";
       state.refresh = true;
       state.pageState = {
@@ -335,10 +336,12 @@ export const ordersSlice = createSlice({
       } else state.error = payload.message;
     },
     [getUnreadOrders.fulfilled]: (state, action) => {
-      if (state.unreadCount !== action.payload.data.count) {
+      if (state.unreadCount * 1 !== action.payload.data.count * 1) {
         if (state.unreadCount < action.payload.data.count) {
           state.unreadMsg = "you have new orders";
         }
+        state.unreadCountDiff =
+          action.payload.data.count * 1 - state.unreadCount;
         state.unreadCount = action.payload.data.count;
       }
     },

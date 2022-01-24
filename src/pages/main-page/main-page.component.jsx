@@ -121,12 +121,12 @@ function MainPage() {
             if (!collapsedSideNavOption) setCollapsedSideNavOption(true);
           }}
         >
-          <div
+          {/* <div
             className={styles.background_div}
             style={{
-              backgroundImage: `url("${SERVER_URL}/background001.jpg")`,
+              backgroundImage: `url("${SERVER_URL}/background-logo.jpeg")`,
             }}
-          ></div>
+          ></div> */}
           <div className={styles.hamburger_menu}>
             <p className={styles.selectedOption}>
               {t(selectedTopNavOption)}

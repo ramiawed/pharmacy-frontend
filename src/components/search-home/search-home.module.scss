@@ -8,17 +8,14 @@
   align-items: center;
   flex-direction: column;
   justify-content: center;
-
-  // background-color: $white-color;
-  // background: linear-gradient(135deg, hsla(239, 100%, 67%, 0.5) 0%, hsla(187, 100%, 89%, 1) 100%);
-
 }
 
 .container h3 {
+  font-family: $font1;
   padding: 12px;
   font-size: 3rem;
   font-weight: bolder;
-  background-image: linear-gradient(135deg, hsla(43, 91%, 69%, 1) 25%, hsla(212, 74%, 50%, 1) 100%);
+  background-image: linear-gradient(135deg, $main-color 25%, rgb(35, 131, 113) 100%);
 
   background-size: 100%;
 
@@ -26,6 +23,12 @@
   -webkit-text-fill-color: transparent;
   -moz-background-clip: text;
   -moz-text-fill-color: transparent;
+}
+
+.app_logo {
+  width: 200px;
+  height: 200px;
+  transform: skewX(-15deg);
 }
 
 .search_container {

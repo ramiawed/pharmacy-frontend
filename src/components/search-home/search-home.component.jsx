@@ -22,7 +22,12 @@ import styles from "./search-home.module.scss";
 import generalStyles from "../../style.module.scss";
 
 // constants
-import { Colors, BASEURL, UserTypeConstants } from "../../utils/constants";
+import {
+  Colors,
+  BASEURL,
+  UserTypeConstants,
+  SERVER_URL,
+} from "../../utils/constants";
 
 let CancelToken = null;
 let source = null;
@@ -208,7 +213,12 @@ function SearchHome() {
         Click Me
       </button>
       {tryBooom ? <Bomb /> : null} */}
-      <h3>{t("app-name")}</h3>
+      <img
+        src={`${SERVER_URL}/background-logo.jpeg`}
+        alt="thumb"
+        className={styles.app_logo}
+      />
+      {/* <h3>{t("app-name")}</h3> */}
       {/* <div
         className={[styles.options, generalStyles.flex_center_container].join(
           " "

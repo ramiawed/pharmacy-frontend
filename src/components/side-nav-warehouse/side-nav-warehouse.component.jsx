@@ -67,8 +67,10 @@ function SideNavWarehouse({ selectedOption, onSelectedChange }) {
           }}
           to="/orders"
         >
-          {t("nav-orders")} -{" "}
-          <span className={styles.badge}>{unreadCount}</span>
+          {t("nav-orders")}{" "}
+          {unreadCount > 0 && (
+            <span className={styles.badge}>{unreadCount}</span>
+          )}
         </Link>
       )}
 

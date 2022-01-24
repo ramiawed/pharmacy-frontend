@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { BASEURL, DateOptions } from "../../utils/constants";
+import { BASEURL, DateOptions, UserTypeConstants } from "../../utils/constants";
 
 const initialState = {
   status: "idle",
@@ -287,6 +287,7 @@ export const ordersSlice = createSlice({
 
     setUnreadMsg: (state) => {
       state.unreadMsg = "";
+      state.unreadCountDiff = 0;
     },
 
     resetPageState: (state) => {
@@ -297,6 +298,32 @@ export const ordersSlice = createSlice({
         dateOption: "",
         page: 1,
       };
+    },
+
+    getOrderById: (state, action) => {
+      const { orderId, userType } = action.payload;
+
+      if (userType === UserTypeConstants.ADMIN) {
+        state.unreadCount = state.unreadCount - 1;
+        state.orders = state.orders.map((o) => {
+          if (o._id === orderId) {
+            return { ...o, seenByAdmin: true };
+          } else {
+            return o;
+          }
+        });
+      }
+
+      if (userType === UserTypeConstants.WAREHOUSE) {
+        state.unreadCount = state.unreadCount - 1;
+        state.orders = state.orders.map((o) => {
+          if (o._id === orderId) {
+            return { ...o, seenByWarehouse: true };
+          } else {
+            return o;
+          }
+        });
+      }
     },
     orderSliceSignOut: (state) => {
       state.status = "idle";
@@ -366,6 +393,7 @@ export const {
   setUnreadMsg,
   setSearchDate,
   orderSliceSignOut,
+  getOrderById,
 } = ordersSlice.actions;
 
 export default ordersSlice.reducer;

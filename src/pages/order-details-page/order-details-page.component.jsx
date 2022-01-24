@@ -10,8 +10,8 @@ import CartRow from "../../components/cart-row/cart-row.component";
 import Loader from "../../components/action-loader/action-loader.component";
 
 // redux stuff
-import { useSelector } from "react-redux";
-import { selectToken } from "../../redux/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectToken, selectUserData } from "../../redux/auth/authSlice";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -19,14 +19,16 @@ import styles from "./order-details-page.module.scss";
 import Header from "../../components/header/header.component";
 import Icon from "../../components/action-icon/action-icon.component";
 import { RiRefreshLine } from "react-icons/ri";
+import { getOrderById } from "../../redux/orders/ordersSlice";
 
 function OrderDetailsPage({ location, onSelectedChange }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const orderId = location?.search.slice(1);
 
   // selectors
-  const token = useSelector(selectToken);
+  const { user, token } = useSelector(selectUserData);
 
   // own states
   const [orderDetails, setOrderDetails] = useState(null);
@@ -44,6 +46,7 @@ function OrderDetailsPage({ location, onSelectedChange }) {
     );
 
     setOrderDetails(response.data.data.order);
+    dispatch(getOrderById({ orderId, userType: user.type }));
 
     setLoading(false);
   };

@@ -93,6 +93,7 @@ function OrdersPage({ onSelectedChange }) {
             {t("warehouse-name")}
           </label>
           <label className={tableStyles.label_medium}>{t("date-label")}</label>
+          <label className={tableStyles.label_xsmall}></label>
         </TableHeader>
       )}
 

@@ -6,6 +6,7 @@ const initialState = {
   status: "idle",
   orders: [],
   count: 0,
+  unreadCount: 0,
   error: "",
   refresh: true,
   pageState: {
@@ -31,17 +32,9 @@ export const getOrders = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      const { pharmacyId = null, warehouseId = null, page } = obj;
+      const { page } = obj;
 
       let buildUrl = `${BASEURL}/orders?page=${page}&limit=9`;
-
-      if (pharmacyId) {
-        buildUrl = buildUrl + `&pharmacyId=${pharmacyId}`;
-      }
-
-      if (warehouseId) {
-        buildUrl = buildUrl + `&warehouseId=${warehouseId}`;
-      }
 
       if (pageState.searchPharmacyName.length > 0) {
         buildUrl = buildUrl + `&pharmacyName=${pageState.searchPharmacyName}`;

@@ -34,6 +34,8 @@ import TableHeader from "../../components/table-header/table-header.component";
 function OrdersPage({ onSelectedChange }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+
+  // selectore
   const { token, user } = useSelector(selectUserData);
   const { status, error, count, orders, refresh, pageState } =
     useSelector(selectOrders);
@@ -47,10 +49,6 @@ function OrdersPage({ onSelectedChange }) {
       getOrders({
         obj: {
           page,
-          pharmacyId:
-            user.type === UserTypeConstants.PHARMACY ? user._id : null,
-          warehouseId:
-            user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
         },
         token,
       })

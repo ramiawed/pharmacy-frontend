@@ -195,6 +195,27 @@ export const saveOrder = createAsyncThunk(
   }
 );
 
+export const unreadOrder = createAsyncThunk(
+  "orders/unreadOrders",
+  async ({ token }, { rejectWithValue }) => {
+    try {
+    } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const ordersSlice = createSlice({
   name: "orders",
   initialState,

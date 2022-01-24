@@ -10,6 +10,8 @@ import InfoRow from "../../components/info-row/info-row.component";
 import InputFileImage from "../../components/input-file-image/input-file-image.component";
 import ChangePassword from "../../components/change-password/change-password.component";
 import DeleteMe from "../../components/delete-me/delete-me.component";
+import Button from "../../components/button/button.component";
+import UserProfileNotifications from "../../components/user-profile-notifications/user-profile-notifications.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -26,8 +28,6 @@ import generalStyles from "../../style.module.scss";
 
 // constants, and utile
 import { UserTypeConstants, Colors, SERVER_URL } from "../../utils/constants";
-import Button from "../../components/button/button.component";
-import UserProfileNotifications from "../../components/user-profile-notifications/user-profile-notifications.component";
 
 function UserProfilePage({ onSelectedChange }) {
   const { t } = useTranslation();
@@ -147,7 +147,7 @@ function UserProfilePage({ onSelectedChange }) {
           editable={true}
           field="city"
           labelText={t("user-city")}
-          value={userObj.city}
+          value={t(userObj.city)}
           onInputChange={handleInputChange}
           action={() => updateFieldHandler("city")}
         />

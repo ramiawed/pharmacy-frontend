@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -6,11 +6,7 @@ import { useTranslation } from "react-i18next";
 import styles from "../side-nav.module.scss";
 
 // constants
-import {
-  Colors,
-  SideNavLinks,
-  UserTypeConstants,
-} from "../../utils/constants.js";
+import { SideNavLinks, UserTypeConstants } from "../../utils/constants.js";
 import { selectSettings } from "../../redux/settings/settingsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
@@ -111,13 +107,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange }) {
           to="/orders"
         >
           {t("nav-orders")} -{" "}
-          <span
-            style={{
-              color: Colors.FAILED_COLOR,
-            }}
-          >
-            {unreadCount}
-          </span>
+          <span className={styles.badge}>{unreadCount}</span>
         </Link>
       )}
 

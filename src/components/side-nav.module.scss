@@ -26,3 +26,12 @@
 
   border-radius: 6px;
 }
+
+.badge {
+  display: inline-block;
+  background: $third-color;
+  color: $white-color;
+
+  padding-inline: 12px;
+  border-radius: 50%;
+}

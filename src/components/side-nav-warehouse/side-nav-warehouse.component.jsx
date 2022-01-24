@@ -16,6 +16,7 @@ import {
   setSearchWarehouseName,
   setWarehouse,
 } from "../../redux/items/itemsSlices";
+import { selectOrders } from "../../redux/orders/ordersSlice";
 
 function SideNavWarehouse({ selectedOption, onSelectedChange }) {
   const { t } = useTranslation();
@@ -25,6 +26,7 @@ function SideNavWarehouse({ selectedOption, onSelectedChange }) {
   const {
     settings: { saveOrders },
   } = useSelector(selectSettings);
+  const { unreadCount } = useSelector(selectOrders);
 
   return (
     <>
@@ -65,7 +67,8 @@ function SideNavWarehouse({ selectedOption, onSelectedChange }) {
           }}
           to="/orders"
         >
-          {t("nav-orders")}
+          {t("nav-orders")} -{" "}
+          <span className={styles.badge}>{unreadCount}</span>
         </Link>
       )}
 

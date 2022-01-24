@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
@@ -9,23 +9,33 @@ import styles from "../side-nav.module.scss";
 import { SideNavLinks, UserTypeConstants } from "../../utils/constants.js";
 import { selectSettings } from "../../redux/settings/settingsSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { selectUser } from "../../redux/auth/authSlice";
+import { selectUser, selectUserData } from "../../redux/auth/authSlice";
 import {
   setCompany,
-  setCompanyId,
   setRole,
   setWarehouse,
-  setWarehouseId,
 } from "../../redux/items/itemsSlices";
+import { getUnreadOrders, selectOrders } from "../../redux/orders/ordersSlice";
 
 function SideNavAdmin({ selectedOption, onSelectedChange }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const user = useSelector(selectUser);
+  const { user, token } = useSelector(selectUserData);
   const {
     settings: { saveOrders },
   } = useSelector(selectSettings);
+  const { unreadCount, unreadCountDiff, unreadMsg } = useSelector(selectOrders);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      dispatch(getUnreadOrders({ token }));
+    }, 60000);
+
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
 
   return (
     <>

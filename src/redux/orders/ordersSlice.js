@@ -338,7 +338,7 @@ export const ordersSlice = createSlice({
     [getUnreadOrders.fulfilled]: (state, action) => {
       if (state.unreadCount * 1 !== action.payload.data.count * 1) {
         if (state.unreadCount < action.payload.data.count) {
-          state.unreadMsg = "you have new orders";
+          state.unreadMsg = "new orders";
         }
         state.unreadCountDiff =
           action.payload.data.count * 1 - state.unreadCount;

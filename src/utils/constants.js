@@ -59,6 +59,7 @@ export const Colors = {
   YELLOW_COLOR: "#e9b93f",
   OFFER_COLOR: "#0f04",
   WHITE_COLOR: "#fff",
+  BLUE_COLOR: "#00A5CF",
 };
 
 export const SideNavLinks = {

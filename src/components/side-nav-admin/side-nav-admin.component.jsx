@@ -6,16 +6,20 @@ import { useTranslation } from "react-i18next";
 import styles from "../side-nav.module.scss";
 
 // constants
-import { SideNavLinks, UserTypeConstants } from "../../utils/constants.js";
+import {
+  Colors,
+  SideNavLinks,
+  UserTypeConstants,
+} from "../../utils/constants.js";
 import { selectSettings } from "../../redux/settings/settingsSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { selectUser, selectUserData } from "../../redux/auth/authSlice";
+import { selectUserData } from "../../redux/auth/authSlice";
 import {
   setCompany,
   setRole,
   setWarehouse,
 } from "../../redux/items/itemsSlices";
-import { getUnreadOrders, selectOrders } from "../../redux/orders/ordersSlice";
+import { selectOrders } from "../../redux/orders/ordersSlice";
 
 function SideNavAdmin({ selectedOption, onSelectedChange }) {
   const { t } = useTranslation();
@@ -25,6 +29,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange }) {
   const {
     settings: { saveOrders },
   } = useSelector(selectSettings);
+  const { unreadCount } = useSelector(selectOrders);
 
   return (
     <>
@@ -105,7 +110,14 @@ function SideNavAdmin({ selectedOption, onSelectedChange }) {
           }}
           to="/orders"
         >
-          {t("nav-orders")}
+          {t("nav-orders")} -{" "}
+          <span
+            style={{
+              color: Colors.FAILED_COLOR,
+            }}
+          >
+            {unreadCount}
+          </span>
         </Link>
       )}
 

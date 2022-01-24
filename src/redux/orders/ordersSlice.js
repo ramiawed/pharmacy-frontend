@@ -204,6 +204,8 @@ export const getUnreadOrders = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
+      console.log(token);
+
       const response = await axios.get(`${BASEURL}/orders/unread`, {
         cancelToken: source.token,
         headers: {
@@ -213,6 +215,7 @@ export const getUnreadOrders = createAsyncThunk(
 
       return response.data;
     } catch (err) {
+      console.log(err);
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }
@@ -337,8 +340,8 @@ export const ordersSlice = createSlice({
     },
     [getUnreadOrders.fulfilled]: (state, action) => {
       if (state.unreadCount * 1 !== action.payload.data.count * 1) {
-        if (state.unreadCount < action.payload.data.count) {
-          state.unreadMsg = "new orders";
+        if (state.unreadCount * 1 < action.payload.data.count * 1) {
+          state.unreadMsg = "new-orders";
         }
         state.unreadCountDiff =
           action.payload.data.count * 1 - state.unreadCount;

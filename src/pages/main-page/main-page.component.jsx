@@ -52,8 +52,15 @@ import SettingsPage from "../settings-page/settings-page.component";
 import styles from "./main-page.module.scss";
 
 // constants
-import { SERVER_URL, SideNavLinks, TopNavLinks } from "../../utils/constants";
+import {
+  Colors,
+  SERVER_URL,
+  SideNavLinks,
+  TopNavLinks,
+} from "../../utils/constants";
 import { selectSettings } from "../../redux/settings/settingsSlice";
+import { selectOrders, setUnreadMsg } from "../../redux/orders/ordersSlice";
+import Toast from "../../components/toast/toast.component";
 
 // MainPage
 // you have to sign in first
@@ -65,6 +72,7 @@ function MainPage() {
   // get the user and the token from redux-store-auth
   const { user, token } = useSelector(selectUserData);
   const { status: settingsStatus } = useSelector(selectSettings);
+  const { unreadCountDiff, unreadMsg } = useSelector(selectOrders);
 
   // state uses in the TopNav component
   const [selectedTopNavOption, setSelectedTopNavOption] = useState(
@@ -406,6 +414,15 @@ function MainPage() {
             />
           )}
         </div>
+      )}
+
+      {unreadMsg && (
+        <Toast
+          bgColor={Colors.BLUE_COLOR}
+          foreColor="#fff"
+          toastText={`${t("you-have")} ${unreadCountDiff} ${t("orders-msg")}`}
+          actionAfterTimeout={() => dispatch(setUnreadMsg())}
+        />
       )}
     </ErrorBoundary>
   ) : (

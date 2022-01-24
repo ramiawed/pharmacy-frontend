@@ -413,5 +413,7 @@
   "add-item-confirm-msg": "هل تريد إضافة الدواء؟",
   "update-item-confirm-msg": "هل تريد تعديل الدواء؟",
   "show-advertisement-on-home-page": "إظهار الإعلانات على الصفحة الرئيسية",
-  "contact-phone-number": "٠٠٩٦٣٩٣٢٤٥٢٥٣٠"
+  "contact-phone-number": "٠٠٩٦٣٩٣٢٤٥٢٥٣٠",
+  "you-have": "لديك",
+  "orders-msg": "طلب/طلبات جديدة"
 }

@@ -15,11 +15,7 @@ import { VscClose } from "react-icons/vsc";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-import {
-  authSliceSignOut,
-  selectUser,
-  selectUserData,
-} from "../../redux/auth/authSlice";
+import { authSliceSignOut, selectUserData } from "../../redux/auth/authSlice";
 import { usersSliceSignOut } from "../../redux/users/usersSlice";
 import { favoritesSliceSignOut } from "../../redux/favorites/favoritesSlice";
 import { cartSliceSignOut } from "../../redux/cart/cartSlice";
@@ -31,7 +27,6 @@ import { warehouseItemsSliceSignOut } from "../../redux/warehouseItems/warehouse
 import {
   getUnreadOrders,
   orderSliceSignOut,
-  selectOrders,
 } from "../../redux/orders/ordersSlice";
 import { advertisementsSignOut } from "../../redux/advertisements/advertisementsSlice";
 import { companiesSectionOneSignOut } from "../../redux/advertisements/companiesSectionOneSlice";
@@ -67,7 +62,6 @@ function SideNav({
 
   // selectors
   const { user, token } = useSelector(selectUserData);
-  const { unreadCount, unreadCountDiff, unreadMsg } = useSelector(selectOrders);
 
   const handleSignOut = () => {
     dispatch(authSliceSignOut());
@@ -102,7 +96,7 @@ function SideNav({
     ) {
       timer = setInterval(() => {
         dispatch(getUnreadOrders({ token }));
-      }, 60000);
+      }, 10000);
     }
 
     return () => {

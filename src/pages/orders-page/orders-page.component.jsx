@@ -28,14 +28,14 @@ import generalStyles from "../../style.module.scss";
 import tableStyles from "../../components/table.module.scss";
 
 // constants and utils
-import { Colors, UserTypeConstants } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 import TableHeader from "../../components/table-header/table-header.component";
 
 function OrdersPage({ onSelectedChange }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  // selectore
+  // selectors
   const { token, user } = useSelector(selectUserData);
   const { status, error, count, orders, refresh, pageState } =
     useSelector(selectOrders);

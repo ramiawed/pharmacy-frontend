@@ -136,8 +136,6 @@ export const getUsers = createAsyncThunk(
         buildUrl = buildUrl + `&isActive=${false}`;
       }
 
-      console.log(buildUrl);
-
       let sortArray = [];
       let sort;
       Object.keys(pageState.orderBy).forEach((key) => {

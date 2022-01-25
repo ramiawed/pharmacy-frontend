@@ -55,7 +55,6 @@ export const authSign = createAsyncThunk(
       return response.data;
     } catch (err) {
       resetCancelAndSource();
-      console.log(err);
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }

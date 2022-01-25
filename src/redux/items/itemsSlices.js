@@ -103,7 +103,6 @@ export const getItems = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      console.log(err);
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }

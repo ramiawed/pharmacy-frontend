@@ -204,8 +204,6 @@ export const getUnreadOrders = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      console.log(token);
-
       const response = await axios.get(`${BASEURL}/orders/unread`, {
         cancelToken: source.token,
         headers: {
@@ -215,7 +213,6 @@ export const getUnreadOrders = createAsyncThunk(
 
       return response.data;
     } catch (err) {
-      console.log(err);
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }

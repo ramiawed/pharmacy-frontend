@@ -389,7 +389,6 @@ function SignUp() {
       }
 
       setSignupLoading(true);
-      console.log(user);
       axios
         .post(`${BASEURL}/users/signup`, user, {})
         .then(() => {
@@ -413,7 +412,6 @@ function SignUp() {
           }
         })
         .catch((err) => {
-          console.log(err);
           if (
             err.code === "ECONNABORTED" &&
             err.message.startsWith("timeout")

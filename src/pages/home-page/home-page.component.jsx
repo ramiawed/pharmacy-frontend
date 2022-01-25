@@ -5,6 +5,8 @@ import { Redirect } from "react-router-dom";
 import SectionHomePage from "../../components/section-home-page/section-home-page.component";
 import Loader from "../../components/loader/loader.component";
 import SearchHome from "../../components/search-home/search-home.component";
+import AdvertisementHomePage from "../../components/advertisement-home-page/advertisement-home-page.component";
+import SectionHomePageFlex from "../../components/section-home-page-flex/section-home-page-flex.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -42,8 +44,6 @@ import {
 
 // styles
 import styles from "./home-page.module.scss";
-import AdvertisementHomePage from "../../components/advertisement-home-page/advertisement-home-page.component";
-import SectionHomePageFlex from "../../components/section-home-page-flex/section-home-page-flex.component";
 
 function HomePage({ onSelectedChange }) {
   const dispatch = useDispatch();

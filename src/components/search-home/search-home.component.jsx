@@ -213,11 +213,7 @@ function SearchHome() {
         Click Me
       </button>
       {tryBooom ? <Bomb /> : null} */}
-      <img
-        src={`${SERVER_URL}/background-logo.jpeg`}
-        alt="thumb"
-        className={styles.app_logo}
-      />
+
       {/* <h3>{t("app-name")}</h3> */}
       {/* <div
         className={[styles.options, generalStyles.flex_center_container].join(
@@ -372,7 +368,15 @@ function SearchHome() {
             )}
           </div>
         )}
+        <h3>{t("app-name")}</h3>
+        <p className={styles.description}>{t("app-description")}</p>
       </div>
+
+      <img
+        src={`${SERVER_URL}/background-logo.jpeg`}
+        alt="thumb"
+        className={styles.app_logo}
+      />
     </div>
   );
 }

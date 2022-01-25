@@ -1,18 +1,18 @@
 {
   "files": {
-    "main.css": "/pharmacy-frontend/static/css/main.a5812ddd.css",
-    "main.js": "/pharmacy-frontend/static/js/main.3eb909af.js",
+    "main.css": "/pharmacy-frontend/static/css/main.3ec3d263.css",
+    "main.js": "/pharmacy-frontend/static/js/main.55dcc7be.js",
     "static/media/background.jpg": "/pharmacy-frontend/static/media/background.ca796664f72ee63515f8.jpg",
     "static/media/slick.svg": "/pharmacy-frontend/static/media/slick.2630a3e3eab21c607e21.svg",
     "static/media/slick.eot": "/pharmacy-frontend/static/media/slick.a4e97f5a2a64f0ab1323.eot",
     "static/media/slick.ttf": "/pharmacy-frontend/static/media/slick.c94f7671dcc99dce43e2.ttf",
     "static/media/slick.woff": "/pharmacy-frontend/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/pharmacy-frontend/index.html",
-    "main.a5812ddd.css.map": "/pharmacy-frontend/static/css/main.a5812ddd.css.map",
-    "main.3eb909af.js.map": "/pharmacy-frontend/static/js/main.3eb909af.js.map"
+    "main.3ec3d263.css.map": "/pharmacy-frontend/static/css/main.3ec3d263.css.map",
+    "main.55dcc7be.js.map": "/pharmacy-frontend/static/js/main.55dcc7be.js.map"
   },
   "entrypoints": [
-    "static/css/main.a5812ddd.css",
-    "static/js/main.3eb909af.js"
+    "static/css/main.3ec3d263.css",
+    "static/js/main.55dcc7be.js"
   ]
 }

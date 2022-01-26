@@ -2,8 +2,10 @@
 
 .basic_details_container {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
   justify-content: flex-start;
+
 }
 
 .row {
@@ -11,21 +13,22 @@
   align-items: center;
   justify-content: flex-start;
 
-  color: $secondary-color;
+  margin-block-end: 6px;
 }
 
 .label {
+  width: 75px;
   font-size: 0.8rem;
+  color: #9d9d9d;
 }
 
 .name {
-  background-color: rgba($color: $secondary-color, $alpha: 0.7);
-  color: $white-color;
+  color: $secondary-color;
 
-  padding: 6px 12px;
   margin-inline: 10px;
-  
-  border-radius: 6px;
+
+  font-size: 0.9rem;
+
 }
 
 .total_price {

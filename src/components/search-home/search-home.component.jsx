@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 
@@ -8,7 +8,6 @@ import { selectUserData } from "../../redux/auth/authSlice";
 
 // react icons
 import { FiSearch } from "react-icons/fi";
-import { TiTick } from "react-icons/ti";
 import { RiCloseLine } from "react-icons/ri";
 
 // components
@@ -19,7 +18,6 @@ import ReactLoading from "react-loading";
 
 // styles
 import styles from "./search-home.module.scss";
-import generalStyles from "../../style.module.scss";
 
 // constants
 import {
@@ -89,7 +87,6 @@ function SearchHome() {
       queryString = queryString + `&city=${user.city}`;
     }
     warehousesBuildUrl = warehousesBuildUrl + queryString;
-    // }
 
     try {
       const response = await axios.get(buildUrl, {
@@ -129,11 +126,6 @@ function SearchHome() {
 
       if (status === "success") {
         setData(data.items);
-        // if (option === "medicines") {
-        //   setData(data.items);
-        // } else {
-        //   setData(data.users);
-        // }
       }
 
       if (companiesResponseStatus === "success") {
@@ -152,13 +144,6 @@ function SearchHome() {
       setWarehousesData([]);
     }
   };
-
-  // const changeOptionHandler = (opt) => {
-  //   if (!loading) {
-  //     setData([]);
-  //     // setOption(opt);
-  //   }
-  // };
 
   const keyDownHandler = (event) => {
     if (event.code === "Enter") {
@@ -183,22 +168,6 @@ function SearchHome() {
     setShowResult(false);
   };
 
-  // useEffect(() => {
-  //   if (searchName.length > 0) {
-  //     if (source) {
-  //       source.cancel("operation canceled by user");
-  //     }
-
-  //     searchHandler();
-  //   }
-
-  //   return () => {
-  //     if (source) {
-  //       source.cancel("operation canceled by user");
-  //     }
-  //   };
-  // }, []);
-
   function Bomb() {
     throw new Error("💥 CABOOM 💥");
   }
@@ -213,66 +182,6 @@ function SearchHome() {
         Click Me
       </button>
       {tryBooom ? <Bomb /> : null} */}
-
-      {/* <h3>{t("app-name")}</h3> */}
-      {/* <div
-        className={[styles.options, generalStyles.flex_center_container].join(
-          " "
-        )}
-      >
-        <div
-          className={[
-            styles.option,
-            option === "medicines" ? styles.selected : "",
-          ].join(" ")}
-          onClick={() => changeOptionHandler("medicines")}
-        >
-          {option === "medicines" && <TiTick size={16} />}
-
-          <label
-            style={{
-              margin: "0 5px",
-            }}
-          >
-            {t("nav-medicines")}
-          </label>
-        </div>
-        <div
-          className={[
-            styles.option,
-            option === "companies" ? styles.selected : "",
-          ].join(" ")}
-          onClick={() => changeOptionHandler("companies")}
-        >
-          {option === "companies" && <TiTick size={16} />}
-
-          <label
-            style={{
-              margin: "0 5px",
-            }}
-          >
-            {t("nav-company")}
-          </label>
-        </div>
-
-        <div
-          className={[
-            styles.option,
-            option === "warehouses" ? styles.selected : "",
-          ].join(" ")}
-          onClick={() => changeOptionHandler("warehouses")}
-        >
-          {option === "warehouses" && <TiTick size={16} />}
-
-          <label
-            style={{
-              margin: "0 5px",
-            }}
-          >
-            {t("nav-warehouse")}
-          </label>
-        </div>
-      </div> */}
 
       <div className={styles.search_container}>
         <div

@@ -57,7 +57,7 @@
 }
 
 .input_div label {
-  font-size: 0.9rem;
+  font-size: 0.7rem;
 }
 
 .delete_icon {
@@ -67,4 +67,11 @@
 
 .delete_icon:hover {
   opacity: 0.9;
+}
+
+@media only screen and (min-width: $medium) {
+
+  .input_div label {
+    font-size: 0.9rem;
+  }
 }

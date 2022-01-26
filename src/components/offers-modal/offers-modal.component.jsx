@@ -18,7 +18,7 @@ import styles from "./offers-modal.module.scss";
 import generalStyles from "../../style.module.scss";
 
 // constants
-import { Colors, OfferTypes } from "../../utils/constants";
+import { Colors, OfferTypes, toEnglishNumber } from "../../utils/constants";
 import { unwrapResult } from "@reduxjs/toolkit";
 
 function OffersModal({
@@ -69,7 +69,7 @@ function OffersModal({
           ...value,
           value: {
             ...value.value,
-            [e.target.title]: e.target.value * 1,
+            [e.target.title]: toEnglishNumber(e.target.value) * 1,
           },
         };
       } else {

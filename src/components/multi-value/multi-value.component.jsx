@@ -8,6 +8,7 @@ import { MdAddCircle } from "react-icons/md";
 // styles
 import generalStyles from "../../style.module.scss";
 import styles from "./multi-value.module.scss";
+import { onKeyPressForNumberInput } from "../../utils/constants";
 
 function MultiValue({
   addHandler,
@@ -48,13 +49,14 @@ function MultiValue({
             <div className={styles.input_div}>
               {quantityLabel && <label>{quantityLabel}</label>}
               <input
-                type="number"
+                // type="number"
                 id={value.key}
                 title="qty"
                 value={value.value.qty}
                 onChange={(e) => changeHandler(e)}
                 placeholder={placeholder}
-                min={0}
+                onKeyPress={onKeyPressForNumberInput}
+                // min={0}
                 disabled={!allowEdit}
               />
               {afterQuantityLabel && <label>{afterQuantityLabel}</label>}
@@ -65,13 +67,13 @@ function MultiValue({
               {bonusLabel && <label>{bonusLabel}</label>}
 
               <input
-                type="number"
+                // type="number"
                 id={value.key}
                 title="bonus"
                 value={value.value.bonus}
                 onChange={(e) => changeHandler(e)}
                 placeholder={placeholder}
-                min={0}
+                // min={0}
                 disabled={!allowEdit}
               />
 

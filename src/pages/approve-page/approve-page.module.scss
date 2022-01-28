@@ -24,7 +24,7 @@
 }
 
 .info p {
-  font-size: 24px;
+  font-size: 16px;
 
   color: $white-color;
 
@@ -38,8 +38,8 @@
 p.strong {
   color: $third-color;
 
-  font-size: 36px;
-  
+  font-size: 24px;
+
   text-align: center;
 }
 
@@ -54,4 +54,14 @@ p.strong {
   position: absolute;
   top: 0;
   left: 0;
+}
+
+@media only screen and (min-width: $medium) {
+  p.strong {
+    font-size: 36px;
+  }
+
+  .info p {
+    font-size: 24px;
+  }
 }

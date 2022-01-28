@@ -13,7 +13,7 @@ import { useSelector } from "react-redux";
 import generalStyles from "../../style.module.scss";
 
 // constants
-import { UserTypeConstants } from "../../utils/constants";
+import { AdditionalColors, UserTypeConstants } from "../../utils/constants";
 
 function StatisticsOptionsPage({ onSelectedChange }) {
   const { t } = useTranslation();
@@ -29,36 +29,43 @@ function StatisticsOptionsPage({ onSelectedChange }) {
         title={t("statistics-sign-in")}
         field="signinDates"
         type="users"
+        backgroundColor={AdditionalColors[0]}
       />
       <StatisticsCard
         title={t("statistics-selected-company")}
         field="selectedDates"
         type="users"
+        backgroundColor={AdditionalColors[1]}
       />
       <StatisticsCard
         title={t("statistics-selected-item")}
         field="selectedDates"
         type="items"
+        backgroundColor={AdditionalColors[2]}
       />
       <StatisticsCard
         title={t("statistics-item-added-to-card")}
         field="addedToCartDates"
         type="items"
+        backgroundColor={AdditionalColors[3]}
       />
       <StatisticsCard
         title={t("statistics-user-order")}
         field="orderDates"
         type="users"
+        backgroundColor={AdditionalColors[4]}
       />
       <StatisticsCard
         title={t("statistics-user-added-to-favorite")}
         field="addedToFavoriteDates"
         type="users"
+        backgroundColor={AdditionalColors[5]}
       />
       <StatisticsCard
         title={t("statistics-item-added-to-favorite")}
         field="addedToFavoriteDates"
         type="items"
+        backgroundColor={AdditionalColors[0]}
       />
     </div>
   ) : (

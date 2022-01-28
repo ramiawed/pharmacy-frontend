@@ -209,7 +209,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
             onchange={citiesNameChangeHandler}
             defaultOption={{
               value: pageState.searchCity,
-              label: t(pageState.searchCity),
+              label: t(pageState.searchCity.toLowerCase()),
             }}
             caption="user-city"
           />

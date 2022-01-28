@@ -4,19 +4,13 @@
   width: 95vw;
   min-height: calc(50vh - 60px);
 
-  margin: 6px auto;
+  margin: 0 auto;
   padding: 6px;
 
   display: flex;
   align-items: center;
   flex-direction: column;
   justify-content: center;
-
-  // background: linear-gradient(135deg, hsla(230, 26%, 45%, 1) 30%, hsla(230, 26%, 45%, 0.4) 95%);
-
-  // box-shadow: 3px 3px 5px rgba($color: $secondary-color, $alpha: 1);
-  // border-radius: 6px;
-
 }
 
 .container h3 {
@@ -26,29 +20,25 @@
   font-weight: bolder;
   color: $main-color;
   text-align: center;
-  // text-shadow: 1px 1px 1px rgba($color: #000000, $alpha: 1);
-  // background-image: linear-gradient(135deg, $main-color 25%, rgb(35, 131, 113) 100%);
-
-  // background-size: 100%;
-
-  // background-clip: text;
-  // -webkit-text-fill-color: transparent;
-  // -moz-background-clip: text;
-  // -moz-text-fill-color: transparent;
 }
 
 .description {
+  font-size: 1.5rem;
+  font-family: $font4;
+
   color: $main-color;
+
+  margin-block-end: 16px;
+
   text-align: center;
-  // text-shadow: 1px 1px 1px rgba($color: #000000, $alpha: 1);
+  text-shadow: 2px 2px 3px rgba($color: $secondary-color, $alpha: 1);
+  text-transform: uppercase;
 }
 
 .app_logo {
   width: 150px;
   height: 150px;
   border-radius: 25px;
-  // box-shadow: 3px 3px 3px rgba($color: #000, $alpha: 0.3),
-  //   -3px -3px 3px rgba($color: #000, $alpha: 0.3);
 
   order: 1;
 
@@ -107,34 +97,7 @@
   justify-content: center;
 }
 
-.options {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
 
-.option {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background-color: rgba($color: $secondary-color, $alpha: 1);
-  color: $white-color;
-  padding: 8px 50px;
-  margin: 5px 0;
-  border-radius: 12px;
-
-  cursor: pointer;
-}
-
-.option:hover {
-  transform: scale(1.01);
-}
-
-.option.selected {
-  background-color: rgba($color: $third-color, $alpha: 1);
-}
 
 .result_div {
   width: 100%;
@@ -163,7 +126,7 @@
 @media only screen and (min-width: $medium) {
 
   .container {
-    flex-direction: column;
+    flex-direction: row;
   }
 
   .container h3 {
@@ -172,13 +135,13 @@
 
   .search_container {
     width: 80%;
-    order: 2;
+    order: 1;
   }
 
   .app_logo {
     width: 200px;
     height: 200px;
-    order: 1;
+    order: 2;
     margin-block-end: 12px;
   }
 

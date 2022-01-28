@@ -12,11 +12,11 @@
 
   background: $third-color;
   color: $white-color !important;
-  
+
   border-radius: 6px;
 
   position: absolute;
-  top: -15px;
+  top: -12px;
   left: -6px;
 
   display: flex;
@@ -26,13 +26,15 @@
 
 p.small {
   font-size: 0.5rem;
+  top: -5px;
+  left: -5px;
 }
 
 .container .tooltip {
   display: none;
-  
+
   min-width: 100px;
-  
+
   font-size: 0.7rem;
 
   padding: 2px 8px;

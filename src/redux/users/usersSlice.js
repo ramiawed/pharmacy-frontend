@@ -412,7 +412,7 @@ export const usersSlice = createSlice({
     resetPageState: (state) => {
       state.pageState = {
         searchName: "",
-        searchCity: "",
+        searchCity: CitiesName.ALL,
         searchDistrict: "",
         searchStreet: "",
         searchEmployeeName: "",
@@ -442,7 +442,7 @@ export const usersSlice = createSlice({
 
       state.pageState = {
         searchName: "",
-        searchCity: "",
+        searchCity: CitiesName.ALL,
         searchDistrict: "",
         searchStreet: "",
         searchEmployeeName: "",

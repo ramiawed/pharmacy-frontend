@@ -10,12 +10,15 @@ import styles from "./statistics-card.module.scss";
 import generalStyles from "../../style.module.scss";
 import rowStyles from "../row.module.scss";
 
-function StatisticsCard({ title, field, type }) {
+function StatisticsCard({ title, field, type, backgroundColor }) {
   const dispatch = useDispatch();
 
   return (
     <div
       className={[styles.card, generalStyles.flex_center_container].join(" ")}
+      style={{
+        backgroundColor: backgroundColor,
+      }}
     >
       <Link
         onClick={() => {

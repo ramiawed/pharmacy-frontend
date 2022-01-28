@@ -32,12 +32,18 @@
 }
 
 .header h2 {
+  font-family: $font_arabic02;
   padding: 6px 0;
 
   font-weight: 600;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
 
   text-shadow: 2px 2px 5px rgba($color: #000, $alpha: 0.5);
+}
+
+.header p {
+  font-family: $font_arabic;
+  font-size: 1rem;
 }
 
 .advertisement_container {

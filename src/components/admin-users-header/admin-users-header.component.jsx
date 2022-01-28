@@ -4,7 +4,11 @@ import { useTranslation } from "react-i18next";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-import { getUsers, resetUsers } from "../../redux/users/usersSlice";
+import {
+  getUsers,
+  resetPageState,
+  resetUsers,
+} from "../../redux/users/usersSlice";
 import { selectToken } from "../../redux/auth/authSlice";
 
 // components
@@ -21,7 +25,16 @@ import { HiOutlineSearch } from "react-icons/hi";
 import generalStyles from "../../style.module.scss";
 
 // constants
-import { Colors } from "../../utils/constants";
+import {
+  CitiesName,
+  Colors,
+  GuestJob,
+  ShowWarehouseItems,
+  UserActiveState,
+  UserApprovedState,
+  UserTypeConstants,
+} from "../../utils/constants";
+import { VscClearAll } from "react-icons/vsc";
 
 function AdminUsersHeader({
   count,
@@ -32,6 +45,35 @@ function AdminUsersHeader({
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
+
+  const {
+    searchName,
+    searchCity,
+    searchEmployeeName,
+    searchCertificateName,
+    searchCompanyName,
+    searchJobTitle,
+    approved,
+    active,
+    userType,
+    searchJob,
+    showItems,
+  } = pageState;
+
+  const searchFilterCount =
+    (searchName.length > 0 ? 1 : 0) +
+    (searchCity === CitiesName.ALL ? 0 : 1) +
+    (searchJobTitle.length > 0 ? 1 : 0) +
+    (searchEmployeeName.length > 0 ? 1 : 0) +
+    (searchCertificateName.length > 0 ? 1 : 0) +
+    (searchCompanyName.length > 0 ? 1 : 0) +
+    (approved === UserApprovedState.ALL ? 0 : 1) +
+    (active === UserActiveState.ALL ? 0 : 1) +
+    (userType === UserTypeConstants.ALL ? 0 : 1) +
+    (searchJob === GuestJob.NONE ? 0 : 1) +
+    (showItems === ShowWarehouseItems.ALL ? 0 : 1);
+
+  const orderFilterCount = Object.entries(pageState.orderBy).length;
 
   const token = useSelector(selectToken);
 
@@ -83,9 +125,22 @@ function AdminUsersHeader({
           onclick={refreshHandler}
         />
 
+        {searchFilterCount || orderFilterCount ? (
+          <Icon
+            selected={false}
+            foreColor={Colors.SECONDARY_COLOR}
+            tooltip={t("clear-filter-tooltip")}
+            onclick={() => {
+              dispatch(resetPageState());
+              refreshHandler();
+            }}
+            icon={() => <VscClearAll />}
+          />
+        ) : null}
+
         <div onClick={showSearchModalHandler}>
           <IconWithNumber
-            value={0}
+            value={searchFilterCount}
             fillIcon={
               <div className={[generalStyles.icon]}>
                 <HiOutlineSearch size={16} color={Colors.SECONDARY_COLOR} />
@@ -103,7 +158,7 @@ function AdminUsersHeader({
 
         <div onClick={showOrderModalHandler}>
           <IconWithNumber
-            value={Object.entries(pageState.orderBy).length}
+            value={orderFilterCount}
             fillIcon={
               <div className={generalStyles.icon}>
                 <BiSortAZ size={16} color={Colors.SECONDARY_COLOR} />

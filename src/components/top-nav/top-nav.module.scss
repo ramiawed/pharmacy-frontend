@@ -28,15 +28,15 @@ div.end {
 }
 
 div .link {
-  text-decoration: none;
-  
+  font-family: $font_arabic;
+  font-size: 1.2rem;
+
   background-color: $main-color;
   color: $white-color;
+
   text-align: center;
-  
-  font-family: $font3;
-  font-size: 1.2rem;
-  
+  text-decoration: none;
+
   cursor: pointer;
 
   transition: all 0.1s ease;
@@ -114,7 +114,7 @@ div.end .link.selected {
   div.end .link {
     padding: 4px 8px;
     margin: 0 6px;
-    
+
   }
 
   div.center .link:hover,

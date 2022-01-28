@@ -39,7 +39,6 @@ function SearchHome() {
   // own states
   const [searchName, setSearchName] = useState("");
   // this option can be medicines, companies, warehouses
-  // const [option, setOption] = useState("medicines");
   const [loading, setLoading] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [data, setData] = useState([]);
@@ -184,6 +183,8 @@ function SearchHome() {
       {tryBooom ? <Bomb /> : null} */}
 
       <div className={styles.search_container}>
+        <p className={styles.description}>{t("app-description")}</p>
+
         <div
           className={[
             styles.search_div,
@@ -277,8 +278,7 @@ function SearchHome() {
             )}
           </div>
         )}
-        <h3>{t("app-name")}</h3>
-        <p className={styles.description}>{t("app-description")}</p>
+        {/* <h3>{t("app-name")}</h3> */}
       </div>
 
       <img

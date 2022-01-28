@@ -15,9 +15,18 @@ $large: 1025px;
 $xlarge: 1201px;
 
 /* FONTS */
-$font1: "Amiri", serif;
-$font2: "Mirza", cursive;
-$font3: "Scheherazade", serif;
+$font1: "Amiri",
+serif;
+$font2: "Mirza",
+cursive;
+$font3: "Scheherazade",
+serif;
+$font4: 'Mochiy Pop P One',
+sans-serif;
+$font_arabic: 'Lateef',
+cursive;
+$font_arabic02: 'Aref Ruqaa',
+serif;
 
 /* SCSS HEX */
 $main-color: #3d425c;
@@ -32,52 +41,36 @@ $yellow-color: #e9b93f;
 $offer-color: #0f04;
 
 /* SCSS Gradient */
-$gradient-top: linear-gradient(
-  0deg,
+$gradient-top: linear-gradient(0deg,
   $main-color,
   $secondary-color,
-  $third-color
-);
-$gradient-right: linear-gradient(
-  90deg,
+  $third-color);
+$gradient-right: linear-gradient(90deg,
   $main-color,
   $secondary-color,
-  $third-color
-);
-$gradient-bottom: linear-gradient(
-  180deg,
+  $third-color);
+$gradient-bottom: linear-gradient(180deg,
   $main-color,
   $secondary-color,
-  $third-color
-);
-$gradient-left: linear-gradient(
-  270deg,
+  $third-color);
+$gradient-left: linear-gradient(270deg,
   $main-color,
   $secondary-color,
-  $third-color
-);
-$gradient-top-right: linear-gradient(
-  45deg,
+  $third-color);
+$gradient-top-right: linear-gradient(45deg,
   $main-color,
   $secondary-color,
-  $third-color
-);
-$gradient-bottom-right: linear-gradient(
-  135deg,
+  $third-color);
+$gradient-bottom-right: linear-gradient(135deg,
   $main-color,
   $secondary-color,
-  $third-color
-);
-$gradient-top-left: linear-gradient(
-  225deg,
+  $third-color);
+$gradient-top-left: linear-gradient(225deg,
   $main-color,
   $secondary-color,
-  $third-color
-);
-$gradient-bottom-left: linear-gradient(
-  315deg,
+  $third-color);
+$gradient-bottom-left: linear-gradient(315deg,
   $main-color,
   $secondary-color,
-  $third-color
-);
+  $third-color);
 $gradient-radial: radial-gradient($main-color, $secondary-color, $third-color);

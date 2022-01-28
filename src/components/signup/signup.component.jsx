@@ -13,14 +13,12 @@ import Button from "../button/button.component";
 import Loader from "../action-loader/action-loader.component";
 
 // redux
-import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-import { authSign, selectUserData } from "../../redux/auth/authSlice";
+import { selectUserData } from "../../redux/auth/authSlice";
 import {
   changeOnlineMsg,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
-import { getAllSettings } from "../../redux/settings/settingsSlice";
 
 // Constants && utils
 import {
@@ -395,21 +393,21 @@ function SignUp() {
           // if create user succeeded
 
           // check if user type is normal
-          if (user.type === UserTypeConstants.GUEST) {
-            dispatch(
-              authSign({ username: user.username, password: user.password })
-            )
-              .then(unwrapResult)
-              .then(({ token }) => {
-                dispatch(getAllSettings({ token }));
-              });
-            setSignupLoading(false);
-          } else {
-            // user type is not normal
-            // redirect to approve page
-            setSignupLoading(false);
-            setSignupSucceeded(true);
-          }
+          // if (user.type === UserTypeConstants.GUEST) {
+          //   dispatch(
+          //     authSign({ username: user.username, password: user.password })
+          //   )
+          //     .then(unwrapResult)
+          //     .then(({ token }) => {
+          //       dispatch(getAllSettings({ token }));
+          //     });
+          //   setSignupLoading(false);
+          // }
+
+          // user type is not normal
+          // redirect to approve page
+          setSignupLoading(false);
+          setSignupSucceeded(true);
         })
         .catch((err) => {
           if (

@@ -1,5 +1,5 @@
 // libraries
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Redirect, useHistory } from "react-router";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -55,6 +55,8 @@ function SignUp() {
 
   const dispatch = useDispatch();
 
+  const inputFileRef = useRef(null);
+
   // selectors
   const isOnline = useSelector(selectOnlineStatus);
   // state from user state redux
@@ -82,6 +84,7 @@ function SignUp() {
     type: UserTypeConstants.GUEST,
     employeeName: "",
     certificateName: "",
+    paperUrl: null,
     guestDetails: {
       job: "",
       companyName: "",
@@ -104,6 +107,7 @@ function SignUp() {
     jobTitle: "",
     addressDetails: "",
     city: "",
+    paperUrl: "",
   });
 
   // reset all state to default
@@ -124,6 +128,7 @@ function SignUp() {
       type: UserTypeConstants.GUEST,
       employeeName: "",
       certificateName: "",
+      paperUrl: null,
       guestDetails: {
         job: "",
         companyName: "",
@@ -146,6 +151,7 @@ function SignUp() {
       jobTitle: "",
       addressDetails: "",
       city: "",
+      paperUrl: "",
     });
 
     history.push("/signin");
@@ -177,6 +183,7 @@ function SignUp() {
     } else {
       setUser({
         ...user,
+
         guestDetails: {
           ...user.guestDetails,
           job: val,
@@ -239,6 +246,7 @@ function SignUp() {
       setError({
         ...error,
         [e.target.id]: "",
+        paperUrl: "",
         job: "",
         companyName: "",
         employeeName: "",
@@ -273,12 +281,23 @@ function SignUp() {
     } else if (e.target.id === "type") {
       // change the type of the user
       // reset employee name and certificate name and guestDetails
-      // (job, company name, job title)
+      // (job, company name, job title
+      if (
+        e.target.value === UserTypeConstants.WAREHOUSE ||
+        e.target.value === UserTypeConstants.COMPANY
+      ) {
+        inputFileRef.current.value = "";
+      }
       setUser({
         ...user,
         [e.target.id]: e.target.value,
         employeeName: "",
         certificateName: "",
+        paperUrl:
+          e.target.value === UserTypeConstants.WAREHOUSE ||
+          e.target.value === UserTypeConstants.COMPANY
+            ? null
+            : user.paperUrl,
         guestDetails: {
           ...user.guestDetails,
           job: "",
@@ -379,6 +398,15 @@ function SignUp() {
       }
     }
 
+    if (
+      user.type === UserTypeConstants.PHARMACY ||
+      user.type === UserTypeConstants.GUEST
+    ) {
+      if (user.paperUrl === null) {
+        errorObj["paperUrl"] = "enter-paper-url";
+      }
+    }
+
     // send post request to server to create a new user
     if (Object.entries(errorObj).length === 0) {
       if (!isOnline) {
@@ -389,25 +417,37 @@ function SignUp() {
       setSignupLoading(true);
       axios
         .post(`${BASEURL}/users/signup`, user, {})
-        .then(() => {
+        .then((response) => {
           // if create user succeeded
 
-          // check if user type is normal
-          // if (user.type === UserTypeConstants.GUEST) {
-          //   dispatch(
-          //     authSign({ username: user.username, password: user.password })
-          //   )
-          //     .then(unwrapResult)
-          //     .then(({ token }) => {
-          //       dispatch(getAllSettings({ token }));
-          //     });
-          //   setSignupLoading(false);
-          // }
-
-          // user type is not normal
-          // redirect to approve page
-          setSignupLoading(false);
-          setSignupSucceeded(true);
+          if (
+            user.type === UserTypeConstants.PHARMACY ||
+            user.type === UserTypeConstants.GUEST
+          ) {
+            const data = new FormData();
+            data.append(
+              "name",
+              `${user.name.replace("%", "")}${Date.now()}.${user.paperUrl.name
+                .split(".")
+                .pop()}`
+            );
+            data.append("id", response.data.data.id);
+            data.append("file", user.paperUrl);
+            axios
+              .post(`${BASEURL}/users/upload-paper`, data)
+              .then(() => {
+                // user type is not normal
+                // redirect to approve page
+                setSignupLoading(false);
+                setSignupSucceeded(true);
+              })
+              .catch(() => {});
+          } else {
+            // user type is not normal
+            // redirect to approve page
+            setSignupLoading(false);
+            setSignupSucceeded(true);
+          }
         })
         .catch((err) => {
           if (
@@ -716,12 +756,44 @@ function SignUp() {
             error={error.addressDetails?.length > 0}
           />
         </div>
+
+        {(user.type === UserTypeConstants.PHARMACY ||
+          user.type === UserTypeConstants.GUEST) && (
+          <div className={styles.input_div} style={{ width: "98%" }}>
+            <label
+              htmlFor="paperUrl"
+              style={{
+                color: Colors.WHITE_COLOR,
+                marginInlineEnd: "6px",
+              }}
+            >
+              {t("choose-paper-url")}
+            </label>
+            <input
+              id="paperUrl"
+              ref={inputFileRef}
+              multiple={false}
+              accept="image/*"
+              type="file"
+              onChange={(e) => {
+                setUser({
+                  ...user,
+                  paperUrl: e.target.files[0],
+                });
+                setError({
+                  ...error,
+                  paperUrl: "",
+                });
+              }}
+            />
+          </div>
+        )}
       </div>
 
       {Object.entries(error).length > 0 && (
         <ul className={styles.error_ul}>
           {Object.keys(error).map((key) => {
-            if (error[key].length > 0) {
+            if (error[key]?.length > 0) {
               return <li key={key}>{t(`${error[key]}`)}</li>;
             } else {
               return null;

@@ -14,6 +14,7 @@ import Toast from "../../components/toast/toast.component";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
+  deleteOrder,
   getOrders,
   resetStatus,
   selectOrders,
@@ -51,6 +52,15 @@ function OrdersPage({ onSelectedChange }) {
           page,
         },
         token,
+      })
+    );
+  };
+
+  const deleteOrderHandler = (orderId) => {
+    dispatch(
+      deleteOrder({
+        token,
+        orderId,
       })
     );
   };
@@ -94,11 +104,17 @@ function OrdersPage({ onSelectedChange }) {
           </label>
           <label className={tableStyles.label_medium}>{t("date-label")}</label>
           <label className={tableStyles.label_xsmall}></label>
+          <label className={tableStyles.label_xsmall}></label>
+          <label className={tableStyles.label_xsmall}></label>
         </TableHeader>
       )}
 
       {orders?.map((order) => (
-        <OrderRow order={order} key={order._id} />
+        <OrderRow
+          order={order}
+          key={order._id}
+          deleteAction={deleteOrderHandler}
+        />
       ))}
 
       {count > 0 && isOnline && (

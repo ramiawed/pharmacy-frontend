@@ -417,5 +417,7 @@
   "you-have": "لديك",
   "orders-msg": "طلب/طلبات جديدة",
   "choose-paper-url": "صورة عن الترخيص",
-  "enter-paper-url": "ادخل صورة عن الترخيص"
+  "enter-paper-url": "ادخل صورة عن الترخيص",
+  "delete-order-tooltip": "حذف الطلب",
+  "save-order-tooltip": "حفظ الطلب"
 }

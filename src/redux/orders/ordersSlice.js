@@ -229,6 +229,44 @@ export const getUnreadOrders = createAsyncThunk(
   }
 );
 
+export const deleteOrder = createAsyncThunk(
+  "orders/deleteOrder",
+  async ({ token, orderId }, { rejectWithValue }) => {
+    try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.post(
+        `${BASEURL}/orders/delete`,
+        {
+          orderId,
+        },
+        {
+          cancelToken: source.token,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const ordersSlice = createSlice({
   name: "orders",
   initialState,
@@ -352,6 +390,27 @@ export const ordersSlice = createSlice({
       state.error = "";
     },
     [getOrders.rejected]: (state, { payload }) => {
+      state.status = "failed";
+
+      if (payload === "timeout") {
+        state.error = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.error = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.error = "network failed";
+      } else state.error = payload.message;
+    },
+    [deleteOrder.pending]: (state) => {
+      state.status = "loading";
+    },
+    [deleteOrder.fulfilled]: (state, action) => {
+      state.status = "succeeded";
+      state.orders = state.orders.filter(
+        (o) => o._id !== action.payload.data.orderId
+      );
+      state.error = "";
+    },
+    [deleteOrder.rejected]: (state, { payload }) => {
       state.status = "failed";
 
       if (payload === "timeout") {

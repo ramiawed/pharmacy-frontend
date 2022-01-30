@@ -11,9 +11,13 @@ import { FaCircle } from "react-icons/fa";
 import rowStyles from "../row.module.scss";
 import tableStyles from "../table.module.scss";
 import generalStyles from "../../style.module.scss";
-import { UserTypeConstants } from "../../utils/constants";
+import { Colors, UserTypeConstants } from "../../utils/constants";
+import { RiDeleteBin5Fill, RiSave3Fill } from "react-icons/ri";
+import Icon from "../action-icon/action-icon.component";
+import { useTranslation } from "react-i18next";
 
-function OrderRow({ order }) {
+function OrderRow({ order, deleteAction }) {
+  const { t } = useTranslation();
   const history = useHistory();
 
   const user = useSelector(selectUser);
@@ -29,6 +33,27 @@ function OrderRow({ order }) {
       <label className={tableStyles.label_medium}>{order.warehouse.name}</label>
       <label className={tableStyles.label_medium}>
         {order.orderDate.split("T")[0]}
+      </label>
+
+      <label className={tableStyles.label_xsmall}>
+        <Icon
+          icon={() => <RiDeleteBin5Fill />}
+          onclick={(e) => {
+            deleteAction(order._id);
+            e.stopPropagation();
+          }}
+          tooltip={t("delete-order-tooltip")}
+          foreColor={Colors.FAILED_COLOR}
+        />
+      </label>
+
+      <label className={tableStyles.label_xsmall}>
+        <Icon
+          icon={() => <RiSave3Fill />}
+          onclick={() => {}}
+          tooltip={t("save-order-tooltip")}
+          foreColor={Colors.SECONDARY_COLOR}
+        />
       </label>
 
       <label className={tableStyles.label_xsmall}>

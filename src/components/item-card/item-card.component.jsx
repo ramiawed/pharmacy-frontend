@@ -295,8 +295,9 @@ function ItemCard({ companyItem }) {
                 generalStyles.fc_green,
                 generalStyles.position_top_5_left_40,
               ].join(" ")}
-              onClick={() => {
+              onClick={(e) => {
                 setShowModal(true);
+                e.stopPropagation();
               }}
             >
               <GiShoppingCart size={24} />

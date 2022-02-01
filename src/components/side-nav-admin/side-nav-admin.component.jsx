@@ -15,7 +15,7 @@ import {
   setRole,
   setWarehouse,
 } from "../../redux/items/itemsSlices";
-import { selectOrders } from "../../redux/orders/ordersSlice";
+import { selectOrders, setRefresh } from "../../redux/orders/ordersSlice";
 
 function SideNavAdmin({ selectedOption, onSelectedChange }) {
   const { t } = useTranslation();
@@ -103,6 +103,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange }) {
           ].join(" ")}
           onClick={() => {
             onSelectedChange(SideNavLinks.ORDERS);
+            dispatch(setRefresh(true));
           }}
           to="/orders"
         >

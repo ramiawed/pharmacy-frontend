@@ -419,5 +419,8 @@
   "choose-paper-url": "صورة عن الترخيص",
   "enter-paper-url": "ادخل صورة عن الترخيص",
   "delete-order-tooltip": "حذف الطلب",
-  "save-order-tooltip": "حفظ الطلب"
+  "save-order-tooltip": "حفظ الطلب",
+  "add-order": "يوجد طلبية جديدة",
+  "delete-order": "تم حذف طلبية",
+  "add-item-to-cart": "تم إضافة المنتج إلى الحافظة"
 }

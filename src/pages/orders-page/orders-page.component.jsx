@@ -38,7 +38,7 @@ function OrdersPage({ onSelectedChange }) {
 
   // selectors
   const { token, user } = useSelector(selectUserData);
-  const { status, error, count, orders, refresh, pageState } =
+  const { status, error, count, orders, refresh, pageState, forceRefresh } =
     useSelector(selectOrders);
   const isOnline = useSelector(selectOnlineStatus);
 
@@ -78,13 +78,18 @@ function OrdersPage({ onSelectedChange }) {
   };
 
   useEffect(() => {
-    if (refresh) {
+    if (refresh || forceRefresh) {
       handleSearch(1);
-      dispatch(setRefresh(false));
+      // dispatch(setRefresh(false));
     }
 
+    // if (forceRefresh) {
+    //   handleSearch(1);
+    //   dispatch(setRefresh(false));
+    // }
+
     onSelectedChange();
-  }, []);
+  }, [forceRefresh]);
 
   return user ? (
     <div className={generalStyles.container}>

@@ -24,10 +24,7 @@ import { itemsSliceSignOut } from "../../redux/items/itemsSlices";
 import { statisticsSliceSignOut } from "../../redux/statistics/statisticsSlice";
 import { warehouseSliceSignOut } from "../../redux/warehouse/warehousesSlice";
 import { warehouseItemsSliceSignOut } from "../../redux/warehouseItems/warehouseItemsSlices";
-import {
-  getUnreadOrders,
-  orderSliceSignOut,
-} from "../../redux/orders/ordersSlice";
+import { orderSliceSignOut } from "../../redux/orders/ordersSlice";
 import { advertisementsSignOut } from "../../redux/advertisements/advertisementsSlice";
 import { companiesSectionOneSignOut } from "../../redux/advertisements/companiesSectionOneSlice";
 import { companiesSectionTwoSignOut } from "../../redux/advertisements/companiesSectionTwoSlice";
@@ -88,23 +85,23 @@ function SideNav({
     dispatch(usersNotificationsSignOut());
   };
 
-  useEffect(() => {
-    let timer;
-    if (
-      user.type === UserTypeConstants.ADMIN ||
-      user.type === UserTypeConstants.WAREHOUSE
-    ) {
-      timer = setInterval(() => {
-        dispatch(getUnreadOrders({ token }));
-      }, 10000);
-    }
+  // useEffect(() => {
+  //   let timer;
+  //   if (
+  //     user.type === UserTypeConstants.ADMIN ||
+  //     user.type === UserTypeConstants.WAREHOUSE
+  //   ) {
+  //     timer = setInterval(() => {
+  //       dispatch(getUnreadOrders({ token }));
+  //     }, 10000);
+  //   }
 
-    return () => {
-      if (timer) {
-        clearInterval(timer);
-      }
-    };
-  }, []);
+  //   return () => {
+  //     if (timer) {
+  //       clearInterval(timer);
+  //     }
+  //   };
+  // }, []);
 
   return (
     <div

@@ -42,6 +42,7 @@ import styles from "./item-row.module.scss";
 
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants";
+import Toast from "../toast/toast.component";
 
 // if logged user is
 // 1- ADMIN: highlight the row by green color if the medicine has an offer.
@@ -105,6 +106,7 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
   const [changeFavoriteLoading, setChangeFavoriteLoading] = useState(false);
   const [changeAddToWarehouseLoading, setChangeAddToWarehouseLoading] =
     useState(false);
+  const [addItemToCart, setAddItemToCart] = useState("");
 
   // method to handle add company to user's favorite
   const addItemToFavoriteItemsHandler = (e) => {
@@ -388,7 +390,20 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
       </div>
 
       {showModal && (
-        <AddToCartModal item={item} close={() => setShowModal(false)} />
+        <AddToCartModal
+          item={item}
+          close={() => setShowModal(false)}
+          setAddItemToCartMsg={setAddItemToCart}
+        />
+      )}
+
+      {addItemToCart.length > 0 && (
+        <Toast
+          bgColor={Colors.SUCCEEDED_COLOR}
+          foreColor="#fff"
+          toastText={t(addItemToCart)}
+          actionAfterTimeout={() => setAddItemToCart("")}
+        />
       )}
     </>
   );

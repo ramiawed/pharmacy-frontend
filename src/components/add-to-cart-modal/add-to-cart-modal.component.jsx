@@ -61,13 +61,13 @@ const checkOfferQty = (selectedWarehouse, qty) => {
   return 0;
 };
 
-function AddToCartModal({ item, close }) {
+function AddToCartModal({ item, close, setAddItemToCartMsg }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
+  // selectors
   const { token, user } = useSelector(selectUserData);
   const isOnline = useSelector(selectOnlineStatus);
-
-  const dispatch = useDispatch();
 
   // build the warehouse option array that contains this item
   // get all the warehouse that contains this item
@@ -137,79 +137,82 @@ function AddToCartModal({ item, close }) {
     }
 
     close();
+    setAddItemToCartMsg("add-item-to-cart");
   };
 
   return (
-    <Modal
-      header="add-to-cart"
-      cancelLabel="cancel-label"
-      okLabel="add-label"
-      closeModal={close}
-      okModal={handleAddItemToCart}
-      small={true}
-    >
-      {/* <div className={styles.warehouse_row}> */}
-      <div className={styles.select_warehouse}>
-        <label>{t("item-warehouse")}</label>
-        <SelectCustom
-          bgColor={Colors.SECONDARY_COLOR}
-          foreColor="#fff"
-          options={itemWarehousesOption}
-          onchange={handleWarehouseChange}
-          defaultOption={itemWarehousesOption[0]}
-          // caption="item-warehouse"
-        />
-      </div>
+    <>
+      <Modal
+        header="add-to-cart"
+        cancelLabel="cancel-label"
+        okLabel="add-label"
+        closeModal={close}
+        okModal={handleAddItemToCart}
+        small={true}
+      >
+        {/* <div className={styles.warehouse_row}> */}
+        <div className={styles.select_warehouse}>
+          <label>{t("item-warehouse")}</label>
+          <SelectCustom
+            bgColor={Colors.SECONDARY_COLOR}
+            foreColor="#fff"
+            options={itemWarehousesOption}
+            onchange={handleWarehouseChange}
+            defaultOption={itemWarehousesOption[0]}
+            // caption="item-warehouse"
+          />
+        </div>
 
-      <div className={styles.max_qty_div}>
-        <label>{t("item-max-qty")}</label>
-        <p>
-          {selectedWarehouse.maxQty === 0
-            ? t("no-limit-qty")
-            : selectedWarehouse.maxQty}
-        </p>
-      </div>
-      <div className={styles.max_qty_div}>
-        <label>{t("selected-qty")}</label>
-        <input
-          className={qtyError ? styles.error : ""}
-          // type="number"
-          // min={0}
-          value={qty}
-          onKeyPress={onKeyPressForNumberInput}
-          onChange={quantityChange}
-        />
-      </div>
-      {/* </div> */}
+        <div className={styles.max_qty_div}>
+          <label>{t("item-max-qty")}</label>
+          <p>
+            {selectedWarehouse.maxQty === 0
+              ? t("no-limit-qty")
+              : selectedWarehouse.maxQty}
+          </p>
+        </div>
+        <div className={styles.max_qty_div}>
+          <label>{t("selected-qty")}</label>
+          <input
+            className={qtyError ? styles.error : ""}
+            // type="number"
+            // min={0}
+            value={qty}
+            onKeyPress={onKeyPressForNumberInput}
+            onChange={quantityChange}
+          />
+        </div>
+        {/* </div> */}
 
-      {offer?.offers.length > 0 &&
-        offer.offers.map((o, index) => (
-          <div className={styles.offer} key={index}>
-            <p>
-              <label>{t("quantity-label")}</label>
-              <label className={styles.value} style={{ padding: "0 6px" }}>
-                {o.qty}
-              </label>
-              <label style={{ paddingLeft: "20px" }}>
-                {t("after-quantity-label")}
-              </label>
-            </p>
-            <p>
-              <label>
-                {offer.mode === OfferTypes.PIECES
-                  ? t("bonus-quantity-label")
-                  : t("bonus-percentage-label")}
-              </label>
-              <label className={styles.value}>{o.bonus}</label>
-              <label>
-                {offer.mode === OfferTypes.PIECES
-                  ? t("after-bonus-quantity-label")
-                  : t("after-bonus-percentage-label")}
-              </label>
-            </p>
-          </div>
-        ))}
-    </Modal>
+        {offer?.offers.length > 0 &&
+          offer.offers.map((o, index) => (
+            <div className={styles.offer} key={index}>
+              <p>
+                <label>{t("quantity-label")}</label>
+                <label className={styles.value} style={{ padding: "0 6px" }}>
+                  {o.qty}
+                </label>
+                <label style={{ paddingLeft: "20px" }}>
+                  {t("after-quantity-label")}
+                </label>
+              </p>
+              <p>
+                <label>
+                  {offer.mode === OfferTypes.PIECES
+                    ? t("bonus-quantity-label")
+                    : t("bonus-percentage-label")}
+                </label>
+                <label className={styles.value}>{o.bonus}</label>
+                <label>
+                  {offer.mode === OfferTypes.PIECES
+                    ? t("after-bonus-quantity-label")
+                    : t("after-bonus-percentage-label")}
+                </label>
+              </p>
+            </div>
+          ))}
+      </Modal>
+    </>
   );
 }
 

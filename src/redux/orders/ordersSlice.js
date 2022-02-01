@@ -7,9 +7,10 @@ const initialState = {
   orders: [],
   count: 0,
   unreadCount: 0,
-  unreadCountDiff: 0,
-  unreadMsg: "",
+  // unreadCountDiff: 0,
+  // unreadMsg: "",
   error: "",
+  forceRefresh: false,
   refresh: true,
   pageState: {
     searchPharmacyName: "",
@@ -197,37 +198,37 @@ export const saveOrder = createAsyncThunk(
   }
 );
 
-export const getUnreadOrders = createAsyncThunk(
-  "orders/getUnreadOrders",
-  async ({ token }, { rejectWithValue }) => {
-    try {
-      CancelToken = axios.CancelToken;
-      source = CancelToken.source();
+// export const getUnreadOrders = createAsyncThunk(
+//   "orders/getUnreadOrders",
+//   async ({ token }, { rejectWithValue }) => {
+//     try {
+//       CancelToken = axios.CancelToken;
+//       source = CancelToken.source();
 
-      const response = await axios.get(`${BASEURL}/orders/unread`, {
-        cancelToken: source.token,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+//       const response = await axios.get(`${BASEURL}/orders/unread`, {
+//         cancelToken: source.token,
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//       });
 
-      return response.data;
-    } catch (err) {
-      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
-        return rejectWithValue("timeout");
-      }
-      if (axios.isCancel(err)) {
-        return rejectWithValue("cancel");
-      }
+//       return response.data;
+//     } catch (err) {
+//       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+//         return rejectWithValue("timeout");
+//       }
+//       if (axios.isCancel(err)) {
+//         return rejectWithValue("cancel");
+//       }
 
-      if (!err.response) {
-        return rejectWithValue("network failed");
-      }
+//       if (!err.response) {
+//         return rejectWithValue("network failed");
+//       }
 
-      return rejectWithValue(err.response.data);
-    }
-  }
-);
+//       return rejectWithValue(err.response.data);
+//     }
+//   }
+// );
 
 export const deleteOrder = createAsyncThunk(
   "orders/deleteOrder",
@@ -295,6 +296,10 @@ export const ordersSlice = createSlice({
       };
     },
 
+    setForceRefresh: (state, action) => {
+      state.forceRefresh = action.payload;
+    },
+
     setDateOption: (state, action) => {
       state.pageState = {
         ...state.pageState,
@@ -320,10 +325,10 @@ export const ordersSlice = createSlice({
       };
     },
 
-    setUnreadMsg: (state) => {
-      state.unreadMsg = "";
-      state.unreadCountDiff = 0;
-    },
+    // setUnreadMsg: (state) => {
+    // state.unreadMsg = "";
+    // state.unreadCountDiff = 0;
+    // },
 
     resetPageState: (state) => {
       state.pageState = {
@@ -366,8 +371,9 @@ export const ordersSlice = createSlice({
       state.count = 0;
       state.error = "";
       state.unreadCount = 0;
-      state.unreadCountDiff = 0;
-      state.unreadMsg = "";
+      // state.unreadCountDiff = 0;
+      // state.unreadMsg = "";
+      state.forceRefresh = false;
       state.refresh = true;
       state.pageState = {
         searchPharmacyName: "",
@@ -388,6 +394,8 @@ export const ordersSlice = createSlice({
       state.orders = action.payload.data.orders;
       state.count = action.payload.count;
       state.error = "";
+      state.forceRefresh = false;
+      state.refresh = false;
     },
     [getOrders.rejected]: (state, { payload }) => {
       state.status = "failed";
@@ -421,16 +429,16 @@ export const ordersSlice = createSlice({
         state.error = "network failed";
       } else state.error = payload.message;
     },
-    [getUnreadOrders.fulfilled]: (state, action) => {
-      if (state.unreadCount * 1 !== action.payload.data.count * 1) {
-        if (state.unreadCount * 1 < action.payload.data.count * 1) {
-          state.unreadMsg = "new-orders";
-        }
-        state.unreadCountDiff =
-          action.payload.data.count * 1 - state.unreadCount;
-        state.unreadCount = action.payload.data.count;
-      }
-    },
+    // [getUnreadOrders.fulfilled]: (state, action) => {
+    //   if (state.unreadCount * 1 !== action.payload.data.count * 1) {
+    //     if (state.unreadCount * 1 < action.payload.data.count * 1) {
+    // state.unreadMsg = "new-orders";
+    //     }
+    // state.unreadCountDiff =
+    //       action.payload.data.count * 1 - state.unreadCount;
+    //     state.unreadCount = action.payload.data.count;
+    //   }
+    // },
   },
 });
 
@@ -446,10 +454,11 @@ export const {
   resetPageState,
   setRefresh,
   setDateOption,
-  setUnreadMsg,
+  // setUnreadMsg,
   setSearchDate,
   orderSliceSignOut,
   getOrderById,
+  setForceRefresh,
 } = ordersSlice.actions;
 
 export default ordersSlice.reducer;

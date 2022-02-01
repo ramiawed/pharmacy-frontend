@@ -282,7 +282,7 @@ function SearchHome() {
       </div>
 
       <img
-        src={`${SERVER_URL}/background-logo.jpeg`}
+        src={`${SERVER_URL}/logo-02.jpeg`}
         alt="thumb"
         className={styles.app_logo}
       />

@@ -40,7 +40,8 @@ function App() {
   const onlineMsg = useSelector(selectOnlineMsg);
 
   const updateOnlineStatus = () => {
-    dispatch(changeOnlineStatus(window.navigator.onLine));
+    // dispatch(changeOnlineStatus(window.navigator.onLine));
+    dispatch(changeOnlineStatus(true));
   };
 
   useEffect(() => {
@@ -76,7 +77,7 @@ function App() {
         </Toast>
       )}
 
-      <Detector
+      {/* <Detector
         polling={{
           url: "https://ipv4.icanhazip.com",
         }}
@@ -88,7 +89,7 @@ function App() {
             </div>
           )
         }
-      />
+      /> */}
     </div>
   );
 }

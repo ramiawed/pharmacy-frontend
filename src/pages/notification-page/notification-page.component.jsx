@@ -49,7 +49,7 @@ function NotificationPage({ onSelectedChange }) {
   useEffect(() => {
     getNotification();
     onSelectedChange();
-  }, []);
+  }, [notificationId]);
 
   return (
     <div className={generalStyles.container}>

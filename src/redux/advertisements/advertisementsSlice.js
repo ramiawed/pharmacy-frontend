@@ -6,6 +6,7 @@ import { BASEURL } from "../../utils/constants";
 const initialState = {
   status: "idle",
   advertisements: [],
+  forceRefresh: false,
   error: "",
 };
 
@@ -131,14 +132,19 @@ export const advertisementsSlice = createSlice({
       state.status = "idle";
       state.error = "";
     },
+    setForceRefresh: (state, action) => {
+      state.forceRefresh = action.payload;
+    },
     resetAdvertisements: (state) => {
       state.status = "idle";
       state.error = "";
+      state.forceRefresh = false;
       state.advertisements = [];
     },
     advertisementsSignOut: (state) => {
       state.status = "idle";
       state.error = "";
+      state.forceRefresh = false;
       state.advertisements = [];
     },
   },
@@ -152,6 +158,7 @@ export const advertisementsSlice = createSlice({
         ...state.advertisements,
         action.payload.data.advertisement,
       ];
+      state.forceRefresh = false;
     },
     [addAdvertisement.rejected]: (state) => {
       state.status = "failed";
@@ -195,6 +202,7 @@ export const {
   resetStatus,
   resetAdvertisements,
   advertisementsSignOut,
+  setForceRefresh,
 } = advertisementsSlice.actions;
 
 export const selectAdvertisements = (state) => state.advertisements;

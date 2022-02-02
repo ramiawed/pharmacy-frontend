@@ -43,8 +43,15 @@ function UserNotificationPage({ onSelectedChange }) {
 
   const token = useSelector(selectToken);
   const isOnline = useSelector(selectOnlineStatus);
-  const { status, error, page, count, userNotifications, refresh } =
-    useSelector(selectUserNotifications);
+  const {
+    status,
+    error,
+    page,
+    count,
+    userNotifications,
+    refresh,
+    forceRefresh,
+  } = useSelector(selectUserNotifications);
 
   const handleSearch = (page) => {
     if (!isOnline) {
@@ -78,10 +85,10 @@ function UserNotificationPage({ onSelectedChange }) {
 
     onSelectedChange();
 
-    if (refresh) {
+    if (refresh || forceRefresh) {
       handleSearch(1);
     }
-  }, [refresh]);
+  }, [refresh, forceRefresh]);
 
   return (
     <div className={generalStyles.container}>

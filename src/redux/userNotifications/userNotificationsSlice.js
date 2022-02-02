@@ -9,6 +9,7 @@ const initialState = {
   count: 0,
   unReadNotificationCount: 0,
   refresh: true,
+  forceRefresh: false,
   error: "",
   page: 1,
 };
@@ -143,11 +144,15 @@ export const UserNotificationsSlice = createSlice({
     resetNotificationsData: (state) => {
       state.userNotifications = [];
     },
+    setForceRefresh: (state, action) => {
+      state.forceRefresh = action.payload;
+    },
     resetNotifications: (state) => {
       state.status = "idle";
       state.error = "";
       state.userNotifications = [];
       state.unReadNotificationCount = 0;
+      state.forceRefresh = false;
       state.count = 0;
       state.page = 1;
     },
@@ -156,6 +161,7 @@ export const UserNotificationsSlice = createSlice({
       state.error = "";
       state.userNotifications = [];
       state.refresh = true;
+      state.forceRefresh = false;
       state.unReadNotificationCount = 0;
       state.count = 0;
       state.page = 1;
@@ -180,6 +186,7 @@ export const UserNotificationsSlice = createSlice({
       state.count = action.payload.count;
       state.error = "";
       state.refresh = false;
+      state.forceRefresh = false;
     },
     [getAllNotifications.rejected]: (state, { payload }) => {
       state.status = "failed";
@@ -217,24 +224,13 @@ export const UserNotificationsSlice = createSlice({
         state.error = "network failed";
       } else state.error = payload.message;
     },
-    [getAllNotifications.rejected]: (state, { payload }) => {
-      state.status = "failed";
 
-      if (payload === "timeout") {
-        state.error = "timeout-msg";
-      } else if (payload === "cancel") {
-        state.error = "cancel-operation-msg";
-      } else if (payload === "network failed") {
-        state.error = "network failed";
-      } else state.error = payload.message;
-    },
-    [getUnreadNotification.pending]: () => {},
     [getUnreadNotification.fulfilled]: (state, action) => {
-      if (action.payload.data.count !== state.unReadNotificationCount) {
-        state.unReadNotificationCount = action.payload.data.count;
-        state.userNotifications = [];
-        state.refresh = true;
-      }
+      state.unReadNotificationCount = action.payload.data.count;
+      // if (action.payload.data.count !== state.unReadNotificationCount) {
+      //   state.userNotifications = [];
+      //   state.refresh = true;
+      // }
     },
     [getUnreadNotification.rejected]: () => {},
   },
@@ -249,6 +245,7 @@ export const {
   setRefresh,
   usersNotificationsSignOut,
   resetNotificationsData,
+  setForceRefresh,
 } = UserNotificationsSlice.actions;
 
 export const selectUserNotifications = (state) => state.userNotifications;

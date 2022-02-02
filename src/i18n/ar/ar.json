@@ -422,5 +422,7 @@
   "save-order-tooltip": "حفظ الطلب",
   "add-order": "يوجد طلبية جديدة",
   "delete-order": "تم حذف طلبية",
-  "add-item-to-cart": "تم إضافة المنتج إلى الحافظة"
+  "add-item-to-cart": "تم إضافة المنتج إلى الحافظة",
+  "add-notification": "يوجد إشعار جديد",
+  "delete-notification-admin": "تم حذف الإشعار من قبل الموقع"
 }

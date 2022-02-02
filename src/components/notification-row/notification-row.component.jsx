@@ -76,6 +76,7 @@ function NotificationRow({ notification, index, setSuccessDeletingMsg }) {
           <img
             className={styles.image}
             src={`${SERVER_URL}/${notification.logo_url}`}
+            alt="thumb"
           />
         ) : (
           <>

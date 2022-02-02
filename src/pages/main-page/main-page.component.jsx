@@ -97,16 +97,13 @@ function MainPage() {
       }
     };
 
-    const timer = setInterval(() => {
-      dispatch(getUnreadNotification({ token }));
-    }, 60000);
+    dispatch(getUnreadNotification({ token }));
 
     window.addEventListener("scroll", toggleToTopVisible);
     window.scrollTo(0, 0);
 
     return () => {
       window.removeEventListener("scroll", toggleToTopVisible);
-      clearInterval(timer);
     };
   }, []);
 

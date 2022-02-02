@@ -17,6 +17,7 @@ export const onlineSlice = createSlice({
     },
     changeOnlineMsg: (state) => {
       state.onlineMsg = "no-internet-connection";
+      state.onlineMsg = "";
     },
   },
 });

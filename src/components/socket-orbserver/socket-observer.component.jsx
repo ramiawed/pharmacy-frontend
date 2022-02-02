@@ -6,14 +6,24 @@ import Toast from "../toast/toast.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-import { selectUser } from "../../redux/auth/authSlice";
-import { setForceRefresh, selectOrders } from "../../redux/orders/ordersSlice";
+import { selectUserData } from "../../redux/auth/authSlice";
+import {
+  setForceRefresh,
+  selectOrders,
+  getUnreadOrders,
+} from "../../redux/orders/ordersSlice";
+import { setForceRefresh as advertisementForceRefresh } from "../../redux/advertisements/advertisementsSlice";
+import {
+  getUnreadNotification,
+  setForceRefresh as notificationForceRefresh,
+} from "../../redux/userNotifications/userNotificationsSlice";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
 
 // socket
 import socketIoClient from "socket.io-client";
+import NotificationToast from "../notification-toast/notification-toast.component";
 const socket = socketIoClient("http://localhost:8000/", { autoConnect: false });
 
 function SocketObserver() {
@@ -21,15 +31,16 @@ function SocketObserver() {
   const dispatch = useDispatch();
 
   // selectors
-  const user = useSelector(selectUser);
+  const { user, token } = useSelector(selectUserData);
   const { orders } = useSelector(selectOrders);
 
   // own state
   const [orderStateMsg, setOrderStateMsg] = useState("");
+  const [notificationData, setNotificationData] = useState(null);
+  const [advertisementStateMsg, setAdvertisementStateMsg] = useState("");
+  useState("");
 
   useEffect(() => {
-    console.log(orders);
-
     // order observer
     socket.on("order-changed", (data) => {
       console.log(data);
@@ -41,6 +52,7 @@ function SocketObserver() {
         ) {
           dispatch(setForceRefresh(true));
           setOrderStateMsg("add-order");
+          dispatch(getUnreadOrders({ token }));
         }
       }
 
@@ -50,7 +62,6 @@ function SocketObserver() {
             return o._id == data.documentKey._id;
           });
 
-          // console.log(deletedOrder);
           if (deletedOrder.length > 0) {
             dispatch(setForceRefresh(true));
             setOrderStateMsg("delete-order");
@@ -62,6 +73,30 @@ function SocketObserver() {
       }
     });
 
+    socket.on("advertisement-changed", (data) => {
+      console.log(data);
+      if (data.operationType === "insert") {
+        dispatch(advertisementForceRefresh(true));
+        setAdvertisementStateMsg("add-advertisement");
+      }
+    });
+
+    if (user.type !== UserTypeConstants.ADMIN) {
+      socket.on("notification-changed", (data) => {
+        console.log(data);
+        if (data.operationType === "insert") {
+          dispatch(notificationForceRefresh(true));
+          dispatch(getUnreadNotification({ token }));
+          setNotificationData(data.fullDocument);
+        }
+
+        if (data.operationType === "delete") {
+          dispatch(notificationForceRefresh(true));
+          dispatch(getUnreadNotification({ token }));
+        }
+      });
+    }
+
     socket.connect();
   }, [orders]);
   return (
@@ -72,6 +107,20 @@ function SocketObserver() {
           foreColor="#fff"
           toastText={t(orderStateMsg)}
           actionAfterTimeout={() => setOrderStateMsg("")}
+        />
+      )}
+
+      {notificationData !== null && (
+        <NotificationToast
+          bgColor={Colors.SECONDARY_COLOR}
+          foreColor={Colors.SECONDARY_COLOR}
+          // header={notificationHeaderStateMsg}
+          // description={notificationDescriptionStateMsg}
+          actionAfterTimeout={() => {
+            setNotificationData(null);
+          }}
+          close={() => setNotificationData(null)}
+          data={notificationData}
         />
       )}
     </>

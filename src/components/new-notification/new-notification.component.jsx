@@ -139,7 +139,8 @@ function NewNotification({ setIsNew, setSuccessAddingMsg }) {
               ref={inputFileRef}
               type="file"
               onChange={fileChangedHandler}
-              style={{ display: "none" }}
+              // style={{ display: "none" }}
+              hidden
             />
           </>
         ) : (

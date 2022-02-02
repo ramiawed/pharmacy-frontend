@@ -133,7 +133,7 @@ export const onKeyPressForNumberInput = (event) => {
   return event.charCode >= 48 && event.charCode <= 57;
 };
 
-// export const BASEURL = "https://salty-brook-65681.herokuapp.com/api/v1";
-export const BASEURL = "http://localhost:8000/api/v1";
-// export const SERVER_URL = "https://salty-brook-65681.herokuapp.com";
-export const SERVER_URL = "http://localhost:8000";
+export const BASEURL = "https://salty-brook-65681.herokuapp.com/api/v1";
+// export const BASEURL = "http://localhost:8000/api/v1";
+export const SERVER_URL = "https://salty-brook-65681.herokuapp.com";
+// export const SERVER_URL = "http://localhost:8000";

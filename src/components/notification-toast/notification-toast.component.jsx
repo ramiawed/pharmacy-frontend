@@ -11,7 +11,7 @@ function NotificationToast({ bgColor, actionAfterTimeout, data, close }) {
   useEffect(() => {
     let timer = setTimeout(() => {
       actionAfterTimeout();
-    }, 100000);
+    }, 10000);
 
     return () => {
       clearTimeout(timer);

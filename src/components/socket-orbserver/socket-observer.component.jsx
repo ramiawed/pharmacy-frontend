@@ -19,12 +19,12 @@ import {
 } from "../../redux/userNotifications/userNotificationsSlice";
 
 // constants
-import { Colors, UserTypeConstants } from "../../utils/constants";
+import { Colors, SERVER_URL, UserTypeConstants } from "../../utils/constants";
 
 // socket
 import socketIoClient from "socket.io-client";
 import NotificationToast from "../notification-toast/notification-toast.component";
-const socket = socketIoClient("http://localhost:8000/", { autoConnect: false });
+const socket = socketIoClient(`${SERVER_URL}`, { autoConnect: false });
 
 function SocketObserver() {
   const { t } = useTranslation();

@@ -130,7 +130,7 @@ function ItemCard({ companyItem }) {
         setChangeFavoriteLoading(false);
       });
 
-    e.stopPropagation();
+    // e.stopPropagation();
   };
 
   // method to handle remove company from user's favorite
@@ -154,7 +154,7 @@ function ItemCard({ companyItem }) {
         setChangeFavoriteLoading(false);
       });
 
-    e.stopPropagation();
+    // e.stopPropagation();
   };
 
   // method to handle add item to warehouse
@@ -184,7 +184,7 @@ function ItemCard({ companyItem }) {
         setChangeAddToWarehouseLoading(false);
       });
 
-    e.stopPropagation();
+    // e.stopPropagation();
   };
 
   // method to handle remove item from warehouse
@@ -214,7 +214,7 @@ function ItemCard({ companyItem }) {
         setChangeAddToWarehouseLoading(false);
       });
 
-    e.stopPropagation();
+    // e.stopPropagation();
   };
 
   const dispatchStatisticsHandler = () => {

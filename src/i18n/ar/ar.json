@@ -424,5 +424,12 @@
   "delete-order": "تم حذف طلبية",
   "add-item-to-cart": "تم إضافة المنتج إلى الحافظة",
   "add-notification": "يوجد إشعار جديد",
-  "delete-notification-admin": "تم حذف الإشعار من قبل الموقع"
+  "delete-notification-admin": "تم حذف الإشعار من قبل الموقع",
+  "delete-order-confirm-msg": "هل تريد حذف الطلبية؟",
+  "delete-order-confirm-header": "حذف الطلبية",
+  "sent": "تم الارسال",
+  "unread": "غير مقروء",
+  "received": "تم الاستلام",
+  "order-details-error": "حصل خطأ أثناء تحميل البيانات، الرجاء المحاولة مرة اخرى",
+  "order-deleted": "الطلبية محذوفة"
 }

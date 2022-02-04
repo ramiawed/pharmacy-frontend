@@ -69,7 +69,7 @@ function AdvertisementPartner({ user, contentColor }) {
         setChangeFavoriteLoading(false);
       });
 
-    e.stopPropagation();
+    // e.stopPropagation();
   };
 
   // method to handle remove company from user's favorite
@@ -88,7 +88,7 @@ function AdvertisementPartner({ user, contentColor }) {
         changeFavoriteLoading(false);
       })
       .catch(() => setChangeFavoriteLoading(false));
-    e.stopPropagation();
+    // e.stopPropagation();
   };
 
   const dispatchCompanySelectedHandler = () => {

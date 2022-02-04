@@ -128,7 +128,7 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
         setChangeFavoriteLoading(false);
       });
 
-    e.stopPropagation();
+    // e.stopPropagation();
   };
 
   // method to handle remove company from user's favorite
@@ -150,7 +150,7 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
         setChangeFavoriteLoading(false);
       });
 
-    e.stopPropagation();
+    // e.stopPropagation();
   };
 
   // method to handle add item to warehouse
@@ -181,7 +181,7 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
         setChangeAddToWarehouseLoading(false);
       });
 
-    e.stopPropagation();
+    // e.stopPropagation();
   };
 
   // method to handle remove item from warehouse
@@ -212,7 +212,7 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
         setChangeAddToWarehouseLoading(false);
       });
 
-    e.stopPropagation();
+    // e.stopPropagation();
   };
 
   const dispatchStatisticsHandler = () => {

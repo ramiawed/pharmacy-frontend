@@ -196,6 +196,43 @@ export const saveOrder = createAsyncThunk(
   }
 );
 
+export const updateOrder = createAsyncThunk(
+  "orders/updateOrder",
+  async ({ obj, id, token }, { rejectWithValue }) => {
+    try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.post(
+        `${BASEURL}/orders/update?id=${id}`,
+        obj,
+        {
+          // timeout: 10000,
+          cancelToken: source.token,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const getUnreadOrders = createAsyncThunk(
   "orders/getUnreadOrders",
   async ({ token }, { rejectWithValue }) => {
@@ -323,11 +360,6 @@ export const ordersSlice = createSlice({
       };
     },
 
-    // setUnreadMsg: (state) => {
-    // state.unreadMsg = "";
-    // state.unreadCountDiff = 0;
-    // },
-
     resetPageState: (state) => {
       state.pageState = {
         searchPharmacyName: "",
@@ -369,8 +401,6 @@ export const ordersSlice = createSlice({
       state.count = 0;
       state.error = "";
       state.unreadCount = 0;
-      // state.unreadCountDiff = 0;
-      // state.unreadMsg = "";
       state.forceRefresh = false;
       state.refresh = true;
       state.pageState = {
@@ -426,6 +456,17 @@ export const ordersSlice = createSlice({
       } else if (payload === "network failed") {
         state.error = "network failed";
       } else state.error = payload.message;
+    },
+    [updateOrder.fulfilled]: (state, action) => {
+      const updatedOrders = state.orders.map((o) => {
+        if (o._id === action.payload.data.order._id) {
+          return action.payload.data.order;
+        } else {
+          return o;
+        }
+      });
+
+      state.orders = updatedOrders;
     },
     [getUnreadOrders.fulfilled]: (state, action) => {
       state.unreadCount = action.payload.data.count;

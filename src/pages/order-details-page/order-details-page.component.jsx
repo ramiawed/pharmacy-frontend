@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory, withRouter } from "react-router";
+import { withRouter } from "react-router";
 import axios from "axios";
 import { BASEURL, Colors, OfferTypes } from "../../utils/constants";
 
@@ -10,8 +10,8 @@ import CartRow from "../../components/cart-row/cart-row.component";
 import Loader from "../../components/action-loader/action-loader.component";
 
 // redux stuff
-import { useDispatch, useSelector } from "react-redux";
-import { selectToken, selectUserData } from "../../redux/auth/authSlice";
+import { useSelector } from "react-redux";
+import { selectToken } from "../../redux/auth/authSlice";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -19,34 +19,41 @@ import styles from "./order-details-page.module.scss";
 import Header from "../../components/header/header.component";
 import Icon from "../../components/action-icon/action-icon.component";
 import { RiRefreshLine } from "react-icons/ri";
-import { getOrderById } from "../../redux/orders/ordersSlice";
+import NoContent from "../../components/no-content/no-content.component";
 
 function OrderDetailsPage({ location, onSelectedChange }) {
   const { t } = useTranslation();
-  const dispatch = useDispatch();
 
   const orderId = location?.search.slice(1);
 
   // selectors
-  const { user, token } = useSelector(selectUserData);
+  const token = useSelector(selectToken);
 
   // own states
   const [orderDetails, setOrderDetails] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [emptyMsg, setEmptyMsg] = useState("");
 
   const getOrderDetails = async () => {
+    setEmptyMsg("");
     setLoading(true);
-    const response = await axios.get(
-      `${BASEURL}/orders/details?id=${orderId}`,
-      {
+    axios
+      .get(`${BASEURL}/orders/details?id=${orderId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
-    );
-
-    setOrderDetails(response.data.data.order);
-    dispatch(getOrderById({ orderId, userType: user.type }));
+      })
+      .then((response) => {
+        console.log(response);
+        if (response.data.data.order === null) {
+          setEmptyMsg("order-deleted");
+        } else {
+          setOrderDetails(response.data.data.order);
+        }
+      })
+      .catch((err) => {
+        setEmptyMsg("order-details-error");
+      });
 
     setLoading(false);
   };
@@ -95,38 +102,44 @@ function OrderDetailsPage({ location, onSelectedChange }) {
               />
             </div>
           </Header>
-          <div className={styles.basic_details_container}>
-            <div className={styles.row}>
-              <label className={styles.label}>{t("pharmacy-name")}: </label>
-              <label className={styles.name}>
-                {orderDetails.pharmacy.name}
-              </label>
-            </div>
+          {orderDetails ? (
+            <>
+              <div className={styles.basic_details_container}>
+                <div className={styles.row}>
+                  <label className={styles.label}>{t("pharmacy-name")}: </label>
+                  <label className={styles.name}>
+                    {orderDetails.pharmacy.name}
+                  </label>
+                </div>
 
-            <div className={styles.row}>
-              <label className={styles.label}>{t("warehouse-name")}: </label>
-              <label className={styles.name}>
-                {orderDetails.warehouse.name}
-              </label>
-            </div>
+                <div className={styles.row}>
+                  <label className={styles.label}>
+                    {t("warehouse-name")}:{" "}
+                  </label>
+                  <label className={styles.name}>
+                    {orderDetails.warehouse.name}
+                  </label>
+                </div>
 
-            <div className={styles.row}>
-              <label className={styles.label}>{t("date-label")}: </label>
-              <label className={styles.name}>
-                {new Date(orderDetails.orderDate).toLocaleDateString()}
-              </label>
-            </div>
-          </div>
+                <div className={styles.row}>
+                  <label className={styles.label}>{t("date-label")}: </label>
+                  <label className={styles.name}>
+                    {new Date(orderDetails.orderDate).toLocaleDateString()}
+                  </label>
+                </div>
+              </div>
+              <CartWarehouseTableHeader withoutMaxQty={true} />
 
-          <CartWarehouseTableHeader withoutMaxQty={true} />
-
-          {orderDetails.items.map((item, index) => (
-            <CartRow key={index} cartItem={item} inOrderDetails={true} />
-          ))}
-
-          <p className={styles.total_price}>
-            {t("total-invoice-price")} {computeTotalPrice()}
-          </p>
+              {orderDetails.items.map((item, index) => (
+                <CartRow key={index} cartItem={item} inOrderDetails={true} />
+              ))}
+              <p className={styles.total_price}>
+                {t("total-invoice-price")} {computeTotalPrice()}
+              </p>
+            </>
+          ) : (
+            <NoContent msg={t(emptyMsg)} />
+          )}
         </div>
       )}
     </>

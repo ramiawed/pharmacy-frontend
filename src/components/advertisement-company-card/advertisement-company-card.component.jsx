@@ -69,7 +69,7 @@ function AdvertisementCompanyCard({ user, contentColor }) {
         setChangeFavoriteLoading(false);
       });
 
-    e.stopPropagation();
+    // e.stopPropagation();
   };
 
   // method to handle remove company from user's favorite
@@ -88,7 +88,7 @@ function AdvertisementCompanyCard({ user, contentColor }) {
         changeFavoriteLoading(false);
       })
       .catch(() => setChangeFavoriteLoading(false));
-    e.stopPropagation();
+    // e.stopPropagation();
   };
 
   // dispatch companySelected statistics and go to medicine page

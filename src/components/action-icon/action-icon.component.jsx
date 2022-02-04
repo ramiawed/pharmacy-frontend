@@ -24,7 +24,11 @@ function Icon({ onclick, tooltip, icon, foreColor }) {
         foreColor === Colors.SECONDARY_COLOR ? generalStyles.fc_secondary : "",
         foreColor === Colors.YELLOW_COLOR ? generalStyles.fc_yellow : "",
       ].join(" ")}
-      onClick={onclick}
+      onClick={(e) => {
+        console.log(e);
+        e.stopPropagation();
+        onclick();
+      }}
     >
       {icon && icon()}
       {tooltip && <div className={generalStyles.tooltip}>{tooltip}</div>}

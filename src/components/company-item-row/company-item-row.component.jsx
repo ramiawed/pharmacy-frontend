@@ -146,7 +146,7 @@ function CompanyItemRow({
 
     setShowDeleteFromWarehouseModal(false);
 
-    e.stopPropagation();
+    // e.stopPropagation();
   };
 
   const deleteItemHandler = (e) => {
@@ -164,7 +164,7 @@ function CompanyItemRow({
       setShowWarningModal(true);
     }
 
-    e.stopPropagation();
+    // e.stopPropagation();
   };
 
   const undoDeleteItemHandler = (e) => {
@@ -182,7 +182,7 @@ function CompanyItemRow({
       setShowWarningModal(true);
     }
 
-    e.stopPropagation();
+    // e.stopPropagation();
   };
 
   const deleteFromWarehouseHandler = (e) => {
@@ -202,7 +202,7 @@ function CompanyItemRow({
       setShowWarningModal(true);
     }
 
-    e.stopPropagation();
+    // e.stopPropagation();
   };
 
   // const onKeyPress = (event) => {

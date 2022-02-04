@@ -93,7 +93,7 @@ function PartnerCard({ partner, fullWidth }) {
         setChangeFavoriteLoading(false);
       });
 
-    e.stopPropagation();
+    // e.stopPropagation();
   };
 
   // method to handle remove company from partner's favorite
@@ -113,7 +113,7 @@ function PartnerCard({ partner, fullWidth }) {
       })
       .catch(() => setChangeFavoriteLoading(false));
 
-    e.stopPropagation();
+    // e.stopPropagation();
   };
 
   const partnerCardClickHandler = () => {

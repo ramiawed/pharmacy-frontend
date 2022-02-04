@@ -88,8 +88,6 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
       .catch(() => {
         setChangeFavoriteLoading(false);
       });
-
-    e.stopPropagation();
   };
 
   // method to handle remove company from partner's favorite
@@ -108,8 +106,6 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
         setChangeFavoriteLoading(false);
       })
       .catch(() => setChangeFavoriteLoading(false));
-
-    e.stopPropagation();
   };
 
   const partnerRowClickHandler = () => {

@@ -10,29 +10,50 @@ import NoContent from "../../components/no-content/no-content.component";
 import Loader from "../../components/action-loader/action-loader.component";
 import Toast from "../../components/toast/toast.component";
 import TableHeader from "../../components/table-header/table-header.component";
+import Icon from "../../components/action-icon/action-icon.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
+  changeAllOrdersSelection,
   deleteOrder,
   getOrders,
   resetStatus,
   selectOrders,
   setPage,
+  updateOrders,
 } from "../../redux/orders/ordersSlice";
 import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 
+// react icons
+import { BsCheckAll } from "react-icons/bs";
+import { FaCircle } from "react-icons/fa";
+import { RiSendPlaneFill } from "react-icons/ri";
+import {
+  MdOutlineCheckBox,
+  MdOutlineCheckBoxOutlineBlank,
+  MdOutlineIndeterminateCheckBox,
+  MdRemoveDone,
+} from "react-icons/md";
+
 // styles
+import styles from "./orders-page.module.scss";
 import paginationStyles from "../../components/pagination.module.scss";
 import generalStyles from "../../style.module.scss";
 import tableStyles from "../../components/table.module.scss";
 
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import { BsCheckAll } from "react-icons/bs";
-import { FaCircle } from "react-icons/fa";
-import { RiSendPlaneFill } from "react-icons/ri";
+
+// return the count of selected orders
+const calculateSelectedOrdersCount = (orders) => {
+  let count = 0;
+  orders.forEach((o) => {
+    count += o.selected ? 1 : 0;
+  });
+  return count;
+};
 
 function OrdersPage({ onSelectedChange }) {
   const { t } = useTranslation();
@@ -43,6 +64,45 @@ function OrdersPage({ onSelectedChange }) {
   const { status, error, count, orders, refresh, pageState, forceRefresh } =
     useSelector(selectOrders);
   const isOnline = useSelector(selectOnlineStatus);
+
+  const selectedOrdersCount = calculateSelectedOrdersCount(orders);
+
+  // handle to change the status of the order
+  const markOrdersAs = (verb) => {
+    const ids = orders
+      .filter(
+        (o) =>
+          o.selected &&
+          ((user.type === UserTypeConstants.PHARMACY &&
+            o.pharmacyStatus !== verb) ||
+            (user.type === UserTypeConstants.WAREHOUSE &&
+              o.warehouseStatus !== verb))
+      )
+      .map((o) => o._id);
+
+    if (ids.length > 0) {
+      let body = {};
+      if (user.type === UserTypeConstants.PHARMACY) {
+        body = {
+          pharmacyStatus: verb,
+        };
+      }
+      if (user.type === UserTypeConstants.WAREHOUSE) {
+        body = {
+          warehouseStatus: verb,
+        };
+      }
+      dispatch(
+        updateOrders({
+          obj: {
+            ids,
+            body,
+          },
+          token,
+        })
+      );
+    }
+  };
 
   // search handler
   const handleSearch = (page) => {
@@ -79,6 +139,14 @@ function OrdersPage({ onSelectedChange }) {
     handleSearch(1);
   };
 
+  const changeOrdersSelection = () => {
+    dispatch(
+      selectedOrdersCount === orders.length
+        ? changeAllOrdersSelection(false)
+        : changeAllOrdersSelection(true)
+    );
+  };
+
   useEffect(() => {
     if (refresh || forceRefresh) {
       handleSearch(1);
@@ -87,50 +155,113 @@ function OrdersPage({ onSelectedChange }) {
     onSelectedChange();
   }, [forceRefresh]);
 
-  return user ? (
+  return user &&
+    (user.type === UserTypeConstants.ADMIN ||
+      user.type === UserTypeConstants.WAREHOUSE ||
+      user.type === UserTypeConstants.PHARMACY) ? (
     <div className={generalStyles.container}>
       <OrderPageHeader
         pageState={pageState}
         count={count}
         search={handleEnterPress}
       />
-      <div
-        className={generalStyles.flex_container}
-        style={{
-          width: "250px",
-        }}
-      >
-        <FaCircle size={10} color={Colors.SECONDARY_COLOR} />
-        <label
-          style={{
-            fontSize: "0.7rem",
-            color: Colors.SECONDARY_COLOR,
-          }}
-        >
-          {t("unread")}
-        </label>
-        <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
-        <label
-          style={{
-            fontSize: "0.7rem",
-            color: Colors.SECONDARY_COLOR,
-          }}
-        >
-          {t("received")}
-        </label>
-        <RiSendPlaneFill color={Colors.SUCCEEDED_COLOR} />
-        <label
-          style={{
-            fontSize: "0.7rem",
-            color: Colors.SECONDARY_COLOR,
-          }}
-        >
-          {t("sent")}
-        </label>
+      <div className={styles.action_highlight_container}>
+        <div className={styles.actions_div}>
+          {user.type === UserTypeConstants.PHARMACY && selectedOrdersCount > 0 && (
+            <div className={styles.button}>
+              <Icon
+                selected={false}
+                foreColor={Colors.SUCCEEDED_COLOR}
+                tooltip={t("mark-as-received")}
+                icon={() => <BsCheckAll />}
+                onclick={() => markOrdersAs("received")}
+              />
+            </div>
+          )}
+
+          {user.type === UserTypeConstants.PHARMACY && selectedOrdersCount > 0 && (
+            <div className={styles.button}>
+              <Icon
+                selected={false}
+                foreColor={Colors.SUCCEEDED_COLOR}
+                tooltip={t("mark-as-sent")}
+                icon={() => <RiSendPlaneFill />}
+                onclick={() => markOrdersAs("sent")}
+              />
+            </div>
+          )}
+
+          {user.type === UserTypeConstants.WAREHOUSE &&
+            selectedOrdersCount > 0 && (
+              <>
+                <div className={styles.button}>
+                  <Icon
+                    selected={false}
+                    foreColor={Colors.SUCCEEDED_COLOR}
+                    tooltip={t("mark-as-sent")}
+                    icon={() => <RiSendPlaneFill />}
+                    onclick={() => markOrdersAs("sent")}
+                  />
+                </div>
+
+                <div className={styles.button}>
+                  <Icon
+                    selected={false}
+                    foreColor={Colors.SUCCEEDED_COLOR}
+                    tooltip={t("mark-as-received")}
+                    icon={() => <BsCheckAll />}
+                    onclick={() => markOrdersAs("received")}
+                  />
+                </div>
+
+                <div className={styles.button}>
+                  <Icon
+                    selected={false}
+                    foreColor={Colors.FAILED_COLOR}
+                    tooltip={t("mark-as-will-dont-server")}
+                    icon={() => <MdRemoveDone />}
+                    onclick={() => markOrdersAs("dontServe")}
+                  />
+                </div>
+              </>
+            )}
+        </div>
+
+        <div className={styles.highlight}>
+          <FaCircle size={10} color={Colors.SECONDARY_COLOR} />
+          <label>{t("unread")}</label>
+          <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
+          <label>{t("received")}</label>
+          <RiSendPlaneFill color={Colors.SUCCEEDED_COLOR} />
+          <label>{t("sent")}</label>
+          <MdRemoveDone color={Colors.FAILED_COLOR} />
+          <label>{t("will-dont-serve")}</label>
+        </div>
       </div>
 
       {count > 0 && (
         <TableHeader>
+          {user.type !== UserTypeConstants.ADMIN && (
+            <label
+              style={{
+                width: "40px",
+              }}
+            >
+              <div onClick={changeOrdersSelection}>
+                {selectedOrdersCount === orders.length && (
+                  <MdOutlineCheckBox size={20} color={Colors.WHITE_COLOR} />
+                )}
+                {selectedOrdersCount === 0 && (
+                  <MdOutlineCheckBoxOutlineBlank size={20} />
+                )}
+                {selectedOrdersCount < orders.length &&
+                  selectedOrdersCount !== 0 && (
+                    <MdOutlineIndeterminateCheckBox size={20} />
+                  )}
+              </div>
+            </label>
+          )}
+
           {(user.type === UserTypeConstants.ADMIN ||
             user.type === UserTypeConstants.WAREHOUSE) && (
             <label className={tableStyles.label_medium}>
@@ -146,7 +277,7 @@ function OrdersPage({ onSelectedChange }) {
           )}
 
           <label className={tableStyles.label_small}>{t("date-label")}</label>
-          <label className={tableStyles.label_small}></label>
+          <label className={tableStyles.label_xsmall}></label>
         </TableHeader>
       )}
 

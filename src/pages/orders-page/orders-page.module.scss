@@ -1,0 +1,51 @@
+@import '../../variables.scss';
+
+.actions_div {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  order: 2;
+  flex: 1;
+}
+
+.button {
+  background: #e3e3e3;
+  border-radius: 3px;
+  margin-inline-end: 4px;
+}
+
+.highlight {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  order: 1;
+}
+
+.highlight label {
+  font-size: 0.7rem;
+  color: $secondary-color;
+  margin-inline: 4px;
+}
+
+.action_highlight_container {
+  display: flex;
+  flex-direction: column;
+}
+
+@media only screen and (min-width: $small) {
+  .action_highlight_container {
+    flex-direction: row;
+  }
+
+  .highlight {
+    order: 2;
+  }
+
+  .actions_div {
+    order: 1;
+  }
+
+
+}

@@ -163,6 +163,39 @@ export const getOrders = createAsyncThunk(
   }
 );
 
+export const updateOrders = createAsyncThunk(
+  "orders/updatesOrders",
+  async ({ obj, token }, { rejectWithValue }) => {
+    try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.post(`${BASEURL}/orders/updates`, obj, {
+        // timeout: 10000,
+        cancelToken: source.token,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return response.data;
+    } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const saveOrder = createAsyncThunk(
   "orders/saveOrder",
   async ({ obj, token }, { rejectWithValue }) => {
@@ -370,6 +403,50 @@ export const ordersSlice = createSlice({
       };
     },
 
+    selectedChange: (state, action) => {
+      state.orders = state.orders.map((o) => {
+        if (o._id === action.payload) {
+          return {
+            ...o,
+            selected: !o.selected,
+          };
+        } else {
+          return o;
+        }
+      });
+    },
+
+    changeAllOrdersSelection: (state, action) => {
+      state.orders = state.orders.map((o) => {
+        return {
+          ...o,
+          selected: action.payload,
+        };
+      });
+    },
+
+    updateOrderStatus: (state, action) => {
+      const { id, fields } = action.payload;
+      const updatedOrders = state.orders.map((o) => {
+        if (o._id === id) {
+          return {
+            ...o,
+            ...fields,
+          };
+        } else {
+          return o;
+        }
+      });
+      state.orders = updatedOrders;
+    },
+
+    deleteOrderSocket: (state, action) => {
+      const { id } = action.payload;
+      const filteredOrders = state.orders.filter((o) => o._id !== id);
+      state.orders = filteredOrders;
+      state.count = filteredOrders.length;
+    },
+
     getOrderById: (state, action) => {
       const { orderId, userType } = action.payload;
 
@@ -419,7 +496,12 @@ export const ordersSlice = createSlice({
     },
     [getOrders.fulfilled]: (state, action) => {
       state.status = "succeeded";
-      state.orders = action.payload.data.orders;
+      state.orders = action.payload.data.orders.map((o) => {
+        return {
+          ...o,
+          selected: false,
+        };
+      });
       state.count = action.payload.count;
       state.error = "";
       state.forceRefresh = false;
@@ -436,6 +518,17 @@ export const ordersSlice = createSlice({
         state.error = "network failed";
       } else state.error = payload.message;
     },
+
+    [updateOrders.pending]: (state) => {
+      state.status = "loading";
+    },
+    [updateOrders.fulfilled]: (state, action) => {
+      state.status = "succeeded";
+    },
+    [updateOrders.rejected]: (state, { payload }) => {
+      state.status = "failed";
+    },
+
     [deleteOrder.pending]: (state) => {
       state.status = "loading";
     },
@@ -491,6 +584,10 @@ export const {
   orderSliceSignOut,
   getOrderById,
   setForceRefresh,
+  selectedChange,
+  changeAllOrdersSelection,
+  updateOrderStatus,
+  deleteOrderSocket,
 } = ordersSlice.actions;
 
 export default ordersSlice.reducer;

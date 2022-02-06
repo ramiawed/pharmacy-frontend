@@ -22,12 +22,9 @@ function SearchContainer({ children, searchAction }) {
         styles.expanded,
         moreSearchOptions ? styles.expanded_with_options : "",
       ].join(" ")}
-      // style={{
-      //   paddingInlineEnd: childrenArray.length === 1 ? "32px" : "",
-      // }}
     >
       <div className={styles.expanded_div}>
-        <div
+        {/* <div
           className={[generalStyles.icon, generalStyles.minus_top_margin].join(
             " "
           )}
@@ -36,7 +33,7 @@ function SearchContainer({ children, searchAction }) {
           }}
         >
           <FaSearch />
-        </div>
+        </div> */}
 
         {true && (
           <>

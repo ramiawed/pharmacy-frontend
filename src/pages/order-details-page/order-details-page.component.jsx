@@ -20,6 +20,7 @@ import Header from "../../components/header/header.component";
 import Icon from "../../components/action-icon/action-icon.component";
 import { RiRefreshLine } from "react-icons/ri";
 import NoContent from "../../components/no-content/no-content.component";
+import Button from "../../components/button/button.component";
 
 function OrderDetailsPage({ location, onSelectedChange }) {
   const { t } = useTranslation();
@@ -128,6 +129,11 @@ function OrderDetailsPage({ location, onSelectedChange }) {
                   </label>
                 </div>
               </div>
+              <Button
+                text={t("send-order")}
+                bgColor={Colors.SUCCEEDED_COLOR}
+                action={() => {}}
+              />
               <CartWarehouseTableHeader withoutMaxQty={true} />
 
               {orderDetails.items.map((item, index) => (

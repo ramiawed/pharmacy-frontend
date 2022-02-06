@@ -11,6 +11,8 @@ import {
   setForceRefresh,
   selectOrders,
   getUnreadOrders,
+  updateOrderStatus,
+  deleteOrderSocket,
 } from "../../redux/orders/ordersSlice";
 import { setForceRefresh as advertisementForceRefresh } from "../../redux/advertisements/advertisementsSlice";
 import {
@@ -57,19 +59,18 @@ function SocketObserver() {
       }
 
       if (data.operationType === "delete") {
-        if (orders.length > 0) {
-          const deletedOrder = orders.filter((o) => {
-            return o._id == data.documentKey._id;
-          });
-
-          if (deletedOrder.length > 0) {
-            dispatch(setForceRefresh(true));
-            setOrderStateMsg("delete-order");
-          }
-        }
+        dispatch(deleteOrderSocket({ id: data.documentKey._id }));
+        setOrderStateMsg("delete-order");
       }
 
       if (data.operationType === "update") {
+        console.log("update");
+        dispatch(
+          updateOrderStatus({
+            id: data.documentKey._id,
+            fields: data.updateDescription.updatedFields,
+          })
+        );
       }
     });
 
@@ -98,7 +99,12 @@ function SocketObserver() {
     }
 
     socket.connect();
-  }, [orders]);
+
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
   return (
     <>
       {orderStateMsg.length > 0 && (
@@ -114,8 +120,6 @@ function SocketObserver() {
         <NotificationToast
           bgColor={Colors.SECONDARY_COLOR}
           foreColor={Colors.SECONDARY_COLOR}
-          // header={notificationHeaderStateMsg}
-          // description={notificationDescriptionStateMsg}
           actionAfterTimeout={() => {
             setNotificationData(null);
           }}

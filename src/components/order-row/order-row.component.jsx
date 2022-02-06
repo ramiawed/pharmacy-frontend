@@ -9,7 +9,11 @@ import Modal from "../modal/modal.component";
 // react-redux
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
-import { updateOrder } from "../../redux/orders/ordersSlice";
+import {
+  getUnreadOrders,
+  selectedChange,
+  updateOrder,
+} from "../../redux/orders/ordersSlice";
 
 // icons
 import { FaCircle } from "react-icons/fa";
@@ -23,6 +27,7 @@ import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
+import { MdRemoveDone } from "react-icons/md";
 
 function OrderRow({ order, deleteAction }) {
   const { t } = useTranslation();
@@ -56,21 +61,40 @@ function OrderRow({ order, deleteAction }) {
     }
 
     history.push(`/order-details?${id}`);
+    dispatch(getUnreadOrders({ token }));
   };
 
   // own state
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   return (
-    <div
-      className={[rowStyles.container, generalStyles.padding_v_6].join(" ")}
-      onClick={() => {
-        rowClickHandler(order._id);
-      }}
-    >
+    <div className={[rowStyles.container, generalStyles.padding_v_6].join(" ")}>
+      {user.type !== UserTypeConstants.ADMIN && (
+        <div
+          className={generalStyles.flex_container}
+          style={{
+            width: "40px",
+          }}
+        >
+          <input
+            type="checkbox"
+            value={order.selected}
+            checked={order.selected}
+            onChange={() => {
+              dispatch(selectedChange(order._id));
+            }}
+          />
+        </div>
+      )}
+
       {(user.type === UserTypeConstants.ADMIN ||
         user.type === UserTypeConstants.WAREHOUSE) && (
-        <label className={tableStyles.label_medium}>
+        <label
+          className={tableStyles.label_medium}
+          onClick={() => {
+            rowClickHandler(order._id);
+          }}
+        >
           {order.pharmacy.name} -{" "}
           {order.pharmacyStatus === "received" && (
             <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
@@ -83,7 +107,12 @@ function OrderRow({ order, deleteAction }) {
 
       {(user.type === UserTypeConstants.ADMIN ||
         user.type === UserTypeConstants.PHARMACY) && (
-        <label className={tableStyles.label_medium}>
+        <label
+          className={tableStyles.label_medium}
+          onClick={() => {
+            rowClickHandler(order._id);
+          }}
+        >
           {order.warehouse.name} -{" "}
           {order.warehouseStatus === "unread" && <FaCircle />}
           {order.warehouseStatus === "received" && (
@@ -92,14 +121,22 @@ function OrderRow({ order, deleteAction }) {
           {order.warehouseStatus === "sent" && (
             <RiSendPlaneFill color={Colors.SUCCEEDED_COLOR} />
           )}
+          {order.warehouseStatus === "dontServe" && (
+            <MdRemoveDone color={Colors.FAILED_COLOR} />
+          )}
         </label>
       )}
 
-      <label className={tableStyles.label_small}>
+      <label
+        className={tableStyles.label_small}
+        onClick={() => {
+          rowClickHandler(order._id);
+        }}
+      >
         {order.orderDate.split("T")[0]}
       </label>
 
-      <label className={tableStyles.label_small}>
+      <label className={tableStyles.label_xsmall}>
         <div
           style={{
             display: "flex",
@@ -120,6 +157,10 @@ function OrderRow({ order, deleteAction }) {
             order.warehouseStatus === "received" && (
               <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
             )}
+          {user.type === UserTypeConstants.WAREHOUSE &&
+            order.warehouseStatus === "dontServe" && (
+              <MdRemoveDone color={Colors.FAILED_COLOR} />
+            )}
 
           {user.type === UserTypeConstants.PHARMACY &&
             order.pharmacyStatus === "sent" && (
@@ -131,14 +172,18 @@ function OrderRow({ order, deleteAction }) {
               <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
             )}
 
-          <Icon
-            icon={() => <RiDeleteBin5Fill />}
-            onclick={() => {
-              setShowDeleteModal(true);
-            }}
-            tooltip={t("delete-order-tooltip")}
-            foreColor={Colors.FAILED_COLOR}
-          />
+          {user.type !== UserTypeConstants.WAREHOUSE ? (
+            <Icon
+              icon={() => <RiDeleteBin5Fill />}
+              onclick={() => {
+                setShowDeleteModal(true);
+              }}
+              tooltip={t("delete-order-tooltip")}
+              foreColor={Colors.FAILED_COLOR}
+            />
+          ) : (
+            <div></div>
+          )}
         </div>
       </label>
 

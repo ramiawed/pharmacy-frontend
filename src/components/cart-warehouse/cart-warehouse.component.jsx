@@ -43,6 +43,7 @@ function CartWarehouse({ warehouse }) {
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showFailedModal, setShowFailedModal] = useState(false);
   const [showLoadingModal, setShowLoadingModal] = useState(false);
+  const [showConfirmSaveOrder, setShowConfirmSaveOrder] = useState(false);
 
   const computeTotalPrice = () => {
     let total = 0;
@@ -146,7 +147,7 @@ function CartWarehouse({ warehouse }) {
           },
         }
       )
-      .then((response) => {
+      .then(() => {
         dispatch(statisticsOrders({ token }));
         setShowLoadingModal(false);
         setShowSuccessModal(true);
@@ -197,7 +198,7 @@ function CartWarehouse({ warehouse }) {
       <Button
         text={t("send-order")}
         bgColor={Colors.SUCCEEDED_COLOR}
-        action={sendOrderHandler}
+        action={() => setShowConfirmSaveOrder(true)}
       />
 
       {showLoadingModal && <Loader allowCancel={false} />}
@@ -227,6 +228,21 @@ function CartWarehouse({ warehouse }) {
           small={true}
         >
           {t("send-order-failed")}
+        </Modal>
+      )}
+
+      {showConfirmSaveOrder && (
+        <Modal
+          closeModal={() => {
+            setShowConfirmSaveOrder(false);
+          }}
+          header={t("send-order")}
+          cancelLabel={t("cancel-label")}
+          okLabel={t("send-order")}
+          okModal={sendOrderHandler}
+          small={true}
+        >
+          {t("confirm-save-order")}
         </Modal>
       )}
     </>

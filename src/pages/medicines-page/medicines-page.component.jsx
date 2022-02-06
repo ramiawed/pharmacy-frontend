@@ -219,86 +219,90 @@ function MedicinesPage({ onSelectedChange }) {
             )}
           </SearchContainer>
         </div>
-
-        <div className={generalStyles.actions}>
-          <Icon
-            icon={() => <RiRefreshLine />}
-            foreColor={Colors.SECONDARY_COLOR}
-            tooltip={t("refresh-tooltip")}
-            onclick={handleEnterPress}
-          />
-          {(pageState.searchName.length > 0 ||
-            pageState.searchCompanyName.length > 0 ||
-            pageState.searchWarehouseName.length > 0 ||
-            pageState.searchInWarehouse ||
-            pageState.searchOutWarehouse) && (
-            <Icon
-              selected={false}
-              foreColor={Colors.SECONDARY_COLOR}
-              tooltip={t("clear-filter-tooltip")}
-              onclick={() => {
-                dispatch(resetMedicinesPageState());
-                handleEnterPress();
-                setShowFavorites(false);
-              }}
-              icon={() => <VscClearAll />}
-            />
-          )}
-
-          <div className={generalStyles.relative}>
-            <Icon
-              icon={() => <AiFillStar />}
-              foreColor={
-                showFavorites ? Colors.SUCCEEDED_COLOR : Colors.SECONDARY_COLOR
-              }
-              tooltip={t("show-favorite-tooltip")}
-              onclick={() => setShowFavorites(!showFavorites)}
-            />
-
-            {showFavorites && (
-              <div
-                className={[
-                  generalStyles.favorites_content,
-                  generalStyles.favorites_content_wider,
-                  generalStyles.bg_white,
-                ].join(" ")}
-              >
-                {showFavorites &&
-                  favoritesItems.map((item) => (
-                    <ItemRow
-                      key={item._id}
-                      item={item}
-                      isFavorite={true}
-                      isSmallFavorite={true}
-                    />
-                  ))}
-              </div>
-            )}
-          </div>
-
-          <Icon
-            icon={() => <AiFillAppstore />}
-            foreColor={
-              pageState.displayType === "card"
-                ? Colors.SUCCEEDED_COLOR
-                : Colors.SECONDARY_COLOR
-            }
-            tooltip={t("show-item-as-card-tooltip")}
-            onclick={() => dispatch(setDisplayType("card"))}
-          />
-
-          <Icon
-            icon={() => <FaListUl />}
-            foreColor={
-              pageState.displayType === "list"
-                ? Colors.SUCCEEDED_COLOR
-                : Colors.SECONDARY_COLOR
-            }
-            tooltip={t("show-item-as-row-tooltip")}
-            onclick={() => dispatch(setDisplayType("list"))}
-          />
-        </div>
       </Header>
+      <div className={generalStyles.actions}>
+        <Icon
+          withBackground={true}
+          icon={() => <RiRefreshLine />}
+          foreColor={Colors.SECONDARY_COLOR}
+          tooltip={t("refresh-tooltip")}
+          onclick={handleEnterPress}
+        />
+        {(pageState.searchName.length > 0 ||
+          pageState.searchCompanyName.length > 0 ||
+          pageState.searchWarehouseName.length > 0 ||
+          pageState.searchInWarehouse ||
+          pageState.searchOutWarehouse) && (
+          <Icon
+            withBackground={true}
+            selected={false}
+            foreColor={Colors.SECONDARY_COLOR}
+            tooltip={t("clear-filter-tooltip")}
+            onclick={() => {
+              dispatch(resetMedicinesPageState());
+              handleEnterPress();
+              setShowFavorites(false);
+            }}
+            icon={() => <VscClearAll />}
+          />
+        )}
+
+        <div className={generalStyles.relative}>
+          <Icon
+            withBackground={true}
+            icon={() => <AiFillStar />}
+            foreColor={
+              showFavorites ? Colors.SUCCEEDED_COLOR : Colors.SECONDARY_COLOR
+            }
+            tooltip={t("show-favorite-tooltip")}
+            onclick={() => setShowFavorites(!showFavorites)}
+          />
+
+          {showFavorites && (
+            <div
+              className={[
+                generalStyles.favorites_content,
+                generalStyles.favorites_content_wider,
+                generalStyles.bg_white,
+              ].join(" ")}
+            >
+              {showFavorites &&
+                favoritesItems.map((item) => (
+                  <ItemRow
+                    key={item._id}
+                    item={item}
+                    isFavorite={true}
+                    isSmallFavorite={true}
+                  />
+                ))}
+            </div>
+          )}
+        </div>
+
+        <Icon
+          withBackground={true}
+          icon={() => <AiFillAppstore />}
+          foreColor={
+            pageState.displayType === "card"
+              ? Colors.SUCCEEDED_COLOR
+              : Colors.SECONDARY_COLOR
+          }
+          tooltip={t("show-item-as-card-tooltip")}
+          onclick={() => dispatch(setDisplayType("card"))}
+        />
+
+        <Icon
+          withBackground={true}
+          icon={() => <FaListUl />}
+          foreColor={
+            pageState.displayType === "list"
+              ? Colors.SUCCEEDED_COLOR
+              : Colors.SECONDARY_COLOR
+          }
+          tooltip={t("show-item-as-row-tooltip")}
+          onclick={() => dispatch(setDisplayType("list"))}
+        />
+      </div>
 
       {count > 0 && pageState.displayType === "list" && (
         <MedicinesTableHeader user={user} />

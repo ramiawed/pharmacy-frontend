@@ -1,5 +1,9 @@
 @import "./variables.scss";
 
+* {
+  font-family: $font_arabic;
+}
+
 .container {
   width: 90%;
   margin: 10px auto;
@@ -88,6 +92,13 @@
   cursor: pointer;
 }
 
+.icon:hover {
+  border-radius: 50%;
+  background: rgba($color: #000000, $alpha: 0.1) !important;
+  box-shadow: inset 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+
 .tooltip {
   display: none;
 
@@ -106,10 +117,7 @@
   z-index: 50;
 }
 
-.icon:hover {
-  border-radius: 50%;
-  background: rgba($color: #000000, $alpha: 0.1);
-}
+
 
 .icon:hover .tooltip {
   display: flex;
@@ -235,7 +243,7 @@
 
 .actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
 }
 
 // style the div that contains the favorite row

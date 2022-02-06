@@ -14,9 +14,15 @@ import generalStyles from "../../style.module.scss";
 // constants
 import { Colors } from "../../utils/constants";
 
-function Icon({ onclick, tooltip, icon, foreColor }) {
+function Icon({ onclick, tooltip, icon, foreColor, withBackground }) {
   return (
     <div
+      style={{
+        background: withBackground ? "#e3e3e3" : "transparent",
+        borderRadius: "3px",
+        marginInline: withBackground ? "2px" : "0",
+        padding: withBackground ? "2px" : "0",
+      }}
       className={[
         generalStyles.icon,
         foreColor === Colors.SUCCEEDED_COLOR ? generalStyles.fc_green : "",
@@ -25,7 +31,6 @@ function Icon({ onclick, tooltip, icon, foreColor }) {
         foreColor === Colors.YELLOW_COLOR ? generalStyles.fc_yellow : "",
       ].join(" ")}
       onClick={(e) => {
-        console.log(e);
         e.stopPropagation();
         onclick();
       }}

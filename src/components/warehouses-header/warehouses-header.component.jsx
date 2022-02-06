@@ -43,27 +43,28 @@ function WarehousesHeader({ search, refreshHandler, count }) {
   const favorites = useSelector(selectFavoritesPartners);
 
   return (
-    <Header>
-      <h2>
-        {t("warehouses")} <span>{count}</span>
-      </h2>
+    <>
+      <Header>
+        <h2>
+          {t("warehouses")} <span>{count}</span>
+        </h2>
 
-      <div style={{ position: "relative", height: "50px" }}>
-        <SearchContainer searchAction={search}>
-          <SearchInput
-            label="user-name"
-            id="search-name"
-            type="text"
-            value={searchName}
-            onchange={(e) => {
-              dispatch(changeSearchName(e.target.value));
-            }}
-            placeholder="search"
-            onEnterPress={search}
-            resetField={() => dispatch(changeSearchName(""))}
-          />
+        <div style={{ position: "relative", height: "50px" }}>
+          <SearchContainer searchAction={search}>
+            <SearchInput
+              label="user-name"
+              id="search-name"
+              type="text"
+              value={searchName}
+              onchange={(e) => {
+                dispatch(changeSearchName(e.target.value));
+              }}
+              placeholder="search"
+              onEnterPress={search}
+              resetField={() => dispatch(changeSearchName(""))}
+            />
 
-          {/* <SearchInput
+            {/* <SearchInput
             label="user-city"
             id="search-city"
             type="text"
@@ -75,8 +76,9 @@ function WarehousesHeader({ search, refreshHandler, count }) {
             onEnterPress={search}
             resetField={() => dispatch(changeSearchCity(""))}
           /> */}
-        </SearchContainer>
-      </div>
+          </SearchContainer>
+        </div>
+      </Header>
 
       <div
         className={[generalStyles.actions, generalStyles.margin_v_4].join(" ")}
@@ -87,6 +89,7 @@ function WarehousesHeader({ search, refreshHandler, count }) {
           tooltip={t("refresh-tooltip")}
           onclick={refreshHandler}
           icon={() => <RiRefreshLine />}
+          withBackground={true}
         />
 
         {(searchName.length > 0 || searchCity.length > 0) && (
@@ -100,6 +103,7 @@ function WarehousesHeader({ search, refreshHandler, count }) {
               dispatch(changeShowFavorites(false));
             }}
             icon={() => <VscClearAll />}
+            withBackground={true}
           />
         )}
 
@@ -112,6 +116,7 @@ function WarehousesHeader({ search, refreshHandler, count }) {
             tooltip={t("show-favorite-tooltip")}
             onclick={() => dispatch(changeShowFavorites(!showFavorites))}
             icon={() => <AiFillStar />}
+            withBackground={true}
           />
 
           {showFavorites && (
@@ -150,6 +155,7 @@ function WarehousesHeader({ search, refreshHandler, count }) {
             dispatch(changeShowFavorites(false));
           }}
           icon={() => <AiFillAppstore />}
+          withBackground={true}
         />
 
         {/* display list option */}
@@ -165,9 +171,10 @@ function WarehousesHeader({ search, refreshHandler, count }) {
             dispatch(changeShowFavorites(false));
           }}
           icon={() => <FaListUl />}
+          withBackground={true}
         />
       </div>
-    </Header>
+    </>
   );
 }
 

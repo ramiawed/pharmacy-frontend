@@ -195,7 +195,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
               dispatch(setSearchName(e.target.value));
             }}
             bordered={true}
-            icon={<FaSearch />}
+            // icon={<FaSearch />}
             placeholder="search-by-name"
             onEnterPress={enterPress}
             resetField={() => dispatch(setSearchName(""))}
@@ -310,7 +310,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
                 dispatch(setSearchEmployeeName(e.target.value));
               }}
               bordered={true}
-              icon={<FaSearch />}
+              // icon={<FaSearch />}
               placeholder="search-by-employee-name"
               onEnterPress={enterPress}
               resetField={() => dispatch(setSearchEmployeeName(""))}
@@ -326,7 +326,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
                 dispatch(setSearchCertificateName(e.target.value));
               }}
               bordered={true}
-              icon={<FaSearch />}
+              // icon={<FaSearch />}
               placeholder="search-by-certificate"
               onEnterPress={enterPress}
               resetField={() => dispatch(setSearchCertificateName(""))}
@@ -348,7 +348,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
                   dispatch(setSearchCompanyName(e.target.value));
                 }}
                 bordered={true}
-                icon={<FaSearch />}
+                // icon={<FaSearch />}
                 placeholder="search-by-company-name"
                 onEnterPress={enterPress}
                 resetField={() => dispatch(setSearchCompanyName(""))}
@@ -364,7 +364,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
                   dispatch(setSearchJobTitle(e.target.value));
                 }}
                 bordered={true}
-                icon={<FaSearch />}
+                // icon={<FaSearch />}
                 placeholder="search-by-job-title"
                 onEnterPress={enterPress}
                 resetField={() => dispatch(setSearchJobTitle(""))}
@@ -386,7 +386,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
               dispatch(setSearchDistrict(e.target.value));
             }}
             bordered={true}
-            icon={<FaSearch />}
+            // icon={<FaSearch />}
             placeholder="search-by-district"
             onEnterPress={enterPress}
             resetField={(e) => {
@@ -404,7 +404,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
               dispatch(setSearchStreet(e.target.value));
             }}
             bordered={true}
-            icon={<FaSearch />}
+            // icon={<FaSearch />}
             placeholder="search-by-street"
             onEnterPress={enterPress}
             resetField={() => dispatch(setSearchStreet(""))}

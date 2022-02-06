@@ -165,79 +165,78 @@ function OrdersPage({ onSelectedChange }) {
         count={count}
         search={handleEnterPress}
       />
-      <div className={styles.action_highlight_container}>
-        <div className={styles.actions_div}>
-          {user.type === UserTypeConstants.PHARMACY && selectedOrdersCount > 0 && (
-            <div className={styles.button}>
-              <Icon
-                selected={false}
-                foreColor={Colors.SUCCEEDED_COLOR}
-                tooltip={t("mark-as-received")}
-                icon={() => <BsCheckAll />}
-                onclick={() => markOrdersAs("received")}
-              />
-            </div>
-          )}
+      {orders.length > 0 && (
+        <div className={styles.action_highlight_container}>
+          <div className={styles.actions_div}>
+            {user.type === UserTypeConstants.PHARMACY &&
+              selectedOrdersCount > 0 && (
+                <Icon
+                  selected={false}
+                  foreColor={Colors.SUCCEEDED_COLOR}
+                  tooltip={t("mark-as-received")}
+                  icon={() => <BsCheckAll />}
+                  onclick={() => markOrdersAs("received")}
+                  withBackground={true}
+                />
+              )}
 
-          {user.type === UserTypeConstants.PHARMACY && selectedOrdersCount > 0 && (
-            <div className={styles.button}>
-              <Icon
-                selected={false}
-                foreColor={Colors.SUCCEEDED_COLOR}
-                tooltip={t("mark-as-sent")}
-                icon={() => <RiSendPlaneFill />}
-                onclick={() => markOrdersAs("sent")}
-              />
-            </div>
-          )}
+            {user.type === UserTypeConstants.PHARMACY &&
+              selectedOrdersCount > 0 && (
+                <Icon
+                  selected={false}
+                  foreColor={Colors.SUCCEEDED_COLOR}
+                  tooltip={t("mark-as-sent")}
+                  icon={() => <RiSendPlaneFill />}
+                  onclick={() => markOrdersAs("sent")}
+                  withBackground={true}
+                />
+              )}
 
-          {user.type === UserTypeConstants.WAREHOUSE &&
-            selectedOrdersCount > 0 && (
-              <>
-                <div className={styles.button}>
+            {user.type === UserTypeConstants.WAREHOUSE &&
+              selectedOrdersCount > 0 && (
+                <>
                   <Icon
                     selected={false}
                     foreColor={Colors.SUCCEEDED_COLOR}
                     tooltip={t("mark-as-sent")}
                     icon={() => <RiSendPlaneFill />}
                     onclick={() => markOrdersAs("sent")}
+                    withBackground={true}
                   />
-                </div>
 
-                <div className={styles.button}>
                   <Icon
                     selected={false}
                     foreColor={Colors.SUCCEEDED_COLOR}
                     tooltip={t("mark-as-received")}
                     icon={() => <BsCheckAll />}
                     onclick={() => markOrdersAs("received")}
+                    withBackground={true}
                   />
-                </div>
 
-                <div className={styles.button}>
                   <Icon
                     selected={false}
                     foreColor={Colors.FAILED_COLOR}
                     tooltip={t("mark-as-will-dont-server")}
                     icon={() => <MdRemoveDone />}
                     onclick={() => markOrdersAs("dontServe")}
+                    withBackground={true}
                   />
-                </div>
-              </>
-            )}
-        </div>
+                </>
+              )}
+          </div>
 
-        <div className={styles.highlight}>
-          <FaCircle size={10} color={Colors.SECONDARY_COLOR} />
-          <label>{t("unread")}</label>
-          <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
-          <label>{t("received")}</label>
-          <RiSendPlaneFill color={Colors.SUCCEEDED_COLOR} />
-          <label>{t("sent")}</label>
-          <MdRemoveDone color={Colors.FAILED_COLOR} />
-          <label>{t("will-dont-serve")}</label>
+          <div className={styles.highlight}>
+            <FaCircle size={10} color={Colors.SECONDARY_COLOR} />
+            <label>{t("unread")}</label>
+            <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
+            <label>{t("received")}</label>
+            <RiSendPlaneFill color={Colors.SUCCEEDED_COLOR} />
+            <label>{t("sent")}</label>
+            <MdRemoveDone color={Colors.FAILED_COLOR} />
+            <label>{t("will-dont-serve")}</label>
+          </div>
         </div>
-      </div>
+      )}
 
       {count > 0 && (
         <TableHeader>

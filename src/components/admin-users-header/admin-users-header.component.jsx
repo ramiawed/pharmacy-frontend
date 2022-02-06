@@ -109,11 +109,12 @@ function AdminUsersHeader({
   });
 
   return (
-    <Header>
-      <h2>
-        {t("partners")} <span>{count}</span>
-      </h2>
-
+    <>
+      <Header>
+        <h2>
+          {t("partners")} <span>{count}</span>
+        </h2>
+      </Header>
       <div
         className={[generalStyles.actions, generalStyles.margin_v_4].join(" ")}
       >
@@ -174,7 +175,7 @@ function AdminUsersHeader({
           />
         </div>
       </div>
-    </Header>
+    </>
   );
 }
 

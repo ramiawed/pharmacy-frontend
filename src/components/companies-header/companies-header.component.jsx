@@ -43,46 +43,48 @@ function CompaniesHeader({ search, refreshHandler, count }) {
   const favorites = useSelector(selectFavoritesPartners);
 
   return (
-    <Header>
-      <h2>
-        {t("companies")} <span>{count}</span>
-      </h2>
+    <>
+      <Header>
+        <h2>
+          {t("companies")} <span>{count}</span>
+        </h2>
 
-      <div style={{ position: "relative", height: "50px" }}>
-        <SearchContainer searchAction={search}>
-          <SearchInput
-            label="user-name"
-            id="search-name"
-            type="text"
-            value={searchName}
-            onchange={(e) => {
-              dispatch(changeSearchName(e.target.value));
-            }}
-            placeholder="search"
-            onEnterPress={search}
-            resetField={() => dispatch(changeSearchName(""))}
-          />
+        <div style={{ position: "relative", height: "50px" }}>
+          <SearchContainer searchAction={search}>
+            <SearchInput
+              label="user-name"
+              id="search-name"
+              type="text"
+              value={searchName}
+              onchange={(e) => {
+                dispatch(changeSearchName(e.target.value));
+              }}
+              placeholder="search"
+              onEnterPress={search}
+              resetField={() => dispatch(changeSearchName(""))}
+            />
 
-          <SearchInput
-            label="user-city"
-            id="search-city"
-            type="text"
-            value={searchCity}
-            onchange={(e) => {
-              dispatch(changeSearchCity(e.target.value));
-            }}
-            placeholder="search"
-            onEnterPress={search}
-            resetField={() => dispatch(changeSearchCity(""))}
-          />
-        </SearchContainer>
-      </div>
-
+            <SearchInput
+              label="user-city"
+              id="search-city"
+              type="text"
+              value={searchCity}
+              onchange={(e) => {
+                dispatch(changeSearchCity(e.target.value));
+              }}
+              placeholder="search"
+              onEnterPress={search}
+              resetField={() => dispatch(changeSearchCity(""))}
+            />
+          </SearchContainer>
+        </div>
+      </Header>
       <div
         className={[generalStyles.actions, generalStyles.margin_v_4].join(" ")}
       >
         {/* refresh */}
         <Icon
+          withBackground={true}
           selected={false}
           foreColor={Colors.SECONDARY_COLOR}
           tooltip={t("refresh-tooltip")}
@@ -95,6 +97,7 @@ function CompaniesHeader({ search, refreshHandler, count }) {
 
         {(searchName.length > 0 || searchCity.length > 0) && (
           <Icon
+            withBackground={true}
             selected={false}
             foreColor={Colors.SECONDARY_COLOR}
             tooltip={t("clear-filter-tooltip")}
@@ -110,6 +113,7 @@ function CompaniesHeader({ search, refreshHandler, count }) {
         {/* show favorites */}
         <div className={generalStyles.relative}>
           <Icon
+            withBackground={true}
             foreColor={
               showFavorites ? Colors.SUCCEEDED_COLOR : Colors.SECONDARY_COLOR
             }
@@ -144,6 +148,7 @@ function CompaniesHeader({ search, refreshHandler, count }) {
 
         {/* display card option */}
         <Icon
+          withBackground={true}
           foreColor={
             displayType === "card"
               ? Colors.SUCCEEDED_COLOR
@@ -159,6 +164,7 @@ function CompaniesHeader({ search, refreshHandler, count }) {
 
         {/* display list option */}
         <Icon
+          withBackground={true}
           foreColor={
             displayType === "list"
               ? Colors.SUCCEEDED_COLOR
@@ -172,7 +178,7 @@ function CompaniesHeader({ search, refreshHandler, count }) {
           icon={() => <FaListUl />}
         />
       </div>
-    </Header>
+    </>
   );
 }
 

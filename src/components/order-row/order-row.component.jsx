@@ -28,6 +28,7 @@ import generalStyles from "../../style.module.scss";
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
 import { MdRemoveDone } from "react-icons/md";
+import Toast from "../toast/toast.component";
 
 function OrderRow({ order, deleteAction }) {
   const { t } = useTranslation();
@@ -35,6 +36,10 @@ function OrderRow({ order, deleteAction }) {
   const dispatch = useDispatch();
 
   const { user, token } = useSelector(selectUserData);
+
+  // own state
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [deleteErrorMsg, setDeleteErrorMsg] = useState("");
 
   const rowClickHandler = (id) => {
     if (user.type !== UserTypeConstants.PHARMACY) {
@@ -64,8 +69,18 @@ function OrderRow({ order, deleteAction }) {
     dispatch(getUnreadOrders({ token }));
   };
 
-  // own state
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const modalOkHandler = (id, warehouseStatus) => {
+    if (
+      user.type === UserTypeConstants.ADMIN ||
+      (user.type === UserTypeConstants.PHARMACY && warehouseStatus !== "sent")
+    ) {
+      deleteAction(id);
+      setShowDeleteModal(false);
+    } else {
+      setShowDeleteModal(false);
+      setDeleteErrorMsg("cant-delete-order");
+    }
+  };
 
   return (
     <div className={[rowStyles.container, generalStyles.padding_v_6].join(" ")}>
@@ -114,7 +129,7 @@ function OrderRow({ order, deleteAction }) {
           }}
         >
           {order.warehouse.name} -{" "}
-          {order.warehouseStatus === "unread" && <FaCircle />}
+          {order.warehouseStatus === "unread" && <FaCircle size={10} />}
           {order.warehouseStatus === "received" && (
             <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
           )}
@@ -152,7 +167,7 @@ function OrderRow({ order, deleteAction }) {
               <RiSendPlaneFill color={Colors.SUCCEEDED_COLOR} />
             )}
           {user.type === UserTypeConstants.WAREHOUSE &&
-            order.warehouseStatus === "unread" && <FaCircle />}
+            order.warehouseStatus === "unread" && <FaCircle size={10} />}
           {user.type === UserTypeConstants.WAREHOUSE &&
             order.warehouseStatus === "received" && (
               <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
@@ -197,13 +212,23 @@ function OrderRow({ order, deleteAction }) {
           }}
           small={true}
           okModal={() => {
-            deleteAction(order._id);
-            setShowDeleteModal(false);
+            modalOkHandler(order._id, order.warehouseStatus);
           }}
           color={Colors.FAILED_COLOR}
         >
           <p>{t("delete-order-confirm-msg")}</p>
         </Modal>
+      )}
+
+      {deleteErrorMsg !== "" && (
+        <Toast
+          bgColor={Colors.FAILED_COLOR}
+          foreColor="#fff"
+          toastText={t(deleteErrorMsg)}
+          actionAfterTimeout={() => {
+            setDeleteErrorMsg("");
+          }}
+        />
       )}
     </div>
   );

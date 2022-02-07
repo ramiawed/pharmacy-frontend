@@ -1,15 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { GuestJob, UserTypeConstants } from "../../utils/constants";
+import {
+  Colors,
+  GuestJob,
+  SERVER_URL,
+  UserTypeConstants,
+} from "../../utils/constants";
 
 // components
 import Modal from "../modal/modal.component";
+import Icon from "../action-icon/action-icon.component";
+
+// react icons
+import { FiImage } from "react-icons/fi";
 
 // styles
 import styles from "./user-more-info-modal.module.scss";
 
 function UserMoreInfoModal({ user, close }) {
   const { t } = useTranslation();
+
+  const [showUserDocument, setShowUserDocument] = useState(false);
 
   return (
     <Modal
@@ -37,6 +48,30 @@ function UserMoreInfoModal({ user, close }) {
           {user.createdAt.split("T")[0]}
         </label>
       </div>
+
+      {(user.type === UserTypeConstants.PHARMACY ||
+        user.type === UserTypeConstants.GUEST) && (
+        <div className={styles.row}>
+          <label className={styles.label}>
+            {user.type === UserTypeConstants.PHARMACY
+              ? t("pharmacy-document")
+              : t("guest-document")}
+            :
+          </label>
+          {/* <label className={styles.icon}> */}
+          <Icon
+            selected={false}
+            foreColor={Colors.SECONDARY_COLOR}
+            tooltip={t("show-paper-url")}
+            onclick={() => {
+              setShowUserDocument(true);
+            }}
+            icon={() => <FiImage size={20} />}
+          />
+
+          {/* </label> */}
+        </div>
+      )}
 
       <div className={[styles.header].join(" ")}>{t("communication-info")}</div>
       <div className={styles.row}>
@@ -117,6 +152,28 @@ function UserMoreInfoModal({ user, close }) {
           ) : null}
         </>
       ) : null}
+
+      {showUserDocument && (
+        <Modal
+          header="user-document"
+          cancelLabel="close-label"
+          closeModal={() => {
+            setShowUserDocument(false);
+          }}
+          small={true}
+        >
+          <img
+            src={`${SERVER_URL}/${user.paper_url}`}
+            style={{
+              display: "block",
+              width: "300px",
+              height: "300px",
+              marginInline: "auto",
+            }}
+            alt="Thumb"
+          />
+        </Modal>
+      )}
     </Modal>
   );
 }

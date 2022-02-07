@@ -13,6 +13,9 @@
 }
 
 .row {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   padding-block: 8px;
   border-bottom: 1px solid rgba($color: $secondary-color, $alpha: 0.3);
   color: $secondary-color;
@@ -33,6 +36,11 @@
   padding-inline: 12px;
   font-size: 0.7rem;
   font-family: $font_arabic;
+}
+
+.icon {
+  // border: 1px solid black;
+  // display: inline-block;
 }
 
 @media only screen and (min-width: $small) {

@@ -44,6 +44,7 @@ import {
 
 // styles
 import styles from "./home-page.module.scss";
+import Chart from "../../components/chart/chart.component";
 
 function HomePage({ onSelectedChange }) {
   const dispatch = useDispatch();

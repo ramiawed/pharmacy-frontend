@@ -36,3 +36,12 @@
   color: $green-color;
   padding-left: 6px;
 }
+
+.actions_div {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+
+  order: 2;
+  flex: 1;
+}

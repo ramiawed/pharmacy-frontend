@@ -2,38 +2,80 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { withRouter } from "react-router";
 import axios from "axios";
-import { BASEURL, Colors, OfferTypes } from "../../utils/constants";
+
+// react icons
+import { RiRefreshLine, RiSendPlaneFill, RiSave3Fill } from "react-icons/ri";
+import { BsCheckAll } from "react-icons/bs";
+import { MdRemoveDone } from "react-icons/md";
 
 // components
 import CartWarehouseTableHeader from "../../components/cart-warehouse-table-header/cart-warehouse-table-header.component";
 import CartRow from "../../components/cart-row/cart-row.component";
 import Loader from "../../components/action-loader/action-loader.component";
+import NoContent from "../../components/no-content/no-content.component";
+import Icon from "../../components/action-icon/action-icon.component";
+import Header from "../../components/header/header.component";
 
 // redux stuff
-import { useSelector } from "react-redux";
-import { selectToken } from "../../redux/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUserData } from "../../redux/auth/authSlice";
+import { selectOrders, updateOrders } from "../../redux/orders/ordersSlice";
 
 // styles
 import generalStyles from "../../style.module.scss";
 import styles from "./order-details-page.module.scss";
-import Header from "../../components/header/header.component";
-import Icon from "../../components/action-icon/action-icon.component";
-import { RiRefreshLine } from "react-icons/ri";
-import NoContent from "../../components/no-content/no-content.component";
-import Button from "../../components/button/button.component";
+
+// constants
+import {
+  BASEURL,
+  Colors,
+  OfferTypes,
+  UserTypeConstants,
+} from "../../utils/constants";
+import { ExportCSV } from "../../components/export-csv/export-csv.component";
 
 function OrderDetailsPage({ location, onSelectedChange }) {
   const { t } = useTranslation();
 
   const orderId = location?.search.slice(1);
 
+  const dispatch = useDispatch();
+
   // selectors
-  const token = useSelector(selectToken);
+  const { token, user } = useSelector(selectUserData);
+  const { status } = useSelector(selectOrders);
 
   // own states
   const [orderDetails, setOrderDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [emptyMsg, setEmptyMsg] = useState("");
+
+  const markOrdersAs = (verb) => {
+    const ids = [orderId];
+
+    if (ids.length > 0) {
+      let body = {};
+      if (user.type === UserTypeConstants.PHARMACY) {
+        body = {
+          pharmacyStatus: verb,
+        };
+      }
+      if (user.type === UserTypeConstants.WAREHOUSE) {
+        body = {
+          warehouseStatus: verb,
+        };
+      }
+      dispatch(
+        updateOrders({
+          obj: {
+            ids,
+            body,
+          },
+          token,
+        })
+      );
+    }
+  };
 
   const getOrderDetails = async () => {
     setEmptyMsg("");
@@ -50,6 +92,7 @@ function OrderDetailsPage({ location, onSelectedChange }) {
           setEmptyMsg("order-deleted");
         } else {
           setOrderDetails(response.data.data.order);
+          console.log(response.data.data.order);
         }
       })
       .catch((err) => {
@@ -129,11 +172,73 @@ function OrderDetailsPage({ location, onSelectedChange }) {
                   </label>
                 </div>
               </div>
-              <Button
-                text={t("send-order")}
-                bgColor={Colors.SUCCEEDED_COLOR}
-                action={() => {}}
-              />
+
+              <div className={styles.actions_div}>
+                {user.type === UserTypeConstants.PHARMACY && (
+                  <Icon
+                    selected={false}
+                    foreColor={Colors.SUCCEEDED_COLOR}
+                    tooltip={t("mark-as-received")}
+                    icon={() => <BsCheckAll />}
+                    onclick={() => markOrdersAs("received")}
+                    withBackground={true}
+                  />
+                )}
+
+                {user.type === UserTypeConstants.PHARMACY && (
+                  <Icon
+                    selected={false}
+                    foreColor={Colors.SUCCEEDED_COLOR}
+                    tooltip={t("mark-as-sent")}
+                    icon={() => <RiSendPlaneFill />}
+                    onclick={() => markOrdersAs("sent")}
+                    withBackground={true}
+                  />
+                )}
+
+                {user.type === UserTypeConstants.WAREHOUSE && (
+                  <>
+                    <Icon
+                      selected={false}
+                      foreColor={Colors.SUCCEEDED_COLOR}
+                      tooltip={t("mark-as-sent")}
+                      icon={() => <RiSendPlaneFill />}
+                      onclick={() => markOrdersAs("sent")}
+                      withBackground={true}
+                    />
+
+                    <Icon
+                      selected={false}
+                      foreColor={Colors.SUCCEEDED_COLOR}
+                      tooltip={t("mark-as-received")}
+                      icon={() => <BsCheckAll />}
+                      onclick={() => markOrdersAs("received")}
+                      withBackground={true}
+                    />
+
+                    <Icon
+                      selected={false}
+                      foreColor={Colors.FAILED_COLOR}
+                      tooltip={t("mark-as-will-dont-server")}
+                      icon={() => <MdRemoveDone />}
+                      onclick={() => markOrdersAs("dontServe")}
+                      withBackground={true}
+                    />
+                  </>
+                )}
+
+                <ExportCSV
+                  csvData={orderDetails.items}
+                  fileName={
+                    orderDetails.pharmacy.name +
+                    "_" +
+                    orderDetails.warehouse.name +
+                    "_" +
+                    new Date(orderDetails.orderDate).toLocaleDateString()
+                  }
+                />
+              </div>
+
               <CartWarehouseTableHeader withoutMaxQty={true} />
 
               {orderDetails.items.map((item, index) => (
@@ -148,6 +253,7 @@ function OrderDetailsPage({ location, onSelectedChange }) {
           )}
         </div>
       )}
+      {status === "loading" && <Loader allowCancel={false} />}
     </>
   );
 }

@@ -20,6 +20,7 @@ import {
 } from "../../redux/favorites/favoritesSlice";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
+  addStatistics,
   statisticsCompanySelected,
   statisticsUserFavorites,
 } from "../../redux/statistics/statisticsSlice";
@@ -88,6 +89,16 @@ function PartnerCard({ partner, fullWidth }) {
         dispatch(
           statisticsUserFavorites({ obj: { partnerId: partner._id }, token })
         );
+        dispatch(
+          addStatistics({
+            obj: {
+              sourceUser: user._id,
+              targetUser: partner._id,
+              action: "user-added-to-favorite",
+            },
+            token,
+          })
+        );
       })
       .catch(() => {
         setChangeFavoriteLoading(false);
@@ -134,6 +145,16 @@ function PartnerCard({ partner, fullWidth }) {
         dispatch(
           statisticsCompanySelected({
             obj: { companyId: partner._id },
+            token,
+          })
+        );
+        dispatch(
+          addStatistics({
+            obj: {
+              sourceUser: user._id,
+              targetUser: partner._id,
+              action: "choose-company",
+            },
             token,
           })
         );

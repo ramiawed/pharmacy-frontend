@@ -4,7 +4,7 @@ import { withRouter } from "react-router";
 import axios from "axios";
 
 // react icons
-import { RiRefreshLine, RiSendPlaneFill, RiSave3Fill } from "react-icons/ri";
+import { RiRefreshLine, RiSendPlaneFill } from "react-icons/ri";
 import { BsCheckAll } from "react-icons/bs";
 import { MdRemoveDone } from "react-icons/md";
 
@@ -87,12 +87,10 @@ function OrderDetailsPage({ location, onSelectedChange }) {
         },
       })
       .then((response) => {
-        console.log(response);
         if (response.data.data.order === null) {
           setEmptyMsg("order-deleted");
         } else {
           setOrderDetails(response.data.data.order);
-          console.log(response.data.data.order);
         }
       })
       .catch((err) => {

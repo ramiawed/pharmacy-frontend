@@ -27,7 +27,10 @@ import {
   changeOnlineMsg,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
-import { statisticsSignIn } from "../../redux/statistics/statisticsSlice";
+import {
+  addStatistics,
+  statisticsSignIn,
+} from "../../redux/statistics/statisticsSlice";
 import { getAllSettings } from "../../redux/settings/settingsSlice";
 
 // styles
@@ -171,6 +174,15 @@ function SignIn() {
       .then(unwrapResult)
       .then((result) => {
         dispatch(statisticsSignIn({ token: result.token }));
+        dispatch(
+          addStatistics({
+            obj: {
+              targetUser: result.data.user._id,
+              action: "sign-in",
+            },
+            token: result.token,
+          })
+        );
         dispatch(getAllSettings({ token: result.token }));
         // dispatch(getFavorites({ token: result.token }));
       })

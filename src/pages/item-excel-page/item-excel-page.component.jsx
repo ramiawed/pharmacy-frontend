@@ -33,6 +33,7 @@ import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors, toEnglishNumber } from "../../utils/constants";
+import Header from "../../components/header/header.component";
 
 function ItemExcelPage() {
   const user = useSelector(selectUser);
@@ -82,6 +83,7 @@ function ItemExcelPage() {
       const completeData = data.map((d) => {
         let obj = {
           ...d,
+          _id: d._id ? d._id : null,
           selected: true,
           company: companyId,
           isActive: true,
@@ -374,118 +376,121 @@ function ItemExcelPage() {
   };
 
   return user && companyId !== 0 ? (
-    <div className={generalStyles.container}>
-      <div className={styles.actions}>
-        {items.length > 0 ? (
-          <>
-            <label>
-              <span className={styles.label}>{t("file-name")}:</span>
-              <span className={styles.value}>{fileName}</span>
-            </label>
-            <label>
-              <span className={styles.label}>{t("items-count")}:</span>
-              <span className={styles.value}>{items.length}</span>
-            </label>
+    <>
+      <div className={generalStyles.container}>
+        <Header>
+          <h2>{t("items-from-excel")}</h2>
+        </Header>
+        <div className={styles.actions}>
+          {items.length > 0 ? (
+            <>
+              <label>
+                <span className={styles.label}>{t("file-name")}:</span>
+                <span className={styles.value}>{fileName}</span>
+              </label>
+              <label>
+                <span className={styles.label}>{t("items-count")}:</span>
+                <span className={styles.value}>{items.length}</span>
+              </label>
 
-            <div
-              className={generalStyles.flex_container}
-              style={{ marginInlineStart: "10px" }}
-            >
-              <input
-                type="checkbox"
-                value={withUpdate}
-                checked={withUpdate}
-                onChange={withUpdateChangeHandler}
+              <div
+                className={generalStyles.flex_container}
+                style={{ marginInlineStart: "10px" }}
+              >
+                <input
+                  type="checkbox"
+                  value={withUpdate}
+                  checked={withUpdate}
+                  onChange={withUpdateChangeHandler}
+                />
+                <label>{t("add-or-update-items")}</label>
+              </div>
+              <Button
+                action={() =>
+                  withUpdate
+                    ? setShowConfirmModal(true)
+                    : setShowConfirmModal(true)
+                }
+                text={t("add-items")}
+                bgColor={Colors.SECONDARY_COLOR}
               />
-              <label>{t("add-or-update-items")}</label>
-            </div>
-            <Button
-              action={() =>
-                withUpdate
-                  ? setShowConfirmModal(true)
-                  : setShowConfirmModal(true)
-              }
-              text={t("add-items")}
-              bgColor={Colors.SECONDARY_COLOR}
-            />
-            <InputFile small={true} fileChangedHandler={fileChanged} />
-          </>
-        ) : null}
-      </div>
+              <InputFile small={true} fileChangedHandler={fileChanged} />
+            </>
+          ) : null}
+        </div>
 
-      {loading && <Loader allowCancel={false} />}
+        {loading && <Loader allowCancel={false} />}
 
-      {items.length === 0 && (
-        <InputFile
-          btnLabel={t("choose-file")}
-          fileChangedHandler={fileChanged}
-        />
-      )}
-
-      {items.length > 0 ? (
-        <ExcelTableHeader
-          deleteAllItem={() => setItems([])}
-          selectValue={itemsSelectValue}
-          itemsSelectionChange={itemsSelectionChangeHandler}
-        />
-      ) : null}
-
-      {items.length > 0 &&
-        items.map((item, index) => (
-          <ItemExcelRow
-            onDelete={() => handleDeleteItem(index)}
-            onchange={handleInputChange}
-            onSelectedChanged={selectedChangeHandler}
-            key={index}
-            item={item}
-            index={index}
+        {items.length === 0 && (
+          <InputFile
+            btnLabel={t("choose-file")}
+            fileChangedHandler={fileChanged}
           />
-        ))}
+        )}
 
-      {showModal && (
-        <Modal
-          header="add-items"
-          cancelLabel="close-label"
-          closeModal={() => setShowModal(false)}
-          small={true}
-        >
-          <p>{successMsg}</p>
-          <p>{failedMsg}</p>
-        </Modal>
-      )}
+        {items.length > 0 ? (
+          <ExcelTableHeader
+            deleteAllItem={() => setItems([])}
+            selectValue={itemsSelectValue}
+            itemsSelectionChange={itemsSelectionChangeHandler}
+          />
+        ) : null}
 
-      {showConfirmModal && (
-        <Modal
-          header="add-items"
-          cancelLabel="cancel-label"
-          okLabel="ok-label"
-          okModal={() =>
-            withUpdate ? handleInsertTenItems() : handleInsertItems()
-          }
-          closeModal={() => setShowConfirmModal(false)}
-          small={true}
-        >
-          {withUpdate ? (
-            <p>{t("insert-update-items-msg")}</p>
-          ) : (
-            <p>{t("insert-items-msg")}</p>
-          )}
-        </Modal>
-      )}
+        {items.length > 0 &&
+          items.map((item, index) => (
+            <ItemExcelRow
+              onDelete={() => handleDeleteItem(index)}
+              onchange={handleInputChange}
+              onSelectedChanged={selectedChangeHandler}
+              key={index}
+              item={item}
+              index={index}
+            />
+          ))}
 
-      {addStatus === "loading" && <Loader allowCancel={false} />}
+        {showModal && (
+          <Modal
+            header="add-items"
+            cancelLabel="close-label"
+            closeModal={() => setShowModal(false)}
+            small={true}
+          >
+            <p>{successMsg}</p>
+            <p>{failedMsg}</p>
+          </Modal>
+        )}
 
-      {addError && (
-        <Toast
-          bgColor={Colors.FAILED_COLOR}
-          foreColor="#fff"
-          toastText={t(addError)}
-          actionAfterTimeout={() => {
-            dispatch(resetAddStatus());
-          }}
-        />
-      )}
-    </div>
+        {showConfirmModal && (
+          <Modal
+            header="add-items"
+            cancelLabel="cancel-label"
+            okLabel="ok-label"
+            okModal={() => handleInsertItems()}
+            closeModal={() => setShowConfirmModal(false)}
+            small={true}
+          >
+            {withUpdate ? (
+              <p>{t("insert-update-items-msg")}</p>
+            ) : (
+              <p>{t("insert-items-msg")}</p>
+            )}
+          </Modal>
+        )}
+
+        {addStatus === "loading" && <Loader allowCancel={false} />}
+
+        {addError && (
+          <Toast
+            bgColor={Colors.FAILED_COLOR}
+            foreColor="#fff"
+            toastText={t(addError)}
+            actionAfterTimeout={() => {
+              dispatch(resetAddStatus());
+            }}
+          />
+        )}
+      </div>
+    </>
   ) : (
     <Redirect to="/signin" />
   );

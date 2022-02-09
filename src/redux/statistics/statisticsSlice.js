@@ -18,6 +18,39 @@ const initialState = {
   },
 };
 
+export const addStatistics = createAsyncThunk(
+  "statistics/addStatistics",
+  async ({ obj, token }, { rejectWithValue }) => {
+    try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.post(`${BASEURL}/statistics`, obj, {
+        // timeout: 10000,
+        cancelToken: source.token,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return response.data;
+    } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const getStatistics = createAsyncThunk(
   "statistics/getStatistics",
   async ({ obj }, { rejectWithValue, getState }) => {

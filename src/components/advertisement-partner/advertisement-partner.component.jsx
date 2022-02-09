@@ -17,6 +17,7 @@ import {
 } from "../../redux/favorites/favoritesSlice";
 import { selectToken, selectUser } from "../../redux/auth/authSlice";
 import {
+  addStatistics,
   statisticsCompanySelected,
   statisticsUserFavorites,
 } from "../../redux/statistics/statisticsSlice";
@@ -95,8 +96,9 @@ function AdvertisementPartner({ user, contentColor }) {
     // if the user type is pharmacy or normal, change the selectedCount
     // and selectedDates for this company
     if (
-      loggedUser.type === UserTypeConstants.PHARMACY ||
-      loggedUser.type === UserTypeConstants.GUEST
+      (loggedUser.type === UserTypeConstants.PHARMACY ||
+        loggedUser.type === UserTypeConstants.GUEST) &&
+      user.type === UserTypeConstants.COMPANY
     ) {
       dispatch(
         statisticsCompanySelected({
@@ -104,7 +106,18 @@ function AdvertisementPartner({ user, contentColor }) {
           token,
         })
       );
+      dispatch(
+        addStatistics({
+          obj: {
+            sourceUser: loggedUser._id,
+            targetUser: user._id,
+            action: "choose-company",
+          },
+          token,
+        })
+      );
     }
+
     dispatch(resetMedicines());
     if (user.type === UserTypeConstants.COMPANY) {
       dispatch(setSearchCompanyName(user.name));

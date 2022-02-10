@@ -373,7 +373,7 @@
   "general-settings": "الاعدادات العامة",
   "show-warehouse-items-permission": "السماح بعرض المنتجات ضمن المستودعات",
   "save-orders-in-database-permission": "بيانات",
-  "add-or-update-items": "تعديل المنتج في حال كان موجود مسبقاً",
+  "add-or-update-items": "إضافات منتجات أو تعديلها",
   "no-data-found": "لا يوجد نتائج مطابقة لمحرك البحث",
   "order-details": "تفاصيل الطلبية",
   "show-medicines": "رؤية المنتجات",
@@ -441,5 +441,8 @@
   "save-order": "حفظ الطلب",
   "pharmacy-document": "الترخيص",
   "guest-document": "البطاقة النقابية - بطاقة طالب صيدلي",
-  "export-items": "تصدير المنتجات إلى ملف اكسل"
+  "export-items": "تصدير المنتجات إلى ملف اكسل",
+  "update-items": "تعديل المنتجات",
+  "choose-file-to-update-items": "اختر ملف اكسل من اجل تعديل المنتجات",
+  "choose-file-to-add-items": "اختر ملف اكسل من اجل إضافة المنتجات"
 }

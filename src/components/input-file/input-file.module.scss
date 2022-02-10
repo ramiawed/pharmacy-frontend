@@ -1,22 +1,28 @@
 @import "../../variables.scss";
 
-.icon_container {
-  width: 200px;
-  height: 200px;
+// .icon_container {
+//   width: 200px;
+//   height: 200px;
 
-  flex-direction: column;
+//   flex-direction: column;
 
 
-  color: $green-color;
+//   color: $green-color;
 
-  border-radius: 50%;
+//   border-radius: 50%;
 
-  cursor: pointer;
+//   cursor: pointer;
 
-  transition: all 0.3s;
-}
+//   transition: all 0.3s;
+// }
 
-.icon_container:hover {
-  background-color: $green-color;
-  color: $white-color;
+// .icon_container:hover {
+//   background-color: $green-color;
+//   color: $white-color;
+// }
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
 }

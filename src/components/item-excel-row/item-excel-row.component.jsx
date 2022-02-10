@@ -10,15 +10,21 @@ import tableStyles from "../table.module.scss";
 import rowStyles from "../row.module.scss";
 import { onKeyPressForNumberInput } from "../../utils/constants";
 
-function ItemExcelRow({ item, index, onchange, onDelete, onSelectedChanged }) {
+function ItemExcelRow({
+  item,
+  index,
+  onchange,
+  onDelete,
+  onSelectedChanged,
+  withUpdate,
+}) {
   const { t } = useTranslation();
 
   const error =
-    item.name === "" || item.price * 1 === 0 || item.customer_price * 1 === 0;
-
-  // const onKeyPress = (event) => {
-  //   return event.charCode >= 48 && event.charCode <= 57;
-  // };
+    item.name === "" ||
+    item.price * 1 === 0 ||
+    item.customer_price * 1 === 0 ||
+    (withUpdate === true && item._id === null);
 
   return (
     <div

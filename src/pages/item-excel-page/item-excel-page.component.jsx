@@ -9,8 +9,13 @@ import ItemExcelRow from "../../components/item-excel-row/item-excel-row.compone
 import Modal from "../../components/modal/modal.component";
 import Toast from "../../components/toast/toast.component";
 import ExcelTableHeader from "../../components/excel-table-header/excel-table-header.component";
-import Button from "../../components/button/button.component";
+import Header from "../../components/header/header.component";
+import Icon from "../../components/action-icon/action-icon.component";
 import Loader from "../../components/action-loader/action-loader.component";
+
+// icons
+import { MdOutlineSystemUpdate } from "react-icons/md";
+import { RiPlayListAddFill } from "react-icons/ri";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -33,7 +38,6 @@ import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors, toEnglishNumber } from "../../utils/constants";
-import Header from "../../components/header/header.component";
 
 function ItemExcelPage() {
   const user = useSelector(selectUser);
@@ -44,13 +48,14 @@ function ItemExcelPage() {
   const { t } = useTranslation();
 
   const dispatch = useDispatch();
-  const token = useSelector(selectToken);
 
+  // selectors
+  const token = useSelector(selectToken);
   const { addError, addStatus } = useSelector(selectItems);
   const isOnline = useSelector(selectOnlineStatus);
-  const [withUpdate, setWithUpdate] = useState(false);
 
   // own state
+  const [withUpdate, setWithUpdate] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [fileName, setFileName] = useState("");
@@ -174,7 +179,12 @@ function ItemExcelPage() {
 
     for (let item of items) {
       if (item.selected) {
-        if (!item.name || !item.price || !item.customer_price) {
+        if (
+          !item.name ||
+          !item.price ||
+          !item.customer_price ||
+          (withUpdate && !item._id)
+        ) {
           wrongItems.push(item);
         } else {
           rightItem.push(item);
@@ -199,64 +209,6 @@ function ItemExcelPage() {
           setShowModal(true);
           setItems([...wrongItems, ...unSelectedItems]);
           checkItemsSelectionStatus([...wrongItems, ...unSelectedItems]);
-          dispatch(resetStatus());
-        })
-        .catch(() => {});
-    } else {
-    }
-  };
-
-  const handleInsertTenItems = () => {
-    setShowConfirmModal(false);
-    if (!isOnline) {
-      dispatch(changeOnlineMsg());
-      return;
-    }
-
-    let count = 0;
-    let index = 0;
-
-    let rightItem = [];
-    let wrongItems = [];
-    let unselectedItems = [];
-
-    while (count < 10 && items[index]) {
-      if (items[index].selected) {
-        if (
-          !items[index].name ||
-          !items[index].price ||
-          !items[index].customer_price
-        ) {
-          wrongItems.push(items[index]);
-        } else {
-          rightItem.push(items[index]);
-          count++;
-        }
-      } else {
-        unselectedItems.push(items[index]);
-      }
-      index++;
-    }
-
-    if (rightItem.length > 0) {
-      dispatch(
-        addItems({
-          obj: rightItem,
-          token,
-          withUpdate: withUpdate ? "addUpdate" : "add",
-        })
-      )
-        .then(unwrapResult)
-        .then(() => {
-          setSuccessMsg(`${t("inserted-items")}: ${rightItem.length}`);
-          setFailedMsg(`${t("wrong-items")}: ${wrongItems.length}`);
-          setShowModal(true);
-          setItems([...wrongItems, ...items.slice(index), ...unselectedItems]);
-          checkItemsSelectionStatus([
-            ...wrongItems,
-            ...items.slice(index),
-            ...unselectedItems,
-          ]);
           dispatch(resetStatus());
         })
         .catch(() => {});
@@ -379,42 +331,43 @@ function ItemExcelPage() {
     <>
       <div className={generalStyles.container}>
         <Header>
-          <h2>{t("items-from-excel")}</h2>
+          <h2>{t("add-or-update-items")}</h2>
         </Header>
         <div className={styles.actions}>
           {items.length > 0 ? (
             <>
-              <label>
-                <span className={styles.label}>{t("file-name")}:</span>
-                <span className={styles.value}>{fileName}</span>
-              </label>
-              <label>
-                <span className={styles.label}>{t("items-count")}:</span>
-                <span className={styles.value}>{items.length}</span>
-              </label>
+              <div className={styles.basic_details_container}>
+                <div className={styles.row}>
+                  <label className={styles.label}>{t("file-name")}: </label>
+                  <label className={styles.name}>{fileName}</label>
+                </div>
 
-              <div
-                className={generalStyles.flex_container}
-                style={{ marginInlineStart: "10px" }}
-              >
-                <input
-                  type="checkbox"
-                  value={withUpdate}
-                  checked={withUpdate}
-                  onChange={withUpdateChangeHandler}
-                />
-                <label>{t("add-or-update-items")}</label>
+                <div className={styles.row}>
+                  <label className={styles.label}>{t("items-count")}:</label>
+                  <label className={styles.name}>{items.length}</label>
+                </div>
+
+                <div className={styles.actions}>
+                  <Icon
+                    selected={false}
+                    foreColor={Colors.SECONDARY_COLOR}
+                    tooltip={t("add-items")}
+                    onclick={() => {}}
+                    icon={() => <RiPlayListAddFill size={20} />}
+                    withBackground={true}
+                  />
+
+                  <Icon
+                    selected={false}
+                    foreColor={Colors.SECONDARY_COLOR}
+                    tooltip={t("update-items")}
+                    onclick={() => {}}
+                    icon={() => <MdOutlineSystemUpdate size={20} />}
+                    withBackground={true}
+                  />
+                  <InputFile small={true} fileChangedHandler={fileChanged} />
+                </div>
               </div>
-              <Button
-                action={() =>
-                  withUpdate
-                    ? setShowConfirmModal(true)
-                    : setShowConfirmModal(true)
-                }
-                text={t("add-items")}
-                bgColor={Colors.SECONDARY_COLOR}
-              />
-              <InputFile small={true} fileChangedHandler={fileChanged} />
             </>
           ) : null}
         </div>
@@ -422,10 +375,24 @@ function ItemExcelPage() {
         {loading && <Loader allowCancel={false} />}
 
         {items.length === 0 && (
-          <InputFile
-            btnLabel={t("choose-file")}
-            fileChangedHandler={fileChanged}
-          />
+          <>
+            <InputFile
+              fileChangedHandler={(file) => {
+                setWithUpdate(false);
+                fileChanged(file);
+              }}
+              label="choose-file-to-add-items"
+              action={false}
+            />
+            <InputFile
+              fileChangedHandler={(file) => {
+                setWithUpdate(true);
+                fileChanged(file);
+              }}
+              label="choose-file-to-update-items"
+              action={true}
+            />
+          </>
         )}
 
         {items.length > 0 ? (
@@ -445,6 +412,7 @@ function ItemExcelPage() {
               key={index}
               item={item}
               index={index}
+              withUpdate={withUpdate}
             />
           ))}
 

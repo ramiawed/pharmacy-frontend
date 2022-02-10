@@ -90,10 +90,13 @@ function HomePage({ onSelectedChange }) {
 
     if (settings.itemsSectionThree.show)
       dispatch(getItemsSectionThree({ token }));
-    dispatch(getAllAdvertisements({ token }));
+
+    if (settings.showAdvertisements) {
+      dispatch(getAllAdvertisements({ token }));
+    }
 
     onSelectedChange();
-  }, []);
+  }, [settings]);
 
   return user ? (
     <div>

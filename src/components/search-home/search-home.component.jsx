@@ -278,27 +278,15 @@ function SearchHome() {
             )}
           </div>
         )}
-        {/* <h3>{t("app-name")}</h3> */}
       </div>
 
-      <img
+      {/* <img
         src={`${SERVER_URL}/logo-02.jpeg`}
         alt="thumb"
         className={styles.app_logo}
-      />
+      /> */}
     </div>
   );
 }
 
 export default SearchHome;
-
-// option === "medicines" ? (
-//   <ItemRow key={d._id} item={d} isSearch={true} />
-// ) : (
-//   <PartnerRow
-//     key={d._id}
-//     partner={d}
-//     isSearch={true}
-//     type={option === "companies" ? "company" : "warehouse"}
-//   />
-// )

@@ -4,10 +4,11 @@ import { useTranslation } from "react-i18next";
 import { SiMicrosoftexcel } from "react-icons/si";
 
 // styles
-import generalStyles from "../../style.module.scss";
+import { Colors } from "../../utils/constants";
+import Icon from "../action-icon/action-icon.component";
 import styles from "./input-file.module.scss";
 
-function InputFile({ fileChangedHandler, small }) {
+function InputFile({ fileChangedHandler, small, label }) {
   const { t } = useTranslation();
   const inputFileRef = React.useRef(null);
 
@@ -23,25 +24,36 @@ function InputFile({ fileChangedHandler, small }) {
   return (
     <>
       {small ? (
-        <div
-          className={[generalStyles.icon, generalStyles.fc_green].join(" ")}
-          onClick={handleClick}
-        >
-          <SiMicrosoftexcel size={24} />
-          <div className={generalStyles.tooltip}>{t("items-from-excel")}</div>
-        </div>
+        <Icon
+          selected={false}
+          foreColor={Colors.SUCCEEDED_COLOR}
+          tooltip={t("items-from-excel")}
+          onclick={handleClick}
+          icon={() => <SiMicrosoftexcel size={24} />}
+          withBackground={true}
+        />
       ) : (
         <div
-          className={[
-            styles.icon_container,
-            generalStyles.margin_h_auto,
-            generalStyles.flex_center_container,
-          ].join(" ")}
-          onClick={handleClick}
+          className={styles.actions}
+          style={{
+            marginBlockEnd: "10px",
+          }}
         >
-          <SiMicrosoftexcel size={125} />
-          <p>{t("items-from-excel")}</p>
-          <p>{t("press-here")}</p>
+          <label
+            style={{
+              color: Colors.SECONDARY_COLOR,
+            }}
+          >
+            {t(label)}
+          </label>
+          <Icon
+            selected={false}
+            foreColor={Colors.SUCCEEDED_COLOR}
+            tooltip={t(label)}
+            onclick={handleClick}
+            icon={() => <SiMicrosoftexcel size={24} />}
+            withBackground={true}
+          />
         </div>
       )}
 

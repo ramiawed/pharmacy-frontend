@@ -6,18 +6,23 @@ import Toast from "../toast/toast.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-import { selectUserData } from "../../redux/auth/authSlice";
+import { authSliceSignOut, selectUserData } from "../../redux/auth/authSlice";
 import {
   setForceRefresh,
   selectOrders,
   getUnreadOrders,
   updateOrderStatus,
   deleteOrderSocket,
+  orderSliceSignOut,
 } from "../../redux/orders/ordersSlice";
-import { setForceRefresh as advertisementForceRefresh } from "../../redux/advertisements/advertisementsSlice";
+import {
+  advertisementsSignOut,
+  setForceRefresh as advertisementForceRefresh,
+} from "../../redux/advertisements/advertisementsSlice";
 import {
   getUnreadNotification,
   setForceRefresh as notificationForceRefresh,
+  usersNotificationsSignOut,
 } from "../../redux/userNotifications/userNotificationsSlice";
 
 // constants
@@ -26,6 +31,29 @@ import { Colors, SERVER_URL, UserTypeConstants } from "../../utils/constants";
 // socket
 import socketIoClient from "socket.io-client";
 import NotificationToast from "../notification-toast/notification-toast.component";
+import {
+  settingsSignOut,
+  socketUpdateSettings,
+} from "../../redux/settings/settingsSlice";
+import { cartSliceSignOut } from "../../redux/cart/cartSlice";
+import { companySliceSignOut } from "../../redux/company/companySlice";
+import { favoritesSliceSignOut } from "../../redux/favorites/favoritesSlice";
+import { itemsSliceSignOut } from "../../redux/items/itemsSlices";
+import { statisticsSliceSignOut } from "../../redux/statistics/statisticsSlice";
+import { usersSliceSignOut } from "../../redux/users/usersSlice";
+import { warehouseSliceSignOut } from "../../redux/warehouse/warehousesSlice";
+import { warehouseItemsSliceSignOut } from "../../redux/warehouseItems/warehouseItemsSlices";
+import {
+  medicinesSliceSignOut,
+  resetMedicines,
+} from "../../redux/medicines/medicinesSlices";
+import { companiesSectionOneSignOut } from "../../redux/advertisements/companiesSectionOneSlice";
+import { companiesSectionTwoSignOut } from "../../redux/advertisements/companiesSectionTwoSlice";
+import { itemsSectionOneSignOut } from "../../redux/advertisements/itemsSectionOneSlice";
+import { itemsSectionThreeSignOut } from "../../redux/advertisements/itemsSectionThreeSlice";
+import { itemsSectionTwoSignOut } from "../../redux/advertisements/itemsSectionTwoSlice";
+import { warehousesSectionOneSignOut } from "../../redux/advertisements/warehousesSectionOneSlice";
+import { notificationsSignOut } from "../../redux/notifications/notificationsSlice";
 const socket = socketIoClient(`${SERVER_URL}`, { autoConnect: false });
 
 function SocketObserver() {
@@ -41,6 +69,31 @@ function SocketObserver() {
   const [notificationData, setNotificationData] = useState(null);
   const [advertisementStateMsg, setAdvertisementStateMsg] = useState("");
   useState("");
+
+  const handleSignOut = () => {
+    dispatch(authSliceSignOut());
+    dispatch(cartSliceSignOut());
+    dispatch(companySliceSignOut());
+    dispatch(favoritesSliceSignOut());
+    dispatch(itemsSliceSignOut());
+    dispatch(statisticsSliceSignOut());
+    dispatch(usersSliceSignOut());
+    dispatch(warehouseSliceSignOut());
+    dispatch(warehouseItemsSliceSignOut());
+    dispatch(orderSliceSignOut());
+    dispatch(resetMedicines());
+    dispatch(advertisementsSignOut());
+    dispatch(companiesSectionOneSignOut());
+    dispatch(companiesSectionTwoSignOut());
+    dispatch(itemsSectionOneSignOut());
+    dispatch(itemsSectionThreeSignOut());
+    dispatch(itemsSectionTwoSignOut());
+    dispatch(warehousesSectionOneSignOut());
+    dispatch(medicinesSliceSignOut());
+    dispatch(notificationsSignOut());
+    dispatch(settingsSignOut());
+    dispatch(usersNotificationsSignOut());
+  };
 
   useEffect(() => {
     // order observer
@@ -97,6 +150,21 @@ function SocketObserver() {
         }
       });
     }
+
+    // settings change observer
+    if (user.type !== UserTypeConstants.ADMIN) {
+      socket.on("settings-changed", (data) => {
+        console.log(data);
+        dispatch(socketUpdateSettings(data.updateDescription.updatedFields));
+      });
+    }
+
+    // sign out observer
+    socket.on("user-sign-out", (data) => {
+      if (user._id === data) {
+        handleSignOut();
+      }
+    });
 
     socket.connect();
 

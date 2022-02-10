@@ -45,7 +45,7 @@ function AdvertisementHomePage({ data }) {
     rtl: true,
     responsive: [
       {
-        breakpoint: 600,
+        breakpoint: 700,
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
@@ -99,17 +99,19 @@ function AdvertisementHomePage({ data }) {
         <Slider {...settings}>
           {data?.map((d) => (
             <div key={d._id}>
-              <div className={styles.img}>
+              <div
+                className={styles.img}
+                onClick={() => {
+                  advertisementClickHandler(d);
+                }}
+              >
                 <img
                   src={`${SERVER_URL}/${d.logo_url}`}
                   alt="Thumb"
                   style={{
-                    width: "100%",
+                    width: "200px",
                     height: "200px",
                     cursor: "pointer",
-                  }}
-                  onClick={() => {
-                    advertisementClickHandler(d);
                   }}
                 />
               </div>

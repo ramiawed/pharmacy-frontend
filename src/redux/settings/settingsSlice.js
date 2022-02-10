@@ -212,6 +212,12 @@ export const settingsSlice = createSlice({
         },
       };
     },
+    socketUpdateSettings: (state, action) => {
+      state.settings = {
+        ...state.settings,
+        ...action.payload,
+      };
+    },
   },
   extraReducers: {
     [getAllSettings.pending]: (state) => {
@@ -261,6 +267,7 @@ export const {
   resetSettingError,
   resetSetting,
   settingsSignOut,
+  socketUpdateSettings,
 } = settingsSlice.actions;
 
 export default settingsSlice.reducer;

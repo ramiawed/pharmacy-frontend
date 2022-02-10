@@ -1,7 +1,8 @@
 @import "../../variables.scss";
 
 .container {
-  width: 95vw;
+  background: $secondary-color;
+  width: 100vw;
   min-height: calc(50vh - 60px);
 
   margin: 0 auto;
@@ -26,12 +27,12 @@
   font-size: 1.5rem;
   font-family: $font4;
 
-  color: $main-color;
+  color: $white-color;
 
   margin-block-end: 16px;
 
   text-align: center;
-  text-shadow: 2px 2px 3px rgba($color: $secondary-color, $alpha: 1);
+  text-shadow: 2px 2px 1px rgba($color: black, $alpha: 1);
   text-transform: uppercase;
 }
 
@@ -62,16 +63,16 @@
   align-items: center;
   justify-content: center;
 
-  // background-color: rgba($color: $white-color, $alpha: 1);
-
-  border: 1px solid $secondary-color;
+  border: 3px solid $secondary-color;
   border-radius: 12px;
 
   padding: 10px;
+
+  background: $white-color
 }
 
 .search_div.has_value {
-  border-bottom: 1px solid $secondary-color;
+  border-bottom: 1px solid $white-color;
   border-radius: 12px 12px 0 0;
 }
 
@@ -108,7 +109,7 @@
 
   background-color: rgba($color: $white-color, $alpha: 1);
 
-  border: 1px solid $secondary-color;
+  border: 3px solid $secondary-color;
   border-top: none;
   border-radius: 0 0 12px 12px;
 

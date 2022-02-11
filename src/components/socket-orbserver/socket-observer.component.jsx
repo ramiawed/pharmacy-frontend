@@ -47,12 +47,25 @@ import {
   medicinesSliceSignOut,
   resetMedicines,
 } from "../../redux/medicines/medicinesSlices";
-import { companiesSectionOneSignOut } from "../../redux/advertisements/companiesSectionOneSlice";
-import { companiesSectionTwoSignOut } from "../../redux/advertisements/companiesSectionTwoSlice";
+import {
+  addCompanyToSectionOne,
+  addCompanyToSectionOneSocket,
+  companiesSectionOneSignOut,
+  removeCompanyFromSectionOneSocket,
+} from "../../redux/advertisements/companiesSectionOneSlice";
+import {
+  addCompanyToSectionTwoSocket,
+  companiesSectionTwoSignOut,
+  removeCompanyFromSectionTwoSocket,
+} from "../../redux/advertisements/companiesSectionTwoSlice";
 import { itemsSectionOneSignOut } from "../../redux/advertisements/itemsSectionOneSlice";
 import { itemsSectionThreeSignOut } from "../../redux/advertisements/itemsSectionThreeSlice";
 import { itemsSectionTwoSignOut } from "../../redux/advertisements/itemsSectionTwoSlice";
-import { warehousesSectionOneSignOut } from "../../redux/advertisements/warehousesSectionOneSlice";
+import {
+  addWarehouseToSectionOneSocket,
+  removeWarehouseToSectionOneSocket,
+  warehousesSectionOneSignOut,
+} from "../../redux/advertisements/warehousesSectionOneSlice";
 import { notificationsSignOut } from "../../redux/notifications/notificationsSlice";
 const socket = socketIoClient(`${SERVER_URL}`, { autoConnect: false });
 
@@ -164,6 +177,32 @@ function SocketObserver() {
         handleSignOut();
       }
     });
+
+    if (user.type !== UserTypeConstants.ADMIN) {
+      socket.on("user-added-to-section-one", (data) => {
+        dispatch(addCompanyToSectionOneSocket(data));
+      });
+
+      socket.on("user-added-to-section-two", (data) => {
+        dispatch(addCompanyToSectionTwoSocket(data));
+      });
+
+      socket.on("warehouse-added-to-section-one", (data) => {
+        dispatch(addWarehouseToSectionOneSocket(data));
+      });
+
+      socket.on("user-removed-from-section-one", (data) => {
+        dispatch(removeCompanyFromSectionOneSocket(data));
+      });
+
+      socket.on("user-removed-from-section-two", (data) => {
+        dispatch(removeCompanyFromSectionTwoSocket(data));
+      });
+
+      socket.on("warehouse-removed-from-section-one", (data) => {
+        dispatch(removeWarehouseToSectionOneSocket(data));
+      });
+    }
 
     socket.connect();
 

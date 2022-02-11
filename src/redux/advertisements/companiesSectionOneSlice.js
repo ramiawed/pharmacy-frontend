@@ -167,6 +167,19 @@ export const companiesSectionOneSlice = createSlice({
       state.refresh = action.payload;
     },
 
+    addCompanyToSectionOneSocket: (state, action) => {
+      state.companiesSectionOne = [
+        ...state.companiesSectionOne,
+        action.payload,
+      ];
+    },
+
+    removeCompanyFromSectionOneSocket: (state, action) => {
+      state.companiesSectionOne = state.companiesSectionOne.filter(
+        (c) => c._id !== action.payload
+      );
+    },
+
     resetCompaniesSectionOne: (state) => {
       state.companiesSectionOneStatus = "idle";
       state.companiesSectionOneError = "";
@@ -273,6 +286,8 @@ export const {
   resetRemoveCompanyFromSectionOneError,
   resetFavoritesCompanies,
   setRefreshCompaniesSliceOne,
+  addCompanyToSectionOneSocket,
+  removeCompanyFromSectionOneSocket,
 } = companiesSectionOneSlice.actions;
 
 export default companiesSectionOneSlice.reducer;

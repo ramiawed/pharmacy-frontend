@@ -167,6 +167,19 @@ export const warehousesSectionOneSlice = createSlice({
       state.refresh = action.payload;
     },
 
+    addWarehouseToSectionOneSocket: (state, action) => {
+      state.warehousesSectionOne = [
+        ...state.warehousesSectionOne,
+        action.payload,
+      ];
+    },
+
+    removeWarehouseToSectionOneSocket: (state, action) => {
+      state.warehousesSectionOne = state.warehousesSectionOne.filter(
+        (w) => w._id !== action.payload
+      );
+    },
+
     resetWarehousesSectionOne: (state) => {
       state.warehousesSectionOneStatus = "idle";
       state.warehousesSectionOneError = "";
@@ -273,6 +286,8 @@ export const {
   resetRemoveWarehouseFromSectionOneError,
   resetFavoritesWarehouses,
   setRefreshWarehouseSliceOne,
+  addWarehouseToSectionOneSocket,
+  removeWarehouseToSectionOneSocket,
 } = warehousesSectionOneSlice.actions;
 
 export default warehousesSectionOneSlice.reducer;

@@ -215,6 +215,9 @@
   "single-item": "منتج",
   "choose-file": "اختر الملف",
   "items-count": "عدد المنتجات",
+  "correct-items-count": "عدد المنتجات المحققة للشروط",
+  "wrong-items-count": "عدد المنتجات الفير محققة للشروط",
+  "selected-items-count": "عدد المنتجات المحددة",
   "ensure-name-price-price_customer": "الرجاء التأكد من الاسم التجاري- السعر - السعر للعموم",
   "inserted-items": "عدد المنتجات المضافة",
   "wrong-items": "عدد المنتجات التي لا تحقق الشروط",
@@ -444,5 +447,12 @@
   "export-items": "تصدير المنتجات إلى ملف اكسل",
   "update-items": "تعديل المنتجات",
   "choose-file-to-update-items": "اختر ملف اكسل من اجل تعديل المنتجات",
-  "choose-file-to-add-items": "اختر ملف اكسل من اجل إضافة المنتجات"
+  "choose-file-to-add-items": "اختر ملف اكسل من اجل إضافة المنتجات",
+  "excel-file-should-contains-this-columns": "ملف الاكسل يجب ان يحتوي على الاعمدة التالية",
+  "excel-file-warning": "في حال لم يحقق المنتج المعايير المطلوبة للادخال سيتم وضع حدود حمراء على المنتج",
+  "required-criteria": "المعايير المطلوبة",
+  "required-id-criteria": "حقل ال id لا يجب ان يكون فارغ",
+  "required-name-criteria": "حقل الاسم لا يجب ان يكون فارغ",
+  "required-price-criteria": "حقل السعر للصيدلاني لا يحب ان يكون فارغ أو أقل من الصفر",
+  "required-customer-price-criteria": "حقل السعر للعموم لا يحب ان يكون فارغ أو أقل من الصفر"
 }

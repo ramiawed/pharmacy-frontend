@@ -40,7 +40,7 @@ function ItemExcelRow({
           type="checkbox"
           value={item.selected}
           checked={item.selected}
-          disabled={error}
+          // disabled={error}
           onChange={() => onSelectedChanged(index)}
         />
       </div>

@@ -52,8 +52,8 @@
 }
 
 .label {
-  width: 75px;
-  font-size: 0.8rem;
+  width: 175px;
+  font-size: 1rem;
   color: #9d9d9d;
 }
 
@@ -62,11 +62,20 @@
 
   margin-inline: 10px;
 
-  font-size: 0.9rem;
+  font-size: 1.1rem;
 }
 
 .actions {
   display: flex;
   align-items: center;
   justify-content: flex-start;
+}
+
+.separator {
+  height: 1px;
+  background: $secondary-color;
+  opacity: 0.5;
+  margin-block: 10px;
+  width: 80%;
+  margin-inline: auto;
 }

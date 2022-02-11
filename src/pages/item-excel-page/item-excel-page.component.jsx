@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect, useLocation } from "react-router-dom";
 import * as XLSX from "xlsx";
@@ -12,9 +12,10 @@ import ExcelTableHeader from "../../components/excel-table-header/excel-table-he
 import Header from "../../components/header/header.component";
 import Icon from "../../components/action-icon/action-icon.component";
 import Loader from "../../components/action-loader/action-loader.component";
+import ExcelFileCriteria from "../../components/excel-file-criteria/excel-file-criteria.component";
 
 // icons
-import { MdOutlineSystemUpdate } from "react-icons/md";
+import { MdEditNote, MdOutlineSystemUpdate } from "react-icons/md";
 import { RiPlayListAddFill } from "react-icons/ri";
 
 // redux stuff
@@ -64,6 +65,38 @@ function ItemExcelPage() {
   const [successMsg, setSuccessMsg] = useState("");
   const [failedMsg, setFailedMsg] = useState("");
   const [itemsSelectValue, setItemsSelectValue] = useState("all");
+  const [correctItemsCount, setCorrectItemsCount] = useState(0);
+  const [wrongItemsCount, setWrongItemsCount] = useState(0);
+  const [selectedItemsCount, setSelectedItemsCount] = useState(0);
+
+  const calculateCounts = () => {
+    let correctCount = 0;
+    let wrongCount = 0;
+    let selectedCount = 0;
+
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].selected) {
+        selectedCount += 1;
+      }
+
+      if (
+        !items[i].name ||
+        !items[i].price ||
+        items[i].price * 1 === 0 ||
+        !items[i].customer_price ||
+        items[i].customer_price * 1 === 0 ||
+        (withUpdate && !items[i]._id)
+      ) {
+        wrongCount += 1;
+      } else {
+        correctCount += 1;
+      }
+    }
+
+    setCorrectItemsCount(correctCount);
+    setWrongItemsCount(wrongCount);
+    setSelectedItemsCount(selectedCount);
+  };
 
   const fileChanged = (file) => {
     // if file is null
@@ -164,9 +197,10 @@ function ItemExcelPage() {
     else reader.readAsArrayBuffer(file);
 
     setLoading(false);
+    calculateCounts();
   };
 
-  const handleInsertItems = () => {
+  const addOrUpdateHandler = () => {
     setShowConfirmModal(false);
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -246,6 +280,8 @@ function ItemExcelPage() {
     setItems(updatedItems);
 
     checkItemsSelectionStatus(updatedItems);
+
+    calculateCounts();
   };
 
   const selectedChangeHandler = (index) => {
@@ -264,6 +300,7 @@ function ItemExcelPage() {
 
     setItems(updatedItems);
     checkItemsSelectionStatus(updatedItems);
+    calculateCounts();
   };
 
   const itemsSelectionChangeHandler = () => {
@@ -283,34 +320,24 @@ function ItemExcelPage() {
       setItemsSelectValue("all");
 
       const updatedItems = items.map((item) => {
-        if (
-          item.name === "" ||
-          item.price * 1 === 0 ||
-          item.customer_price * 1 === 0
-        ) {
-          return {
-            ...item,
-          };
-        } else
-          return {
-            ...item,
-            selected: true,
-          };
+        return {
+          ...item,
+          selected: true,
+        };
       });
 
       setItems(updatedItems);
 
       checkItemsSelectionStatus(updatedItems);
     }
+
+    calculateCounts();
   };
 
   const handleDeleteItem = (index) => {
     const updatedItems = items.filter((item, i) => index !== i);
     setItems(updatedItems);
-  };
-
-  const withUpdateChangeHandler = () => {
-    setWithUpdate(!withUpdate);
+    calculateCounts();
   };
 
   const checkItemsSelectionStatus = (updatedItems) => {
@@ -325,13 +352,25 @@ function ItemExcelPage() {
     if (itemsSelectedCount === updatedItems.length) setItemsSelectValue("all");
     else if (itemsSelectedCount === 0) setItemsSelectValue("none");
     else setItemsSelectValue("some");
+
+    calculateCounts();
   };
+
+  useEffect(() => {
+    calculateCounts();
+  }, [items]);
 
   return user && companyId !== 0 ? (
     <>
       <div className={generalStyles.container}>
         <Header>
-          <h2>{t("add-or-update-items")}</h2>
+          <h2>
+            {items.length === 0
+              ? t("add-or-update-items")
+              : withUpdate
+              ? t("update-items")
+              : t("add-items")}{" "}
+          </h2>
         </Header>
         <div className={styles.actions}>
           {items.length > 0 ? (
@@ -347,24 +386,52 @@ function ItemExcelPage() {
                   <label className={styles.name}>{items.length}</label>
                 </div>
 
-                <div className={styles.actions}>
-                  <Icon
-                    selected={false}
-                    foreColor={Colors.SECONDARY_COLOR}
-                    tooltip={t("add-items")}
-                    onclick={() => {}}
-                    icon={() => <RiPlayListAddFill size={20} />}
-                    withBackground={true}
-                  />
+                <div className={styles.row}>
+                  <label className={styles.label}>
+                    {t("correct-items-count")}:
+                  </label>
+                  <label className={styles.name}>{correctItemsCount}</label>
+                </div>
 
-                  <Icon
-                    selected={false}
-                    foreColor={Colors.SECONDARY_COLOR}
-                    tooltip={t("update-items")}
-                    onclick={() => {}}
-                    icon={() => <MdOutlineSystemUpdate size={20} />}
-                    withBackground={true}
-                  />
+                <div className={styles.row}>
+                  <label className={styles.label}>
+                    {t("wrong-items-count")}:
+                  </label>
+                  <label className={styles.name}>{wrongItemsCount}</label>
+                </div>
+
+                <div className={styles.row}>
+                  <label className={styles.label}>
+                    {t("selected-items-count")}:
+                  </label>
+                  <label className={styles.name}>{selectedItemsCount}</label>
+                </div>
+
+                <div className={styles.actions}>
+                  {withUpdate ? (
+                    <Icon
+                      selected={false}
+                      foreColor={Colors.SECONDARY_COLOR}
+                      tooltip={t("update-items")}
+                      onclick={() => {
+                        setShowConfirmModal(true);
+                      }}
+                      icon={() => <MdEditNote size={24} />}
+                      withBackground={true}
+                    />
+                  ) : (
+                    <Icon
+                      selected={false}
+                      foreColor={Colors.SECONDARY_COLOR}
+                      tooltip={t("add-items")}
+                      onclick={() => {
+                        setShowConfirmModal(true);
+                      }}
+                      icon={() => <RiPlayListAddFill size={20} />}
+                      withBackground={true}
+                    />
+                  )}
+
                   <InputFile small={true} fileChangedHandler={fileChanged} />
                 </div>
               </div>
@@ -384,6 +451,11 @@ function ItemExcelPage() {
               label="choose-file-to-add-items"
               action={false}
             />
+
+            <ExcelFileCriteria action="add" />
+
+            <div className={styles.separator}></div>
+
             <InputFile
               fileChangedHandler={(file) => {
                 setWithUpdate(true);
@@ -392,6 +464,7 @@ function ItemExcelPage() {
               label="choose-file-to-update-items"
               action={true}
             />
+            <ExcelFileCriteria action="update" />
           </>
         )}
 
@@ -433,7 +506,7 @@ function ItemExcelPage() {
             header="add-items"
             cancelLabel="cancel-label"
             okLabel="ok-label"
-            okModal={() => handleInsertItems()}
+            okModal={() => addOrUpdateHandler()}
             closeModal={() => setShowConfirmModal(false)}
             small={true}
           >

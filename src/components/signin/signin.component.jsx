@@ -184,7 +184,6 @@ function SignIn() {
           })
         );
         dispatch(getAllSettings({ token: result.token }));
-        // dispatch(getFavorites({ token: result.token }));
       })
       .catch(() => {});
   };

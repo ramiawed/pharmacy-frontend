@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getFavorites } from "../../redux/favorites/favoritesSlice";
 import { getUnreadNotification } from "../../redux/userNotifications/userNotificationsSlice";
 import { selectSettings } from "../../redux/settings/settingsSlice";
-import { selectOrders } from "../../redux/orders/ordersSlice";
 
 // components
 import TopNav from "../../components/top-nav/top-nav.component";
@@ -63,8 +62,6 @@ function MainPage() {
   // get the user and the token from redux-store-auth
   const { user, token } = useSelector(selectUserData);
   const { status: settingsStatus } = useSelector(selectSettings);
-  const { unreadCountDiff, unreadMsg } = useSelector(selectOrders);
-  const orders = useSelector(selectOrders);
 
   // state uses in the TopNav component
   const [selectedTopNavOption, setSelectedTopNavOption] = useState(
@@ -113,7 +110,7 @@ function MainPage() {
         <HomePageLoader />
       ) : (
         <>
-          <SocketObserver orders={orders} />
+          <SocketObserver />
           <div
             className={styles.container}
             onClick={() => {
@@ -407,15 +404,6 @@ function MainPage() {
           </div>
         </>
       )}
-
-      {/* {unreadMsg && (
-        <Toast
-          bgColor={Colors.BLUE_COLOR}
-          foreColor="#fff"
-          toastText={`${t("you-have")} ${unreadCountDiff} ${t("orders-msg")}`}
-          actionAfterTimeout={() => dispatch(setUnreadMsg())}
-        />
-      )} */}
     </ErrorBoundary>
   ) : (
     // direct access to this page without sign in

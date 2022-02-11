@@ -62,7 +62,6 @@ function SocketObserver() {
 
   // selectors
   const { user, token } = useSelector(selectUserData);
-  const { orders } = useSelector(selectOrders);
 
   // own state
   const [orderStateMsg, setOrderStateMsg] = useState("");

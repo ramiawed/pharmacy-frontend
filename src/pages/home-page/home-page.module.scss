@@ -1,3 +1,5 @@
+@import '../../variables.scss';
+
 .advertisement_container {
   display: flex;
   flex-direction: row;
@@ -5,4 +7,28 @@
 
   justify-content: space-evenly;
   align-items: stretch;
+}
+
+.container {
+  width: 98%;
+
+  margin-block: 12px;
+  padding-block: 12px;
+  border-radius: 6px;
+
+  box-shadow: 3px 3px 5px rgba($color: #000, $alpha: 0.3);
+}
+
+@media only screen and (min-width: $small) {
+  .container {
+    flex-direction: column;
+    width: 45%;
+  }
+}
+
+@media only screen and (min-width: $medium) {
+  .container {
+    flex-direction: column;
+    width: 32%;
+  }
 }

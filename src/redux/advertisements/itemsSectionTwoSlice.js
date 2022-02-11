@@ -12,6 +12,7 @@ const initialState = {
   removeItemFromSectionTwoError: "",
   itemsSectionTwo: [],
   count: 0,
+  refresh: true,
 };
 
 let CancelToken;
@@ -162,6 +163,10 @@ export const itemsSectionTwoSlice = createSlice({
       state.removeItemFromSectionTwoError = "";
     },
 
+    setRefreshItemsSliceTwo: (state, action) => {
+      state.refresh = action.payload;
+    },
+
     resetItemsSectionTwo: (state) => {
       state.itemsSectionTwoStatus = "idle";
       state.itemsSectionTwoError = "";
@@ -171,6 +176,7 @@ export const itemsSectionTwoSlice = createSlice({
       state.removeItemFromSectionTwoError = "";
       state.itemsSectionTwo = [];
       state.count = 0;
+      state.refresh = true;
     },
 
     itemsSectionTwoSignOut: (state) => {
@@ -182,6 +188,7 @@ export const itemsSectionTwoSlice = createSlice({
       state.removeItemFromSectionTwoError = "";
       state.itemsSectionTwo = [];
       state.count = 0;
+      state.refresh = true;
     },
   },
 
@@ -193,6 +200,7 @@ export const itemsSectionTwoSlice = createSlice({
       state.itemsSectionTwoStatus = "succeeded";
       state.itemsSectionTwo = action.payload.data.items;
       state.itemsSectionTwoError = "";
+      state.refresh = false;
     },
     [getItemsSectionTwo.rejected]: (state, { payload }) => {
       state.itemsSectionTwoStatus = "failed";
@@ -264,6 +272,7 @@ export const {
   resetRemoveItemFromSectionTwoStatus,
   resetRemoveItemFromSectionTwoError,
   resetFavoritesItems,
+  setRefreshItemsSliceTwo,
 } = itemsSectionTwoSlice.actions;
 
 export default itemsSectionTwoSlice.reducer;

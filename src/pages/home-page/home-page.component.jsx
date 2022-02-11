@@ -50,43 +50,59 @@ function HomePage({ onSelectedChange }) {
   // selectors
   const { user, token } = useSelector(selectUserData);
 
-  const { companiesSectionOne, companiesSectionOneStatus } = useSelector(
-    selectCompaniesSectionOne
-  );
-  const { companiesSectionTwo, companiesSectionTwoStatus } = useSelector(
-    selectCompaniesSectionTwo
-  );
-  const { warehousesSectionOne, warehousesSectionOneStatus } = useSelector(
-    selectWarehousesSectionOne
-  );
-  const { itemsSectionOne, itemsSectionOneStatus } = useSelector(
-    selectItemsSectionOne
-  );
-  const { itemsSectionTwo, itemsSectionTwoStatus } = useSelector(
-    selectItemsSectionTwo
-  );
-  const { itemsSectionThree, itemsSectionThreeStatus } = useSelector(
-    selectItemsSectionThree
-  );
+  const {
+    companiesSectionOne,
+    companiesSectionOneStatus,
+    refresh: companiesOneRefresh,
+  } = useSelector(selectCompaniesSectionOne);
+
+  const {
+    companiesSectionTwo,
+    companiesSectionTwoStatus,
+    refresh: companiesTwoRefresh,
+  } = useSelector(selectCompaniesSectionTwo);
+
+  const {
+    warehousesSectionOne,
+    warehousesSectionOneStatus,
+    refresh: warehouseOneRefresh,
+  } = useSelector(selectWarehousesSectionOne);
+  const {
+    itemsSectionOne,
+    itemsSectionOneStatus,
+    refresh: itemsOneRefresh,
+  } = useSelector(selectItemsSectionOne);
+  const {
+    itemsSectionTwo,
+    itemsSectionTwoStatus,
+    refresh: itemsTwoRefresh,
+  } = useSelector(selectItemsSectionTwo);
+  const {
+    itemsSectionThree,
+    itemsSectionThreeStatus,
+    refresh: itemsThreeRefresh,
+  } = useSelector(selectItemsSectionThree);
 
   const { advertisements } = useSelector(selectAdvertisements);
   const { settings } = useSelector(selectSettings);
 
   useEffect(() => {
-    if (settings.companiesSectionOne.show)
+    if (settings.companiesSectionOne.show && companiesOneRefresh)
       dispatch(getCompaniesSectionOne({ token }));
 
-    if (settings.companiesSectionTwo.show)
+    if (settings.companiesSectionTwo.show && companiesTwoRefresh)
       dispatch(getCompaniesSectionTwo({ token }));
 
-    if (settings.warehousesSectionOne.show)
+    if (settings.warehousesSectionOne.show && warehouseOneRefresh)
       dispatch(getWarehousesSectionOne({ token }));
 
-    if (settings.itemsSectionOne.show) dispatch(getItemsSectionOne({ token }));
+    if (settings.itemsSectionOne.show && itemsOneRefresh)
+      dispatch(getItemsSectionOne({ token }));
 
-    if (settings.itemsSectionTwo.show) dispatch(getItemsSectionTwo({ token }));
+    if (settings.itemsSectionTwo.show && itemsTwoRefresh)
+      dispatch(getItemsSectionTwo({ token }));
 
-    if (settings.itemsSectionThree.show)
+    if (settings.itemsSectionThree.show && itemsThreeRefresh)
       dispatch(getItemsSectionThree({ token }));
 
     if (settings.showAdvertisements) {

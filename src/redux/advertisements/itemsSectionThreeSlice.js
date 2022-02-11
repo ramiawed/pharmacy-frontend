@@ -12,6 +12,7 @@ const initialState = {
   removeItemFromSectionThreeError: "",
   itemsSectionThree: [],
   count: 0,
+  refresh: true,
 };
 
 let CancelToken;
@@ -162,6 +163,10 @@ export const itemsSectionThreeSlice = createSlice({
       state.removeItemFromSectionThreeError = "";
     },
 
+    setRefreshItemsSliceThree: (state, action) => {
+      state.refresh = action.payload;
+    },
+
     resetItemsSectionThree: (state) => {
       state.itemsSectionThreeStatus = "idle";
       state.itemsSectionThreeError = "";
@@ -171,6 +176,7 @@ export const itemsSectionThreeSlice = createSlice({
       state.removeItemFromSectionThreeError = "";
       state.itemsSectionThree = [];
       state.count = 0;
+      state.refresh = true;
     },
 
     itemsSectionThreeSignOut: (state) => {
@@ -182,6 +188,7 @@ export const itemsSectionThreeSlice = createSlice({
       state.removeItemFromSectionThreeError = "";
       state.itemsSectionThree = [];
       state.count = 0;
+      state.refresh = true;
     },
   },
 
@@ -193,6 +200,7 @@ export const itemsSectionThreeSlice = createSlice({
       state.itemsSectionThreeStatus = "succeeded";
       state.itemsSectionThree = action.payload.data.items;
       state.itemsSectionThreeError = "";
+      state.refresh = false;
     },
     [getItemsSectionThree.rejected]: (state, { payload }) => {
       state.itemsSectionThreeStatus = "failed";
@@ -264,6 +272,7 @@ export const {
   resetRemoveItemFromSectionThreeStatus,
   resetRemoveItemFromSectionThreeError,
   resetFavoritesItems,
+  setRefreshItemsSliceThree,
 } = itemsSectionThreeSlice.actions;
 
 export default itemsSectionThreeSlice.reducer;

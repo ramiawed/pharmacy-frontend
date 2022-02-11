@@ -12,6 +12,7 @@ const initialState = {
   removeWarehouseFromSectionOneError: "",
   warehousesSectionOne: [],
   count: 0,
+  refresh: true,
 };
 
 let CancelToken;
@@ -162,6 +163,10 @@ export const warehousesSectionOneSlice = createSlice({
       state.removeWarehouseFromSectionOneError = "";
     },
 
+    setRefreshWarehouseSliceOne: (state, action) => {
+      state.refresh = action.payload;
+    },
+
     resetWarehousesSectionOne: (state) => {
       state.warehousesSectionOneStatus = "idle";
       state.warehousesSectionOneError = "";
@@ -171,6 +176,7 @@ export const warehousesSectionOneSlice = createSlice({
       state.removeWarehouseFromSectionOneError = "";
       state.warehousesSectionOne = [];
       state.count = 0;
+      state.refresh = true;
     },
 
     warehousesSectionOneSignOut: (state) => {
@@ -182,6 +188,7 @@ export const warehousesSectionOneSlice = createSlice({
       state.removeWarehouseFromSectionOneError = "";
       state.warehousesSectionOne = [];
       state.count = 0;
+      state.refresh = true;
     },
   },
 
@@ -193,6 +200,7 @@ export const warehousesSectionOneSlice = createSlice({
       state.warehousesSectionOneStatus = "succeeded";
       state.warehousesSectionOne = action.payload.data.users;
       state.warehousesSectionOneError = "";
+      state.refresh = false;
     },
     [getWarehousesSectionOne.rejected]: (state, { payload }) => {
       state.warehousesSectionOneStatus = "failed";
@@ -264,6 +272,7 @@ export const {
   resetRemoveWarehouseFromSectionOneStatus,
   resetRemoveWarehouseFromSectionOneError,
   resetFavoritesWarehouses,
+  setRefreshWarehouseSliceOne,
 } = warehousesSectionOneSlice.actions;
 
 export default warehousesSectionOneSlice.reducer;

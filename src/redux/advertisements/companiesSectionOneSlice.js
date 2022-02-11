@@ -12,6 +12,7 @@ const initialState = {
   removeCompanyFromSectionOneError: "",
   companiesSectionOne: [],
   count: 0,
+  refresh: true,
 };
 
 let CancelToken = null;
@@ -162,6 +163,10 @@ export const companiesSectionOneSlice = createSlice({
       state.removeCompanyFromSectionOneError = "";
     },
 
+    setRefreshCompaniesSliceOne: (state, action) => {
+      state.refresh = action.payload;
+    },
+
     resetCompaniesSectionOne: (state) => {
       state.companiesSectionOneStatus = "idle";
       state.companiesSectionOneError = "";
@@ -171,6 +176,7 @@ export const companiesSectionOneSlice = createSlice({
       state.removeCompanyFromSectionOneError = "";
       state.companiesSectionOne = [];
       state.count = 0;
+      state.refresh = true;
     },
 
     companiesSectionOneSignOut: (state) => {
@@ -182,6 +188,7 @@ export const companiesSectionOneSlice = createSlice({
       state.removeCompanyFromSectionOneError = "";
       state.companiesSectionOne = [];
       state.count = 0;
+      state.refresh = true;
     },
   },
 
@@ -193,6 +200,7 @@ export const companiesSectionOneSlice = createSlice({
       state.companiesSectionOneStatus = "succeeded";
       state.companiesSectionOne = action.payload.data.users;
       state.companiesSectionOneError = "";
+      state.refresh = false;
     },
     [getCompaniesSectionOne.rejected]: (state, { payload }) => {
       state.companiesSectionOneStatus = "failed";
@@ -264,6 +272,7 @@ export const {
   resetRemoveCompanyFromSectionOneStatus,
   resetRemoveCompanyFromSectionOneError,
   resetFavoritesCompanies,
+  setRefreshCompaniesSliceOne,
 } = companiesSectionOneSlice.actions;
 
 export default companiesSectionOneSlice.reducer;

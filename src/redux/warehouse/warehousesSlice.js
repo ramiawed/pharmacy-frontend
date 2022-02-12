@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { BASEURL } from "../../utils/constants";
+import { BASEURL, CitiesName } from "../../utils/constants";
 
 let CancelToken = null;
 let source = null;
@@ -12,7 +12,7 @@ const initialState = {
   error: "",
   pageState: {
     searchName: "",
-    searchCity: "",
+    searchCity: CitiesName.ALL,
     displayType: "list",
     showFavorites: false,
     page: 1,
@@ -127,7 +127,7 @@ export const warehousesSlice = createSlice({
     resetWarehousePageState: (state) => {
       state.pageState = {
         searchName: "",
-        searchCity: "",
+        searchCity: CitiesName.ALL,
         displayType: "list",
         showFavorites: false,
         page: 1,
@@ -156,7 +156,7 @@ export const warehousesSlice = createSlice({
       state.error = null;
       state.pageState = {
         searchName: "",
-        searchCity: "",
+        searchCity: CitiesName.ALL,
         displayType: "list",
         showFavorites: false,
         page: 1,

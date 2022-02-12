@@ -167,6 +167,16 @@ export const itemsSectionThreeSlice = createSlice({
       state.refresh = action.payload;
     },
 
+    addItemToSectionThreeSocket: (state, action) => {
+      state.itemsSectionThree = [...state.itemsSectionThree, action.payload];
+    },
+
+    removeItemFromSectionThreeSocket: (state, action) => {
+      state.itemsSectionThree = state.itemsSectionThree.filter(
+        (c) => c._id !== action.payload
+      );
+    },
+
     resetItemsSectionThree: (state) => {
       state.itemsSectionThreeStatus = "idle";
       state.itemsSectionThreeError = "";
@@ -273,6 +283,8 @@ export const {
   resetRemoveItemFromSectionThreeError,
   resetFavoritesItems,
   setRefreshItemsSliceThree,
+  addItemToSectionThreeSocket,
+  removeItemFromSectionThreeSocket,
 } = itemsSectionThreeSlice.actions;
 
 export default itemsSectionThreeSlice.reducer;

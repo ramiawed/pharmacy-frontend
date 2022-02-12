@@ -167,6 +167,16 @@ export const itemsSectionTwoSlice = createSlice({
       state.refresh = action.payload;
     },
 
+    addItemToSectionTwoSocket: (state, action) => {
+      state.itemsSectionTwo = [...state.itemsSectionTwo, action.payload];
+    },
+
+    removeItemFromSectionTwoSocket: (state, action) => {
+      state.itemsSectionTwo = state.itemsSectionTwo.filter(
+        (c) => c._id !== action.payload
+      );
+    },
+
     resetItemsSectionTwo: (state) => {
       state.itemsSectionTwoStatus = "idle";
       state.itemsSectionTwoError = "";
@@ -273,6 +283,8 @@ export const {
   resetRemoveItemFromSectionTwoError,
   resetFavoritesItems,
   setRefreshItemsSliceTwo,
+  addItemToSectionTwoSocket,
+  removeItemFromSectionTwoSocket,
 } = itemsSectionTwoSlice.actions;
 
 export default itemsSectionTwoSlice.reducer;

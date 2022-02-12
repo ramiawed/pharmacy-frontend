@@ -58,9 +58,21 @@ import {
   companiesSectionTwoSignOut,
   removeCompanyFromSectionTwoSocket,
 } from "../../redux/advertisements/companiesSectionTwoSlice";
-import { itemsSectionOneSignOut } from "../../redux/advertisements/itemsSectionOneSlice";
-import { itemsSectionThreeSignOut } from "../../redux/advertisements/itemsSectionThreeSlice";
-import { itemsSectionTwoSignOut } from "../../redux/advertisements/itemsSectionTwoSlice";
+import {
+  addItemToSectionOneSocket,
+  itemsSectionOneSignOut,
+  removeItemFromSectionOneSocket,
+} from "../../redux/advertisements/itemsSectionOneSlice";
+import {
+  addItemToSectionThreeSocket,
+  itemsSectionThreeSignOut,
+  removeItemFromSectionThreeSocket,
+} from "../../redux/advertisements/itemsSectionThreeSlice";
+import {
+  addItemToSectionTwoSocket,
+  itemsSectionTwoSignOut,
+  removeItemFromSectionTwoSocket,
+} from "../../redux/advertisements/itemsSectionTwoSlice";
 import {
   addWarehouseToSectionOneSocket,
   removeWarehouseToSectionOneSocket,
@@ -201,6 +213,30 @@ function SocketObserver() {
 
       socket.on("warehouse-removed-from-section-one", (data) => {
         dispatch(removeWarehouseToSectionOneSocket(data));
+      });
+
+      socket.on("item-added-to-section-one", (data) => {
+        dispatch(addItemToSectionOneSocket(data));
+      });
+
+      socket.on("item-removed-from-section-one", (data) => {
+        dispatch(removeItemFromSectionOneSocket(data));
+      });
+
+      socket.on("item-added-to-section-two", (data) => {
+        dispatch(addItemToSectionTwoSocket(data));
+      });
+
+      socket.on("item-removed-from-section-two", (data) => {
+        dispatch(removeItemFromSectionTwoSocket(data));
+      });
+
+      socket.on("item-added-to-section-three", (data) => {
+        dispatch(addItemToSectionThreeSocket(data));
+      });
+
+      socket.on("item-removed-from-section-three", (data) => {
+        dispatch(removeItemFromSectionThreeSocket(data));
       });
     }
 

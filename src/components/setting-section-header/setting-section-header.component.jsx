@@ -37,7 +37,6 @@ function SettingSectionHeader({
   const [edit, setEdit] = useState(false);
 
   const [showState, setShowState] = useState(show);
-  const [titleRightState, setTitleRightState] = useState(titleRight);
   const [titleState, setTitleState] = useState(title);
   const [titleError, setTitleError] = useState(false);
   const [descriptionState, setDescriptionState] = useState(description);
@@ -46,13 +45,12 @@ function SettingSectionHeader({
 
   const closeHandler = () => {
     setShowState(show);
-    setTitleRightState(titleRight);
+    // setTitleRightState(titleRight);
     setTitleState(title);
     setDescriptionState(description);
     setOrderState(order);
 
     setTitleError(false);
-    // setDescriptionError(false);
     setOrderError(false);
 
     setEdit(false);
@@ -64,11 +62,6 @@ function SettingSectionHeader({
       setTitleError(true);
       error = true;
     }
-
-    // if (descriptionState.trim().length === 0) {
-    //   setDescriptionError(true);
-    //   error = true;
-    // }
 
     if (orderState < 1 || orderState > 7) {
       setOrderError(true);
@@ -88,7 +81,6 @@ function SettingSectionHeader({
             description: descriptionState,
             order: orderState,
             show: showState,
-            titleRight: titleRightState,
           },
         },
       })
@@ -97,8 +89,6 @@ function SettingSectionHeader({
       .then(() => {
         setEdit(false);
       });
-
-    // setEdit(false);
   };
   return (
     <>
@@ -223,27 +213,6 @@ function SettingSectionHeader({
           onChange={() => setShowState(!showState)}
         />
         <label className={styles.checkbox_label}>{t(checkboxLabel)}</label>
-      </div>
-
-      <div
-        className={[
-          generalStyles.flex_center_container,
-          generalStyles.fc_secondary,
-        ].join(" ")}
-        style={{
-          justifyContent: "start",
-        }}
-      >
-        <input
-          type="checkbox"
-          value={titleRightState}
-          checked={titleRightState}
-          disabled={!edit}
-          onChange={() => setTitleRightState(!titleRightState)}
-        />
-        <label className={styles.checkbox_label}>
-          قسم العناوين موجود محاذاة طرف اليمين
-        </label>
       </div>
     </>
   );

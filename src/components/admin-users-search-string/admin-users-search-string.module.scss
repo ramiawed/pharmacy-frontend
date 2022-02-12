@@ -9,12 +9,14 @@
 }
 
 .div_search_str .label {
-  font-size: 0.6rem;
-  color: $white-color;
+  font-size: 0.8rem;
+  color: $secondary-color;
 }
 
 .div_search_str .value {
-  font-size: 0.7rem;
+  font-size: 0.9rem;
+  font-weight: bold;
   color: $secondary-color;
+
   margin-inline: 4px;
 }

@@ -17,6 +17,7 @@ function AdminUserTableHeader() {
         <label className={tableStyles.label_small}>{t("user-approve")}</label>
         <label className={tableStyles.label_small}>{t("user-delete")}</label>
         <label className={tableStyles.label_small}>{t("show-medicines")}</label>
+        <label className={tableStyles.label_small}>{t("user-type")}</label>
         <label
           className={[tableStyles.label_large, tableStyles.hide_on_small].join(
             " "

@@ -124,6 +124,7 @@ function AdminUsersHeader({
           tooltip={t("refresh-tooltip")}
           icon={() => <RiRefreshLine />}
           onclick={refreshHandler}
+          withBackground={true}
         />
 
         {searchFilterCount || orderFilterCount ? (
@@ -136,6 +137,7 @@ function AdminUsersHeader({
               refreshHandler();
             }}
             icon={() => <VscClearAll />}
+            withBackground={true}
           />
         ) : null}
 
@@ -154,6 +156,7 @@ function AdminUsersHeader({
             }
             small={true}
             tooltip={t("search")}
+            withBackground={true}
           />
         </div>
 
@@ -172,6 +175,7 @@ function AdminUsersHeader({
             }
             small={true}
             tooltip={t("sort-results")}
+            withBackground={true}
           />
         </div>
       </div>

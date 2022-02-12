@@ -43,6 +43,7 @@ import {
 
 // styles
 import styles from "./home-page.module.scss";
+import { Colors } from "../../utils/constants";
 
 function HomePage({ onSelectedChange }) {
   const dispatch = useDispatch();
@@ -114,11 +115,19 @@ function HomePage({ onSelectedChange }) {
 
   return user ? (
     <div>
-      {/* <SearchHome />
+      <div
+        style={{
+          background: Colors.SECONDARY_COLOR,
+          position: "relative",
+        }}
+      >
+        <div className={styles.square}></div>
+        <SearchHome />
 
-      {settings.showAdvertisements && (
-        <AdvertisementHomePage data={advertisements} />
-      )} */}
+        {settings.showAdvertisements && (
+          <AdvertisementHomePage data={advertisements} />
+        )}
+      </div>
 
       <div className={styles.advertisement_container}>
         {settings.companiesSectionOne.show &&

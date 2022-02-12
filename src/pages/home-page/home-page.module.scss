@@ -32,3 +32,25 @@
     width: 32%;
   }
 }
+
+.square {
+  width: 10vw;
+
+  border-radius: 6px;
+
+  position: absolute;
+
+  background: rgba($color: $green-color, $alpha: 0.3);
+
+  // transform: rotate(30deg);
+
+  // top: 100px;
+  // right: 100px;
+}
+
+
+.square:after {
+  content: "";
+  display: block;
+  padding-bottom: 100%;
+}

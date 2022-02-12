@@ -461,6 +461,16 @@ function UserRow({ user }) {
             <></>
           )}
         </label>
+
+        <label
+          className={[
+            tableStyles.label_small,
+            generalStyles.flex_center_container,
+          ].join(" ")}
+        >
+          {t(user.type)}
+        </label>
+
         <label
           className={[tableStyles.label_large, tableStyles.hide_on_small].join(
             " "

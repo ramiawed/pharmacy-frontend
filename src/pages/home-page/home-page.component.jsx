@@ -121,7 +121,6 @@ function HomePage({ onSelectedChange }) {
           position: "relative",
         }}
       >
-        <div className={styles.square}></div>
         <SearchHome />
 
         {settings.showAdvertisements && (

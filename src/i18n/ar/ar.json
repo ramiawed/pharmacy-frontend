@@ -117,7 +117,7 @@
   "search-by-company-name": "بحث من خلال اسم الشركة",
   "search-by-job-title": "بحث من خلال المسمى الوظيفي",
   "search-by-item-name": "بحث من خلال اسم المنتج",
-  "search-home-placeholder": "بحث من خلال اسم المنتج - اسم الشركة - اسم المستودع",
+  "search-home-placeholder": "بحث من خلال اسم المنتج، الاسم التجاري، الباركود - اسم الشركة - اسم المستودع",
   "search-engines": "محركات البحث",
   "search-by-warehouse-name": "بحث من خلال اسم المستودع",
   "user-action": "",
@@ -454,5 +454,6 @@
   "required-id-criteria": "حقل ال id لا يجب ان يكون فارغ",
   "required-name-criteria": "حقل الاسم لا يجب ان يكون فارغ",
   "required-price-criteria": "حقل السعر للصيدلاني لا يحب ان يكون فارغ أو أقل من الصفر",
-  "required-customer-price-criteria": "حقل السعر للعموم لا يحب ان يكون فارغ أو أقل من الصفر"
+  "required-customer-price-criteria": "حقل السعر للعموم لا يحب ان يكون فارغ أو أقل من الصفر",
+  "search-by-name-composition-barcode": "بحث من خلال الاسم، الاسم التجاري، الباركود"
 }

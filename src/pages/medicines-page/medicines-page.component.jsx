@@ -126,7 +126,7 @@ function MedicinesPage({ onSelectedChange }) {
                 dispatch(setSearchName(e.target.value));
               }}
               icon={<FaSearch />}
-              placeholder="search"
+              placeholder="search-by-name-composition-barcode"
               onEnterPress={handleEnterPress}
               resetField={() => {
                 dispatch(setSearchName(""));

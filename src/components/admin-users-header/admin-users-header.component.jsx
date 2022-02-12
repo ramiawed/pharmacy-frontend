@@ -35,6 +35,7 @@ import {
   UserTypeConstants,
 } from "../../utils/constants";
 import { VscClearAll } from "react-icons/vsc";
+import AdminUsersSearchString from "../admin-users-search-string/admin-users-search-string.component";
 
 function AdminUsersHeader({
   count,
@@ -114,6 +115,7 @@ function AdminUsersHeader({
         <h2>
           {t("partners")} <span>{count}</span>
         </h2>
+        <AdminUsersSearchString />
       </Header>
       <div
         className={[generalStyles.actions, generalStyles.margin_v_4].join(" ")}

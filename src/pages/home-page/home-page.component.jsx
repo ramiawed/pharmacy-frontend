@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { Redirect } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 // components
 import Loader from "../../components/loader/loader.component";
@@ -43,9 +44,12 @@ import {
 
 // styles
 import styles from "./home-page.module.scss";
-import { Colors } from "../../utils/constants";
+import { Colors, SERVER_URL } from "../../utils/constants";
+import { GiWhiteBook } from "react-icons/gi";
+import HomePageDescribeSection from "../../components/home-page-describe-section/home-page-describe-section.component";
 
 function HomePage({ onSelectedChange }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   // selectors
@@ -122,6 +126,46 @@ function HomePage({ onSelectedChange }) {
         }}
       >
         <SearchHome />
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-evenly",
+            height: "calc(50vh)",
+          }}
+        >
+          <HomePageDescribeSection
+            header="who-we-are"
+            describe="who-we-are-describe"
+          />
+
+          <div
+            style={{
+              width: "1px",
+              height: "150px",
+              background: "#e3e3e3",
+            }}
+          ></div>
+
+          {/* <div
+            style={{
+              backgroundImage: `url("${SERVER_URL}/logo-transparent.png")`,
+              backgroundPosition: "center",
+              backgroundSize: "cover",
+              width: "200px",
+              height: "300px",
+              borderRadius: "12px",
+              boxShadow: "3px 3px 3px rgba($color: #000000, $alpha: 0.5)",
+              backgroundColor: Colors.MAIN_COLOR,
+            }}
+          ></div> */}
+
+          <HomePageDescribeSection
+            header="why-we-are"
+            describe="why-we-are-describe"
+          />
+        </div>
 
         {settings.showAdvertisements && (
           <AdvertisementHomePage data={advertisements} />

@@ -47,7 +47,7 @@ export const getWarehouses = createAsyncThunk(
         buildUrl = buildUrl + `&name=${pageState.searchName}`;
       }
 
-      if (pageState.searchCity.trim() !== "") {
+      if (pageState.searchCity !== CitiesName.ALL) {
         buildUrl = buildUrl + `&city=${pageState.searchCity}`;
       }
 

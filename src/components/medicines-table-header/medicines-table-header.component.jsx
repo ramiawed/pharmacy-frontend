@@ -42,7 +42,7 @@ function MedicinesTableHeader({ user }) {
       <label
         className={styles.large}
         style={{
-          flex: 1,
+          width: "40px",
         }}
       >
         {t("item-caliber")}
@@ -50,7 +50,7 @@ function MedicinesTableHeader({ user }) {
       <label
         className={styles.small}
         style={{
-          flex: 1,
+          width: "25px",
         }}
       >
         {t("item-caliber-small")}
@@ -60,7 +60,7 @@ function MedicinesTableHeader({ user }) {
       <label
         className={styles.large}
         style={{
-          flex: 1,
+          width: "40px",
         }}
       >
         {t("item-packing")}
@@ -69,7 +69,7 @@ function MedicinesTableHeader({ user }) {
       <label
         className={styles.small}
         style={{
-          flex: 1,
+          width: "25px",
         }}
       >
         {t("item-packing-small")}
@@ -100,7 +100,7 @@ function MedicinesTableHeader({ user }) {
           <label
             className={styles.large}
             style={{
-              flex: 1,
+              width: "65px",
             }}
           >
             {t("item-price")}
@@ -108,7 +108,7 @@ function MedicinesTableHeader({ user }) {
           <label
             className={styles.small}
             style={{
-              flex: 1,
+              width: "30px",
             }}
           >
             {t("item-price-small")}
@@ -120,7 +120,7 @@ function MedicinesTableHeader({ user }) {
       <label
         className={styles.large}
         style={{
-          flex: 1,
+          width: "65px",
         }}
       >
         {t("item-customer-price")}
@@ -128,10 +128,27 @@ function MedicinesTableHeader({ user }) {
       <label
         className={styles.small}
         style={{
-          flex: 1,
+          width: "30px",
         }}
       >
         {t("item-customer-price-small")}
+      </label>
+
+      <label
+        className={styles.large}
+        style={{
+          flex: 1,
+        }}
+      >
+        {t("item-barcode")}
+      </label>
+      <label
+        className={styles.small}
+        style={{
+          flex: 1,
+        }}
+      >
+        {t("item-barcode-small")}
       </label>
 
       <label className={styles.icon}></label>

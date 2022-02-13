@@ -124,7 +124,7 @@ function CompaniesHeader({ search, refreshHandler, count }) {
           icon={() => <RiRefreshLine />}
         />
 
-        {(searchName.length > 0 || searchCity.length > 0) && (
+        {(searchName.length > 0 || searchCity !== CitiesName.ALL) && (
           <Icon
             withBackground={true}
             selected={false}

@@ -281,7 +281,7 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
 
         <label
           className={[
-            styles.details,
+            styles.fixed,
             styles.center,
             isSmallFavorite ? styles.small_font : "",
           ].join(" ")}
@@ -291,7 +291,7 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
 
         <label
           className={[
-            styles.details,
+            styles.fixed,
             styles.center,
             isSmallFavorite ? styles.small_font : "",
           ].join(" ")}
@@ -310,14 +310,26 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
         </label>
 
         {user.type !== UserTypeConstants.GUEST && !isFavorite && (
-          <label className={[styles.details, styles.center].join(" ")}>
+          <label className={[styles.price, styles.center].join(" ")}>
             {item.price}
           </label>
         )}
 
         {!isFavorite && (
-          <label className={[styles.details, styles.center].join(" ")}>
+          <label className={[styles.price, styles.center].join(" ")}>
             {item.customer_price}
+          </label>
+        )}
+
+        {!isFavorite && (
+          <label
+            className={[
+              styles.details,
+              styles.center,
+              isSmallFavorite ? styles.small_font : "",
+            ].join(" ")}
+          >
+            {item.barcode}
           </label>
         )}
 

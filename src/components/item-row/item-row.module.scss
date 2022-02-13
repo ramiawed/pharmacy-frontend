@@ -24,12 +24,22 @@
   font-size: 1rem;
 }
 
+.fixed {
+  width: 25px;
+  font-size: 0.6rem;
+}
+
+.price {
+  width: 30px;
+  font-size: 0.6rem;
+}
+
 
 @media only screen and (min-width: $small) {
   .name {
     font-size: 0.8rem;
   }
-  
+
   .details {
     font-size: 0.7rem;
   }
@@ -39,16 +49,26 @@
     font-size: 1.2rem;
   }
 }
- 
- @media only screen and (min-width: $medium) {
- .name {
-  font-size: 1rem;
- }
 
- .details {
-  font-size: 0.8rem;
-}
-   
+@media only screen and (min-width: $medium) {
+  .name {
+    font-size: 1rem;
+  }
+
+  .details {
+    font-size: 0.8rem;
+  }
+
+  .fixed {
+    width: 40px;
+    font-size: 0.8rem;
+  }
+
+  .price {
+    width: 65px;
+    font-size: 0.8rem;
+  }
+
 }
 
 .small_font {

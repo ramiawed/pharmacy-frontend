@@ -121,7 +121,7 @@ function WarehousesHeader({ search, refreshHandler, count }) {
           withBackground={true}
         />
 
-        {(searchName.length > 0 || searchCity.length > 0) && (
+        {(searchName.length > 0 || searchCity !== CitiesName.ALL) && (
           <Icon
             selected={false}
             foreColor={Colors.SECONDARY_COLOR}

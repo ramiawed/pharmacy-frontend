@@ -9,6 +9,7 @@ import {
   RiFacebookCircleFill,
   RiWhatsappFill,
   RiInstagramFill,
+  RiTelegramFill,
 } from "react-icons/ri";
 
 // constants
@@ -34,7 +35,10 @@ function Footer() {
               marginInline: "4px",
             }}
             onClick={() =>
-              window.open("https://www.facebook.com/Sima.Merjaneh/", "_blank")
+              window.open(
+                "https://www.facebook.com/Smart-Pharma-106820748580558/",
+                "_blank"
+              )
             }
           />
           <RiInstagramFill
@@ -45,9 +49,19 @@ function Footer() {
             }}
             onClick={() =>
               window.open(
-                "https://www.instagram.com/sima_merjaneh/?hl=en",
+                "https://www.instagram.com/p/CZsAC7Rrocc/?utm_medium=copy_link",
                 "_blank"
               )
+            }
+          />
+          <RiTelegramFill
+            size={24}
+            style={{
+              cursor: "pointer",
+              marginInline: "4px",
+            }}
+            onClick={() =>
+              window.open("https://t.me/+8SM-2Zfg8fcyNDdk", "_blank")
             }
           />
           <RiWhatsappFill

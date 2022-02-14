@@ -34,6 +34,8 @@ import InputFileImage from "../../components/input-file-image/input-file-image.c
 import Button from "../../components/button/button.component";
 import Loader from "../../components/action-loader/action-loader.component";
 import Icon from "../../components/action-icon/action-icon.component";
+import Header from "../../components/header/header.component";
+import Modal from "../../components/modal/modal.component";
 
 // constants and utils
 import { getIcon } from "../../utils/icons";
@@ -48,13 +50,12 @@ import {
 // icons
 import { MdLocalOffer } from "react-icons/md";
 import { RiRefreshLine } from "react-icons/ri";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 // styles
 import generalStyles from "../../style.module.scss";
 import styles from "./item-page.module.scss";
 import rowStyles from "../../components/row.module.scss";
-import { IoMdArrowRoundBack } from "react-icons/io";
-import Modal from "../../components/modal/modal.component";
 
 function ItemPage() {
   const { t } = useTranslation();
@@ -262,342 +263,342 @@ function ItemPage() {
 
   return user ? (
     <>
-      <div className={styles.content}>
-        <div
-          className={[
-            generalStyles.flex_center_container,
-            generalStyles.flex_column,
-            generalStyles.padding_v_6,
-            generalStyles.padding_h_12,
-          ].join(" ")}
-        >
-          {changeLogoStatus === "succeeded" || changeLogoStatus === "idle" ? (
-            <div
-              className={styles.logo}
-              style={{
-                backgroundImage:
-                  item.logo_url && item.logo_url !== ""
-                    ? `url("${SERVER_URL}/${item.logo_url}")`
-                    : `url("${SERVER_URL}/medicine.jpeg")`,
-                backgroundPosition: "center",
-                backgroundRepeat: "no-repeat",
-                backgroundSize: "contain",
-              }}
-            ></div>
-          ) : null}
-
-          {allowAction && itemId && (
-            <div>
-              <InputFileImage
-                type="item"
-                item={item}
-                onchange={() => {
-                  getItemFromDB();
-                }}
-              />
-            </div>
-          )}
-        </div>
-
-        <div
-          className={[
-            generalStyles.flex_center_container,
-            generalStyles.margin_v_4,
-          ].join(" ")}
-        >
-          <Icon
-            selected={false}
-            foreColor={Colors.SECONDARY_COLOR}
-            tooltip={t("refresh-tooltip")}
-            icon={() => <RiRefreshLine />}
-            onclick={() => {
-              if (type === "info" && itemId) {
-                getItemFromDB();
-                window.scrollTo(0, 0);
-              }
-            }}
-          />
-
-          <Icon
-            tooltip={t("go-back")}
-            onclick={() => {
-              history.goBack();
-            }}
-            icon={() => <IoMdArrowRoundBack />}
-            foreColor={Colors.SECONDARY_COLOR}
-          />
-        </div>
-
-        <CardInfo headerTitle={t("item-main-info")}>
-          <Input
-            label="item-trade-name"
-            id="name"
-            type="text"
-            value={item.name}
-            bordered={false}
-            icon={getIcon("medicine")}
-            onchange={handleInputChange}
-            error={itemError.name?.length > 0}
-            readOnly={!allowAction}
-          />
-
-          <div className={styles.horizontal_div}></div>
-
-          <Input
-            label="item-formula"
-            id="formula"
-            type="text"
-            value={item.formula}
-            bordered={false}
-            icon={getIcon("medicine")}
-            onchange={handleInputChange}
-            error={itemError.formula?.length > 0}
-            readOnly={!allowAction}
-          />
-
-          <div className={styles.horizontal_div}></div>
-
-          <Input
-            label="item-caliber"
-            id="caliber"
-            type="text"
-            value={item.caliber}
-            bordered={false}
-            icon={getIcon("medicine")}
-            onchange={handleInputChange}
-            error={itemError.caliber?.length > 0}
-            readOnly={!allowAction}
-          />
-
-          <div className={styles.horizontal_div}></div>
-
-          <Input
-            label="item-packing"
-            id="packing"
-            type="text"
-            value={item.packing}
-            bordered={false}
-            icon={getIcon("medicine")}
-            onchange={handleInputChange}
-            error={itemError.packing?.length > 0}
-            readOnly={!allowAction}
-          />
-
-          <div className={styles.horizontal_div}></div>
-
-          <Input
-            label="item-barcode"
-            id="barcode"
-            type="text"
-            value={item.barcode}
-            bordered={false}
-            icon={getIcon("medicine")}
-            onchange={handleInputChange}
-            readOnly={!allowAction}
-          />
-        </CardInfo>
-
-        <CardInfo headerTitle={t("item-price")}>
-          {user.type !== UserTypeConstants.GUEST && (
-            <div
-              style={{
-                width: "300px",
-              }}
-            >
-              <Input
-                label="item-price"
-                id="price"
-                type="number"
-                value={item.price}
-                bordered={false}
-                icon={getIcon("price")}
-                onchange={handleInputChange}
-                error={itemError.price?.length > 0}
-                readOnly={!allowAction}
-              />
-            </div>
-          )}
-
-          <div className={styles.horizontal_div}></div>
+      <div className={generalStyles.container}>
+        <Header>
+          <h2>{item.name}</h2>
           <div
             style={{
-              width: "300px",
+              position: "absolute",
+              top: "16px",
+              left: "46px",
             }}
           >
-            <Input
-              label="item-customer-price"
-              id="customer_price"
-              type="number"
-              value={item.customer_price}
-              bordered={false}
-              icon={getIcon("price")}
-              onchange={handleInputChange}
-              error={itemError.customer_price?.length > 0}
-              readOnly={!allowAction}
+            <Icon
+              selected={false}
+              foreColor={Colors.SECONDARY_COLOR}
+              tooltip={t("refresh-tooltip")}
+              icon={() => <RiRefreshLine />}
+              onclick={() => {
+                if (type === "info" && itemId) {
+                  getItemFromDB();
+                  window.scrollTo(0, 0);
+                }
+              }}
             />
           </div>
-        </CardInfo>
+        </Header>
 
-        <CardInfo headerTitle={t("item-composition")}>
-          <div>
-            <textarea
-              className={styles.textarea}
-              placeholder={t("enter-composition")}
-              id="composition"
-              value={item.composition}
-              onChange={handleInputChange}
-              disabled={!allowAction}
-            />
+        <div className={styles.content}>
+          <div
+            className={[
+              generalStyles.flex_center_container,
+              generalStyles.flex_column,
+              generalStyles.padding_v_6,
+              generalStyles.padding_h_12,
+            ].join(" ")}
+          >
+            {changeLogoStatus === "succeeded" || changeLogoStatus === "idle" ? (
+              <div className={styles.logo}>
+                <img
+                  src={
+                    item.logo_url && item.logo_url !== ""
+                      ? `${SERVER_URL}/${item.logo_url}`
+                      : `${SERVER_URL}/medicine.jpeg`
+                  }
+                  alt="thumb"
+                />
+              </div>
+            ) : null}
+
+            {allowAction && itemId && (
+              <div>
+                <InputFileImage
+                  type="item"
+                  item={item}
+                  onchange={() => {
+                    getItemFromDB();
+                  }}
+                />
+              </div>
+            )}
+            {allowAction &&
+              (from === UserTypeConstants.COMPANY ||
+                from === UserTypeConstants.ADMIN) && (
+                <div className={generalStyles.margin_v_4}>
+                  <Button
+                    text={type === "info" ? t("update-item") : t("add-item")}
+                    bgColor={Colors.SUCCEEDED_COLOR}
+                    action={() => setShowUpdateConfirmModal(true)}
+                  />
+                </div>
+              )}
+
+            {/* show add-to-cart button, if the user's type is PHARMACY and the item is exist in any warehouse */}
+            {user.type === UserTypeConstants.PHARMACY &&
+              item.warehouses?.length > 0 && (
+                <div className={generalStyles.margin_v_4}>
+                  <Button
+                    text={t("add-to-cart")}
+                    action={() => setShowAddToCartModal(true)}
+                    bgColor={Colors.SUCCEEDED_COLOR}
+                  />
+                </div>
+              )}
+
+            {user.type === UserTypeConstants.WAREHOUSE &&
+              (item.warehouses
+                ?.map((w) => w.warehouse._id)
+                .includes(user._id) ? (
+                <div className={generalStyles.margin_v_4}>
+                  <Button
+                    text={t("remove-from-warehouse")}
+                    action={removeItemFromWarehouseHandler}
+                    bgColor={Colors.FAILED_COLOR}
+                  />
+                </div>
+              ) : (
+                <div className={generalStyles.margin_v_4}>
+                  <Button
+                    text={t("add-to-warehouse")}
+                    action={addItemToWarehouseHandler}
+                    bgColor={Colors.SUCCEEDED_COLOR}
+                  />
+                </div>
+              ))}
           </div>
-        </CardInfo>
+          <div className={styles.info}>
+            <CardInfo headerTitle={t("item-main-info")}>
+              <Input
+                label="item-trade-name"
+                id="name"
+                type="text"
+                value={item.name}
+                bordered={false}
+                icon={getIcon("medicine")}
+                onchange={handleInputChange}
+                error={itemError.name?.length > 0}
+                readOnly={!allowAction}
+              />
 
-        <CardInfo headerTitle={t("item-indication")}>
-          <div>
-            <textarea
-              className={styles.textarea}
-              placeholder={t("enter-indication")}
-              id="indication"
-              value={item.indication}
-              onChange={handleInputChange}
-              disabled={!allowAction}
-            />
-          </div>
-        </CardInfo>
+              <div className={styles.horizontal_div}></div>
 
-        {/* IF THE USER TYPE IS ADMIN */}
-        {/* show each warehouses */}
-        {item.warehouses?.length > 0 && user.type === UserTypeConstants.ADMIN && (
-          <CardInfo headerTitle={t("warehouses")}>
-            {item.warehouses.map((w, index) => (
-              <div
-                className={[
-                  rowStyles.container,
-                  rowStyles.without_box_shadow,
-                  generalStyles.padding_h_6,
-                ].join(" ")}
-                key={index}
-              >
-                <label className={generalStyles.padding_v_6}>
-                  {w.warehouse.name}
-                </label>
+              <Input
+                label="item-formula"
+                id="formula"
+                type="text"
+                value={item.formula}
+                bordered={false}
+                icon={getIcon("medicine")}
+                onchange={handleInputChange}
+                error={itemError.formula?.length > 0}
+                readOnly={!allowAction}
+              />
 
+              <div className={styles.horizontal_div}></div>
+
+              <Input
+                label="item-caliber"
+                id="caliber"
+                type="text"
+                value={item.caliber}
+                bordered={false}
+                icon={getIcon("medicine")}
+                onchange={handleInputChange}
+                error={itemError.caliber?.length > 0}
+                readOnly={!allowAction}
+              />
+
+              <div className={styles.horizontal_div}></div>
+
+              <Input
+                label="item-packing"
+                id="packing"
+                type="text"
+                value={item.packing}
+                bordered={false}
+                icon={getIcon("medicine")}
+                onchange={handleInputChange}
+                error={itemError.packing?.length > 0}
+                readOnly={!allowAction}
+              />
+
+              <div className={styles.horizontal_div}></div>
+
+              <Input
+                label="item-barcode"
+                id="barcode"
+                type="text"
+                value={item.barcode}
+                bordered={false}
+                icon={getIcon("medicine")}
+                onchange={handleInputChange}
+                readOnly={!allowAction}
+              />
+            </CardInfo>
+
+            <CardInfo headerTitle={t("item-price")}>
+              {user.type !== UserTypeConstants.GUEST && (
                 <div
-                  className={generalStyles.icon}
-                  onClick={() => {
-                    setSelectedWarehouseId(w.warehouse._id);
-                    setAllowEdit(
-                      (user.type === UserTypeConstants.WAREHOUSE &&
-                        user._id === w.warehouse._id) ||
-                        (user.type === UserTypeConstants.ADMIN &&
-                          w.warehouse.allowAdmin)
-                    );
-                    setShowOfferModal(true);
+                  style={{
+                    width: "300px",
                   }}
                 >
-                  <MdLocalOffer />
-                  <div className={generalStyles.tooltip}>{t("nav-offers")}</div>
+                  <Input
+                    label="item-price"
+                    id="price"
+                    type="number"
+                    value={item.price}
+                    bordered={false}
+                    icon={getIcon("price")}
+                    onchange={handleInputChange}
+                    error={itemError.price?.length > 0}
+                    readOnly={!allowAction}
+                  />
                 </div>
+              )}
+
+              <div className={styles.horizontal_div}></div>
+              <div
+                style={{
+                  width: "300px",
+                }}
+              >
+                <Input
+                  label="item-customer-price"
+                  id="customer_price"
+                  type="number"
+                  value={item.customer_price}
+                  bordered={false}
+                  icon={getIcon("price")}
+                  onchange={handleInputChange}
+                  error={itemError.customer_price?.length > 0}
+                  readOnly={!allowAction}
+                />
               </div>
-            ))}
-          </CardInfo>
-        )}
+            </CardInfo>
 
-        {/* IF USER TYPE IS PHARMACY */}
-        {/* show warehouses which are in the same city with user */}
-        {item.warehouses?.length > 0 &&
-          user.type === UserTypeConstants.PHARMACY && (
-            <CardInfo headerTitle={t("warehouses")}>
-              {item.warehouses
-                .filter((w) => w.warehouse.city === user.city)
-                .map((w, index) => (
-                  <div
-                    className={[
-                      rowStyles.container,
-                      rowStyles.without_box_shadow,
-                      generalStyles.padding_h_6,
-                    ].join(" ")}
-                    key={index}
-                  >
-                    <label className={generalStyles.padding_v_6}>
-                      {w.warehouse.name}
-                    </label>
+            <CardInfo headerTitle={t("item-composition")}>
+              <div>
+                <textarea
+                  className={styles.textarea}
+                  placeholder={t("enter-composition")}
+                  id="composition"
+                  value={item.composition}
+                  onChange={handleInputChange}
+                  disabled={!allowAction}
+                />
+              </div>
+            </CardInfo>
 
+            <CardInfo headerTitle={t("item-indication")}>
+              <div>
+                <textarea
+                  className={styles.textarea}
+                  placeholder={t("enter-indication")}
+                  id="indication"
+                  value={item.indication}
+                  onChange={handleInputChange}
+                  disabled={!allowAction}
+                />
+              </div>
+            </CardInfo>
+
+            {/* IF THE USER TYPE IS ADMIN */}
+            {/* show each warehouses */}
+            {item.warehouses?.length > 0 &&
+              user.type === UserTypeConstants.ADMIN && (
+                <CardInfo headerTitle={t("warehouses")}>
+                  {item.warehouses.map((w, index) => (
                     <div
-                      className={generalStyles.icon}
-                      onClick={() => {
-                        setSelectedWarehouseId(w.warehouse._id);
-                        setAllowEdit(
-                          (user.type === UserTypeConstants.WAREHOUSE &&
-                            user._id === w.warehouse._id) ||
-                            (user.type === UserTypeConstants.ADMIN &&
-                              w.warehouse.allowAdmin)
-                        );
-                        setShowOfferModal(true);
-                      }}
+                      className={[
+                        rowStyles.container,
+                        rowStyles.without_box_shadow,
+                        generalStyles.padding_h_6,
+                      ].join(" ")}
+                      key={index}
                     >
-                      <MdLocalOffer />
-                      <div className={generalStyles.tooltip}>
-                        {t("nav-offers")}
+                      <label className={generalStyles.padding_v_6}>
+                        {w.warehouse.name}
+                      </label>
+
+                      <div
+                        className={generalStyles.icon}
+                        onClick={() => {
+                          setSelectedWarehouseId(w.warehouse._id);
+                          setAllowEdit(
+                            (user.type === UserTypeConstants.WAREHOUSE &&
+                              user._id === w.warehouse._id) ||
+                              (user.type === UserTypeConstants.ADMIN &&
+                                w.warehouse.allowAdmin)
+                          );
+                          setShowOfferModal(true);
+                        }}
+                      >
+                        <MdLocalOffer />
+                        <div className={generalStyles.tooltip}>
+                          {t("nav-offers")}
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-            </CardInfo>
-          )}
+                  ))}
+                </CardInfo>
+              )}
 
-        {Object.entries(itemError).length > 0 && (
-          <ul className={styles.error_ul}>
-            {Object.keys(itemError).map((key) =>
-              itemError[key].length > 0 ? (
-                <li key={key}>{t(itemError[key])}</li>
-              ) : null
+            {/* IF USER TYPE IS PHARMACY */}
+            {/* show warehouses which are in the same city with user */}
+            {item.warehouses?.length > 0 &&
+              user.type === UserTypeConstants.PHARMACY && (
+                <CardInfo headerTitle={t("warehouses")}>
+                  {item.warehouses
+                    .filter((w) => w.warehouse.city === user.city)
+                    .map((w, index) => (
+                      <div
+                        className={[
+                          rowStyles.container,
+                          rowStyles.without_box_shadow,
+                          generalStyles.padding_h_6,
+                        ].join(" ")}
+                        key={index}
+                      >
+                        <label className={generalStyles.padding_v_6}>
+                          {w.warehouse.name}
+                        </label>
+
+                        <div
+                          className={generalStyles.icon}
+                          onClick={() => {
+                            setSelectedWarehouseId(w.warehouse._id);
+                            setAllowEdit(
+                              (user.type === UserTypeConstants.WAREHOUSE &&
+                                user._id === w.warehouse._id) ||
+                                (user.type === UserTypeConstants.ADMIN &&
+                                  w.warehouse.allowAdmin)
+                            );
+                            setShowOfferModal(true);
+                          }}
+                        >
+                          <MdLocalOffer />
+                          <div className={generalStyles.tooltip}>
+                            {t("nav-offers")}
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                </CardInfo>
+              )}
+
+            {Object.entries(itemError).length > 0 && (
+              <ul className={styles.error_ul}>
+                {Object.keys(itemError).map((key) =>
+                  itemError[key].length > 0 ? (
+                    <li key={key}>{t(itemError[key])}</li>
+                  ) : null
+                )}
+              </ul>
             )}
-          </ul>
-        )}
-      </div>
-
-      {allowAction &&
-        (from === UserTypeConstants.COMPANY ||
-          from === UserTypeConstants.ADMIN) && (
-          <div className={generalStyles.margin_v_4}>
-            <Button
-              text={type === "info" ? t("update-item") : t("add-item")}
-              bgColor={Colors.SUCCEEDED_COLOR}
-              action={() => setShowUpdateConfirmModal(true)}
-            />
           </div>
-        )}
-
-      {/* show add-to-cart button, if the user's type is PHARMACY and the item is exist in any warehouse */}
-      {user.type === UserTypeConstants.PHARMACY && item.warehouses?.length > 0 && (
-        <div className={generalStyles.margin_v_4}>
-          <Button
-            text={t("add-to-cart")}
-            action={() => setShowAddToCartModal(true)}
-            bgColor={Colors.SUCCEEDED_COLOR}
-          />
         </div>
-      )}
-
-      {user.type === UserTypeConstants.WAREHOUSE &&
-        (item.warehouses?.map((w) => w.warehouse._id).includes(user._id) ? (
-          <div className={generalStyles.margin_v_4}>
-            <Button
-              text={t("remove-from-warehouse")}
-              action={removeItemFromWarehouseHandler}
-              bgColor={Colors.FAILED_COLOR}
-            />
-          </div>
-        ) : (
-          <div className={generalStyles.margin_v_4}>
-            <Button
-              text={t("add-to-warehouse")}
-              action={addItemToWarehouseHandler}
-              bgColor={Colors.SUCCEEDED_COLOR}
-            />
-          </div>
-        ))}
-
+      </div>
       {changeLogoStatus === "loading" && <Loader allowCancel={false} />}
 
       {addToWarehouseStatus === "loading" && <Loader allowCancel={false} />}

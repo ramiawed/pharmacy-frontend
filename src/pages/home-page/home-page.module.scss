@@ -19,10 +19,38 @@
   box-shadow: 3px 3px 5px rgba($color: #000, $alpha: 0.3);
 }
 
+.describe_container {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  flex-direction: column;
+  min-height: calc(50vh);
+  padding-block-end: 10px;
+}
+
+.separator {
+  width: 50%;
+  height: 1px;
+  background-color: #e3e3e3;
+  margin-block: 10px;
+}
+
 @media only screen and (min-width: $small) {
   .container {
     flex-direction: column;
     width: 45%;
+  }
+
+  .separator {
+    width: 1px;
+    height: 150px;
+    margin-block: 0;
+  }
+
+  .describe_container {
+
+    flex-direction: row;
+    padding-block-end: 10px;
   }
 }
 

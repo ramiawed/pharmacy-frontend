@@ -127,39 +127,13 @@ function HomePage({ onSelectedChange }) {
       >
         <SearchHome />
 
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "space-evenly",
-            height: "calc(50vh)",
-          }}
-        >
+        <div className={styles.describe_container}>
           <HomePageDescribeSection
             header="who-we-are"
             describe="who-we-are-describe"
           />
 
-          <div
-            style={{
-              width: "1px",
-              height: "150px",
-              background: "#e3e3e3",
-            }}
-          ></div>
-
-          {/* <div
-            style={{
-              backgroundImage: `url("${SERVER_URL}/logo-transparent.png")`,
-              backgroundPosition: "center",
-              backgroundSize: "cover",
-              width: "200px",
-              height: "300px",
-              borderRadius: "12px",
-              boxShadow: "3px 3px 3px rgba($color: #000000, $alpha: 0.5)",
-              backgroundColor: Colors.MAIN_COLOR,
-            }}
-          ></div> */}
+          <div className={styles.separator}></div>
 
           <HomePageDescribeSection
             header="why-we-are"

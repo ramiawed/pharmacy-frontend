@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";

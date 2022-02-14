@@ -28,7 +28,6 @@ import {
 } from "../../redux/warehouse/warehousesSlice";
 import {
   getFavorites,
-  resetFavoriteError,
   resetFavorites,
   selectFavorites,
 } from "../../redux/favorites/favoritesSlice";

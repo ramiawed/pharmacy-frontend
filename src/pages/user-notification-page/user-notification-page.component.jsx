@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useHistory } from "react-router";
 import ReactLoading from "react-loading";
 
 // components
@@ -20,7 +19,6 @@ import Header from "../../components/header/header.component";
 import {
   getAllNotifications,
   getUnreadNotification,
-  resetNotifications,
   resetNotificationsData,
   selectUserNotifications,
   setPage,
@@ -38,20 +36,12 @@ import { Colors } from "../../utils/constants";
 
 function UserNotificationPage({ onSelectedChange }) {
   const { t } = useTranslation();
-  const history = useHistory();
   const dispatch = useDispatch();
 
   const token = useSelector(selectToken);
   const isOnline = useSelector(selectOnlineStatus);
-  const {
-    status,
-    error,
-    page,
-    count,
-    userNotifications,
-    refresh,
-    forceRefresh,
-  } = useSelector(selectUserNotifications);
+  const { status, page, count, userNotifications, refresh, forceRefresh } =
+    useSelector(selectUserNotifications);
 
   const handleSearch = (page) => {
     if (!isOnline) {

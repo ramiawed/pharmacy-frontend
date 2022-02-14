@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Redirect, useHistory, useLocation } from "react-router";
+import { Redirect } from "react-router";
 import ReactLoading from "react-loading";
 
 // components

@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Colors } from "../../utils/constants";
 
 import styles from "./home-page-describe-section.module.scss";
 

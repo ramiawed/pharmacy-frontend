@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 
 // components
 import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
+import Icon from "../action-icon/action-icon.component";
 
 // react icons
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
@@ -13,6 +15,16 @@ import { VscLoading } from "react-icons/vsc";
 
 // redux-stuff
 import { useDispatch, useSelector } from "react-redux";
+import { statisticsItemFavorites } from "../../redux/statistics/statisticsSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
+import {
+  addItemToWarehouse,
+  removeItemFromWarehouse,
+} from "../../redux/medicines/medicinesSlices";
 
 import {
   addFavoriteItem,
@@ -24,7 +36,6 @@ import { selectToken, selectUser } from "../../redux/auth/authSlice";
 // styles
 import generalStyles from "../../style.module.scss";
 import styles from "./item-card.module.scss";
-import rowStyles from "../row.module.scss";
 
 // constants and utils
 import {
@@ -32,18 +43,6 @@ import {
   SERVER_URL,
   UserTypeConstants,
 } from "../../utils/constants.js";
-import { Link, useHistory } from "react-router-dom";
-import { statisticsItemFavorites } from "../../redux/statistics/statisticsSlice";
-import { unwrapResult } from "@reduxjs/toolkit";
-import {
-  changeOnlineMsg,
-  selectOnlineStatus,
-} from "../../redux/online/onlineSlice";
-import Icon from "../action-icon/action-icon.component";
-import {
-  addItemToWarehouse,
-  removeItemFromWarehouse,
-} from "../../redux/medicines/medicinesSlices";
 
 // if logged user is
 // 1- ADMIN: highlight the row by green color if the medicine has an offer.

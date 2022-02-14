@@ -16,9 +16,6 @@ import Input from "../input/input.component";
 import RowWith2Children from "../row-with-two-children/row-with-two-children.component";
 import SelectCustom from "../select/select.component";
 
-// icons
-import { FaSearch } from "react-icons/fa";
-
 // redux stuff
 import {
   selectUsers,

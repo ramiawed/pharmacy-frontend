@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 // react-icons
-import { FaSearch } from "react-icons/fa";
 import { VscSettings } from "react-icons/vsc";
 
 // styles

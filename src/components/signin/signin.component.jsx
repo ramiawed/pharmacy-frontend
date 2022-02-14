@@ -39,7 +39,6 @@ import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
-import { getFavorites } from "../../redux/favorites/favoritesSlice";
 
 // constants use for motion
 const containerVariant = {

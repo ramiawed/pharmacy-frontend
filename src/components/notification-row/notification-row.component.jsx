@@ -17,7 +17,6 @@ import Modal from "../modal/modal.component";
 // icons
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { BiImage } from "react-icons/bi";
-import { BsCheck, BsFillCircleFill } from "react-icons/bs";
 
 // styles
 import styles from "./notification-row.module.scss";

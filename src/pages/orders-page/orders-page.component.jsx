@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { Redirect } from "react-router";
 import { useTranslation } from "react-i18next";
 

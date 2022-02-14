@@ -77,7 +77,7 @@ function App() {
         </Toast>
       )}
 
-      {/* <Detector
+      <Detector
         polling={{
           url: "https://ipv4.icanhazip.com",
         }}
@@ -89,7 +89,7 @@ function App() {
             </div>
           )
         }
-      /> */}
+      />
     </div>
   );
 }

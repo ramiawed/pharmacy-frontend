@@ -15,7 +15,7 @@ import Loader from "../../components/action-loader/action-loader.component";
 import ExcelFileCriteria from "../../components/excel-file-criteria/excel-file-criteria.component";
 
 // icons
-import { MdEditNote, MdOutlineSystemUpdate } from "react-icons/md";
+import { MdEditNote } from "react-icons/md";
 import { RiPlayListAddFill } from "react-icons/ri";
 
 // redux stuff

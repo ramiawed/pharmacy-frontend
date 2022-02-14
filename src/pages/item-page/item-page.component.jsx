@@ -50,7 +50,6 @@ import {
 // icons
 import { MdLocalOffer } from "react-icons/md";
 import { RiRefreshLine } from "react-icons/ri";
-import { IoMdArrowRoundBack } from "react-icons/io";
 
 // styles
 import generalStyles from "../../style.module.scss";

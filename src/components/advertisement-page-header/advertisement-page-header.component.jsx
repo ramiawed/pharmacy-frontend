@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -23,7 +22,6 @@ import { Colors } from "../../utils/constants";
 
 function AdvertisementPageHeader({ isNew, setIsNew }) {
   const { t } = useTranslation();
-  const history = useHistory();
   const token = useSelector(selectToken);
   const dispatch = useDispatch();
 

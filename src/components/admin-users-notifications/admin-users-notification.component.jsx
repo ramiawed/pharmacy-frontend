@@ -5,7 +5,6 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
   cancelOperation,
-  resetActivationDeleteStatus,
   resetError,
   resetUserChangePasswordStatus,
   selectUsers,
@@ -23,13 +22,8 @@ function AdminUsersNotifications() {
   const dispatch = useDispatch();
 
   // selectors
-  const {
-    status,
-    error,
-    activationDeleteStatus,
-    activationDeleteStatusMsg,
-    resetUserPasswordStatus,
-  } = useSelector(selectUsers);
+  const { status, error, activationDeleteStatus, resetUserPasswordStatus } =
+    useSelector(selectUsers);
 
   return (
     <>

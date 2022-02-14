@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 // react-redux stuff
 import {

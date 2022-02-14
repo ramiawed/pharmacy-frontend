@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { authSliceSignOut, selectUserData } from "../../redux/auth/authSlice";
 import {
   setForceRefresh,
-  selectOrders,
   getUnreadOrders,
   updateOrderStatus,
   deleteOrderSocket,
@@ -49,7 +48,6 @@ import {
   resetMedicines,
 } from "../../redux/medicines/medicinesSlices";
 import {
-  addCompanyToSectionOne,
   addCompanyToSectionOneSocket,
   companiesSectionOneSignOut,
   removeCompanyFromSectionOneSocket,
@@ -92,8 +90,6 @@ function SocketObserver() {
   // own state
   const [orderStateMsg, setOrderStateMsg] = useState("");
   const [notificationData, setNotificationData] = useState(null);
-  const [advertisementStateMsg, setAdvertisementStateMsg] = useState("");
-  useState("");
 
   const handleSignOut = () => {
     dispatch(authSliceSignOut());
@@ -156,7 +152,6 @@ function SocketObserver() {
       console.log(data);
       if (data.operationType === "insert") {
         dispatch(advertisementForceRefresh(true));
-        setAdvertisementStateMsg("add-advertisement");
       }
     });
 

@@ -27,7 +27,6 @@ import { warehouseItemsSliceSignOut } from "../../redux/warehouseItems/warehouse
 import {
   getUnreadOrders,
   orderSliceSignOut,
-  selectOrders,
 } from "../../redux/orders/ordersSlice";
 import { advertisementsSignOut } from "../../redux/advertisements/advertisementsSlice";
 import { companiesSectionOneSignOut } from "../../redux/advertisements/companiesSectionOneSlice";

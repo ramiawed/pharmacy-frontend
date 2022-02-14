@@ -7,7 +7,7 @@
 
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Redirect, useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -37,7 +37,6 @@ import { Colors, UserTypeConstants } from "../../utils/constants.js";
 
 function FavoritesPage({ onSelectedChange }) {
   const { t } = useTranslation();
-  const history = useHistory();
   const dispatch = useDispatch();
 
   // selectors

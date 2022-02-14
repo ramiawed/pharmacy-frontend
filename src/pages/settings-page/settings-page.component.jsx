@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Redirect, useHistory } from "react-router-dom";
+import { Redirect } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // redux stuff

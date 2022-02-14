@@ -1,6 +1,5 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router";
 
 // icons
 import { MdAddCircle } from "react-icons/md";
@@ -24,7 +23,6 @@ import { selectToken } from "../../redux/auth/authSlice";
 
 function AdminNotificationsHeader({ isNew, setIsNew }) {
   const { t } = useTranslation();
-  const history = useHistory();
   const dispatch = useDispatch();
 
   const token = useSelector(selectToken);

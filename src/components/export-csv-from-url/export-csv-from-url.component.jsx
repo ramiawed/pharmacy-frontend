@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import * as FileSaver from "file-saver";
@@ -8,7 +8,7 @@ import * as XLSX from "xlsx";
 import Icon from "../action-icon/action-icon.component";
 
 // constants
-import { BASEURL, Colors } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 
 // react icons
 import { RiSave3Fill } from "react-icons/ri";
@@ -56,6 +56,3 @@ export const ExportCSVFromURL = ({ url, fileName }) => {
     />
   );
 };
-
-{
-}

@@ -1,96 +1,35 @@
-import React, { useEffect, useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import React from "react";
+import { Link } from "react-router-dom";
 
 // components
 
 // react icons
-import { AiFillStar, AiOutlineStar } from "react-icons/ai";
-import { VscLoading } from "react-icons/vsc";
 
 // redux-stuff
-import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addFavorite,
-  selectFavoritesPartners,
-  removeFavorite,
-} from "../../redux/favorites/favoritesSlice";
+
 import { selectToken, selectUser } from "../../redux/auth/authSlice";
 import {
   addStatistics,
   statisticsCompanySelected,
-  statisticsUserFavorites,
 } from "../../redux/statistics/statisticsSlice";
 import {
   resetMedicines,
   setSearchCompanyName,
   setSearchWarehouseName,
 } from "../../redux/medicines/medicinesSlices";
-import {
-  changeOnlineMsg,
-  selectOnlineStatus,
-} from "../../redux/online/onlineSlice";
 
 // styles
-import generalStyles from "../../style.module.scss";
 import styles from "./advertisement-partner.module.scss";
 
 // constants and utils
 import { SERVER_URL, UserTypeConstants } from "../../utils/constants.js";
 
 function AdvertisementPartner({ user, contentColor }) {
-  const history = useHistory();
   const dispatch = useDispatch();
 
-  const isOnline = useSelector(selectOnlineStatus);
-  const favorites = useSelector(selectFavoritesPartners);
   const token = useSelector(selectToken);
   const loggedUser = useSelector(selectUser);
-
-  // state to display a loader icon when user dispatch addToFavorite or removeFromFavorite
-  const [changeFavoriteLoading, setChangeFavoriteLoading] = useState(false);
-
-  // method to handle add company to user's favorite
-  const addCompanyToFavorite = (e) => {
-    // check the internet connection
-    if (!isOnline) {
-      dispatch(changeOnlineMsg());
-      return;
-    }
-
-    setChangeFavoriteLoading(true);
-
-    dispatch(addFavorite({ obj: { favoriteId: user._id }, token }))
-      .then(unwrapResult)
-      .then(() => {
-        setChangeFavoriteLoading(false);
-        dispatch(statisticsUserFavorites({ obj: { userId: user._id }, token }));
-      })
-      .catch(() => {
-        setChangeFavoriteLoading(false);
-      });
-
-    // e.stopPropagation();
-  };
-
-  // method to handle remove company from user's favorite
-  const removeCompanyFromFavorite = (e) => {
-    // check the internet connection
-    if (!isOnline) {
-      dispatch(changeOnlineMsg());
-      return;
-    }
-
-    setChangeFavoriteLoading(true);
-
-    dispatch(removeFavorite({ obj: { favoriteId: user._id }, token }))
-      .then(unwrapResult)
-      .then(() => {
-        changeFavoriteLoading(false);
-      })
-      .catch(() => setChangeFavoriteLoading(false));
-    // e.stopPropagation();
-  };
 
   const dispatchCompanySelectedHandler = () => {
     // if the user type is pharmacy or normal, change the selectedCount
@@ -130,27 +69,6 @@ function AdvertisementPartner({ user, contentColor }) {
 
   return (
     <div className={styles.partner_container}>
-      {/* <div>
-        {changeFavoriteLoading ? (
-          <div
-            className={[generalStyles.icon, generalStyles.fc_yellow].join(" ")}
-          >
-            <VscLoading className={generalStyles.loading} size={20} />
-          </div>
-        ) : (
-          <div
-            className={[generalStyles.icon, generalStyles.fc_yellow].join(" ")}
-          >
-            {favorites &&
-            favorites.map((favorite) => favorite._id).includes(user._id) ? (
-              <AiFillStar size={24} onClick={removeCompanyFromFavorite} />
-            ) : (
-              <AiOutlineStar size={24} onClick={addCompanyToFavorite} />
-            )}
-          </div>
-        )}
-      </div> */}
-
       <div
         className={styles.logo_div}
         style={{

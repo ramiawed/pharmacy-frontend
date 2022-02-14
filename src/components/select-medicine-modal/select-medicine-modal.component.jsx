@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 
 // redux stuff
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { selectToken } from "../../redux/auth/authSlice";
 
 // components

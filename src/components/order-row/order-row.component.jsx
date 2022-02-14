@@ -17,7 +17,7 @@ import {
 
 // icons
 import { FaCircle } from "react-icons/fa";
-import { RiDeleteBin5Fill, RiSave3Fill, RiSendPlaneFill } from "react-icons/ri";
+import { RiDeleteBin5Fill, RiSendPlaneFill } from "react-icons/ri";
 import { BsCheckAll } from "react-icons/bs";
 
 // styles

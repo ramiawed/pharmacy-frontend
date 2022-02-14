@@ -4,8 +4,6 @@ import { useTranslation } from "react-i18next";
 
 // styles
 import styles from "./modal.module.scss";
-import generalStyles from "../../style.module.scss";
-import { Colors } from "../../utils/constants";
 
 const Modal = ({
   closeModal,

@@ -20,12 +20,7 @@ import ReactLoading from "react-loading";
 import styles from "./search-home.module.scss";
 
 // constants
-import {
-  Colors,
-  BASEURL,
-  UserTypeConstants,
-  SERVER_URL,
-} from "../../utils/constants";
+import { Colors, BASEURL, UserTypeConstants } from "../../utils/constants";
 
 let CancelToken = null;
 let source = null;

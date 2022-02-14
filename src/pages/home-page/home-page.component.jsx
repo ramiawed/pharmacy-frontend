@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
 import { Redirect } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-
 // components
 import Loader from "../../components/loader/loader.component";
 import SearchHome from "../../components/search-home/search-home.component";
@@ -44,12 +42,10 @@ import {
 
 // styles
 import styles from "./home-page.module.scss";
-import { Colors, SERVER_URL } from "../../utils/constants";
-import { GiWhiteBook } from "react-icons/gi";
+import { Colors } from "../../utils/constants";
 import HomePageDescribeSection from "../../components/home-page-describe-section/home-page-describe-section.component";
 
 function HomePage({ onSelectedChange }) {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
 
   // selectors

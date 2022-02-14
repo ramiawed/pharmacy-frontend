@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, lazy, Suspense } from "react";
 import { Redirect, Route } from "react-router";
 import { Switch } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -14,7 +14,7 @@ import { selectSettings } from "../../redux/settings/settingsSlice";
 // components
 import TopNav from "../../components/top-nav/top-nav.component";
 import SideNav from "../../components/side-nav/side-nav.component";
-import MedicinesPage from "../medicines-page/medicines-page.component";
+
 import OrdersPage from "../orders-page/orders-page.component";
 import OrderDetailsPage from "../order-details-page/order-details-page.component";
 import Footer from "../../components/footer/footer.component";
@@ -27,31 +27,63 @@ import SocketObserver from "../../components/socket-orbserver/socket-observer.co
 import { GiHamburgerMenu } from "react-icons/gi";
 import { FaArrowAltCircleUp } from "react-icons/fa";
 
-// pages
-import CompaniesPage from "../companies-page/companies-page.component";
-import CartPage from "../cart-page/cart-page.component";
-import AdminUsersPage from "../admin-users-page/admin-users-page.component";
-import FavoritesPage from "../favorites-page/favorites-page.component";
-import WarehousePage from "../warehouses-page/warehouses-page.component";
-import ItemsPage from "../items-page/items-page.component";
-import WarehouseItemsPage from "../warehouse-items-page/warehouse-items-page.component";
-import ItemPage from "../item-page/item-page.component";
-import ItemExcelPage from "../item-excel-page/item-excel-page.component";
-import StatisticsOptionsPage from "../statistics-options-page/statistics-options-page.component";
-import StatisticsPage from "../statistics-page/statistics-page.component";
-import UserProfilePage from "../user-profile-page/user-profile-page.component";
-import AdvertisementsPage from "../advertisements-page/advertisements-page.component";
-import AdminNotificationPage from "../admin-notification-page/admin-notification-page.component";
-import UserNotificationPage from "../user-notification-page/user-notification-page.component";
-import NotificationPage from "../notification-page/notification-page.component";
-import HomePage from "../home-page/home-page.component";
-import SettingsPage from "../settings-page/settings-page.component";
-
 // style
 import styles from "./main-page.module.scss";
 
 // constants
 import { SERVER_URL, SideNavLinks, TopNavLinks } from "../../utils/constants";
+
+// pages
+const CartPage = lazy(() => import("../cart-page/cart-page.component"));
+const AdminUsersPage = lazy(() =>
+  import("../admin-users-page/admin-users-page.component")
+);
+const FavoritesPage = lazy(() =>
+  import("../favorites-page/favorites-page.component")
+);
+const WarehousePage = lazy(() =>
+  import("../warehouses-page/warehouses-page.component")
+);
+const ItemsPage = lazy(() => import("../items-page/items-page.component"));
+const WarehouseItemsPage = lazy(() =>
+  import("../warehouse-items-page/warehouse-items-page.component")
+);
+const ItemPage = lazy(() => import("../item-page/item-page.component"));
+const ItemExcelPage = lazy(() =>
+  import("../item-excel-page/item-excel-page.component")
+);
+const StatisticsOptionsPage = lazy(() =>
+  import("../statistics-options-page/statistics-options-page.component")
+);
+const StatisticsPage = lazy(() =>
+  import("../statistics-page/statistics-page.component")
+);
+const UserProfilePage = lazy(() =>
+  import("../user-profile-page/user-profile-page.component")
+);
+const AdvertisementsPage = lazy(() =>
+  import("../advertisements-page/advertisements-page.component")
+);
+const AdminNotificationPage = lazy(() =>
+  import("../admin-notification-page/admin-notification-page.component")
+);
+const UserNotificationPage = lazy(() =>
+  import("../user-notification-page/user-notification-page.component")
+);
+
+const HomePage = lazy(() => import("../home-page/home-page.component"));
+const CompaniesPage = lazy(() =>
+  import("../companies-page/companies-page.component")
+);
+const MedicinesPage = lazy(() =>
+  import("../medicines-page/medicines-page.component")
+);
+const NotificationPage = lazy(() =>
+  import("../notification-page/notification-page.component")
+);
+const SettingsPage = lazy(() =>
+  import("../settings-page/settings-page.component")
+);
 // MainPage
 // you have to sign in first
 function MainPage() {
@@ -166,226 +198,228 @@ function MainPage() {
             />
 
             <div className={styles.content_area}>
-              <Switch>
-                <Route exact path="/">
-                  <HomePage
-                    onSelectedChange={() => {
-                      setSelectedTopNavOption(TopNavLinks.HOME);
-                      setCollapsedSideNavOption(true);
-                      setSelectedSideNavOption("");
-                      setShowTopNav(false);
-                    }}
-                  />
-                </Route>
+              <Suspense fallback={<div>Loading ...</div>}>
+                <Switch>
+                  <Route exact path="/">
+                    <HomePage
+                      onSelectedChange={() => {
+                        setSelectedTopNavOption(TopNavLinks.HOME);
+                        setCollapsedSideNavOption(true);
+                        setSelectedSideNavOption("");
+                        setShowTopNav(false);
+                      }}
+                    />
+                  </Route>
 
-                <Route exact path="/companies">
-                  <CompaniesPage
-                    onSelectedChange={() => {
-                      setSelectedTopNavOption(TopNavLinks.COMPANIES);
-                      setCollapsedSideNavOption(true);
-                      setSelectedSideNavOption("");
-                      setShowTopNav(false);
-                    }}
-                  />
-                </Route>
+                  <Route exact path="/companies">
+                    <CompaniesPage
+                      onSelectedChange={() => {
+                        setSelectedTopNavOption(TopNavLinks.COMPANIES);
+                        setCollapsedSideNavOption(true);
+                        setSelectedSideNavOption("");
+                        setShowTopNav(false);
+                      }}
+                    />
+                  </Route>
 
-                <Route exact path="/medicines">
-                  <MedicinesPage
-                    onSelectedChange={() => {
-                      setSelectedTopNavOption(TopNavLinks.MEDICINES);
-                      setCollapsedSideNavOption(true);
-                      setSelectedSideNavOption("");
-                      setShowTopNav(false);
-                    }}
-                  />
-                </Route>
+                  <Route exact path="/medicines">
+                    <MedicinesPage
+                      onSelectedChange={() => {
+                        setSelectedTopNavOption(TopNavLinks.MEDICINES);
+                        setCollapsedSideNavOption(true);
+                        setSelectedSideNavOption("");
+                        setShowTopNav(false);
+                      }}
+                    />
+                  </Route>
 
-                <Route path="/warehouse/items">
-                  <WarehouseItemsPage
-                    onSelectedChange={() => {
-                      setSelectedTopNavOption(TopNavLinks.MEDICINES);
-                      setCollapsedSideNavOption(true);
-                      setSelectedSideNavOption("");
-                      setShowTopNav(false);
-                    }}
-                  />
-                </Route>
+                  <Route path="/warehouse/items">
+                    <WarehouseItemsPage
+                      onSelectedChange={() => {
+                        setSelectedTopNavOption(TopNavLinks.MEDICINES);
+                        setCollapsedSideNavOption(true);
+                        setSelectedSideNavOption("");
+                        setShowTopNav(false);
+                      }}
+                    />
+                  </Route>
 
-                <Route exact path="/warehouses">
-                  <WarehousePage
-                    onSelectedChange={() => {
-                      setSelectedTopNavOption(TopNavLinks.WAREHOUSES);
-                      setCollapsedSideNavOption(true);
-                      setSelectedSideNavOption("");
-                      setShowTopNav(false);
-                    }}
-                  />
-                </Route>
+                  <Route exact path="/warehouses">
+                    <WarehousePage
+                      onSelectedChange={() => {
+                        setSelectedTopNavOption(TopNavLinks.WAREHOUSES);
+                        setCollapsedSideNavOption(true);
+                        setSelectedSideNavOption("");
+                        setShowTopNav(false);
+                      }}
+                    />
+                  </Route>
 
-                <Route exact path="/item">
-                  <ItemPage />
-                </Route>
+                  <Route exact path="/item">
+                    <ItemPage />
+                  </Route>
 
-                <Route exact path="/items-from-excel">
-                  <ItemExcelPage />
-                </Route>
+                  <Route exact path="/items-from-excel">
+                    <ItemExcelPage />
+                  </Route>
 
-                <Route exact path="/cart">
-                  <CartPage
-                    onSelectedChange={() => {
-                      setSelectedTopNavOption(TopNavLinks.CART);
-                      setCollapsedSideNavOption(true);
-                      setSelectedSideNavOption("");
-                      setShowTopNav(false);
-                    }}
-                  />
-                </Route>
+                  <Route exact path="/cart">
+                    <CartPage
+                      onSelectedChange={() => {
+                        setSelectedTopNavOption(TopNavLinks.CART);
+                        setCollapsedSideNavOption(true);
+                        setSelectedSideNavOption("");
+                        setShowTopNav(false);
+                      }}
+                    />
+                  </Route>
 
-                <Route exact path="/orders">
-                  <OrdersPage
-                    onSelectedChange={() => {
-                      setSelectedTopNavOption("");
-                      setCollapsedSideNavOption(true);
-                      setSelectedSideNavOption(SideNavLinks.ORDERS);
-                      setShowTopNav(false);
-                    }}
-                  />
-                </Route>
+                  <Route exact path="/orders">
+                    <OrdersPage
+                      onSelectedChange={() => {
+                        setSelectedTopNavOption("");
+                        setCollapsedSideNavOption(true);
+                        setSelectedSideNavOption(SideNavLinks.ORDERS);
+                        setShowTopNav(false);
+                      }}
+                    />
+                  </Route>
 
-                <Route exact path="/order-details">
-                  <OrderDetailsPage
-                    onSelectedChange={() => {
-                      setSelectedTopNavOption("");
-                      setCollapsedSideNavOption(true);
-                      setSelectedSideNavOption(SideNavLinks.ORDERS);
-                      setShowTopNav(false);
-                    }}
-                  />
-                </Route>
+                  <Route exact path="/order-details">
+                    <OrderDetailsPage
+                      onSelectedChange={() => {
+                        setSelectedTopNavOption("");
+                        setCollapsedSideNavOption(true);
+                        setSelectedSideNavOption(SideNavLinks.ORDERS);
+                        setShowTopNav(false);
+                      }}
+                    />
+                  </Route>
 
-                <Route exact path="/profile">
-                  <UserProfilePage
-                    onSelectedChange={() => {
-                      setSelectedTopNavOption("");
-                      setCollapsedSideNavOption(true);
-                      setSelectedSideNavOption(SideNavLinks.PROFILE);
-                      setShowTopNav(false);
-                    }}
-                  />
-                </Route>
+                  <Route exact path="/profile">
+                    <UserProfilePage
+                      onSelectedChange={() => {
+                        setSelectedTopNavOption("");
+                        setCollapsedSideNavOption(true);
+                        setSelectedSideNavOption(SideNavLinks.PROFILE);
+                        setShowTopNav(false);
+                      }}
+                    />
+                  </Route>
 
-                <Route exact path="/favorites">
-                  <FavoritesPage
-                    onSelectedChange={() => {
-                      setSelectedTopNavOption(TopNavLinks.FAVORITES);
-                      setCollapsedSideNavOption(true);
-                      setSelectedSideNavOption("");
-                      setShowTopNav(false);
-                    }}
-                  />
-                </Route>
+                  <Route exact path="/favorites">
+                    <FavoritesPage
+                      onSelectedChange={() => {
+                        setSelectedTopNavOption(TopNavLinks.FAVORITES);
+                        setCollapsedSideNavOption(true);
+                        setSelectedSideNavOption("");
+                        setShowTopNav(false);
+                      }}
+                    />
+                  </Route>
 
-                <Route exact path="/items">
-                  <ItemsPage
-                    onSelectedChange={() => {
-                      setSelectedTopNavOption("");
-                      setCollapsedSideNavOption(true);
-                      setSelectedSideNavOption(SideNavLinks.ITEMS);
-                      setShowTopNav(false);
-                    }}
-                  />
-                </Route>
+                  <Route exact path="/items">
+                    <ItemsPage
+                      onSelectedChange={() => {
+                        setSelectedTopNavOption("");
+                        setCollapsedSideNavOption(true);
+                        setSelectedSideNavOption(SideNavLinks.ITEMS);
+                        setShowTopNav(false);
+                      }}
+                    />
+                  </Route>
 
-                <Route exact path="/notifications">
-                  <UserNotificationPage
-                    onSelectedChange={() => {
-                      setSelectedTopNavOption("");
-                      setCollapsedSideNavOption(true);
-                      setSelectedSideNavOption(SideNavLinks.NOTIFICATIONS);
-                      setShowTopNav(false);
-                    }}
-                  />
-                </Route>
+                  <Route exact path="/notifications">
+                    <UserNotificationPage
+                      onSelectedChange={() => {
+                        setSelectedTopNavOption("");
+                        setCollapsedSideNavOption(true);
+                        setSelectedSideNavOption(SideNavLinks.NOTIFICATIONS);
+                        setShowTopNav(false);
+                      }}
+                    />
+                  </Route>
 
-                <Route exact path="/notification/:notificationId">
-                  <NotificationPage
-                    onSelectedChange={() => {
-                      setSelectedTopNavOption("");
-                      setCollapsedSideNavOption(true);
-                      setSelectedSideNavOption(SideNavLinks.NOTIFICATIONS);
-                      setShowTopNav(false);
-                    }}
-                  />
-                </Route>
+                  <Route exact path="/notification/:notificationId">
+                    <NotificationPage
+                      onSelectedChange={() => {
+                        setSelectedTopNavOption("");
+                        setCollapsedSideNavOption(true);
+                        setSelectedSideNavOption(SideNavLinks.NOTIFICATIONS);
+                        setShowTopNav(false);
+                      }}
+                    />
+                  </Route>
 
-                <Route exact path="/admin/advertisements">
-                  <AdvertisementsPage
-                    onSelectedChange={() => {
-                      setSelectedTopNavOption("");
-                      setCollapsedSideNavOption(true);
-                      setSelectedSideNavOption(SideNavLinks.ADVERTISEMENTS);
-                      setShowTopNav(false);
-                    }}
-                  />
-                </Route>
+                  <Route exact path="/admin/advertisements">
+                    <AdvertisementsPage
+                      onSelectedChange={() => {
+                        setSelectedTopNavOption("");
+                        setCollapsedSideNavOption(true);
+                        setSelectedSideNavOption(SideNavLinks.ADVERTISEMENTS);
+                        setShowTopNav(false);
+                      }}
+                    />
+                  </Route>
 
-                <Route exact path="/admin/partners">
-                  <AdminUsersPage
-                    onSelectedChange={() => {
-                      setSelectedTopNavOption("");
-                      setCollapsedSideNavOption(true);
-                      setSelectedSideNavOption(SideNavLinks.PARTNERS);
-                      setShowTopNav(false);
-                    }}
-                  />
-                </Route>
+                  <Route exact path="/admin/partners">
+                    <AdminUsersPage
+                      onSelectedChange={() => {
+                        setSelectedTopNavOption("");
+                        setCollapsedSideNavOption(true);
+                        setSelectedSideNavOption(SideNavLinks.PARTNERS);
+                        setShowTopNav(false);
+                      }}
+                    />
+                  </Route>
 
-                <Route exact path="/admin/settings">
-                  <SettingsPage
-                    onSelectedChange={() => {
-                      setSelectedTopNavOption("");
-                      setCollapsedSideNavOption(true);
-                      setSelectedSideNavOption(SideNavLinks.SETTINGS);
-                      setShowTopNav(false);
-                    }}
-                  />
-                </Route>
+                  <Route exact path="/admin/settings">
+                    <SettingsPage
+                      onSelectedChange={() => {
+                        setSelectedTopNavOption("");
+                        setCollapsedSideNavOption(true);
+                        setSelectedSideNavOption(SideNavLinks.SETTINGS);
+                        setShowTopNav(false);
+                      }}
+                    />
+                  </Route>
 
-                <Route exact path="/admin/statistics">
-                  <StatisticsOptionsPage
-                    onSelectedChange={() => {
-                      setSelectedTopNavOption("");
-                      setCollapsedSideNavOption(true);
-                      setSelectedSideNavOption(SideNavLinks.STATISTICS);
-                      setShowTopNav(false);
-                    }}
-                  />
-                </Route>
+                  <Route exact path="/admin/statistics">
+                    <StatisticsOptionsPage
+                      onSelectedChange={() => {
+                        setSelectedTopNavOption("");
+                        setCollapsedSideNavOption(true);
+                        setSelectedSideNavOption(SideNavLinks.STATISTICS);
+                        setShowTopNav(false);
+                      }}
+                    />
+                  </Route>
 
-                <Route exact path="/admin/statistics/option">
-                  <StatisticsPage
-                    onSelectedChange={() => {
-                      setSelectedTopNavOption("");
-                      setCollapsedSideNavOption(true);
-                      setSelectedSideNavOption(SideNavLinks.STATISTICS);
-                      setShowTopNav(false);
-                    }}
-                  />
-                </Route>
+                  <Route exact path="/admin/statistics/option">
+                    <StatisticsPage
+                      onSelectedChange={() => {
+                        setSelectedTopNavOption("");
+                        setCollapsedSideNavOption(true);
+                        setSelectedSideNavOption(SideNavLinks.STATISTICS);
+                        setShowTopNav(false);
+                      }}
+                    />
+                  </Route>
 
-                <Route exact path="/admin/notifications">
-                  <AdminNotificationPage
-                    onSelectedChange={() => {
-                      setSelectedTopNavOption("");
-                      setCollapsedSideNavOption(true);
-                      setSelectedSideNavOption(SideNavLinks.NOTIFICATIONS);
-                      setShowTopNav(false);
-                    }}
-                  />
-                </Route>
+                  <Route exact path="/admin/notifications">
+                    <AdminNotificationPage
+                      onSelectedChange={() => {
+                        setSelectedTopNavOption("");
+                        setCollapsedSideNavOption(true);
+                        setSelectedSideNavOption(SideNavLinks.NOTIFICATIONS);
+                        setShowTopNav(false);
+                      }}
+                    />
+                  </Route>
 
-                <Route component={NotFound} />
-              </Switch>
+                  <Route component={NotFound} />
+                </Switch>
+              </Suspense>
             </div>
 
             <Footer />

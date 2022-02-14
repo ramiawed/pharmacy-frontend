@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { SERVER_URL } from "../../utils/constants";
 
@@ -40,7 +40,6 @@ function NotificationToast({ bgColor, actionAfterTimeout, data, close }) {
       )}
 
       <div style={{ flex: 1 }}>
-        {/* <div className="toast">{toastText}</div> */}
         <p className={styles.header}>{data.header}</p>
         <p
           className={styles.description}

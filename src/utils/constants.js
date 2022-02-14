@@ -32,6 +32,26 @@ export const GuestJob = {
   NONE: "user-job",
 };
 
+export const WarehouseOrderStatus = {
+  ALL: "all",
+  UNREAD: "unread",
+  RECEIVED: "received",
+  SENT: "sent",
+  WILL_DONT_SERVER: "will-dont-serve",
+};
+
+export const PharmacyOrderStatus = {
+  ALL: "all",
+  RECEIVED: "received",
+  SENT: "sent",
+};
+
+export const AdminOrderStatus = {
+  ALL: "all",
+  SEEN: "seen",
+  NOT_SEEN: "not-seen",
+};
+
 export const CitiesName = {
   ALEPPO: "aleppo",
   DAMASCUS: "damascus",

@@ -1,6 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { BASEURL, DateOptions, UserTypeConstants } from "../../utils/constants";
+import {
+  AdminOrderStatus,
+  BASEURL,
+  DateOptions,
+  PharmacyOrderStatus,
+  UserTypeConstants,
+  WarehouseOrderStatus,
+} from "../../utils/constants";
 
 const initialState = {
   status: "idle",
@@ -15,6 +22,9 @@ const initialState = {
     searchWarehouseName: "",
     date: "",
     dateOption: "",
+    warehouseOrderStatus: WarehouseOrderStatus.ALL,
+    pharmacyOrderStatus: PharmacyOrderStatus.ALL,
+    adminOrderStatus: AdminOrderStatus.ALL,
     page: 1,
   },
 };
@@ -43,6 +53,20 @@ export const getOrders = createAsyncThunk(
 
       if (pageState.searchWarehouseName.length > 0) {
         buildUrl = buildUrl + `&warehouseName=${pageState.searchWarehouseName}`;
+      }
+
+      if (pageState.pharmacyOrderStatus !== PharmacyOrderStatus.ALL) {
+        buildUrl =
+          buildUrl + `&pharmacyStatus=${pageState.pharmacyOrderStatus}`;
+      }
+
+      if (pageState.warehouseOrderStatus !== WarehouseOrderStatus.ALL) {
+        buildUrl =
+          buildUrl + `&warehouseStatus=${pageState.warehouseOrderStatus}`;
+      }
+
+      if (pageState.adminOrderStatus !== AdminOrderStatus.ALL) {
+        buildUrl = buildUrl + `&adminOrderStatus=${pageState.adminOrderStatus}`;
       }
 
       // One Day
@@ -374,6 +398,24 @@ export const ordersSlice = createSlice({
         dateOption: action.payload,
       };
     },
+    setWarehouseOrderStatus: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        warehouseOrderStatus: action.payload,
+      };
+    },
+    setPharmacyOrderStatus: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        pharmacyOrderStatus: action.payload,
+      };
+    },
+    setAdminOrderStatus: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        adminOrderStatus: action.payload,
+      };
+    },
     setSearchPharmacyName: (state, action) => {
       state.pageState = {
         ...state.pageState,
@@ -399,6 +441,9 @@ export const ordersSlice = createSlice({
         searchWarehouseName: "",
         date: "",
         dateOption: "",
+        warehouseOrderStatus: WarehouseOrderStatus.ALL,
+        pharmacyOrderStatus: PharmacyOrderStatus.ALL,
+        adminOrderStatus: AdminOrderStatus.ALL,
         page: 1,
       };
     },
@@ -483,6 +528,9 @@ export const ordersSlice = createSlice({
       state.pageState = {
         searchPharmacyName: "",
         searchWarehouseName: "",
+        warehouseOrderStatus: WarehouseOrderStatus.ALL,
+        pharmacyOrderStatus: PharmacyOrderStatus.ALL,
+        adminOrderStatus: AdminOrderStatus.ALL,
         date: "",
         dateOption: "",
         page: 1,
@@ -579,6 +627,9 @@ export const {
   resetPageState,
   setRefresh,
   setDateOption,
+  setWarehouseOrderStatus,
+  setPharmacyOrderStatus,
+  setAdminOrderStatus,
   // setUnreadMsg,
   setSearchDate,
   orderSliceSignOut,

@@ -203,22 +203,44 @@ function ItemsPageHeader({
             )}
           </SearchContainer>
         </div>
+        {user.type === UserTypeConstants.COMPANY ||
+        (user.type === UserTypeConstants.ADMIN &&
+          company !== null &&
+          company.allowAdmin) ? (
+          <></>
+        ) : (
+          <div
+            style={{
+              position: "absolute",
+              top: "16px",
+              left: "46px",
+            }}
+          >
+            <Icon
+              foreColor={Colors.SECONDARY_COLOR}
+              selected={false}
+              icon={() => <RiRefreshLine />}
+              tooltip={t("refresh-tooltip")}
+              onclick={search}
+            />
+          </div>
+        )}
       </Header>
 
       <div className={generalStyles.actions}>
-        <Icon
-          foreColor={Colors.SECONDARY_COLOR}
-          selected={false}
-          icon={() => <RiRefreshLine />}
-          tooltip={t("refresh-tooltip")}
-          onclick={search}
-          withBackground={true}
-        />
         {user.type === UserTypeConstants.COMPANY ||
         (user.type === UserTypeConstants.ADMIN &&
           company !== null &&
           company.allowAdmin) ? (
           <>
+            <Icon
+              foreColor={Colors.SECONDARY_COLOR}
+              selected={false}
+              icon={() => <RiRefreshLine />}
+              tooltip={t("refresh-tooltip")}
+              onclick={search}
+              withBackground={true}
+            />
             <Icon
               foreColor={Colors.SECONDARY_COLOR}
               selected={false}

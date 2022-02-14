@@ -12,17 +12,27 @@ import Icon from "../action-icon/action-icon.component";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/auth/authSlice";
 import {
+  setAdminOrderStatus,
   setDateOption,
+  setPharmacyOrderStatus,
   setSearchDate,
   setSearchPharmacyName,
   setSearchWarehouseName,
+  setWarehouseOrderStatus,
 } from "../../redux/orders/ordersSlice";
 
 // icons
 import { RiRefreshLine } from "react-icons/ri";
 
 // constants and utils
-import { Colors, DateOptions, UserTypeConstants } from "../../utils/constants";
+import {
+  AdminOrderStatus,
+  Colors,
+  DateOptions,
+  PharmacyOrderStatus,
+  UserTypeConstants,
+  WarehouseOrderStatus,
+} from "../../utils/constants";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -48,6 +58,73 @@ function OrderPageHeader({ count, pageState, search }) {
 
   const handleDateOptions = (val) => {
     dispatch(setDateOption(val));
+  };
+
+  const warehouseOrderStatusOptions = [
+    {
+      value: WarehouseOrderStatus.ALL,
+      label: t("all"),
+    },
+    {
+      value: WarehouseOrderStatus.UNREAD,
+      label: t("unread"),
+    },
+    {
+      value: WarehouseOrderStatus.RECEIVED,
+      label: t("received"),
+    },
+    {
+      value: WarehouseOrderStatus.SENT,
+      label: t("sent"),
+    },
+    {
+      value: WarehouseOrderStatus.WILL_DONT_SERVER,
+      label: t("will-dont-serve"),
+    },
+  ];
+
+  const handleWarehouseOrderStatusOption = (val) => {
+    dispatch(setWarehouseOrderStatus(val));
+  };
+
+  const pharmacyOrderStatusOptions = [
+    {
+      value: PharmacyOrderStatus.ALL,
+      label: t("all"),
+    },
+
+    {
+      value: PharmacyOrderStatus.RECEIVED,
+      label: t("received"),
+    },
+    {
+      value: PharmacyOrderStatus.SENT,
+      label: t("sent"),
+    },
+  ];
+
+  const handlePharmacyOrderStatusOption = (val) => {
+    dispatch(setPharmacyOrderStatus(val));
+  };
+
+  const adminOrderStatusOptions = [
+    {
+      value: AdminOrderStatus.ALL,
+      label: t("all"),
+    },
+
+    {
+      value: AdminOrderStatus.SEEN,
+      label: t("seen"),
+    },
+    {
+      value: AdminOrderStatus.NOT_SEEN,
+      label: t("not-seen"),
+    },
+  ];
+
+  const handleAdminOrderStatusOption = (val) => {
+    dispatch(setAdminOrderStatus(val));
   };
 
   return (
@@ -90,13 +167,80 @@ function OrderPageHeader({ count, pageState, search }) {
             />
           )}
 
+          {user.type === UserTypeConstants.ADMIN && (
+            <div
+              className={[
+                generalStyles.flex_container,
+                generalStyles.padding_v_6,
+              ].join(" ")}
+            >
+              <label style={{ fontSize: "0.7rem" }}>
+                {t("admin-order-status")}
+              </label>
+              <SelectCustom
+                bgColor={Colors.SECONDARY_COLOR}
+                foreColor="#fff"
+                options={adminOrderStatusOptions}
+                onchange={handleAdminOrderStatusOption}
+                defaultOption={{
+                  value: pageState.adminOrderStatus,
+                  label: t(pageState.adminOrderStatus),
+                }}
+              />
+            </div>
+          )}
+
           <div
             className={[
               generalStyles.flex_container,
               generalStyles.padding_v_6,
             ].join(" ")}
           >
-            <label style={{ fontSize: "0.7rem" }}>{t("dates-within")}</label>
+            <label style={{ fontSize: "0.7rem" }}>
+              {t("warehouse-order-status")}
+            </label>
+            <SelectCustom
+              bgColor={Colors.SECONDARY_COLOR}
+              foreColor="#fff"
+              options={warehouseOrderStatusOptions}
+              onchange={handleWarehouseOrderStatusOption}
+              defaultOption={{
+                value: pageState.warehouseOrderStatus,
+                label: t(pageState.warehouseOrderStatus),
+              }}
+            />
+          </div>
+
+          <div
+            className={[
+              generalStyles.flex_container,
+              generalStyles.padding_v_6,
+            ].join(" ")}
+          >
+            <label style={{ fontSize: "0.7rem" }}>
+              {t("pharmacy-order-status")}
+            </label>
+            <SelectCustom
+              bgColor={Colors.SECONDARY_COLOR}
+              foreColor="#fff"
+              options={pharmacyOrderStatusOptions}
+              onchange={handlePharmacyOrderStatusOption}
+              defaultOption={{
+                value: pageState.pharmacyOrderStatus,
+                label: t(pageState.pharmacyOrderStatus),
+              }}
+            />
+          </div>
+
+          <div
+            className={[
+              generalStyles.flex_container,
+              generalStyles.padding_v_6,
+            ].join(" ")}
+          >
+            <label style={{ fontSize: "0.7rem", marginInlineEnd: "10px" }}>
+              {t("dates-within")}
+            </label>
             <SelectCustom
               bgColor={Colors.SECONDARY_COLOR}
               foreColor="#fff"

@@ -26,7 +26,6 @@ import { BASEURL, Colors, SERVER_URL } from "../../utils/constants";
 function NotificationPage({ onSelectedChange }) {
   const { t } = useTranslation();
   const { notificationId } = useParams();
-  const history = useHistory();
 
   // selectors
   const token = useSelector(selectToken);
@@ -58,9 +57,11 @@ function NotificationPage({ onSelectedChange }) {
           <Header>
             <h2>{t("notification-label")}</h2>
             <div
-              className={[generalStyles.actions, generalStyles.margin_v_4].join(
-                " "
-              )}
+              style={{
+                position: "absolute",
+                top: "16px",
+                left: "46px",
+              }}
             >
               <Icon
                 selected={false}
@@ -93,6 +94,7 @@ function NotificationPage({ onSelectedChange }) {
                 <img
                   className={styles.image}
                   src={`${SERVER_URL}/${notification.logo_url}`}
+                  alt="thumb"
                 />
               </div>
             )}

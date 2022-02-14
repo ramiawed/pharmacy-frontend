@@ -111,6 +111,8 @@ function AdvertisementHomePage({ data }) {
                   style={{
                     width: "200px",
                     height: "200px",
+                    maxWidth: "200px",
+                    maxHeight: "200px",
                     cursor: "pointer",
                   }}
                 />

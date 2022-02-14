@@ -147,6 +147,9 @@ export const advertisementsSlice = createSlice({
       state.forceRefresh = false;
       state.advertisements = [];
     },
+    addAdvertisementSocket: (state, action) => {
+      state.advertisements = [...state.advertisements, action.payload];
+    },
   },
   extraReducers: {
     [addAdvertisement.pending]: (state) => {
@@ -203,6 +206,7 @@ export const {
   resetAdvertisements,
   advertisementsSignOut,
   setForceRefresh,
+  addAdvertisementSocket,
 } = advertisementsSlice.actions;
 
 export const selectAdvertisements = (state) => state.advertisements;

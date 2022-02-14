@@ -16,6 +16,7 @@ import {
   orderSliceSignOut,
 } from "../../redux/orders/ordersSlice";
 import {
+  addAdvertisementSocket,
   advertisementsSignOut,
   setForceRefresh as advertisementForceRefresh,
 } from "../../redux/advertisements/advertisementsSlice";
@@ -237,6 +238,12 @@ function SocketObserver() {
 
       socket.on("item-removed-from-section-three", (data) => {
         dispatch(removeItemFromSectionThreeSocket(data));
+      });
+    }
+
+    if (user.type !== UserTypeConstants.ADMIN) {
+      socket.on("new-advertisement", (data) => {
+        dispatch(addAdvertisementSocket(data));
       });
     }
 

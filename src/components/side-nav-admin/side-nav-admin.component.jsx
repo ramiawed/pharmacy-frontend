@@ -9,7 +9,6 @@ import styles from "../side-nav.module.scss";
 import { SideNavLinks, UserTypeConstants } from "../../utils/constants.js";
 import { selectSettings } from "../../redux/settings/settingsSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { selectUserData } from "../../redux/auth/authSlice";
 import {
   setCompany,
   setRole,
@@ -21,7 +20,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  const { user } = useSelector(selectUserData);
+  // selectors
   const {
     settings: { saveOrders },
   } = useSelector(selectSettings);
@@ -54,12 +53,6 @@ function SideNavAdmin({ selectedOption, onSelectedChange }) {
         }}
         to={{
           pathname: "/items",
-          state: {
-            user: user,
-            company: null,
-            warehouse: null,
-            role: UserTypeConstants.ADMIN,
-          },
         }}
       >
         {t("nav-items")}

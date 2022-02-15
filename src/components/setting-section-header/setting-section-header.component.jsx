@@ -18,7 +18,11 @@ import generalStyles from "../../style.module.scss";
 import styles from "./setting-section-header.module.scss";
 
 // constants and utils
-import { Colors } from "../../utils/constants";
+import {
+  Colors,
+  onKeyPressForNumberInput,
+  toEnglishNumber,
+} from "../../utils/constants";
 
 function SettingSectionHeader({
   show,
@@ -26,7 +30,6 @@ function SettingSectionHeader({
   description,
   order,
   header,
-  titleRight,
   checkboxLabel,
   updateAction,
   field,
@@ -34,8 +37,9 @@ function SettingSectionHeader({
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
-  const [edit, setEdit] = useState(false);
 
+  // own states
+  const [edit, setEdit] = useState(false);
   const [showState, setShowState] = useState(show);
   const [titleState, setTitleState] = useState(title);
   const [titleError, setTitleError] = useState(false);
@@ -45,7 +49,6 @@ function SettingSectionHeader({
 
   const closeHandler = () => {
     setShowState(show);
-    // setTitleRightState(titleRight);
     setTitleState(title);
     setDescriptionState(description);
     setOrderState(order);
@@ -90,11 +93,17 @@ function SettingSectionHeader({
         setEdit(false);
       });
   };
+
+  const quantityChange = (e) => {
+    const value = Number.parseInt(toEnglishNumber(e.target.value));
+    setOrderState(isNaN(value) ? "" : value);
+  };
+
   return (
     <>
       <div
         className={[generalStyles.flex_center_container]}
-        style={{ justifyContent: "start" }}
+        style={{ justifyContent: "flex-start" }}
       >
         <h3 style={{ color: Colors.FAILED_COLOR, paddingInlineEnd: "12px" }}>
           {header}
@@ -131,16 +140,16 @@ function SettingSectionHeader({
           generalStyles.padding_v_4,
         ].join(" ")}
         style={{
-          justifyContent: "start",
+          justifyContent: "flex-start",
         }}
       >
-        <label className={styles.label}>عنوان القسم</label>
+        <label className={styles.label}>{t("section-title")}</label>
         {edit ? (
           <input
             className={[styles.input, titleError ? styles.error : ""].join(" ")}
             value={titleState}
             onChange={(e) => setTitleState(e.target.value)}
-            placeholder="ادخل عنوان القسم"
+            placeholder={t("section-title-placeholder")}
           />
         ) : (
           <label>{titleState}</label>
@@ -154,16 +163,16 @@ function SettingSectionHeader({
           generalStyles.padding_v_4,
         ].join(" ")}
         style={{
-          justifyContent: "start",
+          justifyContent: "flex-start",
         }}
       >
-        <label className={styles.label}>وصف القسم</label>
+        <label className={styles.label}>{t("section-description")}</label>
         {edit ? (
           <input
             className={[styles.input].join(" ")}
             value={descriptionState}
             onChange={(e) => setDescriptionState(e.target.value)}
-            placeholder="ادخل وصف القسم"
+            placeholder={t("section-description-placeholder")}
           />
         ) : (
           <label>{descriptionState}</label>
@@ -177,20 +186,22 @@ function SettingSectionHeader({
           generalStyles.padding_v_4,
         ].join(" ")}
         style={{
-          justifyContent: "start",
+          justifyContent: "flex-start",
         }}
       >
-        <label className={styles.label}>ترتيب القسم</label>
+        <label className={styles.label}>{t("section-order")}</label>
         {edit ? (
-          <input
-            type="number"
-            value={orderState}
-            className={[styles.input, orderError ? styles.error : ""].join(" ")}
-            onChange={(e) => setOrderState(e.target.value * 1)}
-            min="1"
-            max="7"
-            placeholder="ادخل ترتيب القسم بين ١ و ٧"
-          />
+          <>
+            <input
+              value={orderState}
+              onKeyPress={onKeyPressForNumberInput}
+              onChange={quantityChange}
+              className={[styles.input, orderError ? styles.error : ""].join(
+                " "
+              )}
+              placeholder={t("section-order-placeholder")}
+            />
+          </>
         ) : (
           <label>{orderState}</label>
         )}
@@ -202,7 +213,7 @@ function SettingSectionHeader({
           generalStyles.fc_secondary,
         ].join(" ")}
         style={{
-          justifyContent: "start",
+          justifyContent: "flex-start",
         }}
       >
         <input

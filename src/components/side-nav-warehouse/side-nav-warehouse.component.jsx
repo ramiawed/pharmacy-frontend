@@ -42,15 +42,8 @@ function SideNavWarehouse({ selectedOption, onSelectedChange }) {
           dispatch(setSearchWarehouseName(""));
           dispatch(setRole(UserTypeConstants.WAREHOUSE));
         }}
-        // to="/warehouse/items"
         to={{
           pathname: "/items",
-          state: {
-            user: user,
-            company: null,
-            warehouse: user,
-            role: UserTypeConstants.WAREHOUSE,
-          },
         }}
       >
         {t("nav-items")}

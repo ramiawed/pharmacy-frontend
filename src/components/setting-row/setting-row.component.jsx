@@ -36,7 +36,7 @@ function SettingRow({ data, tooltip, action, type }) {
   // own state
   const [loading, setLoading] = useState(false);
 
-  const removeFromFavorites = () => {
+  const removeFromAdvertisementSectionHandler = () => {
     if (!isOnline) {
       dispatch(changeOnlineMsg());
       return;
@@ -87,7 +87,7 @@ function SettingRow({ data, tooltip, action, type }) {
             <Icon
               icon={() => <RiDeleteBin5Fill size={20} />}
               foreColor={Colors.FAILED_COLOR}
-              onclick={removeFromFavorites}
+              onclick={removeFromAdvertisementSectionHandler}
               tooltip={t(tooltip)}
             />
           )}

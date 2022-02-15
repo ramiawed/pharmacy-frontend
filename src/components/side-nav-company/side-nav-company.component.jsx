@@ -2,9 +2,6 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-// styles
-import styles from "../side-nav.module.scss";
-
 // constants
 import { SideNavLinks, UserTypeConstants } from "../../utils/constants.js";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,10 +12,14 @@ import {
   setWarehouse,
 } from "../../redux/items/itemsSlices";
 
+// styles
+import styles from "../side-nav.module.scss";
+
 function SideNavCompany({ selectedOption, onSelectedChange }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+
   return (
     <>
       <Link
@@ -35,12 +36,6 @@ function SideNavCompany({ selectedOption, onSelectedChange }) {
         // to="/company/items"
         to={{
           pathname: "/items",
-          state: {
-            user: user,
-            company: user,
-            warehouse: null,
-            role: UserTypeConstants.COMPANY,
-          },
         }}
       >
         {t("nav-items")}

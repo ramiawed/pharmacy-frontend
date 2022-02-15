@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 
@@ -43,30 +43,33 @@ function SelectPartnerModal({ close, chooseAction, url, header }) {
     if (event.code !== "Escape") event.stopPropagation();
   };
 
-  const getCompanies = async (p) => {
-    try {
-      setLoading(true);
-      let nameCondition = "";
+  const getCompanies = useCallback(
+    async (p) => {
+      try {
+        setLoading(true);
+        let nameCondition = "";
 
-      if (searchName.trim().length > 0) {
-        nameCondition = `&name=${searchName.trim()}`;
-      }
+        if (searchName.trim().length > 0) {
+          nameCondition = `&name=${searchName.trim()}`;
+        }
 
-      const response = await axios.get(`${url}&page=${p}${nameCondition}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      if (p === 1) {
-        setData(response.data.data.users);
-      } else {
-        setData([...data, ...response.data.data.users]);
-      }
-      setCount(response.data.count);
-      setLoading(false);
-      setPage(p + 1);
-    } catch (err) {}
-  };
+        const response = await axios.get(`${url}&page=${p}${nameCondition}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        if (p === 1) {
+          setData(response.data.data.users);
+        } else {
+          setData([...data, ...response.data.data.users]);
+        }
+        setCount(response.data.count);
+        setLoading(false);
+        setPage(p + 1);
+      } catch (err) {}
+    },
+    [data, searchName, token, url]
+  );
 
   const select = (data) => {
     chooseAction(data);
@@ -75,7 +78,7 @@ function SelectPartnerModal({ close, chooseAction, url, header }) {
 
   useEffect(() => {
     getCompanies(1);
-  }, []);
+  }, [getCompanies]);
 
   return (
     <Modal

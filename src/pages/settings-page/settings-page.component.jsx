@@ -11,7 +11,10 @@ import { getItemsSectionOne } from "../../redux/advertisements/itemsSectionOneSl
 import { getItemsSectionTwo } from "../../redux/advertisements/itemsSectionTwoSlice";
 import { getItemsSectionThree } from "../../redux/advertisements/itemsSectionThreeSlice";
 import { getWarehousesSectionOne } from "../../redux/advertisements/warehousesSectionOneSlice";
-import { selectSettings } from "../../redux/settings/settingsSlice";
+import {
+  selectSettings,
+  updateSettings,
+} from "../../redux/settings/settingsSlice";
 
 // components
 import Header from "../../components/header/header.component";
@@ -21,11 +24,8 @@ import CompaniesSectionTwoSettings from "../../components/companies-section-two-
 import ItemsSectionThreeSettings from "../../components/items-section-three-settings/items-section-three-settings.component";
 import ItemsSectionOneSettings from "../../components/items-section-one-settings/items-section-one-settings.component";
 import ItemsSectionTwoSettings from "../../components/items-section-two-settings/items-section-two-settings.component";
-import ShowWarehouseItemsSetting from "../../components/show-warehouse-items-setting/show-warehouse-items-setting.component";
-import SaveOrdersSettings from "../../components/save-orders-setting/save-orders-setting.component";
 import WarehousesSectionOneSettings from "../../components/warehouses-section-one-settings/warehouses-section-one-settings.component";
-import ShowAdvertisementsSettings from "../../components/show-advertisements-setting/show-advertisements-setting.component";
-
+import SettingCheckbox from "../../components/setting-checkbox/setting-checkbox.component";
 import { default as ActionLoader } from "../../components/action-loader/action-loader.component";
 
 // icons
@@ -43,6 +43,39 @@ function SettingsPage({ onSelectedChange }) {
 
   const { status } = useSelector(selectSettings);
   const { user, token } = useSelector(selectUserData);
+  const {
+    settings: { showWarehouseItem, showAdvertisements, saveOrders },
+  } = useSelector(selectSettings);
+
+  const changeShowWarehouseItemSettingHandler = () =>
+    dispatch(
+      updateSettings({
+        token,
+        obj: {
+          showWarehouseItem: !showWarehouseItem,
+        },
+      })
+    );
+
+  const changeShowAdvertisementSettingHandler = () =>
+    dispatch(
+      updateSettings({
+        token,
+        obj: {
+          showAdvertisements: !showAdvertisements,
+        },
+      })
+    );
+
+  const changeSaveOrdersSettingHandler = () =>
+    dispatch(
+      updateSettings({
+        token,
+        obj: {
+          saveOrders: !saveOrders,
+        },
+      })
+    );
 
   const refreshHandler = () => {
     dispatch(getCompaniesSectionOne({ token }));
@@ -90,9 +123,21 @@ function SettingsPage({ onSelectedChange }) {
             {t("general-settings")}
           </h3>
         </div>
-        <ShowWarehouseItemsSetting />
-        <ShowAdvertisementsSettings />
-        <SaveOrdersSettings />
+        <SettingCheckbox
+          label={t("show-warehouse-items-permission")}
+          value={showWarehouseItem}
+          action={changeShowWarehouseItemSettingHandler}
+        />
+        <SettingCheckbox
+          label={t("show-advertisement-on-home-page")}
+          value={showAdvertisements}
+          action={changeShowAdvertisementSettingHandler}
+        />
+        <SettingCheckbox
+          label={t("save-orders-in-database-permission")}
+          value={saveOrders}
+          action={changeSaveOrdersSettingHandler}
+        />
       </div>
       {status === "loading" && <ActionLoader />}
     </>

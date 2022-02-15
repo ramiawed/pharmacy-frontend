@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useCallback, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
@@ -88,14 +88,18 @@ function SideNav({
     dispatch(usersNotificationsSignOut());
   };
 
-  useEffect(() => {
+  const getUnreadOrdersHandler = useCallback(() => {
     if (
       user.type === UserTypeConstants.ADMIN ||
       user.type === UserTypeConstants.WAREHOUSE
     ) {
       dispatch(getUnreadOrders({ token }));
     }
-  }, []);
+  }, [dispatch, token, user.type]);
+
+  useEffect(() => {
+    getUnreadOrdersHandler();
+  }, [getUnreadOrdersHandler]);
 
   return (
     <div

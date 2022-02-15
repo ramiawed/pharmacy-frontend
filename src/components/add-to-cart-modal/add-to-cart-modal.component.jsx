@@ -95,13 +95,9 @@ function AddToCartModal({ item, close, setAddItemToCartMsg }) {
   const [qtyError, setQtyError] = useState(false);
 
   const handleWarehouseChange = (val) => {
-    setSelectedWarehouse(item.warehouses.find((w) => w.warehouse._id == val));
-    setOffer(item.warehouses.find((w) => w.warehouse._id == val).offer);
+    setSelectedWarehouse(item.warehouses.find((w) => w.warehouse._id === val));
+    setOffer(item.warehouses.find((w) => w.warehouse._id === val).offer);
   };
-
-  // const onKeyPress = (event) => {
-  //   return event.charCode >= 48 && event.charCode <= 57;
-  // };
 
   const quantityChange = (e) => {
     const value = Number.parseInt(toEnglishNumber(e.target.value));
@@ -175,8 +171,6 @@ function AddToCartModal({ item, close, setAddItemToCartMsg }) {
           <label>{t("selected-qty")}</label>
           <input
             className={qtyError ? styles.error : ""}
-            // type="number"
-            // min={0}
             value={qty}
             onKeyPress={onKeyPressForNumberInput}
             onChange={quantityChange}

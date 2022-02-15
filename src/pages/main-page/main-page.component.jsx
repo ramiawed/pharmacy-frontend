@@ -45,9 +45,7 @@ const WarehousePage = lazy(() =>
   import("../warehouses-page/warehouses-page.component")
 );
 const ItemsPage = lazy(() => import("../items-page/items-page.component"));
-const WarehouseItemsPage = lazy(() =>
-  import("../warehouse-items-page/warehouse-items-page.component")
-);
+
 const ItemPage = lazy(() => import("../item-page/item-page.component"));
 const ItemExcelPage = lazy(() =>
   import("../item-excel-page/item-excel-page.component")
@@ -224,17 +222,6 @@ function MainPage() {
 
                   <Route exact path="/medicines">
                     <MedicinesPage
-                      onSelectedChange={() => {
-                        setSelectedTopNavOption(TopNavLinks.MEDICINES);
-                        setCollapsedSideNavOption(true);
-                        setSelectedSideNavOption("");
-                        setShowTopNav(false);
-                      }}
-                    />
-                  </Route>
-
-                  <Route path="/warehouse/items">
-                    <WarehouseItemsPage
                       onSelectedChange={() => {
                         setSelectedTopNavOption(TopNavLinks.MEDICINES);
                         setCollapsedSideNavOption(true);

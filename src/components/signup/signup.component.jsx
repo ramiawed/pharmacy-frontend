@@ -3,7 +3,7 @@ import React, { useState, useRef } from "react";
 import { Redirect, useHistory } from "react-router";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import axios from "../../api/pharmacy";
+import axios from "axios";
 
 // components
 import SelectCustom from "../select/select.component";

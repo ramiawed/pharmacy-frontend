@@ -19,6 +19,7 @@ import SearchContainer from "../search-container/search-container.component";
 import SearchInput from "../search-input/search-input.component";
 import Icon from "../action-icon/action-icon.component";
 import PartnerRow from "../partner-row/partner-row.component";
+import CitiesDropDown from "../cities-dropdown/cities-dropdown.component";
 
 // react icons
 import { RiRefreshLine } from "react-icons/ri";
@@ -31,7 +32,6 @@ import generalStyles from "../../style.module.scss";
 
 // constants and utils
 import { CitiesName, Colors, UserTypeConstants } from "../../utils/constants";
-import SelectCustom from "../select/select.component";
 
 function WarehousesHeader({ search, refreshHandler, count }) {
   const { t } = useTranslation();
@@ -42,33 +42,21 @@ function WarehousesHeader({ search, refreshHandler, count }) {
   );
   const favorites = useSelector(selectFavoritesPartners);
 
-  // guest options and its change handler
-  const citiesOptions = [
-    { value: CitiesName.ALL, label: t("all-cities") },
-    { value: CitiesName.ALEPPO, label: t("aleppo") },
-    { value: CitiesName.DAMASCUS, label: t("damascus") },
-    { value: CitiesName.DARAA, label: t("daraa") },
-    { value: CitiesName.DEIR_EZ_ZOR, label: t("deir_ez_zor") },
-    { value: CitiesName.HAMA, label: t("hama") },
-    { value: CitiesName.AL_HASAKAH, label: t("al_hasakah") },
-    { value: CitiesName.HOMS, label: t("homs") },
-    { value: CitiesName.IDLIB, label: t("idlib") },
-    { value: CitiesName.LATAKIA, label: t("latakia") },
-    { value: CitiesName.QUNEITRA, label: t("quneitra") },
-    { value: CitiesName.RAQQA, label: t("raqqa") },
-    { value: CitiesName.AL_SUWAYDA, label: t("al_suwayda") },
-    { value: CitiesName.TARTUS, label: t("tartus") },
-    {
-      value: CitiesName.DAMASCUS_COUNTRYSIDE,
-      label: t("damascus_countryside"),
-    },
-  ];
-  // Guest types are (Student, Pharmacist, Employee)
-  // uses with the SelectCustom
+  // when you change the selected city
   const citiesNameChangeHandler = (val) => {
-    // if the user type is Normal and the job is Student or Pharmacist
-    // so the user doesn't contains info about company name and job title
     dispatch(changeSearchCity(val));
+  };
+
+  // select card as display type
+  const selectCardDisplayTypeHandler = () => {
+    dispatch(changeDisplayType("card"));
+    dispatch(changeShowFavorites(false));
+  };
+
+  // select list as display type
+  const selectListDisplayTypeHandler = () => {
+    dispatch(changeDisplayType("list"));
+    dispatch(changeShowFavorites(false));
   };
 
   return (
@@ -78,6 +66,7 @@ function WarehousesHeader({ search, refreshHandler, count }) {
           {t("warehouses")} <span>{count}</span>
         </h2>
 
+        {/* search option */}
         <div style={{ position: "relative", height: "50px" }}>
           <SearchContainer searchAction={search}>
             <SearchInput
@@ -93,12 +82,9 @@ function WarehousesHeader({ search, refreshHandler, count }) {
               resetField={() => dispatch(changeSearchName(""))}
             />
 
-            <SelectCustom
-              bgColor={Colors.SECONDARY_COLOR}
-              foreColor="#fff"
-              options={citiesOptions}
-              onchange={citiesNameChangeHandler}
-              defaultOption={{
+            <CitiesDropDown
+              onSelectionChange={citiesNameChangeHandler}
+              defaultValue={{
                 value: searchCity,
                 label: t(searchCity.toLowerCase()),
               }}
@@ -108,6 +94,7 @@ function WarehousesHeader({ search, refreshHandler, count }) {
         </div>
       </Header>
 
+      {/* action's buttons */}
       <div
         className={[generalStyles.actions, generalStyles.margin_v_4].join(" ")}
       >
@@ -120,6 +107,7 @@ function WarehousesHeader({ search, refreshHandler, count }) {
           withBackground={true}
         />
 
+        {/* clear search filter */}
         {(searchName.length > 0 || searchCity !== CitiesName.ALL) && (
           <Icon
             selected={false}
@@ -178,10 +166,7 @@ function WarehousesHeader({ search, refreshHandler, count }) {
               : Colors.SECONDARY_COLOR
           }
           tooltip={t("show-item-as-card-tooltip")}
-          onclick={() => {
-            dispatch(changeDisplayType("card"));
-            dispatch(changeShowFavorites(false));
-          }}
+          onclick={selectCardDisplayTypeHandler}
           icon={() => <AiFillAppstore />}
           withBackground={true}
         />
@@ -194,10 +179,7 @@ function WarehousesHeader({ search, refreshHandler, count }) {
               : Colors.SECONDARY_COLOR
           }
           tooltip={t("show-item-as-row-tooltip")}
-          onclick={() => {
-            dispatch(changeDisplayType("list"));
-            dispatch(changeShowFavorites(false));
-          }}
+          onclick={selectListDisplayTypeHandler}
           icon={() => <FaListUl />}
           withBackground={true}
         />

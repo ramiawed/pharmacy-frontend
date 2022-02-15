@@ -73,7 +73,7 @@ function UserRow({ user }) {
 
   // method to handle the change in the input in password and confirm password
   // for change password
-  const handlePasswordFieldsChange = (field, val) => {
+  const passwordFieldsChangeHandler = (field, val) => {
     setPasswordObj({
       ...passwordObj,
       [field]: val,
@@ -156,7 +156,7 @@ function UserRow({ user }) {
   // handle press on the action icon in each row
   // based on the type of the action icon will set the modal info
   // show modal
-  const handleActionIconClick = (type) => {
+  const userStatusChangeConfirmHandler = (type) => {
     // the icon represent that the user is approve by the admin
     // when click on this icon show warning message
     if (type === "approve") {
@@ -245,7 +245,7 @@ function UserRow({ user }) {
 
   // handle press ok in the modal
   // this handler based on the actionType state
-  const handlePressOkOnModal = () => {
+  const okActionForConfirmModal = () => {
     if (!isOnline) {
       dispatch(changeOnlineMsg());
       return;
@@ -329,7 +329,7 @@ function UserRow({ user }) {
     setShowModal(false);
   };
 
-  const closeResetPasswordModalHandler = () => {
+  const resetPasswordFieldHandler = () => {
     setShowResetUserPasswordModal(false);
     setPasswordObj({
       newPassword: "",
@@ -341,6 +341,20 @@ function UserRow({ user }) {
     });
   };
 
+  const userNameClickHandler = () => {
+    dispatch(setCompany(user.type === UserTypeConstants.COMPANY ? user : null));
+    dispatch(
+      setWarehouse(user.type === UserTypeConstants.WAREHOUSE ? user : null)
+    );
+    dispatch(
+      setRole(
+        user.type === UserTypeConstants.COMPANY
+          ? UserTypeConstants.COMPANY
+          : UserTypeConstants.WAREHOUSE
+      )
+    );
+  };
+
   return (
     <>
       <div className={[rowStyles.container].join(" ")}>
@@ -348,37 +362,11 @@ function UserRow({ user }) {
           {user.type === UserTypeConstants.COMPANY ||
           user.type === UserTypeConstants.WAREHOUSE ? (
             <Link
-              onClick={() => {
-                dispatch(
-                  setCompany(
-                    user.type === UserTypeConstants.COMPANY ? user : null
-                  )
-                );
-                dispatch(
-                  setWarehouse(
-                    user.type === UserTypeConstants.WAREHOUSE ? user : null
-                  )
-                );
-                dispatch(
-                  setRole(
-                    user.type === UserTypeConstants.COMPANY
-                      ? UserTypeConstants.COMPANY
-                      : UserTypeConstants.WAREHOUSE
-                  )
-                );
-              }}
+              onClick={userNameClickHandler}
               to={{
                 pathname: "/items",
                 state: {
                   user: loggedUser,
-                  // company:
-                  //   user.type === UserTypeConstants.COMPANY ? user : null,
-                  // warehouse:
-                  //   user.type === UserTypeConstants.WAREHOUSE ? user : null,
-                  // role:
-                  //   user.type === UserTypeConstants.COMPANY
-                  //     ? UserTypeConstants.COMPANY
-                  //     : UserTypeConstants.WAREHOUSE,
                 },
               }}
               className={rowStyles.hover_underline}
@@ -399,14 +387,14 @@ function UserRow({ user }) {
           {user.isApproved ? (
             <Icon
               tooltip={t("tooltip-approve")}
-              onclick={() => handleActionIconClick("disapprove")}
+              onclick={() => userStatusChangeConfirmHandler("disapprove")}
               icon={() => <AiFillUnlock />}
               foreColor={Colors.SUCCEEDED_COLOR}
             />
           ) : (
             <Icon
               tooltip={t("tooltip-disapprove")}
-              onclick={() => handleActionIconClick("approve")}
+              onclick={() => userStatusChangeConfirmHandler("approve")}
               icon={() => <AiFillLock />}
               foreColor={Colors.FAILED_COLOR}
             />
@@ -422,14 +410,14 @@ function UserRow({ user }) {
           {user.isActive ? (
             <Icon
               tooltip={t("tooltip-undo-delete")}
-              onclick={() => handleActionIconClick("delete")}
+              onclick={() => userStatusChangeConfirmHandler("delete")}
               icon={() => <BsFillPersonCheckFill />}
               foreColor={Colors.SUCCEEDED_COLOR}
             />
           ) : (
             <Icon
               tooltip={t("tooltip-delete")}
-              onclick={() => handleActionIconClick("undo-delete")}
+              onclick={() => userStatusChangeConfirmHandler("undo-delete")}
               icon={() => <BsFillPersonDashFill />}
               foreColor={Colors.FAILED_COLOR}
             />
@@ -445,14 +433,16 @@ function UserRow({ user }) {
             user.allowShowingMedicines ? (
               <Icon
                 tooltip={t("tooltip-show-medicines")}
-                onclick={() => handleActionIconClick("undoShowMedicines")}
+                onclick={() =>
+                  userStatusChangeConfirmHandler("undoShowMedicines")
+                }
                 icon={() => <BiShow />}
                 foreColor={Colors.SUCCEEDED_COLOR}
               />
             ) : (
               <Icon
                 tooltip={t("tooltip-undo-show-medicines")}
-                onclick={() => handleActionIconClick("showMedicines")}
+                onclick={() => userStatusChangeConfirmHandler("showMedicines")}
                 icon={() => <BiHide />}
                 foreColor={Colors.FAILED_COLOR}
               />
@@ -522,7 +512,7 @@ function UserRow({ user }) {
           header={modalInfo.header}
           cancelLabel={modalInfo.cancelLabel}
           okLabel={modalInfo.okLabel}
-          okModal={() => handlePressOkOnModal()}
+          okModal={okActionForConfirmModal}
           closeModal={() => setShowModal(false)}
           small={true}
         >
@@ -532,11 +522,11 @@ function UserRow({ user }) {
 
       {showResetUserPasswordModal && (
         <AdminResetUserPasswordModal
-          close={closeResetPasswordModalHandler}
+          close={resetPasswordFieldHandler}
           changePasswordHandler={changeUserPasswordHandler}
           passwordObj={passwordObj}
           passwordObjError={passwordObjError}
-          handlePasswordFieldsChange={handlePasswordFieldsChange}
+          handlePasswordFieldsChange={passwordFieldsChangeHandler}
         />
       )}
 

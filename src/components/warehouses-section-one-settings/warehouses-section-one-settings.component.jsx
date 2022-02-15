@@ -36,6 +36,7 @@ function WarehousesSectionOneSettings() {
   const token = useSelector(selectToken);
   const dispatch = useDispatch();
 
+  // selectors
   const {
     warehousesSectionOne,
     warehousesSectionOneStatus,
@@ -44,16 +45,17 @@ function WarehousesSectionOneSettings() {
     addWarehouseToSectionOneError,
     removeWarehouseFromSectionOneError,
   } = useSelector(selectWarehousesSectionOne);
-
   const {
     settings: {
       warehousesSectionOne: { show, title, description, order, titleRight },
     },
   } = useSelector(selectSettings);
 
+  // own states
   const [showChooseModal, setShowChooseModal] = useState(false);
 
-  const removeFromSectionOne = (id) => {
+  // handlers
+  const removeFromSectionOneHandler = (id) => {
     dispatch(removeWarehouseFromSectionOne({ id: id, token }));
   };
 
@@ -65,7 +67,7 @@ function WarehousesSectionOneSettings() {
         description={description}
         order={order}
         titleRight={titleRight}
-        header="القسم الاول / مستودعات /"
+        header={t("section-one-warehouses")}
         checkboxLabel="show-section-one-warehouses-in-home-page"
         updateAction={updateSettings}
         field="warehousesSectionOne"
@@ -81,8 +83,7 @@ function WarehousesSectionOneSettings() {
                 <SettingRow
                   data={warehouse}
                   key={warehouse._id}
-                  // tooltip="remove-warehouse-from-favorites-advertisement"
-                  action={removeFromSectionOne}
+                  action={removeFromSectionOneHandler}
                 />
               ))}
 

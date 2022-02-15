@@ -11,6 +11,7 @@ import Input from "../input/input.component";
 import Toast from "../toast/toast.component";
 import Button from "../button/button.component";
 import Loader from "../action-loader/action-loader.component";
+import CitiesDropDown from "../cities-dropdown/cities-dropdown.component";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
@@ -164,8 +165,7 @@ function SignUp() {
     { value: GuestJob.PHARMACIST, label: t("pharmacist") },
     { value: GuestJob.EMPLOYEE, label: t("employee") },
   ];
-  // Guest types are (Student, Pharmacist, Employee)
-  // uses with the SelectCustom
+
   const guestTypeChangeHandler = (val) => {
     // if the user type is Normal and the job is Student or Pharmacist
     // so the user doesn't contains info about company name and job title
@@ -202,29 +202,7 @@ function SignUp() {
     });
   };
 
-  // guest options and its change handler
-  const citiesOptions = [
-    { value: CitiesName.NONE, label: t("city-name") },
-    { value: CitiesName.ALEPPO, label: t("aleppo") },
-    { value: CitiesName.DAMASCUS, label: t("damascus") },
-    { value: CitiesName.DARAA, label: t("daraa") },
-    { value: CitiesName.DEIR_EZ_ZOR, label: t("deir_ez_zor") },
-    { value: CitiesName.HAMA, label: t("hama") },
-    { value: CitiesName.AL_HASAKAH, label: t("al_hasakah") },
-    { value: CitiesName.HOMS, label: t("homs") },
-    { value: CitiesName.IDLIB, label: t("idlib") },
-    { value: CitiesName.LATAKIA, label: t("latakia") },
-    { value: CitiesName.QUNEITRA, label: t("quneitra") },
-    { value: CitiesName.RAQQA, label: t("raqqa") },
-    { value: CitiesName.AL_SUWAYDA, label: t("al_suwayda") },
-    { value: CitiesName.TARTUS, label: t("tartus") },
-    {
-      value: CitiesName.DAMASCUS_COUNTRYSIDE,
-      label: t("damascus_countryside"),
-    },
-  ];
-  // Guest types are (Student, Pharmacist, Employee)
-  // uses with the SelectCustom
+  //
   const citiesNameChangeHandler = (val) => {
     // if the user type is Normal and the job is Student or Pharmacist
     // so the user doesn't contains info about company name and job title
@@ -732,15 +710,13 @@ function SignUp() {
             styles.margintop,
           ].join(" ")}
         >
-          <SelectCustom
-            bgColor={Colors.SECONDARY_COLOR}
-            foreColor="#fff"
-            options={citiesOptions}
-            onchange={citiesNameChangeHandler}
-            defaultOption={{
+          <CitiesDropDown
+            onSelectionChange={citiesNameChangeHandler}
+            defaultValue={{
               value: "NONE",
               label: t("city-name"),
             }}
+            caption=""
           />
         </div>
 

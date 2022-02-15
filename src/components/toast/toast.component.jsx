@@ -24,7 +24,7 @@ function Toast({
         color: foreColor,
       }}
     >
-      <div className="toast">{toastText}</div>
+      <div>{toastText}</div>
       {children}
     </div>
   );

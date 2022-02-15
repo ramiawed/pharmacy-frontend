@@ -2,8 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 import { BASEURL } from "../../utils/constants";
 
-let CancelToken;
-let source;
+let CancelToken = null;
+let source = null;
 
 const initialState = {
   status: "idle",
@@ -45,7 +45,6 @@ export const authSign = createAsyncThunk(
           password,
         },
         {
-          // timeout: 10000,
           cancelToken: source.token,
         }
       );
@@ -79,7 +78,6 @@ export const updateUserInfo = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(`${BASEURL}/users/updateMe`, obj, {
-        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -122,7 +120,6 @@ export const changeMyPassword = createAsyncThunk(
         `${BASEURL}/users/changeMyPassword`,
         obj,
         {
-          // timeout: 10000,
           cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
@@ -156,7 +153,6 @@ export const deleteMe = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(`${BASEURL}/users/deleteMe`, obj, {
-        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -189,7 +185,6 @@ export const changeLogo = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(`${BASEURL}/users/upload`, data, {
-        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,

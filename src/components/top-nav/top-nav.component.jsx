@@ -88,10 +88,6 @@ function TopNav({ onSelectedChange, showTopNav }) {
           <Link
             to={{
               pathname: "/medicines",
-              state: {
-                companyId: null,
-                warehouseId: null,
-              },
             }}
             className={[
               styles.link,
@@ -164,7 +160,6 @@ function TopNav({ onSelectedChange, showTopNav }) {
                 fillIcon={<GiShoppingCart size={20} />}
                 noFillIcon={<GiShoppingCart size={20} />}
               />
-              {/* <GiShoppingCart size={20} /> */}
             </Link>
           )}
         </div>
@@ -221,7 +216,6 @@ function TopNav({ onSelectedChange, showTopNav }) {
               fillIcon={<GiShoppingCart size={20} />}
               noFillIcon={<GiShoppingCart size={20} />}
             />
-            {/* <GiShoppingCart size={20} /> */}
           </Link>
         )}
       </div>

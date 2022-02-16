@@ -2,8 +2,10 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { UserTypeConstants } from "../../utils/constants";
 
+// components
 import TableHeader from "../table-header/table-header.component";
 
+// styles
 import styles from "./medicines-table-header.module.scss";
 
 function MedicinesTableHeader({ user }) {
@@ -132,23 +134,6 @@ function MedicinesTableHeader({ user }) {
         }}
       >
         {t("item-customer-price-small")}
-      </label>
-
-      <label
-        className={styles.large}
-        style={{
-          flex: 1,
-        }}
-      >
-        {t("item-barcode")}
-      </label>
-      <label
-        className={styles.small}
-        style={{
-          flex: 1,
-        }}
-      >
-        {t("item-barcode-small")}
       </label>
 
       <label className={styles.icon}></label>

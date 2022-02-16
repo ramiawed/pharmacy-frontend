@@ -321,18 +321,6 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
           </label>
         )}
 
-        {!isFavorite && (
-          <label
-            className={[
-              styles.details,
-              styles.center,
-              isSmallFavorite ? styles.small_font : "",
-            ].join(" ")}
-          >
-            {item.barcode}
-          </label>
-        )}
-
         <label className={[styles.center, styles.icon].join(" ")}>
           {changeAddToWarehouseLoading ? (
             <Icon

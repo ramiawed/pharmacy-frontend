@@ -123,20 +123,6 @@ function HomePage({ onSelectedChange }) {
       >
         <SearchHome />
 
-        <div className={styles.describe_container}>
-          <HomePageDescribeSection
-            header="who-we-are"
-            describe="who-we-are-describe"
-          />
-
-          <div className={styles.separator}></div>
-
-          <HomePageDescribeSection
-            header="why-we-are"
-            describe="why-we-are-describe"
-          />
-        </div>
-
         {settings.showAdvertisements && (
           <AdvertisementHomePage data={advertisements} />
         )}
@@ -298,6 +284,19 @@ function HomePage({ onSelectedChange }) {
               />
             )
           ))}
+      </div>
+      <div className={styles.describe_container}>
+        <HomePageDescribeSection
+          header="who-we-are"
+          describe="who-we-are-describe"
+        />
+
+        <div className={styles.separator}></div>
+
+        <HomePageDescribeSection
+          header="why-we-are"
+          describe="why-we-are-describe"
+        />
       </div>
     </div>
   ) : (

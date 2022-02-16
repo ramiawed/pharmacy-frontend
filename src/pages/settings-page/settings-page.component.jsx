@@ -112,6 +112,7 @@ function SettingsPage({ onSelectedChange }) {
             />
           </div>
         </Header>
+
         <CompaniesSectionOneSettings />
         <CompaniesSectionTwoSettings />
         <WarehousesSectionOneSettings />

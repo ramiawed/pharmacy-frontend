@@ -95,8 +95,8 @@ function AddToCartModal({ item, close, setAddItemToCartMsg }) {
   const [qtyError, setQtyError] = useState(false);
 
   const handleWarehouseChange = (val) => {
-    setSelectedWarehouse(item.warehouses.find((w) => w.warehouse._id === val));
-    setOffer(item.warehouses.find((w) => w.warehouse._id === val).offer);
+    setSelectedWarehouse(item.warehouses.find((w) => w.warehouse._id == val));
+    setOffer(item.warehouses.find((w) => w.warehouse._id == val).offer);
   };
 
   const quantityChange = (e) => {

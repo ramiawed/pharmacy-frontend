@@ -2,8 +2,8 @@ import React, { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 // redux stuff
-import { selectToken } from "../../redux/auth/authSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
+import { selectToken } from "../../redux/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { addNotification } from "../../redux/notifications/notificationsSlice";
 
@@ -139,7 +139,6 @@ function NewNotification({ setIsNew, setSuccessAddingMsg }) {
               ref={inputFileRef}
               type="file"
               onChange={fileChangedHandler}
-              // style={{ display: "none" }}
               hidden
             />
           </>

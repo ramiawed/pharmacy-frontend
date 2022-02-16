@@ -73,7 +73,7 @@ function PartnerCard({ partner, fullWidth }) {
       partner.allowShowingMedicines);
 
   // method to handle add company to partner's favorite
-  const addPartnerToFavoriteHandler = (e) => {
+  const addPartnerToFavoriteHandler = () => {
     // check the internet connection
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -103,12 +103,10 @@ function PartnerCard({ partner, fullWidth }) {
       .catch(() => {
         setChangeFavoriteLoading(false);
       });
-
-    // e.stopPropagation();
   };
 
   // method to handle remove company from partner's favorite
-  const removePartnerFromFavoriteHandler = (e) => {
+  const removePartnerFromFavoriteHandler = () => {
     // check the internet connection
     if (!isOnline) {
       dispatch(changeOnlineMsg());
@@ -123,8 +121,6 @@ function PartnerCard({ partner, fullWidth }) {
         changeFavoriteLoading(false);
       })
       .catch(() => setChangeFavoriteLoading(false));
-
-    // e.stopPropagation();
   };
 
   const partnerCardClickHandler = () => {
@@ -171,33 +167,6 @@ function PartnerCard({ partner, fullWidth }) {
       history.push("/medicines");
     }
   };
-
-  // dispatch companySelected statistics and go to medicine page
-  // const displayMedicinesHandler = () => {
-  //   if (
-  //     user.type === UserTypeConstants.PHARMACY ||
-  //     user.type === UserTypeConstants.GUEST
-  //   ) {
-  //     dispatch(
-  //       statisticsCompanySelected({
-  //         obj: { companyId: partner._id },
-  //         token,
-  //       })
-  //     );
-  //   }
-
-  //   dispatch(resetMedicines());
-
-  //   history.push({
-  //     pathname: "medicines",
-  //     state: {
-  //       companyId:
-  //         partner.type === UserTypeConstants.COMPANY ? partner._id : null,
-  //       warehouseId:
-  //         partner.type === UserTypeConstants.WAREHOUSE ? partner._id : null,
-  //     },
-  //   });
-  // };
 
   return (
     <div

@@ -1,9 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import styles from "./order.module.scss";
+import styles from "./sort-by.module.scss";
 
-function Order({ arr, orderBy, orderChange, valueChanged }) {
+function SortBy({ arr, orderBy, orderChange, valueChanged }) {
   const { t } = useTranslation();
   return (
     <>
@@ -40,4 +40,4 @@ function Order({ arr, orderBy, orderChange, valueChanged }) {
   );
 }
 
-export default Order;
+export default SortBy;

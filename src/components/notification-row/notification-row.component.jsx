@@ -3,6 +3,7 @@ import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
 
 // react-stuff
+import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteNotification } from "../../redux/notifications/notificationsSlice";
 import { selectUserData } from "../../redux/auth/authSlice";
@@ -23,7 +24,6 @@ import styles from "./notification-row.module.scss";
 
 // constants
 import { Colors, SERVER_URL, UserTypeConstants } from "../../utils/constants";
-import { unwrapResult } from "@reduxjs/toolkit";
 
 function NotificationRow({ notification, index, setSuccessDeletingMsg }) {
   const { t } = useTranslation();
@@ -126,13 +126,3 @@ function NotificationRow({ notification, index, setSuccessDeletingMsg }) {
 }
 
 export default NotificationRow;
-
-// {user.type !== UserTypeConstants.ADMIN && (
-//   <div className={styles.unread}>
-//     {notification.users.includes(user._id) ? (
-//       <BsCheck color={Colors.SUCCEEDED_COLOR} size={24} />
-//     ) : (
-//       <BsFillCircleFill color={Colors.SECONDARY_COLOR} size={24} />
-//     )}
-//   </div>
-// )}

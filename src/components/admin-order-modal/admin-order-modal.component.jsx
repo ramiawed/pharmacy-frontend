@@ -3,7 +3,6 @@ import { useTranslation } from "react-i18next";
 
 // components
 import Modal from "../modal/modal.component";
-import Order from "../order/order.component";
 
 // redux stuff
 import { selectUsers, setOrderBy } from "../../redux/users/usersSlice";
@@ -11,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 // constants
 import { OrderOptions } from "../../utils/constants";
+import SortBy from "../sort-by/sort-by.component";
 
 function AdminUsersOrderModal({ close, okHandler }) {
   const { t } = useTranslation();
@@ -63,7 +63,7 @@ function AdminUsersOrderModal({ close, okHandler }) {
       small={true}
       okModal={okHandler}
     >
-      <Order
+      <SortBy
         arr={orderOptions}
         orderBy={pageState.orderBy}
         orderChange={(field) => addOrRemoveField(field)}

@@ -27,9 +27,8 @@ import {
 import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 
 // react icons
-import { BsCheckAll } from "react-icons/bs";
+import { BsCheckAll, BsCheck } from "react-icons/bs";
 import { FaCircle } from "react-icons/fa";
-import { RiSendPlaneFill } from "react-icons/ri";
 import {
   MdOutlineCheckBox,
   MdOutlineCheckBoxOutlineBlank,
@@ -45,6 +44,7 @@ import tableStyles from "../../components/table.module.scss";
 
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants";
+import { RiMailUnreadLine } from "react-icons/ri";
 
 // return the count of selected orders
 const calculateSelectedOrdersCount = (orders) => {
@@ -186,7 +186,7 @@ function OrdersPage({ onSelectedChange }) {
                   selected={false}
                   foreColor={Colors.SUCCEEDED_COLOR}
                   tooltip={t("mark-as-sent")}
-                  icon={() => <RiSendPlaneFill />}
+                  icon={() => <BsCheck />}
                   onclick={() => markOrdersAs("sent")}
                   withBackground={true}
                 />
@@ -199,7 +199,7 @@ function OrdersPage({ onSelectedChange }) {
                     selected={false}
                     foreColor={Colors.SUCCEEDED_COLOR}
                     tooltip={t("mark-as-sent")}
-                    icon={() => <RiSendPlaneFill />}
+                    icon={() => <BsCheck />}
                     onclick={() => markOrdersAs("sent")}
                     withBackground={true}
                   />
@@ -226,11 +226,11 @@ function OrdersPage({ onSelectedChange }) {
           </div>
 
           <div className={styles.highlight}>
-            <FaCircle size={10} color={Colors.SECONDARY_COLOR} />
+            <RiMailUnreadLine color={Colors.SECONDARY_COLOR} />
             <label>{t("unread")}</label>
             <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
             <label>{t("received")}</label>
-            <RiSendPlaneFill color={Colors.SUCCEEDED_COLOR} />
+            <BsCheck color={Colors.SUCCEEDED_COLOR} />
             <label>{t("sent")}</label>
             <MdRemoveDone color={Colors.FAILED_COLOR} />
             <label>{t("will-dont-serve")}</label>
@@ -263,14 +263,26 @@ function OrdersPage({ onSelectedChange }) {
 
           {(user.type === UserTypeConstants.ADMIN ||
             user.type === UserTypeConstants.WAREHOUSE) && (
-            <label className={tableStyles.label_medium}>
+            <label
+              className={tableStyles.label_medium}
+              style={{
+                display: "flex",
+                paddingInlineStart: "10px",
+              }}
+            >
               {t("pharmacy-name")}
             </label>
           )}
 
           {(user.type === UserTypeConstants.ADMIN ||
             user.type === UserTypeConstants.PHARMACY) && (
-            <label className={tableStyles.label_medium}>
+            <label
+              className={tableStyles.label_medium}
+              style={{
+                display: "flex",
+                paddingInlineStart: "10px",
+              }}
+            >
               {t("warehouse-name")}
             </label>
           )}

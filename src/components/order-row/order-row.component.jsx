@@ -5,6 +5,7 @@ import { useHistory } from "react-router";
 // components
 import Icon from "../action-icon/action-icon.component";
 import Modal from "../modal/modal.component";
+import Toast from "../toast/toast.component";
 
 // react-redux
 import { useDispatch, useSelector } from "react-redux";
@@ -17,8 +18,8 @@ import {
 
 // icons
 import { FaCircle } from "react-icons/fa";
-import { RiDeleteBin5Fill, RiSendPlaneFill } from "react-icons/ri";
-import { BsCheckAll } from "react-icons/bs";
+import { RiDeleteBin5Fill, RiMailUnreadLine } from "react-icons/ri";
+import { BsCheckAll, BsCheck } from "react-icons/bs";
 
 // styles
 import rowStyles from "../row.module.scss";
@@ -28,7 +29,6 @@ import generalStyles from "../../style.module.scss";
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
 import { MdRemoveDone } from "react-icons/md";
-import Toast from "../toast/toast.component";
 
 function OrderRow({ order, deleteAction }) {
   const { t } = useTranslation();
@@ -104,20 +104,41 @@ function OrderRow({ order, deleteAction }) {
 
       {(user.type === UserTypeConstants.ADMIN ||
         user.type === UserTypeConstants.WAREHOUSE) && (
-        <label
-          className={tableStyles.label_medium}
-          onClick={() => {
-            rowClickHandler(order._id);
-          }}
-        >
-          {order.pharmacy.name} -{" "}
-          {order.pharmacyStatus === "received" && (
-            <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
-          )}
-          {order.pharmacyStatus === "sent" && (
-            <RiSendPlaneFill color={Colors.SUCCEEDED_COLOR} />
-          )}
-        </label>
+        <>
+          <label
+            className={tableStyles.label_medium}
+            onClick={() => {
+              rowClickHandler(order._id);
+            }}
+            style={{
+              display: "flex",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                borderLeft: `1px solid ${Colors.SECONDARY_COLOR}`,
+                marginInline: "10px",
+                padding: "5px",
+              }}
+            >
+              {order.pharmacyStatus === "received" && (
+                <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
+              )}
+              {order.pharmacyStatus === "sent" && (
+                <BsCheck color={Colors.SUCCEEDED_COLOR} />
+              )}
+            </div>
+            <label>{order.pharmacy.name}</label>
+            <label
+              style={{
+                paddingInlineStart: "10px",
+              }}
+            >
+              {order.pharmacy.addressDetails}
+            </label>
+          </label>
+        </>
       )}
 
       {(user.type === UserTypeConstants.ADMIN ||
@@ -127,18 +148,30 @@ function OrderRow({ order, deleteAction }) {
           onClick={() => {
             rowClickHandler(order._id);
           }}
+          style={{
+            display: "flex",
+          }}
         >
-          {order.warehouse.name} -{" "}
-          {order.warehouseStatus === "unread" && <FaCircle size={10} />}
-          {order.warehouseStatus === "received" && (
-            <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
-          )}
-          {order.warehouseStatus === "sent" && (
-            <RiSendPlaneFill color={Colors.SUCCEEDED_COLOR} />
-          )}
-          {order.warehouseStatus === "dontServe" && (
-            <MdRemoveDone color={Colors.FAILED_COLOR} />
-          )}
+          <div
+            style={{
+              display: "flex",
+              borderLeft: `1px solid ${Colors.SECONDARY_COLOR}`,
+              marginInline: "10px",
+              padding: "5px",
+            }}
+          >
+            {order.warehouseStatus === "unread" && <RiMailUnreadLine />}
+            {order.warehouseStatus === "received" && (
+              <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
+            )}
+            {order.warehouseStatus === "sent" && (
+              <BsCheck color={Colors.SUCCEEDED_COLOR} />
+            )}
+            {order.warehouseStatus === "dontServe" && (
+              <MdRemoveDone color={Colors.FAILED_COLOR} />
+            )}
+          </div>
+          {order.warehouse.name}
         </label>
       )}
 
@@ -160,14 +193,14 @@ function OrderRow({ order, deleteAction }) {
           }}
         >
           {user.type === UserTypeConstants.ADMIN && !order.seenByAdmin && (
-            <FaCircle size={10} />
+            <RiMailUnreadLine />
           )}
           {user.type === UserTypeConstants.WAREHOUSE &&
             order.warehouseStatus === "sent" && (
-              <RiSendPlaneFill color={Colors.SUCCEEDED_COLOR} />
+              <BsCheck color={Colors.SUCCEEDED_COLOR} />
             )}
           {user.type === UserTypeConstants.WAREHOUSE &&
-            order.warehouseStatus === "unread" && <FaCircle size={10} />}
+            order.warehouseStatus === "unread" && <RiMailUnreadLine />}
           {user.type === UserTypeConstants.WAREHOUSE &&
             order.warehouseStatus === "received" && (
               <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
@@ -179,7 +212,7 @@ function OrderRow({ order, deleteAction }) {
 
           {user.type === UserTypeConstants.PHARMACY &&
             order.pharmacyStatus === "sent" && (
-              <RiSendPlaneFill color={Colors.SUCCEEDED_COLOR} />
+              <BsCheck color={Colors.SUCCEEDED_COLOR} />
             )}
 
           {user.type === UserTypeConstants.PHARMACY &&

@@ -177,6 +177,7 @@ function OrderPageHeader({ count, pageState, search }) {
               <label style={{ fontSize: "0.7rem" }}>
                 {t("admin-order-status")}
               </label>
+
               <SelectCustom
                 bgColor={Colors.SECONDARY_COLOR}
                 foreColor="#fff"

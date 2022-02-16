@@ -7,7 +7,7 @@ import styles from "./notification-toast.module.scss";
 
 function NotificationToast({ bgColor, actionAfterTimeout, data, close }) {
   const history = useHistory();
-  // const timer = useRef(null);
+
   useEffect(() => {
     let timer = setTimeout(() => {
       actionAfterTimeout();

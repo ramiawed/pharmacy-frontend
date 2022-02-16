@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import AdvertisementItem from "../advertisement-item/advertisement-item.component";
 import AdvertisementPartner from "../advertisement-partner/advertisement-partner.component";
 
@@ -13,19 +13,6 @@ function SectionHomePageFlex({
   type,
   order,
 }) {
-  const [width, setWidth] = useState(window.innerWidth);
-
-  useEffect(() => {
-    const changeWidthHandler = () => {
-      setWidth(document.documentElement.clientWidth);
-    };
-    window.addEventListener("resize", changeWidthHandler);
-
-    return () => {
-      window.removeEventListener("resize", changeWidthHandler);
-    };
-  }, []);
-
   return (
     <div
       className={styles.container}

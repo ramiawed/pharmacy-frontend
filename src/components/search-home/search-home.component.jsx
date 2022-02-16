@@ -33,7 +33,6 @@ function SearchHome() {
 
   // own states
   const [searchName, setSearchName] = useState("");
-  // this option can be medicines, companies, warehouses
   const [loading, setLoading] = useState(false);
   const [showResult, setShowResult] = useState(false);
   const [data, setData] = useState([]);
@@ -41,7 +40,7 @@ function SearchHome() {
   const [warehousesData, setWarehousesData] = useState([]);
 
   //
-  const [tryBooom, setTryBooom] = useState(false);
+  // const [tryBooom, setTryBooom] = useState(false);
 
   const searchHandler = async () => {
     if (searchName.trim().length === 0) {
@@ -60,18 +59,13 @@ function SearchHome() {
     let companiesBuildUrl = `${BASEURL}`;
     let warehousesBuildUrl = `${BASEURL}`;
 
-    // if (option === "medicines") {
     buildUrl =
       buildUrl + `/items?page=1&limit=25&isActive=true&itemName=${searchName}`;
-    // }
 
-    // if (option === "companies") {
     companiesBuildUrl =
       companiesBuildUrl +
       `/users?type=company&page=1&limit=25&isActive=true&name=${searchName}`;
-    // }
 
-    // if (option === "warehouses") {
     let queryString = `/users?type=warehouse&page=1&limit=25&isActive=true&name=${searchName}`;
     if (
       user.type === UserTypeConstants.WAREHOUSE ||
@@ -95,10 +89,23 @@ function SearchHome() {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      const warehousesResponse = await axios.get(warehousesBuildUrl, {
-        cancelToken: source.token,
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      if (user.type !== UserTypeConstants.GUEST) {
+        const warehousesResponse = await axios.get(warehousesBuildUrl, {
+          cancelToken: source.token,
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        const {
+          data: {
+            data: warehousesResponseData,
+            status: warehousesResponseStatus,
+          },
+        } = warehousesResponse;
+
+        if (warehousesResponseStatus === "success") {
+          setWarehousesData(warehousesResponseData.users);
+        }
+      }
 
       CancelToken = null;
       source = null;
@@ -111,13 +118,6 @@ function SearchHome() {
         data: { data: companiesResponseData, status: companiesResponseStatus },
       } = companiesResponse;
 
-      const {
-        data: {
-          data: warehousesResponseData,
-          status: warehousesResponseStatus,
-        },
-      } = warehousesResponse;
-
       if (status === "success") {
         setData(data.items);
       }
@@ -126,13 +126,8 @@ function SearchHome() {
         setCompaniesData(companiesResponseData.users);
       }
 
-      if (warehousesResponseStatus === "success") {
-        setWarehousesData(warehousesResponseData.users);
-      }
-
       setLoading(false);
     } catch (err) {
-      // setLoading(false);
       setData([]);
       setCompaniesData([]);
       setWarehousesData([]);
@@ -274,12 +269,6 @@ function SearchHome() {
           </div>
         )}
       </div>
-
-      {/* <img
-        src={`${SERVER_URL}/logo-02.jpeg`}
-        alt="thumb"
-        className={styles.app_logo}
-      /> */}
     </div>
   );
 }

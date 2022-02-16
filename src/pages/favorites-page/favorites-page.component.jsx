@@ -110,19 +110,25 @@ function FavoritesPage({ onSelectedChange }) {
             ))}
       </CardInfo>
 
+      {(user.type === UserTypeConstants.ADMIN ||
+        user.type === UserTypeConstants.PHARMACY ||
+        user.type === UserTypeConstants.COMPANY) && (
+        <CardInfo headerTitle={t("warehouses")}>
+          {favoritesPartners &&
+            favoritesPartners
+              .filter(
+                (favorite) => favorite.type === UserTypeConstants.WAREHOUSE
+              )
+              .map((favorite) => (
+                <PartnerRow
+                  key={favorite._id}
+                  partner={favorite}
+                  withoutBoxShadow={true}
+                />
+              ))}
+        </CardInfo>
+      )}
       {/* favorites warehouses */}
-      <CardInfo headerTitle={t("warehouses")}>
-        {favoritesPartners &&
-          favoritesPartners
-            .filter((favorite) => favorite.type === UserTypeConstants.WAREHOUSE)
-            .map((favorite) => (
-              <PartnerRow
-                key={favorite._id}
-                partner={favorite}
-                withoutBoxShadow={true}
-              />
-            ))}
-      </CardInfo>
 
       {status === "loading" && <ActionLoader allowCancel={false} />}
     </div>

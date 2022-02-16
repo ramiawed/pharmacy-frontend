@@ -70,7 +70,9 @@ function TopNav({ onSelectedChange, showTopNav }) {
             {t("nav-company")}
           </Link>
 
-          {user.type !== UserTypeConstants.GUEST && (
+          {(user.type === UserTypeConstants.ADMIN ||
+            user.type === UserTypeConstants.PHARMACY ||
+            user.type === UserTypeConstants.COMPANY) && (
             <Link
               to="/warehouses"
               className={[

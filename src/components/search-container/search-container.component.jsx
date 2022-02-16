@@ -23,17 +23,6 @@ function SearchContainer({ children, searchAction }) {
       ].join(" ")}
     >
       <div className={styles.expanded_div}>
-        {/* <div
-          className={[generalStyles.icon, generalStyles.minus_top_margin].join(
-            " "
-          )}
-          onClick={() => {
-            setMoreSearchOptions(false);
-          }}
-        >
-          <FaSearch />
-        </div> */}
-
         {true && (
           <>
             <div style={{ flex: 1 }}>

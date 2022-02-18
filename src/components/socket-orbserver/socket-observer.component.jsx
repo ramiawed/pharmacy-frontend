@@ -38,14 +38,18 @@ import {
 import { cartSliceSignOut } from "../../redux/cart/cartSlice";
 import { companySliceSignOut } from "../../redux/company/companySlice";
 import { favoritesSliceSignOut } from "../../redux/favorites/favoritesSlice";
-import { itemsSliceSignOut } from "../../redux/items/itemsSlices";
+import {
+  itemsSliceSignOut,
+  warehouseAddBonusSocket as warehouseAddBonusSocketItemsSlice,
+} from "../../redux/items/itemsSlices";
 import { statisticsSliceSignOut } from "../../redux/statistics/statisticsSlice";
-import { usersSliceSignOut } from "../../redux/users/usersSlice";
+import { usersSliceSignOut, setRefresh } from "../../redux/users/usersSlice";
 import { warehouseSliceSignOut } from "../../redux/warehouse/warehousesSlice";
 import { warehouseItemsSliceSignOut } from "../../redux/warehouseItems/warehouseItemsSlices";
 import {
   medicinesSliceSignOut,
   resetMedicines,
+  warehouseAddBonusSocket,
 } from "../../redux/medicines/medicinesSlices";
 import {
   addCompanyToSectionOneSocket,
@@ -90,6 +94,7 @@ function SocketObserver() {
   // own state
   const [orderStateMsg, setOrderStateMsg] = useState("");
   const [notificationData, setNotificationData] = useState(null);
+  const [userAddedMsg, setUserAddedMsg] = useState("");
 
   const handleSignOut = () => {
     dispatch(authSliceSignOut());
@@ -117,9 +122,8 @@ function SocketObserver() {
   };
 
   useEffect(() => {
-    // order observer
+    // orders observer
     socket.on("order-changed", (data) => {
-      console.log(data);
       if (data.operationType === "insert") {
         if (
           user.type === UserTypeConstants.ADMIN ||
@@ -138,7 +142,6 @@ function SocketObserver() {
       }
 
       if (data.operationType === "update") {
-        console.log("update");
         dispatch(
           updateOrderStatus({
             id: data.documentKey._id,
@@ -148,16 +151,16 @@ function SocketObserver() {
       }
     });
 
+    // advertisements observer
     socket.on("advertisement-changed", (data) => {
-      console.log(data);
       if (data.operationType === "insert") {
         dispatch(advertisementForceRefresh(true));
       }
     });
 
+    // notifications observer
     if (user.type !== UserTypeConstants.ADMIN) {
       socket.on("notification-changed", (data) => {
-        console.log(data);
         if (data.operationType === "insert") {
           dispatch(notificationForceRefresh(true));
           dispatch(getUnreadNotification({ token }));
@@ -174,7 +177,6 @@ function SocketObserver() {
     // settings change observer
     if (user.type !== UserTypeConstants.ADMIN) {
       socket.on("settings-changed", (data) => {
-        console.log(data);
         dispatch(socketUpdateSettings(data.updateDescription.updatedFields));
       });
     }
@@ -186,6 +188,15 @@ function SocketObserver() {
       }
     });
 
+    // new user
+    if (user.type === UserTypeConstants.ADMIN) {
+      socket.on("user-added", (data) => {
+        setUserAddedMsg("new-user-added");
+        dispatch(setRefresh(true));
+      });
+    }
+
+    // user section one and two observer
     if (user.type !== UserTypeConstants.ADMIN) {
       socket.on("user-added-to-section-one", (data) => {
         dispatch(addCompanyToSectionOneSocket(data));
@@ -236,9 +247,22 @@ function SocketObserver() {
       });
     }
 
+    // item section one and two observer
     if (user.type !== UserTypeConstants.ADMIN) {
       socket.on("new-advertisement", (data) => {
         dispatch(addAdvertisementSocket(data));
+      });
+    }
+
+    if (
+      user.type === UserTypeConstants.PHARMACY ||
+      user.type === UserTypeConstants.ADMIN
+    ) {
+      socket.on("warehouse-add-bonus", (data) => {
+        dispatch(warehouseAddBonusSocket(data));
+        if (user.type === UserTypeConstants.ADMIN) {
+          dispatch(warehouseAddBonusSocketItemsSlice(data));
+        }
       });
     }
 
@@ -257,6 +281,15 @@ function SocketObserver() {
           foreColor="#fff"
           toastText={t(orderStateMsg)}
           actionAfterTimeout={() => setOrderStateMsg("")}
+        />
+      )}
+
+      {userAddedMsg.length > 0 && (
+        <Toast
+          bgColor={Colors.SECONDARY_COLOR}
+          foreColor="#fff"
+          toastText={t(userAddedMsg)}
+          actionAfterTimeout={() => setUserAddedMsg("")}
         />
       )}
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState, lazy, Suspense } from "react";
+import React, { useEffect, useState, lazy, Suspense, useCallback } from "react";
 import { Redirect, Route } from "react-router";
 import { Switch } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -31,7 +31,13 @@ import { FaArrowAltCircleUp } from "react-icons/fa";
 import styles from "./main-page.module.scss";
 
 // constants
-import { SERVER_URL, SideNavLinks, TopNavLinks } from "../../utils/constants";
+import {
+  SERVER_URL,
+  SideNavLinks,
+  TopNavLinks,
+  UserTypeConstants,
+} from "../../utils/constants";
+import { getUnreadOrders } from "../../redux/orders/ordersSlice";
 
 // pages
 const CartPage = lazy(() => import("../cart-page/cart-page.component"));
@@ -106,14 +112,24 @@ function MainPage() {
   const [selectedSideNavOption, setSelectedSideNavOption] = useState("");
   const [collapsedSideNavOption, setCollapsedSideNavOption] = useState(true);
 
-  // for first render reset the auth status and error
-  // get the favorite for login user
-  useEffect(() => {
+  const dispatchProperties = useCallback(() => {
     if (user) {
       dispatch(resetStatus());
       dispatch(getFavorites({ token }));
       dispatch(getUnreadNotification({ token }));
+      if (
+        user.type === UserTypeConstants.ADMIN ||
+        user.type === UserTypeConstants.WAREHOUSE
+      ) {
+        dispatch(getUnreadOrders({ token }));
+      }
     }
+  }, [dispatch, token, user]);
+
+  // for first render reset the auth status and error
+  // get the favorite for login user
+  useEffect(() => {
+    dispatchProperties();
 
     // show toTop button after scroll more than 500
     const toggleToTopVisible = () => {
@@ -124,15 +140,13 @@ function MainPage() {
       }
     };
 
-    dispatch(getUnreadNotification({ token }));
-
     window.addEventListener("scroll", toggleToTopVisible);
     window.scrollTo(0, 0);
 
     return () => {
       window.removeEventListener("scroll", toggleToTopVisible);
     };
-  }, []);
+  }, [dispatchProperties]);
 
   return user ? (
     <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>

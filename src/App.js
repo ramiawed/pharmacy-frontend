@@ -39,12 +39,12 @@ function App() {
 
   const onlineMsg = useSelector(selectOnlineMsg);
 
-  const updateOnlineStatus = () => {
-    // dispatch(changeOnlineStatus(window.navigator.onLine));
-    dispatch(changeOnlineStatus(true));
-  };
-
   useEffect(() => {
+    const updateOnlineStatus = () => {
+      dispatch(changeOnlineStatus(window.navigator.onLine));
+      // dispatch(changeOnlineStatus(true));
+    };
+
     updateOnlineStatus();
 
     window.addEventListener("offline", updateOnlineStatus);
@@ -54,7 +54,7 @@ function App() {
       window.removeEventListener("offline", updateOnlineStatus);
       window.removeEventListener("online", updateOnlineStatus);
     };
-  }, []);
+  }, [dispatch]);
 
   return (
     <div className={styles.main_div}>
@@ -85,7 +85,7 @@ function App() {
           !online && (
             <div className={generalStyles.no_internet_container}>
               <RiWifiOffLine color={Colors.FAILED_COLOR} size={20} />
-              <p>No Internet Connection</p>
+              <p>No internet connection</p>
             </div>
           )
         }

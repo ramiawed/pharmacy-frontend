@@ -367,6 +367,19 @@ export const itemsSlice = createSlice({
     resetChangeOfferError: (state) => {
       state.changeOfferError = "";
     },
+
+    warehouseAddBonusSocket: (state, action) => {
+      state.items = state.items.map((m) => {
+        if (m._id === action.payload.itemId) {
+          return {
+            ...m,
+            warehouses: action.payload.warehouses,
+          };
+        }
+        return m;
+      });
+    },
+
     resetItems: (state) => {
       state.status = "idle";
       state.items = [];
@@ -732,6 +745,7 @@ export const {
   setRole,
   setCompany,
   setWarehouse,
+  warehouseAddBonusSocket,
 } = itemsSlice.actions;
 
 export const selectItems = (state) => state.items;

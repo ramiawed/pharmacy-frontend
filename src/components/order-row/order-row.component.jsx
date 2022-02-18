@@ -8,18 +8,19 @@ import Modal from "../modal/modal.component";
 import Toast from "../toast/toast.component";
 
 // react-redux
+import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
-  getUnreadOrders,
+  decrementUnreadOrder,
   selectedChange,
   updateOrder,
 } from "../../redux/orders/ordersSlice";
 
 // icons
-import { FaCircle } from "react-icons/fa";
 import { RiDeleteBin5Fill, RiMailUnreadLine } from "react-icons/ri";
 import { BsCheckAll, BsCheck } from "react-icons/bs";
+import { MdRemoveDone } from "react-icons/md";
 
 // styles
 import rowStyles from "../row.module.scss";
@@ -28,7 +29,6 @@ import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import { MdRemoveDone } from "react-icons/md";
 
 function OrderRow({ order, deleteAction }) {
   const { t } = useTranslation();
@@ -61,12 +61,15 @@ function OrderRow({ order, deleteAction }) {
       }
 
       if (Object.keys(obj).length > 0) {
-        dispatch(updateOrder({ id, obj, token }));
+        dispatch(updateOrder({ id, obj, token }))
+          .then(unwrapResult)
+          .then(() => {
+            dispatch(decrementUnreadOrder({ token }));
+          });
       }
     }
 
     history.push(`/order-details?${id}`);
-    dispatch(getUnreadOrders({ token }));
   };
 
   const modalOkHandler = (id, warehouseStatus) => {

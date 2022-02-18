@@ -1,10 +1,12 @@
 import React, { useEffect } from "react";
 import { Redirect } from "react-router-dom";
+
 // components
 import Loader from "../../components/loader/loader.component";
 import SearchHome from "../../components/search-home/search-home.component";
 import AdvertisementHomePage from "../../components/advertisement-home-page/advertisement-home-page.component";
 import SectionHomePageFlex from "../../components/section-home-page-flex/section-home-page-flex.component";
+import HomePageDescribeSection from "../../components/home-page-describe-section/home-page-describe-section.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -43,7 +45,6 @@ import {
 // styles
 import styles from "./home-page.module.scss";
 import { Colors } from "../../utils/constants";
-import HomePageDescribeSection from "../../components/home-page-describe-section/home-page-describe-section.component";
 
 function HomePage({ onSelectedChange }) {
   const dispatch = useDispatch();

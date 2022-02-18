@@ -468,6 +468,7 @@ export const usersSlice = createSlice({
       state.users = action.payload.data.users;
       state.count = action.payload.count;
       state.error = "";
+      state.refresh = false;
     },
     [getUsers.rejected]: (state, { payload }) => {
       state.status = "failed";
@@ -480,61 +481,7 @@ export const usersSlice = createSlice({
         state.error = "network failed";
       } else state.error = payload.message;
     },
-    // [userApproveChange.pending]: (state) => {
-    //   state.activationDeleteStatus = "loading";
-    //   state.activationDeleteStatusMsg = "";
-    // },
-    // [userApproveChange.fulfilled]: (state, action) => {
-    //   state.activationDeleteStatus = "succeeded";
-    //   const newUsers = state.users.map((user) => {
-    //     if (user._id === action.payload.data.user._id) {
-    //       return action.payload.data.user;
-    //     } else return user;
-    //   });
 
-    //   state.users = newUsers;
-    //   if (action.payload.status === "activation success") {
-    //     state.activationDeleteStatusMsg = "user-approved-success";
-    //   } else {
-    //     state.activationDeleteStatusMsg = "user-disapproved-success";
-    //   }
-    // },
-    // [userApproveChange.rejected]: (state, { payload }) => {
-    //   state.activationDeleteStatus = "failed";
-
-    //   if (payload === "timeout") {
-    //     state.activationDeleteStatusMsg = "timeout-msg";
-    //   } else if (payload === "cancel") {
-    //     state.activationDeleteStatusMsg = "cancel-operation-msg";
-    //   } else if (payload === "network failed") {
-    //     state.activationDeleteStatusMsg = "network failed";
-    //   } else state.activationDeleteStatusMsg = payload.message;
-    // },
-    // [deleteUser.pending]: (state) => {
-    //   state.activationDeleteStatus = "loading";
-    //   state.activationDeleteStatusMsg = "";
-    // },
-    // [deleteUser.fulfilled]: (state, action) => {
-    //   state.activationDeleteStatus = "succeeded";
-    //   const newUsers = state.users.map((user) => {
-    //     if (user._id === action.payload.data.user._id) {
-    //       return action.payload.data.user;
-    //     } else return user;
-    //   });
-    //   state.users = newUsers;
-    //   state.activationDeleteStatusMsg = "user-delete-success";
-    // },
-    // [deleteUser.rejected]: (state, { payload }) => {
-    //   state.activationDeleteStatus = "failed";
-
-    //   if (payload === "timeout") {
-    //     state.activationDeleteStatusMsg = "timeout-msg";
-    //   } else if (payload === "cancel") {
-    //     state.activationDeleteStatusMsg = "cancel-operation-msg";
-    //   } else if (payload === "network failed") {
-    //     state.activationDeleteStatusMsg = "network failed";
-    //   } else state.activationDeleteStatusMsg = payload.message;
-    // },
     [updateUser.pending]: (state, action) => {
       state.status = "loading";
       state.error = "";
@@ -560,31 +507,7 @@ export const usersSlice = createSlice({
         state.error = "network failed";
       } else state.error = payload.message;
     },
-    // [undoDeleteUser.pending]: (state, action) => {
-    //   state.activationDeleteStatus = "loading";
-    //   state.activationDeleteStatusMsg = "";
-    // },
-    // [undoDeleteUser.fulfilled]: (state, action) => {
-    //   state.activationDeleteStatus = "succeeded";
-    //   const newUsers = state.users.map((user) => {
-    //     if (user._id === action.payload.data.user._id) {
-    //       return action.payload.data.user;
-    //     } else return user;
-    //   });
-    //   state.users = newUsers;
-    //   state.activationDeleteStatusMsg = "user-undo-delete-success";
-    // },
-    // [undoDeleteUser.rejected]: (state, { payload }) => {
-    //   state.activationDeleteStatus = "failed";
 
-    //   if (payload === "timeout") {
-    //     state.activationDeleteStatusMsg = "timeout-msg";
-    //   } else if (payload === "cancel") {
-    //     state.activationDeleteStatusMsg = "cancel-operation-msg";
-    //   } else if (payload === "network failed") {
-    //     state.activationDeleteStatusMsg = "network failed";
-    //   } else state.activationDeleteStatusMsg = payload.message;
-    // },
     [resetUserPassword.pending]: (state) => {
       state.resetUserPasswordStatus = "loading";
     },

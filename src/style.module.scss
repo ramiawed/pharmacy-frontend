@@ -10,11 +10,12 @@
 }
 
 .sign_container {
-  background-image: url("./background.jpg");
-  background-size: cover;
+  border: 1px solid black;
+  background-image: url("./background.jpeg");
+  background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
-  width: 100vw;
+  width: 50vw;
   min-height: 100vh;
 }
 

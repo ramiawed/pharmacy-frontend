@@ -16,12 +16,7 @@ import ReactPaginate from "react-paginate";
 
 // redux stuff
 import { useSelector, useDispatch } from "react-redux";
-import {
-  getUsers,
-  selectUsers,
-  setPage,
-  setRefresh,
-} from "../../redux/users/usersSlice";
+import { getUsers, selectUsers, setPage } from "../../redux/users/usersSlice";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
   selectOnlineStatus,
@@ -89,13 +84,12 @@ function AdminUsersPage({ onSelectedChange }) {
 
   // dispatch a getUsers after component render for the first time
   useEffect(() => {
-    if (refresh) {
-      handleSearch(pageState.page);
-      dispatch(setRefresh(false));
+    if (refresh === true) {
+      handleSearch(1);
     }
 
     onSelectedChange();
-  }, []);
+  }, [refresh]);
 
   return user && user.type === UserTypeConstants.ADMIN ? (
     <div className={generalStyles.container}>

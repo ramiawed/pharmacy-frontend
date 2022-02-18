@@ -435,6 +435,10 @@ export const ordersSlice = createSlice({
       };
     },
 
+    decrementUnreadOrder: (state) => {
+      state.unreadCount = state.unreadCount - 1;
+    },
+
     resetPageState: (state) => {
       state.pageState = {
         searchPharmacyName: "",
@@ -639,6 +643,7 @@ export const {
   changeAllOrdersSelection,
   updateOrderStatus,
   deleteOrderSocket,
+  decrementUnreadOrder,
 } = ordersSlice.actions;
 
 export default ordersSlice.reducer;

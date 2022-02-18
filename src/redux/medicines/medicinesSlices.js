@@ -291,6 +291,20 @@ export const medicinesSlice = createSlice({
       });
     },
 
+    warehouseAddOrRemoveItemSocket: (state, action) => {
+      console.log(action.payload);
+      state.medicines = state.medicines.map((m) => {
+        if (m._id === action.payload.itemId) {
+          return {
+            ...m,
+            warehouses: action.payload.warehouses,
+            existing_place: action.payload.existing_place,
+          };
+        }
+        return m;
+      });
+    },
+
     resetMedicinesArray: (state) => {
       state.medicines = [];
       state.count = 0;
@@ -442,6 +456,7 @@ export const {
   resetMedicinesArray,
   resetMedicinesPageState,
   warehouseAddBonusSocket,
+  warehouseAddOrRemoveItemSocket,
 } = medicinesSlice.actions;
 
 export const selectMedicines = (state) => state.medicines;

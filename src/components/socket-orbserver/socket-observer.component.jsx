@@ -41,6 +41,7 @@ import { favoritesSliceSignOut } from "../../redux/favorites/favoritesSlice";
 import {
   itemsSliceSignOut,
   warehouseAddBonusSocket as warehouseAddBonusSocketItemsSlice,
+  warehouseAddOrRemoveItemSocket as warehouseAddOrRemoveItemSocketItemsSlice,
 } from "../../redux/items/itemsSlices";
 import { statisticsSliceSignOut } from "../../redux/statistics/statisticsSlice";
 import { usersSliceSignOut, setRefresh } from "../../redux/users/usersSlice";
@@ -50,6 +51,7 @@ import {
   medicinesSliceSignOut,
   resetMedicines,
   warehouseAddBonusSocket,
+  warehouseAddOrRemoveItemSocket,
 } from "../../redux/medicines/medicinesSlices";
 import {
   addCompanyToSectionOneSocket,
@@ -254,6 +256,7 @@ function SocketObserver() {
       });
     }
 
+    // item bonus change, or item added or removed from warehouse
     if (
       user.type === UserTypeConstants.PHARMACY ||
       user.type === UserTypeConstants.ADMIN
@@ -262,6 +265,13 @@ function SocketObserver() {
         dispatch(warehouseAddBonusSocket(data));
         if (user.type === UserTypeConstants.ADMIN) {
           dispatch(warehouseAddBonusSocketItemsSlice(data));
+        }
+      });
+
+      socket.on("warehouse-add-or-delete-item", (data) => {
+        dispatch(warehouseAddOrRemoveItemSocket(data));
+        if (user.type === UserTypeConstants.ADMIN) {
+          dispatch(warehouseAddOrRemoveItemSocketItemsSlice(data));
         }
       });
     }

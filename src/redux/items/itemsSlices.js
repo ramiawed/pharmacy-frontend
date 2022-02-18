@@ -380,6 +380,19 @@ export const itemsSlice = createSlice({
       });
     },
 
+    warehouseAddOrRemoveItemSocket: (state, action) => {
+      state.items = state.items.map((m) => {
+        if (m._id === action.payload.itemId) {
+          return {
+            ...m,
+            warehouses: action.payload.warehouses,
+            existing_place: action.payload.existing_place,
+          };
+        }
+        return m;
+      });
+    },
+
     resetItems: (state) => {
       state.status = "idle";
       state.items = [];
@@ -746,6 +759,7 @@ export const {
   setCompany,
   setWarehouse,
   warehouseAddBonusSocket,
+  warehouseAddOrRemoveItemSocket
 } = itemsSlice.actions;
 
 export const selectItems = (state) => state.items;

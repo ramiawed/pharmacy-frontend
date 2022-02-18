@@ -44,7 +44,6 @@ import {
 
 // styles
 import styles from "./home-page.module.scss";
-import { Colors } from "../../utils/constants";
 
 function HomePage({ onSelectedChange }) {
   const dispatch = useDispatch();
@@ -115,13 +114,13 @@ function HomePage({ onSelectedChange }) {
   }, [settings]);
 
   return user ? (
-    <div>
-      <div
-        style={{
-          background: Colors.SECONDARY_COLOR,
-          position: "relative",
-        }}
-      >
+    <div
+      style={{
+        background:
+          "linear-gradient(225deg, hsla(230, 26%, 45%, 1) 19%, hsla(230, 26%, 45%, 0.5) 75%)",
+      }}
+    >
+      <div className={styles.search_container}>
         <SearchHome />
 
         {settings.showAdvertisements && (
@@ -276,9 +275,7 @@ function HomePage({ onSelectedChange }) {
               <SectionHomePageFlex
                 data={itemsSectionThree}
                 containerBackground="#baa437"
-                headerFlex={settings.itemsSectionThree?.titleRight ? 1 : 2}
                 headerBackground="#baa437"
-                sliderFlex={settings.itemsSectionThree?.titleRight ? 2 : 1}
                 header={settings.itemsSectionThree?.title}
                 description={settings.itemsSectionThree?.description}
                 order={settings.itemsSectionThree?.order}
@@ -286,6 +283,7 @@ function HomePage({ onSelectedChange }) {
             )
           ))}
       </div>
+
       <div className={styles.describe_container}>
         <HomePageDescribeSection
           header="who-we-are"

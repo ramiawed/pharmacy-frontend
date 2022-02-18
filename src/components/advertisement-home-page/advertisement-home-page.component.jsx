@@ -34,6 +34,7 @@ function AdvertisementHomePage({ data }) {
   const settings = {
     dots: true,
     infinite: true,
+    // vertical: true,
     speed: 300,
     slidesToShow: 2,
     slidesToScroll: 1,
@@ -100,6 +101,7 @@ function AdvertisementHomePage({ data }) {
           {data?.map((d) => (
             <div key={d._id}>
               <div
+                key={d._id}
                 className={styles.img}
                 onClick={() => {
                   advertisementClickHandler(d);

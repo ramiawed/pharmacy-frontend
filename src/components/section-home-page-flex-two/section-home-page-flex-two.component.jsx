@@ -6,9 +6,9 @@ import AdvertisementItem from "../advertisement-item/advertisement-item.componen
 import AdvertisementPartner from "../advertisement-partner/advertisement-partner.component";
 
 // styles
-import styles from "./section-home-page-flex.module.scss";
+import styles from "./section-home-page-flex-two.module.scss";
 
-function SectionHomePageFlex({
+function SectionHomePageFlexTwo({
   data,
   containerBackground,
   headerBackground,
@@ -21,13 +21,12 @@ function SectionHomePageFlex({
     infinite: true,
     vertical: true,
     speed: 300,
-    slidesToShow: data.length >= 5 ? 5 : data.length,
-    slidesToScroll: data.length >= 5 ? 2 : 0,
+    slidesToShow: 5,
+    slidesToScroll: 5,
     initialSlide: 1,
     autoplay: true,
     autoplaySpeed: 2000,
     cssEase: "linear",
-    arrows: false,
     rtl: true,
   };
 
@@ -52,20 +51,18 @@ function SectionHomePageFlex({
       <div className={styles.advertisement_container}>
         <Slider {...settings}>
           {data?.map((d) => (
-            <div key={d._id}>
-              <div className={styles.inner_container} key={d._id}>
-                {type === "item" ? (
-                  <AdvertisementItem
-                    item={d}
-                    contentColor={containerBackground}
-                  />
-                ) : (
-                  <AdvertisementPartner
-                    user={d}
-                    contentColor={containerBackground}
-                  />
-                )}
-              </div>
+            <div className={styles.inner_container} key={d._id}>
+              {type === "item" ? (
+                <AdvertisementItem
+                  item={d}
+                  contentColor={containerBackground}
+                />
+              ) : (
+                <AdvertisementPartner
+                  user={d}
+                  contentColor={containerBackground}
+                />
+              )}
             </div>
           ))}
         </Slider>
@@ -74,4 +71,4 @@ function SectionHomePageFlex({
   );
 }
 
-export default SectionHomePageFlex;
+export default SectionHomePageFlexTwo;

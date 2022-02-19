@@ -1,0 +1,143 @@
+@import '../../variables.scss';
+
+.sign_container {
+  width: 100vw;
+  height: 100vh;
+
+  background: hsla(230, 26%, 45%, 1);
+  background: linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
+  background: -moz-linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
+  background: -webkit-linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
+
+
+  .headers {
+    height: 100vh;
+    width: calc(100vw - 25%);
+
+    position: absolute;
+
+    .right_div_2 {
+      position: absolute;
+
+      min-width: 30%;
+      min-height: 100vh;
+
+      background: hsla(230, 26%, 45%, 1);
+      background: linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
+      background: -moz-linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
+      background: -webkit-linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
+    }
+
+    .right_div {
+      height: 100vh;
+      width: 20%;
+
+      position: absolute;
+      bottom: 0;
+
+      background: hsla(230, 26%, 45%, 1);
+      background: linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
+      background: -moz-linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
+      background: -webkit-linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
+    }
+
+
+    .bottom_div {
+      height: 200px;
+      width: calc(100vw - 25%);
+
+      position: absolute;
+      bottom: 0;
+
+      background: hsla(230, 26%, 45%, 1);
+      background: linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
+      background: -moz-linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
+      background: -webkit-linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
+    }
+
+    .inner_container {
+      display: none;
+
+      width: 70%;
+      height: 400px;
+
+      min-width: 300px;
+
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      background-color: white;
+      border-radius: 15px;
+
+      box-shadow: 3px 3px 3px rgba($color: #000000, $alpha: 0.5);
+
+      img {
+        width: 150px;
+        height: 150px;
+
+        position: absolute;
+        top: 0;
+        left: 30px;
+
+        transform: skewX(-20deg);
+      }
+
+      h1,
+      .description {
+        font-size: 4rem;
+        font-weight: 700;
+        font-family: 'Lobster', cursive;
+
+        background: linear-gradient(to right, #3d425c 10%, #7780aa 50%, #3d425c 60%);
+        background-size: auto auto;
+        background-clip: border-box;
+        background-size: 200% auto;
+        background-clip: text;
+
+        color: #fff;
+        text-fill-color: transparent;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+
+        animation: textclip 3s linear infinite;
+
+        display: inline-block;
+      }
+
+      .description {
+        font-size: 1rem;
+        color: $green-color;
+      }
+
+      @keyframes textclip {
+        to {
+          background-position: 200% center;
+        }
+      }
+    }
+
+    @media only screen and (min-width: $small) {
+      .inner_container {
+        display: flex;
+
+        position: absolute;
+        top: 50%;
+        left: 50%;
+
+        transform: translate(-50%, -50%);
+      }
+    }
+
+    @media only screen and (min-width: $medium) {
+      .inner_container {
+        display: flex;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+
+        transform: translate(-50%, -50%);
+      }
+    }
+  }
+
+}

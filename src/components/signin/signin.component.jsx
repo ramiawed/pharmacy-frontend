@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
+import background from "../../background.jpeg";
 
 // react-icons
 import { HiUser } from "react-icons/hi";
@@ -215,6 +216,8 @@ function SignIn() {
               {t("sign-up")}
             </p>
           </div>
+
+          <img className={styles.small_logo} src={background} alt="thumb" />
 
           <h3>{t("sign-in")}</h3>
 

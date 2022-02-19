@@ -17,14 +17,14 @@ function SignInPage() {
   return (
     <div className={styles.sign_container}>
       <div className={styles.headers}>
-        <div className={styles.right_div}></div>
+        {/* <div className={styles.right_div}></div>
         <div className={styles.right_div_2}></div>
         <div className={styles.bottom_div}></div>
         <div className={styles.inner_container}>
           <h1>{t("app-name")}</h1>
           <p className={styles.description}>{t("app-description")}</p>
           <img src={background001} alt="thumb" />
-        </div>
+        </div> */}
       </div>
 
       <SignIn />

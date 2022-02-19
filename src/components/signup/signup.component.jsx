@@ -68,6 +68,11 @@ function SignUp() {
   const [signupLoading, setSignupLoading] = useState(false);
   // state to determine that the sign up process succeeded or not
   const [signupSucceeded, setSignupSucceeded] = useState(false);
+  const [userNamePlaceHolder, setUserNamePlaceHolder] =
+    useState("enter-guest-name");
+  const [userPaperUrlLabel, setUserPaperUrlLabel] = useState(
+    "choose-paper-url-guest"
+  );
 
   // states for each field
   const [user, setUser] = useState({
@@ -80,8 +85,6 @@ function SignUp() {
     mobile: "",
     city: CitiesName.NONE,
     addressDetails: "",
-    // district: "",
-    // street: "",
     type: UserTypeConstants.GUEST,
     employeeName: "",
     certificateName: "",
@@ -124,8 +127,6 @@ function SignUp() {
       mobile: "",
       city: "",
       addressDetails: "",
-      // district: "",
-      // street: "",
       type: UserTypeConstants.GUEST,
       employeeName: "",
       certificateName: "",
@@ -260,11 +261,27 @@ function SignUp() {
       // change the type of the user
       // reset employee name and certificate name and guestDetails
       // (job, company name, job title
-      if (
-        e.target.value === UserTypeConstants.WAREHOUSE ||
-        e.target.value === UserTypeConstants.COMPANY
-      ) {
-        inputFileRef.current.value = "";
+      // if (
+      //   e.target.value === UserTypeConstants.WAREHOUSE ||
+      //   e.target.value === UserTypeConstants.COMPANY
+      // ) {
+      //   // inputFileRef.current.value = "";
+      // }
+      if (e.target.value === UserTypeConstants.WAREHOUSE) {
+        setUserNamePlaceHolder("enter-warehouse-name");
+        setUserPaperUrlLabel("");
+      }
+      if (e.target.value === UserTypeConstants.COMPANY) {
+        setUserNamePlaceHolder("enter-company-name");
+        setUserPaperUrlLabel("");
+      }
+      if (e.target.value === UserTypeConstants.PHARMACY) {
+        setUserNamePlaceHolder("enter-pharmacy-name");
+        setUserPaperUrlLabel("choose-paper-url-pharmacy");
+      }
+      if (e.target.value === UserTypeConstants.GUEST) {
+        setUserNamePlaceHolder("enter-guest-name");
+        setUserPaperUrlLabel("choose-paper-url-guest");
       }
       setUser({
         ...user,
@@ -397,7 +414,6 @@ function SignUp() {
         .post(`${BASEURL}/users/signup`, user, {})
         .then((response) => {
           // if create user succeeded
-
           if (
             user.type === UserTypeConstants.PHARMACY ||
             user.type === UserTypeConstants.GUEST
@@ -472,58 +488,6 @@ function SignUp() {
       <h3>{t("sign-up")}</h3>
 
       <div className={styles.info_div}>
-        {/* name */}
-        <div className={styles.input_div}>
-          <Input
-            icon={getIcon("name")}
-            type="text"
-            label="user-name"
-            id="name"
-            value={user.name}
-            onchange={inputChangeHandler}
-            error={error.name?.length > 0}
-          />
-        </div>
-
-        {/* username */}
-        <div className={styles.input_div}>
-          <Input
-            icon={getIcon("username")}
-            type="text"
-            label="user-username"
-            id="username"
-            value={user.username}
-            onchange={inputChangeHandler}
-            error={error.username?.length > 0}
-          />
-        </div>
-
-        {/* password */}
-        <div className={styles.input_div}>
-          <Input
-            icon={getIcon("password")}
-            type="password"
-            label="user-password"
-            id="password"
-            value={user.password}
-            onchange={inputChangeHandler}
-            error={error.password?.length > 0}
-          />
-        </div>
-
-        {/* password confirm */}
-        <div className={styles.input_div}>
-          <Input
-            icon={getIcon("password")}
-            type="password"
-            label="user-password-confirm"
-            id="passwordConfirm"
-            value={user.passwordConfirm}
-            onchange={inputChangeHandler}
-            error={error.passwordConfirm?.length > 0}
-          />
-        </div>
-
         {/* user type with 100% width and top margin of 10 */}
         <div
           className={[
@@ -579,6 +543,58 @@ function SignUp() {
             />
             <label>{t("normal")}</label>
           </div>
+        </div>
+        {/* name */}
+        <div className={styles.input_div}>
+          <Input
+            icon={getIcon("name")}
+            type="text"
+            label="user-name"
+            id="name"
+            value={user.name}
+            onchange={inputChangeHandler}
+            error={error.name?.length > 0}
+            placeholder={userNamePlaceHolder}
+          />
+        </div>
+
+        {/* username */}
+        <div className={styles.input_div}>
+          <Input
+            icon={getIcon("username")}
+            type="text"
+            label="user-username"
+            id="username"
+            value={user.username}
+            onchange={inputChangeHandler}
+            error={error.username?.length > 0}
+          />
+        </div>
+
+        {/* password */}
+        <div className={styles.input_div}>
+          <Input
+            icon={getIcon("password")}
+            type="password"
+            label="user-password"
+            id="password"
+            value={user.password}
+            onchange={inputChangeHandler}
+            error={error.password?.length > 0}
+          />
+        </div>
+
+        {/* password confirm */}
+        <div className={styles.input_div}>
+          <Input
+            icon={getIcon("password")}
+            type="password"
+            label="user-password-confirm"
+            id="passwordConfirm"
+            value={user.passwordConfirm}
+            onchange={inputChangeHandler}
+            error={error.passwordConfirm?.length > 0}
+          />
         </div>
 
         {user.type === UserTypeConstants.PHARMACY ||
@@ -743,7 +759,7 @@ function SignUp() {
                 marginInlineEnd: "6px",
               }}
             >
-              {t("choose-paper-url")}
+              {t(userPaperUrlLabel)}
             </label>
             <input
               id="paperUrl"

@@ -331,7 +331,7 @@ export const authSlice = createSlice({
     },
     [changeMyPassword.fulfilled]: (state, action) => {
       state.changePasswordStatus = "succeeded";
-      state.user = action.payload.data.user;
+      // state.user = action.payload.data.user;
     },
     [changeMyPassword.rejected]: (state, { error, meta, payload }) => {
       state.changePasswordStatus = "failed";

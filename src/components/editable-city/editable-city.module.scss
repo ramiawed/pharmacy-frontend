@@ -1,0 +1,67 @@
+@import "../../variables.scss";
+
+.info_row {
+  padding: 8px 12px;
+  
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.info_row .label {
+  width: 75px;
+  min-width: 75px;
+
+  text-align: end;
+  padding-inline-end: 6px;
+
+  color: #9d9d9d;
+  
+  font-size: 0.6rem;
+}
+
+.info_row .value {
+  flex: 1;
+  color: $secondary-color;
+
+  font-size: 0.8rem;
+}
+
+.value input {
+  width: 100%;
+  
+  padding: 4px;
+
+  border: none;
+  outline: none;
+}
+
+.error {
+  width: 100%;
+  color: $third-color;
+  text-align: center;
+  font-size: 12px;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@media only screen and (min-width: $small) {
+  .info_row .label {
+    width: 100px;
+    min-width: 100px;
+  
+    color: #9d9d9d;
+    
+    font-size: 0.8rem;
+  }
+  
+  .info_row .value {
+    font-size: 1rem;
+  }
+}

@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router-dom";
+import axios from "axios";
 
 // components
 import Header from "../../components/header/header.component";
@@ -12,6 +13,7 @@ import ChangePassword from "../../components/change-password/change-password.com
 import DeleteMe from "../../components/delete-me/delete-me.component";
 import Button from "../../components/button/button.component";
 import UserProfileNotifications from "../../components/user-profile-notifications/user-profile-notifications.component";
+import EditableCity from "../../components/editable-city/editable-city.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -27,20 +29,36 @@ import rowStyles from "../../components/row.module.scss";
 import generalStyles from "../../style.module.scss";
 
 // constants, and utile
-import { UserTypeConstants, Colors, SERVER_URL } from "../../utils/constants";
+import {
+  UserTypeConstants,
+  Colors,
+  SERVER_URL,
+  BASEURL,
+} from "../../utils/constants";
 
 function UserProfilePage({ onSelectedChange }) {
   const { t } = useTranslation();
-  const isOnline = useSelector(selectOnlineStatus);
   const dispatch = useDispatch();
-  const { user, token } = useSelector(selectUserData);
 
+  // selectors
+  const isOnline = useSelector(selectOnlineStatus);
+  const { token } = useSelector(selectUserData);
+
+  // own state
+  const [user, setUser] = useState({});
   const [userObj, setUserObj] = useState(user);
 
   const handleInputChange = (field, val) => {
     setUserObj({
       ...userObj,
       [field]: val,
+    });
+  };
+
+  const handleCityChange = (val) => {
+    setUserObj({
+      ...userObj,
+      city: val,
     });
   };
 
@@ -58,6 +76,16 @@ function UserProfilePage({ onSelectedChange }) {
   };
 
   useEffect(() => {
+    axios
+      .get(`${BASEURL}/users/me`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        setUser(response.data.data.user);
+        setUserObj(response.data.data.user);
+      });
     window.scrollTo(0, 0);
     onSelectedChange();
   }, []);
@@ -111,7 +139,7 @@ function UserProfilePage({ onSelectedChange }) {
         <InfoRow
           editable={false}
           labelText={t("user-type")}
-          value={userObj.type}
+          value={t(userObj.type)}
         />
       </CardInfo>
 
@@ -143,12 +171,15 @@ function UserProfilePage({ onSelectedChange }) {
       </CardInfo>
 
       <CardInfo headerTitle={t("address-info")}>
-        <InfoRow
+        <EditableCity
           editable={true}
           field="city"
           labelText={t("user-city")}
-          value={t(userObj.city)}
-          onInputChange={handleInputChange}
+          value={{
+            value: userObj.city,
+            label: t(userObj.city),
+          }}
+          onInputChange={handleCityChange}
           action={() => updateFieldHandler("city")}
         />
 
@@ -262,7 +293,7 @@ function UserProfilePage({ onSelectedChange }) {
       <UserProfileNotifications />
     </div>
   ) : (
-    <Redirect to="signing" />
+    <Redirect to="/" />
   );
 }
 

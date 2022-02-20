@@ -75,7 +75,10 @@ function NotificationPage({ onSelectedChange }) {
           <div className={styles.content_div}>
             <div className={styles.row}>
               <label>{t("header")}</label>
-              <p className={styles.header}>{notification.header}</p>
+              <p className={styles.header} style={{ flex: 1 }}>
+                {notification.header}
+              </p>
+              <p className={styles.header}>{notification.date.split("T")[0]}</p>
             </div>
 
             <div className={styles.row}>

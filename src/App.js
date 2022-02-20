@@ -42,7 +42,6 @@ function App() {
   useEffect(() => {
     const updateOnlineStatus = () => {
       dispatch(changeOnlineStatus(window.navigator.onLine));
-      // dispatch(changeOnlineStatus(true));
     };
 
     updateOnlineStatus();

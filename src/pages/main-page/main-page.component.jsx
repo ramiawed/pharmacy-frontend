@@ -210,7 +210,7 @@ function MainPage() {
             />
 
             <div className={styles.content_area}>
-              <Suspense fallback={<div>Loading ...</div>}>
+              <Suspense fallback={<HomePageLoader />}>
                 <Switch>
                   <Route exact path="/">
                     <HomePage

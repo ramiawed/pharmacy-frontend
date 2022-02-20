@@ -275,7 +275,7 @@ function NewAdvertisement({ isNew, setIsNew }) {
           header="choose-company"
           close={() => setShowSelectCompanyModal(false)}
           chooseAction={(data) => selectCompanyHandler(data)}
-          url={`${BASEURL}/users?limit=9&isActive=true&type=company`}
+          url={`${BASEURL}/users?limit=9&isActive=true&isApproved=true&type=company`}
         />
       )}
 
@@ -284,7 +284,7 @@ function NewAdvertisement({ isNew, setIsNew }) {
           header="choose-warehouse"
           close={() => setShowSelectWarehouseModal(false)}
           chooseAction={(data) => selectWarehouseHandler(data)}
-          url={`${BASEURL}/users?limit=9&isActive=true&type=warehouse`}
+          url={`${BASEURL}/users?limit=9&isActive=true&isApproved=true&type=warehouse`}
         />
       )}
 

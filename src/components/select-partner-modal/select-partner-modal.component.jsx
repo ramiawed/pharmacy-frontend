@@ -44,7 +44,7 @@ function SelectPartnerModal({ close, chooseAction, url, header }) {
   };
 
   const getCompanies = useCallback(
-    async (p) => {
+    (p) => {
       try {
         setLoading(true);
         let nameCondition = "";
@@ -53,19 +53,22 @@ function SelectPartnerModal({ close, chooseAction, url, header }) {
           nameCondition = `&name=${searchName.trim()}`;
         }
 
-        const response = await axios.get(`${url}&page=${p}${nameCondition}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        if (p === 1) {
-          setData(response.data.data.users);
-        } else {
-          setData([...data, ...response.data.data.users]);
-        }
-        setCount(response.data.count);
-        setLoading(false);
-        setPage(p + 1);
+        axios
+          .get(`${url}&page=${p}${nameCondition}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          })
+          .then((response) => {
+            if (p === 1) {
+              setData(response.data.data.users);
+            } else {
+              setData([...data, ...response.data.data.users]);
+            }
+            setCount(response.data.count);
+            setLoading(false);
+            setPage(p + 1);
+          });
       } catch (err) {}
     },
     [data, searchName, token, url]
@@ -78,7 +81,7 @@ function SelectPartnerModal({ close, chooseAction, url, header }) {
 
   useEffect(() => {
     getCompanies(1);
-  }, [getCompanies]);
+  }, []);
 
   return (
     <Modal

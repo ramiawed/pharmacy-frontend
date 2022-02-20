@@ -62,9 +62,9 @@ export const addCompanyToSectionOne = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        `${BASEURL}/users/inSectionOne/${id}`,
+        `${BASEURL}/users/update/${id}`,
         {
-          option: true,
+          inSectionOne: true,
         },
         {
           // timeout: 10000,
@@ -101,9 +101,9 @@ export const removeCompanyFromSectionOne = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        `${BASEURL}/users/inSectionOne/${id}`,
+        `${BASEURL}/users/update/${id}`,
         {
-          option: false,
+          inSectionOne: false,
         },
         {
           // timeout: 10000,

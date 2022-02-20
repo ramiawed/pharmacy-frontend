@@ -77,7 +77,7 @@ function SelectMedicineModal({ close, chooseAction, url }) {
 
   useEffect(() => {
     getItems(1);
-  }, [getItems]);
+  }, []);
 
   return (
     <Modal

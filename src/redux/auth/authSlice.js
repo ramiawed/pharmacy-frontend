@@ -296,13 +296,17 @@ export const authSlice = createSlice({
       state.token = "";
       state.user = null;
 
-      if (payload === "timeout") {
-        state.error = "timeout-msg";
-      } else if (payload === "cancel") {
-        state.error = "cancel-operation-msg";
-      } else if (payload === "network failed") {
-        state.error = "network failed";
-      } else state.error = payload.message;
+      try {
+        if (payload === "timeout") {
+          state.error = "general-error";
+        } else if (payload === "cancel") {
+          state.error = "general-error";
+        } else if (payload === "network failed") {
+          state.error = "general-error";
+        } else state.error = payload.message;
+      } catch (err) {
+        state.error = "general-error";
+      }
     },
 
     // user update info lifecycle
@@ -315,13 +319,18 @@ export const authSlice = createSlice({
     },
     [updateUserInfo.rejected]: (state, { payload }) => {
       state.updateStatus = "failed";
-      if (payload === "timeout") {
-        state.updateError = "timeout";
-      } else if (payload === "cancel") {
-        state.updateError = "cancel";
-      } else if (payload === "network failed") {
-        state.updateError = "network failed";
-      } else state.updateError = payload.message;
+
+      try {
+        if (payload === "timeout") {
+          state.error = "general-error";
+        } else if (payload === "cancel") {
+          state.error = "general-error";
+        } else if (payload === "network failed") {
+          state.error = "general-error";
+        } else state.error = payload.message;
+      } catch (err) {
+        state.error = "general-error";
+      }
     },
 
     // change password lifecycle
@@ -336,13 +345,17 @@ export const authSlice = createSlice({
     [changeMyPassword.rejected]: (state, { error, meta, payload }) => {
       state.changePasswordStatus = "failed";
 
-      if (payload === "timeout") {
-        state.passwordError = payload;
-      } else if (payload === "cancel") {
-        state.passwordError = "cancel-operation-msg";
-      } else if (payload === "network failed") {
-        state.passwordError = "network failed";
-      } else state.passwordError = payload.message;
+      try {
+        if (payload === "timeout") {
+          state.error = "general-error";
+        } else if (payload === "cancel") {
+          state.error = "general-error";
+        } else if (payload === "network failed") {
+          state.error = "general-error";
+        } else state.error = payload.message;
+      } catch (err) {
+        state.error = "general-error";
+      }
     },
 
     // delete me lifecycle
@@ -356,13 +369,18 @@ export const authSlice = createSlice({
     },
     [deleteMe.rejected]: (state, { payload }) => {
       state.deleteStatus = "failed";
-      if (payload === "timeout") {
-        state.deleteError = "timeout-msg";
-      } else if (payload === "cancel") {
-        state.deleteError = "cancel-operation-msg";
-      } else if (payload === "network failed") {
-        state.deleteError = "network failed";
-      } else state.deleteError = payload.message;
+
+      try {
+        if (payload === "timeout") {
+          state.error = "general-error";
+        } else if (payload === "cancel") {
+          state.error = "general-error";
+        } else if (payload === "network failed") {
+          state.error = "general-error";
+        } else state.error = payload.message;
+      } catch (err) {
+        state.error = "general-error";
+      }
     },
 
     // change the logo of a user lifecycle
@@ -375,13 +393,18 @@ export const authSlice = createSlice({
     },
     [changeLogo.rejected]: (state, { payload }) => {
       state.changeLogoStatus = "failed";
-      if (payload === "timeout") {
-        state.changeLogoError = "timeout-msg";
-      } else if (payload === "cancel") {
-        state.changeLogoError = "cancel-operation-msg";
-      } else if (payload === "network failed") {
-        state.changeLogoError = "network failed";
-      } else state.changeLogoError = payload.message;
+
+      try {
+        if (payload === "timeout") {
+          state.error = "general-error";
+        } else if (payload === "cancel") {
+          state.error = "general-error";
+        } else if (payload === "network failed") {
+          state.error = "general-error";
+        } else state.error = payload.message;
+      } catch (err) {
+        state.error = "general-error";
+      }
     },
   },
 });

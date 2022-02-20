@@ -13,6 +13,17 @@ const initialState = {
 let CancelToken = null;
 let source = null;
 
+export const cancelOperation = () => {
+  if (source) {
+    source.cancel("operation canceled by user");
+  }
+};
+
+const resetCancelAndSource = () => {
+  CancelToken = null;
+  source = null;
+};
+
 export const getAllAdvertisements = createAsyncThunk(
   "advertisement/getAllAdvertisements",
   async ({ token }, { rejectWithValue }) => {
@@ -28,8 +39,11 @@ export const getAllAdvertisements = createAsyncThunk(
         },
       });
 
+      resetCancelAndSource();
+
       return response.data;
     } catch (err) {
+      resetCancelAndSource();
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }
@@ -65,8 +79,10 @@ export const addAdvertisement = createAsyncThunk(
         }
       );
 
+      resetCancelAndSource();
       return response.data;
     } catch (err) {
+      resetCancelAndSource();
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }
@@ -102,8 +118,11 @@ export const deleteAdvertisement = createAsyncThunk(
         }
       );
 
+      resetCancelAndSource();
+
       return response.data;
     } catch (err) {
+      resetCancelAndSource();
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }
@@ -163,8 +182,20 @@ export const advertisementsSlice = createSlice({
       ];
       state.forceRefresh = false;
     },
-    [addAdvertisement.rejected]: (state) => {
+    [addAdvertisement.rejected]: (state, { payload }) => {
       state.status = "failed";
+
+      try {
+        if (payload === "timeout") {
+          state.error = "general-error";
+        } else if (payload === "cancel") {
+          state.error = "general-error";
+        } else if (payload === "network failed") {
+          state.error = "general-error";
+        } else state.error = payload.message;
+      } catch (err) {
+        state.error = "general-error";
+      }
     },
     [deleteAdvertisement.pending]: (state) => {
       state.status = "loading";
@@ -175,8 +206,20 @@ export const advertisementsSlice = createSlice({
         (adv) => adv._id !== action.payload.data.advertisement._id
       );
     },
-    [deleteAdvertisement.rejected]: (state) => {
+    [deleteAdvertisement.rejected]: (state, { payload }) => {
       state.status = "failed";
+
+      try {
+        if (payload === "timeout") {
+          state.error = "general-error";
+        } else if (payload === "cancel") {
+          state.error = "general-error";
+        } else if (payload === "network failed") {
+          state.error = "general-error";
+        } else state.error = payload.message;
+      } catch (err) {
+        state.error = "general-error";
+      }
     },
     [getAllAdvertisements.pending]: (state) => {
       state.status = "loading";
@@ -189,13 +232,17 @@ export const advertisementsSlice = createSlice({
     [getAllAdvertisements.rejected]: (state, { payload }) => {
       state.status = "failed";
 
-      if (payload === "timeout") {
-        state.error = "timeout-msg";
-      } else if (payload === "cancel") {
-        state.error = "cancel-operation-msg";
-      } else if (payload === "network failed") {
-        state.error = "network failed";
-      } else state.error = payload.message;
+      try {
+        if (payload === "timeout") {
+          state.error = "general-error";
+        } else if (payload === "cancel") {
+          state.error = "general-error";
+        } else if (payload === "network failed") {
+          state.error = "general-error";
+        } else state.error = payload.message;
+      } catch (err) {
+        state.error = "general-error";
+      }
     },
   },
 });

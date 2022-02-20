@@ -4,9 +4,12 @@ import { useTranslation } from "react-i18next";
 // redux stufff
 import { useDispatch, useSelector } from "react-redux";
 import {
+  cancelOperation,
+  getAllAdvertisements,
   resetError,
   selectAdvertisements,
 } from "../../redux/advertisements/advertisementsSlice";
+import { selectToken } from "../../redux/auth/authSlice";
 
 // components
 import AdvertisementPageHeader from "../../components/advertisement-page-header/advertisement-page-header.component";
@@ -26,13 +29,21 @@ function AdvertisementsPage({ onSelectedChange }) {
   const dispatch = useDispatch();
 
   // selectors
+  const token = useSelector(selectToken);
   const { status, error, advertisements } = useSelector(selectAdvertisements);
 
   // own states
   const [isNew, setIsNew] = useState(false);
 
+  const cancelOperationHandler = () => {
+    cancelOperation();
+  };
+
   useEffect(() => {
     window.scrollTo(0, 0);
+    if (advertisements?.length === 0) {
+      dispatch(getAllAdvertisements({ token }));
+    }
     onSelectedChange();
   }, []);
 
@@ -48,7 +59,9 @@ function AdvertisementsPage({ onSelectedChange }) {
         ))}
       </div>
 
-      {status === "loading" && <Loader />}
+      {status === "loading" && (
+        <Loader allowCancel={true} onclick={cancelOperationHandler} />
+      )}
 
       {error && (
         <Toast

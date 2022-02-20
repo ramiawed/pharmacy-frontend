@@ -16,7 +16,8 @@ import {
 import { BsFillPersonCheckFill, BsFillPersonDashFill } from "react-icons/bs";
 import { IoMdMore } from "react-icons/io";
 import { BiShow, BiHide } from "react-icons/bi";
-import { AiFillUnlock, AiFillLock, AiFillEdit } from "react-icons/ai";
+import { AiFillUnlock, AiFillLock } from "react-icons/ai";
+import { CgPassword } from "react-icons/cg";
 
 // components
 import Modal from "../modal/modal.component";
@@ -493,7 +494,7 @@ function UserRow({ user }) {
           <Icon
             tooltip={t("change-password-tooltip")}
             onclick={() => setShowResetUserPasswordModal(true)}
-            icon={() => <AiFillEdit />}
+            icon={() => <CgPassword />}
             foreColor={Colors.SECONDARY_COLOR}
           />
         </label>

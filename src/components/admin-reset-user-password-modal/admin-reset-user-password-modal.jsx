@@ -26,7 +26,7 @@ function AdminResetUserPasswordModal({
   return (
     <Modal
       header="change-password-tooltip"
-      cancelLabel="close-label"
+      cancelLabel="cancel-label"
       closeModal={close}
       small={true}
       okLabel="ok-label"

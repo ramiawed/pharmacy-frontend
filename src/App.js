@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Route, Switch } from "react-router-dom";
+import { Route, Router, Switch } from "react-router-dom";
 import { Detector } from "react-detect-offline";
 
 // components
@@ -57,12 +57,14 @@ function App() {
 
   return (
     <div className={styles.main_div}>
-      <Switch>
-        <Route path="/signin" exact component={SignInPage} />
-        <Route path="/signup" exact component={SignUpPage} />
-        <Route path="/approve" exact component={ApprovePage} />
-        <Route path="/" component={MainPage} />
-      </Switch>
+      <Router basename="/pharmacy-frontend">
+        <Switch>
+          <Route path="/signin" exact component={SignInPage} />
+          <Route path="/signup" exact component={SignUpPage} />
+          <Route path="/approve" exact component={ApprovePage} />
+          <Route path="/" component={MainPage} />
+        </Switch>
+      </Router>
 
       {onlineMsg && (
         <Toast

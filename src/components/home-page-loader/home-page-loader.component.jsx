@@ -1,13 +1,17 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import styles from "./home-page-loader.module.scss";
 
 function HomePageLoader() {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.container}>
-      <div className={styles.loader}>
+      {/* <div className={styles.loader}>
         <span></span>
-      </div>
+      </div> */}
+      <h1>{t("app-name")}</h1>
     </div>
   );
 }

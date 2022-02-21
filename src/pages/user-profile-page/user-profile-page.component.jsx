@@ -140,6 +140,7 @@ function UserProfilePage({ onSelectedChange }) {
           editable={false}
           labelText={t("user-type")}
           value={t(userObj.type)}
+          onInputChange={handleInputChange}
         />
       </CardInfo>
 

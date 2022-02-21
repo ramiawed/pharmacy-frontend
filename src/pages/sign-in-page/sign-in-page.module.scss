@@ -3,96 +3,150 @@
 .sign_container {
   width: 100vw;
   height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: absolute;
 
   background: white;
   background: linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
   background: -moz-linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
   background: -webkit-linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
 
-
-  .headers {
-    // background: url('../../background002.jpeg');
-    // background-size: contain;
-    // background-repeat: no-repeat;
-    // background-position: center;
-    height: 100vh;
-    width: calc(100vw - 25%);
-
+  .right_div_2,
+  .right_div,
+  .bottom_div {
     position: absolute;
 
-    .right_div_2 {
+    background: hsla(230, 26%, 45%, 1);
+    background: linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
+    background: -moz-linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
+    background: -webkit-linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
+  }
+
+  .right_div_2 {
+    right: 0;
+    min-width: 30%;
+    min-height: 100vh;
+  }
+
+  .right_div {
+    height: 100vh;
+    width: 20%;
+
+    right: 0;
+  }
+
+  .bottom_div {
+    height: 200px;
+    width: 100vw;
+
+    bottom: 0;
+  }
+
+
+  .main {
+    background-image: url("../../image01.jpg");
+    background-size: 50%;
+    background-repeat: no-repeat;
+    background-position: 50% 100%;
+    height: 80%;
+    width: 80vw;
+
+    position: relative;
+
+    display: flex;
+
+
+    background-color: rgba($color: $white-color, $alpha: 1);
+    border-radius: 15px;
+
+    box-shadow: 3px 3px 5px rgba($color: #000000, $alpha: 0.3);
+
+    .vertical_1 {
       position: absolute;
+      top: 10px;
+      left: 30px;
+      width: 3px;
+      height: calc(100% - 50px);
 
-      min-width: 30%;
-      min-height: 100vh;
-
-      background: hsla(230, 26%, 45%, 1);
-      background: linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
-      background: -moz-linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
-      background: -webkit-linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
+      background: $secondary-color
     }
 
-    .right_div {
-      height: 100vh;
-      width: 20%;
-
+    .vertical_2 {
       position: absolute;
-      bottom: 0;
+      top: 10px;
+      left: 50px;
+      width: 3px;
+      height: calc(100% - 75px);
 
-      background: hsla(230, 26%, 45%, 1);
-      background: linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
-      background: -moz-linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
-      background: -webkit-linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
+      background: $secondary-color
     }
 
-
-    .bottom_div {
-      height: 200px;
-      width: calc(100vw - 25%);
-
+    .horizontal_1 {
       position: absolute;
-      bottom: 0;
+      top: 30px;
+      left: 10px;
+      width: calc(100% - 300px);
+      height: 3px;
 
-      background: hsla(230, 26%, 45%, 1);
-      background: linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
-      background: -moz-linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
-      background: -webkit-linear-gradient(45deg, hsla(230, 26%, 45%, 0.3) 19%, hsla(230, 26%, 45%, 0.6) 100%);
+      background: $secondary-color
     }
 
-    .inner_container {
-      display: none;
+    .horizontal_2 {
+      position: absolute;
+      top: 50px;
+      left: 10px;
+      width: calc(100% - 350px);
+      height: 3px;
 
+      background: $secondary-color
+    }
+
+    .sign_in_div {
+      min-height: 400px;
+      min-width: 300px;
+      padding: 30px;
+
+      display: flex;
+      align-items: stretch;
+      flex-direction: column;
+
+    }
+
+    .headers {
+      // border: 1px solid black;
       width: 70%;
-      height: 400px;
+      flex: 1;
 
       min-width: 300px;
 
       flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      background-color: white;
-      border-radius: 15px;
+      align-items: flex-end;
+      justify-content: flex-start;
 
-      box-shadow: 3px 3px 3px rgba($color: #000000, $alpha: 0.5);
 
-      img {
+      .logo {
         width: 150px;
         height: 150px;
 
         position: absolute;
-        top: 0;
-        left: 30px;
-
-        transform: skewX(-20deg);
+        top: 15px;
+        right: 25px;
       }
 
-      h1,
-      .description {
+      .image {
+        width: 200px;
+        height: 200px;
+      }
+
+      h1 {
         font-size: 4rem;
         font-weight: 700;
         font-family: 'Lobster', cursive;
 
-        background: linear-gradient(to right, #3d425c 10%, #7780aa 50%, #3d425c 60%);
+        background: linear-gradient(to right, #566092 10%, #a1daf2 50%, #566092 60%);
         background-size: auto auto;
         background-clip: border-box;
         background-size: 200% auto;
@@ -106,10 +160,21 @@
         animation: textclip 3s linear infinite;
 
         display: inline-block;
+
+        position: relative;
+        top: 50px;
+        left: 70px;
       }
 
+
+
       .description {
-        font-size: 1rem;
+        font-family: 'Lobster', cursive;
+        color: $secondary-color;
+        font-size: 1.5rem;
+        position: relative;
+        top: 50px;
+        left: 70px;
       }
 
       @keyframes textclip {
@@ -120,25 +185,14 @@
     }
 
     @media only screen and (min-width: $small) {
-      .inner_container {
+      .headers {
         display: flex;
-
-        position: absolute;
-        top: 50%;
-        left: 50%;
-
-        transform: translate(-50%, -50%);
       }
     }
 
     @media only screen and (min-width: $medium) {
-      .inner_container {
+      .headers {
         display: flex;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-
-        transform: translate(-50%, -50%);
       }
     }
   }

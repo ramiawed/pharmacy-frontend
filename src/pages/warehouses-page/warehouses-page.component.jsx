@@ -115,7 +115,9 @@ function WarehousePage({ onSelectedChange }) {
     };
   }, []);
 
-  return user ? (
+  return user &&
+    (user.type === UserTypeConstants.ADMIN ||
+      user.type === UserTypeConstants.PHARMACY) ? (
     <div className={generalStyles.container}>
       <WarehousesHeader
         count={count}
@@ -201,7 +203,7 @@ function WarehousePage({ onSelectedChange }) {
       )}
     </div>
   ) : (
-    <Redirect to="/signin" />
+    <Redirect to="/" />
   );
 }
 

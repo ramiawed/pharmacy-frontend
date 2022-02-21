@@ -1,28 +1,20 @@
 @import "../../variables.scss";
 
 .container {
-  height: 100vh;
-  width: 100%;
-  min-width: 300px;
+  padding: 10px;
+  min-width: 100%;
+  min-height: 100%;
 
-  position: absolute;
+  background-color: rgba($color: $main-color, $alpha: 1);
 
-  overflow: hidden;
+  border-radius: 15px;
+
+  box-shadow: 3px 3px 5px rgba($color: #000, $alpha: 0.4);
+
+  position: relative;
+
 }
 
-.container::after {
-  content: "";
-  width: 100%;
-  height: 100%;
-
-  position: absolute;
-
-  top: 0;
-  left: 0;
-
-  background-color: $main-color;
-  opacity: 0.9;
-}
 
 .signup {
   position: absolute;
@@ -63,7 +55,7 @@
 }
 
 .info {
-  width: 90%;
+  width: 100%;
 
   display: flex;
   flex-direction: column;
@@ -90,26 +82,23 @@
   margin-top: 10px;
 }
 
-.small_logo {
-  width: 100px;
-  height: 100px;
+// .small_logo {
+//   width: 150px;
+//   height: 150px;
 
-  border-radius: 12px;
+//   border-radius: 12px;
 
-  position: relative;
-  top: -50px;
+//   position: absolute;
+//   top: 50px;
 
-  display: block;
-}
+//   display: block;
+// }
 
 @media only screen and (min-width: $small) {
   .container {
     width: 40%;
   }
 
-  .small_logo {
-    display: none;
-  }
 }
 
 @media only screen and (min-width: $medium) {

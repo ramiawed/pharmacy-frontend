@@ -19,6 +19,7 @@ import {
   changeAllOrdersSelection,
   deleteOrder,
   getOrders,
+  getUnreadOrders,
   resetStatus,
   selectOrders,
   setPage,
@@ -28,7 +29,6 @@ import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 
 // react icons
 import { BsCheckAll, BsCheck } from "react-icons/bs";
-import { FaCircle } from "react-icons/fa";
 import {
   MdOutlineCheckBox,
   MdOutlineCheckBoxOutlineBlank,
@@ -45,6 +45,7 @@ import tableStyles from "../../components/table.module.scss";
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants";
 import { RiMailUnreadLine } from "react-icons/ri";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 // return the count of selected orders
 const calculateSelectedOrdersCount = (orders) => {
@@ -100,7 +101,11 @@ function OrdersPage({ onSelectedChange }) {
           },
           token,
         })
-      );
+      )
+        .then(unwrapResult)
+        .then(() => {
+          dispatch(getUnreadOrders({ token }));
+        });
     }
   };
 
@@ -131,7 +136,7 @@ function OrdersPage({ onSelectedChange }) {
     const { selected } = e;
 
     handleSearch(selected + 1);
-    // setInitialPage(selected);
+
     window.scrollTo(0, 0);
   };
 
@@ -333,7 +338,7 @@ function OrdersPage({ onSelectedChange }) {
       )}
     </div>
   ) : (
-    <Redirect to="/signin" />
+    <Redirect to="/" />
   );
 }
 

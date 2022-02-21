@@ -32,7 +32,6 @@ function CardInfo({ headerTitle, children, type }) {
         <p>{headerTitle}</p>
         <label
           className={styles.header_label}
-          style={{}}
           onClick={() => setExpanded(!expanded)}
         >
           {expanded ? <BsFillCaretUpFill /> : <BsFillCaretDownFill />}

@@ -3,14 +3,14 @@ import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import background from "../../background.jpeg";
+import Logo from "../../smart-pharma-logo-02.png";
 
 // react-icons
 import { HiUser } from "react-icons/hi";
 import { RiLockPasswordLine } from "react-icons/ri";
 
 // component
-import Input from "../input/input.component";
+import InputSignIn from "../input-sign-in/input-sign-in.component";
 import Button from "../button/button.component";
 import Loader from "../action-loader/action-loader.component";
 import Modal from "../modal/modal.component";
@@ -49,7 +49,7 @@ const containerVariant = {
   },
   visible: {
     opacity: 1,
-    left: "0",
+    left: "10px",
     transition: {
       type: "spring",
     },
@@ -217,12 +217,12 @@ function SignIn() {
             </p>
           </div>
 
-          <img className={styles.small_logo} src={background} alt="thumb" />
+          {/* <img className={styles.small_logo} src={Logo} alt="thumb" /> */}
 
           <h3>{t("sign-in")}</h3>
 
           {/* username */}
-          <Input
+          <InputSignIn
             icon={<HiUser className={styles.icons} />}
             type="text"
             placeholder="user-username"
@@ -235,7 +235,7 @@ function SignIn() {
           />
 
           {/* password */}
-          <Input
+          <InputSignIn
             icon={<RiLockPasswordLine className={styles.icon} />}
             type="password"
             placeholder="user-password"

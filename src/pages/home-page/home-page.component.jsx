@@ -44,6 +44,7 @@ import {
 
 // styles
 import styles from "./home-page.module.scss";
+import generalStyles from "../../style.module.scss";
 
 function HomePage({ onSelectedChange }) {
   const dispatch = useDispatch();
@@ -115,9 +116,11 @@ function HomePage({ onSelectedChange }) {
 
   return user ? (
     <div
+      // className={generalStyles.container}
       style={{
         background:
           "linear-gradient(225deg, hsla(230, 26%, 45%, 1) 19%, hsla(230, 26%, 45%, 0.5) 75%)",
+        overflow: "hidden",
       }}
     >
       <div className={styles.search_container}>

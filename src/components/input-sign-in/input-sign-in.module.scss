@@ -1,0 +1,76 @@
+@import "../../variables.scss";
+
+.input_div {
+  min-width: 100%;
+
+  margin: 4px 0;
+  padding: 4px 8px;
+
+  border-radius: 4px;
+
+  // background-color: $white-color;
+  color: $white-color;
+  // border: 1px solid #787474;
+
+
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.input_div input {
+  width: 75px;
+
+  margin-inline-start: 8px;
+  padding: 4px 0px;
+
+  outline: none;
+  border: none;
+
+  color: $white-color;
+  background-color: transparent;
+
+  flex: 1;
+}
+
+.input_div input:disabled {
+  background-color: transparent;
+  color: $secondary-color;
+}
+
+.bordered {
+  border: 1px solid $secondary-color;
+}
+
+.input_div label {
+  font-size: 0.7rem;
+  text-align: left;
+}
+
+.input_div .icon_error {
+  width: 30px;
+
+  color: $third-color;
+}
+
+.input_div .icon_close {
+  width: 30px;
+
+  color: $white-color;
+}
+
+@media only screen and (min-width: $small) {
+  .input_div label {
+    font-size: 0.7rem;
+    padding: 0 12px;
+    text-align: left;
+  }
+}
+
+@media only screen and (min-width: $medium) {
+  .input_div label {
+    font-size: 0.7rem;
+    padding: 0 12px;
+    text-align: left;
+  }
+}

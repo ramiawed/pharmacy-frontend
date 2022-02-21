@@ -98,6 +98,7 @@ function MainPage() {
   // get the user and the token from redux-store-auth
   const { user, token } = useSelector(selectUserData);
   const { status: settingsStatus } = useSelector(selectSettings);
+  const [loading, setLoading] = useState(true);
 
   // state uses in the TopNav component
   const [selectedTopNavOption, setSelectedTopNavOption] = useState(
@@ -140,6 +141,10 @@ function MainPage() {
       }
     };
 
+    setTimeout(() => {
+      setLoading(false);
+    }, 4000);
+
     window.addEventListener("scroll", toggleToTopVisible);
     window.scrollTo(0, 0);
 
@@ -150,7 +155,7 @@ function MainPage() {
 
   return user ? (
     <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>
-      {settingsStatus === "loading" ? (
+      {settingsStatus === "loading" || loading ? (
         <HomePageLoader />
       ) : (
         <>
@@ -161,12 +166,6 @@ function MainPage() {
               if (!collapsedSideNavOption) setCollapsedSideNavOption(true);
             }}
           >
-            {/* <div
-              className={styles.background_div}
-              style={{
-                backgroundImage: `url("${SERVER_URL}/background.png")`,
-              }}
-            ></div> */}
             <div className={styles.hamburger_menu}>
               <p className={styles.selectedOption}>
                 {t(selectedTopNavOption)}
@@ -210,7 +209,7 @@ function MainPage() {
             />
 
             <div className={styles.content_area}>
-              <Suspense fallback={<HomePageLoader />}>
+              <Suspense fallback={<div>...loading</div>}>
                 <Switch>
                   <Route exact path="/">
                     <HomePage
@@ -422,7 +421,6 @@ function MainPage() {
                 </Switch>
               </Suspense>
             </div>
-
             <Footer />
 
             {toTopVisible && (

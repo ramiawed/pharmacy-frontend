@@ -52,16 +52,16 @@ function AdminNotificationPage({ onSelectedChange }) {
     useState("");
 
   const handleSearch = (page) => {
-    if (!isOnline) {
-      dispatch(changeOnlineMsg());
-      return;
-    }
-
     dispatch(setPage(page));
     dispatch(getAllNotifications({ token }));
   };
 
   const handlePageClick = (e) => {
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
     const { selected } = e;
 
     handleSearch(selected + 1);

@@ -57,14 +57,12 @@ function App() {
 
   return (
     <div className={styles.main_div}>
-      <Router basename="/pharmacy-frontend">
-        <Switch>
-          <Route path="/signin" exact component={SignInPage} />
-          <Route path="/signup" exact component={SignUpPage} />
-          <Route path="/approve" exact component={ApprovePage} />
-          <Route path="/" component={MainPage} />
-        </Switch>
-      </Router>
+      <Switch>
+        <Route path="/signin" exact component={SignInPage} />
+        <Route path="/signup" exact component={SignUpPage} />
+        <Route path="/approve" exact component={ApprovePage} />
+        <Route path="/" component={MainPage} />
+      </Switch>
 
       {onlineMsg && (
         <Toast

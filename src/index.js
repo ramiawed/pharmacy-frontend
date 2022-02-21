@@ -15,7 +15,7 @@ let persistor = persistStore(store);
 ReactDOM.render(
   <Provider store={store}>
     <PersistGate loading={null} persistor={persistor}>
-      <BrowserRouter basename="/">
+      <BrowserRouter basename="/pharmacy-frontend">
         <App />
       </BrowserRouter>
     </PersistGate>

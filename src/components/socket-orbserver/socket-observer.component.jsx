@@ -24,12 +24,6 @@ import {
   setForceRefresh as notificationForceRefresh,
   usersNotificationsSignOut,
 } from "../../redux/userNotifications/userNotificationsSlice";
-
-// constants
-import { Colors, SERVER_URL, UserTypeConstants } from "../../utils/constants";
-
-// socket
-import socketIoClient from "socket.io-client";
 import NotificationToast from "../notification-toast/notification-toast.component";
 import {
   settingsSignOut,
@@ -84,6 +78,13 @@ import {
   warehousesSectionOneSignOut,
 } from "../../redux/advertisements/warehousesSectionOneSlice";
 import { notificationsSignOut } from "../../redux/notifications/notificationsSlice";
+
+// constants
+import { Colors, SERVER_URL, UserTypeConstants } from "../../utils/constants";
+
+// socket
+import socketIoClient from "socket.io-client";
+
 const socket = socketIoClient(`${SERVER_URL}`, { autoConnect: false });
 
 function SocketObserver() {

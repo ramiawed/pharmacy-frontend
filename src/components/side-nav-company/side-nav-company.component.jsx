@@ -14,8 +14,10 @@ import {
 
 // styles
 import styles from "../side-nav.module.scss";
+import { GiMedicines } from "react-icons/gi";
+import { CgProfile } from "react-icons/cg";
 
-function SideNavCompany({ selectedOption, onSelectedChange }) {
+function SideNavCompany({ selectedOption, onSelectedChange, collapsed }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
@@ -33,28 +35,22 @@ function SideNavCompany({ selectedOption, onSelectedChange }) {
           dispatch(setWarehouse(null));
           dispatch(setRole(UserTypeConstants.COMPANY));
         }}
-        // to="/company/items"
         to={{
           pathname: "/items",
         }}
       >
-        {t("nav-items")}
+        <div className={styles.nav}>
+          <div className={styles.nav_icon}>
+            <GiMedicines size={20} />
+            {collapsed && (
+              <label className={styles.tooltip}>{t("nav-items")}</label>
+            )}
+          </div>
+          {!collapsed && (
+            <div className={styles.nav_label}>{t("nav-items")}</div>
+          )}
+        </div>
       </Link>
-
-      {/* <Link
-        className={[
-          styles.link,
-          selectedOption === SideNavLinks.ADVERTISEMENTS
-            ? `${styles.selected}`
-            : "",
-        ].join(" ")}
-        onClick={() => {
-          onSelectedChange(SideNavLinks.ADVERTISEMENTS);
-        }}
-        to="/company/advertises"
-      >
-        {t("nav-advertise")}
-      </Link> */}
 
       <Link
         className={[
@@ -66,7 +62,17 @@ function SideNavCompany({ selectedOption, onSelectedChange }) {
         }}
         to="/profile"
       >
-        {t("nav-profile")}
+        <div className={styles.nav}>
+          <div className={styles.nav_icon}>
+            <CgProfile size={20} />
+            {collapsed && (
+              <label className={styles.tooltip}>{t("nav-profile")}</label>
+            )}
+          </div>
+          {!collapsed && (
+            <div className={styles.nav_label}>{t("nav-profile")}</div>
+          )}
+        </div>
       </Link>
     </>
   );

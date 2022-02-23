@@ -32,12 +32,15 @@ import styles from "./main-page.module.scss";
 
 // constants
 import {
-  SERVER_URL,
   SideNavLinks,
   TopNavLinks,
   UserTypeConstants,
 } from "../../utils/constants";
 import { getUnreadOrders } from "../../redux/orders/ordersSlice";
+import {
+  changeNavSettings,
+  selectNavigationSlice,
+} from "../../redux/navs/navigationSlice";
 
 // pages
 const CartPage = lazy(() => import("../cart-page/cart-page.component"));
@@ -100,18 +103,17 @@ function MainPage() {
   const { status: settingsStatus } = useSelector(selectSettings);
   const [loading, setLoading] = useState(true);
 
-  // state uses in the TopNav component
-  const [selectedTopNavOption, setSelectedTopNavOption] = useState(
-    TopNavLinks.HOME
-  );
-
   const [toTopVisible, setToTopVisible] = useState(false);
-  // state to toggle show, hide TopNav
-  const [showTopNav, setShowTopNav] = useState(false);
 
-  // state uses in the SideNav component
-  const [selectedSideNavOption, setSelectedSideNavOption] = useState("");
-  const [collapsedSideNavOption, setCollapsedSideNavOption] = useState(true);
+  const {
+    setting: {
+      selectedTopNavOption,
+      collapsedSideNavOption,
+      selectedSideNavOption,
+      showTopNav,
+      showSearchBar,
+    },
+  } = useSelector(selectNavigationSlice);
 
   const dispatchProperties = useCallback(() => {
     if (user) {
@@ -153,6 +155,10 @@ function MainPage() {
     };
   }, [dispatchProperties]);
 
+  const changeNavigationSettingHandler = (obj) => {
+    dispatch(changeNavSettings(obj));
+  };
+
   return user ? (
     <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>
       {settingsStatus === "loading" || loading ? (
@@ -163,7 +169,11 @@ function MainPage() {
           <div
             className={styles.container}
             onClick={() => {
-              if (!collapsedSideNavOption) setCollapsedSideNavOption(true);
+              changeNavigationSettingHandler({
+                collapsedSideNavOption: true,
+                showTopNav: false,
+                showSearchBar: false,
+              });
             }}
           >
             <div className={styles.hamburger_menu}>
@@ -177,9 +187,14 @@ function MainPage() {
                 style={{
                   padding: "4px",
                 }}
-                onClick={() => {
-                  setShowTopNav(!showTopNav);
-                  setCollapsedSideNavOption(true);
+                onClick={(e) => {
+                  changeNavigationSettingHandler({
+                    collapsedSideNavOption: true,
+                    showTopNav: !showTopNav,
+                    showSearchBar: false,
+                  });
+
+                  e.stopPropagation();
                 }}
               />
             </div>
@@ -187,25 +202,33 @@ function MainPage() {
             <TopNav
               selectedOption={selectedTopNavOption}
               onSelectedChange={(val) => {
-                setSelectedTopNavOption(val);
-                setCollapsedSideNavOption(true);
-                setSelectedSideNavOption("");
-                setShowTopNav(false);
+                changeNavigationSettingHandler({
+                  selectedTopNavOption: val,
+                  collapsedSideNavOption: true,
+                  selectedSideNavOption: "",
+                  searchNavShow: false,
+                  showSearchBar: false,
+                });
               }}
-              showTopNav={showTopNav}
             />
             <SideNav
               collapsed={collapsedSideNavOption}
               onCollapsedChange={() => {
-                setCollapsedSideNavOption(!collapsedSideNavOption);
-                setShowTopNav(false);
+                changeNavigationSettingHandler({
+                  collapsedSideNavOption: !collapsedSideNavOption,
+                  showTopNav: false,
+                });
               }}
               selectedOption={selectedSideNavOption}
               onSelectedChange={(val) => {
-                setSelectedSideNavOption(val);
-                setSelectedTopNavOption("");
-                setCollapsedSideNavOption(true);
+                changeNavigationSettingHandler({
+                  selectedSideNavOption: val,
+                  selectedTopNavOption: "",
+                  collapsedSideNavOption: true,
+                  showSearchBar: false,
+                });
               }}
+              showSearchBar={showSearchBar}
             />
 
             <div className={styles.content_area}>
@@ -214,10 +237,13 @@ function MainPage() {
                   <Route exact path="/">
                     <HomePage
                       onSelectedChange={() => {
-                        setSelectedTopNavOption(TopNavLinks.HOME);
-                        setCollapsedSideNavOption(true);
-                        setSelectedSideNavOption("");
-                        setShowTopNav(false);
+                        changeNavigationSettingHandler({
+                          selectedTopNavOption: TopNavLinks.HOME,
+                          collapsedSideNavOption: true,
+                          selectedSideNavOption: "",
+                          showTopNav: false,
+                          showSearchBar: false,
+                        });
                       }}
                     />
                   </Route>
@@ -225,10 +251,13 @@ function MainPage() {
                   <Route exact path="/companies">
                     <CompaniesPage
                       onSelectedChange={() => {
-                        setSelectedTopNavOption(TopNavLinks.COMPANIES);
-                        setCollapsedSideNavOption(true);
-                        setSelectedSideNavOption("");
-                        setShowTopNav(false);
+                        changeNavigationSettingHandler({
+                          selectedTopNavOption: TopNavLinks.COMPANIES,
+                          collapsedSideNavOption: true,
+                          selectedSideNavOption: "",
+                          showTopNav: false,
+                          showSearchBar: false,
+                        });
                       }}
                     />
                   </Route>
@@ -236,10 +265,13 @@ function MainPage() {
                   <Route exact path="/medicines">
                     <MedicinesPage
                       onSelectedChange={() => {
-                        setSelectedTopNavOption(TopNavLinks.MEDICINES);
-                        setCollapsedSideNavOption(true);
-                        setSelectedSideNavOption("");
-                        setShowTopNav(false);
+                        changeNavigationSettingHandler({
+                          selectedTopNavOption: TopNavLinks.MEDICINES,
+                          collapsedSideNavOption: true,
+                          selectedSideNavOption: "",
+                          showTopNav: false,
+                          showSearchBar: false,
+                        });
                       }}
                     />
                   </Route>
@@ -247,10 +279,13 @@ function MainPage() {
                   <Route exact path="/warehouses">
                     <WarehousePage
                       onSelectedChange={() => {
-                        setSelectedTopNavOption(TopNavLinks.WAREHOUSES);
-                        setCollapsedSideNavOption(true);
-                        setSelectedSideNavOption("");
-                        setShowTopNav(false);
+                        changeNavigationSettingHandler({
+                          selectedTopNavOption: TopNavLinks.WAREHOUSES,
+                          collapsedSideNavOption: true,
+                          selectedSideNavOption: "",
+                          showTopNav: false,
+                          showSearchBar: false,
+                        });
                       }}
                     />
                   </Route>
@@ -266,10 +301,13 @@ function MainPage() {
                   <Route exact path="/cart">
                     <CartPage
                       onSelectedChange={() => {
-                        setSelectedTopNavOption(TopNavLinks.CART);
-                        setCollapsedSideNavOption(true);
-                        setSelectedSideNavOption("");
-                        setShowTopNav(false);
+                        changeNavigationSettingHandler({
+                          selectedTopNavOption: TopNavLinks.CART,
+                          collapsedSideNavOption: true,
+                          selectedSideNavOption: "",
+                          showTopNav: false,
+                          showSearchBar: false,
+                        });
                       }}
                     />
                   </Route>
@@ -277,10 +315,13 @@ function MainPage() {
                   <Route exact path="/orders">
                     <OrdersPage
                       onSelectedChange={() => {
-                        setSelectedTopNavOption("");
-                        setCollapsedSideNavOption(true);
-                        setSelectedSideNavOption(SideNavLinks.ORDERS);
-                        setShowTopNav(false);
+                        changeNavigationSettingHandler({
+                          selectedTopNavOption: "",
+                          collapsedSideNavOption: true,
+                          selectedSideNavOption: SideNavLinks.ORDERS,
+                          showTopNav: false,
+                          showSearchBar: false,
+                        });
                       }}
                     />
                   </Route>
@@ -288,10 +329,13 @@ function MainPage() {
                   <Route exact path="/order-details">
                     <OrderDetailsPage
                       onSelectedChange={() => {
-                        setSelectedTopNavOption("");
-                        setCollapsedSideNavOption(true);
-                        setSelectedSideNavOption(SideNavLinks.ORDERS);
-                        setShowTopNav(false);
+                        changeNavigationSettingHandler({
+                          selectedTopNavOption: "",
+                          collapsedSideNavOption: true,
+                          selectedSideNavOption: SideNavLinks.ORDERS,
+                          showTopNav: false,
+                          showSearchBar: false,
+                        });
                       }}
                     />
                   </Route>
@@ -299,10 +343,13 @@ function MainPage() {
                   <Route exact path="/profile">
                     <UserProfilePage
                       onSelectedChange={() => {
-                        setSelectedTopNavOption("");
-                        setCollapsedSideNavOption(true);
-                        setSelectedSideNavOption(SideNavLinks.PROFILE);
-                        setShowTopNav(false);
+                        changeNavigationSettingHandler({
+                          selectedTopNavOption: "",
+                          collapsedSideNavOption: true,
+                          selectedSideNavOption: SideNavLinks.PROFILE,
+                          showTopNav: false,
+                          showSearchBar: false,
+                        });
                       }}
                     />
                   </Route>
@@ -310,10 +357,13 @@ function MainPage() {
                   <Route exact path="/favorites">
                     <FavoritesPage
                       onSelectedChange={() => {
-                        setSelectedTopNavOption(TopNavLinks.FAVORITES);
-                        setCollapsedSideNavOption(true);
-                        setSelectedSideNavOption("");
-                        setShowTopNav(false);
+                        changeNavigationSettingHandler({
+                          selectedTopNavOption: TopNavLinks.FAVORITES,
+                          collapsedSideNavOption: true,
+                          selectedSideNavOption: "",
+                          showTopNav: false,
+                          showSearchBar: false,
+                        });
                       }}
                     />
                   </Route>
@@ -321,10 +371,13 @@ function MainPage() {
                   <Route exact path="/items">
                     <ItemsPage
                       onSelectedChange={() => {
-                        setSelectedTopNavOption("");
-                        setCollapsedSideNavOption(true);
-                        setSelectedSideNavOption(SideNavLinks.ITEMS);
-                        setShowTopNav(false);
+                        changeNavigationSettingHandler({
+                          selectedTopNavOption: "",
+                          collapsedSideNavOption: true,
+                          selectedSideNavOption: SideNavLinks.ITEMS,
+                          showTopNav: false,
+                          showSearchBar: false,
+                        });
                       }}
                     />
                   </Route>
@@ -332,10 +385,13 @@ function MainPage() {
                   <Route exact path="/notifications">
                     <UserNotificationPage
                       onSelectedChange={() => {
-                        setSelectedTopNavOption("");
-                        setCollapsedSideNavOption(true);
-                        setSelectedSideNavOption(SideNavLinks.NOTIFICATIONS);
-                        setShowTopNav(false);
+                        changeNavigationSettingHandler({
+                          selectedTopNavOption: "",
+                          collapsedSideNavOption: true,
+                          selectedSideNavOption: SideNavLinks.NOTIFICATIONS,
+                          showTopNav: false,
+                          showSearchBar: false,
+                        });
                       }}
                     />
                   </Route>
@@ -343,10 +399,13 @@ function MainPage() {
                   <Route exact path="/notification/:notificationId">
                     <NotificationPage
                       onSelectedChange={() => {
-                        setSelectedTopNavOption("");
-                        setCollapsedSideNavOption(true);
-                        setSelectedSideNavOption(SideNavLinks.NOTIFICATIONS);
-                        setShowTopNav(false);
+                        changeNavigationSettingHandler({
+                          selectedTopNavOption: "",
+                          collapsedSideNavOption: true,
+                          selectedSideNavOption: SideNavLinks.NOTIFICATIONS,
+                          showTopNav: false,
+                          showSearchBar: false,
+                        });
                       }}
                     />
                   </Route>
@@ -354,10 +413,13 @@ function MainPage() {
                   <Route exact path="/admin/advertisements">
                     <AdvertisementsPage
                       onSelectedChange={() => {
-                        setSelectedTopNavOption("");
-                        setCollapsedSideNavOption(true);
-                        setSelectedSideNavOption(SideNavLinks.ADVERTISEMENTS);
-                        setShowTopNav(false);
+                        changeNavigationSettingHandler({
+                          selectedTopNavOption: "",
+                          collapsedSideNavOption: true,
+                          selectedSideNavOption: SideNavLinks.ADVERTISEMENTS,
+                          showTopNav: false,
+                          showSearchBar: false,
+                        });
                       }}
                     />
                   </Route>
@@ -365,10 +427,13 @@ function MainPage() {
                   <Route exact path="/admin/partners">
                     <AdminUsersPage
                       onSelectedChange={() => {
-                        setSelectedTopNavOption("");
-                        setCollapsedSideNavOption(true);
-                        setSelectedSideNavOption(SideNavLinks.PARTNERS);
-                        setShowTopNav(false);
+                        changeNavigationSettingHandler({
+                          selectedTopNavOption: "",
+                          collapsedSideNavOption: true,
+                          selectedSideNavOption: SideNavLinks.PARTNERS,
+                          showTopNav: false,
+                          showSearchBar: false,
+                        });
                       }}
                     />
                   </Route>
@@ -376,10 +441,13 @@ function MainPage() {
                   <Route exact path="/admin/settings">
                     <SettingsPage
                       onSelectedChange={() => {
-                        setSelectedTopNavOption("");
-                        setCollapsedSideNavOption(true);
-                        setSelectedSideNavOption(SideNavLinks.SETTINGS);
-                        setShowTopNav(false);
+                        changeNavigationSettingHandler({
+                          selectedTopNavOption: "",
+                          collapsedSideNavOption: true,
+                          selectedSideNavOption: SideNavLinks.SETTINGS,
+                          showTopNav: false,
+                          showSearchBar: false,
+                        });
                       }}
                     />
                   </Route>
@@ -387,10 +455,13 @@ function MainPage() {
                   <Route exact path="/admin/statistics">
                     <StatisticsOptionsPage
                       onSelectedChange={() => {
-                        setSelectedTopNavOption("");
-                        setCollapsedSideNavOption(true);
-                        setSelectedSideNavOption(SideNavLinks.STATISTICS);
-                        setShowTopNav(false);
+                        changeNavigationSettingHandler({
+                          selectedTopNavOption: "",
+                          collapsedSideNavOption: true,
+                          selectedSideNavOption: SideNavLinks.STATISTICS,
+                          showTopNav: false,
+                          showSearchBar: false,
+                        });
                       }}
                     />
                   </Route>
@@ -398,10 +469,13 @@ function MainPage() {
                   <Route exact path="/admin/statistics/option">
                     <StatisticsPage
                       onSelectedChange={() => {
-                        setSelectedTopNavOption("");
-                        setCollapsedSideNavOption(true);
-                        setSelectedSideNavOption(SideNavLinks.STATISTICS);
-                        setShowTopNav(false);
+                        changeNavigationSettingHandler({
+                          selectedTopNavOption: "",
+                          collapsedSideNavOption: true,
+                          selectedSideNavOption: SideNavLinks.STATISTICS,
+                          showTopNav: false,
+                          showSearchBar: false,
+                        });
                       }}
                     />
                   </Route>
@@ -409,10 +483,13 @@ function MainPage() {
                   <Route exact path="/admin/notifications">
                     <AdminNotificationPage
                       onSelectedChange={() => {
-                        setSelectedTopNavOption("");
-                        setCollapsedSideNavOption(true);
-                        setSelectedSideNavOption(SideNavLinks.NOTIFICATIONS);
-                        setShowTopNav(false);
+                        changeNavigationSettingHandler({
+                          selectedTopNavOption: "",
+                          collapsedSideNavOption: true,
+                          selectedSideNavOption: SideNavLinks.NOTIFICATIONS,
+                          showTopNav: false,
+                          showSearchBar: false,
+                        });
                       }}
                     />
                   </Route>

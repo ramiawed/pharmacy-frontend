@@ -36,7 +36,7 @@ function AdvertisementHomePage({ data }) {
     infinite: true,
     // vertical: true,
     speed: 300,
-    slidesToShow: 2,
+    slidesToShow: 1,
     slidesToScroll: 1,
     initialSlide: 1,
     autoplay: true,

@@ -8,6 +8,7 @@ import { selectUser } from "../../redux/auth/authSlice";
 import { selectFavorites } from "../../redux/favorites/favoritesSlice";
 import { selectCartItemCount } from "../../redux/cart/cartSlice";
 import { selectUserNotifications } from "../../redux/userNotifications/userNotificationsSlice";
+import { selectNavigationSlice } from "../../redux/navs/navigationSlice";
 
 // components
 import IconWithNumber from "../icon-with-number/icon-with-number.component";
@@ -27,13 +28,16 @@ import {
   resetMedicinesArray,
 } from "../../redux/medicines/medicinesSlices";
 
-function TopNav({ onSelectedChange, showTopNav }) {
+function TopNav({ onSelectedChange }) {
   const history = useHistory();
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   // selectors
   const { unReadNotificationCount } = useSelector(selectUserNotifications);
+  const {
+    setting: { showTopNav },
+  } = useSelector(selectNavigationSlice);
   const allFavorites = useSelector(selectFavorites);
   const user = useSelector(selectUser);
   const total = useSelector(selectCartItemCount);

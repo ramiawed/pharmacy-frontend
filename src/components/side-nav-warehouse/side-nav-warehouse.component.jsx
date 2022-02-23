@@ -17,8 +17,11 @@ import {
   setWarehouse,
 } from "../../redux/items/itemsSlices";
 import { selectOrders } from "../../redux/orders/ordersSlice";
+import { BsFillEnvelopeFill } from "react-icons/bs";
+import { CgProfile } from "react-icons/cg";
+import { GiMedicines } from "react-icons/gi";
 
-function SideNavWarehouse({ selectedOption, onSelectedChange }) {
+function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -46,7 +49,17 @@ function SideNavWarehouse({ selectedOption, onSelectedChange }) {
           pathname: "/items",
         }}
       >
-        {t("nav-items")}
+        <div className={styles.nav}>
+          <div className={styles.nav_icon}>
+            <GiMedicines size={20} />
+            {collapsed && (
+              <label className={styles.tooltip}>{t("nav-items")}</label>
+            )}
+          </div>
+          {!collapsed && (
+            <div className={styles.nav_label}>{t("nav-items")}</div>
+          )}
+        </div>
       </Link>
 
       {saveOrders && (
@@ -60,10 +73,20 @@ function SideNavWarehouse({ selectedOption, onSelectedChange }) {
           }}
           to="/orders"
         >
-          {t("nav-orders")}{" "}
-          {unreadCount > 0 && (
+          <div className={styles.nav}>
+            <div className={styles.nav_icon}>
+              <BsFillEnvelopeFill size={20} />
+              {collapsed && (
+                <label className={styles.tooltip}>{t("nav-orders")}</label>
+              )}
+            </div>
+            {!collapsed && (
+              <div className={styles.nav_label}>{t("nav-orders")} </div>
+            )}
+          </div>
+          {/* {unreadCount > 0 && (
             <span className={styles.badge}>{unreadCount}</span>
-          )}
+          )} */}
         </Link>
       )}
 
@@ -77,7 +100,17 @@ function SideNavWarehouse({ selectedOption, onSelectedChange }) {
         }}
         to="/profile"
       >
-        {t("nav-profile")}
+        <div className={styles.nav}>
+          <div className={styles.nav_icon}>
+            <CgProfile size={20} />
+            {collapsed && (
+              <label className={styles.tooltip}>{t("nav-profile")}</label>
+            )}
+          </div>
+          {!collapsed && (
+            <div className={styles.nav_label}>{t("nav-profile")}</div>
+          )}
+        </div>
       </Link>
     </>
   );

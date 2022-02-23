@@ -7,8 +7,9 @@ import styles from "../side-nav.module.scss";
 
 // constants
 import { SideNavLinks } from "../../utils/constants.js";
+import { CgProfile } from "react-icons/cg";
 
-function SideNavGuest({ selectedOption, onSelectedChange }) {
+function SideNavGuest({ selectedOption, onSelectedChange, collapsed }) {
   const { t } = useTranslation();
   return (
     <>
@@ -22,7 +23,17 @@ function SideNavGuest({ selectedOption, onSelectedChange }) {
         }}
         to="/profile"
       >
-        {t("nav-profile")}
+        <div className={styles.nav}>
+          <div className={styles.nav_icon}>
+            <CgProfile size={20} />
+            {collapsed && (
+              <label className={styles.tooltip}>{t("nav-profile")}</label>
+            )}
+          </div>
+          {!collapsed && (
+            <div className={styles.nav_label}>{t("nav-profile")}</div>
+          )}
+        </div>
       </Link>
     </>
   );

@@ -20,7 +20,12 @@ import ReactLoading from "react-loading";
 import styles from "./search-home.module.scss";
 
 // constants
-import { Colors, BASEURL, UserTypeConstants } from "../../utils/constants";
+import {
+  Colors,
+  BASEURL,
+  UserTypeConstants,
+  SERVER_URL,
+} from "../../utils/constants";
 
 let CancelToken = null;
 let source = null;
@@ -162,7 +167,12 @@ function SearchHome() {
   }
 
   return (
-    <div className={styles.container}>
+    <div
+      className={styles.container}
+      onClick={(e) => {
+        e.stopPropagation();
+      }}
+    >
       {/* <button
         onClick={() => {
           setTryBooom(true);

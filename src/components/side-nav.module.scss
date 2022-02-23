@@ -5,9 +5,9 @@
 
   text-decoration: none;
 
-  color: $main-color;
+  color: $white-color;
 
-  padding: 5px 20px;
+  padding: 5px 5px;
   margin-block-end: 4px;
 
   font-family: $font_arabic;
@@ -34,4 +34,39 @@
 
   padding-inline: 12px;
   border-radius: 50%;
+}
+
+.nav {
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+
+
+}
+
+.nav_icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-block: auto;
+  margin-inline-end: 10px;
+
+  position: relative;
+}
+
+.tooltip {
+  display: none;
+  position: absolute;
+  right: 25px;
+  top: 5px;
+
+  background: black;
+  padding-inline: 4px;
+  border-radius: 4px;
+
+  font-size: 0.7rem;
+}
+
+.nav_icon:hover .tooltip {
+  display: block;
 }

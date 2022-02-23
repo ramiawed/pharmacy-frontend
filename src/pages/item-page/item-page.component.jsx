@@ -55,6 +55,7 @@ import { RiRefreshLine } from "react-icons/ri";
 import generalStyles from "../../style.module.scss";
 import styles from "./item-page.module.scss";
 import rowStyles from "../../components/row.module.scss";
+import { changeNavSettings } from "../../redux/navs/navigationSlice";
 
 function ItemPage() {
   const { t } = useTranslation();
@@ -246,6 +247,7 @@ function ItemPage() {
       })
       .then((response) => {
         setItem(response.data.data.item);
+        // console.log(response.data.data.item);
         setLoadingItem("idle");
       })
       .catch((err) => {
@@ -258,6 +260,12 @@ function ItemPage() {
       getItemFromDB();
       window.scrollTo(0, 0);
     }
+
+    // dispatch(
+    //   changeNavSettings({
+    //     showSearchBar: false,
+    //   })
+    // );
   }, [itemId, type]);
 
   return user ? (

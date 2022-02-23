@@ -127,8 +127,6 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
       .catch(() => {
         setChangeFavoriteLoading(false);
       });
-
-    // e.stopPropagation();
   };
 
   // method to handle remove company from user's favorite
@@ -149,8 +147,6 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
       .catch(() => {
         setChangeFavoriteLoading(false);
       });
-
-    // e.stopPropagation();
   };
 
   // method to handle add item to warehouse
@@ -180,8 +176,6 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
       .catch(() => {
         setChangeAddToWarehouseLoading(false);
       });
-
-    // e.stopPropagation();
   };
 
   // method to handle remove item from warehouse

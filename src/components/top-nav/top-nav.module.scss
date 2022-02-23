@@ -10,10 +10,8 @@
   top: 60px;
   z-index: 10;
 
-  background-color: $white-color;
-  color: $main-color;
-
-  border-bottom: 1px solid $main-color;
+  background-color: $main-color;
+  color: $white-color;
 
   display: flex;
   flex-direction: column;
@@ -106,8 +104,8 @@ div.end .link.selected {
   }
 
   div .link {
-    background-color: $white-color;
-    color: $main-color;
+    background-color: $main-color;
+    color: $white-color;
   }
 
   div.center .link,

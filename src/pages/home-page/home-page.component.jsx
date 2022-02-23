@@ -3,7 +3,6 @@ import { Redirect } from "react-router-dom";
 
 // components
 import Loader from "../../components/loader/loader.component";
-import SearchHome from "../../components/search-home/search-home.component";
 import AdvertisementHomePage from "../../components/advertisement-home-page/advertisement-home-page.component";
 import SectionHomePageFlex from "../../components/section-home-page-flex/section-home-page-flex.component";
 import HomePageDescribeSection from "../../components/home-page-describe-section/home-page-describe-section.component";
@@ -44,7 +43,6 @@ import {
 
 // styles
 import styles from "./home-page.module.scss";
-import generalStyles from "../../style.module.scss";
 
 function HomePage({ onSelectedChange }) {
   const dispatch = useDispatch();
@@ -116,19 +114,15 @@ function HomePage({ onSelectedChange }) {
 
   return user ? (
     <div
-      // className={generalStyles.container}
       style={{
-        background:
-          "linear-gradient(225deg, hsla(230, 26%, 45%, 1) 19%, hsla(230, 26%, 45%, 0.5) 75%)",
         overflow: "hidden",
+        paddingInlineStart: "35px",
       }}
     >
       <div className={styles.search_container}>
-        <SearchHome />
-
-        {settings.showAdvertisements && (
+        {/* {settings.showAdvertisements && (
           <AdvertisementHomePage data={advertisements} />
-        )}
+        )} */}
       </div>
 
       <div className={styles.advertisement_container}>

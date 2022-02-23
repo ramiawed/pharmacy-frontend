@@ -10,9 +10,58 @@
 }
 
 .search_container {
+  width: 100vw;
+  min-width: 100vw;
+
+  min-height: calc(100vh - 60px);
+
+  background-image: url('http://localhost:8000/images/image001.jpeg');
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  background-position: 0%;
+
+  transition: 5s;
   position: relative;
-  // background: $secondary-color;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  animation-name: animate-background;
+  animation-direction: alternate-reverse;
+  animation-duration: 30s;
+  animation-fill-mode: forwards;
+  animation-iteration-count: infinite;
+  animation-play-state: running;
+  animation-timing-function: ease-in-out;
 }
+
+@keyframes animate-background {
+  0% {
+    background-image: url('http://localhost:8000/images/image001.jpeg');
+  }
+
+  20% {
+    background-image: url('http://localhost:8000/images/image002.jpeg');
+  }
+
+  40% {
+    background-image: url('http://localhost:8000/images/image003.jpeg');
+  }
+
+  60% {
+    background-image: url('http://localhost:8000/images/image004.jpeg');
+  }
+
+  80% {
+    background-image: url('http://localhost:8000/images/image005.jpeg');
+  }
+
+  100% {
+    background-image: url('http://localhost:8000/images/image006.jpeg');
+  }
+}
+
 
 .container {
   width: 98%;

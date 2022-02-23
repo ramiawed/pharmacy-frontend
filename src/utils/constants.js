@@ -72,8 +72,8 @@ export const CitiesName = {
 };
 
 export const Colors = {
-  MAIN_COLOR: "#3d425c",
-  SECONDARY_COLOR: "#566092",
+  MAIN_COLOR: "#1358D6",
+  SECONDARY_COLOR: "#1A4CAB",
   SUCCEEDED_COLOR: "#2aa70b",
   FAILED_COLOR: "#ff787e",
   YELLOW_COLOR: "#e9b93f",
@@ -154,7 +154,7 @@ export const onKeyPressForNumberInput = (event) => {
   return event.charCode >= 48 && event.charCode <= 57;
 };
 
-export const BASEURL = "https://salty-brook-65681.herokuapp.com/api/v1";
-// export const BASEURL = "http://localhost:8000/api/v1";
-export const SERVER_URL = "https://salty-brook-65681.herokuapp.com";
-// export const SERVER_URL = "http://localhost:8000";
+// export const BASEURL = "https://salty-brook-65681.herokuapp.com/api/v1";
+export const BASEURL = "http://localhost:8000/api/v1";
+// export const SERVER_URL = "https://salty-brook-65681.herokuapp.com";
+export const SERVER_URL = "http://localhost:8000";

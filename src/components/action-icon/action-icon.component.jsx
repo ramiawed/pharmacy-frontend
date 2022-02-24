@@ -29,6 +29,9 @@ function Icon({ onclick, tooltip, icon, foreColor, withBackground }) {
         foreColor === Colors.FAILED_COLOR ? generalStyles.fc_red : "",
         foreColor === Colors.SECONDARY_COLOR ? generalStyles.fc_secondary : "",
         foreColor === Colors.YELLOW_COLOR ? generalStyles.fc_yellow : "",
+        foreColor === Colors.BACKUP_COLOR ? generalStyles.fc_backup : "",
+        foreColor === Colors.MAIN_COLOR ? generalStyles.fc_main : "",
+        foreColor === Colors.WHITE_COLOR ? generalStyles.fc_white : "",
       ].join(" ")}
       onClick={(e) => {
         e.stopPropagation();

@@ -51,12 +51,12 @@ div.end {
 
 div.center .link:hover,
 div.center .link.selected {
-  color: $third-color;
+  color: $secondary-color;
 }
 
 div.end .link:hover,
 div.end .link.selected {
-  color: $third-color;
+  color: $secondary-color;
 }
 
 .hide {
@@ -86,7 +86,7 @@ div.end .link.selected {
 
 .float_div .link:hover,
 .float_div .link.selected {
-  color: $third-color;
+  color: $secondary-color;
 }
 
 @media only screen and (min-width: $small) {
@@ -117,7 +117,7 @@ div.end .link.selected {
 
   div.center .link:hover,
   div.center .link.selected {
-    background-color: $third-color;
+    background-color: $secondary-color;
     color: $white-color;
     border-radius: 6px;
   }

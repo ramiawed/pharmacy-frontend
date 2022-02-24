@@ -27,6 +27,14 @@
   color: $secondary-color;
 }
 
+.fc_main {
+  color: $main-color;
+}
+
+.fc_backup {
+  color: $backup-color;
+}
+
 .fc_white {
   color: $white-color !important;
 }
@@ -45,6 +53,14 @@
 
 .bg_secondary {
   background-color: $secondary-color !important;
+}
+
+.bg_main {
+  background-color: $main-color !important;
+}
+
+.bg_backup {
+  background-color: $backup-color !important;
 }
 
 .bg_white {

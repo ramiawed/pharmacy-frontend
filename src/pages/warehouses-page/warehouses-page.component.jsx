@@ -117,7 +117,8 @@ function WarehousePage({ onSelectedChange }) {
 
   return user &&
     (user.type === UserTypeConstants.ADMIN ||
-      user.type === UserTypeConstants.PHARMACY) ? (
+      user.type === UserTypeConstants.PHARMACY ||
+      user.type === UserTypeConstants.COMPANY) ? (
     <div className={generalStyles.container}>
       <WarehousesHeader
         count={count}

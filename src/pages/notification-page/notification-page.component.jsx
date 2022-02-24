@@ -64,7 +64,7 @@ function NotificationPage({ onSelectedChange }) {
             >
               <Icon
                 selected={false}
-                foreColor={Colors.SECONDARY_COLOR}
+                foreColor={Colors.WHITE_COLOR}
                 tooltip={t("refresh-tooltip")}
                 icon={() => <RiRefreshLine />}
                 onclick={getNotification}

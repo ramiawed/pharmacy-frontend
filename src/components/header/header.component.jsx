@@ -22,7 +22,7 @@ function Header({ children }) {
             history.goBack();
           }}
           icon={() => <IoMdArrowRoundBack />}
-          foreColor={Colors.SECONDARY_COLOR}
+          foreColor={Colors.WHITE_COLOR}
         />
       </div>
     </div>

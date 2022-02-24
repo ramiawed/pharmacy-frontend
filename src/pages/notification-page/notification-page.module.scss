@@ -8,26 +8,23 @@
 
 .row {
   display: flex;
-  // align-items: flex-start;
-
-  border-radius: 6px;
-
-  background-color: rgba($color: $secondary-color, $alpha: 0.2);
-
-  padding: 10px;
+  // border-radius: 6px;
+  border-bottom: 1px solid $secondary-color;
+  // padding: 10px;
   margin-block-end: 10px;
 }
 
 .row label {
   min-width: 75px;
-
   font-size: 0.8rem;
-
-  color: $secondary-color;
+  background-color: rgba($color: $secondary-color, $alpha: 0.7);
+  color: $white-color;
+  text-align: center;
+  margin-inline-end: 10px;
+  border-start-end-radius: 6px;
 }
 
 .row p {
-  // flex: 1;
   text-align: justify;
 }
 
@@ -41,18 +38,17 @@
 .image {
   max-width: 100%;
   max-height: 320px;
-
   border-radius: 6px;
 }
 
 .header {
   font-weight: bold;
   font-size: 1rem;
-  color: $secondary-color;
+  color: $main-color;
 }
 
 .body {
-  color: #919191;
+  color: $black-color;
 }
 
 @media only screen and (min-width: $small) {

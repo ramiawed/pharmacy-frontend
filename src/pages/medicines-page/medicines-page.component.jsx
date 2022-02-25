@@ -9,7 +9,6 @@ import ItemCard from "../../components/item-card/item-card.component";
 import SearchContainer from "../../components/search-container/search-container.component";
 import SearchInput from "../../components/search-input/search-input.component";
 import ItemRow from "../../components/item-row/item-row.component";
-import MedicinesTableHeader from "../../components/medicines-table-header/medicines-table-header.component";
 import NoContent from "../../components/no-content/no-content.component";
 import Button from "../../components/button/button.component";
 import Icon from "../../components/action-icon/action-icon.component";
@@ -47,6 +46,7 @@ import searchContainerStyles from "../../components/search-container/search-cont
 import { Colors, UserTypeConstants } from "../../utils/constants";
 import { VscClearAll } from "react-icons/vsc";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import ItemRowNew from "../../components/item-row-new/item-row-new.component";
 
 let timer = null;
 
@@ -111,7 +111,10 @@ function MedicinesPage({ onSelectedChange }) {
     <div
       className={generalStyles.container}
       style={{
-        marginTop: "55px",
+        marginBlockStart: "55px",
+        marginBlockEnd: "10px",
+        paddingInlineStart: "45px",
+        paddingInlineEnd: "10px",
       }}
     >
       <SearchContainer searchAction={handleEnterPress}>
@@ -309,13 +312,13 @@ function MedicinesPage({ onSelectedChange }) {
         />
       </div>
 
-      {count > 0 && pageState.displayType === "list" && (
+      {/* {count > 0 && pageState.displayType === "list" && (
         <MedicinesTableHeader user={user} />
-      )}
+      )} */}
 
       {pageState.displayType === "list" &&
         medicines.map((medicine) => (
-          <ItemRow key={medicine._id} item={medicine} />
+          <ItemRowNew key={medicine._id} item={medicine} />
         ))}
 
       {pageState.displayType === "card" && (

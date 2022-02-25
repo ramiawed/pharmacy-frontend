@@ -2,26 +2,20 @@
 
 .link {
   width: 100%;
-
   text-decoration: none;
-
   color: $white-color;
-
   padding: 5px 5px;
   margin-block-end: 4px;
-  font-size: 1.2rem;
-
+  font-size: 0.8rem;
   cursor: pointer;
-
   transition: all 0.2s;
 }
 
 .link.selected,
 .link:hover,
 .link.selected:hover {
-  background: $secondary-color;
+  background: $third-color;
   color: $white-color;
-
   border-radius: 6px;
 }
 
@@ -29,7 +23,6 @@
   display: inline-block;
   background: $white-color;
   color: $third-color;
-
   padding-inline: 12px;
   border-radius: 50%;
 }
@@ -38,8 +31,6 @@
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
-
-
 }
 
 .nav_icon {
@@ -48,7 +39,6 @@
   justify-content: center;
   margin-block: auto;
   margin-inline-end: 10px;
-
   position: relative;
 }
 
@@ -57,11 +47,9 @@
   position: absolute;
   right: 25px;
   top: 5px;
-
   background: black;
   padding-inline: 4px;
   border-radius: 4px;
-
   font-size: 0.7rem;
 }
 

@@ -107,7 +107,7 @@ function AddToCartModal({ item, close, setAddItemToCartMsg }) {
   };
 
   const handleAddItemToCart = () => {
-    if (qty === "") {
+    if (qty.length === 0) {
       setQtyError(true);
       return;
     }

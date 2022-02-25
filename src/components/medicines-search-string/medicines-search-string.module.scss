@@ -6,19 +6,21 @@
   justify-content: center;
 
   margin-bottom: 4px;
+  padding-block: 4px;
   background-color: $secondary-color;
-
-  z-index: 100;
-
+  position: relative;
+  top: -8px;
+  right: -45px;
+  width: 100vw;
 }
 
 .div_search_str .label {
-  font-size: 0.8rem;
+  font-size: 0.6rem;
   color: $white-color;
 }
 
 .div_search_str .value {
-  font-size: 0.9rem;
+  font-size: 0.7rem;
   font-weight: bold;
   color: $main-color;
 

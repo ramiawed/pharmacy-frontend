@@ -1,12 +1,12 @@
 @import "./variables.scss";
 
 * {
-  font-family: $font_arabic02;
+  // font-family: $font_arabic02;
 }
 
 .container {
-  width: 95%;
-  margin: 10px auto;
+  width: 100%;
+  margin: 0 auto;
   padding-inline-start: 40px;
 }
 
@@ -260,6 +260,7 @@
 .actions {
   display: flex;
   justify-content: center;
+  margin-block-end: 10px;
 }
 
 // style the div that contains the favorite row

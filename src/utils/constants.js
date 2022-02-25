@@ -72,16 +72,16 @@ export const CitiesName = {
 };
 
 export const Colors = {
-  MAIN_COLOR: "#125bcf",
-  SECONDARY_COLOR: "#15a1e7",
+  MAIN_COLOR: "#4267B2",
+  SECONDARY_COLOR: "#acb3c3",
   BACKUP_COLOR: "#99cf16",
   SUCCEEDED_COLOR: "#2aa70b",
   FAILED_COLOR: "#ff787e",
   YELLOW_COLOR: "#e9b93f",
-  OFFER_COLOR: "#0f04",
+  OFFER_COLOR: "#81bbf5a4",
   WHITE_COLOR: "#fff",
   BLUE_COLOR: "#00A5CF",
-  GREY_COLOR: "#e3e3e3",
+  GREY_COLOR: "#898F9C",
 };
 
 export const SideNavLinks = {

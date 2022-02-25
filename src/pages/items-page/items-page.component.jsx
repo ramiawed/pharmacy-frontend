@@ -116,7 +116,12 @@ function ItemsPage({ onSelectedChange }) {
   }, [pageState.sortFields, pageState.warehouse, pageState.role]);
 
   return user ? (
-    <div className={generalStyles.container}>
+    <div
+      className={generalStyles.container}
+      style={{
+        marginTop: "55px",
+      }}
+    >
       <ItemsPageHeader
         user={user}
         role={pageState.role}

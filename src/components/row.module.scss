@@ -10,7 +10,7 @@
   justify-content: space-between;
   align-items: center;
 
-  color: $secondary-color;
+  color: $grey-color;
   background-color: $white-color;
 
   box-shadow: 0 0 3px rgba($color: #000000, $alpha: 0.3);
@@ -50,7 +50,7 @@
 
 .container label {
   text-align: center;
-  // font-size: 0.8rem;
+  color: $grey-color;
 }
 
 .container label.align_start {
@@ -59,32 +59,25 @@
 
 .container .input {
   width: 100%;
-
   padding: 4px 2px;
-  
   font-size: 0.6rem;
-
   text-align: center;
-
   border: none;
   outline: none;
-
   background-color: transparent;
-
   border-radius: 6px;
-
-  color: $secondary-color;
+  color: $grey-color;
 }
 
 .input:focus {
   border-bottom: 1px solid $secondary-color;
   border-radius: 0;
-  color: black;
+  color: $grey-color;
 }
 
 .hover_underline {
   text-decoration: none;
-  color: $secondary-color;
+  color: $grey-color;
 }
 
 .hover_underline:hover {

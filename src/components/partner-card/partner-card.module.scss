@@ -43,9 +43,6 @@
 
   border-radius: 12px;
 
-  // background: rgba($color: $secondary-color, $alpha: 0.2);
-  // box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -60,7 +57,7 @@
 .partner_name {
   position: relative;
   font-size: 1.5rem;
-  color: $secondary-color;
+  color: $grey-color;
 
   display: flex;
   flex-direction: column;

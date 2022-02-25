@@ -1,7 +1,7 @@
 @import "./variables.scss";
 
 * {
-  font-family: $font_arabic;
+  font-family: $font_arabic02;
 }
 
 .container {
@@ -39,6 +39,10 @@
   color: $white-color !important;
 }
 
+.fc_grey {
+  color: $grey-color !important;
+}
+
 .bg_green {
   background-color: $green-color !important;
 }
@@ -65,6 +69,10 @@
 
 .bg_white {
   background-color: $white-color !important;
+}
+
+.bg_grey {
+  background-color: $grey-color !important;
 }
 
 // end coloring

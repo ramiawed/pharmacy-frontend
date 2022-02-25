@@ -128,13 +128,7 @@ function OrderPageHeader({ count, pageState, search }) {
   };
 
   return (
-    <Header>
-      <>
-        <h2>
-          {t("nav-orders")} <span>{count}</span>
-        </h2>
-      </>
-
+    <>
       <div style={{ position: "relative", height: "50px" }}>
         <SearchContainer searchAction={search}>
           {user.type !== UserTypeConstants.PHARMACY && (
@@ -169,15 +163,14 @@ function OrderPageHeader({ count, pageState, search }) {
 
           {user.type === UserTypeConstants.ADMIN && (
             <div
-              className={[
-                generalStyles.flex_container,
-                generalStyles.padding_v_6,
-              ].join(" ")}
+              style={{
+                display: "flex",
+                justifyContent: "flex-start",
+                backgroundColor: Colors.WHITE_COLOR,
+                borderRadius: "6px",
+                marginBottom: "4px",
+              }}
             >
-              <label style={{ fontSize: "0.7rem" }}>
-                {t("admin-order-status")}
-              </label>
-
               <SelectCustom
                 bgColor={Colors.SECONDARY_COLOR}
                 foreColor="#fff"
@@ -187,19 +180,20 @@ function OrderPageHeader({ count, pageState, search }) {
                   value: pageState.adminOrderStatus,
                   label: t(pageState.adminOrderStatus),
                 }}
+                caption={t("admin-order-status")}
               />
             </div>
           )}
 
           <div
-            className={[
-              generalStyles.flex_container,
-              generalStyles.padding_v_6,
-            ].join(" ")}
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              backgroundColor: Colors.WHITE_COLOR,
+              borderRadius: "6px",
+              marginBottom: "4px",
+            }}
           >
-            <label style={{ fontSize: "0.7rem" }}>
-              {t("warehouse-order-status")}
-            </label>
             <SelectCustom
               bgColor={Colors.SECONDARY_COLOR}
               foreColor="#fff"
@@ -209,18 +203,19 @@ function OrderPageHeader({ count, pageState, search }) {
                 value: pageState.warehouseOrderStatus,
                 label: t(pageState.warehouseOrderStatus),
               }}
+              caption={t("warehouse-order-status")}
             />
           </div>
 
           <div
-            className={[
-              generalStyles.flex_container,
-              generalStyles.padding_v_6,
-            ].join(" ")}
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              backgroundColor: Colors.WHITE_COLOR,
+              borderRadius: "6px",
+              marginBottom: "4px",
+            }}
           >
-            <label style={{ fontSize: "0.7rem" }}>
-              {t("pharmacy-order-status")}
-            </label>
             <SelectCustom
               bgColor={Colors.SECONDARY_COLOR}
               foreColor="#fff"
@@ -230,18 +225,19 @@ function OrderPageHeader({ count, pageState, search }) {
                 value: pageState.pharmacyOrderStatus,
                 label: t(pageState.pharmacyOrderStatus),
               }}
+              caption={t("pharmacy-order-status")}
             />
           </div>
 
           <div
-            className={[
-              generalStyles.flex_container,
-              generalStyles.padding_v_6,
-            ].join(" ")}
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              backgroundColor: Colors.WHITE_COLOR,
+              borderRadius: "6px",
+              marginBottom: "4px",
+            }}
           >
-            <label style={{ fontSize: "0.7rem", marginInlineEnd: "10px" }}>
-              {t("dates-within")}
-            </label>
             <SelectCustom
               bgColor={Colors.SECONDARY_COLOR}
               foreColor="#fff"
@@ -256,16 +252,29 @@ function OrderPageHeader({ count, pageState, search }) {
                   }`
                 ),
               }}
+              caption={t("dates-within")}
             />
           </div>
 
           <div
-            className={[
-              generalStyles.flex_container,
-              generalStyles.padding_v_6,
-            ].join(" ")}
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              backgroundColor: Colors.WHITE_COLOR,
+              borderRadius: "6px",
+              marginBottom: "4px",
+            }}
           >
-            <label style={{ fontSize: "0.7rem" }}>{t("date-label")}</label>
+            <label
+              style={{
+                fontSize: "0.7rem",
+                color: Colors.SECONDARY_COLOR,
+                minWidth: "100px",
+                paddingInlineStart: "10px",
+              }}
+            >
+              {t("date-label")}
+            </label>
             <input
               type="date"
               value={pageState.date}
@@ -291,7 +300,7 @@ function OrderPageHeader({ count, pageState, search }) {
           onclick={search}
         />
       </div>
-    </Header>
+    </>
   );
 }
 

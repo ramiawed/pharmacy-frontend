@@ -32,6 +32,7 @@ function Icon({ onclick, tooltip, icon, foreColor, withBackground }) {
         foreColor === Colors.BACKUP_COLOR ? generalStyles.fc_backup : "",
         foreColor === Colors.MAIN_COLOR ? generalStyles.fc_main : "",
         foreColor === Colors.WHITE_COLOR ? generalStyles.fc_white : "",
+        foreColor === Colors.GREY_COLOR ? generalStyles.fc_grey : "",
       ].join(" ")}
       onClick={(e) => {
         e.stopPropagation();

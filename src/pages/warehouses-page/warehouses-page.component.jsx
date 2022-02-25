@@ -119,7 +119,12 @@ function WarehousePage({ onSelectedChange }) {
     (user.type === UserTypeConstants.ADMIN ||
       user.type === UserTypeConstants.PHARMACY ||
       user.type === UserTypeConstants.COMPANY) ? (
-    <div className={generalStyles.container}>
+    <div
+      className={generalStyles.container}
+      style={{
+        marginTop: "60px",
+      }}
+    >
       <WarehousesHeader
         count={count}
         search={handleEnterPress}

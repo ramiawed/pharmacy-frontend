@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -12,9 +13,9 @@ import {
   selectCompaniesPageState,
 } from "../../redux/company/companySlice";
 import { selectFavoritesPartners } from "../../redux/favorites/favoritesSlice";
+import CitiesDropDown from "../cities-dropdown/cities-dropdown.component";
 
 // components
-import Header from "../header/header.component";
 import SearchContainer from "../search-container/search-container.component";
 import SearchInput from "../search-input/search-input.component";
 import Icon from "../action-icon/action-icon.component";
@@ -25,16 +26,17 @@ import { RiRefreshLine } from "react-icons/ri";
 import { AiFillAppstore, AiFillStar } from "react-icons/ai";
 import { FaListUl } from "react-icons/fa";
 import { VscClearAll } from "react-icons/vsc";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 // styles
 import generalStyles from "../../style.module.scss";
 
 // constants and utils
 import { CitiesName, Colors, UserTypeConstants } from "../../utils/constants";
-import SelectCustom from "../select/select.component";
 
 function CompaniesHeader({ search, refreshHandler, count }) {
   const { t } = useTranslation();
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const { searchName, searchCity, displayType, showFavorites } = useSelector(
@@ -42,27 +44,6 @@ function CompaniesHeader({ search, refreshHandler, count }) {
   );
   const favorites = useSelector(selectFavoritesPartners);
 
-  // guest options and its change handler
-  const citiesOptions = [
-    { value: CitiesName.ALL, label: t("all-cities") },
-    { value: CitiesName.ALEPPO, label: t("aleppo") },
-    { value: CitiesName.DAMASCUS, label: t("damascus") },
-    { value: CitiesName.DARAA, label: t("daraa") },
-    { value: CitiesName.DEIR_EZ_ZOR, label: t("deir_ez_zor") },
-    { value: CitiesName.HAMA, label: t("hama") },
-    { value: CitiesName.AL_HASAKAH, label: t("al_hasakah") },
-    { value: CitiesName.HOMS, label: t("homs") },
-    { value: CitiesName.IDLIB, label: t("idlib") },
-    { value: CitiesName.LATAKIA, label: t("latakia") },
-    { value: CitiesName.QUNEITRA, label: t("quneitra") },
-    { value: CitiesName.RAQQA, label: t("raqqa") },
-    { value: CitiesName.AL_SUWAYDA, label: t("al_suwayda") },
-    { value: CitiesName.TARTUS, label: t("tartus") },
-    {
-      value: CitiesName.DAMASCUS_COUNTRYSIDE,
-      label: t("damascus_countryside"),
-    },
-  ];
   // Guest types are (Student, Pharmacist, Employee)
   // uses with the SelectCustom
   const citiesNameChangeHandler = (val) => {
@@ -73,40 +54,40 @@ function CompaniesHeader({ search, refreshHandler, count }) {
 
   return (
     <>
-      <Header>
-        <h2>
-          {t("companies")} <span>{count}</span>
-        </h2>
+      <div style={{ position: "relative", height: "50px" }}>
+        <SearchContainer searchAction={search}>
+          <SearchInput
+            label="user-name"
+            id="search-name"
+            type="text"
+            value={searchName}
+            onchange={(e) => {
+              dispatch(changeSearchName(e.target.value));
+            }}
+            placeholder="search"
+            onEnterPress={search}
+            resetField={() => dispatch(changeSearchName(""))}
+          />
 
-        <div style={{ position: "relative", height: "50px" }}>
-          <SearchContainer searchAction={search}>
-            <SearchInput
-              label="user-name"
-              id="search-name"
-              type="text"
-              value={searchName}
-              onchange={(e) => {
-                dispatch(changeSearchName(e.target.value));
-              }}
-              placeholder="search"
-              onEnterPress={search}
-              resetField={() => dispatch(changeSearchName(""))}
-            />
-
-            <SelectCustom
-              bgColor={Colors.SECONDARY_COLOR}
-              foreColor="#fff"
-              options={citiesOptions}
-              onchange={citiesNameChangeHandler}
-              defaultOption={{
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              backgroundColor: Colors.WHITE_COLOR,
+              borderRadius: "6px",
+            }}
+          >
+            <CitiesDropDown
+              onSelectionChange={citiesNameChangeHandler}
+              defaultValue={{
                 value: searchCity,
                 label: t(searchCity.toLowerCase()),
               }}
               caption="user-city"
             />
-          </SearchContainer>
-        </div>
-      </Header>
+          </div>
+        </SearchContainer>
+      </div>
       <div
         className={[generalStyles.actions, generalStyles.margin_v_4].join(" ")}
       >
@@ -114,7 +95,7 @@ function CompaniesHeader({ search, refreshHandler, count }) {
         <Icon
           withBackground={true}
           selected={false}
-          foreColor={Colors.SECONDARY_COLOR}
+          foreColor={Colors.GREY_COLOR}
           tooltip={t("refresh-tooltip")}
           onclick={() => {
             refreshHandler();
@@ -127,7 +108,7 @@ function CompaniesHeader({ search, refreshHandler, count }) {
           <Icon
             withBackground={true}
             selected={false}
-            foreColor={Colors.SECONDARY_COLOR}
+            foreColor={Colors.GREY_COLOR}
             tooltip={t("clear-filter-tooltip")}
             onclick={() => {
               dispatch(resetCompaniesPageState());
@@ -143,7 +124,7 @@ function CompaniesHeader({ search, refreshHandler, count }) {
           <Icon
             withBackground={true}
             foreColor={
-              showFavorites ? Colors.SUCCEEDED_COLOR : Colors.SECONDARY_COLOR
+              showFavorites ? Colors.SUCCEEDED_COLOR : Colors.GREY_COLOR
             }
             tooltip={t("show-favorite-tooltip")}
             onclick={() => dispatch(changeShowFavorites(!showFavorites))}
@@ -178,9 +159,7 @@ function CompaniesHeader({ search, refreshHandler, count }) {
         <Icon
           withBackground={true}
           foreColor={
-            displayType === "card"
-              ? Colors.SUCCEEDED_COLOR
-              : Colors.SECONDARY_COLOR
+            displayType === "card" ? Colors.SUCCEEDED_COLOR : Colors.GREY_COLOR
           }
           tooltip={t("show-item-as-card-tooltip")}
           onclick={() => {
@@ -194,9 +173,7 @@ function CompaniesHeader({ search, refreshHandler, count }) {
         <Icon
           withBackground={true}
           foreColor={
-            displayType === "list"
-              ? Colors.SUCCEEDED_COLOR
-              : Colors.SECONDARY_COLOR
+            displayType === "list" ? Colors.SUCCEEDED_COLOR : Colors.GREY_COLOR
           }
           tooltip={t("show-item-as-row-tooltip")}
           onclick={() => {
@@ -204,6 +181,16 @@ function CompaniesHeader({ search, refreshHandler, count }) {
             dispatch(changeShowFavorites(false));
           }}
           icon={() => <FaListUl />}
+        />
+
+        <Icon
+          withBackground={true}
+          tooltip={t("go-back")}
+          onclick={() => {
+            history.goBack();
+          }}
+          icon={() => <IoMdArrowRoundBack />}
+          foreColor={Colors.GREY_COLOR}
         />
       </div>
     </>

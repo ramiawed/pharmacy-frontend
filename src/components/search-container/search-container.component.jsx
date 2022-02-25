@@ -40,10 +40,14 @@ function SearchContainer({ children, searchAction }) {
                     searchAction();
                     setMoreSearchOptions(false);
                   }}
-                  style={{ margin: "4px auto 4px 0" }}
+                  style={{
+                    marginBlockStart: "4px",
+                    marginInline: "auto",
+                    width: "50%",
+                  }}
                   className={[
                     generalStyles.button,
-                    generalStyles.bg_secondary,
+                    generalStyles.bg_main,
                     generalStyles.fc_white,
                     generalStyles.block,
                     generalStyles.padding_v_6,
@@ -57,10 +61,7 @@ function SearchContainer({ children, searchAction }) {
 
             {childrenArray.length > 1 && (
               <div
-                className={[
-                  generalStyles.icon,
-                  generalStyles.minus_top_margin,
-                ].join(" ")}
+                className={[generalStyles.icon].join(" ")}
                 onClick={() => setMoreSearchOptions(!moreSearchOptions)}
               >
                 <VscSettings />

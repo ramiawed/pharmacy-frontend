@@ -39,7 +39,7 @@
   flex-direction: column;
 
   box-shadow: 4px 4px 10px rgba(0, 0, 0, 0.6);
-  
+
   animation-name: modal-show;
   animation-duration: 0.2s;
   animation-fill-mode: forwards;
@@ -48,11 +48,11 @@
 .modal_header {
   padding: 8px 12px;
 
-  background-color: $secondary-color;
+  background-color: $grey-color;
   border-radius: 6px 6px 0 0;
 
   color: $white-color;
-  
+
 }
 
 .modal_body {
@@ -69,7 +69,7 @@
 .cancel_button {
   border: none;
   outline: none;
-  color: $secondary-color;
+  color: $grey-color;
   background: transparent;
   padding: 4px 8px;
   cursor: pointer;
@@ -83,7 +83,7 @@
   border: none;
   outline: none;
   color: $white-color;
-  background: $secondary-color;
+  background: $grey-color;
   border-radius: 4px;
   padding: 4px 8px;
   cursor: pointer;

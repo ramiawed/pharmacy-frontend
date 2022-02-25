@@ -74,7 +74,15 @@ function SelectCustom({
 
   return (
     <div className={styles.order_container}>
-      {caption && <label>{t(caption)}</label>}
+      {caption && (
+        <label
+          style={{
+            minWidth: "100px",
+          }}
+        >
+          {t(caption)}
+        </label>
+      )}
 
       {/* third-party component react-select */}
       <Select

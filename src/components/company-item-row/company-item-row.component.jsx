@@ -219,7 +219,7 @@ function CompanyItemRow({
       <div
         className={rowStyles.container}
         style={{
-          backgroundColor: checkOffer(item, user) ? "#0f04" : "#fff",
+          backgroundColor: checkOffer(item, user) ? Colors.OFFER_COLOR : "#fff",
         }}
         // onClick={() => {
         //   history.push("item", {

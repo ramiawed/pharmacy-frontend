@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
 import ReactLoading from "react-loading";
+import { useHistory } from "react-router-dom";
 
 // components
-import Header from "../../components/header/header.component";
 import ItemCard from "../../components/item-card/item-card.component";
 import SearchContainer from "../../components/search-container/search-container.component";
 import SearchInput from "../../components/search-input/search-input.component";
@@ -46,12 +46,13 @@ import searchContainerStyles from "../../components/search-container/search-cont
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
 import { VscClearAll } from "react-icons/vsc";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 let timer = null;
 
 function MedicinesPage({ onSelectedChange }) {
   const { t } = useTranslation();
-
+  const history = useHistory();
   const dispatch = useDispatch();
 
   // selectors
@@ -107,124 +108,118 @@ function MedicinesPage({ onSelectedChange }) {
   }, []);
 
   return user ? (
-    <div className={generalStyles.container}>
-      <Header>
-        <h2>
-          {t("nav-medicines")} <span>{count}</span>
-        </h2>
+    <div
+      className={generalStyles.container}
+      style={{
+        marginTop: "55px",
+      }}
+    >
+      <SearchContainer searchAction={handleEnterPress}>
+        <SearchInput
+          label="user-name"
+          id="search-name"
+          type="text"
+          value={pageState.searchName}
+          onchange={(e) => {
+            dispatch(setSearchName(e.target.value));
+          }}
+          icon={<FaSearch />}
+          placeholder="search-by-name-composition-barcode"
+          onEnterPress={handleEnterPress}
+          resetField={() => {
+            dispatch(setSearchName(""));
+          }}
+          onkeyup={keyUpHandler}
+        />
+        {/* // {user.type !== UserTypeConstants.GUEST && companyId === null && ( */}
+        {user.type !== UserTypeConstants.GUEST && (
+          <SearchInput
+            label="item-company"
+            id="item-company"
+            type="text"
+            value={pageState.searchCompanyName}
+            onchange={(e) => {
+              dispatch(setSearchCompanyName(e.target.value));
+            }}
+            icon={<FaSearch />}
+            placeholder="search"
+            onEnterPress={handleEnterPress}
+            resetField={() => {
+              dispatch(setSearchCompanyName(""));
+            }}
+          />
+        )}
 
-        <MedicinesSearchString pageState={pageState} user={user} />
+        {/* {user.type !== UserTypeConstants.GUEST && warehouseId === null && ( */}
+        {(user.type === UserTypeConstants.ADMIN ||
+          user.type === UserTypeConstants.PHARMACY) && (
+          <SearchInput
+            label="item-warehouse"
+            id="item-warehouse"
+            type="text"
+            value={pageState.searchWarehouseName}
+            onchange={(e) => {
+              dispatch(setSearchWarehouseName(e.target.value));
+            }}
+            icon={<FaSearch />}
+            placeholder="search"
+            onEnterPress={handleEnterPress}
+            resetField={() => {
+              dispatch(setSearchWarehouseName(""));
+            }}
+          />
+        )}
 
-        <div style={{ position: "relative", height: "50px" }}>
-          <SearchContainer searchAction={handleEnterPress}>
-            <SearchInput
-              label="user-name"
-              id="search-name"
-              type="text"
-              value={pageState.searchName}
-              onchange={(e) => {
-                dispatch(setSearchName(e.target.value));
+        {/* {user.type !== UserTypeConstants.GUEST && warehouseId === null && ( */}
+        {user.type !== UserTypeConstants.GUEST && (
+          <div className={searchContainerStyles.checkbox_div}>
+            <input
+              type="checkbox"
+              value={pageState.searchInWarehouse}
+              checked={pageState.searchInWarehouse}
+              onChange={() => {
+                dispatch(setSearchInWarehouse(!pageState.searchInWarehouse));
+                dispatch(setSearchOutWarehouse(false));
               }}
-              icon={<FaSearch />}
-              placeholder="search-by-name-composition-barcode"
-              onEnterPress={handleEnterPress}
-              resetField={() => {
-                dispatch(setSearchName(""));
-              }}
-              onkeyup={keyUpHandler}
             />
-            {/* // {user.type !== UserTypeConstants.GUEST && companyId === null && ( */}
-            {user.type !== UserTypeConstants.GUEST && (
-              <SearchInput
-                label="item-company"
-                id="item-company"
-                type="text"
-                value={pageState.searchCompanyName}
-                onchange={(e) => {
-                  dispatch(setSearchCompanyName(e.target.value));
-                }}
-                icon={<FaSearch />}
-                placeholder="search"
-                onEnterPress={handleEnterPress}
-                resetField={() => {
-                  dispatch(setSearchCompanyName(""));
-                }}
-              />
+            {user.type === UserTypeConstants.WAREHOUSE && (
+              <label>{t("warehouse-in-warehouse")}</label>
             )}
+            {user.type !== UserTypeConstants.WAREHOUSE && (
+              <label>{t("pharmacy-in-warehouse")}</label>
+            )}
+          </div>
+        )}
 
-            {/* {user.type !== UserTypeConstants.GUEST && warehouseId === null && ( */}
-            {(user.type === UserTypeConstants.ADMIN ||
-              user.type === UserTypeConstants.PHARMACY) && (
-              <SearchInput
-                label="item-warehouse"
-                id="item-warehouse"
-                type="text"
-                value={pageState.searchWarehouseName}
-                onchange={(e) => {
-                  dispatch(setSearchWarehouseName(e.target.value));
-                }}
-                icon={<FaSearch />}
-                placeholder="search"
-                onEnterPress={handleEnterPress}
-                resetField={() => {
-                  dispatch(setSearchWarehouseName(""));
-                }}
-              />
+        {/* {user.type !== UserTypeConstants.GUEST && warehouseId === null && ( */}
+        {user.type !== UserTypeConstants.GUEST && (
+          <div className={searchContainerStyles.checkbox_div}>
+            <input
+              type="checkbox"
+              value={pageState.searchOutWarehouse}
+              checked={pageState.searchOutWarehouse}
+              onChange={() => {
+                dispatch(setSearchOutWarehouse(!pageState.searchOutWarehouse));
+                dispatch(setSearchInWarehouse(false));
+              }}
+            />
+            {user.type === UserTypeConstants.WAREHOUSE && (
+              <label>{t("warehouse-out-warehouse")}</label>
             )}
+            {user.type !== UserTypeConstants.WAREHOUSE && (
+              <label>{t("pharmacy-out-warehouse")}</label>
+            )}
+          </div>
+        )}
+      </SearchContainer>
 
-            {/* {user.type !== UserTypeConstants.GUEST && warehouseId === null && ( */}
-            {user.type !== UserTypeConstants.GUEST && (
-              <div className={searchContainerStyles.checkbox_div}>
-                <input
-                  type="checkbox"
-                  value={pageState.searchInWarehouse}
-                  checked={pageState.searchInWarehouse}
-                  onChange={() => {
-                    dispatch(
-                      setSearchInWarehouse(!pageState.searchInWarehouse)
-                    );
-                    dispatch(setSearchOutWarehouse(false));
-                  }}
-                />
-                {user.type === UserTypeConstants.WAREHOUSE && (
-                  <label>{t("warehouse-in-warehouse")}</label>
-                )}
-                {user.type !== UserTypeConstants.WAREHOUSE && (
-                  <label>{t("pharmacy-in-warehouse")}</label>
-                )}
-              </div>
-            )}
+      <MedicinesSearchString pageState={pageState} user={user} />
 
-            {/* {user.type !== UserTypeConstants.GUEST && warehouseId === null && ( */}
-            {user.type !== UserTypeConstants.GUEST && (
-              <div className={searchContainerStyles.checkbox_div}>
-                <input
-                  type="checkbox"
-                  value={pageState.searchOutWarehouse}
-                  checked={pageState.searchOutWarehouse}
-                  onChange={() => {
-                    dispatch(
-                      setSearchOutWarehouse(!pageState.searchOutWarehouse)
-                    );
-                    dispatch(setSearchInWarehouse(false));
-                  }}
-                />
-                {user.type === UserTypeConstants.WAREHOUSE && (
-                  <label>{t("warehouse-out-warehouse")}</label>
-                )}
-                {user.type !== UserTypeConstants.WAREHOUSE && (
-                  <label>{t("pharmacy-out-warehouse")}</label>
-                )}
-              </div>
-            )}
-          </SearchContainer>
-        </div>
-      </Header>
       <div className={generalStyles.actions}>
         <Icon
           withBackground={true}
           icon={() => <RiRefreshLine />}
-          foreColor={Colors.SECONDARY_COLOR}
+          foreColor={Colors.GREY_COLOR}
           tooltip={t("refresh-tooltip")}
           onclick={handleEnterPress}
         />
@@ -236,7 +231,7 @@ function MedicinesPage({ onSelectedChange }) {
           <Icon
             withBackground={true}
             selected={false}
-            foreColor={Colors.SECONDARY_COLOR}
+            foreColor={Colors.GREY_COLOR}
             tooltip={t("clear-filter-tooltip")}
             onclick={() => {
               dispatch(resetMedicinesPageState());
@@ -252,7 +247,7 @@ function MedicinesPage({ onSelectedChange }) {
             withBackground={true}
             icon={() => <AiFillStar />}
             foreColor={
-              showFavorites ? Colors.SUCCEEDED_COLOR : Colors.SECONDARY_COLOR
+              showFavorites ? Colors.SUCCEEDED_COLOR : Colors.GREY_COLOR
             }
             tooltip={t("show-favorite-tooltip")}
             onclick={() => setShowFavorites(!showFavorites)}
@@ -285,7 +280,7 @@ function MedicinesPage({ onSelectedChange }) {
           foreColor={
             pageState.displayType === "card"
               ? Colors.SUCCEEDED_COLOR
-              : Colors.SECONDARY_COLOR
+              : Colors.GREY_COLOR
           }
           tooltip={t("show-item-as-card-tooltip")}
           onclick={() => dispatch(setDisplayType("card"))}
@@ -297,10 +292,20 @@ function MedicinesPage({ onSelectedChange }) {
           foreColor={
             pageState.displayType === "list"
               ? Colors.SUCCEEDED_COLOR
-              : Colors.SECONDARY_COLOR
+              : Colors.GREY_COLOR
           }
           tooltip={t("show-item-as-row-tooltip")}
           onclick={() => dispatch(setDisplayType("list"))}
+        />
+
+        <Icon
+          withBackground={true}
+          tooltip={t("go-back")}
+          onclick={() => {
+            history.goBack();
+          }}
+          icon={() => <IoMdArrowRoundBack />}
+          foreColor={Colors.GREY_COLOR}
         />
       </div>
 

@@ -227,6 +227,38 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
   return (
     <>
       <div
+        className={styles.container}
+        onClick={() => {
+          dispatchStatisticsHandler();
+
+          history.push("/item", {
+            from: user.type,
+            type: "info",
+            allowAction: false,
+            itemId: item._id,
+            companyId: item.company._id,
+            warehouseId:
+              user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
+          });
+        }}
+      >
+        <label>{item.name}</label>
+        <label>{item.company.name}</label>
+        <label>{item.caliber}</label>
+        <label>{item.packing}</label>
+        <label>{item.formula}</label>
+        {user.type !== UserTypeConstants.GUEST && !isFavorite && (
+          <label className={[styles.price, styles.center].join(" ")}>
+            {item.price}
+          </label>
+        )}
+        {!isFavorite && (
+          <label className={[styles.price, styles.center].join(" ")}>
+            {item.customer_price}
+          </label>
+        )}
+      </div>
+      <div
         style={{
           backgroundColor: checkOffer(item, user)
             ? Colors.OFFER_COLOR

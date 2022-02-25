@@ -81,14 +81,20 @@ function UserNotificationPage({ onSelectedChange }) {
   }, [refresh, forceRefresh]);
 
   return (
-    <div className={generalStyles.container}>
+    <div
+      className={generalStyles.container}
+      style={{
+        paddingInlineStart: "35px",
+        marginBlockEnd: "10px",
+      }}
+    >
       <Header>
         <h2>{t("nav-notifications")}</h2>
 
         <div
           style={{
             position: "absolute",
-            top: "16px",
+            top: "10px",
             left: "42px",
           }}
         >
@@ -107,7 +113,11 @@ function UserNotificationPage({ onSelectedChange }) {
 
       {/* <Notifications /> */}
 
-      <div>
+      <div
+        style={{
+          paddingInline: "10px",
+        }}
+      >
         {userNotifications.map((note, index) => (
           <NotificationRow key={note._id} notification={note} index={index} />
         ))}

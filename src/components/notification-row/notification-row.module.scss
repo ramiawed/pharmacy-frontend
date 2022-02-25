@@ -2,32 +2,15 @@
 
 .row_container {
   border-radius: 6px;
-  background-color: rgba($color: $backup-color, $alpha: 0.3);
-  padding: 10px;
   margin-bottom: 10px;
-
   position: relative;
-
   display: flex;
   flex-direction: row;
-
-  overflow: hidden;
-
-  animation-name: animateOpacity;
-  // animation-duration: 0.3s;
-  animation-fill-mode: forwards;
+  // overflow: hidden;
 }
 
 .row_container:hover {
-  background: rgba($color: $backup-color, $alpha: 0.8);
-}
-
-.row_unread {
-  background: rgba($color: $backup-color, $alpha: 1);
-}
-
-.row_unread:hover {
-  background: rgba($color: $backup-color, $alpha: 0.8);
+  background: rgba($color: $white-color, $alpha: 0.8);
 }
 
 .inner_container {
@@ -36,8 +19,8 @@
   background: $white-color;
   padding: 5px;
   border-radius: 6px;
-
-  box-shadow: 2px 2px 5px rgba($color: #000000, $alpha: 0.6);
+  border: 1px solid rgba($color: $secondary-color, $alpha: 0.6);
+  // box-shadow: 2px 2px 3px rgba($color: #000000, $alpha: 0.6);
   cursor: pointer;
 
 }
@@ -45,9 +28,9 @@
 .img {
   width: 15%;
   padding: 2px;
-  background-color: $white-color;
+  background-color: $main-color;
   border-radius: 6px;
-  box-shadow: 2px 2px 15px rgba($color: #000000, $alpha: 0.6);
+  box-shadow: 2px 2px 3px rgba($color: #000000, $alpha: 0.6);
 
   margin-inline-end: 10px;
 
@@ -142,18 +125,9 @@
   color: $main-color;
 }
 
-@keyframes animateOpacity {
-  0% {
-    opacity: 0;
-    left: -100%;
-  }
-
-  50% {
-    opacity: 1;
-  }
-
-  100% {
-    // opacity: 1;
-    left: 0;
-  }
+.unread_icon {
+  color: $main-color;
+  position: absolute;
+  left: 20px;
+  top: 0;
 }

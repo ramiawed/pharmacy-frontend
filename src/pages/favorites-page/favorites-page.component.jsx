@@ -63,19 +63,24 @@ function FavoritesPage({ onSelectedChange }) {
   }, []);
 
   return user ? (
-    <div className={generalStyles.container}>
+    <div
+      className={generalStyles.container}
+      style={{
+        paddingInlineStart: "35px",
+      }}
+    >
       <Header>
         <h2>{t("favorites")}</h2>
         <div
           style={{
             position: "absolute",
-            top: "16px",
+            top: "10px",
             left: "42px",
           }}
         >
           <Icon
             selected={false}
-            foreColor={Colors.SECONDARY_COLOR}
+            foreColor={Colors.WHITE_COLOR}
             tooltip={t("refresh-tooltip")}
             onclick={refreshFavoritesHandler}
             icon={() => <RiRefreshLine />}
@@ -83,42 +88,30 @@ function FavoritesPage({ onSelectedChange }) {
         </div>
       </Header>
 
-      {/* favorites items */}
-      <CardInfo headerTitle={t("nav-items")}>
-        {favoritesItems &&
-          favoritesItems.map((item) => (
-            <ItemRow
-              key={item._id}
-              item={item}
-              withoutBoxShadow={true}
-              isFavorite={true}
-            />
-          ))}
-      </CardInfo>
-
-      {/* favorite companies */}
-      <CardInfo headerTitle={t("companies")}>
-        {favoritesPartners &&
-          favoritesPartners
-            .filter((favorite) => favorite.type === UserTypeConstants.COMPANY)
-            .map((favorite) => (
-              <PartnerRow
-                key={favorite._id}
-                partner={favorite}
+      <div
+        style={{
+          paddingInline: "10px",
+        }}
+      >
+        <CardInfo headerTitle={t("nav-items")}>
+          {favoritesItems &&
+            favoritesItems.map((item) => (
+              <ItemRow
+                key={item._id}
+                item={item}
                 withoutBoxShadow={true}
+                isFavorite={true}
               />
             ))}
-      </CardInfo>
+        </CardInfo>
+        {/* favorites items */}
 
-      {(user.type === UserTypeConstants.ADMIN ||
-        user.type === UserTypeConstants.PHARMACY ||
-        user.type === UserTypeConstants.COMPANY) && (
-        <CardInfo headerTitle={t("warehouses")}>
+        {/* favorite companies */}
+
+        <CardInfo headerTitle={t("companies")}>
           {favoritesPartners &&
             favoritesPartners
-              .filter(
-                (favorite) => favorite.type === UserTypeConstants.WAREHOUSE
-              )
+              .filter((favorite) => favorite.type === UserTypeConstants.COMPANY)
               .map((favorite) => (
                 <PartnerRow
                   key={favorite._id}
@@ -127,7 +120,26 @@ function FavoritesPage({ onSelectedChange }) {
                 />
               ))}
         </CardInfo>
-      )}
+
+        {(user.type === UserTypeConstants.ADMIN ||
+          user.type === UserTypeConstants.PHARMACY ||
+          user.type === UserTypeConstants.COMPANY) && (
+          <CardInfo headerTitle={t("warehouses")}>
+            {favoritesPartners &&
+              favoritesPartners
+                .filter(
+                  (favorite) => favorite.type === UserTypeConstants.WAREHOUSE
+                )
+                .map((favorite) => (
+                  <PartnerRow
+                    key={favorite._id}
+                    partner={favorite}
+                    withoutBoxShadow={true}
+                  />
+                ))}
+          </CardInfo>
+        )}
+      </div>
       {/* favorites warehouses */}
 
       {status === "loading" && <ActionLoader allowCancel={false} />}

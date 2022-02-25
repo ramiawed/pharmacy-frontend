@@ -2,44 +2,19 @@
 
 .header {
   position: relative;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
-  flex-direction: column;
-
-  border-radius: 12px;
   padding-block-end: 5px;
   margin-bottom: 5px;
-
   background-color: rgba($color: $secondary-color, $alpha: 1);
-
-  // animation-name: changeHeaderBackground;
-  // animation-duration: 1.5s;
-  // animation-iteration-count: infinite;
-  // animation-direction: alternate-reverse;
-}
-
-@keyframes changeHeaderBackground {
-  0% {
-    background-color: rgba($color: $secondary-color, $alpha: 0.3);
-  }
-
-  100% {
-    background-color: rgba($color: $secondary-color, $alpha: 0.6);
-  }
 }
 
 .header h2 {
   font-weight: bold;
-  padding: 6px 12px;
   margin: 10px 0;
-
   text-align: center;
-
   color: $white-color;
-
   text-shadow: 1px 1px 1px rgba($color: #000000, $alpha: 1);
 }
 
@@ -50,6 +25,6 @@
 .back {
   position: absolute;
 
-  top: 16px;
+  top: 10px;
   left: 10px;
 }

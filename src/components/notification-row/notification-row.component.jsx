@@ -18,6 +18,7 @@ import Modal from "../modal/modal.component";
 // icons
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { BiImage } from "react-icons/bi";
+import { FaBookmark } from "react-icons/fa";
 
 // styles
 import styles from "./notification-row.module.scss";
@@ -59,13 +60,7 @@ function NotificationRow({ notification, index, setSuccessDeletingMsg }) {
 
   return (
     <div
-      className={[
-        styles.row_container,
-        !notification.users.includes(user._id) &&
-        user.type !== UserTypeConstants.ADMIN
-          ? styles.row_unread
-          : "",
-      ].join(" ")}
+      className={[styles.row_container].join(" ")}
       style={{
         animationDuration: (0.3 * index) / 10 + "s",
       }}
@@ -93,6 +88,13 @@ function NotificationRow({ notification, index, setSuccessDeletingMsg }) {
           <label>{t("body")}</label>
           <p className={styles.body}>{notification.body}</p>
         </div>
+
+        {!notification.users.includes(user._id) &&
+          user.type !== UserTypeConstants.ADMIN && (
+            <div className={styles.unread_icon}>
+              <FaBookmark />
+            </div>
+          )}
       </div>
 
       {user.type === UserTypeConstants.ADMIN && (

@@ -249,6 +249,12 @@ function ItemRowNew({ item }) {
           {item.name}
         </div>
         <div className={styles.details}>
+          <div className={[styles.row].join(" ")}>
+            <div>
+              <label className={styles.label}>{t("item-company")}:</label>
+              <label className={styles.value}>{item.company.name}</label>
+            </div>
+          </div>
           <div className={styles.row}>
             <div>
               <label className={styles.label}>{t("item-formula")}:</label>

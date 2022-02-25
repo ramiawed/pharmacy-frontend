@@ -74,3 +74,24 @@
 .small_font {
   font-size: 0.7rem !important;
 }
+
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 4px 10px;
+
+  border-bottom: 1px solid rgba($color: $secondary-color, $alpha: 0.2);
+
+  label {
+    color: $grey-color;
+
+    &::after {
+      content: '/';
+      margin-inline: 4px;
+      color: $main-color;
+    }
+  }
+
+
+}

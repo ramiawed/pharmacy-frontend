@@ -20,12 +20,7 @@ import ReactLoading from "react-loading";
 import styles from "./search-home.module.scss";
 
 // constants
-import {
-  Colors,
-  BASEURL,
-  UserTypeConstants,
-  SERVER_URL,
-} from "../../utils/constants";
+import { Colors, BASEURL, UserTypeConstants } from "../../utils/constants";
 
 let CancelToken = null;
 let source = null;
@@ -43,9 +38,6 @@ function SearchHome() {
   const [data, setData] = useState([]);
   const [companiesData, setCompaniesData] = useState([]);
   const [warehousesData, setWarehousesData] = useState([]);
-
-  //
-  // const [tryBooom, setTryBooom] = useState(false);
 
   const searchHandler = async () => {
     if (searchName.trim().length === 0) {
@@ -162,10 +154,6 @@ function SearchHome() {
     setShowResult(false);
   };
 
-  function Bomb() {
-    throw new Error("💥 CABOOM 💥");
-  }
-
   return (
     <div
       className={styles.container}
@@ -173,17 +161,8 @@ function SearchHome() {
         e.stopPropagation();
       }}
     >
-      {/* <button
-        onClick={() => {
-          setTryBooom(true);
-        }}
-      >
-        Click Me
-      </button>
-      {tryBooom ? <Bomb /> : null} */}
-
       <div className={styles.search_container}>
-        <p className={styles.description}>{t("app-description")}</p>
+        <p className={styles.description}>{t("app-slogan")}</p>
 
         <div
           className={[

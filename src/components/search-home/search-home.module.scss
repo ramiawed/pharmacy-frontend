@@ -6,9 +6,7 @@
   background-color: rgba($color: $secondary-color, $alpha: 0.7);
   margin: 0 auto;
   padding: 6px;
-
   flex: 1;
-
   display: flex;
   align-items: flex-start;
   flex-direction: column;
@@ -38,11 +36,8 @@
 
 .description {
   font-size: 1.5rem;
-
   color: #fff;
-
   margin-block-end: 16px;
-
   text-align: center;
   text-shadow: 2px 2px 3px rgba($color: black, $alpha: 0.3);
   text-transform: uppercase;
@@ -51,22 +46,16 @@
 .app_logo {
   width: 150px;
   height: 150px;
-
   order: 1;
-
   margin-block: 12px;
 }
 
 .search_container {
   display: flex;
   flex-direction: column;
-
   width: 90%;
-
   margin-inline: auto;
-
   position: relative;
-
   order: 2;
 }
 
@@ -74,12 +63,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
-  // border: 1px solid $secondary-color;
   border-radius: 12px;
-
   padding: 10px;
-
   background: $white-color
 }
 
@@ -90,20 +75,15 @@
 
 .input {
   background-color: transparent;
-
   flex: 1;
-
   border: none;
   outline: none;
-
   padding: 0 20px;
-
   color: $secondary-color;
 }
 
 .icon {
   font-size: 1rem;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -113,18 +93,12 @@
   width: 100%;
   min-height: 50px;
   max-height: 150px;
-
   position: absolute;
   top: 135px;
-
   z-index: 100;
-
   background-color: rgba($color: $white-color, $alpha: 1);
-
-  // border: 1px solid $secondary-color;
   border-top: none;
   border-radius: 0 0 12px 12px;
-
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -146,7 +120,6 @@
 }
 
 @media only screen and (min-width: $medium) {
-
   .container {
     flex-direction: row;
     width: 60vw;
@@ -162,8 +135,6 @@
     top: 100px;
   }
 }
-
-
 
 .header {
   width: 100%;

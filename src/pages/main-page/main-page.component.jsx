@@ -42,7 +42,6 @@ import {
   changeNavSettings,
   selectNavigationSlice,
 } from "../../redux/navs/navigationSlice";
-import { BsWindowSidebar } from "react-icons/bs";
 
 // pages
 const CartPage = lazy(() => import("../cart-page/cart-page.component"));
@@ -220,6 +219,7 @@ function MainPage() {
                 });
               }}
             />
+
             <SideNav
               collapsed={collapsedSideNavOption}
               onCollapsedChange={() => {

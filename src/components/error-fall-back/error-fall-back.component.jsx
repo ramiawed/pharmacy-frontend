@@ -2,9 +2,15 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 
+// component
+import Button from "../../components/button/button.component";
+
 // styles
 import styles from "./error-fall-back.module.scss";
 import generalStyles from "../../style.module.scss";
+
+// constants
+import { Colors } from "../../utils/constants";
 
 const containerVariant = {
   hidden: {
@@ -38,8 +44,19 @@ function ErrorFallback({ error, resetErrorBoundary }) {
       >
         <p>{t("believed-partner")}</p>
         <p className={styles.strong}>{t("error-msg")}</p>
-        <p>{t("approve-message")}</p>
-        <p>{t("hour-serving")}</p>
+        <div
+          style={{
+            zIndex: 10,
+          }}
+        >
+          <Button
+            text={t("home")}
+            bgColor={Colors.FAILED_COLOR}
+            action={() => {
+              resetErrorBoundary();
+            }}
+          />
+        </div>
       </motion.div>
     </div>
   );

@@ -247,7 +247,6 @@ function ItemPage() {
       })
       .then((response) => {
         setItem(response.data.data.item);
-        // console.log(response.data.data.item);
         setLoadingItem("idle");
       })
       .catch((err) => {

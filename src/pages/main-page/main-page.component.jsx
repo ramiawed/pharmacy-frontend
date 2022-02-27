@@ -1,5 +1,6 @@
 import React, { useEffect, useState, lazy, Suspense, useCallback } from "react";
 import { Redirect, Route } from "react-router";
+import { useHistory } from "react-router-dom";
 import { Switch } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import { ErrorBoundary } from "react-error-boundary";
@@ -41,6 +42,7 @@ import {
   changeNavSettings,
   selectNavigationSlice,
 } from "../../redux/navs/navigationSlice";
+import { BsWindowSidebar } from "react-icons/bs";
 
 // pages
 const CartPage = lazy(() => import("../cart-page/cart-page.component"));
@@ -96,6 +98,7 @@ const SettingsPage = lazy(() =>
 function MainPage() {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   // selectors
   // get the user and the token from redux-store-auth
@@ -160,7 +163,13 @@ function MainPage() {
   };
 
   return user ? (
-    <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>
+    <ErrorBoundary
+      FallbackComponent={ErrorFallback}
+      onReset={() => {
+        history.push("/");
+        // window.location.reload();
+      }}
+    >
       {settingsStatus === "loading" || loading ? (
         <HomePageLoader />
       ) : (

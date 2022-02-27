@@ -11,7 +11,11 @@
   margin-block-end: 10px;
   padding-inline-start: 45px;
   padding-inline-end: 10px;
+  padding-block-end: 10px;
+  overflow: hidden;
 }
+
+
 
 .container_with_header {
   width: 100%;
@@ -20,6 +24,14 @@
   margin-block-end: 10px;
   padding-inline-start: 45px;
   padding-inline-end: 10px;
+  padding-block-end: 10px;
+  overflow: hidden;
+}
+
+.refresh_icon {
+  position: absolute;
+  top: 10px;
+  left: 56px;
 }
 
 // coloring

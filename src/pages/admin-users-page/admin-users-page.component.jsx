@@ -92,7 +92,7 @@ function AdminUsersPage({ onSelectedChange }) {
   }, [refresh]);
 
   return user && user.type === UserTypeConstants.ADMIN ? (
-    <div className={generalStyles.container}>
+    <>
       <AdminUsersHeader
         count={count}
         pageState={pageState}
@@ -100,60 +100,62 @@ function AdminUsersPage({ onSelectedChange }) {
         showOrderModalHandler={() => setShowOrderModel(true)}
       />
 
-      {count > 0 && <AdminUserTableHeader />}
+      <div className={generalStyles.container_with_header}>
+        {count > 0 && <AdminUserTableHeader />}
 
-      {/* Results */}
-      {users &&
-        users.length > 0 &&
-        users.map((user, index) => (
-          <UserRow key={user._id} user={user} index={index} />
-        ))}
+        {/* Results */}
+        {users &&
+          users.length > 0 &&
+          users.map((user, index) => (
+            <UserRow key={user._id} user={user} index={index} />
+          ))}
 
-      {count > 0 && isOnline && (
-        <ReactPaginate
-          previousLabel={t("previous")}
-          nextLabel={t("next")}
-          pageCount={Math.ceil(count / 9)}
-          forcePage={pageState.page - 1}
-          onPageChange={handlePageClick}
-          containerClassName={paginationStyles.pagination}
-          previousLinkClassName={paginationStyles.pagination_link}
-          nextLinkClassName={paginationStyles.pagination_link}
-          disabledClassName={paginationStyles.pagination_link_disabled}
-          activeClassName={paginationStyles.pagination_link_active}
-        />
-      )}
+        {count > 0 && isOnline && (
+          <ReactPaginate
+            previousLabel={t("previous")}
+            nextLabel={t("next")}
+            pageCount={Math.ceil(count / 9)}
+            forcePage={pageState.page - 1}
+            onPageChange={handlePageClick}
+            containerClassName={paginationStyles.pagination}
+            previousLinkClassName={paginationStyles.pagination_link}
+            nextLinkClassName={paginationStyles.pagination_link}
+            disabledClassName={paginationStyles.pagination_link_disabled}
+            activeClassName={paginationStyles.pagination_link_active}
+          />
+        )}
 
-      {/* show no content div when no user found */}
-      {count === 0 && status !== "loading" && (
-        <>
-          <NoContent msg={t("no-partners-found-message")} />
-        </>
-      )}
+        {/* show no content div when no user found */}
+        {count === 0 && status !== "loading" && (
+          <>
+            <NoContent msg={t("no-partners-found-message")} />
+          </>
+        )}
 
-      {/* loading and notifications */}
-      <AdminUsersNotifications />
+        {/* loading and notifications */}
+        <AdminUsersNotifications />
 
-      {/* search modal */}
-      {showModal && (
-        <AdminUsersSearchModal
-          close={() => setShowModal(false)}
-          search={searchModalOkHandler}
-          enterPress={enterPress}
-        />
-      )}
+        {/* search modal */}
+        {showModal && (
+          <AdminUsersSearchModal
+            close={() => setShowModal(false)}
+            search={searchModalOkHandler}
+            enterPress={enterPress}
+          />
+        )}
 
-      {/* order modal */}
-      {showOrderModal && (
-        <AdminUsersOrderModal
-          close={() => setShowOrderModel(false)}
-          okHandler={() => {
-            setShowOrderModel(false);
-            handleSearch(1);
-          }}
-        />
-      )}
-    </div>
+        {/* order modal */}
+        {showOrderModal && (
+          <AdminUsersOrderModal
+            close={() => setShowOrderModel(false)}
+            okHandler={() => {
+              setShowOrderModel(false);
+              handleSearch(1);
+            }}
+          />
+        )}
+      </div>
+    </>
   ) : (
     <Redirect to="/" />
   );

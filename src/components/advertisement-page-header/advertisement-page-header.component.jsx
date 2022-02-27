@@ -35,16 +35,10 @@ function AdvertisementPageHeader({ isNew, setIsNew }) {
       <Header>
         <h2>{t("nav-advertise")}</h2>
         {isNew && (
-          <div
-            style={{
-              position: "absolute",
-              top: "16px",
-              left: "42px",
-            }}
-          >
+          <div className={generalStyles.refresh_icon}>
             <Icon
               selected={false}
-              foreColor={Colors.SECONDARY_COLOR}
+              foreColor={Colors.WHITE_COLOR}
               tooltip={t("refresh-tooltip")}
               onclick={() => {
                 refreshHandler();
@@ -61,7 +55,7 @@ function AdvertisementPageHeader({ isNew, setIsNew }) {
           <>
             <Icon
               selected={false}
-              foreColor={Colors.SECONDARY_COLOR}
+              foreColor={Colors.MAIN_COLOR}
               tooltip={t("new-advertisement")}
               onclick={() => {
                 setIsNew(true);
@@ -72,7 +66,7 @@ function AdvertisementPageHeader({ isNew, setIsNew }) {
             {/* Refresh */}
             <Icon
               selected={false}
-              foreColor={Colors.SECONDARY_COLOR}
+              foreColor={Colors.MAIN_COLOR}
               tooltip={t("refresh-tooltip")}
               onclick={() => {
                 refreshHandler();

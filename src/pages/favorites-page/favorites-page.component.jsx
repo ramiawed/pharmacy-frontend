@@ -66,13 +66,7 @@ function FavoritesPage({ onSelectedChange }) {
     <>
       <Header>
         <h2>{t("favorites")}</h2>
-        <div
-          style={{
-            position: "absolute",
-            top: "10px",
-            left: "42px",
-          }}
-        >
+        <div className={generalStyles.refresh_icon}>
           <Icon
             selected={false}
             foreColor={Colors.WHITE_COLOR}

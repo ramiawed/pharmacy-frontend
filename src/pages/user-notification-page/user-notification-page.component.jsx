@@ -85,13 +85,7 @@ function UserNotificationPage({ onSelectedChange }) {
       <Header>
         <h2>{t("nav-notifications")}</h2>
 
-        <div
-          style={{
-            position: "absolute",
-            top: "10px",
-            left: "42px",
-          }}
-        >
+        <div className={generalStyles.refresh_icon}>
           {/* Refresh */}
           <Icon
             selected={false}

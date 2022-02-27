@@ -271,13 +271,7 @@ function StatisticsPage({ onSelectedChange }) {
           </SearchContainer>
         </div>
 
-        <div
-          style={{
-            position: "absolute",
-            top: "16px",
-            left: "42px",
-          }}
-        >
+        <div className={generalStyles.refresh_icon}>
           {/* refresh */}
           <Icon
             selected={false}

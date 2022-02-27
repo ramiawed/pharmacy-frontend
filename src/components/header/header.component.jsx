@@ -17,7 +17,6 @@ function Header({ children }) {
       {children}
       <div className={styles.back}>
         <Icon
-          tooltip={t("go-back")}
           onclick={() => {
             history.goBack();
           }}

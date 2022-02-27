@@ -49,9 +49,8 @@ function AdvertisementsPage({ onSelectedChange }) {
 
   return (
     <>
-      <div className={generalStyles.container}>
-        <AdvertisementPageHeader isNew={isNew} setIsNew={setIsNew} />
-
+      <AdvertisementPageHeader isNew={isNew} setIsNew={setIsNew} />
+      <div className={generalStyles.container_with_header}>
         <NewAdvertisement isNew={isNew} setIsNew={setIsNew} />
 
         {advertisements.map((adv) => (

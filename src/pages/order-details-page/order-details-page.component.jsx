@@ -129,13 +129,7 @@ function OrderDetailsPage({ location, onSelectedChange }) {
         <>
           <Header>
             <h2>{t("order-details")}</h2>
-            <div
-              style={{
-                position: "absolute",
-                top: "10px",
-                left: "42px",
-              }}
-            >
+            <div className={generalStyles.refresh_icon}>
               <Icon
                 icon={() => <RiRefreshLine color={Colors.WHITE_COLOR} />}
                 foreColor={Colors.SECONDARY_COLOR}

@@ -50,18 +50,12 @@ function NotificationPage({ onSelectedChange }) {
   }, [notificationId]);
 
   return (
-    <div className={generalStyles.container}>
+    <>
       {notification ? (
         <>
           <Header>
             <h2>{t("notification-label")}</h2>
-            <div
-              style={{
-                position: "absolute",
-                top: "10px",
-                left: "46px",
-              }}
-            >
+            <div className={generalStyles.refresh_icon}>
               <Icon
                 selected={false}
                 foreColor={Colors.WHITE_COLOR}
@@ -71,32 +65,33 @@ function NotificationPage({ onSelectedChange }) {
               />
             </div>
           </Header>
+          <div div className={generalStyles.container_with_header}>
+            <div className={styles.content_div}>
+              <div className={styles.row}>
+                {/* <label>{t("header")}</label> */}
+                <p className={styles.header} style={{ flex: 1 }}>
+                  {notification.header}
+                </p>
+                <p className={styles.date}>{notification.date.split("T")[0]}</p>
+              </div>
 
-          <div className={styles.content_div}>
-            <div className={styles.row}>
-              {/* <label>{t("header")}</label> */}
-              <p className={styles.header} style={{ flex: 1 }}>
-                {notification.header}
-              </p>
-              <p className={styles.date}>{notification.date.split("T")[0]}</p>
-            </div>
-
-            <div>
-              {notification.logo_url !== "" && (
-                <img
-                  className={styles.image}
-                  src={`${SERVER_URL}/${notification.logo_url}`}
-                  alt="thumb"
-                />
-              )}
-              <p className={styles.body}>{notification.body}</p>
+              <div>
+                {notification.logo_url !== "" && (
+                  <img
+                    className={styles.image}
+                    src={`${SERVER_URL}/${notification.logo_url}`}
+                    alt="thumb"
+                  />
+                )}
+                <p className={styles.body}>{notification.body}</p>
+              </div>
             </div>
           </div>
         </>
       ) : (
         <Loader />
       )}
-    </div>
+    </>
   );
 }
 

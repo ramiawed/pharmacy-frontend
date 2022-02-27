@@ -283,13 +283,7 @@ function OrderPageHeader({ count, pageState, search }) {
           />
         </div>
       </SearchContainer>
-      <div
-        style={{
-          position: "absolute",
-          top: "16px",
-          left: "46px",
-        }}
-      >
+      <div className={generalStyles.refresh_icon}>
         <Icon
           foreColor={Colors.SECONDARY_COLOR}
           selected={false}

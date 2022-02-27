@@ -270,31 +270,24 @@ function ItemPage() {
 
   return user ? (
     <>
-      <div className={generalStyles.container}>
-        <Header>
-          <h2>{item.name}</h2>
-          <div
-            style={{
-              position: "absolute",
-              top: "16px",
-              left: "46px",
+      <Header>
+        <h2>{item.name}</h2>
+        <div className={generalStyles.refresh_icon}>
+          <Icon
+            selected={false}
+            foreColor={Colors.WHITE_COLOR}
+            tooltip={t("refresh-tooltip")}
+            icon={() => <RiRefreshLine />}
+            onclick={() => {
+              if (type === "info" && itemId) {
+                getItemFromDB();
+                window.scrollTo(0, 0);
+              }
             }}
-          >
-            <Icon
-              selected={false}
-              foreColor={Colors.SECONDARY_COLOR}
-              tooltip={t("refresh-tooltip")}
-              icon={() => <RiRefreshLine />}
-              onclick={() => {
-                if (type === "info" && itemId) {
-                  getItemFromDB();
-                  window.scrollTo(0, 0);
-                }
-              }}
-            />
-          </div>
-        </Header>
-
+          />
+        </div>
+      </Header>
+      <div className={generalStyles.container_with_header}>
         <div className={styles.content}>
           <div
             className={[

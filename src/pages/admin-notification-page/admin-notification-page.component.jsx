@@ -78,76 +78,77 @@ function AdminNotificationPage({ onSelectedChange }) {
   }, []);
 
   return user && user.type === UserTypeConstants.ADMIN ? (
-    <div className={generalStyles.container}>
+    <>
       <AdminNotificationsHeader isNew={isNew} setIsNew={setIsNew} />
+      <div className={generalStyles.container_with_header}>
+        {isNew ? (
+          <NewNotification
+            setIsNew={setIsNew}
+            setSuccessAddingMsg={setSuccessAddingNewNotificationMsg}
+            setSuccessDeletingMsg={setSuccessDeletingNotificationMsg}
+          />
+        ) : (
+          <>
+            {notifications.map((note, index) => (
+              <NotificationRow
+                key={note._id}
+                notification={note}
+                index={index}
+                setSuccessDeletingMsg={setSuccessDeletingNotificationMsg}
+              />
+            ))}
 
-      {isNew ? (
-        <NewNotification
-          setIsNew={setIsNew}
-          setSuccessAddingMsg={setSuccessAddingNewNotificationMsg}
-          setSuccessDeletingMsg={setSuccessDeletingNotificationMsg}
-        />
-      ) : (
-        <>
-          {notifications.map((note, index) => (
-            <NotificationRow
-              key={note._id}
-              notification={note}
-              index={index}
-              setSuccessDeletingMsg={setSuccessDeletingNotificationMsg}
-            />
-          ))}
+            {count > 0 && isOnline && (
+              <ReactPaginate
+                previousLabel={t("previous")}
+                nextLabel={t("next")}
+                pageCount={Math.ceil(count / 9)}
+                forcePage={page - 1}
+                onPageChange={handlePageClick}
+                containerClassName={paginationStyles.pagination}
+                previousLinkClassName={paginationStyles.pagination_link}
+                nextLinkClassName={paginationStyles.pagination_link}
+                disabledClassName={paginationStyles.pagination_link_disabled}
+                activeClassName={paginationStyles.pagination_link_active}
+              />
+            )}
 
-          {count > 0 && isOnline && (
-            <ReactPaginate
-              previousLabel={t("previous")}
-              nextLabel={t("next")}
-              pageCount={Math.ceil(count / 9)}
-              forcePage={page - 1}
-              onPageChange={handlePageClick}
-              containerClassName={paginationStyles.pagination}
-              previousLinkClassName={paginationStyles.pagination_link}
-              nextLinkClassName={paginationStyles.pagination_link}
-              disabledClassName={paginationStyles.pagination_link_disabled}
-              activeClassName={paginationStyles.pagination_link_active}
-            />
-          )}
+            {notifications.length === 0 && status !== "loading" && (
+              <NoContent msg={t("no-notifications")} />
+            )}
 
-          {notifications.length === 0 && status !== "loading" && (
-            <NoContent msg={t("no-notifications")} />
-          )}
+            {error && (
+              <Toast
+                bgColor={Colors.FAILED_COLOR}
+                foreColor="#fff"
+                toastText={t(error)}
+                actionAfterTimeout={() => dispatch(resetError())}
+              />
+            )}
+          </>
+        )}
 
-          {error && (
-            <Toast
-              bgColor={Colors.FAILED_COLOR}
-              foreColor="#fff"
-              toastText={t(error)}
-              actionAfterTimeout={() => dispatch(resetError())}
-            />
-          )}
-        </>
-      )}
+        {status === "loading" && <Loader />}
 
-      {status === "loading" && <Loader />}
+        {successAddingNewNotificationMsg && (
+          <Toast
+            bgColor={Colors.SUCCEEDED_COLOR}
+            foreColor="#fff"
+            toastText={t(successAddingNewNotificationMsg)}
+            actionAfterTimeout={() => setSuccessAddingNewNotificationMsg("")}
+          />
+        )}
 
-      {successAddingNewNotificationMsg && (
-        <Toast
-          bgColor={Colors.SUCCEEDED_COLOR}
-          foreColor="#fff"
-          toastText={t(successAddingNewNotificationMsg)}
-          actionAfterTimeout={() => setSuccessAddingNewNotificationMsg("")}
-        />
-      )}
-
-      {successDeletingNotificationMsg && (
-        <Toast
-          bgColor={Colors.SUCCEEDED_COLOR}
-          foreColor="#fff"
-          toastText={t(successDeletingNotificationMsg)}
-          actionAfterTimeout={() => setSuccessDeletingNotificationMsg("")}
-        />
-      )}
-    </div>
+        {successDeletingNotificationMsg && (
+          <Toast
+            bgColor={Colors.SUCCEEDED_COLOR}
+            foreColor="#fff"
+            toastText={t(successDeletingNotificationMsg)}
+            actionAfterTimeout={() => setSuccessDeletingNotificationMsg("")}
+          />
+        )}
+      </div>
+    </>
   ) : (
     <Redirect to="/" />
   );

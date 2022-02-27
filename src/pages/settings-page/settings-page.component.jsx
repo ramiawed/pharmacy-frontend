@@ -93,26 +93,19 @@ function SettingsPage({ onSelectedChange }) {
 
   return user && user.type === UserTypeConstants.ADMIN ? (
     <>
-      <div className={generalStyles.container}>
-        <Header>
-          <h2>{t("nav-settings")}</h2>
-          <div
-            style={{
-              position: "absolute",
-              top: "16px",
-              left: "42px",
-            }}
-          >
-            <Icon
-              selected={false}
-              foreColor={Colors.SECONDARY_COLOR}
-              tooltip={t("refresh-tooltip")}
-              onclick={refreshHandler}
-              icon={() => <RiRefreshLine />}
-            />
-          </div>
-        </Header>
-
+      <Header>
+        <h2>{t("nav-settings")}</h2>
+        <div className={generalStyles.refresh_icon}>
+          <Icon
+            selected={false}
+            foreColor={Colors.WHITE_COLOR}
+            tooltip={t("refresh-tooltip")}
+            onclick={refreshHandler}
+            icon={() => <RiRefreshLine />}
+          />
+        </div>
+      </Header>
+      <div className={generalStyles.container_with_header}>
         <CompaniesSectionOneSettings />
         <CompaniesSectionTwoSettings />
         <WarehousesSectionOneSettings />

@@ -33,36 +33,42 @@ function AdminNotificationsHeader({ isNew, setIsNew }) {
   };
 
   return (
-    <Header>
-      <h2>{t("nav-notifications")}</h2>
-
+    <>
+      <Header>
+        <h2>{t("nav-notifications")}</h2>
+      </Header>
       <div
         className={[generalStyles.actions, generalStyles.margin_v_4].join(" ")}
       >
         {!isNew && (
-          <Icon
-            selected={false}
-            foreColor={Colors.SECONDARY_COLOR}
-            tooltip={t("new-advertisement")}
-            onclick={() => {
-              setIsNew(true);
-            }}
-            icon={() => <MdAddCircle size={20} />}
-          />
+          <>
+            <Icon
+              selected={false}
+              foreColor={Colors.GREY_COLOR}
+              tooltip={t("new-advertisement")}
+              onclick={() => {
+                setIsNew(true);
+              }}
+              icon={() => <MdAddCircle size={20} />}
+              withBackground={true}
+            />
+
+            <Icon
+              selected={false}
+              foreColor={Colors.GREY_COLOR}
+              tooltip={t("refresh-tooltip")}
+              onclick={() => {
+                refreshHandler();
+              }}
+              icon={() => <RiRefreshLine />}
+              withBackground={true}
+            />
+          </>
         )}
 
         {/* Refresh */}
-        <Icon
-          selected={false}
-          foreColor={Colors.SECONDARY_COLOR}
-          tooltip={t("refresh-tooltip")}
-          onclick={() => {
-            refreshHandler();
-          }}
-          icon={() => <RiRefreshLine />}
-        />
       </div>
-    </Header>
+    </>
   );
 }
 

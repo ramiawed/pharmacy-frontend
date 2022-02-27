@@ -1,13 +1,17 @@
 @import "../../variables.scss";
 
 .header {
-  position: relative;
+  position: sticky;
+  top: 60px;
+
   display: flex;
   align-items: center;
   justify-content: center;
-  padding-block-end: 5px;
+  // padding-block-end: 5px;
   margin-bottom: 5px;
   background-color: rgba($color: $secondary-color, $alpha: 1);
+  z-index: 10;
+
 }
 
 .header h2 {

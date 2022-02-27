@@ -81,13 +81,7 @@ function UserNotificationPage({ onSelectedChange }) {
   }, [refresh, forceRefresh]);
 
   return (
-    <div
-      className={generalStyles.container}
-      style={{
-        paddingInlineStart: "35px",
-        marginBlockEnd: "10px",
-      }}
-    >
+    <>
       <Header>
         <h2>{t("nav-notifications")}</h2>
 
@@ -111,48 +105,51 @@ function UserNotificationPage({ onSelectedChange }) {
         </div>
       </Header>
 
-      {/* <Notifications /> */}
+      <div className={generalStyles.container_with_header}>
+        {/* <Notifications /> */}
 
-      <div
-        style={{
-          paddingInline: "10px",
-        }}
-      >
-        {userNotifications.map((note, index) => (
-          <NotificationRow key={note._id} notification={note} index={index} />
-        ))}
-      </div>
-
-      {userNotifications.length === 0 && status !== "loading" && (
-        <NoContent msg={t("no-notifications")} />
-      )}
-
-      {status === "loading" && (
-        <div className={generalStyles.flex_container}>
-          <ReactLoading color={Colors.SECONDARY_COLOR} type="cylon" />
+        <div
+          style={{
+            paddingInline: "10px",
+          }}
+        >
+          {userNotifications.map((note, index) => (
+            <NotificationRow key={note._id} notification={note} index={index} />
+          ))}
         </div>
-      )}
 
-      {userNotifications.length < count && (
-        <Button
-          text={t("more")}
-          action={handleMoreResult}
-          bgColor={Colors.SECONDARY_COLOR}
-        />
-      )}
-
-      {userNotifications.length === count &&
-        status !== "loading" &&
-        count !== 0 && (
-          <p
-            className={[generalStyles.center, generalStyles.fc_secondary].join(
-              " "
-            )}
-          >
-            {t("no-more")}
-          </p>
+        {userNotifications.length === 0 && status !== "loading" && (
+          <NoContent msg={t("no-notifications")} />
         )}
-    </div>
+
+        {status === "loading" && (
+          <div className={generalStyles.flex_container}>
+            <ReactLoading color={Colors.SECONDARY_COLOR} type="cylon" />
+          </div>
+        )}
+
+        {userNotifications.length < count && (
+          <Button
+            text={t("more")}
+            action={handleMoreResult}
+            bgColor={Colors.SECONDARY_COLOR}
+          />
+        )}
+
+        {userNotifications.length === count &&
+          status !== "loading" &&
+          count !== 0 && (
+            <p
+              className={[
+                generalStyles.center,
+                generalStyles.fc_secondary,
+              ].join(" ")}
+            >
+              {t("no-more")}
+            </p>
+          )}
+      </div>
+    </>
   );
 }
 

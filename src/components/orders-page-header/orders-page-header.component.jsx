@@ -129,62 +129,38 @@ function OrderPageHeader({ count, pageState, search }) {
 
   return (
     <>
-      <div style={{ position: "relative", height: "50px" }}>
-        <SearchContainer searchAction={search}>
-          {user.type !== UserTypeConstants.PHARMACY && (
-            <SearchInput
-              label="pharmacy-name"
-              id="pharmacy-name"
-              type="text"
-              value={pageState.searchPharmacyName}
-              onchange={(e) => dispatch(setSearchPharmacyName(e.target.value))}
-              placeholder="search"
-              onEnterPress={search}
-              resetField={() => {
-                dispatch(setSearchPharmacyName(""));
-              }}
-            />
-          )}
+      <SearchContainer searchAction={search}>
+        {user.type !== UserTypeConstants.PHARMACY && (
+          <SearchInput
+            label="pharmacy-name"
+            id="pharmacy-name"
+            type="text"
+            value={pageState.searchPharmacyName}
+            onchange={(e) => dispatch(setSearchPharmacyName(e.target.value))}
+            placeholder="search"
+            onEnterPress={search}
+            resetField={() => {
+              dispatch(setSearchPharmacyName(""));
+            }}
+          />
+        )}
 
-          {user.type !== UserTypeConstants.WAREHOUSE && (
-            <SearchInput
-              label="warehouse-name"
-              id="warehouse-name"
-              type="text"
-              value={pageState.searchWarehouseName}
-              onchange={(e) => dispatch(setSearchWarehouseName(e.target.value))}
-              placeholder="search"
-              onEnterPress={search}
-              resetField={() => {
-                dispatch(setSearchWarehouseName(""));
-              }}
-            />
-          )}
+        {user.type !== UserTypeConstants.WAREHOUSE && (
+          <SearchInput
+            label="warehouse-name"
+            id="warehouse-name"
+            type="text"
+            value={pageState.searchWarehouseName}
+            onchange={(e) => dispatch(setSearchWarehouseName(e.target.value))}
+            placeholder="search"
+            onEnterPress={search}
+            resetField={() => {
+              dispatch(setSearchWarehouseName(""));
+            }}
+          />
+        )}
 
-          {user.type === UserTypeConstants.ADMIN && (
-            <div
-              style={{
-                display: "flex",
-                justifyContent: "flex-start",
-                backgroundColor: Colors.WHITE_COLOR,
-                borderRadius: "6px",
-                marginBottom: "4px",
-              }}
-            >
-              <SelectCustom
-                bgColor={Colors.SECONDARY_COLOR}
-                foreColor="#fff"
-                options={adminOrderStatusOptions}
-                onchange={handleAdminOrderStatusOption}
-                defaultOption={{
-                  value: pageState.adminOrderStatus,
-                  label: t(pageState.adminOrderStatus),
-                }}
-                caption={t("admin-order-status")}
-              />
-            </div>
-          )}
-
+        {user.type === UserTypeConstants.ADMIN && (
           <div
             style={{
               display: "flex",
@@ -197,94 +173,116 @@ function OrderPageHeader({ count, pageState, search }) {
             <SelectCustom
               bgColor={Colors.SECONDARY_COLOR}
               foreColor="#fff"
-              options={warehouseOrderStatusOptions}
-              onchange={handleWarehouseOrderStatusOption}
+              options={adminOrderStatusOptions}
+              onchange={handleAdminOrderStatusOption}
               defaultOption={{
-                value: pageState.warehouseOrderStatus,
-                label: t(pageState.warehouseOrderStatus),
+                value: pageState.adminOrderStatus,
+                label: t(pageState.adminOrderStatus),
               }}
-              caption={t("warehouse-order-status")}
+              caption={t("admin-order-status")}
             />
           </div>
+        )}
 
-          <div
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-start",
+            backgroundColor: Colors.WHITE_COLOR,
+            borderRadius: "6px",
+            marginBottom: "4px",
+          }}
+        >
+          <SelectCustom
+            bgColor={Colors.SECONDARY_COLOR}
+            foreColor="#fff"
+            options={warehouseOrderStatusOptions}
+            onchange={handleWarehouseOrderStatusOption}
+            defaultOption={{
+              value: pageState.warehouseOrderStatus,
+              label: t(pageState.warehouseOrderStatus),
+            }}
+            caption={t("warehouse-order-status")}
+          />
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-start",
+            backgroundColor: Colors.WHITE_COLOR,
+            borderRadius: "6px",
+            marginBottom: "4px",
+          }}
+        >
+          <SelectCustom
+            bgColor={Colors.SECONDARY_COLOR}
+            foreColor="#fff"
+            options={pharmacyOrderStatusOptions}
+            onchange={handlePharmacyOrderStatusOption}
+            defaultOption={{
+              value: pageState.pharmacyOrderStatus,
+              label: t(pageState.pharmacyOrderStatus),
+            }}
+            caption={t("pharmacy-order-status")}
+          />
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-start",
+            backgroundColor: Colors.WHITE_COLOR,
+            borderRadius: "6px",
+            marginBottom: "4px",
+          }}
+        >
+          <SelectCustom
+            bgColor={Colors.SECONDARY_COLOR}
+            foreColor="#fff"
+            options={dateOptions}
+            onchange={handleDateOptions}
+            defaultOption={{
+              value: pageState.dateOption,
+              label: t(
+                `${
+                  dateOptions.find((o) => o.value === pageState.dateOption)
+                    .label
+                }`
+              ),
+            }}
+            caption={t("dates-within")}
+          />
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-start",
+            backgroundColor: Colors.WHITE_COLOR,
+            borderRadius: "6px",
+            marginBottom: "4px",
+          }}
+        >
+          <label
             style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              backgroundColor: Colors.WHITE_COLOR,
-              borderRadius: "6px",
-              marginBottom: "4px",
+              fontSize: "0.7rem",
+              color: Colors.SECONDARY_COLOR,
+              minWidth: "100px",
+              paddingInlineStart: "10px",
             }}
           >
-            <SelectCustom
-              bgColor={Colors.SECONDARY_COLOR}
-              foreColor="#fff"
-              options={pharmacyOrderStatusOptions}
-              onchange={handlePharmacyOrderStatusOption}
-              defaultOption={{
-                value: pageState.pharmacyOrderStatus,
-                label: t(pageState.pharmacyOrderStatus),
-              }}
-              caption={t("pharmacy-order-status")}
-            />
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              backgroundColor: Colors.WHITE_COLOR,
-              borderRadius: "6px",
-              marginBottom: "4px",
+            {t("date-label")}
+          </label>
+          <input
+            type="date"
+            value={pageState.date}
+            onChange={(e) => {
+              dispatch(setSearchDate(e.target.value));
             }}
-          >
-            <SelectCustom
-              bgColor={Colors.SECONDARY_COLOR}
-              foreColor="#fff"
-              options={dateOptions}
-              onchange={handleDateOptions}
-              defaultOption={{
-                value: pageState.dateOption,
-                label: t(
-                  `${
-                    dateOptions.find((o) => o.value === pageState.dateOption)
-                      .label
-                  }`
-                ),
-              }}
-              caption={t("dates-within")}
-            />
-          </div>
-
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              backgroundColor: Colors.WHITE_COLOR,
-              borderRadius: "6px",
-              marginBottom: "4px",
-            }}
-          >
-            <label
-              style={{
-                fontSize: "0.7rem",
-                color: Colors.SECONDARY_COLOR,
-                minWidth: "100px",
-                paddingInlineStart: "10px",
-              }}
-            >
-              {t("date-label")}
-            </label>
-            <input
-              type="date"
-              value={pageState.date}
-              onChange={(e) => {
-                dispatch(setSearchDate(e.target.value));
-              }}
-            />
-          </div>
-        </SearchContainer>
-      </div>
+          />
+        </div>
+      </SearchContainer>
       <div
         style={{
           position: "absolute",

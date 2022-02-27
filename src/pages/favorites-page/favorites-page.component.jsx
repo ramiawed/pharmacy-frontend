@@ -63,12 +63,7 @@ function FavoritesPage({ onSelectedChange }) {
   }, []);
 
   return user ? (
-    <div
-      className={generalStyles.container}
-      style={{
-        paddingInlineStart: "35px",
-      }}
-    >
+    <>
       <Header>
         <h2>{t("favorites")}</h2>
         <div
@@ -87,48 +82,32 @@ function FavoritesPage({ onSelectedChange }) {
           />
         </div>
       </Header>
-
-      <div
-        style={{
-          paddingInline: "10px",
-        }}
-      >
-        <CardInfo headerTitle={t("nav-items")}>
-          {favoritesItems &&
-            favoritesItems.map((item) => (
-              <ItemRow
-                key={item._id}
-                item={item}
-                withoutBoxShadow={true}
-                isFavorite={true}
-              />
-            ))}
-        </CardInfo>
-        {/* favorites items */}
-
-        {/* favorite companies */}
-
-        <CardInfo headerTitle={t("companies")}>
-          {favoritesPartners &&
-            favoritesPartners
-              .filter((favorite) => favorite.type === UserTypeConstants.COMPANY)
-              .map((favorite) => (
-                <PartnerRow
-                  key={favorite._id}
-                  partner={favorite}
+      <div className={generalStyles.container_with_header}>
+        <div
+          style={{
+            paddingInline: "10px",
+          }}
+        >
+          <CardInfo headerTitle={t("nav-items")}>
+            {favoritesItems &&
+              favoritesItems.map((item) => (
+                <ItemRow
+                  key={item._id}
+                  item={item}
                   withoutBoxShadow={true}
+                  isFavorite={true}
                 />
               ))}
-        </CardInfo>
+          </CardInfo>
+          {/* favorites items */}
 
-        {(user.type === UserTypeConstants.ADMIN ||
-          user.type === UserTypeConstants.PHARMACY ||
-          user.type === UserTypeConstants.COMPANY) && (
-          <CardInfo headerTitle={t("warehouses")}>
+          {/* favorite companies */}
+
+          <CardInfo headerTitle={t("companies")}>
             {favoritesPartners &&
               favoritesPartners
                 .filter(
-                  (favorite) => favorite.type === UserTypeConstants.WAREHOUSE
+                  (favorite) => favorite.type === UserTypeConstants.COMPANY
                 )
                 .map((favorite) => (
                   <PartnerRow
@@ -138,12 +117,31 @@ function FavoritesPage({ onSelectedChange }) {
                   />
                 ))}
           </CardInfo>
-        )}
-      </div>
-      {/* favorites warehouses */}
 
-      {status === "loading" && <ActionLoader allowCancel={false} />}
-    </div>
+          {(user.type === UserTypeConstants.ADMIN ||
+            user.type === UserTypeConstants.PHARMACY ||
+            user.type === UserTypeConstants.COMPANY) && (
+            <CardInfo headerTitle={t("warehouses")}>
+              {favoritesPartners &&
+                favoritesPartners
+                  .filter(
+                    (favorite) => favorite.type === UserTypeConstants.WAREHOUSE
+                  )
+                  .map((favorite) => (
+                    <PartnerRow
+                      key={favorite._id}
+                      partner={favorite}
+                      withoutBoxShadow={true}
+                    />
+                  ))}
+            </CardInfo>
+          )}
+        </div>
+        {/* favorites warehouses */}
+
+        {status === "loading" && <ActionLoader allowCancel={false} />}
+      </div>
+    </>
   ) : (
     <Redirect to="/signin" />
   );

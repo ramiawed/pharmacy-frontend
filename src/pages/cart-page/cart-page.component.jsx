@@ -43,28 +43,31 @@ function CartPage({ onSelectedChange }) {
   // if there is no logged user or user type is not pharmacy
   // redirect to the main page
   return user && user.type === UserTypeConstants.PHARMACY ? (
-    <div className={generalStyles.container}>
+    <>
       <Header>
         <h2>{t("cart")}</h2>
       </Header>
-      {/* if cart contains an item or more */}
-      {cartWarehouse.length > 0 && (
-        <>
-          <div>
-            {cartWarehouse.map((w, index) => (
-              <CartWarehouse warehouse={w} key={index} />
-            ))}
-          </div>
-        </>
-      )}
 
-      {/* if the cart is empty */}
-      {cartWarehouse.length === 0 && (
-        <>
-          <NoContent msg={t("empty-cart")} />
-        </>
-      )}
-    </div>
+      <div className={generalStyles.container_with_header}>
+        {/* if cart contains an item or more */}
+        {cartWarehouse.length > 0 && (
+          <>
+            <div>
+              {cartWarehouse.map((w, index) => (
+                <CartWarehouse warehouse={w} key={index} />
+              ))}
+            </div>
+          </>
+        )}
+
+        {/* if the cart is empty */}
+        {cartWarehouse.length === 0 && (
+          <>
+            <NoContent msg={t("empty-cart")} />
+          </>
+        )}
+      </div>
+    </>
   ) : (
     <Redirect to="/signin" />
   );

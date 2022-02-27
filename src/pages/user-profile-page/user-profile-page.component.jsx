@@ -91,208 +91,210 @@ function UserProfilePage({ onSelectedChange }) {
   }, []);
 
   return user ? (
-    <div className={generalStyles.container}>
+    <>
       <Header>
         <h2>{t("nav-profile")}</h2>
       </Header>
-
-      <div
-        className={[
-          generalStyles.flex_center_container,
-          generalStyles.flex_column,
-          generalStyles.padding_v_6,
-          generalStyles.padding_h_12,
-        ].join(" ")}
-      >
+      <div className={generalStyles.container_with_header}>
         <div
-          className={styles.logo}
-          style={{
-            backgroundImage:
-              user.logo_url && user.logo_url !== ""
-                ? `url("${SERVER_URL}/${user.logo_url}")`
-                : `url("${SERVER_URL}/avatar01.png")`,
-          }}
-        ></div>
-
-        <div>
-          <InputFileImage type="partner" />
-        </div>
-      </div>
-
-      <CardInfo headerTitle={t("personal-info")}>
-        <InfoRow
-          editable={true}
-          field="name"
-          labelText={t("user-name")}
-          value={userObj.name}
-          onInputChange={handleInputChange}
-          action={() => updateFieldHandler("name")}
-        />
-        <InfoRow
-          editable={true}
-          field="username"
-          labelText={t("user-username")}
-          value={userObj.username}
-          onInputChange={handleInputChange}
-          action={() => updateFieldHandler("username")}
-        />
-        <InfoRow
-          editable={false}
-          labelText={t("user-type")}
-          value={t(userObj.type)}
-          onInputChange={handleInputChange}
-        />
-      </CardInfo>
-
-      <CardInfo headerTitle={t("communication-info")}>
-        <InfoRow
-          editable={true}
-          field="phone"
-          labelText={t("user-phone")}
-          value={userObj.phone}
-          onInputChange={handleInputChange}
-          action={() => updateFieldHandler("phone")}
-        />
-        <InfoRow
-          editable={true}
-          field="mobile"
-          labelText={t("user-mobile")}
-          value={userObj.mobile}
-          onInputChange={handleInputChange}
-          action={() => updateFieldHandler("mobile")}
-        />
-        <InfoRow
-          editable={true}
-          field="email"
-          labelText={t("user-email")}
-          value={userObj.email}
-          onInputChange={handleInputChange}
-          action={() => updateFieldHandler("email")}
-        />
-      </CardInfo>
-
-      <CardInfo headerTitle={t("address-info")}>
-        <EditableCity
-          editable={true}
-          field="city"
-          labelText={t("user-city")}
-          value={{
-            value: userObj.city,
-            label: t(userObj.city),
-          }}
-          onInputChange={handleCityChange}
-          action={() => updateFieldHandler("city")}
-        />
-
-        <InfoRow
-          editable={true}
-          field="addressDetails"
-          labelText={t("user-address-details")}
-          value={userObj.addressDetails}
-          onInputChange={handleInputChange}
-          action={() => updateFieldHandler("addressDetails")}
-        />
-      </CardInfo>
-
-      {user.type === UserTypeConstants.PHARMACY ||
-      user.type === UserTypeConstants.WAREHOUSE ? (
-        <CardInfo headerTitle={t("additional-info")}>
-          <InfoRow
-            editable={true}
-            field="employeeName"
-            labelText={t("user-employee-name")}
-            value={userObj.employeeName}
-            onInputChange={handleInputChange}
-            action={() => updateFieldHandler("employeeName")}
-          />
-          <InfoRow
-            editable={true}
-            field="certificateName"
-            labelText={t("user-certificate-name")}
-            value={userObj.certificateName}
-            onInputChange={handleInputChange}
-            action={() => updateFieldHandler("certificateName")}
-          />
-        </CardInfo>
-      ) : (
-        <></>
-      )}
-
-      {user.type === UserTypeConstants.GUEST ? (
-        <CardInfo headerTitle={t("additional-info")}>
-          <InfoRow
-            editable={true}
-            field="guestDetails.job"
-            labelText={t("user-job")}
-            value={userObj.guestDetails.job}
-            onInputChange={handleInputChange}
-            action={() => updateFieldHandler("guestDetails.job")}
-          />
-          <InfoRow
-            editable={true}
-            field="guestDetails.companyName"
-            labelText={t("user-company-name")}
-            value={userObj.guestDetails.companyName}
-            onInputChange={handleInputChange}
-            action={() => updateFieldHandler("guestDetails.companyName")}
-          />
-        </CardInfo>
-      ) : (
-        <></>
-      )}
-
-      <CardInfo headerTitle={t("change-password")}>
-        <ChangePassword />
-      </CardInfo>
-
-      {(user.type === UserTypeConstants.COMPANY ||
-        user.type === UserTypeConstants.WAREHOUSE) && (
-        <CardInfo
-          headerTitle={t("admin-permission")}
-          bgColor={Colors.FAILED_COLOR}
+          className={[
+            generalStyles.flex_center_container,
+            generalStyles.flex_column,
+            generalStyles.padding_v_6,
+            generalStyles.padding_h_12,
+          ].join(" ")}
         >
           <div
-            className={[
-              rowStyles.container,
-              rowStyles.without_box_shadow,
-              generalStyles.padding_h_12,
-            ].join(" ")}
-          >
-            <input
-              type="checkbox"
-              value={userObj.allowAdmin}
-              onChange={(e) =>
-                handleInputChange("allowAdmin", !userObj.allowAdmin)
-              }
-              checked={userObj.allowAdmin}
-            />
-            <label
-              className={[generalStyles.right, generalStyles.padding_h_8].join(
-                " "
-              )}
-              style={{ flex: "1" }}
-            >
-              {t("admin-permission-label")}
-            </label>
-            <Button
-              text="update-label"
-              action={() => updateFieldHandler("allowAdmin")}
-              bgColor={Colors.SUCCEEDED_COLOR}
-            />
+            className={styles.logo}
+            style={{
+              backgroundImage:
+                user.logo_url && user.logo_url !== ""
+                  ? `url("${SERVER_URL}/${user.logo_url}")`
+                  : `url("${SERVER_URL}/avatar01.png")`,
+            }}
+          ></div>
+
+          <div>
+            <InputFileImage type="partner" />
           </div>
+        </div>
+
+        <CardInfo headerTitle={t("personal-info")}>
+          <InfoRow
+            editable={true}
+            field="name"
+            labelText={t("user-name")}
+            value={userObj.name}
+            onInputChange={handleInputChange}
+            action={() => updateFieldHandler("name")}
+          />
+          <InfoRow
+            editable={true}
+            field="username"
+            labelText={t("user-username")}
+            value={userObj.username}
+            onInputChange={handleInputChange}
+            action={() => updateFieldHandler("username")}
+          />
+          <InfoRow
+            editable={false}
+            labelText={t("user-type")}
+            value={t(userObj.type)}
+            onInputChange={handleInputChange}
+          />
         </CardInfo>
-      )}
 
-      <CardInfo
-        headerTitle={t("delete-account")}
-        bgColor={Colors.FAILED_COLOR}
-        type="warning"
-      >
-        <DeleteMe />
-      </CardInfo>
+        <CardInfo headerTitle={t("communication-info")}>
+          <InfoRow
+            editable={true}
+            field="phone"
+            labelText={t("user-phone")}
+            value={userObj.phone}
+            onInputChange={handleInputChange}
+            action={() => updateFieldHandler("phone")}
+          />
+          <InfoRow
+            editable={true}
+            field="mobile"
+            labelText={t("user-mobile")}
+            value={userObj.mobile}
+            onInputChange={handleInputChange}
+            action={() => updateFieldHandler("mobile")}
+          />
+          <InfoRow
+            editable={true}
+            field="email"
+            labelText={t("user-email")}
+            value={userObj.email}
+            onInputChange={handleInputChange}
+            action={() => updateFieldHandler("email")}
+          />
+        </CardInfo>
 
-      <UserProfileNotifications />
-    </div>
+        <CardInfo headerTitle={t("address-info")}>
+          <EditableCity
+            editable={true}
+            field="city"
+            labelText={t("user-city")}
+            value={{
+              value: userObj.city,
+              label: t(userObj.city),
+            }}
+            onInputChange={handleCityChange}
+            action={() => updateFieldHandler("city")}
+          />
+
+          <InfoRow
+            editable={true}
+            field="addressDetails"
+            labelText={t("user-address-details")}
+            value={userObj.addressDetails}
+            onInputChange={handleInputChange}
+            action={() => updateFieldHandler("addressDetails")}
+          />
+        </CardInfo>
+
+        {user.type === UserTypeConstants.PHARMACY ||
+        user.type === UserTypeConstants.WAREHOUSE ? (
+          <CardInfo headerTitle={t("additional-info")}>
+            <InfoRow
+              editable={true}
+              field="employeeName"
+              labelText={t("user-employee-name")}
+              value={userObj.employeeName}
+              onInputChange={handleInputChange}
+              action={() => updateFieldHandler("employeeName")}
+            />
+            <InfoRow
+              editable={true}
+              field="certificateName"
+              labelText={t("user-certificate-name")}
+              value={userObj.certificateName}
+              onInputChange={handleInputChange}
+              action={() => updateFieldHandler("certificateName")}
+            />
+          </CardInfo>
+        ) : (
+          <></>
+        )}
+
+        {user.type === UserTypeConstants.GUEST ? (
+          <CardInfo headerTitle={t("additional-info")}>
+            <InfoRow
+              editable={true}
+              field="guestDetails.job"
+              labelText={t("user-job")}
+              value={userObj.guestDetails.job}
+              onInputChange={handleInputChange}
+              action={() => updateFieldHandler("guestDetails.job")}
+            />
+            <InfoRow
+              editable={true}
+              field="guestDetails.companyName"
+              labelText={t("user-company-name")}
+              value={userObj.guestDetails.companyName}
+              onInputChange={handleInputChange}
+              action={() => updateFieldHandler("guestDetails.companyName")}
+            />
+          </CardInfo>
+        ) : (
+          <></>
+        )}
+
+        <CardInfo headerTitle={t("change-password")}>
+          <ChangePassword />
+        </CardInfo>
+
+        {(user.type === UserTypeConstants.COMPANY ||
+          user.type === UserTypeConstants.WAREHOUSE) && (
+          <CardInfo
+            headerTitle={t("admin-permission")}
+            bgColor={Colors.FAILED_COLOR}
+          >
+            <div
+              className={[
+                rowStyles.container,
+                rowStyles.without_box_shadow,
+                generalStyles.padding_h_12,
+              ].join(" ")}
+            >
+              <input
+                type="checkbox"
+                value={userObj.allowAdmin}
+                onChange={(e) =>
+                  handleInputChange("allowAdmin", !userObj.allowAdmin)
+                }
+                checked={userObj.allowAdmin}
+              />
+              <label
+                className={[
+                  generalStyles.right,
+                  generalStyles.padding_h_8,
+                ].join(" ")}
+                style={{ flex: "1" }}
+              >
+                {t("admin-permission-label")}
+              </label>
+              <Button
+                text="update-label"
+                action={() => updateFieldHandler("allowAdmin")}
+                bgColor={Colors.SUCCEEDED_COLOR}
+              />
+            </div>
+          </CardInfo>
+        )}
+
+        <CardInfo
+          headerTitle={t("delete-account")}
+          bgColor={Colors.FAILED_COLOR}
+          type="warning"
+        >
+          <DeleteMe />
+        </CardInfo>
+
+        <UserProfileNotifications />
+      </div>
+    </>
   ) : (
     <Redirect to="/" />
   );

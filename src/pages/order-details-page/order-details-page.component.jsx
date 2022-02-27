@@ -126,85 +126,56 @@ function OrderDetailsPage({ location, onSelectedChange }) {
       {loading ? (
         <Loader allowCancel={false} />
       ) : (
-        <div className={generalStyles.container}>
+        <>
           <Header>
             <h2>{t("order-details")}</h2>
             <div
               style={{
                 position: "absolute",
-                top: "16px",
+                top: "10px",
                 left: "42px",
               }}
             >
               <Icon
-                icon={() => <RiRefreshLine />}
+                icon={() => <RiRefreshLine color={Colors.WHITE_COLOR} />}
                 foreColor={Colors.SECONDARY_COLOR}
                 tooltip={t("refresh-tooltip")}
                 onclick={getOrderDetails}
               />
             </div>
           </Header>
-          {orderDetails ? (
-            <>
-              <div className={styles.basic_details_container}>
-                <div className={styles.row}>
-                  <label className={styles.label}>{t("pharmacy-name")}: </label>
-                  <label className={styles.name}>
-                    {orderDetails.pharmacy.name}
-                  </label>
+          <div className={generalStyles.container_with_header}>
+            {orderDetails ? (
+              <>
+                <div className={styles.basic_details_container}>
+                  <div className={styles.row}>
+                    <label className={styles.label}>
+                      {t("pharmacy-name")}:{" "}
+                    </label>
+                    <label className={styles.name}>
+                      {orderDetails.pharmacy.name}
+                    </label>
+                  </div>
+
+                  <div className={styles.row}>
+                    <label className={styles.label}>
+                      {t("warehouse-name")}:{" "}
+                    </label>
+                    <label className={styles.name}>
+                      {orderDetails.warehouse.name}
+                    </label>
+                  </div>
+
+                  <div className={styles.row}>
+                    <label className={styles.label}>{t("date-label")}: </label>
+                    <label className={styles.name}>
+                      {new Date(orderDetails.orderDate).toLocaleDateString()}
+                    </label>
+                  </div>
                 </div>
 
-                <div className={styles.row}>
-                  <label className={styles.label}>
-                    {t("warehouse-name")}:{" "}
-                  </label>
-                  <label className={styles.name}>
-                    {orderDetails.warehouse.name}
-                  </label>
-                </div>
-
-                <div className={styles.row}>
-                  <label className={styles.label}>{t("date-label")}: </label>
-                  <label className={styles.name}>
-                    {new Date(orderDetails.orderDate).toLocaleDateString()}
-                  </label>
-                </div>
-              </div>
-
-              <div className={styles.actions_div}>
-                {user.type === UserTypeConstants.PHARMACY && (
-                  <Icon
-                    selected={false}
-                    foreColor={Colors.SUCCEEDED_COLOR}
-                    tooltip={t("mark-as-received")}
-                    icon={() => <BsCheckAll />}
-                    onclick={() => markOrdersAs("received")}
-                    withBackground={true}
-                  />
-                )}
-
-                {user.type === UserTypeConstants.PHARMACY && (
-                  <Icon
-                    selected={false}
-                    foreColor={Colors.SUCCEEDED_COLOR}
-                    tooltip={t("mark-as-sent")}
-                    icon={() => <RiSendPlaneFill />}
-                    onclick={() => markOrdersAs("sent")}
-                    withBackground={true}
-                  />
-                )}
-
-                {user.type === UserTypeConstants.WAREHOUSE && (
-                  <>
-                    <Icon
-                      selected={false}
-                      foreColor={Colors.SUCCEEDED_COLOR}
-                      tooltip={t("mark-as-sent")}
-                      icon={() => <RiSendPlaneFill />}
-                      onclick={() => markOrdersAs("sent")}
-                      withBackground={true}
-                    />
-
+                <div className={styles.actions_div}>
+                  {user.type === UserTypeConstants.PHARMACY && (
                     <Icon
                       selected={false}
                       foreColor={Colors.SUCCEEDED_COLOR}
@@ -213,43 +184,76 @@ function OrderDetailsPage({ location, onSelectedChange }) {
                       onclick={() => markOrdersAs("received")}
                       withBackground={true}
                     />
+                  )}
 
+                  {user.type === UserTypeConstants.PHARMACY && (
                     <Icon
                       selected={false}
-                      foreColor={Colors.FAILED_COLOR}
-                      tooltip={t("mark-as-will-dont-server")}
-                      icon={() => <MdRemoveDone />}
-                      onclick={() => markOrdersAs("dontServe")}
+                      foreColor={Colors.SUCCEEDED_COLOR}
+                      tooltip={t("mark-as-sent")}
+                      icon={() => <RiSendPlaneFill />}
+                      onclick={() => markOrdersAs("sent")}
                       withBackground={true}
                     />
-                  </>
-                )}
+                  )}
 
-                <ExportCSV
-                  csvData={orderDetails.items}
-                  fileName={
-                    orderDetails.pharmacy.name +
-                    "_" +
-                    orderDetails.warehouse.name +
-                    "_" +
-                    new Date(orderDetails.orderDate).toLocaleDateString()
-                  }
-                />
-              </div>
+                  {user.type === UserTypeConstants.WAREHOUSE && (
+                    <>
+                      <Icon
+                        selected={false}
+                        foreColor={Colors.SUCCEEDED_COLOR}
+                        tooltip={t("mark-as-sent")}
+                        icon={() => <RiSendPlaneFill />}
+                        onclick={() => markOrdersAs("sent")}
+                        withBackground={true}
+                      />
 
-              <CartWarehouseTableHeader withoutMaxQty={true} />
+                      <Icon
+                        selected={false}
+                        foreColor={Colors.SUCCEEDED_COLOR}
+                        tooltip={t("mark-as-received")}
+                        icon={() => <BsCheckAll />}
+                        onclick={() => markOrdersAs("received")}
+                        withBackground={true}
+                      />
 
-              {orderDetails.items.map((item, index) => (
-                <CartRow key={index} cartItem={item} inOrderDetails={true} />
-              ))}
-              <p className={styles.total_price}>
-                {t("total-invoice-price")} {computeTotalPrice()}
-              </p>
-            </>
-          ) : (
-            <NoContent msg={t(emptyMsg)} />
-          )}
-        </div>
+                      <Icon
+                        selected={false}
+                        foreColor={Colors.FAILED_COLOR}
+                        tooltip={t("mark-as-will-dont-server")}
+                        icon={() => <MdRemoveDone />}
+                        onclick={() => markOrdersAs("dontServe")}
+                        withBackground={true}
+                      />
+                    </>
+                  )}
+
+                  <ExportCSV
+                    csvData={orderDetails.items}
+                    fileName={
+                      orderDetails.pharmacy.name +
+                      "_" +
+                      orderDetails.warehouse.name +
+                      "_" +
+                      new Date(orderDetails.orderDate).toLocaleDateString()
+                    }
+                  />
+                </div>
+
+                <CartWarehouseTableHeader withoutMaxQty={true} />
+
+                {orderDetails.items.map((item, index) => (
+                  <CartRow key={index} cartItem={item} inOrderDetails={true} />
+                ))}
+                <p className={styles.total_price}>
+                  {t("total-invoice-price")} {computeTotalPrice()}
+                </p>
+              </>
+            ) : (
+              <NoContent msg={t(emptyMsg)} />
+            )}
+          </div>
+        </>
       )}
       {status === "loading" && <Loader allowCancel={false} />}
     </>

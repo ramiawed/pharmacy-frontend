@@ -54,7 +54,7 @@ function CompaniesHeader({ search, refreshHandler, count }) {
 
   return (
     <>
-      <div style={{ position: "relative", height: "50px" }}>
+      <>
         <SearchContainer searchAction={search}>
           <SearchInput
             label="user-name"
@@ -87,7 +87,7 @@ function CompaniesHeader({ search, refreshHandler, count }) {
             />
           </div>
         </SearchContainer>
-      </div>
+      </>
       <div
         className={[generalStyles.actions, generalStyles.margin_v_4].join(" ")}
       >

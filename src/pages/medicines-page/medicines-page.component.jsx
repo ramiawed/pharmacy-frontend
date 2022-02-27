@@ -108,15 +108,7 @@ function MedicinesPage({ onSelectedChange }) {
   }, []);
 
   return user ? (
-    <div
-      className={generalStyles.container}
-      style={{
-        marginBlockStart: "55px",
-        marginBlockEnd: "10px",
-        paddingInlineStart: "45px",
-        paddingInlineEnd: "10px",
-      }}
-    >
+    <div className={generalStyles.container}>
       <SearchContainer searchAction={handleEnterPress}>
         <SearchInput
           label="user-name"

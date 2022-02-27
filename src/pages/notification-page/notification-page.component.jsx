@@ -58,7 +58,7 @@ function NotificationPage({ onSelectedChange }) {
             <div
               style={{
                 position: "absolute",
-                top: "16px",
+                top: "10px",
                 left: "46px",
               }}
             >
@@ -74,32 +74,23 @@ function NotificationPage({ onSelectedChange }) {
 
           <div className={styles.content_div}>
             <div className={styles.row}>
-              <label>{t("header")}</label>
+              {/* <label>{t("header")}</label> */}
               <p className={styles.header} style={{ flex: 1 }}>
                 {notification.header}
               </p>
-              <p className={styles.header}>{notification.date.split("T")[0]}</p>
+              <p className={styles.date}>{notification.date.split("T")[0]}</p>
             </div>
 
-            <div className={styles.row}>
-              <label>{t("body")}</label>
-              <p className={styles.body}>{notification.body}</p>
-            </div>
-
-            {notification.logo_url !== "" && (
-              <div
-                className={[
-                  styles.img,
-                  generalStyles.flex_center_container,
-                ].join(" ")}
-              >
+            <div>
+              {notification.logo_url !== "" && (
                 <img
                   className={styles.image}
                   src={`${SERVER_URL}/${notification.logo_url}`}
                   alt="thumb"
                 />
-              </div>
-            )}
+              )}
+              <p className={styles.body}>{notification.body}</p>
+            </div>
           </div>
         </>
       ) : (

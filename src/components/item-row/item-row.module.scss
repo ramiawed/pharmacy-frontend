@@ -1,80 +1,5 @@
 @import '../../variables.scss';
 
-
-.name {
-  flex: 3;
-  font-size: 0.7rem;
-}
-
-.align_center {
-  text-align: center;
-}
-
-.align_start {
-  text-align: start;
-}
-
-.details {
-  flex: 1;
-  font-size: 0.6rem;
-}
-
-.icon {
-  width: 32px;
-  font-size: 1rem;
-}
-
-.fixed {
-  width: 25px;
-  font-size: 0.6rem;
-}
-
-.price {
-  width: 30px;
-  font-size: 0.6rem;
-}
-
-
-@media only screen and (min-width: $small) {
-  .name {
-    font-size: 0.8rem;
-  }
-
-  .details {
-    font-size: 0.7rem;
-  }
-
-  .icon {
-    width: 40px;
-    font-size: 1.2rem;
-  }
-}
-
-@media only screen and (min-width: $medium) {
-  .name {
-    font-size: 1rem;
-  }
-
-  .details {
-    font-size: 0.8rem;
-  }
-
-  .fixed {
-    width: 40px;
-    font-size: 0.8rem;
-  }
-
-  .price {
-    width: 65px;
-    font-size: 0.8rem;
-  }
-
-}
-
-.small_font {
-  font-size: 0.7rem !important;
-}
-
 .container {
   display: flex;
   align-items: center;
@@ -83,11 +8,33 @@
 
   border-bottom: 1px solid rgba($color: $secondary-color, $alpha: 0.2);
 
+  .details {
+    flex: 1;
+
+    .name {
+      color: $main-color;
+      font-weight: bold;
+    }
+
+    label {
+      &::after {
+        content: ' - ';
+      }
+    }
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
   label {
     color: $grey-color;
+    font-size: 0.8rem;
 
     &::after {
-      content: '/';
+      content: '';
       margin-inline: 4px;
       color: $main-color;
     }

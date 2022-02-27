@@ -242,115 +242,17 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
           });
         }}
       >
-        <label>{item.name}</label>
-        <label>{item.company.name}</label>
-        <label>{item.caliber}</label>
-        <label>{item.packing}</label>
-        <label>{item.formula}</label>
-        {user.type !== UserTypeConstants.GUEST && !isFavorite && (
-          <label className={[styles.price, styles.center].join(" ")}>
-            {item.price}
-          </label>
-        )}
-        {!isFavorite && (
-          <label className={[styles.price, styles.center].join(" ")}>
-            {item.customer_price}
-          </label>
-        )}
-      </div>
-      <div
-        style={{
-          backgroundColor: checkOffer(item, user)
-            ? Colors.OFFER_COLOR
-            : Colors.WHITE_COLOR,
-          cursor: "pointer",
-        }}
-        className={[
-          isSearch || isFavorite
-            ? rowStyles.search_container
-            : rowStyles.container,
-        ].join(" ")}
-        onClick={() => {
-          dispatchStatisticsHandler();
-
-          history.push("/item", {
-            from: user.type,
-            type: "info",
-            allowAction: false,
-            itemId: item._id,
-            companyId: item.company._id,
-            warehouseId:
-              user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
-          });
-        }}
-      >
-        <label
-          className={[
-            styles.name,
-            !isFavorite ? styles.align_center : "",
-            isFavorite ? styles.align_start : "",
-            isSmallFavorite ? styles.small_font : "",
-          ].join(" ")}
-        >
-          {item.name}
-        </label>
-
-        <label
-          className={[
-            styles.details,
-            styles.center,
-            isSmallFavorite ? styles.small_font : "",
-          ].join(" ")}
-        >
-          {item.company.name}
-        </label>
-
-        <label
-          className={[
-            styles.fixed,
-            styles.center,
-            isSmallFavorite ? styles.small_font : "",
-          ].join(" ")}
-        >
-          {item.caliber}
-        </label>
-
-        <label
-          className={[
-            styles.fixed,
-            styles.center,
-            isSmallFavorite ? styles.small_font : "",
-          ].join(" ")}
-        >
-          {item.packing}
-        </label>
-
-        <label
-          className={[
-            styles.details,
-            styles.center,
-            isSmallFavorite ? styles.small_font : "",
-          ].join(" ")}
-        >
-          {item.formula}
-        </label>
-
-        {user.type !== UserTypeConstants.GUEST && !isFavorite && (
-          <label className={[styles.price, styles.center].join(" ")}>
-            {item.price}
-          </label>
-        )}
-
-        {!isFavorite && (
-          <label className={[styles.price, styles.center].join(" ")}>
-            {item.customer_price}
-          </label>
-        )}
-
-        <label className={[styles.center, styles.icon].join(" ")}>
+        <div className={styles.details}>
+          <label className={styles.name}>{item.name}</label>
+          <label>{item.company.name}</label>
+          <label>{item.caliber}</label>
+        </div>
+        <div className={styles.actions}>
           {changeAddToWarehouseLoading ? (
             <Icon
-              icon={() => <VscLoading className={generalStyles.loading} />}
+              icon={() => (
+                <VscLoading className={generalStyles.loading} size={20} />
+              )}
               onclick={() => {}}
               foreColor={Colors.SECONDARY_COLOR}
             />
@@ -358,14 +260,14 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
             user.type === UserTypeConstants.WAREHOUSE &&
             (item.warehouses.map((w) => w.warehouse._id).includes(user._id) ? (
               <Icon
-                icon={() => <RiDeleteBin5Fill />}
+                icon={() => <RiDeleteBin5Fill size={20} />}
                 onclick={removeItemFromWarehouseHandler}
                 tooltip={t("remove-from-warehouse-tooltip")}
                 foreColor={Colors.FAILED_COLOR}
               />
             ) : (
               <Icon
-                icon={() => <MdAddCircle />}
+                icon={() => <MdAddCircle size={20} />}
                 onclick={addItemToWarehouseHandler}
                 tooltip={t("add-to-warehouse-tooltip")}
                 foreColor={Colors.SUCCEEDED_COLOR}
@@ -374,24 +276,22 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
           )}
 
           {user.type === UserTypeConstants.PHARMACY &&
-          item.existing_place[user.city] > 0 ? (
-            <Icon
-              icon={() => <GiShoppingCart />}
-              onclick={(e) => {
-                setShowModal(true);
-                e.stopPropagation();
-              }}
-              foreColor={Colors.SUCCEEDED_COLOR}
-            />
-          ) : (
-            <div style={{ width: "24px" }}></div>
-          )}
-        </label>
+            item.existing_place[user.city] > 0 && (
+              <Icon
+                icon={() => <GiShoppingCart size={20} />}
+                onclick={(e) => {
+                  setShowModal(true);
+                  e.stopPropagation();
+                }}
+                foreColor={Colors.SUCCEEDED_COLOR}
+              />
+            )}
 
-        <label className={[styles.icon, styles.align_center].join(" ")}>
           {changeFavoriteLoading ? (
             <Icon
-              icon={() => <VscLoading className={generalStyles.loading} />}
+              icon={() => (
+                <VscLoading className={generalStyles.loading} size={20} />
+              )}
               onclick={() => {}}
               foreColor={Colors.YELLOW_COLOR}
             />
@@ -399,20 +299,20 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
               .map((favorite) => favorite._id)
               .includes(item._id) ? (
             <Icon
-              icon={() => <AiFillStar />}
+              icon={() => <AiFillStar size={20} />}
               onclick={removeItemFromFavoritesItemsHandler}
               tooltip={t("remove-from-favorite-tooltip")}
               foreColor={Colors.YELLOW_COLOR}
             />
           ) : (
             <Icon
-              icon={() => <AiOutlineStar />}
+              icon={() => <AiOutlineStar size={20} />}
               onclick={addItemToFavoriteItemsHandler}
               tooltip={t("add-to-favorite-tooltip")}
               foreColor={Colors.YELLOW_COLOR}
             />
           )}
-        </label>
+        </div>
       </div>
 
       {showModal && (

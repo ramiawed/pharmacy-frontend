@@ -6,6 +6,7 @@ import Loader from "../../components/loader/loader.component";
 import AdvertisementHomePage from "../../components/advertisement-home-page/advertisement-home-page.component";
 import SectionHomePageFlex from "../../components/section-home-page-flex/section-home-page-flex.component";
 import HomePageDescribeSection from "../../components/home-page-describe-section/home-page-describe-section.component";
+import background from "../../14.jpg";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -140,17 +141,11 @@ function HomePage({ onSelectedChange }) {
       <div
         className={styles.main_container}
         style={{
-          backgroundImage: `url('${SERVER_URL}/advertisements/${backgroundImages}')`,
+          backgroundImage: backgroundImages
+            ? `url('${SERVER_URL}/advertisements/${backgroundImages}')`
+            : `url(${background})`,
         }}
-      >
-        {/* {settings.showAdvertisements && (
-          <AdvertisementHomePage data={advertisements} />
-        )} */}
-        {/* <HomePageDescribeSection
-          header="who-we-are"
-          describe="who-we-are-describe"
-        /> */}
-      </div>
+      ></div>
 
       <div className={styles.advertisement_container}>
         {settings.companiesSectionOne.show &&

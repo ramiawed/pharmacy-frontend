@@ -4,38 +4,28 @@
   position: fixed;
   top: 60px;
   bottom: 0;
-  // min-height: 100vh;
   transition: all 0.5s;
-
   display: flex;
   flex-direction: column;
   align-items: center;
-
   z-index: 100;
-
+  overflow: hidden;
 }
 
 .profile_img {
   width: 100%;
   height: 170px;
-
-
   margin-block-end: 10px;
   background-color: $main-color;
-
   overflow: hidden;
-
   box-shadow: 0px 3px 15px rgba($color: $main-color, $alpha: 0.7);
 }
 
 .profile_img>img {
   width: 100px;
   height: 100px;
-
   padding: 10px;
-
   border-radius: 15px;
-
 }
 
 .profile_img h3 {
@@ -52,14 +42,12 @@
 
 .collapsed {
   width: 35px;
-
   background: $main-color;
   border-left: 1px solid $main-color;
 }
 
 .showed {
   width: 100%;
-
   background: $main-color;
   box-shadow: -6px 0 6px rgba(0, 0, 0, 0.3);
 }
@@ -74,165 +62,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-
   width: 90%;
   height: calc(100vh - 170px);
-
   text-align: center;
-
-  // overflow: scroll;
-}
-
-.side_nav_container button {
-  width: 60px;
-  height: 60px;
-
-  position: absolute;
-  top: 50%;
-
-  border: none;
-  outline: none;
-
-  border-radius: 50%;
-
-  color: $white-color;
-  background-color: $main-color;
-
-  transition: all 0.5s;
-}
-
-.side_nav_container button:hover {
-  transform: scale(1.1);
-}
-
-.side_nav_container button:lang(ar) {
-  left: -30px;
-}
-
-.side_nav_container button:lang(en) {
-  right: -30px;
-}
-
-.icon {
-  position: absolute;
-  top: 24px;
-}
-
-.icon:lang(ar) {
-  left: 20px;
-}
-
-.icon:lang(en) {
-  transform: rotate(180deg);
-  right: 20px;
-}
-
-.icon_showed:lang(ar) {
-  animation-name: icon-showed-move;
-  animation-duration: 1.5s;
-  animation-iteration-count: infinite;
-  animation-direction: normal;
-
-  opacity: 0;
-}
-
-@keyframes icon-showed-move {
-  0% {
-    left: 5px;
-    opacity: 0;
-  }
-
-  50% {
-    left: 20px;
-    opacity: 1;
-  }
-
-  100% {
-    left: 20px;
-  }
-}
-
-.icon_showed:lang(en) {
-  animation-name: icon-showed-move-en;
-  animation-duration: 1.5s;
-  animation-iteration-count: infinite;
-  animation-direction: normal;
-
-  opacity: 0;
-}
-
-@keyframes icon-showed-move-en {
-  0% {
-    right: 5px;
-    opacity: 0;
-  }
-
-  50% {
-    right: 20px;
-    opacity: 1;
-  }
-
-  100% {
-    right: 20px;
-  }
-}
-
-.icon_collapsed:lang(ar) {
-  animation-name: icon-collapsed-move;
-  animation-duration: 1.5s;
-  animation-iteration-count: infinite;
-  animation-direction: normal;
-
-  opacity: 0;
-}
-
-@keyframes icon-collapsed-move {
-  0% {
-    left: 20px;
-    opacity: 0;
-  }
-
-  50% {
-    left: 5px;
-    opacity: 1;
-  }
-
-  100% {
-    left: 5px;
-  }
-}
-
-.icon_collapsed:lang(en) {
-  animation-name: icon-collapsed-move-en;
-  animation-duration: 1.5s;
-  animation-iteration-count: infinite;
-  animation-direction: normal;
-
-  opacity: 0;
-}
-
-@keyframes icon-collapsed-move-en {
-  0% {
-    right: 20px;
-    opacity: 0;
-  }
-
-  50% {
-    right: 5px;
-    opacity: 1;
-  }
-
-  100% {
-    right: 5px;
-  }
 }
 
 .close_icon {
   position: absolute;
   top: 0;
-
   color: $white-color;
-
   display: block;
 }
 
@@ -248,14 +86,7 @@
   color: $third-color;
 }
 
-@media only screen and (min-width: $small) {
-  .close_icon {
-    display: none;
-  }
-}
-
 .nav {
-  // border: 1px solid black;
   display: flex;
   align-items: flex-start;
   justify-content: flex-start;
@@ -270,17 +101,14 @@
   position: relative;
 }
 
-
 .tooltip {
   display: none;
   position: absolute;
   right: 25px;
   top: 5px;
-
   background: black;
   padding-inline: 4px;
   border-radius: 4px;
-
   font-size: 0.7rem;
 }
 

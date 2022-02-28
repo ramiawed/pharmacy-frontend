@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect, useLocation, useHistory } from "react-router-dom";
 import axios from "axios";
+import Logo from "../../logo01.png";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -302,7 +303,7 @@ function ItemPage() {
                   src={
                     item.logo_url && item.logo_url !== ""
                       ? `${SERVER_URL}/items/${item.logo_url}`
-                      : `${SERVER_URL}/medicine.jpeg`
+                      : Logo
                   }
                   alt="thumb"
                 />

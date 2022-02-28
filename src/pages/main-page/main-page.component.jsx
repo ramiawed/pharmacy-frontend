@@ -179,13 +179,13 @@ function MainPage() {
           <SocketObserver />
           <div
             className={styles.container}
-            onClick={() => {
-              changeNavigationSettingHandler({
-                collapsedSideNavOption: true,
-                showTopNav: false,
-                showSearchBar: false,
-              });
-            }}
+            // onClick={() => {
+            //   changeNavigationSettingHandler({
+            //     collapsedSideNavOption: true,
+            //     showTopNav: false,
+            //     showSearchBar: false,
+            //   });
+            // }}
           >
             <div className={styles.hamburger_menu}>
               <p className={styles.selectedOption}>

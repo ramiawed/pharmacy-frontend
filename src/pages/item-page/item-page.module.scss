@@ -1,7 +1,6 @@
 @import "../../variables.scss";
 
 .content {
-  // width: 75%;
   margin: 0 auto;
   display: flex;
   flex-direction: column;
@@ -9,18 +8,12 @@
   justify-content: center;
 }
 
-.description {
-  padding: 0 12px;
-  color: $secondary-color;
-}
 
 .textarea {
   min-width: 100%;
   min-height: 60px;
-
   outline: none;
   border: none;
-
   padding: 2px 4px;
   color: $secondary-color;
 }
@@ -29,35 +22,8 @@
   color: gray;
 }
 
-.select_div {
-  padding: 6px 0;
-
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-
-  margin-inline-start: 15px;
-}
-
 .error_icon {
   color: $red-color;
-}
-
-.action_div {
-  display: flex;
-  justify-content: center;
-}
-
-.add_button {
-  padding: 8px 12px;
-  margin-block-start: 8px auto;
-
-  color: $white-color;
-
-  border: none;
-  outline: none;
-
-  border-radius: 6px;
 }
 
 .horizontal_div {
@@ -84,13 +50,8 @@
 
 .logo {
   margin: 10px 0;
-  padding: 10px;
-
-
-  background-color: $secondary-color;
   box-shadow: 3px 3px 3px rgba($color: #000, $alpha: 0.5);
   border-radius: 6px;
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -108,7 +69,6 @@ textarea:disabled {
 
 @media only screen and (min-width: $small) {
   .content {
-    // width: 75%;
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;

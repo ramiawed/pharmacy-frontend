@@ -37,7 +37,13 @@ function MultiValue({
               generalStyles.margin_h_auto,
             ].join(" ")}
           >
-            <MdAddCircle size={36} onClick={addHandler} />
+            <MdAddCircle
+              size={36}
+              onClick={(e) => {
+                addHandler();
+                e.stopPropagation();
+              }}
+            />
             <div className={generalStyles.tooltip}>
               {t("add-offer-tooltip")}
             </div>

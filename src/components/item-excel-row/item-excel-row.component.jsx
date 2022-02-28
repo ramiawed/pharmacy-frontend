@@ -87,8 +87,6 @@ function ItemExcelRow({
         <input
           className={rowStyles.input}
           id="price"
-          // min="0"
-          // type="number"
           onKeyPress={onKeyPressForNumberInput}
           value={item.price}
           onChange={(e) => onchange(e, index)}
@@ -99,7 +97,6 @@ function ItemExcelRow({
         <input
           className={rowStyles.input}
           id="customer_price"
-          // type="number"
           onKeyPress={onKeyPressForNumberInput}
           value={item.customer_price}
           onChange={(e) => onchange(e, index)}

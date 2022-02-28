@@ -70,6 +70,44 @@ export const authSign = createAsyncThunk(
   }
 );
 
+export const authSignWithToken = createAsyncThunk(
+  "auth/authSignWithToken",
+  async ({ token }, { rejectWithValue }) => {
+    try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.post(
+        `${BASEURL}/users/signinwithtoken`,
+        {
+          token,
+        },
+        {
+          cancelToken: source.token,
+        }
+      );
+
+      resetCancelAndSource();
+
+      return response.data;
+    } catch (err) {
+      resetCancelAndSource();
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const updateUserInfo = createAsyncThunk(
   "auth/updateUser",
   async ({ obj, token }, { rejectWithValue }) => {
@@ -292,6 +330,34 @@ export const authSlice = createSlice({
       state.error = "";
     },
     [authSign.rejected]: (state, { error, meta, payload }) => {
+      state.status = "failed";
+      state.token = "";
+      state.user = null;
+
+      try {
+        if (payload === "timeout") {
+          state.error = "general-error";
+        } else if (payload === "cancel") {
+          state.error = "general-error";
+        } else if (payload === "network failed") {
+          state.error = "general-error";
+        } else state.error = payload.message;
+      } catch (err) {
+        state.error = "general-error";
+      }
+    },
+
+    [authSignWithToken.pending]: (state, action) => {
+      state.status = "loading";
+      state.error = "";
+    },
+    [authSignWithToken.fulfilled]: (state, action) => {
+      state.status = "succeeded";
+      state.token = action.payload.token;
+      state.user = action.payload.data.user;
+      state.error = "";
+    },
+    [authSignWithToken.rejected]: (state, { error, meta, payload }) => {
       state.status = "failed";
       state.token = "";
       state.user = null;

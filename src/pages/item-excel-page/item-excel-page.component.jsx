@@ -362,16 +362,16 @@ function ItemExcelPage() {
 
   return user && companyId !== 0 ? (
     <>
-      <div className={generalStyles.container}>
-        <Header>
-          <h2>
-            {items.length === 0
-              ? t("add-or-update-items")
-              : withUpdate
-              ? t("update-items")
-              : t("add-items")}{" "}
-          </h2>
-        </Header>
+      <Header>
+        <h2>
+          {items.length === 0
+            ? t("add-or-update-items")
+            : withUpdate
+            ? t("update-items")
+            : t("add-items")}{" "}
+        </h2>
+      </Header>
+      <div className={generalStyles.container_with_header}>
         <div className={styles.actions}>
           {items.length > 0 ? (
             <>

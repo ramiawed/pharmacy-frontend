@@ -94,6 +94,7 @@ function SideNav({
     dispatch(notificationsSignOut());
     dispatch(settingsSignOut());
     dispatch(usersNotificationsSignOut());
+    localStorage.removeItem("token");
   };
 
   return (

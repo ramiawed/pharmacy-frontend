@@ -122,6 +122,7 @@ function SocketObserver() {
     dispatch(notificationsSignOut());
     dispatch(settingsSignOut());
     dispatch(usersNotificationsSignOut());
+    localStorage.removeItem("token");
   };
 
   useEffect(() => {

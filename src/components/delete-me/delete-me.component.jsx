@@ -103,6 +103,7 @@ function DeleteMe() {
         dispatch(notificationsSignOut());
         dispatch(settingsSignOut());
         dispatch(usersNotificationsSignOut());
+        localStorage.removeItem("token");
       })
       .catch(() => {
         // on failed, show message below the password input

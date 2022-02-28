@@ -29,7 +29,6 @@ function AdvertisementsPage({ onSelectedChange }) {
   const dispatch = useDispatch();
 
   // selectors
-  const token = useSelector(selectToken);
   const { status, error, advertisements } = useSelector(selectAdvertisements);
 
   // own states
@@ -41,9 +40,7 @@ function AdvertisementsPage({ onSelectedChange }) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (advertisements?.length === 0) {
-      dispatch(getAllAdvertisements({ token }));
-    }
+
     onSelectedChange();
   }, []);
 

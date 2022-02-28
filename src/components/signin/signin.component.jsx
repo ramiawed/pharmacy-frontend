@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import Logo from "../../smart-pharma-logo-02.png";
+import Logo from "../../logo01.png";
 
 // react-icons
 import { HiUser } from "react-icons/hi";
@@ -36,7 +36,6 @@ import { getAllSettings } from "../../redux/settings/settingsSlice";
 
 // styles
 import styles from "./signin.module.scss";
-import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
@@ -49,7 +48,7 @@ const containerVariant = {
   },
   visible: {
     opacity: 1,
-    left: "10px",
+    left: "0",
     transition: {
       type: "spring",
     },
@@ -75,7 +74,7 @@ function SignIn() {
     password: "",
   });
   const [showForgetPasswordModal, setShowForgetPasswordModal] = useState(false);
-
+  const [rememberMeOption, setRememberMeOption] = useState(false);
   // error object contains error message and fields that has the error
   const [preSignError, setPreSignError] = useState({
     username: "",
@@ -173,6 +172,9 @@ function SignIn() {
     dispatch(authSign(userInfo))
       .then(unwrapResult)
       .then((result) => {
+        if (rememberMeOption) {
+          localStorage.setItem("token", result.token);
+        }
         dispatch(statisticsSignIn({ token: result.token }));
         dispatch(
           addStatistics({
@@ -202,82 +204,88 @@ function SignIn() {
   ) : (
     <>
       <motion.div
-        className={[styles.container, generalStyles.flex_center_container].join(
-          " "
-        )}
+        className={[styles.container].join(" ")}
         variants={containerVariant}
         initial="hidden"
         animate="visible"
       >
-        <div className={styles.info}>
-          <div className={styles.signup}>
-            <p>{t("sign-up-sentence")}</p>
-            <p className={styles.button} onClick={signupHandler}>
-              {t("sign-up")}
-            </p>
-          </div>
-
-          {/* <img className={styles.small_logo} src={Logo} alt="thumb" /> */}
-
-          <h3>{t("sign-in")}</h3>
-
-          {/* username */}
-          <InputSignIn
-            icon={<HiUser className={styles.icons} />}
-            type="text"
-            placeholder="user-username"
-            id="username"
-            value={userInfo.username}
-            onchange={inputChangeHandler}
-            error={preSignError.username?.length > 0 || error}
-            onEnterPress={pressEnterHandler}
-            resetField={resetFieldHandler}
-          />
-
-          {/* password */}
-          <InputSignIn
-            icon={<RiLockPasswordLine className={styles.icon} />}
-            type="password"
-            placeholder="user-password"
-            id="password"
-            value={userInfo.password}
-            onchange={inputChangeHandler}
-            error={preSignError.password?.length > 0 || error}
-            onEnterPress={pressEnterHandler}
-            resetField={resetFieldHandler}
-          />
-
-          <p
-            className={styles.forget_password}
-            onClick={() => {
-              setShowForgetPasswordModal(true);
-            }}
-          >
-            {t("forget-password")}
-          </p>
-
-          {/* Error sections */}
-          <>
-            {Object.keys(preSignError).map((key) => {
-              if (preSignError[key].length > 0) {
-                return (
-                  <p className={styles.error} key={key}>
-                    {t(`${preSignError[key]}`)}
-                  </p>
-                );
-              } else {
-                return null;
-              }
-            })}
-            {error && <p className={styles.error}>{t(error)}</p>}
-          </>
-
-          <Button
-            text={t("sign-in")}
-            action={signInHandler}
-            bgColor={Colors.FAILED_COLOR}
-          />
+        <div className={styles.signup}>
+          <label>{t("sign-up-sentence")}</label>
+          <label className={styles.signup_button} onClick={signupHandler}>
+            {t("sign-up")}
+          </label>
         </div>
+        <img src={Logo} alt="thumb" />
+
+        <h3>{t("sign-in")}</h3>
+
+        {/* username */}
+        <InputSignIn
+          icon={<HiUser className={styles.icons} />}
+          type="text"
+          placeholder="user-username"
+          id="username"
+          value={userInfo.username}
+          onchange={inputChangeHandler}
+          error={preSignError.username?.length > 0 || error}
+          onEnterPress={pressEnterHandler}
+          resetField={resetFieldHandler}
+        />
+
+        {/* password */}
+        <InputSignIn
+          icon={<RiLockPasswordLine className={styles.icon} />}
+          type="password"
+          placeholder="user-password"
+          id="password"
+          value={userInfo.password}
+          onchange={inputChangeHandler}
+          error={preSignError.password?.length > 0 || error}
+          onEnterPress={pressEnterHandler}
+          resetField={resetFieldHandler}
+        />
+
+        <div
+          className={styles.remember_me}
+          defaultChecked={rememberMeOption}
+          defaultValue={rememberMeOption}
+          onChange={() => setRememberMeOption(!rememberMeOption)}
+        >
+          <input type="checkbox" />
+          <label>{t("remember-me")}</label>
+        </div>
+
+        <p
+          className={styles.forget_password}
+          onClick={() => {
+            setShowForgetPasswordModal(true);
+          }}
+        >
+          {t("forget-password")}
+        </p>
+
+        {/* Error sections */}
+        <>
+          {Object.keys(preSignError).map((key) => {
+            if (preSignError[key].length > 0) {
+              return (
+                <p className={styles.error} key={key}>
+                  {t(`${preSignError[key]}`)}
+                </p>
+              );
+            } else {
+              return null;
+            }
+          })}
+          {error && <p className={styles.error}>{t(error)}</p>}
+        </>
+
+        <Button
+          text={t("sign-in")}
+          action={signInHandler}
+          bgColor={Colors.FAILED_COLOR}
+        />
+        {/* </div> */}
 
         {status === "loading" && (
           <Loader allowCancel={true} onclick={cancelOperationHandler} />
@@ -304,3 +312,12 @@ function SignIn() {
 }
 
 export default SignIn;
+
+{
+  /* <div className={styles.signup}>
+            <p>{t("sign-up-sentence")}</p>
+            <p className={styles.button} onClick={signupHandler}>
+              {t("sign-up")}
+            </p>
+          </div> */
+}

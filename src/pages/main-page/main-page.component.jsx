@@ -166,7 +166,6 @@ function MainPage() {
       FallbackComponent={ErrorFallback}
       onReset={() => {
         history.push("/");
-        // window.location.reload();
       }}
     >
       {settingsStatus === "loading" || loading ? (

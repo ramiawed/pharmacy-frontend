@@ -38,9 +38,6 @@ function InputSignIn({
   return (
     <div
       className={[styles.input_div, bordered ? styles.bordered : ""].join(" ")}
-      style={{
-        border: `1px solid ${error ? Colors.FAILED_COLOR : "#787474"}`,
-      }}
     >
       {icon && icon}
       {label && (
@@ -71,7 +68,7 @@ function InputSignIn({
       {resetField && value && (
         <AiFillCloseCircle
           onClick={() => resetField(id)}
-          className={styles.icon_close}
+          className={styles.icon_clear}
         />
       )}
       {error && <AiOutlineExclamationCircle className={styles.icon_error} />}

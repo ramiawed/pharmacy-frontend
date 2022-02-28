@@ -8,9 +8,6 @@ function HomePageLoader() {
 
   return (
     <div className={styles.container}>
-      {/* <div className={styles.loader}>
-        <span></span>
-      </div> */}
       <h1>{t("app-name")}</h1>
     </div>
   );

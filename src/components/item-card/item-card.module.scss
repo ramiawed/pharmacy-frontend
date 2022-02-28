@@ -77,6 +77,10 @@
   background-color: $main-color;
   writing-mode: vertical-rl;
   text-orientation: mixed;
+  width: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .content {

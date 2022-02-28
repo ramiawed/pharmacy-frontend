@@ -40,6 +40,7 @@ import { selectAdvertisements } from "../../redux/advertisements/advertisementsS
 
 // styles
 import styles from "./home-page.module.scss";
+import { SERVER_URL } from "../../utils/constants";
 
 function HomePage({ onSelectedChange }) {
   const dispatch = useDispatch();
@@ -110,7 +111,7 @@ function HomePage({ onSelectedChange }) {
     //   dispatch(getAllAdvertisements({ token }));
     // }
 
-    setInterval(() => {
+    const timer = setInterval(() => {
       if (currentImage.current === advertisements.length - 1) {
         currentImage.current = 0;
       } else {
@@ -120,9 +121,13 @@ function HomePage({ onSelectedChange }) {
       setBackgroundImages(
         advertisements.map((a) => a.logo_url)[currentImage.current]
       );
-    }, 5000);
+    }, 10000);
 
     onSelectedChange();
+
+    return () => {
+      clearInterval(timer);
+    };
   }, [settings]);
 
   return user ? (
@@ -135,7 +140,7 @@ function HomePage({ onSelectedChange }) {
       <div
         className={styles.main_container}
         style={{
-          backgroundImage: `url('http://localhost:8000/images/${backgroundImages}')`,
+          backgroundImage: `url('${SERVER_URL}/images/${backgroundImages}')`,
         }}
       >
         {/* {settings.showAdvertisements && (

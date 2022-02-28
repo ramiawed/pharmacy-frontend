@@ -177,16 +177,7 @@ function MainPage() {
       ) : (
         <>
           <SocketObserver />
-          <div
-            className={styles.container}
-            // onClick={() => {
-            //   changeNavigationSettingHandler({
-            //     collapsedSideNavOption: true,
-            //     showTopNav: false,
-            //     showSearchBar: false,
-            //   });
-            // }}
-          >
+          <div className={styles.container}>
             <div className={styles.hamburger_menu}>
               <p className={styles.selectedOption}>
                 {t(selectedTopNavOption)}
@@ -244,7 +235,7 @@ function MainPage() {
             />
 
             <div className={styles.content_area}>
-              <Suspense fallback={<div>...loading</div>}>
+              <Suspense fallback={<HomePageLoader />}>
                 <Switch>
                   <Route exact path="/">
                     <HomePage

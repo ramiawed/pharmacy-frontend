@@ -122,7 +122,10 @@ function SideNav({
             }}
           >
             {user.logo_url.length > 0 && (
-              <img src={`${SERVER_URL}/${user.logo_url}`} alt="thumb" />
+              <img
+                src={`${SERVER_URL}/profiles/${user.logo_url}`}
+                alt="thumb"
+              />
             )}
 
             <h3>{user.name}</h3>

@@ -327,7 +327,7 @@ function ItemCard({ companyItem }) {
         <div className={styles.logo_div}>
           {companyItem.logo_url && companyItem.logo_url !== "" ? (
             <img
-              src={`${SERVER_URL}/${companyItem.logo_url}`}
+              src={`${SERVER_URL}/items/${companyItem.logo_url}`}
               className={styles.logo}
               alt="thumb"
             />

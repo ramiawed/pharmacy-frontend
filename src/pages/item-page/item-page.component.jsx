@@ -301,7 +301,7 @@ function ItemPage() {
                 <img
                   src={
                     item.logo_url && item.logo_url !== ""
-                      ? `${SERVER_URL}/${item.logo_url}`
+                      ? `${SERVER_URL}/items/${item.logo_url}`
                       : `${SERVER_URL}/medicine.jpeg`
                   }
                   alt="thumb"

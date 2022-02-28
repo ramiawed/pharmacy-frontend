@@ -41,7 +41,7 @@ function AdvertisementItem({ item, contentColor }) {
         style={{
           backgroundImage:
             item.logo_url.length > 0
-              ? `url("${SERVER_URL}/${item.logo_url}")`
+              ? `url("${SERVER_URL}/items/${item.logo_url}")`
               : `url("${SERVER_URL}/default-logo.png")`,
           backgroundPosition: "center",
           backgroundSize: "cover",

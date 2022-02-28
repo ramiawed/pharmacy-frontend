@@ -140,7 +140,7 @@ function HomePage({ onSelectedChange }) {
       <div
         className={styles.main_container}
         style={{
-          backgroundImage: `url('${SERVER_URL}/images/${backgroundImages}')`,
+          backgroundImage: `url('${SERVER_URL}/advertisements/${backgroundImages}')`,
         }}
       >
         {/* {settings.showAdvertisements && (

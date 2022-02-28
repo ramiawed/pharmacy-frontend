@@ -79,7 +79,7 @@ function NotificationPage({ onSelectedChange }) {
                 {notification.logo_url !== "" && (
                   <img
                     className={styles.image}
-                    src={`${SERVER_URL}/${notification.logo_url}`}
+                    src={`${SERVER_URL}/notifications/${notification.logo_url}`}
                     alt="thumb"
                   />
                 )}

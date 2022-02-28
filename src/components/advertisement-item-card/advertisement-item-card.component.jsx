@@ -254,7 +254,7 @@ function AdvertisementItemCard({ companyItem, contentColor }) {
         style={{
           backgroundImage:
             companyItem.logo_url.length > 0
-              ? `url("${SERVER_URL}/${companyItem.logo_url}")`
+              ? `url("${SERVER_URL}/items/${companyItem.logo_url}")`
               : `url("${SERVER_URL}/default-logo.png")`,
           backgroundPosition: "center",
           backgroundSize: "cover",

@@ -32,7 +32,7 @@ function NotificationToast({ bgColor, actionAfterTimeout, data, close }) {
       {data.logo_url.length > 0 && (
         <div>
           <img
-            src={`${SERVER_URL}/${data.logo_url}`}
+            src={`${SERVER_URL}/notifications/${data.logo_url}`}
             className={styles.logo}
             alt="thumb"
           />

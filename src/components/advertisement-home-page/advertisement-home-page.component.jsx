@@ -107,7 +107,10 @@ function AdvertisementHomePage({ data }) {
                   advertisementClickHandler(d);
                 }}
               >
-                <img src={`${SERVER_URL}/${d.logo_url}`} alt="Thumb" />
+                <img
+                  src={`${SERVER_URL}/advertisements/${d.logo_url}`}
+                  alt="Thumb"
+                />
               </div>
             </div>
           ))}

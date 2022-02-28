@@ -163,7 +163,7 @@ function UserMoreInfoModal({ user, close }) {
           small={true}
         >
           <img
-            src={`${SERVER_URL}/${user.paper_url}`}
+            src={`${SERVER_URL}/profiles/${user.paper_url}`}
             style={{
               display: "block",
               width: "300px",

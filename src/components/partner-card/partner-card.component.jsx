@@ -180,7 +180,7 @@ function PartnerCard({ partner, fullWidth }) {
 
       {partner.logo_url?.length > 0 ? (
         <img
-          src={`${SERVER_URL}/${partner.logo_url}`}
+          src={`${SERVER_URL}/profiles/${partner.logo_url}`}
           className={styles.partner_logo}
           alt="thumb"
         />

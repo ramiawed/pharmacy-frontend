@@ -160,7 +160,7 @@ function AdvertisementCompanyCard({ user, contentColor }) {
         style={{
           backgroundImage:
             user.logo_url.length > 0
-              ? `url("${SERVER_URL}/${user.logo_url}")`
+              ? `url("${SERVER_URL}/profiles/${user.logo_url}")`
               : `url("${SERVER_URL}/default-logo.png")`,
           backgroundPosition: "center",
           backgroundSize: "cover",

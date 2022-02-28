@@ -42,6 +42,7 @@ import {
   changeNavSettings,
   selectNavigationSlice,
 } from "../../redux/navs/navigationSlice";
+import { selectAdvertisements } from "../../redux/advertisements/advertisementsSlice";
 
 // pages
 const CartPage = lazy(() => import("../cart-page/cart-page.component"));
@@ -116,6 +117,7 @@ function MainPage() {
       showSearchBar,
     },
   } = useSelector(selectNavigationSlice);
+  const { status: advertisementsStatus } = useSelector(selectAdvertisements);
 
   const dispatchProperties = useCallback(() => {
     if (user) {
@@ -168,7 +170,9 @@ function MainPage() {
         history.push("/");
       }}
     >
-      {settingsStatus === "loading" || loading ? (
+      {settingsStatus === "loading" ||
+      advertisementsStatus === "loading" ||
+      loading ? (
         <HomePageLoader />
       ) : (
         <>

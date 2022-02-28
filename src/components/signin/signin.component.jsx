@@ -40,6 +40,7 @@ import styles from "./signin.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
+import { getAllAdvertisements } from "../../redux/advertisements/advertisementsSlice";
 
 // constants use for motion
 const containerVariant = {
@@ -187,6 +188,7 @@ function SignIn() {
           })
         );
         dispatch(getAllSettings({ token: result.token }));
+        dispatch(getAllAdvertisements({ token: result.token }));
       })
       .catch(() => {});
   };

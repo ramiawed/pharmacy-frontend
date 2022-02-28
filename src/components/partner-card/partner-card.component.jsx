@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
+import Logo from "../../logo01.png";
 
 // components
 import Button from "../button/button.component";
@@ -184,11 +185,7 @@ function PartnerCard({ partner, fullWidth }) {
           alt="thumb"
         />
       ) : (
-        <img
-          src={`${SERVER_URL}/default-logo.jpg`}
-          className={styles.partner_logo}
-          alt="thumb"
-        />
+        <img src={Logo} className={styles.partner_logo} alt="thumb" />
       )}
 
       <div className={styles.from_top}>

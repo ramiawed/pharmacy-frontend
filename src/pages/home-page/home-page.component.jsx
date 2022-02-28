@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Redirect } from "react-router-dom";
 
 // components
@@ -36,10 +36,7 @@ import {
   selectItemsSectionThree,
 } from "../../redux/advertisements/itemsSectionThreeSlice";
 
-import {
-  getAllAdvertisements,
-  selectAdvertisements,
-} from "../../redux/advertisements/advertisementsSlice";
+import { selectAdvertisements } from "../../redux/advertisements/advertisementsSlice";
 
 // styles
 import styles from "./home-page.module.scss";
@@ -84,7 +81,11 @@ function HomePage({ onSelectedChange }) {
   } = useSelector(selectItemsSectionThree);
 
   const { advertisements } = useSelector(selectAdvertisements);
+  const [backgroundImages, setBackgroundImages] = useState(
+    advertisements.map((a) => a.logo_url)[0]
+  );
   const { settings } = useSelector(selectSettings);
+  const currentImage = useRef(0);
 
   useEffect(() => {
     if (settings.companiesSectionOne.show && companiesOneRefresh)
@@ -105,9 +106,21 @@ function HomePage({ onSelectedChange }) {
     if (settings.itemsSectionThree.show && itemsThreeRefresh)
       dispatch(getItemsSectionThree({ token }));
 
-    if (settings.showAdvertisements) {
-      dispatch(getAllAdvertisements({ token }));
-    }
+    // if (settings.showAdvertisements) {
+    //   dispatch(getAllAdvertisements({ token }));
+    // }
+
+    setInterval(() => {
+      if (currentImage.current === advertisements.length - 1) {
+        currentImage.current = 0;
+      } else {
+        currentImage.current = currentImage.current + 1;
+      }
+
+      setBackgroundImages(
+        advertisements.map((a) => a.logo_url)[currentImage.current]
+      );
+    }, 5000);
 
     onSelectedChange();
   }, [settings]);
@@ -119,10 +132,19 @@ function HomePage({ onSelectedChange }) {
         paddingInlineStart: "35px",
       }}
     >
-      <div className={styles.search_container}>
+      <div
+        className={styles.main_container}
+        style={{
+          backgroundImage: `url('http://localhost:8000/images/${backgroundImages}')`,
+        }}
+      >
         {/* {settings.showAdvertisements && (
           <AdvertisementHomePage data={advertisements} />
         )} */}
+        {/* <HomePageDescribeSection
+          header="who-we-are"
+          describe="who-we-are-describe"
+        /> */}
       </div>
 
       <div className={styles.advertisement_container}>
@@ -279,20 +301,6 @@ function HomePage({ onSelectedChange }) {
               />
             )
           ))}
-      </div>
-
-      <div className={styles.describe_container}>
-        <HomePageDescribeSection
-          header="who-we-are"
-          describe="who-we-are-describe"
-        />
-
-        <div className={styles.separator}></div>
-
-        <HomePageDescribeSection
-          header="why-we-are"
-          describe="why-we-are-describe"
-        />
       </div>
     </div>
   ) : (

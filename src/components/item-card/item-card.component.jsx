@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-
+import Logo from "../../logo01.png";
 // components
 import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
 import Icon from "../action-icon/action-icon.component";
@@ -43,6 +43,7 @@ import {
   SERVER_URL,
   UserTypeConstants,
 } from "../../utils/constants.js";
+import { GoBookmark } from "react-icons/go";
 
 // if logged user is
 // 1- ADMIN: highlight the row by green color if the medicine has an offer.
@@ -231,10 +232,7 @@ function ItemCard({ companyItem }) {
   };
   return (
     <div
-      className={[
-        styles.partner_container,
-        checkOffer(companyItem, user) ? styles.partner_container_has_offer : "",
-      ].join(" ")}
+      className={[styles.partner_container].join(" ")}
       onClick={() => {
         dispatchStatisticsHandler();
 
@@ -242,7 +240,6 @@ function ItemCard({ companyItem }) {
           from: user.type,
           type: "info",
           allowAction: false,
-
           itemId: companyItem._id,
           companyId: companyItem.company._id,
           warehouseId:
@@ -250,173 +247,135 @@ function ItemCard({ companyItem }) {
         });
       }}
     >
+      {checkOffer(companyItem, user) && (
+        <div className={styles.offer_icon}>
+          <GoBookmark size={24} />
+        </div>
+      )}
+      <div className={styles.company_name}>{companyItem.company.name}</div>
       <div
-        className={[
-          generalStyles.actions,
-          generalStyles.padding_v_4,
-          generalStyles.padding_h_6,
-        ].join(" ")}
+        style={{
+          flex: 1,
+        }}
       >
-        {changeAddToWarehouseLoading ? (
-          <Icon
-            icon={() => (
-              <VscLoading className={generalStyles.loading} size={20} />
-            )}
-            onclick={() => {}}
-            foreColor={Colors.SECONDARY_COLOR}
-          />
-        ) : (
-          user.type === UserTypeConstants.WAREHOUSE &&
-          (companyItem.warehouses
-            .map((w) => w.warehouse._id)
-            .includes(user._id) ? (
+        <div className={styles.icons_div}>
+          {changeAddToWarehouseLoading ? (
             <Icon
-              icon={() => <RiDeleteBin5Fill size={24} />}
-              onclick={removeItemFromWarehouseHandler}
-              tooltip={t("remove-from-warehouse-tooltip")}
-              foreColor={Colors.FAILED_COLOR}
+              icon={() => (
+                <VscLoading className={generalStyles.loading} size={20} />
+              )}
+              onclick={() => {}}
+              foreColor={Colors.SECONDARY_COLOR}
+            />
+          ) : (
+            user.type === UserTypeConstants.WAREHOUSE &&
+            (companyItem.warehouses
+              .map((w) => w.warehouse._id)
+              .includes(user._id) ? (
+              <Icon
+                icon={() => <RiDeleteBin5Fill size={24} />}
+                onclick={removeItemFromWarehouseHandler}
+                tooltip={t("remove-from-warehouse-tooltip")}
+                foreColor={Colors.FAILED_COLOR}
+              />
+            ) : (
+              <Icon
+                icon={() => <MdAddCircle size={24} />}
+                onclick={addItemToWarehouseHandler}
+                tooltip={t("add-to-warehouse-tooltip")}
+                foreColor={Colors.SUCCEEDED_COLOR}
+              />
+            ))
+          )}
+
+          {user.type === UserTypeConstants.PHARMACY &&
+            companyItem.existing_place[user.city] > 0 && (
+              <Icon
+                icon={() => <GiShoppingCart size={24} />}
+                onclick={() => setShowModal(true)}
+                foreColor={Colors.SUCCEEDED_COLOR}
+              />
+            )}
+
+          {changeFavoriteLoading ? (
+            <Icon
+              icon={() => (
+                <VscLoading className={generalStyles.loading} size={24} />
+              )}
+              onclick={() => {}}
+              foreColor={Colors.YELLOW_COLOR}
+            />
+          ) : favorites
+              .map((favorite) => favorite._id)
+              .includes(companyItem._id) ? (
+            <Icon
+              icon={() => <AiFillStar size={24} />}
+              onclick={removeItemFromFavoritesItems}
+              tooltip={t("remove-from-favorite-tooltip")}
+              foreColor={Colors.YELLOW_COLOR}
             />
           ) : (
             <Icon
-              icon={() => <MdAddCircle size={24} />}
-              onclick={addItemToWarehouseHandler}
-              tooltip={t("add-to-warehouse-tooltip")}
-              foreColor={Colors.SUCCEEDED_COLOR}
+              icon={() => <AiOutlineStar size={24} />}
+              onclick={addItemToFavoriteItems}
+              tooltip={t("add-to-favorite-tooltip")}
+              foreColor={Colors.YELLOW_COLOR}
             />
-          ))
-        )}
-
-        {user.type === UserTypeConstants.PHARMACY &&
-          companyItem.warehouses.length > 0 && (
-            <div
-              className={[
-                generalStyles.icon,
-                generalStyles.fc_green,
-                generalStyles.position_top_5_left_40,
-              ].join(" ")}
-              onClick={(e) => {
-                setShowModal(true);
-                e.stopPropagation();
-              }}
-            >
-              <GiShoppingCart size={24} />
-            </div>
           )}
-
-        {changeFavoriteLoading ? (
-          <Icon
-            icon={() => (
-              <VscLoading className={generalStyles.loading} size={24} />
-            )}
-            onclick={() => {}}
-            foreColor={Colors.YELLOW_COLOR}
-          />
-        ) : favorites
-            .map((favorite) => favorite._id)
-            .includes(companyItem._id) ? (
-          <Icon
-            icon={() => <AiFillStar size={24} />}
-            onclick={removeItemFromFavoritesItems}
-            tooltip={t("remove-from-favorite-tooltip")}
-            foreColor={Colors.YELLOW_COLOR}
-          />
-        ) : (
-          <Icon
-            icon={() => <AiOutlineStar size={24} />}
-            onclick={addItemToFavoriteItems}
-            tooltip={t("add-to-favorite-tooltip")}
-            foreColor={Colors.YELLOW_COLOR}
-          />
-        )}
-      </div>
-
-      <div className={styles.logo_div}>
-        {companyItem.logo_url && companyItem.logo_url !== "" ? (
-          <img
-            src={`${SERVER_URL}/${companyItem.logo_url}`}
-            className={styles.logo}
-            alt="thumb"
-          />
-        ) : (
-          <img
-            src={`${SERVER_URL}/default-medicine.png`}
-            className={styles.logo}
-            alt="thumb"
-          />
-        )}
-      </div>
-
-      <div className={styles.content}>
-        <div
-          className={[
-            styles.showed_content,
-            checkOffer(companyItem, user) ? styles.has_offer : "",
-          ].join(" ")}
-        >
-          <label
-            className={[
-              generalStyles.fc_white,
-              generalStyles.center,
-              generalStyles.block,
-            ].join(" ")}
-          >
-            {/* <Link
-              onClick={dispatchStatisticsHandler}
-              to={{
-                pathname: "/item",
-                state: {
-                  from: user.type,
-                  type: "info",
-                  allowAction: false,
-
-                  itemId: companyItem._id,
-                  companyId: companyItem.company._id,
-                  warehouseId:
-                    user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
-                },
-              }}
-              className={[
-                rowStyles.hover_underline,
-                generalStyles.fc_white,
-              ].join(" ")}
-            >
-            </Link> */}
-            {companyItem.name}
-          </label>
-
-          {user.type !== UserTypeConstants.GUEST && (
-            <div className={styles.info}>
-              <label>{t("item-price")}:</label>
-              <label className={styles.bigger}>{companyItem.price}</label>
-            </div>
-          )}
-
-          <div className={styles.info}>
-            <label>{t("item-customer-price")}:</label>
-            <label className={styles.bigger}>
-              {companyItem.customer_price}
-            </label>
-          </div>
-
-          <div className={styles.info}>
-            <label>{t("item-formula")}:</label>
-            <label className={styles.bigger}>{companyItem.formula}</label>
-          </div>
-
-          <div className={styles.more_info}>
-            <div className={styles.info}>
-              <label>{t("item-packing")}</label>
-              <label className={styles.bigger}>{companyItem.packing}</label>
-            </div>
-
-            <div className={styles.info}>
-              <label>{t("item-caliber")}</label>
-              <label className={styles.bigger}>{companyItem.caliber}</label>
-            </div>
-          </div>
         </div>
 
-        <div className={styles.behind_content}></div>
+        <div className={styles.logo_div}>
+          {companyItem.logo_url && companyItem.logo_url !== "" ? (
+            <img
+              src={`${SERVER_URL}/${companyItem.logo_url}`}
+              className={styles.logo}
+              alt="thumb"
+            />
+          ) : (
+            <img src={Logo} className={styles.logo} alt="thumb" />
+          )}
+        </div>
+
+        <div className={styles.content}>
+          <div className={[styles.showed_content].join(" ")}>
+            <div className={styles.main_details}>
+              <div className={styles.name_details}>
+                <label className={styles.name}>{companyItem.name}</label>
+                <label className={styles.composition}>
+                  {companyItem.composition}
+                </label>
+              </div>
+
+              {user.type !== UserTypeConstants.GUEST && (
+                <div className={styles.price}>
+                  <label>{companyItem.price}</label>
+                </div>
+              )}
+              <div className={styles.price}>
+                <label className={styles.customer_price}>
+                  {companyItem.customer_price}
+                </label>
+              </div>
+            </div>
+
+            <div className={styles.info}>
+              <label className={styles.label}>{t("item-formula")}:</label>
+              <label className={styles.value}>{companyItem.formula}</label>
+            </div>
+
+            <div className={styles.info}>
+              <label className={styles.label}>{t("item-packing")}:</label>
+              <label className={styles.value}>{companyItem.packing}</label>
+            </div>
+
+            <div className={styles.info}>
+              <label className={styles.label}>{t("item-caliber")}:</label>
+              <label className={styles.value}>{companyItem.caliber}</label>
+            </div>
+          </div>
+
+          <div className={styles.behind_content}></div>
+        </div>
       </div>
 
       {showModal && (

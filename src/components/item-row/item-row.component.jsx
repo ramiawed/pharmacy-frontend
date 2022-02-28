@@ -43,6 +43,7 @@ import styles from "./item-row.module.scss";
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants";
 import Toast from "../toast/toast.component";
+import { changeNavSettings } from "../../redux/navs/navigationSlice";
 
 // if logged user is
 // 1- ADMIN: highlight the row by green color if the medicine has an offer.
@@ -281,6 +282,11 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
                 icon={() => <GiShoppingCart size={20} />}
                 onclick={(e) => {
                   setShowModal(true);
+                  // dispatch(
+                  //   changeNavSettings({
+                  //     showSearchBar: false,
+                  //   })
+                  // );
                   e.stopPropagation();
                 }}
                 foreColor={Colors.SUCCEEDED_COLOR}

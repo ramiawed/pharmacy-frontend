@@ -108,7 +108,7 @@ function MedicinesPage({ onSelectedChange }) {
   }, []);
 
   return user ? (
-    <div className={generalStyles.container}>
+    <>
       <SearchContainer searchAction={handleEnterPress}>
         <SearchInput
           label="user-name"
@@ -207,153 +207,159 @@ function MedicinesPage({ onSelectedChange }) {
           </div>
         )}
       </SearchContainer>
+      <div
+        className={generalStyles.container}
+        style={{
+          marginBlockStart: "50px",
+        }}
+      >
+        <MedicinesSearchString pageState={pageState} user={user} />
 
-      <MedicinesSearchString pageState={pageState} user={user} />
-
-      <div className={generalStyles.actions}>
-        <Icon
-          withBackground={true}
-          icon={() => <RiRefreshLine />}
-          foreColor={Colors.GREY_COLOR}
-          tooltip={t("refresh-tooltip")}
-          onclick={handleEnterPress}
-        />
-        {(pageState.searchName.length > 0 ||
-          pageState.searchCompanyName.length > 0 ||
-          pageState.searchWarehouseName.length > 0 ||
-          pageState.searchInWarehouse ||
-          pageState.searchOutWarehouse) && (
+        <div className={generalStyles.actions}>
           <Icon
             withBackground={true}
-            selected={false}
+            icon={() => <RiRefreshLine />}
             foreColor={Colors.GREY_COLOR}
-            tooltip={t("clear-filter-tooltip")}
+            tooltip={t("refresh-tooltip")}
+            onclick={handleEnterPress}
+          />
+          {(pageState.searchName.length > 0 ||
+            pageState.searchCompanyName.length > 0 ||
+            pageState.searchWarehouseName.length > 0 ||
+            pageState.searchInWarehouse ||
+            pageState.searchOutWarehouse) && (
+            <Icon
+              withBackground={true}
+              selected={false}
+              foreColor={Colors.GREY_COLOR}
+              tooltip={t("clear-filter-tooltip")}
+              onclick={() => {
+                dispatch(resetMedicinesPageState());
+                handleEnterPress();
+                setShowFavorites(false);
+              }}
+              icon={() => <VscClearAll />}
+            />
+          )}
+
+          <div className={generalStyles.relative}>
+            <Icon
+              withBackground={true}
+              icon={() => <AiFillStar />}
+              foreColor={
+                showFavorites ? Colors.SUCCEEDED_COLOR : Colors.GREY_COLOR
+              }
+              tooltip={t("show-favorite-tooltip")}
+              onclick={() => setShowFavorites(!showFavorites)}
+            />
+
+            {showFavorites && (
+              <div
+                className={[
+                  generalStyles.favorites_content,
+                  generalStyles.favorites_content_wider,
+                  generalStyles.bg_white,
+                ].join(" ")}
+              >
+                {showFavorites &&
+                  favoritesItems.map((item) => (
+                    <ItemRow
+                      key={item._id}
+                      item={item}
+                      isFavorite={true}
+                      isSmallFavorite={true}
+                    />
+                  ))}
+              </div>
+            )}
+          </div>
+
+          <Icon
+            withBackground={true}
+            icon={() => <AiFillAppstore />}
+            foreColor={
+              pageState.displayType === "card"
+                ? Colors.SUCCEEDED_COLOR
+                : Colors.GREY_COLOR
+            }
+            tooltip={t("show-item-as-card-tooltip")}
+            onclick={() => dispatch(setDisplayType("card"))}
+          />
+
+          <Icon
+            withBackground={true}
+            icon={() => <FaListUl />}
+            foreColor={
+              pageState.displayType === "list"
+                ? Colors.SUCCEEDED_COLOR
+                : Colors.GREY_COLOR
+            }
+            tooltip={t("show-item-as-row-tooltip")}
+            onclick={() => dispatch(setDisplayType("list"))}
+          />
+
+          <Icon
+            withBackground={true}
+            tooltip={t("go-back")}
             onclick={() => {
-              dispatch(resetMedicinesPageState());
-              handleEnterPress();
-              setShowFavorites(false);
+              history.goBack();
             }}
-            icon={() => <VscClearAll />}
+            icon={() => <IoMdArrowRoundBack />}
+            foreColor={Colors.GREY_COLOR}
+          />
+        </div>
+
+        {/* {count > 0 && pageState.displayType === "list" && (
+       <MedicinesTableHeader user={user} />
+     )} */}
+
+        {pageState.displayType === "list" &&
+          medicines.map((medicine) => (
+            <ItemRowNew key={medicine._id} item={medicine} />
+          ))}
+
+        {pageState.displayType === "card" && (
+          <div
+            className={[
+              generalStyles.flex_container,
+              generalStyles.margin_top_10,
+            ].join(" ")}
+          >
+            {medicines.map((medicine) => (
+              <ItemCard key={medicine._id} companyItem={medicine} />
+            ))}
+          </div>
+        )}
+
+        {count === 0 && status !== "loading" && (
+          <NoContent msg={t("no-medicines")} />
+        )}
+
+        {status === "loading" && (
+          <div className={generalStyles.flex_container}>
+            <ReactLoading color={Colors.SECONDARY_COLOR} type="cylon" />
+          </div>
+        )}
+
+        {medicines.length < count && status !== "loading" && (
+          <Button
+            text={t("more")}
+            action={handleMoreResult}
+            bgColor={Colors.SECONDARY_COLOR}
           />
         )}
 
-        <div className={generalStyles.relative}>
-          <Icon
-            withBackground={true}
-            icon={() => <AiFillStar />}
-            foreColor={
-              showFavorites ? Colors.SUCCEEDED_COLOR : Colors.GREY_COLOR
-            }
-            tooltip={t("show-favorite-tooltip")}
-            onclick={() => setShowFavorites(!showFavorites)}
-          />
-
-          {showFavorites && (
-            <div
-              className={[
-                generalStyles.favorites_content,
-                generalStyles.favorites_content_wider,
-                generalStyles.bg_white,
-              ].join(" ")}
-            >
-              {showFavorites &&
-                favoritesItems.map((item) => (
-                  <ItemRow
-                    key={item._id}
-                    item={item}
-                    isFavorite={true}
-                    isSmallFavorite={true}
-                  />
-                ))}
-            </div>
-          )}
-        </div>
-
-        <Icon
-          withBackground={true}
-          icon={() => <AiFillAppstore />}
-          foreColor={
-            pageState.displayType === "card"
-              ? Colors.SUCCEEDED_COLOR
-              : Colors.GREY_COLOR
-          }
-          tooltip={t("show-item-as-card-tooltip")}
-          onclick={() => dispatch(setDisplayType("card"))}
-        />
-
-        <Icon
-          withBackground={true}
-          icon={() => <FaListUl />}
-          foreColor={
-            pageState.displayType === "list"
-              ? Colors.SUCCEEDED_COLOR
-              : Colors.GREY_COLOR
-          }
-          tooltip={t("show-item-as-row-tooltip")}
-          onclick={() => dispatch(setDisplayType("list"))}
-        />
-
-        <Icon
-          withBackground={true}
-          tooltip={t("go-back")}
-          onclick={() => {
-            history.goBack();
-          }}
-          icon={() => <IoMdArrowRoundBack />}
-          foreColor={Colors.GREY_COLOR}
-        />
+        {medicines.length === count && status !== "loading" && count !== 0 && (
+          <p
+            className={[generalStyles.center, generalStyles.fc_secondary].join(
+              " "
+            )}
+          >
+            {t("no-more")}
+          </p>
+        )}
       </div>
-
-      {/* {count > 0 && pageState.displayType === "list" && (
-        <MedicinesTableHeader user={user} />
-      )} */}
-
-      {pageState.displayType === "list" &&
-        medicines.map((medicine) => (
-          <ItemRowNew key={medicine._id} item={medicine} />
-        ))}
-
-      {pageState.displayType === "card" && (
-        <div
-          className={[
-            generalStyles.flex_container,
-            generalStyles.margin_top_10,
-          ].join(" ")}
-        >
-          {medicines.map((medicine) => (
-            <ItemCard key={medicine._id} companyItem={medicine} />
-          ))}
-        </div>
-      )}
-
-      {count === 0 && status !== "loading" && (
-        <NoContent msg={t("no-medicines")} />
-      )}
-
-      {status === "loading" && (
-        <div className={generalStyles.flex_container}>
-          <ReactLoading color={Colors.SECONDARY_COLOR} type="cylon" />
-        </div>
-      )}
-
-      {medicines.length < count && status !== "loading" && (
-        <Button
-          text={t("more")}
-          action={handleMoreResult}
-          bgColor={Colors.SECONDARY_COLOR}
-        />
-      )}
-
-      {medicines.length === count && status !== "loading" && count !== 0 && (
-        <p
-          className={[generalStyles.center, generalStyles.fc_secondary].join(
-            " "
-          )}
-        >
-          {t("no-more")}
-        </p>
-      )}
-    </div>
+    </>
   ) : (
     <Redirect to="/signin" />
   );

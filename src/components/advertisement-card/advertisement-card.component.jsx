@@ -69,7 +69,7 @@ function AdvertisementCard({ advertisement }) {
           </div>
           <div className={styles.img}>
             <img
-              src={`${SERVER_URL}/${advertisement.logo_url}`}
+              src={`${SERVER_URL}/images/${advertisement.logo_url}`}
               className={styles.image}
               alt="Thumb"
             />

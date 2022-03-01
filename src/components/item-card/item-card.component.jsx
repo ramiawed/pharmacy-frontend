@@ -249,7 +249,7 @@ function ItemCard({ companyItem }) {
     >
       {checkOffer(companyItem, user) && (
         <div className={styles.offer_icon}>
-          <GoBookmark size={24} />
+          <GoBookmark size={36} />
         </div>
       )}
       <div className={styles.company_name}>{companyItem.company.name}</div>

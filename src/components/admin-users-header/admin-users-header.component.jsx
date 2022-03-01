@@ -122,7 +122,7 @@ function AdminUsersHeader({
       >
         <Icon
           selected={false}
-          foreColor={Colors.SECONDARY_COLOR}
+          foreColor={Colors.GREY_COLOR}
           tooltip={t("refresh-tooltip")}
           icon={() => <RiRefreshLine />}
           onclick={refreshHandler}
@@ -132,7 +132,7 @@ function AdminUsersHeader({
         {searchFilterCount || orderFilterCount ? (
           <Icon
             selected={false}
-            foreColor={Colors.SECONDARY_COLOR}
+            foreColor={Colors.GREY_COLOR}
             tooltip={t("clear-filter-tooltip")}
             onclick={() => {
               dispatch(resetPageState());
@@ -148,12 +148,12 @@ function AdminUsersHeader({
             value={searchFilterCount}
             fillIcon={
               <div className={[generalStyles.icon]}>
-                <HiOutlineSearch size={16} color={Colors.SECONDARY_COLOR} />
+                <HiOutlineSearch size={16} color={Colors.GREY_COLOR} />
               </div>
             }
             noFillIcon={
               <div className={generalStyles.icon}>
-                <HiOutlineSearch size={16} color={Colors.SECONDARY_COLOR} />
+                <HiOutlineSearch size={16} color={Colors.GREY_COLOR} />
               </div>
             }
             small={true}
@@ -167,12 +167,12 @@ function AdminUsersHeader({
             value={orderFilterCount}
             fillIcon={
               <div className={generalStyles.icon}>
-                <BiSortAZ size={16} color={Colors.SECONDARY_COLOR} />
+                <BiSortAZ size={16} color={Colors.GREY_COLOR} />
               </div>
             }
             noFillIcon={
               <div className={generalStyles.icon}>
-                <BiSortAZ size={16} color={Colors.SECONDARY_COLOR} />
+                <BiSortAZ size={16} color={Colors.GREY_COLOR} />
               </div>
             }
             small={true}

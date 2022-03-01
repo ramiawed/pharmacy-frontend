@@ -8,11 +8,13 @@ import SideNavCompany from "../side-nav-company/side-nav-company.component";
 import SideNavGuest from "../side-nav-guest/side-nav-guest.component";
 import SideNavPharmacy from "../side-nav-pharmacy/side-nav-pharmacy.component";
 import SideNavWarehouse from "../side-nav-warehouse/side-nav-warehouse.component";
+import SearchHome from "../search-home/search-home.component";
 
 // react-icons
 import { FaSearch } from "react-icons/fa";
 import { VscClose } from "react-icons/vsc";
 import { GoSignOut } from "react-icons/go";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -40,6 +42,10 @@ import {
   medicinesSliceSignOut,
   resetMedicines,
 } from "../../redux/medicines/medicinesSlices";
+import {
+  changeNavSettings,
+  selectNavigationSlice,
+} from "../../redux/navs/navigationSlice";
 
 // styles
 import styles from "./side-nav.module.scss";
@@ -49,12 +55,6 @@ import navStyles from "./../side-nav.module.scss";
 
 // constants
 import { SERVER_URL, UserTypeConstants } from "../../utils/constants";
-import { GiHamburgerMenu } from "react-icons/gi";
-import SearchHome from "../search-home/search-home.component";
-import {
-  changeNavSettings,
-  selectNavigationSlice,
-} from "../../redux/navs/navigationSlice";
 
 function SideNav({
   collapsed,

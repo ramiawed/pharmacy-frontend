@@ -15,7 +15,6 @@ import { selectSettings } from "../../redux/settings/settingsSlice";
 // components
 import TopNav from "../../components/top-nav/top-nav.component";
 import SideNav from "../../components/side-nav/side-nav.component";
-
 import OrdersPage from "../orders-page/orders-page.component";
 import OrderDetailsPage from "../order-details-page/order-details-page.component";
 import Footer from "../../components/footer/footer.component";
@@ -93,6 +92,7 @@ const NotificationPage = lazy(() =>
 const SettingsPage = lazy(() =>
   import("../settings-page/settings-page.component")
 );
+
 // MainPage
 // you have to sign in first
 function MainPage() {
@@ -104,7 +104,6 @@ function MainPage() {
   // get the user and the token from redux-store-auth
   const { user, token } = useSelector(selectUserData);
   const { status: settingsStatus } = useSelector(selectSettings);
-  const [loading, setLoading] = useState(true);
 
   const [toTopVisible, setToTopVisible] = useState(false);
 
@@ -147,10 +146,6 @@ function MainPage() {
       }
     };
 
-    setTimeout(() => {
-      setLoading(false);
-    }, 4000);
-
     window.addEventListener("scroll", toggleToTopVisible);
     window.scrollTo(0, 0);
 
@@ -170,9 +165,7 @@ function MainPage() {
         history.push("/");
       }}
     >
-      {settingsStatus === "loading" ||
-      advertisementsStatus === "loading" ||
-      loading ? (
+      {settingsStatus === "loading" || advertisementsStatus === "loading" ? (
         <HomePageLoader />
       ) : (
         <>

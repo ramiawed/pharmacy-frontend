@@ -226,7 +226,7 @@ function ItemRowNew({ item }) {
       <div className={styles.container}>
         {checkOffer(item, user) && (
           <div className={styles.offer_icon}>
-            <GoBookmark size={24} />
+            <GoBookmark size={36} />
           </div>
         )}
 

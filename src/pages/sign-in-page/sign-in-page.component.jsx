@@ -20,6 +20,7 @@ import { unwrapResult } from "@reduxjs/toolkit";
 import { Redirect } from "react-router-dom";
 
 function SignInPage() {
+  const { t } = useTranslation();
   const [checkingToken, setCheckingToken] = useState(true);
   const dispatch = useDispatch();
 
@@ -61,6 +62,7 @@ function SignInPage() {
     <div className={styles.container}>
       <div className={styles.image}>
         <img src={Logo} alt="thumb" className={styles.img} />
+        <p>{t("app-slogan")}</p>
       </div>
       <div className={styles.content}>
         <SignIn />

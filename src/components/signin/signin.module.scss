@@ -5,6 +5,9 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: rgba($color: $main-color, $alpha: 1);
+
+
 
   .signup {
     position: fixed;
@@ -75,7 +78,7 @@
   .container {
     width: 100%;
     padding: 40px;
-    background-color: rgba($color: $main-color, $alpha: 1);
+    background: linear-gradient(180deg, hsla(0, 0%, 100%, 1) 0%, hsla(220, 46%, 48%, 1) 60%);
     margin: 50px;
     border-radius: 15px;
 

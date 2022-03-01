@@ -86,6 +86,7 @@ function UserProfilePage({ onSelectedChange }) {
       .then((response) => {
         setUser(response.data.data.user);
         setUserObj(response.data.data.user);
+        console.log(userObj.guestDetails.job);
       });
     window.scrollTo(0, 0);
     onSelectedChange();

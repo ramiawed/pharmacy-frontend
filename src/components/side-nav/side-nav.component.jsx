@@ -1,13 +1,10 @@
-import React, { useState } from "react";
+import React, { lazy, Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 // components
-import SideNavAdmin from "../side-nav-admin/side-nav-admin.component";
-import SideNavCompany from "../side-nav-company/side-nav-company.component";
-import SideNavGuest from "../side-nav-guest/side-nav-guest.component";
-import SideNavPharmacy from "../side-nav-pharmacy/side-nav-pharmacy.component";
-import SideNavWarehouse from "../side-nav-warehouse/side-nav-warehouse.component";
+// import SideNavAdmin from "../side-nav-admin/side-nav-admin.component";
+
 import SearchHome from "../search-home/search-home.component";
 
 // react-icons
@@ -55,6 +52,22 @@ import navStyles from "./../side-nav.module.scss";
 
 // constants
 import { SERVER_URL, UserTypeConstants } from "../../utils/constants";
+
+const SideNavAdmin = lazy(() =>
+  import("../side-nav-admin/side-nav-admin.component")
+);
+const SideNavCompany = lazy(() =>
+  import("../side-nav-company/side-nav-company.component")
+);
+const SideNavGuest = lazy(() =>
+  import("../side-nav-guest/side-nav-guest.component")
+);
+const SideNavPharmacy = lazy(() =>
+  import("../side-nav-pharmacy/side-nav-pharmacy.component")
+);
+const SideNavWarehouse = lazy(() =>
+  import("../side-nav-warehouse/side-nav-warehouse.component")
+);
 
 function SideNav({
   collapsed,
@@ -169,41 +182,44 @@ function SideNav({
               )}
             </div>
           </div>
-          {user.type === UserTypeConstants.ADMIN && (
-            <SideNavAdmin
-              selectedOption={selectedOption}
-              onSelectedChange={onSelectedChange}
-              collapsed={collapsed}
-            />
-          )}
-          {user.type === UserTypeConstants.COMPANY && (
-            <SideNavCompany
-              selectedOption={selectedOption}
-              onSelectedChange={onSelectedChange}
-              collapsed={collapsed}
-            />
-          )}
-          {user.type === UserTypeConstants.WAREHOUSE && (
-            <SideNavWarehouse
-              selectedOption={selectedOption}
-              onSelectedChange={onSelectedChange}
-              collapsed={collapsed}
-            />
-          )}
-          {user.type === UserTypeConstants.PHARMACY && (
-            <SideNavPharmacy
-              selectedOption={selectedOption}
-              onSelectedChange={onSelectedChange}
-              collapsed={collapsed}
-            />
-          )}
-          {user.type === UserTypeConstants.GUEST && (
-            <SideNavGuest
-              selectedOption={selectedOption}
-              onSelectedChange={onSelectedChange}
-              collapsed={collapsed}
-            />
-          )}
+          <Suspense fallback={<></>}>
+            {user.type === UserTypeConstants.ADMIN && (
+              <SideNavAdmin
+                selectedOption={selectedOption}
+                onSelectedChange={onSelectedChange}
+                collapsed={collapsed}
+              />
+            )}
+            {user.type === UserTypeConstants.COMPANY && (
+              <SideNavCompany
+                selectedOption={selectedOption}
+                onSelectedChange={onSelectedChange}
+                collapsed={collapsed}
+              />
+            )}
+            {user.type === UserTypeConstants.WAREHOUSE && (
+              <SideNavWarehouse
+                selectedOption={selectedOption}
+                onSelectedChange={onSelectedChange}
+                collapsed={collapsed}
+              />
+            )}
+            {user.type === UserTypeConstants.PHARMACY && (
+              <SideNavPharmacy
+                selectedOption={selectedOption}
+                onSelectedChange={onSelectedChange}
+                collapsed={collapsed}
+              />
+            )}
+            {user.type === UserTypeConstants.GUEST && (
+              <SideNavGuest
+                selectedOption={selectedOption}
+                onSelectedChange={onSelectedChange}
+                collapsed={collapsed}
+              />
+            )}
+          </Suspense>
+
           <Link
             className={linkStyles.link}
             to={{

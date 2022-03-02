@@ -47,7 +47,8 @@ function InputFileImage({ type, item, readOnly, onchange }) {
             if (onchange) {
               onchange();
             }
-          });
+          })
+          .catch((err) => console.log(err));
       } else {
         const { _id } = item;
         dispatch(changeItemLogo({ data, _id, token }))
@@ -56,7 +57,8 @@ function InputFileImage({ type, item, readOnly, onchange }) {
             if (onchange) {
               onchange();
             }
-          });
+          })
+          .catch((err) => console.log(err));
       }
     }
   };

@@ -218,32 +218,31 @@ export const deleteMe = createAsyncThunk(
 export const changeLogo = createAsyncThunk(
   "auth/changeLogo",
   async ({ data, token }, { rejectWithValue }) => {
-    try {
-      CancelToken = axios.CancelToken;
-      source = CancelToken.source();
-
-      const response = await axios.post(`${BASEURL}/users/upload`, data, {
-        cancelToken: source.token,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      resetCancelAndSource();
-      return response.data;
-    } catch (err) {
-      resetCancelAndSource();
-      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
-        return rejectWithValue("timeout");
-      }
-      if (axios.isCancel(err)) {
-        return rejectWithValue("cancel");
-      }
-      if (!err.response) {
-        return rejectWithValue("network failed");
-      }
-      return rejectWithValue(err.response.data);
-    }
+    // try {
+    //   CancelToken = axios.CancelToken;
+    //   source = CancelToken.source();
+    //   const response = await axios.post(`${BASEURL}/users/upload`, data, {
+    //     cancelToken: source.token,
+    //     headers: {
+    //       "Content-Type": "multipart/form-data",
+    //       Authorization: `Bearer ${token}`,
+    //     },
+    //   });
+    //   resetCancelAndSource();
+    //   return response.data;
+    // } catch (err) {
+    //   resetCancelAndSource();
+    //   if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+    //     return rejectWithValue("timeout");
+    //   }
+    //   if (axios.isCancel(err)) {
+    //     return rejectWithValue("cancel");
+    //   }
+    //   if (!err.response) {
+    //     return rejectWithValue("network failed");
+    //   }
+    //   return rejectWithValue(err.response.data);
+    // }
   }
 );
 
@@ -301,6 +300,12 @@ export const authSlice = createSlice({
     },
     resetChangeLogoError: (state) => {
       state.changeLogoError = "";
+    },
+    changeLogoURL: (state, action) => {
+      state.user = {
+        ...state.user,
+        logo_url: action.payload,
+      };
     },
     authSliceSignOut: (state) => {
       state.status = "idle";
@@ -449,29 +454,29 @@ export const authSlice = createSlice({
       }
     },
 
-    // change the logo of a user lifecycle
-    [changeLogo.pending]: (state) => {
-      state.changeLogoStatus = "loading";
-    },
-    [changeLogo.fulfilled]: (state, action) => {
-      state.changeLogoStatus = "succeeded";
-      state.user = action.payload.data.user;
-    },
-    [changeLogo.rejected]: (state, { payload }) => {
-      state.changeLogoStatus = "failed";
+    // // change the logo of a user lifecycle
+    // [changeLogo.pending]: (state) => {
+    //   state.changeLogoStatus = "loading";
+    // },
+    // [changeLogo.fulfilled]: (state, action) => {
+    //   state.changeLogoStatus = "succeeded";
+    //   state.user = action.payload.data.user;
+    // },
+    // [changeLogo.rejected]: (state, { payload }) => {
+    //   state.changeLogoStatus = "failed";
 
-      try {
-        if (payload === "timeout") {
-          state.error = "general-error";
-        } else if (payload === "cancel") {
-          state.error = "general-error";
-        } else if (payload === "network failed") {
-          state.error = "general-error";
-        } else state.error = payload.message;
-      } catch (err) {
-        state.error = "general-error";
-      }
-    },
+    //   try {
+    //     if (payload === "timeout") {
+    //       state.error = "general-error";
+    //     } else if (payload === "cancel") {
+    //       state.error = "general-error";
+    //     } else if (payload === "network failed") {
+    //       state.error = "general-error";
+    //     } else state.error = payload.message;
+    //   } catch (err) {
+    //     state.error = "general-error";
+    //   }
+    // },
   },
 });
 
@@ -488,6 +493,7 @@ export const {
   resetUpdateStatus,
   resetUpdateError,
   authSliceSignOut,
+  changeLogoURL,
 } = authSlice.actions;
 
 export const selectToken = (state) => state.auth.token;

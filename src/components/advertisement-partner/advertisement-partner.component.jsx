@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import DefaultLogo from "../../logo01.png";
 
 // components
 
@@ -69,17 +70,16 @@ function AdvertisementPartner({ user, contentColor }) {
 
   return (
     <div className={styles.partner_container}>
-      <div
-        className={styles.logo_div}
-        style={{
-          backgroundImage:
+      <div className={styles.logo_div}>
+        <img
+          src={
             user.logo_url.length > 0
-              ? `url("${SERVER_URL}/profiles/${user.logo_url}")`
-              : `url("${SERVER_URL}/default-logo.png")`,
-          backgroundPosition: "center",
-          backgroundSize: "cover",
-        }}
-      ></div>
+              ? `url("${SERVER_URL}profiles/${user.logo_url}")`
+              : `${DefaultLogo}`
+          }
+          alt="thumb"
+        />
+      </div>
 
       <Link
         className={styles.content}

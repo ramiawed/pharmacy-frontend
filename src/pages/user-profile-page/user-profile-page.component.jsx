@@ -9,16 +9,21 @@ import Logo from "../../logo01.png";
 import Header from "../../components/header/header.component";
 import CardInfo from "../../components/card-info/card-info.component";
 import InfoRow from "../../components/info-row/info-row.component";
-import InputFileImage from "../../components/input-file-image/input-file-image.component";
+// import InputFileImage from "../../components/input-file-image/input-file-image.component";
 import ChangePassword from "../../components/change-password/change-password.component";
 import DeleteMe from "../../components/delete-me/delete-me.component";
 import Button from "../../components/button/button.component";
 import UserProfileNotifications from "../../components/user-profile-notifications/user-profile-notifications.component";
 import EditableCity from "../../components/editable-city/editable-city.component";
+import Loader from "../../components/action-loader/action-loader.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-import { selectUserData, updateUserInfo } from "../../redux/auth/authSlice";
+import {
+  changeLogoURL,
+  selectUserData,
+  updateUserInfo,
+} from "../../redux/auth/authSlice";
 import {
   changeOnlineMsg,
   selectOnlineStatus,
@@ -40,14 +45,40 @@ import {
 function UserProfilePage({ onSelectedChange }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const inputFileRef = React.useRef(null);
 
   // selectors
   const isOnline = useSelector(selectOnlineStatus);
-  const { token } = useSelector(selectUserData);
+  const { token, user } = useSelector(selectUserData);
 
   // own state
-  const [user, setUser] = useState({});
-  const [userObj, setUserObj] = useState(user);
+  const [userObj, setUserObj] = useState({});
+  const [loading, setLoading] = useState(false);
+
+  const handleClick = () => {
+    inputFileRef.current.click();
+  };
+
+  const fileSelectedHandler = (event) => {
+    if (event.target.files[0]) {
+      setLoading(true);
+      // setSelectedFile(event.target.files[0]);
+      let formData = new FormData();
+      formData.append("file", event.target.files[0]);
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      axios.post(`${BASEURL}/users/upload`, formData, config).then((res) => {
+        dispatch(changeLogoURL(res.data.data.name));
+        getMyInfo();
+        setLoading(false);
+      });
+    }
+  };
 
   const handleInputChange = (field, val) => {
     setUserObj({
@@ -76,7 +107,7 @@ function UserProfilePage({ onSelectedChange }) {
     );
   };
 
-  useEffect(() => {
+  const getMyInfo = () => {
     axios
       .get(`${BASEURL}/users/me`, {
         headers: {
@@ -84,10 +115,13 @@ function UserProfilePage({ onSelectedChange }) {
         },
       })
       .then((response) => {
-        setUser(response.data.data.user);
+        // setUser(response.data.data.user);
         setUserObj(response.data.data.user);
-        console.log(userObj.guestDetails.job);
       });
+  };
+
+  useEffect(() => {
+    getMyInfo();
     window.scrollTo(0, 0);
     onSelectedChange();
   }, []);
@@ -97,6 +131,7 @@ function UserProfilePage({ onSelectedChange }) {
       <Header>
         <h2>{t("nav-profile")}</h2>
       </Header>
+      {loading && <Loader />}
       <div className={generalStyles.container_with_header}>
         <div className={styles.content}>
           <div
@@ -110,16 +145,48 @@ function UserProfilePage({ onSelectedChange }) {
             <div className={styles.logo}>
               <img
                 src={
-                  user.logo_url && user.logo_url !== ""
-                    ? `${SERVER_URL}/profiles/${user.logo_url}`
+                  userObj.logo_url && userObj.logo_url !== ""
+                    ? `${SERVER_URL}/profiles/${userObj.logo_url}`
                     : Logo
                 }
                 alt="thumb"
               />
             </div>
 
+            <div style={{ display: "none" }}>
+              <form encType="multipart/form-data">
+                <div>
+                  <input
+                    type="file"
+                    name="file"
+                    onChange={fileSelectedHandler}
+                    ref={inputFileRef}
+                    stye={{ display: "none" }}
+                  />
+
+                  {/* <input
+                    type="submit"
+                    onClick={fileUploadHandler}
+                    value="Get me the stats!"
+                  /> */}
+                </div>
+              </form>
+            </div>
+
             <div>
-              <InputFileImage type="partner" />
+              <button
+                className={[
+                  generalStyles.button,
+                  generalStyles.bg_secondary,
+                  generalStyles.fc_white,
+                  generalStyles.padding_h_12,
+                  generalStyles.padding_v_6,
+                ].join(" ")}
+                onClick={handleClick}
+                // disabled={readOnly}
+              >
+                {t("change-logo")}
+              </button>
             </div>
           </div>
 

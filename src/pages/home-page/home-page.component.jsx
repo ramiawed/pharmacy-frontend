@@ -42,6 +42,7 @@ import { selectAdvertisements } from "../../redux/advertisements/advertisementsS
 // styles
 import styles from "./home-page.module.scss";
 import { SERVER_URL } from "../../utils/constants";
+import TestUploadImage from "../../components/test-upload-image/test-upload-image.component";
 
 function HomePage({ onSelectedChange }) {
   const dispatch = useDispatch();
@@ -146,6 +147,8 @@ function HomePage({ onSelectedChange }) {
             : `url(${background})`,
         }}
       ></div>
+
+      <TestUploadImage />
 
       <div className={styles.advertisement_container}>
         {settings.companiesSectionOne.show &&

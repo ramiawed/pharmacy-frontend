@@ -1,11 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
+
 import { BrowserRouter } from "react-router-dom";
+
+// redux stuff
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
+
+// files
 import store from "./store";
 import App from "./App";
+
+//
 import "./i18n/i18n";
 import "./../node_modules/slick-carousel/slick/slick.css";
 import "./../node_modules/slick-carousel/slick/slick-theme.css";

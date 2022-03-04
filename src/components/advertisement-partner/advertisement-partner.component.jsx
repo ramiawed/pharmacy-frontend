@@ -74,7 +74,7 @@ function AdvertisementPartner({ user, contentColor }) {
         <img
           src={
             user.logo_url.length > 0
-              ? `url("${SERVER_URL}profiles/${user.logo_url}")`
+              ? `${SERVER_URL}profiles/${user.logo_url}`
               : `${DefaultLogo}`
           }
           alt="thumb"

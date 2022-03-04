@@ -8,7 +8,7 @@
 
   position: relative;
 
-  box-shadow: 2px 2px 5px rgba($color: $black-color, $alpha: 0.7);
+  box-shadow: 2px 2px 5px rgba($color: $white-color, $alpha: 0.7);
   border-radius: 6px;
 
   display: flex;
@@ -43,5 +43,5 @@
 }
 
 .partner_container:hover {
-  transform: scale(1.05);
+  box-shadow: inset 2px 2px 5px rgba($color: $black-color, $alpha: 0.7);
 }

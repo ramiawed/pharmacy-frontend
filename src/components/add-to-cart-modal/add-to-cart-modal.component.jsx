@@ -62,7 +62,6 @@ const checkOfferQty = (selectedWarehouse, qty) => {
 };
 
 function AddToCartModal({ item, close, setAddItemToCartMsg }) {
-  console.log(item);
   const { t } = useTranslation();
   const dispatch = useDispatch();
 

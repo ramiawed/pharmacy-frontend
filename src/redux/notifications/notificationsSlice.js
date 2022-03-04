@@ -53,39 +53,6 @@ export const getAllNotifications = createAsyncThunk(
   }
 );
 
-export const addNotification = createAsyncThunk(
-  "notification/addNotification",
-  async ({ data, token }, { rejectWithValue }) => {
-    try {
-      CancelToken = axios.CancelToken;
-      source = CancelToken.source();
-
-      const response = await axios.post(`${BASEURL}/notifications/add`, data, {
-        // timeout: 10000,
-        cancelToken: source.token,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
-      return response.data;
-    } catch (err) {
-      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
-        return rejectWithValue("timeout");
-      }
-      if (axios.isCancel(err)) {
-        return rejectWithValue("cancel");
-      }
-
-      if (!err.response) {
-        return rejectWithValue("network failed");
-      }
-
-      return rejectWithValue(err.response.data);
-    }
-  }
-);
-
 export const deleteNotification = createAsyncThunk(
   "notification/deleteNotification",
   async ({ id, token }, { rejectWithValue }) => {
@@ -138,6 +105,9 @@ export const NotificationsSlice = createSlice({
     setPage: (state, action) => {
       state.page = action.payload;
     },
+    addNotification: (state, action) => {
+      state.notifications = [action.payload, ...state.notifications];
+    },
     resetNotifications: (state) => {
       state.status = "idle";
       state.error = "";
@@ -154,19 +124,6 @@ export const NotificationsSlice = createSlice({
     },
   },
   extraReducers: {
-    [addNotification.pending]: (state) => {
-      state.status = "loading";
-    },
-    [addNotification.fulfilled]: (state, action) => {
-      state.status = "succeeded";
-      state.notifications = [
-        action.payload.data.notification,
-        ...state.notifications,
-      ];
-    },
-    [addNotification.rejected]: (state) => {
-      state.status = "failed";
-    },
     [deleteNotification.pending]: (state) => {
       state.status = "loading";
     },
@@ -197,6 +154,7 @@ export const {
   resetNotifications,
   setPage,
   notificationsSignOut,
+  addNotification,
 } = NotificationsSlice.actions;
 
 export const selectNotifications = (state) => state.notifications;

@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
+import axios from "axios";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -20,7 +21,7 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 import styles from "./new-notification.module.scss";
 
 // constants
-import { Colors } from "../../utils/constants";
+import { BASEURL, Colors } from "../../utils/constants";
 
 function NewNotification({ setIsNew, setSuccessAddingMsg }) {
   const inputFileRef = useRef(null);
@@ -67,27 +68,25 @@ function NewNotification({ setIsNew, setSuccessAddingMsg }) {
       return;
     }
 
-    const data = new FormData();
+    const formData = new FormData();
+    formData.append("file", selectedImage);
+    formData.append("title", header);
+    formData.append("description", body);
 
-    if (selectedImage !== null) {
-      data.append(
-        "logo_url",
-        `${Date.now()}.${selectedImage.name.split(".").pop()}`
-      );
-      data.append("file", selectedImage);
-    }
+    const config = {
+      headers: {
+        "content-type": "multipart/form-data",
+        Authorization: `Bearer ${token}`,
+      },
+    };
 
-    data.append("header", header);
-    data.append("body", body);
-
-    dispatch(addNotification({ data, token }))
-      .then(unwrapResult)
-      .then(() => {
-        setBody("");
-        setHeader("");
-        setSelectedImage(null);
-        setSuccessAddingMsg("add-notification-msg");
-      });
+    axios.post(`${BASEURL}/notifications/add`, formData, config).then((res) => {
+      dispatch(addNotification(res.data.data.notification));
+      setBody("");
+      setHeader("");
+      setSelectedImage(null);
+      setSuccessAddingMsg("add-notification-msg");
+    });
   };
 
   return (
@@ -133,14 +132,23 @@ function NewNotification({ setIsNew, setSuccessAddingMsg }) {
               onclick={handleAddImageClick}
               icon={() => <MdAddCircle size={24} />}
             />
-            <input
-              multiple={false}
-              accept="image/*"
-              ref={inputFileRef}
-              type="file"
-              onChange={fileChangedHandler}
-              hidden
-            />
+            <div
+              style={{
+                display: "none",
+              }}
+            >
+              <form encType="multipart/form-data">
+                <div>
+                  <input
+                    type="file"
+                    name="file"
+                    onChange={fileChangedHandler}
+                    ref={inputFileRef}
+                    stye={{ display: "none" }}
+                  />
+                </div>
+              </form>
+            </div>
           </>
         ) : (
           <Icon

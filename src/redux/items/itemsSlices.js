@@ -367,7 +367,6 @@ export const itemsSlice = createSlice({
     resetChangeOfferError: (state) => {
       state.changeOfferError = "";
     },
-
     warehouseAddBonusSocket: (state, action) => {
       state.items = state.items.map((m) => {
         if (m._id === action.payload.itemId) {
@@ -759,7 +758,7 @@ export const {
   setCompany,
   setWarehouse,
   warehouseAddBonusSocket,
-  warehouseAddOrRemoveItemSocket
+  warehouseAddOrRemoveItemSocket,
 } = itemsSlice.actions;
 
 export const selectItems = (state) => state.items;

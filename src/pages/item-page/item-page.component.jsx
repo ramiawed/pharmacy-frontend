@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
   addItem,
+  changeItemLogo,
   resetAddStatus,
   resetUpdateStatus,
   selectItems,
@@ -56,7 +57,6 @@ import { RiRefreshLine } from "react-icons/ri";
 import generalStyles from "../../style.module.scss";
 import styles from "./item-page.module.scss";
 import rowStyles from "../../components/row.module.scss";
-import { changeNavSettings } from "../../redux/navs/navigationSlice";
 
 function ItemPage() {
   const { t } = useTranslation();
@@ -68,6 +68,11 @@ function ItemPage() {
 
   const { from, allowAction, type, itemId, companyId, warehouseId } =
     location.state;
+
+  const inputFileRef = React.useRef(null);
+  const handleClick = () => {
+    inputFileRef.current.click();
+  };
 
   // selectors
   const isOnline = useSelector(selectOnlineStatus);
@@ -85,6 +90,7 @@ function ItemPage() {
   const [showUpdateConfirmModal, setShowUpdateConfirmModal] = useState(false);
   const [loadingItem, setLoadingItem] = useState("idle");
   const [itemError, setItemError] = useState({});
+  const [imageSizeWarningMsg, setImageSizeWarningMsg] = useState("");
 
   const [item, setItem] = useState({
     name: "",
@@ -238,6 +244,29 @@ function ItemPage() {
       .catch(() => {});
   };
 
+  const fileSelectedHandler = (event) => {
+    if (event.target.files[0]) {
+      if (parseFloat(event.target.files[0].size / 1024).toFixed(2) < 512) {
+        let formData = new FormData();
+        formData.append("file", event.target.files[0]);
+        const config = {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        };
+
+        axios
+          .post(`${BASEURL}/items/upload/${item._id}`, formData, config)
+          .then((res) => {
+            getItemFromDB();
+          });
+      } else {
+        setImageSizeWarningMsg("image-size-must-be-less-than");
+      }
+    }
+  };
+
   const getItemFromDB = useCallback(() => {
     setLoadingItem("loading");
     axios
@@ -260,12 +289,6 @@ function ItemPage() {
       getItemFromDB();
       window.scrollTo(0, 0);
     }
-
-    // dispatch(
-    //   changeNavSettings({
-    //     showSearchBar: false,
-    //   })
-    // );
   }, [itemId, type]);
 
   return user ? (
@@ -311,15 +334,37 @@ function ItemPage() {
             ) : null}
 
             {allowAction && itemId && (
-              <div>
-                <InputFileImage
-                  type="item"
-                  item={item}
-                  onchange={() => {
-                    getItemFromDB();
-                  }}
-                />
-              </div>
+              <>
+                <div style={{ display: "none" }}>
+                  <form encType="multipart/form-data">
+                    <div>
+                      <input
+                        type="file"
+                        name="file"
+                        onChange={fileSelectedHandler}
+                        ref={inputFileRef}
+                        stye={{ display: "none" }}
+                      />
+                    </div>
+                  </form>
+                </div>
+
+                <div>
+                  <button
+                    className={[
+                      generalStyles.button,
+                      generalStyles.bg_secondary,
+                      generalStyles.fc_white,
+                      generalStyles.padding_h_12,
+                      generalStyles.padding_v_6,
+                    ].join(" ")}
+                    onClick={handleClick}
+                    // disabled={readOnly}
+                  >
+                    {t("change-logo")}
+                  </button>
+                </div>
+              </>
             )}
             {allowAction &&
               (from === UserTypeConstants.COMPANY ||
@@ -630,6 +675,18 @@ function ItemPage() {
           }}
         >
           <p>{t("update-item-succeeded")}</p>
+        </Toast>
+      )}
+
+      {imageSizeWarningMsg && (
+        <Toast
+          bgColor={Colors.FAILED_COLOR}
+          foreColor="#fff"
+          actionAfterTimeout={() => {
+            setImageSizeWarningMsg("");
+          }}
+        >
+          <p>{t("image-size-must-be-less-than")}</p>
         </Toast>
       )}
 

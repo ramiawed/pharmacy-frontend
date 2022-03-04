@@ -308,6 +308,20 @@ function SignUp() {
     }
   };
 
+  const fileSelectedHandler = (event) => {
+    if (event.target.files[0]) {
+      // setSelectedFile(event.target.files[0]);
+      let formData = new FormData();
+      formData.append("file", event.target.files[0]);
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      };
+
+      axios.post(`${BASEURL}/users/upload`, formData, config).then((res) => {});
+    }
+  };
   // handle click on the create an account button
   // check name, username, password, passwordConfirm to be not empty
   // check the password and passwordConfirm length (must be greater than or equals to 8)
@@ -419,16 +433,17 @@ function SignUp() {
             user.type === UserTypeConstants.GUEST
           ) {
             const data = new FormData();
-            data.append(
-              "name",
-              `${user.name.replace("%", "")}${Date.now()}.${user.paperUrl.name
-                .split(".")
-                .pop()}`
-            );
             data.append("id", response.data.data.id);
             data.append("file", user.paperUrl);
+
+            const config = {
+              headers: {
+                "content-type": "multipart/form-data",
+              },
+            };
+
             axios
-              .post(`${BASEURL}/users/upload-paper`, data)
+              .post(`${BASEURL}/users/upload-paper`, data, config)
               .then(() => {
                 // user type is not normal
                 // redirect to approve page
@@ -751,33 +766,46 @@ function SignUp() {
 
         {(user.type === UserTypeConstants.PHARMACY ||
           user.type === UserTypeConstants.GUEST) && (
-          <div className={styles.input_div} style={{ width: "98%" }}>
-            <label
-              htmlFor="paperUrl"
-              style={{
-                color: Colors.WHITE_COLOR,
-                marginInlineEnd: "6px",
-              }}
-            >
-              {t(userPaperUrlLabel)}
-            </label>
-            <input
-              id="paperUrl"
-              ref={inputFileRef}
-              multiple={false}
-              accept="image/*"
-              type="file"
-              onChange={(e) => {
-                setUser({
-                  ...user,
-                  paperUrl: e.target.files[0],
-                });
-                setError({
-                  ...error,
-                  paperUrl: "",
-                });
-              }}
-            />
+          <div div className={styles.input_div} style={{ width: "98%" }}>
+            <form encType="multipart/form-data">
+              <>
+                <label
+                  htmlFor="paperUrl"
+                  style={{
+                    color: Colors.WHITE_COLOR,
+                    marginInlineEnd: "6px",
+                  }}
+                >
+                  {t(userPaperUrlLabel)}
+                </label>
+                <input
+                  type="file"
+                  name="file"
+                  ref={inputFileRef}
+                  stye={{ display: "none" }}
+                  onChange={(e) => {
+                    setUser({
+                      ...user,
+                      paperUrl: e.target.files[0],
+                    });
+                    setError({
+                      ...error,
+                      paperUrl: "",
+                    });
+                  }}
+                />
+              </>
+            </form>
+            {/* <div className={styles.input_div} style={{ width: "98%" }}>
+              
+              <input
+                id="paperUrl"
+                ref={inputFileRef}
+                multiple={false}
+                accept="image/*"
+                type="file"
+              />
+            </div> */}
           </div>
         )}
       </div>

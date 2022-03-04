@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import DefaultLogo from "../../logo01.png";
+import Logo from "../../logo01.png";
 
 // components
 
@@ -38,14 +38,15 @@ function AdvertisementItem({ item, contentColor }) {
   return (
     <div className={styles.partner_container}>
       <div className={styles.logo_div}>
-        <img
-          src={
-            user.logo_url.length > 0
-              ? `url("${SERVER_URL}profiles/${user.logo_url}")`
-              : `${DefaultLogo}`
-          }
-          alt="thumb"
-        />
+        {item.logo_url && item.logo_url !== "" ? (
+          <img
+            src={`${SERVER_URL}/items/${item.logo_url}`}
+            className={styles.logo}
+            alt="thumb"
+          />
+        ) : (
+          <img src={Logo} className={styles.logo} alt="thumb" />
+        )}
       </div>
 
       <div>
@@ -72,10 +73,6 @@ function AdvertisementItem({ item, contentColor }) {
           {item.name}
         </Link>
       </div>
-
-      {/* {showModal && (
-        <AddToCartModal item={item} close={() => setShowModal(false)} />
-      )} */}
     </div>
   );
 }

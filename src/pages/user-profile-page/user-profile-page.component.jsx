@@ -65,6 +65,7 @@ function UserProfilePage({ onSelectedChange }) {
       // setSelectedFile(event.target.files[0]);
       let formData = new FormData();
       formData.append("file", event.target.files[0]);
+
       const config = {
         headers: {
           "content-type": "multipart/form-data",
@@ -163,12 +164,6 @@ function UserProfilePage({ onSelectedChange }) {
                     ref={inputFileRef}
                     stye={{ display: "none" }}
                   />
-
-                  {/* <input
-                    type="submit"
-                    onClick={fileUploadHandler}
-                    value="Get me the stats!"
-                  /> */}
                 </div>
               </form>
             </div>

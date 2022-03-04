@@ -42,7 +42,6 @@ import { selectAdvertisements } from "../../redux/advertisements/advertisementsS
 // styles
 import styles from "./home-page.module.scss";
 import { SERVER_URL } from "../../utils/constants";
-import TestUploadImage from "../../components/test-upload-image/test-upload-image.component";
 
 function HomePage({ onSelectedChange }) {
   const dispatch = useDispatch();
@@ -148,8 +147,6 @@ function HomePage({ onSelectedChange }) {
         }}
       ></div>
 
-      <TestUploadImage />
-
       <div className={styles.advertisement_container}>
         {settings.companiesSectionOne.show &&
           (companiesSectionOneStatus === "loading" ? (
@@ -251,6 +248,7 @@ function HomePage({ onSelectedChange }) {
                 header={settings.itemsSectionOne?.title}
                 description={settings.itemsSectionOne?.description}
                 order={settings.itemsSectionOne?.order}
+                type="item"
               />
             )
           ))}
@@ -277,6 +275,7 @@ function HomePage({ onSelectedChange }) {
                 header={settings.itemsSectionTwo?.title}
                 description={settings.itemsSectionTwo?.description}
                 order={settings.itemsSectionTwo?.order}
+                type="item"
               />
             )
           ))}
@@ -301,6 +300,7 @@ function HomePage({ onSelectedChange }) {
                 header={settings.itemsSectionThree?.title}
                 description={settings.itemsSectionThree?.description}
                 order={settings.itemsSectionThree?.order}
+                type="item"
               />
             )
           ))}

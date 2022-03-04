@@ -30,7 +30,7 @@ import Icon from "../action-icon/action-icon.component";
 import Toast from "../toast/toast.component";
 
 // react icons
-import { GoBookmark } from "react-icons/go";
+import { BsBookmarkPlusFill } from "react-icons/bs";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { GiShoppingCart } from "react-icons/gi";
 import { RiDeleteBin5Fill } from "react-icons/ri";
@@ -226,7 +226,7 @@ function ItemRowNew({ item }) {
       <div className={styles.container}>
         {checkOffer(item, user) && (
           <div className={styles.offer_icon}>
-            <GoBookmark size={36} />
+            <BsBookmarkPlusFill size={36} />
           </div>
         )}
 

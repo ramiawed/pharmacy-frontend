@@ -72,7 +72,8 @@ export const CitiesName = {
 };
 
 export const Colors = {
-  MAIN_COLOR: "#4267B2",
+  // MAIN_COLOR: "#4267B2",
+  MAIN_COLOR: "#566092",
   SECONDARY_COLOR: "#acb3c3",
   BACKUP_COLOR: "#99cf16",
   SUCCEEDED_COLOR: "#2aa70b",

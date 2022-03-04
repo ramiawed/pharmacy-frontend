@@ -72,7 +72,8 @@
 
 .company_name {
   font-size: 1.5rem;
-  color: rgb(86, 227, 25);
+  // color: rgb(86, 227, 25);
+  color: $white-color;
   text-align: center;
   background-color: $main-color;
   writing-mode: vertical-rl;

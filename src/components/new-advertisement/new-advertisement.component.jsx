@@ -24,6 +24,7 @@ import styles from "./new-advertisement.module.scss";
 
 // constants
 import { BASEURL, Colors } from "../../utils/constants";
+import axios from "axios";
 
 function NewAdvertisement({ isNew, setIsNew }) {
   const { t } = useTranslation();
@@ -87,24 +88,37 @@ function NewAdvertisement({ isNew, setIsNew }) {
     }
 
     if (selectedImage) {
-      const data = new FormData();
-      data.append(
-        "name",
-        `${Date.now()}.${selectedImage.name.split(".").pop()}`
-      );
-      data.append("company", selectedCompany ? selectedCompany._id : null);
-      data.append(
+      const formData = new FormData();
+      formData.append("file", selectedImage);
+      formData.append("company", selectedCompany ? selectedCompany._id : null);
+      formData.append(
         "warehouse",
         selectedWarehouse ? selectedWarehouse._id : null
       );
-      data.append("medicine", selectedMedicine ? selectedMedicine._id : null);
-      data.append("file", selectedImage);
+      formData.append(
+        "medicine",
+        selectedMedicine ? selectedMedicine._id : null
+      );
 
-      dispatch(addAdvertisement({ data, token }))
-        .then(unwrapResult)
-        .then(() => {
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      axios
+        .post(`${BASEURL}/advertisement/upload`, formData, config)
+        .then((res) => {
+          dispatch(addAdvertisement(res.data.data.advertisement));
           resetState();
         });
+
+      // dispatch(addAdvertisement({ data, token }))
+      //   .then(unwrapResult)
+      //   .then(() => {
+      //     resetState();
+      //   });
     }
   };
 
@@ -204,14 +218,24 @@ function NewAdvertisement({ isNew, setIsNew }) {
                       onclick={handleAddImageClick}
                       icon={() => <MdAddCircle size={24} />}
                     />
-                    <input
-                      multiple={false}
-                      accept="image/*"
-                      ref={inputFileRef}
-                      type="file"
-                      onChange={fileChangedHandler}
-                      style={{ display: "none" }}
-                    />
+                    <div
+                      style={{
+                        display: "none",
+                      }}
+                    >
+                      <form encType="multipart/form-data">
+                        <div>
+                          <input
+                            multiple={false}
+                            accept="image/*"
+                            ref={inputFileRef}
+                            type="file"
+                            onChange={fileChangedHandler}
+                            style={{ display: "none" }}
+                          />
+                        </div>
+                      </form>
+                    </div>
                   </>
                 ) : (
                   <Icon

@@ -7,8 +7,6 @@
   align-items: center;
   background: rgba($color: $main-color, $alpha: 1);
 
-
-
   .signup {
     position: fixed;
     top: 0;
@@ -78,7 +76,7 @@
   .container {
     width: 100%;
     padding: 40px;
-    background: linear-gradient(180deg, hsla(0, 0%, 100%, 1) 0%, hsla(220, 46%, 48%, 1) 60%);
+    background: linear-gradient(180deg, hsla(0, 0%, 100%, 1) 0%, $main-color 60%);
     margin: 50px;
     border-radius: 15px;
 

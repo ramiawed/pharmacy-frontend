@@ -1,177 +1,96 @@
 @import "../../variables.scss";
 
 .container {
-  min-height: 100vh;
-  width: 100%;
-  min-width: 300px;
-
-  padding: 30px 0;
-  position: absolute;
-
-  flex-direction: column;
-
-
-  overflow: scroll;
-}
-
-.container::before {
-  content: "";
-  width: 100%;
-  height: 100%;
-  position: absolute;
-
-  top: 0;
-  left: 0;
-
-  background-color: $main-color;
-  // opacity: 0.8;
-}
-
-.container h3 {
-  color: $white-color;
-  margin-bottom: 10px;
-  z-index: 10;
-}
-
-.container .button {
-  color: $third-color;
-  margin-inline-start: 4px;
-  font-weight: bolder;
-
-  &:hover {
-    text-decoration: underline;
-    cursor: pointer;
-  }
-}
-
-.container button {
-  background-color: $third-color;
-  color: $white-color;
-  padding: 8px 12px;
-  border: none;
-  outline: none;
-  border-radius: 8px;
-  margin-top: 16px;
-  z-index: 10;
-}
-
-.signup {
-  display: flex;
-  position: absolute;
-  top: 10px;
-  left: 10px;
-}
-
-.signup p {
-  font-size: 12px;
-  color: $white-color;
-  z-index: 1;
-}
-
-.info_div {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  align-items: center;
-  justify-content: space-around;
-  width: 80%;
-  z-index: 10;
-}
-
-.input_div {
-  width: 98%;
-  padding: 4px;
-}
-
-.input_full_width {
-  width: 98%;
-}
-
-.margintop {
-  margin-top: 10px;
-}
-
-p.error {
-  color: $third-color;
-  font-size: 12px;
-  font-weight: bold;
-  margin: 4px 0;
-}
-
-.radio_div {
-  display: flex;
-  flex-direction: row;
-  padding-right: 10px;
-  z-index: 1;
-}
-
-.radio {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-left: 20px;
-}
-
-.radio label {
-  padding: 4px;
-  color: $white-color;
-}
-
-.error_ul {
-  width: 80%;
-  z-index: 1;
-  color: $third-color;
-  margin: 10px auto;
+  width: 50%;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  flex-wrap: wrap;
-}
+  align-items: center;
+  background: rgba($color: $main-color, $alpha: 1);
 
-.error_ul li {
-  min-width: 25%;
-  text-align: center;
-  list-style-type: none;
-  font-size: 0.8rem;
-}
+  padding-block: 40px;
 
-@media only screen and (min-width: $small) {
-  .container {
-    width: 100%;
-    padding: 30px 0;
+  .signin {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: $white-color;
+
+    .signin_button {
+      display: inline-block;
+      margin-inline: 5px;
+      color: $third-color;
+      font-weight: bold;
+      cursor: pointer;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
   }
 
-  .input_div {
-    width: 98%;
+  img {
+    display: none;
+    width: 50%;
+    height: auto;
+  }
+
+  h3 {
+    color: $white-color;
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+    display: inline-block;
+    letter-spacing: 1px;
+  }
+
+  .radio_div {
+    display: flex;
+    flex-direction: row;
+    padding-right: 10px;
+    z-index: 1;
+  }
+
+  .radio {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-left: 20px;
+  }
+
+  .radio label {
+    padding: 4px;
+    color: $white-color;
   }
 
   .error_ul {
-    flex-direction: row;
-  }
-
-  .error_ul li {
-    min-width: 33%;
-  }
-}
-
-@media only screen and (min-width: $medium) {
-  .container {
-    width: 75%;
-  }
-
-  .input_div {
-    width: 48%;
-  }
-
-  .input_full_width {
-    width: 98%;
-  }
-
-  .error_ul {
-    flex-direction: row;
+    width: 80%;
+    z-index: 1;
+    color: $third-color;
+    margin: 10px auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    flex-wrap: wrap;
   }
 
   .error_ul li {
     min-width: 25%;
+    text-align: center;
+    list-style-type: none;
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .container {
+    width: 100%;
+    padding: 40px;
+    background: linear-gradient(180deg, hsla(0, 0%, 100%, 1) 0%, $main-color 60%);
+    margin: 50px;
+    border-radius: 15px;
+
+    img {
+      display: inline-block;
+    }
   }
 }

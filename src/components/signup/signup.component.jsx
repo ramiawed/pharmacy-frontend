@@ -4,6 +4,7 @@ import { Redirect, useHistory } from "react-router";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
+import Logo from "../../logo01.png";
 
 // components
 import SelectCustom from "../select/select.component";
@@ -33,7 +34,6 @@ import { getIcon } from "../../utils/icons.js";
 
 // styles
 import styles from "./signup.module.scss";
-import generalStyles from "../../style.module.scss";
 
 const containerVariant = {
   hidden: {
@@ -308,20 +308,6 @@ function SignUp() {
     }
   };
 
-  const fileSelectedHandler = (event) => {
-    if (event.target.files[0]) {
-      // setSelectedFile(event.target.files[0]);
-      let formData = new FormData();
-      formData.append("file", event.target.files[0]);
-      const config = {
-        headers: {
-          "content-type": "multipart/form-data",
-        },
-      };
-
-      axios.post(`${BASEURL}/users/upload`, formData, config).then((res) => {});
-    }
-  };
   // handle click on the create an account button
   // check name, username, password, passwordConfirm to be not empty
   // check the password and passwordConfirm length (must be greater than or equals to 8)
@@ -485,22 +471,21 @@ function SignUp() {
     <Redirect to="/approve" />
   ) : (
     <motion.div
-      className={[styles.container, generalStyles.flex_center_container].join(
-        " "
-      )}
+      className={[styles.container].join(" ")}
       variants={containerVariant}
       initial="hidden"
       animate="visible"
     >
       {/* top left */}
-      <div className={styles.signup}>
-        <p>{t("sign-in-sentence")}</p>
-        <p className={styles.button} onClick={signInHandler}>
-          {t("sign-in")}
-        </p>
+      <div className={styles.signin}>
+        <label>{t("sign-up-sentence")}</label>
+        <label className={styles.signin_button} onClick={signInHandler}>
+          {t("sign-up")}
+        </label>
       </div>
+      <img src={Logo} alt="thumb" />
 
-      <h3>{t("sign-up")}</h3>
+      <h3>{t("sign-in")}</h3>
 
       <div className={styles.info_div}>
         {/* user type with 100% width and top margin of 10 */}

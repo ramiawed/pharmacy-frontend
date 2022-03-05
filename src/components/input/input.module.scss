@@ -2,15 +2,11 @@
 
 .input_div {
   min-width: 100%;
-
   margin: 4px 0;
   padding: 4px 8px;
-
   border-radius: 8px;
-
   background-color: $white-color;
-  color: $secondary-color;
-
+  color: $main-color;
   display: flex;
   justify-content: flex-start;
   align-items: center;
@@ -18,15 +14,11 @@
 
 .input_div input {
   width: 75px;
-
   margin-inline-start: 8px;
   padding: 4px 0px;
-
   outline: none;
   border: none;
-
-  color: $secondary-color;
-
+  color: $main-color;
   flex: 1;
 }
 
@@ -40,24 +32,17 @@
 }
 
 .input_div label {
-  // min-width: 85px;
-
   font-size: 0.7rem;
-
-  // padding-inline-end: 12px;
-
   text-align: left;
 }
 
 .input_div .icon_error {
   width: 30px;
-
-  color: $red-color;
+  color: $third-color;
 }
 
 .input_div .icon_close {
   width: 30px;
-
   color: $secondary-color;
 }
 

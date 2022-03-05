@@ -6,7 +6,7 @@ import Loader from "../../components/loader/loader.component";
 import AdvertisementHomePage from "../../components/advertisement-home-page/advertisement-home-page.component";
 import SectionHomePageFlex from "../../components/section-home-page-flex/section-home-page-flex.component";
 import HomePageDescribeSection from "../../components/home-page-describe-section/home-page-describe-section.component";
-import background from "../../14.jpg";
+import background from "../../background001.jpg";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";

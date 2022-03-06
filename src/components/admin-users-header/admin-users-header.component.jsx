@@ -96,9 +96,9 @@ function AdminUsersHeader({
       showOrderModalHandler();
     }
 
-    if (e.code === "Backspace") {
-      history.goBack();
-    }
+    // if (e.code === "Backspace") {
+    //   history.goBack();
+    // }
   };
 
   useEffect(() => {

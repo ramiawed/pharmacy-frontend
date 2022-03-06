@@ -23,6 +23,7 @@ import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
+import NoContent from "../../components/no-content/no-content.component";
 
 function AdvertisementsPage({ onSelectedChange }) {
   const { t } = useTranslation();
@@ -49,6 +50,8 @@ function AdvertisementsPage({ onSelectedChange }) {
       <AdvertisementPageHeader isNew={isNew} setIsNew={setIsNew} />
       <div className={generalStyles.container_with_header}>
         <NewAdvertisement isNew={isNew} setIsNew={setIsNew} />
+
+        {advertisements.length === 0 && !isNew && <NoContent />}
 
         {advertisements.map((adv) => (
           <AdvertisementCard advertisement={adv} key={adv._id} />

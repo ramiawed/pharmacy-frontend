@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect, useLocation, useHistory } from "react-router-dom";
 import axios from "axios";
-import Logo from "../../logo01.png";
+import Logo from "../../logo.png";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";

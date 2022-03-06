@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import Logo from "../../logo01.png";
+import Logo from "../../logo.png";
 import OfferImage from "../../offer-image.jpg";
 
 // components

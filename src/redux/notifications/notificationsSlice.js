@@ -90,6 +90,41 @@ export const deleteNotification = createAsyncThunk(
   }
 );
 
+export const addNotification = createAsyncThunk(
+  "notification/addNotification",
+  async ({ data, token }, { rejectWithValue }) => {
+    try {
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      };
+
+      const response = await axios.post(
+        `${BASEURL}/notifications/add`,
+        data,
+        config
+      );
+
+      return response.data;
+    } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const NotificationsSlice = createSlice({
   name: "notifications",
   initialState,
@@ -104,9 +139,6 @@ export const NotificationsSlice = createSlice({
     },
     setPage: (state, action) => {
       state.page = action.payload;
-    },
-    addNotification: (state, action) => {
-      state.notifications = [action.payload, ...state.notifications];
     },
     resetNotifications: (state) => {
       state.status = "idle";
@@ -124,6 +156,31 @@ export const NotificationsSlice = createSlice({
     },
   },
   extraReducers: {
+    [addNotification.pending]: (state) => {
+      state.status = "loading";
+    },
+    [addNotification.fulfilled]: (state, action) => {
+      state.status = "succeeded";
+      state.notifications = [
+        action.payload.data.notification,
+        ...state.notifications,
+      ];
+    },
+    [addNotification.rejected]: (state, { payload }) => {
+      state.status = "failed";
+
+      try {
+        if (payload === "timeout") {
+          state.error = "general-error";
+        } else if (payload === "cancel") {
+          state.error = "general-error";
+        } else if (payload === "network failed") {
+          state.error = "general-error";
+        } else state.error = payload.message;
+      } catch (err) {
+        state.error = "general-error";
+      }
+    },
     [deleteNotification.pending]: (state) => {
       state.status = "loading";
     },
@@ -154,7 +211,7 @@ export const {
   resetNotifications,
   setPage,
   notificationsSignOut,
-  addNotification,
+  // addNotification,
 } = NotificationsSlice.actions;
 
 export const selectNotifications = (state) => state.notifications;

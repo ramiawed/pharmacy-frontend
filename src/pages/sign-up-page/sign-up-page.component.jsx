@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import Logo from "../../logo01.png";
+import Logo from "../../logo.png";
 
 // components
 import SignUp from "../../components/signup/signup.component";

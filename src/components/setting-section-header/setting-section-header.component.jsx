@@ -124,7 +124,7 @@ function SettingSectionHeader({
         ) : (
           <Icon
             icon={() => <AiFillEdit size={20} />}
-            foreColor={Colors.SECONDARY_COLOR}
+            foreColor={Colors.MAIN_COLOR}
             onclick={() => {
               setEdit(true);
             }}
@@ -152,7 +152,7 @@ function SettingSectionHeader({
             placeholder={t("section-title-placeholder")}
           />
         ) : (
-          <label>{titleState}</label>
+          <label className={styles.value}>{titleState}</label>
         )}
       </div>
 
@@ -175,7 +175,7 @@ function SettingSectionHeader({
             placeholder={t("section-description-placeholder")}
           />
         ) : (
-          <label>{descriptionState}</label>
+          <label className={styles.value}>{descriptionState}</label>
         )}
       </div>
 
@@ -203,7 +203,7 @@ function SettingSectionHeader({
             />
           </>
         ) : (
-          <label>{orderState}</label>
+          <label className={styles.value}>{orderState}</label>
         )}
       </div>
 

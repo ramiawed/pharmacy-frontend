@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Redirect, useHistory } from "react-router";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
-import Logo from "../../logo01.png";
+import Logo from "../../logo.png";
 
 // react-icons
 import { HiUser } from "react-icons/hi";

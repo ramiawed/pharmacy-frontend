@@ -292,7 +292,6 @@ export const medicinesSlice = createSlice({
     },
 
     warehouseAddOrRemoveItemSocket: (state, action) => {
-      console.log(action.payload);
       state.medicines = state.medicines.map((m) => {
         if (m._id === action.payload.itemId) {
           return {

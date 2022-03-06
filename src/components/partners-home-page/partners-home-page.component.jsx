@@ -1,6 +1,6 @@
 import React from "react";
 import { SERVER_URL } from "../../utils/constants";
-import DefaultLogo from "../../logo01.png";
+import DefaultLogo from "../../logo.png";
 
 // styles
 import styles from "./partners-home-page.module.scss";

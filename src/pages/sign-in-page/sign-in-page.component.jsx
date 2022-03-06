@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 
 import { useTranslation } from "react-i18next";
-import Logo from "../../logo01.png";
+import Logo from "../../logo.png";
 // import Logo from "../../sign-in-page.jpg";
 
 // components

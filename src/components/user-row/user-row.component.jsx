@@ -495,15 +495,15 @@ function UserRow({ user }) {
             tooltip={t("change-password-tooltip")}
             onclick={() => setShowResetUserPasswordModal(true)}
             icon={() => <CgPassword />}
-            foreColor={Colors.SECONDARY_COLOR}
+            foreColor={Colors.MAIN_COLOR}
           />
         </label>
         <label className={tableStyles.label_xsmall}>
-          <ActinIcon
+          <Icon
             tooltip={t("user-more-info-title")}
             onclick={() => setShowMoreInfo(true)}
             icon={() => <IoMdMore />}
-            foreColor={Colors.SECONDARY_COLOR}
+            foreColor={Colors.MAIN_COLOR}
           />
         </label>
       </div>

@@ -4,11 +4,9 @@
   border: none;
   outline: none;
   border-bottom: 1px solid $secondary-color;
-
   flex: 1;
-
   padding: 4px 0;
-  color: $secondary-color;
+  color: $main-color;
 }
 
 .error {
@@ -18,11 +16,15 @@
 .label {
   min-width: 75px;
   font-size: 0.8rem;
-  color: #a3a3a3;
+  color: $grey-color;
+}
+
+.value {
+  color: $main-color;
 }
 
 .checkbox_label {
-  color: $secondary-color;
+  color: $main-color;
   font-size: 0.9rem;
   padding-inline: 10px;
 }

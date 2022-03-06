@@ -2,7 +2,6 @@ import React, { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 // redux stuff
-import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { addAdvertisement } from "../../redux/advertisements/advertisementsSlice";
 import { selectUserData } from "../../redux/auth/authSlice";
@@ -24,7 +23,6 @@ import styles from "./new-advertisement.module.scss";
 
 // constants
 import { BASEURL, Colors } from "../../utils/constants";
-import axios from "axios";
 
 function NewAdvertisement({ isNew, setIsNew }) {
   const { t } = useTranslation();
@@ -100,25 +98,7 @@ function NewAdvertisement({ isNew, setIsNew }) {
         selectedMedicine ? selectedMedicine._id : null
       );
 
-      const config = {
-        headers: {
-          "content-type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      };
-
-      axios
-        .post(`${BASEURL}/advertisement/upload`, formData, config)
-        .then((res) => {
-          dispatch(addAdvertisement(res.data.data.advertisement));
-          resetState();
-        });
-
-      // dispatch(addAdvertisement({ data, token }))
-      //   .then(unwrapResult)
-      //   .then(() => {
-      //     resetState();
-      //   });
+      dispatch(addAdvertisement({ data: formData, token }));
     }
   };
 

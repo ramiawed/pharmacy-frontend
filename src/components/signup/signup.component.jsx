@@ -4,7 +4,7 @@ import { Redirect, useHistory } from "react-router";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
-import Logo from "../../logo01.png";
+import Logo from "../../logo.png";
 
 // components
 import SelectCustom from "../select/select.component";

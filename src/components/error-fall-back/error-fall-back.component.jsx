@@ -30,10 +30,6 @@ const containerVariant = {
 function ErrorFallback({ error, resetErrorBoundary }) {
   const { t } = useTranslation();
 
-  useEffect(() => {
-    console.log(error);
-  }, []);
-
   return (
     <div
       className={[styles.container, generalStyles.flex_center_container].join(

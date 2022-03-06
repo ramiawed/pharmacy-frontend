@@ -56,20 +56,21 @@
 
     div {
       flex: 1;
+      padding-inline-start: 10px;
 
       .label {
         color: $secondary-color;
-        font-size: 0.4rem;
-        min-width: 75px;
-        width: 75px;
+        font-size: 0.6rem;
+        min-width: 50px;
+        width: 50px;
         display: inline-block;
-        text-align: end;
+        text-align: start;
       }
 
       .value {
         color: $main-color;
         margin-inline-start: 10px;
-        font-size: 0.6rem;
+        font-size: 0.8rem;
       }
     }
   }

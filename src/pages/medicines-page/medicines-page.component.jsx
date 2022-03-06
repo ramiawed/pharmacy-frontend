@@ -219,7 +219,7 @@ function MedicinesPage({ onSelectedChange }) {
           <Icon
             withBackground={true}
             icon={() => <RiRefreshLine />}
-            foreColor={Colors.GREY_COLOR}
+            foreColor={Colors.MAIN_COLOR}
             tooltip={t("refresh-tooltip")}
             onclick={handleEnterPress}
           />
@@ -231,7 +231,7 @@ function MedicinesPage({ onSelectedChange }) {
             <Icon
               withBackground={true}
               selected={false}
-              foreColor={Colors.GREY_COLOR}
+              foreColor={Colors.MAIN_COLOR}
               tooltip={t("clear-filter-tooltip")}
               onclick={() => {
                 dispatch(resetMedicinesPageState());
@@ -247,7 +247,7 @@ function MedicinesPage({ onSelectedChange }) {
               withBackground={true}
               icon={() => <AiFillStar />}
               foreColor={
-                showFavorites ? Colors.SUCCEEDED_COLOR : Colors.GREY_COLOR
+                showFavorites ? Colors.SUCCEEDED_COLOR : Colors.MAIN_COLOR
               }
               tooltip={t("show-favorite-tooltip")}
               onclick={() => setShowFavorites(!showFavorites)}
@@ -280,7 +280,7 @@ function MedicinesPage({ onSelectedChange }) {
             foreColor={
               pageState.displayType === "card"
                 ? Colors.SUCCEEDED_COLOR
-                : Colors.GREY_COLOR
+                : Colors.MAIN_COLOR
             }
             tooltip={t("show-item-as-card-tooltip")}
             onclick={() => dispatch(setDisplayType("card"))}
@@ -292,7 +292,7 @@ function MedicinesPage({ onSelectedChange }) {
             foreColor={
               pageState.displayType === "list"
                 ? Colors.SUCCEEDED_COLOR
-                : Colors.GREY_COLOR
+                : Colors.MAIN_COLOR
             }
             tooltip={t("show-item-as-row-tooltip")}
             onclick={() => dispatch(setDisplayType("list"))}
@@ -305,7 +305,7 @@ function MedicinesPage({ onSelectedChange }) {
               history.goBack();
             }}
             icon={() => <IoMdArrowRoundBack />}
-            foreColor={Colors.GREY_COLOR}
+            foreColor={Colors.MAIN_COLOR}
           />
         </div>
 

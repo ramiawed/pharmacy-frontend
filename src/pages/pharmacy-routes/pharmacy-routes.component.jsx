@@ -2,6 +2,7 @@ import React, { lazy, Suspense } from "react";
 import { Route, Switch } from "react-router-dom";
 import HomePageLoader from "../../components/home-page-loader/home-page-loader.component";
 import { SideNavLinks, TopNavLinks } from "../../utils/constants";
+import CartPage from "../cart-page/cart-page.component";
 
 const CompaniesPage = lazy(() =>
   import("../companies-page/companies-page.component")
@@ -126,7 +127,21 @@ function PharmacyRoutes({ changeOptionHandler }) {
             />
           </Route>
 
-          <Route exact path="/items">
+          <Route exact path="/cart">
+            <CartPage
+              onSelectedChange={() => {
+                changeOptionHandler({
+                  selectedTopNavOption: "",
+                  collapsedSideNavOption: true,
+                  selectedSideNavOption: TopNavLinks.CART,
+                  showTopNav: false,
+                  showSearchBar: false,
+                });
+              }}
+            />
+          </Route>
+
+          {/* <Route exact path="/items">
             <ItemsPage
               onSelectedChange={() => {
                 changeOptionHandler({
@@ -138,7 +153,7 @@ function PharmacyRoutes({ changeOptionHandler }) {
                 });
               }}
             />
-          </Route>
+          </Route> */}
 
           <Route exact path="/notifications">
             <UserNotificationPage

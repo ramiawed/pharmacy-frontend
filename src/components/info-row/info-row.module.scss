@@ -2,9 +2,9 @@
 
 .info_row {
   padding: 8px 12px;
-  
+
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-  
+
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -18,20 +18,20 @@
   padding-inline-end: 6px;
 
   color: #9d9d9d;
-  
+
   font-size: 0.6rem;
 }
 
 .info_row .value {
   flex: 1;
-  color: $secondary-color;
+  color: $main-color;
 
   font-size: 0.8rem;
 }
 
 .value input {
   width: 100%;
-  
+  color: $main-color;
   padding: 4px;
 
   border: none;
@@ -55,12 +55,12 @@
   .info_row .label {
     width: 100px;
     min-width: 100px;
-  
+
     color: #9d9d9d;
-    
+
     font-size: 0.8rem;
   }
-  
+
   .info_row .value {
     font-size: 1rem;
   }

@@ -22,12 +22,11 @@ import {
   setSearchCertificateName,
   setSearchCity,
   setSearchCompanyName,
-  setSearchDistrict,
   setSearchEmployeeName,
   setSearchJob,
   setSearchJobTitle,
   setSearchName,
-  setSearchStreet,
+  setSearchAddressDetails,
   setShowItems,
   setUserActive,
   setUserApproved,
@@ -40,7 +39,7 @@ const Separator = () => {
     <div
       style={{
         height: "1px",
-        background: "rgba(0, 0, 0, 0.3)",
+        // background: "rgba(0, 0, 0, 0.3)",
         margin: "6px 0",
       }}
     ></div>
@@ -192,7 +191,6 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
               dispatch(setSearchName(e.target.value));
             }}
             bordered={true}
-            // icon={<FaSearch />}
             placeholder="search-by-name"
             onEnterPress={enterPress}
             resetField={() => dispatch(setSearchName(""))}
@@ -307,7 +305,6 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
                 dispatch(setSearchEmployeeName(e.target.value));
               }}
               bordered={true}
-              // icon={<FaSearch />}
               placeholder="search-by-employee-name"
               onEnterPress={enterPress}
               resetField={() => dispatch(setSearchEmployeeName(""))}
@@ -323,7 +320,6 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
                 dispatch(setSearchCertificateName(e.target.value));
               }}
               bordered={true}
-              // icon={<FaSearch />}
               placeholder="search-by-certificate"
               onEnterPress={enterPress}
               resetField={() => dispatch(setSearchCertificateName(""))}
@@ -345,7 +341,6 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
                   dispatch(setSearchCompanyName(e.target.value));
                 }}
                 bordered={true}
-                // icon={<FaSearch />}
                 placeholder="search-by-company-name"
                 onEnterPress={enterPress}
                 resetField={() => dispatch(setSearchCompanyName(""))}
@@ -361,7 +356,6 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
                   dispatch(setSearchJobTitle(e.target.value));
                 }}
                 bordered={true}
-                // icon={<FaSearch />}
                 placeholder="search-by-job-title"
                 onEnterPress={enterPress}
                 resetField={() => dispatch(setSearchJobTitle(""))}
@@ -372,42 +366,25 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
         </>
       )}
 
-      <RowWith2Children>
+      <>
         <div>
           <Input
-            label="user-district"
-            id="search-district"
+            label="user-address-details"
+            id="search-address-details"
             type="text"
-            value={pageState.searchDistrict}
+            value={pageState.searchAddressDetails}
             onchange={(e) => {
-              dispatch(setSearchDistrict(e.target.value));
+              dispatch(setSearchAddressDetails(e.target.value));
             }}
             bordered={true}
-            // icon={<FaSearch />}
-            placeholder="search-by-district"
+            placeholder="search-by-address-details"
             onEnterPress={enterPress}
             resetField={(e) => {
-              dispatch(setSearchDistrict(""));
+              dispatch(setSearchAddressDetails(""));
             }}
           />
         </div>
-        <div>
-          <Input
-            label="user-street"
-            id="search-street"
-            type="text"
-            value={pageState.searchStreet}
-            onchange={(e) => {
-              dispatch(setSearchStreet(e.target.value));
-            }}
-            bordered={true}
-            // icon={<FaSearch />}
-            placeholder="search-by-street"
-            onEnterPress={enterPress}
-            resetField={() => dispatch(setSearchStreet(""))}
-          />
-        </div>
-      </RowWith2Children>
+      </>
     </Modal>
   );
 }

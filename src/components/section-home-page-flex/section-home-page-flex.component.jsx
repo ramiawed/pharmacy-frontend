@@ -21,9 +21,9 @@ function SectionHomePageFlex({
     infinite: true,
     vertical: true,
     speed: 300,
-    slidesToShow: data.length >= 5 ? 5 : data.length,
-    slidesToScroll: data.length >= 5 ? 2 : 0,
-    initialSlide: 1,
+    slidesToShow: 1,
+    // slidesToScroll: data.length >= 5 ? 2 : 0,
+    // initialSlide: 1,
     autoplay: true,
     autoplaySpeed: 2000,
     cssEase: "linear",
@@ -52,20 +52,18 @@ function SectionHomePageFlex({
       <div className={styles.advertisement_container}>
         <Slider {...settings}>
           {data?.map((d) => (
-            <div key={d._id}>
-              <div className={styles.inner_container} key={d._id}>
-                {type === "item" ? (
-                  <AdvertisementItem
-                    item={d}
-                    contentColor={containerBackground}
-                  />
-                ) : (
-                  <AdvertisementPartner
-                    user={d}
-                    contentColor={containerBackground}
-                  />
-                )}
-              </div>
+            <div className={styles.inner_container} key={d._id}>
+              {type === "item" ? (
+                <AdvertisementItem
+                  item={d}
+                  contentColor={containerBackground}
+                />
+              ) : (
+                <AdvertisementPartner
+                  user={d}
+                  contentColor={containerBackground}
+                />
+              )}
             </div>
           ))}
         </Slider>

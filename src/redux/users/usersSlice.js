@@ -24,8 +24,7 @@ const initialState = {
   pageState: {
     searchName: "",
     searchCity: CitiesName.ALL,
-    searchDistrict: "",
-    searchStreet: "",
+    searchAddressDetails: "",
     searchEmployeeName: "",
     searchCertificateName: "",
     searchCompanyName: "",
@@ -79,12 +78,9 @@ export const getUsers = createAsyncThunk(
         buildUrl = buildUrl + `&city=${pageState.searchCity}`;
       }
 
-      if (pageState.searchDistrict.trim() !== "") {
-        buildUrl = buildUrl + `&district=${pageState.searchDistrict}`;
-      }
-
-      if (pageState.searchStreet.trim() !== "") {
-        buildUrl = buildUrl + `&street=${pageState.searchStreet}`;
+      if (pageState.searchAddressDetails.trim() !== "") {
+        buildUrl =
+          buildUrl + `&addressDetails=${pageState.searchAddressDetails}`;
       }
 
       if (pageState.searchEmployeeName.trim() !== "") {
@@ -314,17 +310,10 @@ export const usersSlice = createSlice({
       };
     },
 
-    setSearchDistrict: (state, action) => {
+    setSearchAddressDetails: (state, action) => {
       state.pageState = {
         ...state.pageState,
-        searchDistrict: action.payload,
-      };
-    },
-
-    setSearchStreet: (state, action) => {
-      state.pageState = {
-        ...state.pageState,
-        searchStreet: action.payload,
+        searchAddressDetails: action.payload,
       };
     },
 
@@ -413,8 +402,7 @@ export const usersSlice = createSlice({
       state.pageState = {
         searchName: "",
         searchCity: CitiesName.ALL,
-        searchDistrict: "",
-        searchStreet: "",
+        searchAddressDetails: "",
         searchEmployeeName: "",
         searchCertificateName: "",
         searchCompanyName: "",
@@ -443,8 +431,7 @@ export const usersSlice = createSlice({
       state.pageState = {
         searchName: "",
         searchCity: CitiesName.ALL,
-        searchDistrict: "",
-        searchStreet: "",
+        searchAddressDetails: "",
         searchEmployeeName: "",
         searchCertificateName: "",
         searchCompanyName: "",
@@ -545,8 +532,7 @@ export const {
   usersSliceSignOut,
   setSearchName,
   setSearchCity,
-  setSearchDistrict,
-  setSearchStreet,
+  setSearchAddressDetails,
   setSearchEmployeeName,
   setSearchCertificateName,
   setSearchCompanyName,

@@ -44,7 +44,7 @@ function AdminNotificationsHeader({ isNew, setIsNew }) {
           <>
             <Icon
               selected={false}
-              foreColor={Colors.GREY_COLOR}
+              foreColor={Colors.MAIN_COLOR}
               tooltip={t("new-advertisement")}
               onclick={() => {
                 setIsNew(true);
@@ -55,7 +55,7 @@ function AdminNotificationsHeader({ isNew, setIsNew }) {
 
             <Icon
               selected={false}
-              foreColor={Colors.GREY_COLOR}
+              foreColor={Colors.MAIN_COLOR}
               tooltip={t("refresh-tooltip")}
               onclick={() => {
                 refreshHandler();

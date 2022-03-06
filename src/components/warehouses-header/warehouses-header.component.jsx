@@ -102,7 +102,7 @@ function WarehousesHeader({ search, refreshHandler, count }) {
       >
         {/* refresh */}
         <Icon
-          foreColor={Colors.GREY_COLOR}
+          foreColor={Colors.MAIN_COLOR}
           tooltip={t("refresh-tooltip")}
           onclick={refreshHandler}
           icon={() => <RiRefreshLine />}
@@ -113,7 +113,7 @@ function WarehousesHeader({ search, refreshHandler, count }) {
         {(searchName.length > 0 || searchCity !== CitiesName.ALL) && (
           <Icon
             selected={false}
-            foreColor={Colors.GREY_COLOR}
+            foreColor={Colors.MAIN_COLOR}
             tooltip={t("clear-filter-tooltip")}
             onclick={() => {
               dispatch(resetWarehousePageState());
@@ -129,7 +129,7 @@ function WarehousesHeader({ search, refreshHandler, count }) {
         <div className={generalStyles.relative}>
           <Icon
             foreColor={
-              showFavorites ? Colors.SUCCEEDED_COLOR : Colors.GREY_COLOR
+              showFavorites ? Colors.SUCCEEDED_COLOR : Colors.MAIN_COLOR
             }
             tooltip={t("show-favorite-tooltip")}
             onclick={() => dispatch(changeShowFavorites(!showFavorites))}
@@ -163,7 +163,7 @@ function WarehousesHeader({ search, refreshHandler, count }) {
         {/* display card option */}
         <Icon
           foreColor={
-            displayType === "card" ? Colors.SUCCEEDED_COLOR : Colors.GREY_COLOR
+            displayType === "card" ? Colors.SUCCEEDED_COLOR : Colors.MAIN_COLOR
           }
           tooltip={t("show-item-as-card-tooltip")}
           onclick={selectCardDisplayTypeHandler}
@@ -174,7 +174,7 @@ function WarehousesHeader({ search, refreshHandler, count }) {
         {/* display list option */}
         <Icon
           foreColor={
-            displayType === "list" ? Colors.SUCCEEDED_COLOR : Colors.GREY_COLOR
+            displayType === "list" ? Colors.SUCCEEDED_COLOR : Colors.MAIN_COLOR
           }
           tooltip={t("show-item-as-row-tooltip")}
           onclick={selectListDisplayTypeHandler}
@@ -189,7 +189,7 @@ function WarehousesHeader({ search, refreshHandler, count }) {
             history.goBack();
           }}
           icon={() => <IoMdArrowRoundBack />}
-          foreColor={Colors.GREY_COLOR}
+          foreColor={Colors.MAIN_COLOR}
         />
       </div>
     </>

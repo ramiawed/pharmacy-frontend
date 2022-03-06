@@ -95,7 +95,7 @@ function CompaniesHeader({ search, refreshHandler, count }) {
         <Icon
           withBackground={true}
           selected={false}
-          foreColor={Colors.GREY_COLOR}
+          foreColor={Colors.MAIN_COLOR}
           tooltip={t("refresh-tooltip")}
           onclick={() => {
             refreshHandler();
@@ -108,7 +108,7 @@ function CompaniesHeader({ search, refreshHandler, count }) {
           <Icon
             withBackground={true}
             selected={false}
-            foreColor={Colors.GREY_COLOR}
+            foreColor={Colors.MAIN_COLOR}
             tooltip={t("clear-filter-tooltip")}
             onclick={() => {
               dispatch(resetCompaniesPageState());
@@ -124,7 +124,7 @@ function CompaniesHeader({ search, refreshHandler, count }) {
           <Icon
             withBackground={true}
             foreColor={
-              showFavorites ? Colors.SUCCEEDED_COLOR : Colors.GREY_COLOR
+              showFavorites ? Colors.SUCCEEDED_COLOR : Colors.MAIN_COLOR
             }
             tooltip={t("show-favorite-tooltip")}
             onclick={() => dispatch(changeShowFavorites(!showFavorites))}
@@ -159,7 +159,7 @@ function CompaniesHeader({ search, refreshHandler, count }) {
         <Icon
           withBackground={true}
           foreColor={
-            displayType === "card" ? Colors.SUCCEEDED_COLOR : Colors.GREY_COLOR
+            displayType === "card" ? Colors.SUCCEEDED_COLOR : Colors.MAIN_COLOR
           }
           tooltip={t("show-item-as-card-tooltip")}
           onclick={() => {
@@ -173,7 +173,7 @@ function CompaniesHeader({ search, refreshHandler, count }) {
         <Icon
           withBackground={true}
           foreColor={
-            displayType === "list" ? Colors.SUCCEEDED_COLOR : Colors.GREY_COLOR
+            displayType === "list" ? Colors.SUCCEEDED_COLOR : Colors.MAIN_COLOR
           }
           tooltip={t("show-item-as-row-tooltip")}
           onclick={() => {
@@ -190,7 +190,7 @@ function CompaniesHeader({ search, refreshHandler, count }) {
             history.goBack();
           }}
           icon={() => <IoMdArrowRoundBack />}
-          foreColor={Colors.GREY_COLOR}
+          foreColor={Colors.MAIN_COLOR}
         />
       </div>
     </>

@@ -40,14 +40,17 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
+
+
 }
 
 .offer_icon {
   position: absolute;
-  top: -1px;
+  top: 0px;
   right: 10px;
   color: $yellow-color;
   z-index: 2;
+  transform: rotate(15deg);
 }
 
 .logo_div {

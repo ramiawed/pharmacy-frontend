@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
+import OfferImage from "../../offer-image.jpg";
 
 // react-redux stuff
 import {
@@ -226,7 +227,15 @@ function ItemRowNew({ item }) {
       <div className={styles.container}>
         {checkOffer(item, user) && (
           <div className={styles.offer_icon}>
-            <BsBookmarkPlusFill size={36} />
+            <img
+              src={OfferImage}
+              alt="thumb"
+              style={{
+                width: "36px",
+                height: "36px",
+                transform: "rotate(20deg)",
+              }}
+            />
           </div>
         )}
 

@@ -3,7 +3,7 @@
 .container {
   height: calc(100vh - 60px);
   width: calc(100vw - 35px);
-  background-color: rgba($color: $secondary-color, $alpha: 0.7);
+  background-color: rgba($color: $main-color, $alpha: 0.9);
   margin: 0 auto;
   padding: 6px;
   flex: 1;
@@ -106,6 +106,19 @@
 
   overflow: scroll;
 }
+
+.close_icon {
+  color: $white-color;
+  position: absolute;
+  left: 0;
+  top: 0;
+
+  &:hover {
+    color: $third-color;
+  }
+}
+
+
 
 @media only screen and (min-width: $small) {
   .container {

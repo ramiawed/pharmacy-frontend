@@ -2,7 +2,6 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 // components
-import Header from "../header/header.component";
 import SearchContainer from "../search-container/search-container.component";
 import SearchInput from "../search-input/search-input.component";
 import SelectCustom from "../select/select.component";

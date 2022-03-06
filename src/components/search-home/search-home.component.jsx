@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next";
 import axios from "axios";
 
 // redux stuff
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 
 // react icons
@@ -21,12 +21,15 @@ import styles from "./search-home.module.scss";
 
 // constants
 import { Colors, BASEURL, UserTypeConstants } from "../../utils/constants";
+import Icon from "../action-icon/action-icon.component";
+import { changeNavSettings } from "../../redux/navs/navigationSlice";
 
 let CancelToken = null;
 let source = null;
 
 function SearchHome() {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   // selectors
   const { user, token } = useSelector(selectUserData);
@@ -155,15 +158,20 @@ function SearchHome() {
   };
 
   return (
-    <div
-      className={styles.container}
-      onClick={(e) => {
-        e.stopPropagation();
-      }}
-    >
+    <div className={styles.container}>
+      <div className={styles.close_icon}>
+        <Icon
+          icon={() => <RiCloseLine />}
+          onclick={() => {
+            dispatch(
+              changeNavSettings({
+                showSearchBar: false,
+              })
+            );
+          }}
+        />
+      </div>
       <div className={styles.search_container}>
-        <p className={styles.description}>{t("app-slogan")}</p>
-
         <div
           className={[
             styles.search_div,

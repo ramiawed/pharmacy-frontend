@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { motion } from "framer-motion";
 
@@ -29,6 +29,10 @@ const containerVariant = {
 
 function ErrorFallback({ error, resetErrorBoundary }) {
   const { t } = useTranslation();
+
+  useEffect(() => {
+    console.log(error);
+  }, []);
 
   return (
     <div

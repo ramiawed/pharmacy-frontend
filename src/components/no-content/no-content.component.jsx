@@ -1,6 +1,7 @@
 import React from "react";
 
 import generalStyles from "../../style.module.scss";
+import NoContentImage from "../../no-content.png";
 
 function NoContent({ msg }) {
   return (
@@ -9,7 +10,15 @@ function NoContent({ msg }) {
         " "
       )}
     >
-      <p className={generalStyles.fc_white}>{msg}</p>
+      {/* <p className={generalStyles.fc_white}>{msg}</p> */}
+      <img
+        src={NoContentImage}
+        alt="thumb"
+        style={{
+          width: "150px",
+          height: "150px",
+        }}
+      />
     </div>
   );
 }

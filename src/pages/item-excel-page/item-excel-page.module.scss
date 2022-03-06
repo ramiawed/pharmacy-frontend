@@ -79,3 +79,16 @@
   width: 80%;
   margin-inline: auto;
 }
+
+.checkbox_div {
+  background: #e3e3e3;
+  border-radius: 3px;
+  padding: 2px;
+  margin-inline: 2px;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $main-color;
+}

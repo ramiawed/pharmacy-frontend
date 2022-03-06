@@ -7,6 +7,7 @@ import { VscSettings } from "react-icons/vsc";
 // styles
 import styles from "./search-container.module.scss";
 import generalStyles from "../../style.module.scss";
+import Icon from "../action-icon/action-icon.component";
 
 function SearchContainer({ children, searchAction }) {
   const { t } = useTranslation();
@@ -61,10 +62,14 @@ function SearchContainer({ children, searchAction }) {
 
             {childrenArray.length > 1 && (
               <div
-                className={[generalStyles.icon].join(" ")}
-                onClick={() => setMoreSearchOptions(!moreSearchOptions)}
+                style={{
+                  marginInline: "4px",
+                }}
               >
-                <VscSettings />
+                <Icon
+                  onClick={() => setMoreSearchOptions(!moreSearchOptions)}
+                  icon={() => <VscSettings />}
+                />
               </div>
             )}
 

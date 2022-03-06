@@ -429,7 +429,7 @@ function SignUp() {
             };
 
             axios
-              .post(`${BASEURL}/users/upload-paper`, data, config)
+              .post(`${BASEURL}/users/upload-license`, data, config)
               .then(() => {
                 // user type is not normal
                 // redirect to approve page

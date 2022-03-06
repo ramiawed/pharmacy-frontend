@@ -13,9 +13,15 @@ import Header from "../../components/header/header.component";
 import Icon from "../../components/action-icon/action-icon.component";
 import Loader from "../../components/action-loader/action-loader.component";
 import ExcelFileCriteria from "../../components/excel-file-criteria/excel-file-criteria.component";
+import ItemExcelCard from "../../components/item-excel-card/item-excel-card.component";
 
 // icons
-import { MdEditNote } from "react-icons/md";
+import {
+  MdEditNote,
+  MdOutlineCheckBox,
+  MdOutlineCheckBoxOutlineBlank,
+  MdOutlineIndeterminateCheckBox,
+} from "react-icons/md";
 import { RiPlayListAddFill } from "react-icons/ri";
 
 // redux stuff
@@ -39,6 +45,7 @@ import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors, toEnglishNumber } from "../../utils/constants";
+import { AiFillDelete } from "react-icons/ai";
 
 function ItemExcelPage() {
   const user = useSelector(selectUser);
@@ -408,31 +415,53 @@ function ItemExcelPage() {
                 </div>
 
                 <div className={styles.actions}>
+                  <div
+                    className={styles.checkbox_div}
+                    onClick={itemsSelectionChangeHandler}
+                  >
+                    {itemsSelectValue === "all" && (
+                      <MdOutlineCheckBox size={20} color={Colors.MAIN_COLOR} />
+                    )}
+                    {itemsSelectValue === "none" && (
+                      <MdOutlineCheckBoxOutlineBlank size={20} />
+                    )}
+                    {itemsSelectValue === "some" && (
+                      <MdOutlineIndeterminateCheckBox size={20} />
+                    )}
+                  </div>
                   {withUpdate ? (
                     <Icon
                       selected={false}
-                      foreColor={Colors.SECONDARY_COLOR}
+                      foreColor={Colors.MAIN_COLOR}
                       tooltip={t("update-items")}
                       onclick={() => {
                         setShowConfirmModal(true);
                       }}
-                      icon={() => <MdEditNote size={24} />}
+                      icon={() => <MdEditNote />}
                       withBackground={true}
                     />
                   ) : (
                     <Icon
                       selected={false}
-                      foreColor={Colors.SECONDARY_COLOR}
+                      foreColor={Colors.MAIN_COLOR}
                       tooltip={t("add-items")}
                       onclick={() => {
                         setShowConfirmModal(true);
                       }}
-                      icon={() => <RiPlayListAddFill size={20} />}
+                      icon={() => <RiPlayListAddFill />}
                       withBackground={true}
                     />
                   )}
 
                   <InputFile small={true} fileChangedHandler={fileChanged} />
+                  <Icon
+                    selected={false}
+                    foreColor={Colors.FAILED_COLOR}
+                    tooltip={t("delete-all-rows")}
+                    onclick={() => setItems([])}
+                    icon={() => <AiFillDelete />}
+                    withBackground={true}
+                  />
                 </div>
               </div>
             </>
@@ -468,25 +497,27 @@ function ItemExcelPage() {
           </>
         )}
 
-        {items.length > 0 ? (
+        {/* {items.length > 0 ? (
           <ExcelTableHeader
             deleteAllItem={() => setItems([])}
             selectValue={itemsSelectValue}
             itemsSelectionChange={itemsSelectionChangeHandler}
           />
-        ) : null}
+        ) : null} */}
 
         {items.length > 0 &&
           items.map((item, index) => (
-            <ItemExcelRow
-              onDelete={() => handleDeleteItem(index)}
-              onchange={handleInputChange}
-              onSelectedChanged={selectedChangeHandler}
-              key={index}
-              item={item}
-              index={index}
-              withUpdate={withUpdate}
-            />
+            <>
+              <ItemExcelCard
+                onDelete={() => handleDeleteItem(index)}
+                onchange={handleInputChange}
+                onSelectedChanged={selectedChangeHandler}
+                key={index}
+                item={item}
+                index={index}
+                withUpdate={withUpdate}
+              />
+            </>
           ))}
 
         {showModal && (

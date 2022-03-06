@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import Logo from "../../logo01.png";
+import OfferImage from "../../offer-image.jpg";
+
 // components
 import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
 import Icon from "../action-icon/action-icon.component";
@@ -43,7 +45,6 @@ import {
   SERVER_URL,
   UserTypeConstants,
 } from "../../utils/constants.js";
-import { GoBookmark } from "react-icons/go";
 
 // if logged user is
 // 1- ADMIN: highlight the row by green color if the medicine has an offer.
@@ -249,7 +250,14 @@ function ItemCard({ companyItem }) {
     >
       {checkOffer(companyItem, user) && (
         <div className={styles.offer_icon}>
-          <GoBookmark size={36} />
+          <img
+            src={OfferImage}
+            alt="thumb"
+            style={{
+              width: "36px",
+              height: "36px",
+            }}
+          />
         </div>
       )}
       <div className={styles.company_name}>{companyItem.company.name}</div>

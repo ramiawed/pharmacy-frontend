@@ -40,6 +40,7 @@ import { selectAdvertisements } from "../../redux/advertisements/advertisementsS
 // styles
 import styles from "./home-page.module.scss";
 import { SERVER_URL } from "../../utils/constants";
+import AdvertisementsHomePage from "../../components/advertisements-home-page/advertisements-home-page.component";
 
 function HomePage({ onSelectedChange }) {
   const dispatch = useDispatch();
@@ -136,14 +137,15 @@ function HomePage({ onSelectedChange }) {
         paddingInlineStart: "35px",
       }}
     >
-      <div
+      {/* <div
         className={styles.main_container}
         style={{
           backgroundImage: backgroundImages
             ? `url('${SERVER_URL}/advertisements/${backgroundImages}')`
             : `url(${background})`,
         }}
-      ></div>
+      ></div> */}
+      <AdvertisementsHomePage />
 
       <div className={styles.advertisement_container}>
         {settings.companiesSectionOne.show &&

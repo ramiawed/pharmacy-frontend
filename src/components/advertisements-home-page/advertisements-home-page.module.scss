@@ -1,0 +1,74 @@
+@import '../../variables.scss';
+
+.container {
+  position: relative;
+  width: 100%;
+  height: 60vh;
+  display: flex;
+  align-items: stretch;
+  justify-content: stretch;
+  flex-direction: column;
+
+  .quotes {
+    flex: 1;
+  }
+
+  .image {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+
+    div {
+      width: 90%;
+      height: 300px;
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
+      background-position: 0%;
+
+    }
+
+    .bottom_image {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      filter: blur(25px);
+      -webkit-filter: blur(25px);
+      transition: 3s;
+    }
+
+    .bottom_image_2 {
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      filter: blur(25px);
+      -webkit-filter: blur(25px);
+      transition: 3s;
+    }
+
+    .top_image {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      transition: 3s;
+      border-radius: 30px;
+      box-shadow: 0px 0px 10px 10px rgba($color: #000, $alpha: 0.1);
+    }
+  }
+}
+
+@media only screen and (min-width: $medium) {
+  .container {
+    flex-direction: row;
+    height: calc(100vh - 60px);
+
+    .image {
+      div {
+        width: 70%;
+        height: 80%;
+      }
+    }
+  }
+}

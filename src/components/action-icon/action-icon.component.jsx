@@ -36,7 +36,7 @@ function Icon({ onclick, tooltip, icon, foreColor, withBackground }) {
       ].join(" ")}
       onClick={(e) => {
         e.stopPropagation();
-        onclick();
+        if (onclick) onclick();
       }}
     >
       {icon && icon()}

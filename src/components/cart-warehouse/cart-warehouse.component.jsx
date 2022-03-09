@@ -10,7 +10,7 @@ import {
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
 import { selectUserData } from "../../redux/auth/authSlice";
-import { statisticsOrders } from "../../redux/statistics/statisticsSlice";
+import { addStatistics } from "../../redux/statistics/statisticsSlice";
 
 // components
 import CartRow from "../cart-row/cart-row.component";
@@ -124,7 +124,16 @@ function CartWarehouse({ warehouse }) {
         }
       )
       .then(() => {
-        dispatch(statisticsOrders({ token }));
+        dispatch(
+          addStatistics({
+            obj: {
+              sourceUser: user._id,
+              targetUser: null,
+              action: "user-made-an-order",
+            },
+            token,
+          })
+        );
         setShowLoadingModal(false);
         setShowSuccessModal(true);
         if (saveOrders) {

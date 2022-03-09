@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from "react";
-
+import { Redirect } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 import Logo from "../../logo.png";
-// import Logo from "../../sign-in-page.jpg";
 
 // components
 import SignIn from "../../components/signin/signin.component";
 
-// styles
-import styles from "./sign-in-page.module.scss";
+// redux stuff
+import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { authSignWithToken, selectUser } from "../../redux/auth/authSlice";
-import {
-  addStatistics,
-  statisticsSignIn,
-} from "../../redux/statistics/statisticsSlice";
+import { addStatistics } from "../../redux/statistics/statisticsSlice";
 import { getAllSettings } from "../../redux/settings/settingsSlice";
-import { unwrapResult } from "@reduxjs/toolkit";
-import { Redirect } from "react-router-dom";
+
+// styles
+import styles from "./sign-in-page.module.scss";
+import HomePageLoader from "../../components/home-page-loader/home-page-loader.component";
 
 function SignInPage() {
   const { t } = useTranslation();
@@ -33,12 +31,11 @@ function SignInPage() {
       dispatch(authSignWithToken({ token }))
         .then(unwrapResult)
         .then((result) => {
-          dispatch(statisticsSignIn({ token: result.token }));
           dispatch(
             addStatistics({
               obj: {
                 targetUser: result.data.user._id,
-                action: "sign-in",
+                action: "user-sign-in",
               },
               token: result.token,
             })
@@ -55,7 +52,7 @@ function SignInPage() {
   }, []);
 
   return checkingToken ? (
-    <div>...checking</div>
+    <HomePageLoader />
   ) : user ? (
     <Redirect to="/" />
   ) : (

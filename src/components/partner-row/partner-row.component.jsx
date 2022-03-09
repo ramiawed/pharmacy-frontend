@@ -19,11 +19,7 @@ import {
   selectFavoritesError,
 } from "../../redux/favorites/favoritesSlice";
 import { selectUserData } from "../../redux/auth/authSlice";
-import {
-  addStatistics,
-  statisticsCompanySelected,
-  statisticsUserFavorites,
-} from "../../redux/statistics/statisticsSlice";
+import { addStatistics } from "../../redux/statistics/statisticsSlice";
 import {
   changeOnlineMsg,
   selectOnlineStatus,
@@ -42,7 +38,7 @@ import rowStyles from "../row.module.scss";
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
 
-function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
+function PartnerRow({ partner, isSearch, withoutBoxShadow, onSelectAction }) {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -83,9 +79,6 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
       .then(() => {
         setChangeFavoriteLoading(false);
         dispatch(
-          statisticsUserFavorites({ obj: { partnerId: partner._id }, token })
-        );
-        dispatch(
           addStatistics({
             obj: {
               sourceUser: user._id,
@@ -120,6 +113,9 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
   };
 
   const partnerRowClickHandler = () => {
+    if (onSelectAction) {
+      onSelectAction();
+    }
     if (
       partner.type === UserTypeConstants.WAREHOUSE &&
       user.type === UserTypeConstants.WAREHOUSE
@@ -133,12 +129,6 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow }) {
         user.type === UserTypeConstants.PHARMACY ||
         user.type === UserTypeConstants.GUEST
       ) {
-        dispatch(
-          statisticsCompanySelected({
-            obj: { companyId: partner._id },
-            token,
-          })
-        );
         dispatch(
           addStatistics({
             obj: {

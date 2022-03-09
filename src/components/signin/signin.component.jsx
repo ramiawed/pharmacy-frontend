@@ -23,16 +23,12 @@ import {
   selectUserData,
   resetError,
   cancelOperation,
-  authSignWithToken,
 } from "../../redux/auth/authSlice";
 import {
   changeOnlineMsg,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
-import {
-  addStatistics,
-  statisticsSignIn,
-} from "../../redux/statistics/statisticsSlice";
+import { addStatistics } from "../../redux/statistics/statisticsSlice";
 import { getAllSettings } from "../../redux/settings/settingsSlice";
 
 // styles
@@ -177,12 +173,11 @@ function SignIn() {
         if (rememberMeOption) {
           localStorage.setItem("token", result.token);
         }
-        dispatch(statisticsSignIn({ token: result.token }));
         dispatch(
           addStatistics({
             obj: {
               targetUser: result.data.user._id,
-              action: "sign-in",
+              action: "user-sign-in",
             },
             token: result.token,
           })

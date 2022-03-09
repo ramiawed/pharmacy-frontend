@@ -137,15 +137,11 @@ function HomePage({ onSelectedChange }) {
         paddingInlineStart: "35px",
       }}
     >
-      {/* <div
-        className={styles.main_container}
-        style={{
-          backgroundImage: backgroundImages
-            ? `url('${SERVER_URL}/advertisements/${backgroundImages}')`
-            : `url(${background})`,
-        }}
-      ></div> */}
-      <AdvertisementsHomePage />
+      <AdvertisementsHomePage
+        advertisements={advertisements.map(
+          (a) => `${SERVER_URL}/advertisements/${a.logo_url}`
+        )}
+      />
 
       <div className={styles.advertisement_container}>
         {settings.companiesSectionOne.show &&

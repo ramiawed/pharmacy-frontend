@@ -4,10 +4,7 @@ import { useHistory } from "react-router-dom";
 import OfferImage from "../../offer-image.jpg";
 
 // react-redux stuff
-import {
-  statisticsItemFavorites,
-  statisticsItemSelected,
-} from "../../redux/statistics/statisticsSlice";
+import { addStatistics } from "../../redux/statistics/statisticsSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
@@ -31,7 +28,6 @@ import Icon from "../action-icon/action-icon.component";
 import Toast from "../toast/toast.component";
 
 // react icons
-import { BsBookmarkPlusFill } from "react-icons/bs";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { GiShoppingCart } from "react-icons/gi";
 import { RiDeleteBin5Fill } from "react-icons/ri";
@@ -121,7 +117,16 @@ function ItemRowNew({ item }) {
     dispatch(addFavoriteItem({ obj: { favoriteItemId: item._id }, token }))
       .then(unwrapResult)
       .then(() => {
-        dispatch(statisticsItemFavorites({ obj: { itemId: item._id }, token }));
+        dispatch(
+          addStatistics({
+            obj: {
+              sourceUser: user._id,
+              targetItem: item._id,
+              action: "item-added-to-favorite",
+            },
+            token,
+          })
+        );
         setChangeFavoriteLoading(false);
       })
       .catch(() => {
@@ -213,9 +218,12 @@ function ItemRowNew({ item }) {
       user.type === UserTypeConstants.GUEST
     ) {
       dispatch(
-        statisticsItemSelected({
-          obj: { itemId: item._id },
-          token,
+        addStatistics({
+          obj: {
+            sourceUser: user._id,
+            targetItem: item._id,
+            action: "choose-item",
+          },
         })
       );
     }

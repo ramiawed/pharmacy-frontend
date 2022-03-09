@@ -17,7 +17,7 @@ import { VscLoading } from "react-icons/vsc";
 
 // redux-stuff
 import { useDispatch, useSelector } from "react-redux";
-import { statisticsItemFavorites } from "../../redux/statistics/statisticsSlice";
+import { addStatistics } from "../../redux/statistics/statisticsSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import {
   changeOnlineMsg,
@@ -121,17 +121,21 @@ function ItemCard({ companyItem }) {
       addFavoriteItem({ obj: { favoriteItemId: companyItem._id }, token })
     )
       .then(unwrapResult)
-      .then((result) => {
+      .then(() => {
         dispatch(
-          statisticsItemFavorites({ obj: { itemId: companyItem._id }, token })
+          addStatistics({
+            obj: {
+              sourceUser: user._id,
+              targetItem: companyItem._id,
+              action: "item-added-to-favorite",
+            },
+          })
         );
         setChangeFavoriteLoading(false);
       })
       .catch(() => {
         setChangeFavoriteLoading(false);
       });
-
-    // e.stopPropagation();
   };
 
   // method to handle remove company from user's favorite
@@ -154,8 +158,6 @@ function ItemCard({ companyItem }) {
       .catch(() => {
         setChangeFavoriteLoading(false);
       });
-
-    // e.stopPropagation();
   };
 
   // method to handle add item to warehouse
@@ -184,8 +186,6 @@ function ItemCard({ companyItem }) {
       .catch(() => {
         setChangeAddToWarehouseLoading(false);
       });
-
-    // e.stopPropagation();
   };
 
   // method to handle remove item from warehouse
@@ -224,8 +224,12 @@ function ItemCard({ companyItem }) {
       user.type === UserTypeConstants.GUEST
     ) {
       dispatch(
-        statisticsItemFavorites({
-          obj: { itemId: companyItem._id },
+        addStatistics({
+          obj: {
+            sourceUser: user._id,
+            targetItem: companyItem._id,
+            action: "choose-item",
+          },
           token,
         })
       );

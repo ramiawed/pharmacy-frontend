@@ -20,11 +20,7 @@ import {
   selectFavoritesError,
 } from "../../redux/favorites/favoritesSlice";
 import { selectUserData } from "../../redux/auth/authSlice";
-import {
-  addStatistics,
-  statisticsCompanySelected,
-  statisticsUserFavorites,
-} from "../../redux/statistics/statisticsSlice";
+import { addStatistics } from "../../redux/statistics/statisticsSlice";
 import {
   changeOnlineMsg,
   selectOnlineStatus,
@@ -88,9 +84,6 @@ function PartnerCard({ partner, fullWidth }) {
       .then(() => {
         setChangeFavoriteLoading(false);
         dispatch(
-          statisticsUserFavorites({ obj: { partnerId: partner._id }, token })
-        );
-        dispatch(
           addStatistics({
             obj: {
               sourceUser: user._id,
@@ -139,12 +132,6 @@ function PartnerCard({ partner, fullWidth }) {
         user.type === UserTypeConstants.PHARMACY ||
         user.type === UserTypeConstants.GUEST
       ) {
-        dispatch(
-          statisticsCompanySelected({
-            obj: { companyId: partner._id },
-            token,
-          })
-        );
         dispatch(
           addStatistics({
             obj: {

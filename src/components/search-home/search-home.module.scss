@@ -79,7 +79,7 @@
   border: none;
   outline: none;
   padding: 0 20px;
-  color: $secondary-color;
+  color: $main-color;
 }
 
 .icon {
@@ -94,7 +94,7 @@
   min-height: 50px;
   max-height: 150px;
   position: absolute;
-  top: 100px;
+  top: 50px;
   z-index: 100;
   background-color: rgba($color: $white-color, $alpha: 1);
   border-top: none;
@@ -126,10 +126,10 @@
     width: 70vw;
   }
 
-  .result_div {
-    max-height: 300px;
-    top: 100px;
-  }
+  // .result_div {
+  //   max-height: 300px;
+  //   top: 50px;
+  // }
 }
 
 @media only screen and (min-width: $medium) {
@@ -143,10 +143,10 @@
     order: 1;
   }
 
-  .result_div {
-    max-height: 300px;
-    top: 100px;
-  }
+  // .result_div {
+  //   max-height: 300px;
+  //   top: 50px;
+  // }
 }
 
 .header {

@@ -67,7 +67,7 @@ function SearchContainer({ children, searchAction }) {
                 }}
               >
                 <Icon
-                  onClick={() => setMoreSearchOptions(!moreSearchOptions)}
+                  onclick={() => setMoreSearchOptions(!moreSearchOptions)}
                   icon={() => <VscSettings />}
                 />
               </div>

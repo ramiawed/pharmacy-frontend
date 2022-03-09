@@ -16,7 +16,7 @@ import SelectCustom from "../select/select.component";
 import { addItemToCart } from "../../redux/cart/cartSlice";
 import { selectUserData } from "../../redux/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { statisticsItemAddedToCart } from "../../redux/statistics/statisticsSlice";
+import { addStatistics } from "../../redux/statistics/statisticsSlice";
 import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 
 // constants and utils
@@ -129,7 +129,16 @@ function AddToCartModal({ item, close, setAddItemToCartMsg }) {
     );
 
     if (isOnline) {
-      dispatch(statisticsItemAddedToCart({ obj: { itemId: item._id }, token }));
+      dispatch(
+        addStatistics({
+          obj: {
+            sourceUser: user._id,
+            targetItem: item._id,
+            action: "item-added-to-cart",
+          },
+          token,
+        })
+      );
     }
 
     close();

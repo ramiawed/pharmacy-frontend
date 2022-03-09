@@ -10,10 +10,7 @@ import DefaultLogo from "../../logo.png";
 import { useDispatch, useSelector } from "react-redux";
 
 import { selectToken, selectUser } from "../../redux/auth/authSlice";
-import {
-  addStatistics,
-  statisticsCompanySelected,
-} from "../../redux/statistics/statisticsSlice";
+import { addStatistics } from "../../redux/statistics/statisticsSlice";
 import {
   resetMedicines,
   setSearchCompanyName,
@@ -40,12 +37,6 @@ function AdvertisementPartner({ user, contentColor }) {
         loggedUser.type === UserTypeConstants.GUEST) &&
       user.type === UserTypeConstants.COMPANY
     ) {
-      dispatch(
-        statisticsCompanySelected({
-          obj: { companyId: user._id },
-          token,
-        })
-      );
       dispatch(
         addStatistics({
           obj: {

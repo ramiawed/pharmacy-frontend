@@ -122,7 +122,7 @@
   "search-by-company-name": "بحث من خلال اسم الشركة",
   "search-by-job-title": "بحث من خلال المسمى الوظيفي",
   "search-by-item-name": "بحث من خلال اسم المنتج",
-  "search-home-placeholder": "بحث من خلال اسم المنتج، الاسم التجاري، الباركود - اسم الشركة - اسم المستودع",
+  "search-home-placeholder": "اسم المنتج - الاسم التجاري - الباركود - اسم الشركة - اسم المستودع",
   "search-engines": "محركات البحث",
   "search-by-warehouse-name": "بحث من خلال اسم المستودع",
   "user-action": "",

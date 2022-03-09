@@ -7,7 +7,7 @@ import Logo from "../../logo.png";
 // redux-stuff
 import { useDispatch, useSelector } from "react-redux";
 import { selectToken, selectUser } from "../../redux/auth/authSlice";
-import { statisticsItemFavorites } from "../../redux/statistics/statisticsSlice";
+import { addStatistics } from "../../redux/statistics/statisticsSlice";
 
 // styles
 import styles from "./advertisement-item.module.scss";
@@ -27,8 +27,12 @@ function AdvertisementItem({ item, contentColor }) {
       user.type === UserTypeConstants.GUEST
     ) {
       dispatch(
-        statisticsItemFavorites({
-          obj: { itemId: item._id },
+        addStatistics({
+          obj: {
+            sourceUser: user._id,
+            targetItem: item._id,
+            action: "item-added-to-favorite",
+          },
           token,
         })
       );

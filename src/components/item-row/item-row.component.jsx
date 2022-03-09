@@ -3,10 +3,7 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
 // react-redux stuff
-import {
-  statisticsItemFavorites,
-  statisticsItemSelected,
-} from "../../redux/statistics/statisticsSlice";
+import { addStatistics } from "../../redux/statistics/statisticsSlice";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
@@ -23,10 +20,12 @@ import {
   addItemToWarehouse,
   removeItemFromWarehouse,
 } from "../../redux/medicines/medicinesSlices";
+import { changeNavSettings } from "../../redux/navs/navigationSlice";
 
 // components
 import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
 import Icon from "../action-icon/action-icon.component";
+import Toast from "../toast/toast.component";
 
 // react icons
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
@@ -37,13 +36,10 @@ import { VscLoading } from "react-icons/vsc";
 
 // styles
 import generalStyles from "../../style.module.scss";
-import rowStyles from "../row.module.scss";
 import styles from "./item-row.module.scss";
 
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import Toast from "../toast/toast.component";
-import { changeNavSettings } from "../../redux/navs/navigationSlice";
 
 // if logged user is
 // 1- ADMIN: highlight the row by green color if the medicine has an offer.
@@ -122,7 +118,16 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
     dispatch(addFavoriteItem({ obj: { favoriteItemId: item._id }, token }))
       .then(unwrapResult)
       .then(() => {
-        dispatch(statisticsItemFavorites({ obj: { itemId: item._id }, token }));
+        dispatch(
+          addStatistics({
+            obj: {
+              sourceUser: user._id,
+              targetItem: item._id,
+              action: "item-added-to-favorite",
+            },
+            token,
+          })
+        );
         setChangeFavoriteLoading(false);
       })
       .catch(() => {
@@ -216,8 +221,12 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
       user.type === UserTypeConstants.GUEST
     ) {
       dispatch(
-        statisticsItemSelected({
-          obj: { itemId: item._id },
+        addStatistics({
+          obj: {
+            sourceUser: user._id,
+            targetItem: item._id,
+            action: "choose-item",
+          },
           token,
         })
       );

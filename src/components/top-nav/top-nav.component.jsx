@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
 
@@ -16,17 +16,28 @@ import IconWithNumber from "../icon-with-number/icon-with-number.component";
 // icons
 import { GiShoppingCart } from "react-icons/gi";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
-import { IoMdNotifications, IoMdNotificationsOutline } from "react-icons/io";
+import {
+  IoMdArrowRoundBack,
+  IoMdNotifications,
+  IoMdNotificationsOutline,
+} from "react-icons/io";
+import { FiSearch } from "react-icons/fi";
 
 // style
 import styles from "./top-nav.module.scss";
 
 // constants
-import { TopNavLinks, UserTypeConstants } from "../../utils/constants.js";
+import {
+  Colors,
+  TopNavLinks,
+  UserTypeConstants,
+} from "../../utils/constants.js";
 import {
   resetMedicines,
   resetMedicinesArray,
 } from "../../redux/medicines/medicinesSlices";
+import SearchInTopNav from "../search-in-top-nav/search-in-top-nav.component";
+import Icon from "../action-icon/action-icon.component";
 
 function TopNav({ onSelectedChange }) {
   const history = useHistory();
@@ -41,6 +52,9 @@ function TopNav({ onSelectedChange }) {
   const allFavorites = useSelector(selectFavorites);
   const user = useSelector(selectUser);
   const total = useSelector(selectCartItemCount);
+
+  // own state
+  const [showTopSearchBar, setShowTopSearchBar] = useState(false);
 
   return (
     <>
@@ -114,6 +128,16 @@ function TopNav({ onSelectedChange }) {
         </div>
 
         <div className={styles.end}>
+          {/* <div className={styles.search_icon_div}> */}
+          <FiSearch
+            className={styles.search_icon}
+            size={20}
+            onClick={() => {
+              setShowTopSearchBar(true);
+            }}
+          />
+          {/* </div> */}
+
           <Link
             to="/favorites"
             className={[
@@ -172,6 +196,14 @@ function TopNav({ onSelectedChange }) {
       </div>
 
       <div className={styles.float_div}>
+        <FiSearch
+          className={styles.search_icon}
+          size={20}
+          onClick={() => {
+            setShowTopSearchBar(true);
+          }}
+        />
+
         <Link
           to="/favorites"
           className={[
@@ -225,6 +257,21 @@ function TopNav({ onSelectedChange }) {
           </Link>
         )}
       </div>
+
+      {showTopSearchBar && (
+        <div className={styles.search_container_fixed}>
+          <SearchInTopNav />
+          <div className={styles.back}>
+            <Icon
+              onclick={() => {
+                setShowTopSearchBar(false);
+              }}
+              icon={() => <IoMdArrowRoundBack />}
+              foreColor={Colors.WHITE_COLOR}
+            />
+          </div>
+        </div>
+      )}
     </>
   );
 }

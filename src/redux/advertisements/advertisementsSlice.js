@@ -66,6 +66,8 @@ export const addAdvertisement = createAsyncThunk(
     try {
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
+      console.log(data);
+      console.log(token);
 
       const config = {
         headers: {

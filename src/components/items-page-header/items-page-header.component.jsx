@@ -156,7 +156,7 @@ function ItemsPageHeader({
           company.allowAdmin) ? (
           <>
             <Icon
-              foreColor={Colors.GREY_COLOR}
+              foreColor={Colors.MAIN_COLOR}
               selected={false}
               icon={() => <RiRefreshLine />}
               tooltip={t("refresh-tooltip")}
@@ -164,7 +164,7 @@ function ItemsPageHeader({
               withBackground={true}
             />
             <Icon
-              foreColor={Colors.GREY_COLOR}
+              foreColor={Colors.MAIN_COLOR}
               selected={false}
               icon={() => <RiAddCircleFill />}
               tooltip={t("add-item")}
@@ -185,7 +185,7 @@ function ItemsPageHeader({
             />
 
             <Icon
-              foreColor={Colors.GREY_COLOR}
+              foreColor={Colors.MAIN_COLOR}
               selected={false}
               icon={() => <SiMicrosoftexcel />}
               tooltip={t("items-from-excel")}

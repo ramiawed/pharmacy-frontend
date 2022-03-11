@@ -307,6 +307,25 @@
   min-width: 350px;
 }
 
+div.count {
+  text-align: center;
+  color: $main-color;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+span.label {
+  font-size: 0.9rem;
+  color: $grey-color;
+}
+
+span.count {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: $main-color;
+  padding-inline: 8px;
+}
+
 // style the div that display an icon the indicates that there is no result
 .no_content_div {
   width: 50%;

@@ -86,7 +86,7 @@ export const ExportCSV = ({ csvData, fileName }) => {
   return (
     <Icon
       selected={false}
-      foreColor={Colors.SECONDARY_COLOR}
+      foreColor={Colors.GREY_COLOR}
       tooltip={t("save-order")}
       icon={() => <RiSave3Fill />}
       onclick={(e) => exportToCSV(csvData, fileName)}
@@ -94,7 +94,3 @@ export const ExportCSV = ({ csvData, fileName }) => {
     />
   );
 };
-
-{
-  /* <button onClick={(e) => exportToCSV(csvData, fileName)}>Export</button> */
-}

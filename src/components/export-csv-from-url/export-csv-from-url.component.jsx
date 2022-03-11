@@ -48,7 +48,7 @@ export const ExportCSVFromURL = ({ url, fileName }) => {
   return (
     <Icon
       selected={false}
-      foreColor={Colors.SECONDARY_COLOR}
+      foreColor={Colors.MAIN_COLOR}
       tooltip={t("export-items")}
       icon={() => <RiSave3Fill />}
       onclick={(e) => exportToCSV(fileName)}

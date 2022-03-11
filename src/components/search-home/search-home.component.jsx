@@ -134,6 +134,12 @@ function SearchHome() {
     }
   };
 
+  const resetSearch = () => {
+    setShowResult(false);
+    setData([]);
+    dispatch(changeNavSettings({ showSearchBar: false }));
+  };
+
   const keyDownHandler = (event) => {
     if (event.code === "Enter") {
       searchHandler();
@@ -224,7 +230,12 @@ function SearchHome() {
                   <div className={styles.header}>{t("items")}</div>
                 )}
                 {data.map((d) => (
-                  <ItemRow key={d._id} item={d} isSearch={true} />
+                  <ItemRow
+                    key={d._id}
+                    item={d}
+                    isSearch={true}
+                    onSelectAction={resetSearch}
+                  />
                 ))}
                 {companiesData.length > 0 && (
                   <div className={styles.header}>{t("companies")}</div>
@@ -235,6 +246,7 @@ function SearchHome() {
                     partner={company}
                     isSearch={true}
                     type="company"
+                    onSelectAction={resetSearch}
                   />
                 ))}
 
@@ -247,6 +259,7 @@ function SearchHome() {
                     partner={warehouse}
                     isSearch={true}
                     type="warehouse"
+                    onSelectAction={resetSearch}
                   />
                 ))}
               </>

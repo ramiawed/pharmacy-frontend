@@ -23,7 +23,7 @@ import { AiFillAppstore, AiFillStar } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import { selectFavoritesItems } from "../../redux/favorites/favoritesSlice.js";
-import {
+import medicinesSlices, {
   getMedicines,
   selectMedicines,
   cancelOperation,
@@ -309,9 +309,12 @@ function MedicinesPage({ onSelectedChange }) {
           />
         </div>
 
-        {/* {count > 0 && pageState.displayType === "list" && (
-       <MedicinesTableHeader user={user} />
-     )} */}
+        {count > 0 && (
+          <div className={generalStyles.count}>
+            <span className={generalStyles.label}>{t("items-count")}</span>
+            <span className={generalStyles.count}>{count}</span>
+          </div>
+        )}
 
         {pageState.displayType === "list" &&
           medicines.map((medicine) => (
@@ -331,9 +334,29 @@ function MedicinesPage({ onSelectedChange }) {
           </div>
         )}
 
-        {count === 0 && status !== "loading" && (
-          <NoContent msg={t("no-medicines")} />
+        {count > 0 && status !== "loading" && (
+          <div className={generalStyles.count}>
+            {medicines.length} / {count}
+          </div>
         )}
+
+        {medicines.length === 0 &&
+          status !== "loading" &&
+          pageState.searchName.length === 0 &&
+          pageState.searchCompanyName.length === 0 &&
+          pageState.searchWarehouseName.length === 0 &&
+          !pageState.searchInWarehouse &&
+          !pageState.searchOutWarehouse && <NoContent msg={t("no-items")} />}
+
+        {medicines.length === 0 &&
+          status !== "loading" &&
+          (pageState.searchName.length !== 0 ||
+            pageState.searchCompanyName.length !== 0 ||
+            pageState.searchWarehouseName.length !== 0 ||
+            pageState.searchInWarehouse ||
+            pageState.searchOutWarehouse) && (
+            <NoContent msg={t("no-result-found")} />
+          )}
 
         {status === "loading" && (
           <div className={generalStyles.flex_container}>

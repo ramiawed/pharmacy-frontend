@@ -220,6 +220,8 @@
   "single-item": "منتج",
   "choose-file": "اختر الملف",
   "items-count": "عدد المنتجات",
+  "companies-count": "عدد الشركات",
+  "warehouses-count": "عدد المستودعات",
   "correct-items-count": "عدد المنتجات المحققة للشروط",
   "wrong-items-count": "عدد المنتجات الفير محققة للشروط",
   "selected-items-count": "عدد المنتجات المحددة",
@@ -242,6 +244,7 @@
   "item-undo-delete-error": "حدث خطأ أثناء استعادة المنتج",
   "item-operation-complete": "تمت العملية بنجاح",
   "no-items-found": "لم يتم العثور على منتج مطابق لشروط البحث",
+  "no-items": "لا يوجد منتجات",
   "no-orders-found": "لا يوجد طلبات",
   "tooltip-item-delete": "حذف منتج",
   "tooltip-item-undo-delete": "استعادة منتج",
@@ -474,5 +477,6 @@
   "why-we-are-describe": "سمارت فارما هو اول موقع وتطبيق الكتروني مختص في المبيعات الصيدلانية، نعتمد على الربط بين الصيدليات واحتياجاتهم من الشركات والمستودعات",
   "new-user-added": "شريك جديد قام بإنشاء حساب، يرجى تفعيل حسابه",
   "general-error": "الرجاء المحاولة مرة جديدة",
-  "image-size-must-be-less-than": "حجم الصورة يجب ان يكون اقل من ٥١٢ كيلو بايت"
+  "image-size-must-be-less-than": "حجم الصورة يجب ان يكون اقل من ٥١٢ كيلو بايت",
+  "no-result-found": "لا يوجد نتائج"
 }

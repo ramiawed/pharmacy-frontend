@@ -19,29 +19,27 @@
 .label {
   width: 75px;
   font-size: 0.8rem;
-  color: #9d9d9d;
+  color: $grey-color;
 }
 
 .name {
-  color: $secondary-color;
-
+  color: $main-color;
   margin-inline: 10px;
-
-  font-size: 0.9rem;
-
+  font-size: 1rem;
+  font-weight: bold;
 }
 
 .total_price {
   text-align: left;
   color: $green-color;
-  padding-left: 6px;
+  padding-inline: 6px;
 }
 
 .actions_div {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-
   order: 2;
   flex: 1;
+  margin-block-end: 10px;
 }

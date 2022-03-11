@@ -37,7 +37,11 @@ import {
 } from "../../redux/online/onlineSlice";
 
 // constants and utils
-import { Colors, UserTypeConstants } from "../../utils/constants.js";
+import {
+  CitiesName,
+  Colors,
+  UserTypeConstants,
+} from "../../utils/constants.js";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -50,6 +54,7 @@ function WarehousePage({ onSelectedChange }) {
   const isOnline = useSelector(selectOnlineStatus);
   const { token, user } = useSelector(selectUserData);
   const { warehouses, count, status, error } = useSelector(selectWarehouses);
+  const { searchName, searchCity } = useSelector(selectWarehousesPageState);
   const { displayType, page } = useSelector(selectWarehousesPageState);
 
   // select favorites from favoriteSlice
@@ -126,6 +131,13 @@ function WarehousePage({ onSelectedChange }) {
         refreshHandler={refreshHandler}
       />
 
+      {count > 0 && (
+        <div className={generalStyles.count}>
+          <span className={generalStyles.label}>{t("warehouses-count")}</span>
+          <span className={generalStyles.count}>{count}</span>
+        </div>
+      )}
+
       {/* display as list */}
       {displayType === "list" &&
         warehouses.map((warehouse) => (
@@ -146,14 +158,22 @@ function WarehousePage({ onSelectedChange }) {
         </div>
       )}
 
-      {/* show loading indicator when data loading from db */}
-      {/* {status === "loading" && <Loader allowCancel={false} />} */}
-
-      {warehouses.length === 0 && status !== "loading" && (
-        <>
-          <NoContent msg={t("no-warehouses")} />
-        </>
+      {count > 0 && status !== "loading" && (
+        <div className={generalStyles.count}>
+          {warehouses.length} / {count}
+        </div>
       )}
+
+      {warehouses.length === 0 &&
+        status !== "loading" &&
+        searchName.length === 0 &&
+        searchCity === CitiesName.ALL && <NoContent msg={t("no-warehouses")} />}
+
+      {warehouses.length === 0 &&
+        status !== "loading" &&
+        (searchName.length !== 0 || searchCity !== CitiesName.ALL) && (
+          <NoContent msg={t("no-result-found")} />
+        )}
 
       {status === "loading" && (
         <div className={generalStyles.flex_container}>

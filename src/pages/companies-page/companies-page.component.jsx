@@ -48,7 +48,8 @@ import {
 import generalStyles from "../../style.module.scss";
 
 // constants and utils
-import { Colors } from "../../utils/constants";
+import { CitiesName, Colors } from "../../utils/constants";
+import { NonceProvider } from "react-select";
 
 function CompaniesPage({ onSelectedChange }) {
   const { t } = useTranslation();
@@ -60,6 +61,7 @@ function CompaniesPage({ onSelectedChange }) {
   const { token, user } = useSelector(selectUserData);
   // select companies from companySlice
   const { companies, count, status, error } = useSelector(selectCompanies);
+  const { searchName, searchCity } = useSelector(selectCompaniesPageState);
   const { displayType, page } = useSelector(selectCompaniesPageState);
   const isOnline = useSelector(selectOnlineStatus);
 
@@ -132,6 +134,13 @@ function CompaniesPage({ onSelectedChange }) {
         count={count}
       />
 
+      {count > 0 && (
+        <div className={generalStyles.count}>
+          <span className={generalStyles.label}>{t("companies-count")}</span>
+          <span className={generalStyles.count}>{count}</span>
+        </div>
+      )}
+
       {/* display partner as list */}
       {displayType === "list" &&
         companies.map((company) => (
@@ -152,9 +161,22 @@ function CompaniesPage({ onSelectedChange }) {
         </div>
       )}
 
-      {companies.length === 0 && status !== "loading" && (
-        <NoContent msg={t("no-companies")} />
+      {count > 0 && status !== "loading" && (
+        <div className={generalStyles.count}>
+          {companies.length} / {count}
+        </div>
       )}
+
+      {companies.length === 0 &&
+        status !== "loading" &&
+        searchName.length === 0 &&
+        searchCity === CitiesName.ALL && <NoContent msg={t("no-companies")} />}
+
+      {companies.length === 0 &&
+        status !== "loading" &&
+        (searchName.length !== 0 || searchCity !== CitiesName.ALL) && (
+          <NoContent msg={t("no-result-found")} />
+        )}
 
       {status === "loading" && (
         <div className={generalStyles.flex_container}>

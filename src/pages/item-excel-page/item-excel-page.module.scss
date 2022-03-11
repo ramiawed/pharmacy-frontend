@@ -52,17 +52,16 @@
 }
 
 .label {
-  width: 175px;
-  font-size: 1rem;
-  color: #9d9d9d;
+  width: 150px;
+  font-size: 0.8rem;
+  color: $grey-color;
 }
 
 .name {
-  color: $secondary-color;
-
+  color: $main-color;
   margin-inline: 10px;
-
-  font-size: 1.1rem;
+  font-size: 1rem;
+  font-weight: bold;
 }
 
 .actions {

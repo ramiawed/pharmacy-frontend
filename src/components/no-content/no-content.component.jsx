@@ -1,16 +1,12 @@
 import React from "react";
 
 import generalStyles from "../../style.module.scss";
-import NoContentImage from "../../no-content.png";
+import NoContentImage from "../../no-content.jpeg";
+import { Colors } from "../../utils/constants";
 
 function NoContent({ msg }) {
   return (
-    <div
-      className={[generalStyles.no_content_div, generalStyles.fc_white].join(
-        " "
-      )}
-    >
-      {/* <p className={generalStyles.fc_white}>{msg}</p> */}
+    <div className={[generalStyles.no_content_div].join(" ")}>
       <img
         src={NoContentImage}
         alt="thumb"
@@ -19,6 +15,14 @@ function NoContent({ msg }) {
           height: "150px",
         }}
       />
+
+      <p
+        style={{
+          color: Colors.MAIN_COLOR,
+        }}
+      >
+        {msg}
+      </p>
     </div>
   );
 }

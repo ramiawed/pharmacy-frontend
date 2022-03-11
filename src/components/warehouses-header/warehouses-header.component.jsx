@@ -33,11 +33,13 @@ import generalStyles from "../../style.module.scss";
 
 // constants and utils
 import { CitiesName, Colors, UserTypeConstants } from "../../utils/constants";
+import { selectUser } from "../../redux/auth/authSlice";
 
 function WarehousesHeader({ search, refreshHandler, count }) {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   const { searchName, searchCity, displayType, showFavorites } = useSelector(
     selectWarehousesPageState
@@ -77,23 +79,25 @@ function WarehousesHeader({ search, refreshHandler, count }) {
           resetField={() => dispatch(changeSearchName(""))}
         />
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-start",
-            backgroundColor: Colors.WHITE_COLOR,
-            borderRadius: "6px",
-          }}
-        >
-          <CitiesDropDown
-            onSelectionChange={citiesNameChangeHandler}
-            defaultValue={{
-              value: searchCity,
-              label: t(searchCity.toLowerCase()),
+        {user.type === UserTypeConstants.ADMIN && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              backgroundColor: Colors.WHITE_COLOR,
+              borderRadius: "6px",
             }}
-            caption="user-city"
-          />
-        </div>
+          >
+            <CitiesDropDown
+              onSelectionChange={citiesNameChangeHandler}
+              defaultValue={{
+                value: searchCity,
+                label: t(searchCity.toLowerCase()),
+              }}
+              caption="user-city"
+            />
+          </div>
+        )}
       </SearchContainer>
 
       {/* action's buttons */}

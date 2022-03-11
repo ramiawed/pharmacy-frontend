@@ -88,7 +88,7 @@ const checkOffer = (item, user) => {
   return result;
 };
 
-function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
+function ItemRow({ item, onSelectAction }) {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -239,6 +239,9 @@ function ItemRow({ item, isSearch, isFavorite, isSmallFavorite }) {
       <div
         className={styles.container}
         onClick={() => {
+          if (onSelectAction) {
+            onSelectAction();
+          }
           dispatchStatisticsHandler();
 
           history.push("/item", {

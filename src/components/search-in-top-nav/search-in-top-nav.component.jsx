@@ -131,6 +131,11 @@ function SearchInTopNav() {
     }
   };
 
+  const resetSearch = () => {
+    setShowResult(false);
+    setData([]);
+  };
+
   const keyDownHandler = (event) => {
     if (event.code === "Enter") {
       searchHandler();
@@ -209,7 +214,12 @@ function SearchInTopNav() {
                   <div className={styles.header}>{t("items")}</div>
                 )}
                 {data.map((d) => (
-                  <ItemRow key={d._id} item={d} isSearch={true} />
+                  <ItemRow
+                    key={d._id}
+                    item={d}
+                    isSearch={true}
+                    onSelectAction={resetSearch}
+                  />
                 ))}
                 {companiesData.length > 0 && (
                   <div className={styles.header}>{t("companies")}</div>
@@ -220,10 +230,7 @@ function SearchInTopNav() {
                     partner={company}
                     isSearch={true}
                     type="company"
-                    onSelectAction={() => {
-                      setShowResult(false);
-                      setData([]);
-                    }}
+                    onSelectAction={resetSearch}
                   />
                 ))}
 
@@ -236,6 +243,7 @@ function SearchInTopNav() {
                     partner={warehouse}
                     isSearch={true}
                     type="warehouse"
+                    onSelectAction={resetSearch}
                   />
                 ))}
               </>

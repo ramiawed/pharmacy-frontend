@@ -28,13 +28,13 @@ function AdvertisementsHomePage({ advertisements }) {
   const [index, setIndex] = useState(0);
   const i = useRef(0);
 
-  const startTimer = useCallback(() => {
+  const startTimer = () => {
     timer = setInterval(() => {
       i.current = i.current === backgrounds.length - 1 ? 0 : i.current + 1;
 
       setIndex(i.current);
     }, 7000);
-  }, [backgrounds.length]);
+  };
 
   useEffect(() => {
     startTimer();
@@ -42,7 +42,7 @@ function AdvertisementsHomePage({ advertisements }) {
     return () => {
       clearInterval(timer);
     };
-  }, [startTimer]);
+  }, []);
 
   return (
     <div className={styles.container}>

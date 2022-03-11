@@ -143,7 +143,7 @@ function HomePage({ onSelectedChange }) {
         )}
       />
 
-      <div className={styles.advertisement_container}>
+      {/* <div className={styles.advertisement_container}>
         {settings.companiesSectionOne.show &&
           (companiesSectionOneStatus === "loading" ? (
             <div
@@ -300,7 +300,7 @@ function HomePage({ onSelectedChange }) {
               />
             )
           ))}
-      </div>
+      </div> */}
     </div>
   ) : (
     <Redirect to="/signin" />

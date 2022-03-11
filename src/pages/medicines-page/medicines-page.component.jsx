@@ -100,11 +100,10 @@ function MedicinesPage({ onSelectedChange }) {
   useEffect(() => {
     if (medicines.length === 0) {
       handleSearch();
+      window.scrollTo(0, 0);
     }
 
     onSelectedChange();
-
-    window.scrollTo(0, 0);
   }, []);
 
   return user ? (
@@ -137,7 +136,7 @@ function MedicinesPage({ onSelectedChange }) {
               dispatch(setSearchCompanyName(e.target.value));
             }}
             icon={<FaSearch />}
-            placeholder="search"
+            placeholder="search-by-company-name"
             onEnterPress={handleEnterPress}
             resetField={() => {
               dispatch(setSearchCompanyName(""));
@@ -157,7 +156,7 @@ function MedicinesPage({ onSelectedChange }) {
               dispatch(setSearchWarehouseName(e.target.value));
             }}
             icon={<FaSearch />}
-            placeholder="search"
+            placeholder="search-by-warehouse-name"
             onEnterPress={handleEnterPress}
             resetField={() => {
               dispatch(setSearchWarehouseName(""));

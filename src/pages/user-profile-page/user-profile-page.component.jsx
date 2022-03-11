@@ -82,8 +82,6 @@ function UserProfilePage({ onSelectedChange }) {
   };
 
   const handleInputChange = (field, val) => {
-    console.log(field);
-    console.log(val);
     setUserObj({
       ...userObj,
       [field]: val,
@@ -118,8 +116,6 @@ function UserProfilePage({ onSelectedChange }) {
         },
       })
       .then((response) => {
-        // setUser(response.data.data.user);
-        console.log(response.data.data.user);
         setUserObj(response.data.data.user);
       });
   };

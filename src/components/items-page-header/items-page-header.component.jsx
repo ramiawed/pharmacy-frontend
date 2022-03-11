@@ -53,7 +53,7 @@ function ItemsPageHeader({
           type="text"
           value={pageState.searchName}
           onchange={(e) => dispatch(setSearchName(e.target.value))}
-          placeholder="search"
+          placeholder="search-by-name-composition-barcode"
           onEnterPress={search}
           resetField={() => {
             dispatch(setSearchName(""));
@@ -69,7 +69,7 @@ function ItemsPageHeader({
             type="text"
             value={pageState.searchCompanyName}
             onchange={(e) => dispatch(setSearchCompanyName(e.target.value))}
-            placeholder="search"
+            placeholder="search-by-company-name"
             onEnterPress={search}
             resetField={() => {
               dispatch(setSearchCompanyName(""));
@@ -86,7 +86,7 @@ function ItemsPageHeader({
             type="text"
             value={pageState.searchWarehouseName}
             onchange={(e) => dispatch(setSearchWarehouseName(e.target.value))}
-            placeholder="search"
+            placeholder="search-by-warehouse-name"
             onEnterPress={search}
             resetField={() => {
               dispatch(setSearchWarehouseName(""));

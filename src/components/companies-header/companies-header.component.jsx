@@ -64,7 +64,7 @@ function CompaniesHeader({ search, refreshHandler, count }) {
             onchange={(e) => {
               dispatch(changeSearchName(e.target.value));
             }}
-            placeholder="search"
+            placeholder="search-by-company-name"
             onEnterPress={search}
             resetField={() => dispatch(changeSearchName(""))}
           />

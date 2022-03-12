@@ -21,7 +21,7 @@ function SectionHomePageFlex({
     infinite: true,
     vertical: true,
     speed: 300,
-    slidesToShow: 1,
+    slidesToShow: data.length,
     // slidesToScroll: data.length >= 5 ? 2 : 0,
     // initialSlide: 1,
     autoplay: true,

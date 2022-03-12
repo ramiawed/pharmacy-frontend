@@ -1,7 +1,7 @@
 @import "../../variables.scss";
 
 .partner_container {
-  width: 75%;
+  width: 80%;
   min-height: 300px;
 
   background-color: rgba($color: $secondary-color, $alpha: 0.1);
@@ -23,30 +23,25 @@
 
 @media only screen and (min-width: $small) {
   .partner_container {
-    width: 31%;
+    width: 45%;
   }
 }
 
 @media only screen and (min-width: $medium) {
   .partner_container {
-    width: 23%;
+    width: 30%;
   }
 }
 
 .partner_logo {
   margin: 10px auto;
-
   padding: 10px;
-
   width: 200px;
   height: 200px;
-
   border-radius: 12px;
-
   display: flex;
   align-items: center;
   justify-content: center;
-
   transition: all 1s;
 }
 
@@ -58,7 +53,6 @@
   position: relative;
   font-size: 1.5rem;
   color: $grey-color;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -93,7 +87,6 @@
 .from_top>div {
   z-index: 10;
   margin: 8px;
-  // color: $white-color;
 }
 
 .from_top>div.name {

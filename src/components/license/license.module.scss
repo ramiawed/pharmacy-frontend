@@ -46,6 +46,7 @@
     border-radius: 6px;
     transition: all 0.3s;
     cursor: pointer;
+    margin-block-start: 10px;
 
     &:hover {
       background: $green-color;

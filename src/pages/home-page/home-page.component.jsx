@@ -4,7 +4,6 @@ import { Redirect } from "react-router-dom";
 // components
 import Loader from "../../components/loader/loader.component";
 import SectionHomePageFlex from "../../components/section-home-page-flex/section-home-page-flex.component";
-import background from "../../background001.jpg";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";

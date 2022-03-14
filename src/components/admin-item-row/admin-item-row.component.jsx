@@ -20,7 +20,7 @@ import OffersModal from "../offers-modal/offers-modal.component";
 import Icon from "../action-icon/action-icon.component";
 
 // react-icons
-import { AiFillUnlock, AiFillLock } from "react-icons/ai";
+import { AiFillUnlock, AiFillLock, AiFillEdit } from "react-icons/ai";
 import { MdLocalOffer } from "react-icons/md";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 
@@ -28,6 +28,7 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 import generalStyles from "../../style.module.scss";
 import tableStyles from "../table.module.scss";
 import rowStyles from "../row.module.scss";
+import styles from "./admin-item-row.module.scss";
 
 // constants
 import {
@@ -66,7 +67,7 @@ const checkOffer = (item, user) => {
   return result;
 };
 
-function CompanyItemRow({
+function AdminItemRow({
   item,
   user,
   company,
@@ -86,6 +87,7 @@ function CompanyItemRow({
   const [modalObj, setModalObj] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [showWarningModal, setShowWarningModal] = useState(false);
+  const [showChangeMaxQtyModal, setShowChangeMaxQtyModal] = useState(false);
   const [showOfferModal, setShowOfferModal] = useState(false);
   const [showDeleteFromWarehouseModal, setShowDeleteFromWarehouseModal] =
     useState(false);
@@ -95,6 +97,7 @@ function CompanyItemRow({
       ? item.warehouses.find((w) => w.warehouse._id === warehouse._id).maxQty
       : 0
   );
+  const [prevMaxQty, setPrevMaxQty] = useState(0);
 
   const actionButtonPress = (action) => {
     if (action === "delete") {
@@ -145,8 +148,6 @@ function CompanyItemRow({
     });
 
     setShowDeleteFromWarehouseModal(false);
-
-    // e.stopPropagation();
   };
 
   const deleteItemHandler = (e) => {
@@ -163,8 +164,6 @@ function CompanyItemRow({
     } else {
       setShowWarningModal(true);
     }
-
-    // e.stopPropagation();
   };
 
   const undoDeleteItemHandler = (e) => {
@@ -181,8 +180,6 @@ function CompanyItemRow({
     } else {
       setShowWarningModal(true);
     }
-
-    // e.stopPropagation();
   };
 
   const deleteFromWarehouseHandler = (e) => {
@@ -201,8 +198,6 @@ function CompanyItemRow({
     } else {
       setShowWarningModal(true);
     }
-
-    // e.stopPropagation();
   };
 
   // const onKeyPress = (event) => {
@@ -221,19 +216,6 @@ function CompanyItemRow({
         style={{
           backgroundColor: checkOffer(item, user) ? Colors.OFFER_COLOR : "#fff",
         }}
-        // onClick={() => {
-        //   history.push("item", {
-        //     from: user.type,
-        //     type: "info",
-        //     allowAction:
-        //       user.type === UserTypeConstants.COMPANY ||
-        //       (user.type === UserTypeConstants.ADMIN &&
-        //         item.company.allowAdmin),
-        //     itemId: item._id,
-        //     companyId: item.company._id,
-        //     warehouseId: warehouse?._id,
-        //   });
-        // }}
       >
         <label
           className={[rowStyles.hover_underline, tableStyles.label_medium].join(
@@ -303,27 +285,18 @@ function CompanyItemRow({
           user.type === UserTypeConstants.WAREHOUSE) && (
           <>
             <label className={tableStyles.label_small}>
-              <input
-                // type="number"
-                className={rowStyles.input}
-                // min={0}
-                onKeyPress={onKeyPressForNumberInput}
-                value={maxQty}
-                onChange={maxQtyChangeHandler}
-                onBlur={(e) =>
-                  changeItemMaxQty({
-                    itemId: item._id,
-                    warehouseId: warehouse._id,
-                    qty: Number.parseInt(maxQty),
-                  })
-                }
-                disabled={
-                  (user.type === UserTypeConstants.ADMIN &&
-                    role === UserTypeConstants.WAREHOUSE &&
-                    !warehouse?.allowAdmin) ||
-                  !isOnline
-                }
-              />
+              <div className={styles.max_qty_div}>
+                <label>{maxQty}</label>
+                <Icon
+                  icon={() => <AiFillEdit />}
+                  onclick={() => {
+                    setShowChangeMaxQtyModal(true);
+                    setPrevMaxQty(maxQty);
+                  }}
+                  foreColor={Colors.MAIN_COLOR}
+                  tooltip={t("change-max-qty-header")}
+                />
+              </div>
             </label>
 
             <label
@@ -428,8 +401,43 @@ function CompanyItemRow({
           {<p>{t("item-delete-from-warehouse")}</p>}
         </Modal>
       )}
+
+      {showChangeMaxQtyModal && (
+        <Modal
+          header={t("change-max-qty-header")}
+          cancelLabel={t("cancel-label")}
+          closeModal={() => {
+            setShowChangeMaxQtyModal(false);
+            setMaxQty(prevMaxQty);
+            setPrevMaxQty(0);
+          }}
+          okLabel={t("ok-label")}
+          okModal={() => {
+            changeItemMaxQty({
+              itemId: item._id,
+              warehouseId: warehouse._id,
+              qty: Number.parseInt(maxQty),
+            });
+            setShowChangeMaxQtyModal(false);
+          }}
+          small={true}
+        >
+          <input
+            className={styles.input}
+            onKeyPress={onKeyPressForNumberInput}
+            value={maxQty}
+            onChange={maxQtyChangeHandler}
+            disabled={
+              (user.type === UserTypeConstants.ADMIN &&
+                role === UserTypeConstants.WAREHOUSE &&
+                !warehouse?.allowAdmin) ||
+              !isOnline
+            }
+          />
+        </Modal>
+      )}
     </>
   );
 }
 
-export default CompanyItemRow;
+export default AdminItemRow;

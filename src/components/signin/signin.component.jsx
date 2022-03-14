@@ -1,5 +1,5 @@
 // libraries
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router";
 import { motion } from "framer-motion";
 import { useTranslation } from "react-i18next";
@@ -37,6 +37,7 @@ import styles from "./signin.module.scss";
 // constants
 import { Colors } from "../../utils/constants";
 import { getAllAdvertisements } from "../../redux/advertisements/advertisementsSlice";
+import License from "../license/license.component";
 
 // constants use for motion
 const containerVariant = {
@@ -283,6 +284,7 @@ function SignIn() {
           action={signInHandler}
           bgColor={Colors.FAILED_COLOR}
         />
+
         {/* </div> */}
 
         {status === "loading" && (
@@ -310,12 +312,3 @@ function SignIn() {
 }
 
 export default SignIn;
-
-{
-  /* <div className={styles.signup}>
-            <p>{t("sign-up-sentence")}</p>
-            <p className={styles.button} onClick={signupHandler}>
-              {t("sign-up")}
-            </p>
-          </div> */
-}

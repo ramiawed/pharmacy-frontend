@@ -234,16 +234,8 @@ function ItemRowNew({ item }) {
     <>
       <div className={styles.container}>
         {checkOffer(item, user) && (
-          <div className={styles.offer_icon}>
-            <img
-              src={OfferImage}
-              alt="thumb"
-              style={{
-                width: "36px",
-                height: "36px",
-                transform: "rotate(20deg)",
-              }}
-            />
+          <div className={[styles.ribbon_2].join(" ")}>
+            <span>{t("offer")}</span>
           </div>
         )}
 
@@ -336,17 +328,15 @@ function ItemRowNew({ item }) {
           )}
 
           {user.type === UserTypeConstants.PHARMACY &&
-          item.existing_place[user.city] > 0 ? (
-            <Icon
-              icon={() => <GiShoppingCart />}
-              onclick={(e) => {
-                setShowModal(true);
-              }}
-              foreColor={Colors.SUCCEEDED_COLOR}
-            />
-          ) : (
-            <div style={{ width: "24px" }}></div>
-          )}
+            item.existing_place[user.city] > 0 && (
+              <Icon
+                icon={() => <GiShoppingCart />}
+                onclick={(e) => {
+                  setShowModal(true);
+                }}
+                foreColor={Colors.SUCCEEDED_COLOR}
+              />
+            )}
 
           {changeFavoriteLoading ? (
             <Icon

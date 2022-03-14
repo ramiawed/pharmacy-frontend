@@ -236,7 +236,7 @@
   "update-item-succeeded": "تم تعديل المنتج بنجاح",
   "item-status": "حالة",
   "item-delete-header": "حذف منتج",
-  "item-undo-delete-header": "استعادة حساب",
+  "item-undo-delete-header": "استعادة منتج",
   "item-delete-confirm-message": "عند حذف المنتج لن يكون متاح للإضافة لأي مستودع، هل تريد متابعة العملية؟",
   "item-undo-delete-confirm-message": "عند استعادة المنتج سوف يكون متاح للإضافة لأي مستودع، هل تريد متابعة العملية؟",
   "item-delete-succeeded": "تم حذف المنتج بنجاح",
@@ -281,6 +281,7 @@
   "tooltip-offers": "عروض المنتج",
   "offer-type": "نوع العرض",
   "pieces": "عرض القطع",
+  "offer": "عرض",
   "percentage": "عرض النسبة المئوية",
   "select-offer-type": "اختر نوع العرض",
   "quantity-label": "الكمية",
@@ -479,5 +480,11 @@
   "new-user-added": "شريك جديد قام بإنشاء حساب، يرجى تفعيل حسابه",
   "general-error": "الرجاء المحاولة مرة جديدة",
   "image-size-must-be-less-than": "حجم الصورة يجب ان يكون اقل من ٥١٢ كيلو بايت",
-  "no-result-found": "لا يوجد نتائج"
+  "no-result-found": "لا يوجد نتائج",
+  "change-max-qty-header": "تغيير قيمة الحد الاعلى للطلب",
+  "item-available": "متوفر من الشركة",
+  "item-not-available": "غير متوفر من الشركة",
+  "agree-license": "أوافق على شروط الخصوصية بعد أن قمت بقراءتها",
+  "read-license": "قراءة شروط الخصوصية",
+  "license-header": "شروط الخصوصية"
 }

@@ -132,14 +132,14 @@ function EditableCity({
             </div>
           ) : (
             <div className={generalStyles.flex_center_container}>
-              <Button
+              {/* <Button
                 text="edit-label"
                 action={() => {
                   setIsEditable(true);
                   setPreviousValue(value);
                 }}
                 bgColor={Colors.SUCCEEDED_COLOR}
-              />
+              /> */}
             </div>
           )
         ) : null}

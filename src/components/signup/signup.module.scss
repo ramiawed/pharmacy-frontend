@@ -79,6 +79,12 @@
     list-style-type: none;
     font-size: 0.8rem;
   }
+
+  span.read_license {
+    &:hover {
+      text-decoration: underline;
+    }
+  }
 }
 
 @media (max-width: 768px) {

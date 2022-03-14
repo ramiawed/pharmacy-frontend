@@ -210,6 +210,7 @@ function MedicinesPage({ onSelectedChange }) {
         className={generalStyles.container}
         style={{
           marginBlockStart: "50px",
+          paddingInlineStart: "50px",
         }}
       >
         <MedicinesSearchString pageState={pageState} user={user} />

@@ -138,7 +138,7 @@ function ItemsTableHeader({
           {t("user-company-name")}
         </label>
       )}
-      <label className={tableStyles.label_small}>{t("item-status")}</label>
+      <label className={tableStyles.label_small}>{t("item-available")}</label>
 
       <label className={tableStyles.label_small}>{t("item-formula")}</label>
 

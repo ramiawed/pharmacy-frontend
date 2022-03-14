@@ -5,12 +5,12 @@ import { v4 as uuidv4 } from "uuid";
 
 // components
 import ReactPaginate from "react-paginate";
-import CompanyItemRow from "../../components/company-item-row/company-item-row.component";
 import Toast from "../../components/toast/toast.component";
 import NoContent from "../../components/no-content/no-content.component";
 import ItemsTableHeader from "../../components/items-table-header/items-table-header.component";
 import Loader from "../../components/action-loader/action-loader.component";
 import ItemsPageHeader from "../../components/items-page-header/items-page-header.component";
+import AdminItemRow from "../../components/admin-item-row/admin-item-row.component";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -38,13 +38,11 @@ import { Colors } from "../../utils/constants";
 // styles
 import paginationStyles from "../../components/pagination.module.scss";
 import generalStyles from "../../style.module.scss";
+import AdminItemCard from "../../components/admin-item-card/admin-item-card.component";
 
 function ItemsPage({ onSelectedChange }) {
   const { t } = useTranslation();
   const user = useSelector(selectUser);
-
-  // const location = useLocation();
-  // const { user, company, warehouse, role } = location.state;
 
   // selector
   const isOnline = useSelector(selectOnlineStatus);
@@ -69,7 +67,6 @@ function ItemsPage({ onSelectedChange }) {
 
     dispatch(setPage(selected + 1));
     handleSearch();
-    // setInitialPage(selected);
     window.scrollTo(0, 0);
   };
 
@@ -120,6 +117,7 @@ function ItemsPage({ onSelectedChange }) {
       className={generalStyles.container}
       style={{
         marginTop: "55px",
+        paddingInlineStart: "50px",
       }}
     >
       <ItemsPageHeader
@@ -132,7 +130,7 @@ function ItemsPage({ onSelectedChange }) {
         search={handleEnterPress}
       />
 
-      {count > 0 && (
+      {/* {count > 0 && (
         <ItemsTableHeader
           user={user}
           role={pageState.role}
@@ -142,15 +140,14 @@ function ItemsPage({ onSelectedChange }) {
           sortPriceField={pageState.sortPriceField}
           sortCustomerPriceField={pageState.sortCustomerPriceField}
         />
-      )}
+      )} */}
 
       {/* display items */}
       {items?.map((item) => (
-        <CompanyItemRow
+        <AdminItemCard
           key={uuidv4()}
           item={item}
           user={user}
-          company={pageState.company}
           warehouse={pageState.warehouse}
           role={pageState.role}
           deleteItemFromWarehouse={deleteItemFromWarehouse}

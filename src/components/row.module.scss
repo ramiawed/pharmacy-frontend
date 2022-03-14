@@ -57,27 +57,27 @@
   text-align: start;
 }
 
-.container .input {
-  width: 100%;
-  padding: 4px 2px;
-  font-size: 0.6rem;
-  text-align: center;
-  border: none;
-  outline: none;
-  background-color: transparent;
-  border-radius: 6px;
-  color: $grey-color;
-}
+// .container .input {
+//   width: 100%;
+//   padding: 4px 2px;
+//   font-size: 0.6rem;
+//   text-align: center;
+//   border: none;
+//   outline: none;
+//   background-color: transparent;
+//   border-radius: 6px;
+//   color: $grey-color;
+// }
 
-.input:focus {
-  border-bottom: 1px solid $secondary-color;
-  border-radius: 0;
-  color: $grey-color;
-}
+// .input:focus {
+//   border-bottom: 1px solid $secondary-color;
+//   border-radius: 0;
+//   color: $grey-color;
+// }
 
 .hover_underline {
   text-decoration: none;
-  color: $grey-color;
+  color: $main-color;
 }
 
 .hover_underline:hover {

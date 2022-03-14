@@ -1,0 +1,55 @@
+@import '../../variables.scss';
+
+.container {
+  max-height: 400px;
+  overflow: auto;
+  padding-inline: 12px;
+
+  h1 {
+    color: $main-color;
+    text-decoration: underline;
+  }
+
+  strong {
+    font-size: 1rem;
+    color: $green-color;
+  }
+
+  ul.first {
+    list-style-type: square;
+    list-style-position: inside;
+    list-style-image: none;
+  }
+
+  ul.second {
+    list-style-type: circle;
+    list-style-position: inside;
+    list-style-image: none;
+    margin-inline-start: 25px;
+  }
+
+  p,
+  li {
+    text-align: justify;
+  }
+
+  button {
+    display: block;
+    padding-inline: 20px;
+    padding-block: 10px;
+    margin-inline: auto;
+    background: transparent;
+    color: $green-color;
+    border: 1px solid $green-color;
+    font-weight: bold;
+    outline: none;
+    border-radius: 6px;
+    transition: all 0.3s;
+    cursor: pointer;
+
+    &:hover {
+      background: $green-color;
+      color: $white-color;
+    }
+  }
+}

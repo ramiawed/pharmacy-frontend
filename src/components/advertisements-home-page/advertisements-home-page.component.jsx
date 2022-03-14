@@ -1,13 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
-import Logo02 from "../../warehouses-with-offers.jpg";
-import Logo from "../../logo.jpg";
-import Logo01 from "../../order-online.jpg";
-import ComingSoonLogo from "../../coming-soon.jpg";
-import FacebookLogo from "../../facebook.jpg";
-import Online24 from "../../online24.jpg";
-import UglyImage1 from "../../ugly-image-1.jpeg";
-import UglyImage2 from "../../ugly-image-2.jpeg";
+import LogoWithDotsImage from "../../logo-with-dots.jpg";
+import OrderOnlineImage from "../../order-online.jpg";
+import WarehouseWithOffersImage from "../../warehouses-with-offers.jpg";
+import FreeServicesImage from "../../free-services.jpg";
 
 import styles from "./advertisements-home-page.module.scss";
 
@@ -15,14 +11,10 @@ let timer = null;
 
 function AdvertisementsHomePage({ advertisements }) {
   const backgrounds = [
-    Logo,
-    Logo01,
-    Logo02,
-    ComingSoonLogo,
-    FacebookLogo,
-    Online24,
-    UglyImage1,
-    UglyImage2,
+    LogoWithDotsImage,
+    OrderOnlineImage,
+    WarehouseWithOffersImage,
+    FreeServicesImage,
     ...advertisements,
   ];
   const [index, setIndex] = useState(0);

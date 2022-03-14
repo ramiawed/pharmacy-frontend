@@ -34,6 +34,8 @@ import { getIcon } from "../../utils/icons.js";
 
 // styles
 import styles from "./signup.module.scss";
+import Modal from "../modal/modal.component";
+import License from "../license/license.component";
 
 const containerVariant = {
   hidden: {
@@ -64,6 +66,8 @@ function SignUp() {
   const { user: authUser } = useSelector(selectUserData);
 
   // own state
+  const [licenseCheck, setLicenseCheck] = useState(false);
+  const [showLicenseModel, setShowLicenseModal] = useState(false);
   const [networkError, setNetworkError] = useState("");
   const [signupLoading, setSignupLoading] = useState(false);
   // state to determine that the sign up process succeeded or not
@@ -409,60 +413,62 @@ function SignUp() {
         return;
       }
 
-      setSignupLoading(true);
-      axios
-        .post(`${BASEURL}/users/signup`, user, {})
-        .then((response) => {
-          // if create user succeeded
-          if (
-            user.type === UserTypeConstants.PHARMACY ||
-            user.type === UserTypeConstants.GUEST
-          ) {
-            const data = new FormData();
-            data.append("id", response.data.data.id);
-            data.append("file", user.paperUrl);
-
-            const config = {
-              headers: {
-                "content-type": "multipart/form-data",
-              },
-            };
-
-            axios
-              .post(`${BASEURL}/users/upload-license`, data, config)
-              .then(() => {
-                // user type is not normal
-                // redirect to approve page
-                setSignupLoading(false);
-                setSignupSucceeded(true);
-              })
-              .catch(() => {});
-          } else {
-            // user type is not normal
-            // redirect to approve page
-            setSignupLoading(false);
-            setSignupSucceeded(true);
-          }
-        })
-        .catch((err) => {
-          if (
-            err.code === "ECONNABORTED" &&
-            err.message.startsWith("timeout")
-          ) {
-            setNetworkError("timeout");
-          } else if (!err.response) {
-            setNetworkError("network failed");
-          } else {
-            setError({
-              [err.response.data.field[0]]: err.response.data.message,
-            });
-          }
-
-          setSignupLoading(false);
-        });
+      setShowLicenseModal(true);
     } else {
       setError(errorObj);
     }
+  };
+
+  const newAccountHandler = () => {
+    setShowLicenseModal(false);
+    setSignupLoading(true);
+    axios
+      .post(`${BASEURL}/users/signup`, user, {})
+      .then((response) => {
+        // if create user succeeded
+        if (
+          user.type === UserTypeConstants.PHARMACY ||
+          user.type === UserTypeConstants.GUEST
+        ) {
+          const data = new FormData();
+          data.append("id", response.data.data.id);
+          data.append("file", user.paperUrl);
+
+          const config = {
+            headers: {
+              "content-type": "multipart/form-data",
+            },
+          };
+
+          axios
+            .post(`${BASEURL}/users/upload-license`, data, config)
+            .then(() => {
+              // user type is not normal
+              // redirect to approve page
+              setSignupLoading(false);
+              setSignupSucceeded(true);
+            })
+            .catch(() => {});
+        } else {
+          // user type is not normal
+          // redirect to approve page
+          setSignupLoading(false);
+          setSignupSucceeded(true);
+        }
+      })
+      .catch((err) => {
+        if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+          setNetworkError("timeout");
+        } else if (!err.response) {
+          setNetworkError("network failed");
+        } else {
+          setError({
+            [err.response.data.field[0]]: err.response.data.message,
+          });
+        }
+
+        setSignupLoading(false);
+      });
   };
 
   return authUser ? (
@@ -781,18 +787,40 @@ function SignUp() {
                 />
               </>
             </form>
-            {/* <div className={styles.input_div} style={{ width: "98%" }}>
-              
-              <input
-                id="paperUrl"
-                ref={inputFileRef}
-                multiple={false}
-                accept="image/*"
-                type="file"
-              />
-            </div> */}
           </div>
         )}
+
+        {/* <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          <input
+            type="checkbox"
+            value={licenseCheck}
+            defaultValue={licenseCheck}
+            onChange={() => {
+              setLicenseCheck(!licenseCheck);
+            }}
+          />
+          <label
+            style={{
+              paddingInline: "10px",
+              color: Colors.WHITE_COLOR,
+            }}
+          >
+            {t("agree-license")}،
+            <span
+              className={styles.read_license}
+              onClick={() => {
+                setShowLicenseModal(true);
+              }}
+            >
+              {t("read-license")}
+            </span>
+          </label>
+        </div> */}
       </div>
 
       {Object.entries(error).length > 0 && (
@@ -826,6 +854,18 @@ function SignUp() {
       )}
 
       {signupLoading && <Loader allowCancel={false} />}
+
+      {showLicenseModel && (
+        <Modal
+          closeModal={() => {
+            setShowLicenseModal(false);
+          }}
+          header={t("license-header")}
+          cancelLabel={t("close-label")}
+        >
+          <License action={newAccountHandler} />
+        </Modal>
+      )}
     </motion.div>
   );
 }

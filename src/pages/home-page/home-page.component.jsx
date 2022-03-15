@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom";
 // components
 import Loader from "../../components/loader/loader.component";
 import SectionHomePageFlex from "../../components/section-home-page-flex/section-home-page-flex.component";
+import PharmacyIntroduce from "../../components/pharmacy-introduce/pharmacy-introduce.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -40,6 +41,8 @@ import { selectAdvertisements } from "../../redux/advertisements/advertisementsS
 import styles from "./home-page.module.scss";
 import { SERVER_URL } from "../../utils/constants";
 import AdvertisementsHomePage from "../../components/advertisements-home-page/advertisements-home-page.component";
+import WarehouseIntroduce from "../../components/warehouse-introduce/warehouse-introduce.component";
+import GuestIntroduce from "../../components/guest-introduce/guest-introduce.component";
 
 function HomePage({ onSelectedChange }) {
   const dispatch = useDispatch();
@@ -142,6 +145,9 @@ function HomePage({ onSelectedChange }) {
         )}
       />
 
+      <PharmacyIntroduce />
+      <WarehouseIntroduce />
+      <GuestIntroduce />
       {/* <div className={styles.advertisement_container}>
         {settings.companiesSectionOne.show &&
           (companiesSectionOneStatus === "loading" ? (

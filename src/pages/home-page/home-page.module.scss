@@ -25,6 +25,11 @@
   align-items: center;
 }
 
+.introductions {
+  background: hsla(0, 0%, 91%, 1);
+  background: linear-gradient(45deg, hsla(0, 0%, 66%, 1) 25%, hsla(0, 0%, 91%, 1) 75%);
+}
+
 .container {
   width: 98%;
   margin-block: 12px;

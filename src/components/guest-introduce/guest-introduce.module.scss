@@ -4,7 +4,8 @@
   min-height: 50vh;
   width: 100%;
   position: relative;
-  background: #e8e8e8;
+  // background: hsla(0, 0%, 91%, 1);
+  // background: linear-gradient(45deg, hsla(0, 0%, 91%, 1) 25%, hsla(0, 0%, 66%, 1) 75%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -42,6 +43,21 @@
       position: relative;
       box-shadow: 0 0 3px 3px rgba($color: $main-color, $alpha: 0.7), 0 0 5px 5px rgba($color: $main-color, $alpha: 0.5), 0 0 10px 10px rgba($color: $main-color, $alpha: 0.2);
 
+      .icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        position: absolute;
+        background: $white-color;
+        color: $main-color;
+        top: -20px;
+        right: -20px;
+        font-size: 1.5rem;
+        box-shadow: 0 0 3px 3px rgba($color: $secondary-color, $alpha: 0.7), 0 0 6px 6px rgba($color: $secondary-color, $alpha: 0.5);
+      }
     }
   }
 }

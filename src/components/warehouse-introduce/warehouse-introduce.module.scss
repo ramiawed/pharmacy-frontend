@@ -4,7 +4,8 @@
   min-height: 50vh;
   width: 100%;
   position: relative;
-  background: #fff;
+  // background: #fff;
+  // background: linear-gradient(45deg, hsla(0, 0%, 91%, 1) 19%, hsla(0, 0%, 100%, 1) 100%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -23,7 +24,7 @@
       width: 90%;
       background: $white-color;
       margin-inline: 10px;
-      margin-block: 15px;
+      margin-block: 20px;
       padding: 20px;
       border-radius: 6px;
       text-align: center;

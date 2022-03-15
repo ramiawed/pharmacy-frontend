@@ -144,10 +144,24 @@ function HomePage({ onSelectedChange }) {
           (a) => `${SERVER_URL}/advertisements/${a.logo_url}`
         )}
       />
+      <div className={styles.introductions}>
+        <PharmacyIntroduce />
+        <hr
+          style={{
+            width: "80%",
+            marginInline: "auto",
+          }}
+        />
+        <WarehouseIntroduce />
+        <hr
+          style={{
+            width: "80%",
+            marginInline: "auto",
+          }}
+        />
+        <GuestIntroduce />
+      </div>
 
-      <PharmacyIntroduce />
-      <WarehouseIntroduce />
-      <GuestIntroduce />
       {/* <div className={styles.advertisement_container}>
         {settings.companiesSectionOne.show &&
           (companiesSectionOneStatus === "loading" ? (

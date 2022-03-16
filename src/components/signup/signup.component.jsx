@@ -484,14 +484,14 @@ function SignUp() {
     >
       {/* top left */}
       <div className={styles.signin}>
-        <label>{t("sign-up-sentence")}</label>
+        <label>{t("sign-in-sentence")}</label>
         <label className={styles.signin_button} onClick={signInHandler}>
-          {t("sign-up")}
+          {t("sign-in")}
         </label>
       </div>
       <img src={Logo} alt="thumb" />
 
-      <h3>{t("sign-in")}</h3>
+      <h3>{t("sign-up")}</h3>
 
       <div className={styles.info_div}>
         {/* user type with 100% width and top margin of 10 */}

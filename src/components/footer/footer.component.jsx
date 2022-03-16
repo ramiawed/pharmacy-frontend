@@ -96,7 +96,7 @@ function Footer() {
           small={true}
           color={Colors.SECONDARY_COLOR}
         >
-          <p>{t("contact-us-through-whatsapp")}: ٠٠٩٦٩٣٢٣٤٥٢٥٣٠</p>
+          <p>{t("contact-us-through-whatsapp")}: 0943063066</p>
           <p></p>
         </Modal>
       )}

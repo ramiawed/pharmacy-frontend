@@ -144,21 +144,21 @@ function HomePage({ onSelectedChange }) {
           (a) => `${SERVER_URL}/advertisements/${a.logo_url}`
         )}
       />
-      <div className={styles.introductions}>
+      <div>
         <PharmacyIntroduce />
-        <hr
+        {/* <hr
           style={{
             width: "80%",
             marginInline: "auto",
           }}
-        />
+        /> */}
         <WarehouseIntroduce />
-        <hr
+        {/* <hr
           style={{
             width: "80%",
             marginInline: "auto",
           }}
-        />
+        /> */}
         <GuestIntroduce />
       </div>
 

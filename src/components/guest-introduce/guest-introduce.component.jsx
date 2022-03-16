@@ -7,32 +7,14 @@ import styles from "./guest-introduce.module.scss";
 function GuestIntroduce() {
   return (
     <div className={styles.container}>
+      <h2>الضيوف</h2>
       <div className={styles.description}>
-        <p>
-          <label className={styles.icon}>1</label>
-          <label>التعرف على منتجات الشركات وتركيباتها واستطباباتها</label>
-        </p>
-        <p>
-          <label className={styles.icon}>2</label>
-          <label>معرفة أسعار العموم</label>
-        </p>
-        <p>
-          <label className={styles.icon}>3</label>
-          <label>
-            التعرف على المنتجات الجديدة المطروحة بالسوق اضافة الى اهم الاخبار
-          </label>
+        <p>التعرف على منتجات الشركات وتركيباتها واستطباباتها</p>
+        <p>معرفة أسعار العموم</p>
+        <p className={styles.full_width}>
+          التعرف على المنتجات الجديدة المطروحة بالسوق اضافة الى اهم الاخبار
         </p>
       </div>
-      <img
-        src={GuestImage}
-        style={{
-          width: "250px",
-          height: "250px",
-          marginBlockEnd: "10px",
-        }}
-        alt="thumb"
-        className={styles.img}
-      />
     </div>
   );
 }

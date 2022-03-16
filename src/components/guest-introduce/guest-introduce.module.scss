@@ -1,102 +1,79 @@
 @import '../../variables.scss';
 
 .container {
-  min-height: 50vh;
-  width: 100%;
+  width: 90%;
+  margin-inline: auto;
+  margin-block: 20px;
   position: relative;
-  // background: hsla(0, 0%, 91%, 1);
-  // background: linear-gradient(45deg, hsla(0, 0%, 91%, 1) 25%, hsla(0, 0%, 66%, 1) 75%);
   display: flex;
-  align-items: center;
+  align-items: stretch;
   justify-content: center;
   flex-direction: column;
   padding: 20px;
+  border-radius: 6px;
+  box-shadow: 0 0 5px 5px rgba($color: #000000, $alpha: 0.3);
+  background-color: $main-color;
 
-  .img {
-    order: 1;
+  h2 {
+    width: 100%;
+    font-size: 2rem;
+    padding-inline: 20px;
+    padding-block: 10px;
+    box-shadow: 0 0 3px 3px rgba($color: $secondary-color, $alpha: 0.7);
+    border-radius: 6px;
+    color: $main-color;
+    background-color: $white-color;
+    margin-block-end: 10px;
   }
 
   .description {
-    order: 2;
+
     display: flex;
     align-items: stretch;
-    justify-content: space-evenly;
-    flex: 1;
+    justify-content: space-between;
     flex-wrap: wrap;
-    flex-direction: column;
 
     p {
-      width: 90%;
-      background: $main-color;
-      margin-inline: 10px;
-      margin-block: 15px;
+      min-width: 90%;
+      width: 100%;
+      background: $white-color;
+      margin-block: 5px;
       padding: 20px;
       border-radius: 6px;
       text-align: center;
-      color: $white-color;
+      color: $main-color;
       display: flex;
       align-items: center;
       justify-content: center;
-      flex-direction: column;
       font-size: 1.1rem;
       font-weight: bold;
-      position: relative;
-      box-shadow: 0 0 3px 3px rgba($color: $main-color, $alpha: 0.7), 0 0 5px 5px rgba($color: $main-color, $alpha: 0.5), 0 0 10px 10px rgba($color: $main-color, $alpha: 0.2);
-
-      .icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 46px;
-        height: 46px;
-        border-radius: 50%;
-        position: absolute;
-        background: $white-color;
-        color: $main-color;
-        top: -20px;
-        right: -20px;
-        font-size: 1.5rem;
-        box-shadow: 0 0 3px 3px rgba($color: $secondary-color, $alpha: 0.7), 0 0 6px 6px rgba($color: $secondary-color, $alpha: 0.5);
-      }
+      box-shadow: 0 0 3px 3px rgba($color: #000000, $alpha: 0.2);
     }
   }
-}
 
-@media only screen and (min-width: $small) {
-  .container {
-    flex-direction: column;
-
-    .img {
-      order: 1;
-    }
-
+  @media only screen and (min-width: $small) {
     .description {
-      order: 2;
       flex-direction: row;
 
       p {
+        min-width: 48%;
+        width: 48%;
         margin-block: 10px;
       }
+
+      p.full_width {
+        width: 100%;
+      }
     }
   }
 
-
-}
-
-@media only screen and (min-width: $medium) {
-  .container {
-    flex-direction: row;
-
-    .img {
-      order: 2;
-    }
-
+  @media only screen and (min-width: $medium) {
     .description {
-      order: 1;
       flex-direction: row;
 
       p {
-        width: 27%;
+        width: 48%;
+        min-width: 48%;
       }
     }
   }

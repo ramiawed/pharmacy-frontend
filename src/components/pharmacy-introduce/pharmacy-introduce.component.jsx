@@ -1,5 +1,4 @@
 import React from "react";
-import PharmacyImage from "../../pharmacy01.png";
 import styles from "./pharmacy-introduce.module.scss";
 
 function PharmacyIntroduce() {

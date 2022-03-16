@@ -1,10 +1,4 @@
 import React from "react";
-import WarehouseImage from "../../warehouse01.png";
-
-// icons
-import { AiFillControl } from "react-icons/ai";
-import { GoWatch } from "react-icons/go";
-import { BsFillBookmarkPlusFill } from "react-icons/bs";
 
 // styles
 import styles from "./warehouse-introduce.module.scss";

@@ -1,5 +1,4 @@
 import React from "react";
-import GuestImage from "../../guest.png";
 
 // styles
 import styles from "./guest-introduce.module.scss";

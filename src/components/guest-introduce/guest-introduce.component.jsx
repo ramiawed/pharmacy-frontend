@@ -1,19 +1,31 @@
 import React from "react";
 
+import { IoIosPeople } from "react-icons/io";
+
 // styles
 import styles from "./guest-introduce.module.scss";
 
 function GuestIntroduce() {
   return (
     <div className={styles.container}>
-      <h2>الضيوف</h2>
-      <div className={styles.description}>
-        <p>التعرف على منتجات الشركات وتركيباتها واستطباباتها</p>
-        <p>معرفة أسعار العموم</p>
-        <p className={styles.full_width}>
-          التعرف على المنتجات الجديدة المطروحة بالسوق اضافة الى اهم الاخبار
-        </p>
+      <div className={styles.icon}>
+        <IoIosPeople />
       </div>
+      <h2>الضيوف</h2>
+      <hr
+        style={{
+          width: "80%",
+          marginInline: "auto",
+          marginBlock: "10px",
+        }}
+      />
+      <ul>
+        <li>التعرف على منتجات الشركات وتركيباتها واستطباباتها</li>
+        <li>معرفة أسعار العموم</li>
+        <li>
+          التعرف على المنتجات الجديدة المطروحة بالسوق اضافة الى اهم الاخبار
+        </li>
+      </ul>
     </div>
   );
 }

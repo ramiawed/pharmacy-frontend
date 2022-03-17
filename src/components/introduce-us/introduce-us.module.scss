@@ -1,0 +1,26 @@
+@import '../../variables.scss';
+
+.container {
+  margin-block: 20px;
+  width: 90%;
+  box-shadow: 0 0 3px 3px rgba($color: $main-color, $alpha: 0.5);
+  padding: 25px;
+  border-radius: 6px;
+  background-color: rgba($color: $main-color, $alpha: 1);
+  color: $secondary-color;
+
+
+  h2 {
+    color: $white-color;
+    font-size: 2rem;
+    text-align: center;
+    font-family: $font-ar-01;
+  }
+
+  p {
+    text-align: center;
+    font-size: 1.1rem;
+    font-weight: bold;
+    font-family: $font-ar-01;
+  }
+}

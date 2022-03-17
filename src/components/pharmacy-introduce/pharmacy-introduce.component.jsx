@@ -1,22 +1,35 @@
 import React from "react";
+
+import { GiMedicines } from "react-icons/gi";
+
 import styles from "./pharmacy-introduce.module.scss";
 
 function PharmacyIntroduce() {
   return (
     <div className={styles.container}>
-      <h2>الصيدليات</h2>
-      <div className={styles.description}>
-        <p>امكانية التعرف والوصول الى أكثر من 12 ألف منتج.</p>
-        <p>
-          البحث والتسوق والطلب بسلاسة وسهولة على مدار 24 ساعة وخلال أيام
-          الأسبوع..
-        </p>
-        <p>خيارات بحث متعددة لتسهيل إمكانية الوصول لاحتياجك.</p>
-        <p>مراقبة حالة الطلبات من المستودعات.</p>
-        <p className={styles.full_width}>
-          التعرف على المنتجات الجديدة وتحديثات الاسعار إضافة الى اهم الاخبار.
-        </p>
+      <div className={styles.icon}>
+        <GiMedicines />
       </div>
+      <h2>الصيدليات</h2>
+      <hr
+        style={{
+          width: "80%",
+          marginInline: "auto",
+          marginBlock: "10px",
+        }}
+      />
+      <ul>
+        <li>امكانية التعرف والوصول الى أكثر من 12 ألف منتج</li>
+        <li>
+          البحث والتسوق والطلب بسلاسة وسهولة على مدار 24 ساعة وخلال أيام
+          الأسبوع.
+        </li>
+        <li>خيارات بحث متعددة لتسهيل إمكانية الوصول لاحتياجك</li>
+        <li>مراقبة حالة الطلبات من المستودعات.</li>
+        <li>
+          التعرف على المنتجات الجديدة وتحديثات الاسعار إضافة الى اهم الاخبار
+        </li>
+      </ul>
     </div>
   );
 }

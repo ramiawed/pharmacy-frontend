@@ -6,6 +6,10 @@ import Loader from "../../components/loader/loader.component";
 import SectionHomePageFlex from "../../components/section-home-page-flex/section-home-page-flex.component";
 import PharmacyIntroduce from "../../components/pharmacy-introduce/pharmacy-introduce.component";
 
+// icons
+import { GiMedicinePills, GiMedicines } from "react-icons/gi";
+import { RiMedicineBottleFill } from "react-icons/ri";
+
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
@@ -43,6 +47,7 @@ import { SERVER_URL } from "../../utils/constants";
 import AdvertisementsHomePage from "../../components/advertisements-home-page/advertisements-home-page.component";
 import WarehouseIntroduce from "../../components/warehouse-introduce/warehouse-introduce.component";
 import GuestIntroduce from "../../components/guest-introduce/guest-introduce.component";
+import IntroduceUs from "../../components/introduce-us/introduce-us.component";
 
 function HomePage({ onSelectedChange }) {
   const dispatch = useDispatch();
@@ -137,28 +142,32 @@ function HomePage({ onSelectedChange }) {
       style={{
         overflow: "hidden",
         paddingInlineStart: "35px",
+        position: "relative",
       }}
     >
+      {/* <div className={styles.favorite_nav}>
+        <GiMedicinePills />
+        <GiMedicines />
+        <RiMedicineBottleFill />
+      </div> */}
+
       <AdvertisementsHomePage
         advertisements={advertisements.map(
           (a) => `${SERVER_URL}/advertisements/${a.logo_url}`
         )}
       />
-      <div>
-        <PharmacyIntroduce />
-        {/* <hr
+
+      <div className={styles.introduces}>
+        <IntroduceUs />
+        <hr
           style={{
-            width: "80%",
+            width: "90%",
             marginInline: "auto",
+            marginBlock: "10px",
           }}
-        /> */}
+        />
         <WarehouseIntroduce />
-        {/* <hr
-          style={{
-            width: "80%",
-            marginInline: "auto",
-          }}
-        /> */}
+        <PharmacyIntroduce />
         <GuestIntroduce />
       </div>
 

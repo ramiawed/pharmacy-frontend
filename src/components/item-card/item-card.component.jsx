@@ -253,15 +253,8 @@ function ItemCard({ companyItem }) {
       }}
     >
       {checkOffer(companyItem, user) && (
-        <div className={styles.offer_icon}>
-          <img
-            src={OfferImage}
-            alt="thumb"
-            style={{
-              width: "36px",
-              height: "36px",
-            }}
-          />
+        <div className={[styles.ribbon_2].join(" ")}>
+          <span>{t("offer")}</span>
         </div>
       )}
       <div className={styles.company_name}>{companyItem.company.name}</div>

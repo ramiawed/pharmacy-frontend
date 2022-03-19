@@ -2,13 +2,9 @@ import React, { lazy, Suspense, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
-// components
-// import SideNavAdmin from "../side-nav-admin/side-nav-admin.component";
-
 import SearchHome from "../search-home/search-home.component";
 
 // react-icons
-import { FaSearch } from "react-icons/fa";
 import { VscClose } from "react-icons/vsc";
 import { GoSignOut } from "react-icons/go";
 import { GiHamburgerMenu } from "react-icons/gi";
@@ -48,7 +44,6 @@ import {
 import styles from "./side-nav.module.scss";
 import linkStyles from "../side-nav.module.scss";
 import generalStyles from "../../style.module.scss";
-import navStyles from "./../side-nav.module.scss";
 
 // constants
 import { SERVER_URL, UserTypeConstants } from "../../utils/constants";
@@ -161,27 +156,6 @@ function SideNav({
           />
         )}
         <div className={styles.links}>
-          <div className={[navStyles.link].join(" ")}>
-            <div
-              className={navStyles.nav}
-              onClick={(e) => {
-                dispatch(
-                  changeNavSettings({
-                    showSearchBar: !showSearchBar,
-                    collapsedSideNavOption: true,
-                  })
-                );
-                e.stopPropagation();
-              }}
-            >
-              <div className={navStyles.nav_icon}>
-                <FaSearch size={20} />
-              </div>
-              {!collapsed && (
-                <div className={navStyles.nav_label}>{t("search")}</div>
-              )}
-            </div>
-          </div>
           <Suspense fallback={<></>}>
             {user.type === UserTypeConstants.ADMIN && (
               <SideNavAdmin

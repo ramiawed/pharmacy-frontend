@@ -336,6 +336,7 @@ function HomePage({ onSelectedChange }) {
           closeAction={() => {
             setShowCompaniesSectionOneSideNav(false);
           }}
+          type="partner"
         />
       )}
 

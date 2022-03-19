@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 import Logo from "../../logo.png";
-import OfferImage from "../../offer-image.jpg";
 
 // components
 import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
@@ -235,6 +234,7 @@ function ItemCard({ companyItem }) {
       );
     }
   };
+
   return (
     <div
       className={[styles.partner_container].join(" ")}

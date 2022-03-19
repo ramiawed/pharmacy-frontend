@@ -238,18 +238,19 @@ function AdminItemCard({
         </div>
 
         <div className={styles.details}>
-          <div className={[styles.row].join(" ")}>
-            {((user.type === UserTypeConstants.ADMIN &&
-              role === UserTypeConstants.ADMIN) ||
-              (user.type === UserTypeConstants.ADMIN &&
-                role === UserTypeConstants.WAREHOUSE) ||
-              user.type === UserTypeConstants.WAREHOUSE) && (
+          {((user.type === UserTypeConstants.ADMIN &&
+            role === UserTypeConstants.ADMIN) ||
+            (user.type === UserTypeConstants.ADMIN &&
+              role === UserTypeConstants.WAREHOUSE) ||
+            user.type === UserTypeConstants.WAREHOUSE) && (
+            <div className={[styles.row].join(" ")}>
               <div>
                 <label className={styles.label}>{t("item-company")}:</label>
                 <label className={styles.value}>{item.company.name}</label>
               </div>
-            )}
-          </div>
+            </div>
+          )}
+
           <div className={[styles.row].join(" ")}>
             <div>
               <label className={styles.label}>{t("item-available")}:</label>

@@ -36,7 +36,6 @@ function ItemExcelRow({
           type="checkbox"
           value={item.selected}
           checked={item.selected}
-          // disabled={error}
           onChange={() => onSelectedChanged(index)}
         />
         <Icon
@@ -85,7 +84,7 @@ function ItemExcelRow({
         />
         <label>{t("item-customer-price")}:</label>
         <input
-          id="price"
+          id="customer_price"
           onKeyPress={onKeyPressForNumberInput}
           value={item.customer_price}
           onChange={(e) => onchange(e, index)}

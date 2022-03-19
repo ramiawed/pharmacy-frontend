@@ -27,13 +27,10 @@
 
 .favorite_nav {
   width: 45px;
-  height: 100px;
   position: fixed;
   left: 0;
-  top: 75px;
-  background-color: $grey-color;
+  top: 20vh;
   z-index: 100;
-  opacity: 0.4;
   border-top-right-radius: 6px;
   border-bottom-right-radius: 6px;
   transition: all 0.3s;
@@ -41,12 +38,48 @@
   flex-direction: column;
   z-index: 200;
 
+  .favorite_nav_icon {
+    width: 100%;
+    height: 46px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $white-color;
+    opacity: 0.2;
+
+    transition: all 0.3s;
+
+    &:hover {
+      background: $third-color;
+      opacity: 1;
+
+      .favorite_nav_tooltip {
+        display: block;
+      }
+    }
+  }
+
+  .favorite_nav_tooltip {
+    display: none;
+    width: 100px;
+    position: absolute;
+    top: 10px;
+    left: 105%;
+    background: #000;
+    opacity: 0.8;
+    color: #fff;
+    border-radius: 6px;
+    text-align: center;
+    font-size: 0.8rem;
+  }
 
   &:hover {
-    opacity: 1;
     z-index: 200;
   }
 }
+
+
 
 .introduces {
   display: flex;

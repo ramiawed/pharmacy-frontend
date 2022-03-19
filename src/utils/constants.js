@@ -141,7 +141,7 @@ export const AdditionalColors = [
   "#0B86B2",
   "#3D5A80",
   "#E56B6F",
-  "#ffe66d",
+  "#baa437",
 ];
 
 export const toEnglishNumber = (strNum) => {
@@ -161,6 +161,6 @@ export const onKeyPressForNumberInput = (event) => {
 // export const BASEURL = "http://67.205.165.65/api/v1";
 export const BASEURL = "https://api.smartpharmasy.com/api/v1";
 // export const SERVER_URL = "https://salty-brook-65681.herokuapp.com";
-// export const SERVER_URL = "http://localhost:8000";
+// export const SERVER_URL = "http://localhost:8000/";
 export const SERVER_URL = "https://api.smartpharmasy.com/";
 // export const SERVER_URL = "http://67.205.165.65/";

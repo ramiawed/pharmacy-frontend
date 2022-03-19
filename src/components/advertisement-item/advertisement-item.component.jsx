@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import Logo from "../../logo.png";
 
 // components
@@ -15,7 +15,8 @@ import styles from "./advertisement-item.module.scss";
 // constants and utils
 import { SERVER_URL, UserTypeConstants } from "../../utils/constants";
 
-function AdvertisementItem({ item, contentColor }) {
+function AdvertisementItem({ item }) {
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const user = useSelector(selectUser);
@@ -40,7 +41,22 @@ function AdvertisementItem({ item, contentColor }) {
   };
 
   return (
-    <div className={styles.partner_container}>
+    <div
+      className={styles.partner_container}
+      onClick={() => {
+        dispatchStatisticsHandler();
+        history.push("/item", {
+          from: user.type,
+          type: "info",
+          allowAction: false,
+
+          itemId: item._id,
+          companyId: item.company._id,
+          warehouseId:
+            user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
+        });
+      }}
+    >
       <div className={styles.logo_div}>
         {item.logo_url && item.logo_url !== "" ? (
           <img
@@ -54,28 +70,7 @@ function AdvertisementItem({ item, contentColor }) {
       </div>
 
       <div>
-        <Link
-          className={styles.content}
-          style={{
-            color: contentColor,
-          }}
-          onClick={dispatchStatisticsHandler}
-          to={{
-            pathname: "/item",
-            state: {
-              from: user.type,
-              type: "info",
-              allowAction: false,
-
-              itemId: item._id,
-              companyId: item.company._id,
-              warehouseId:
-                user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
-            },
-          }}
-        >
-          {item.name}
-        </Link>
+        <label className={styles.content}>{item.name}</label>
       </div>
     </div>
   );

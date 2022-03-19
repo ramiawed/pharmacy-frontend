@@ -33,6 +33,9 @@ const UserProfilePage = lazy(() =>
 const WarehousePage = lazy(() =>
   import("../warehouses-page/warehouses-page.component")
 );
+const ItemExcelPage = lazy(() =>
+  import("../item-excel-page/item-excel-page.component")
+);
 
 function CompanyPage({ changeOptionHandler }) {
   return (
@@ -139,6 +142,10 @@ function CompanyPage({ changeOptionHandler }) {
                 });
               }}
             />
+          </Route>
+
+          <Route exact path="/items-from-excel">
+            <ItemExcelPage />
           </Route>
 
           <Route exact path="/notifications">

@@ -507,7 +507,7 @@ function ItemExcelPage() {
 
         {items.length > 0 &&
           items.map((item, index) => (
-            <>
+            <div key={index}>
               <ItemExcelCard
                 onDelete={() => handleDeleteItem(index)}
                 onchange={handleInputChange}
@@ -517,7 +517,7 @@ function ItemExcelPage() {
                 index={index}
                 withUpdate={withUpdate}
               />
-            </>
+            </div>
           ))}
 
         {showModal && (

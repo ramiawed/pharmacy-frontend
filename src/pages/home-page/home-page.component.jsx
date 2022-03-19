@@ -1,14 +1,20 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Redirect } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 // components
-import Loader from "../../components/loader/loader.component";
-import SectionHomePageFlex from "../../components/section-home-page-flex/section-home-page-flex.component";
 import PharmacyIntroduce from "../../components/pharmacy-introduce/pharmacy-introduce.component";
+import AdvertisementSideNav from "../../components/advertisement-side-nav/advertisement-side-nav.component";
+import AdvertisementsHomePage from "../../components/advertisements-home-page/advertisements-home-page.component";
+import WarehouseIntroduce from "../../components/warehouse-introduce/warehouse-introduce.component";
+import GuestIntroduce from "../../components/guest-introduce/guest-introduce.component";
+import IntroduceUs from "../../components/introduce-us/introduce-us.component";
 
 // icons
 import { GiMedicinePills, GiMedicines } from "react-icons/gi";
 import { RiMedicineBottleFill } from "react-icons/ri";
+import { FaWarehouse } from "react-icons/fa";
+import { AiFillGolden, AiFillProfile } from "react-icons/ai";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -43,14 +49,25 @@ import { selectAdvertisements } from "../../redux/advertisements/advertisementsS
 
 // styles
 import styles from "./home-page.module.scss";
-import { SERVER_URL } from "../../utils/constants";
-import AdvertisementsHomePage from "../../components/advertisements-home-page/advertisements-home-page.component";
-import WarehouseIntroduce from "../../components/warehouse-introduce/warehouse-introduce.component";
-import GuestIntroduce from "../../components/guest-introduce/guest-introduce.component";
-import IntroduceUs from "../../components/introduce-us/introduce-us.component";
+
+// constants
+import { AdditionalColors, SERVER_URL } from "../../utils/constants";
 
 function HomePage({ onSelectedChange }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
+  const [showCompaniesSectionOneSideNav, setShowCompaniesSectionOneSideNav] =
+    useState(false);
+  const [showCompaniesSectionTwoSideNav, setShowCompaniesSectionTwoSideNav] =
+    useState(false);
+  const [showWarehouseSectionOneSideNav, setShowWarehouseSectionOneSideNav] =
+    useState(false);
+  const [showItemsSectionOneSideNav, setShowItemsSectionOneSideNav] =
+    useState(false);
+  const [showItemsSectionTwoSideNav, setShowItemsSectionTwoSideNav] =
+    useState(false);
+  const [showItemsSectionThreeSideNav, setShowItemsSectionThreeSideNav] =
+    useState(false);
 
   // selectors
   const { user, token } = useSelector(selectUserData);
@@ -137,6 +154,60 @@ function HomePage({ onSelectedChange }) {
     };
   }, [settings]);
 
+  const showCompaniesSectionOneSideNavHandler = () => {
+    setShowCompaniesSectionOneSideNav(true);
+    setShowCompaniesSectionTwoSideNav(false);
+    setShowWarehouseSectionOneSideNav(false);
+    setShowItemsSectionOneSideNav(false);
+    setShowItemsSectionTwoSideNav(false);
+    setShowItemsSectionThreeSideNav(false);
+  };
+
+  const showCompaniesSectionTwoSideNavHandler = () => {
+    setShowCompaniesSectionOneSideNav(false);
+    setShowCompaniesSectionTwoSideNav(true);
+    setShowWarehouseSectionOneSideNav(false);
+    setShowItemsSectionOneSideNav(false);
+    setShowItemsSectionTwoSideNav(false);
+    setShowItemsSectionThreeSideNav(false);
+  };
+
+  const showWarehouseSectionOneSideNavHandler = () => {
+    setShowCompaniesSectionOneSideNav(false);
+    setShowCompaniesSectionTwoSideNav(false);
+    setShowWarehouseSectionOneSideNav(true);
+    setShowItemsSectionOneSideNav(false);
+    setShowItemsSectionTwoSideNav(false);
+    setShowItemsSectionThreeSideNav(false);
+  };
+
+  const showItemsSectionOneSideNavHandler = () => {
+    setShowCompaniesSectionOneSideNav(false);
+    setShowCompaniesSectionTwoSideNav(false);
+    setShowWarehouseSectionOneSideNav(false);
+    setShowItemsSectionOneSideNav(true);
+    setShowItemsSectionTwoSideNav(false);
+    setShowItemsSectionThreeSideNav(false);
+  };
+
+  const showItemsSectionTwoSideNavHandler = () => {
+    setShowCompaniesSectionOneSideNav(false);
+    setShowCompaniesSectionTwoSideNav(false);
+    setShowWarehouseSectionOneSideNav(false);
+    setShowItemsSectionOneSideNav(false);
+    setShowItemsSectionTwoSideNav(true);
+    setShowItemsSectionThreeSideNav(false);
+  };
+
+  const showItemsSectionThreeSideNavHandler = () => {
+    setShowCompaniesSectionOneSideNav(false);
+    setShowCompaniesSectionTwoSideNav(false);
+    setShowWarehouseSectionOneSideNav(false);
+    setShowItemsSectionOneSideNav(false);
+    setShowItemsSectionTwoSideNav(false);
+    setShowItemsSectionThreeSideNav(true);
+  };
+
   return user ? (
     <div
       style={{
@@ -145,11 +216,97 @@ function HomePage({ onSelectedChange }) {
         position: "relative",
       }}
     >
-      {/* <div className={styles.favorite_nav}>
-        <GiMedicinePills />
-        <GiMedicines />
-        <RiMedicineBottleFill />
-      </div> */}
+      <div className={styles.favorite_nav}>
+        {settings.companiesSectionOne.show && (
+          <div
+            className={styles.favorite_nav_icon}
+            style={{
+              backgroundColor: AdditionalColors[0],
+            }}
+            onClick={showCompaniesSectionOneSideNavHandler}
+          >
+            <AiFillGolden size={24} />
+            <p className={styles.favorite_nav_tooltip}>
+              {t(settings.companiesSectionOne?.title)}
+            </p>
+          </div>
+        )}
+
+        {settings.companiesSectionTwo.show && (
+          <div
+            className={styles.favorite_nav_icon}
+            style={{
+              backgroundColor: AdditionalColors[1],
+            }}
+            onClick={showCompaniesSectionTwoSideNavHandler}
+          >
+            <AiFillProfile size={24} />
+            <p className={styles.favorite_nav_tooltip}>
+              {t(settings.companiesSectionTwo?.title)}
+            </p>
+          </div>
+        )}
+
+        {settings.warehousesSectionOne.show && (
+          <div
+            className={styles.favorite_nav_icon}
+            style={{
+              backgroundColor: AdditionalColors[2],
+            }}
+            onClick={showWarehouseSectionOneSideNavHandler}
+          >
+            <FaWarehouse size={24} />
+            <p className={styles.favorite_nav_tooltip}>
+              {t(settings.warehousesSectionOne?.title)}
+            </p>
+          </div>
+        )}
+
+        {settings.itemsSectionOne.show && (
+          <div
+            className={styles.favorite_nav_icon}
+            style={{
+              backgroundColor: AdditionalColors[3],
+            }}
+            onClick={showItemsSectionOneSideNavHandler}
+          >
+            <GiMedicinePills size={24} />
+            <p className={styles.favorite_nav_tooltip}>
+              {t(settings.itemsSectionOne?.title)}
+            </p>
+          </div>
+        )}
+
+        {settings.itemsSectionTwo.show && (
+          <div
+            className={styles.favorite_nav_icon}
+            style={{
+              backgroundColor: AdditionalColors[4],
+            }}
+            onClick={showItemsSectionTwoSideNavHandler}
+          >
+            <GiMedicines size={24} />
+            <p className={styles.favorite_nav_tooltip}>
+              {t(settings.itemsSectionTwo?.title)}
+            </p>
+          </div>
+        )}
+
+        {settings.itemsSectionThree.show && (
+          <div
+            className={styles.favorite_nav_icon}
+            style={{
+              backgroundColor: AdditionalColors[5],
+            }}
+            onClick={showItemsSectionThreeSideNavHandler}
+          >
+            <RiMedicineBottleFill size={24} />
+            <p className={styles.favorite_nav_tooltip}>
+              {t(settings.itemsSectionThree?.title)}
+            </p>
+          </div>
+        )}
+      </div>
 
       <AdvertisementsHomePage
         advertisements={advertisements.map(
@@ -171,164 +328,76 @@ function HomePage({ onSelectedChange }) {
         <GuestIntroduce />
       </div>
 
-      {/* <div className={styles.advertisement_container}>
-        {settings.companiesSectionOne.show &&
-          (companiesSectionOneStatus === "loading" ? (
-            <div
-              className={styles.container}
-              style={{
-                background: "#1a535c",
-                order: settings.companiesSectionOne?.order,
-              }}
-            >
-              <Loader color="#fff" />
-            </div>
-          ) : (
-            companiesSectionOne.length > 0 && (
-              <SectionHomePageFlex
-                data={companiesSectionOne}
-                containerBackground="#1a535c"
-                headerFlex={settings.companiesSectionOne?.titleRight ? 1 : 2}
-                headerBackground="#083137"
-                sliderFlex={settings.companiesSectionOne?.titleRight ? 2 : 1}
-                header={settings.companiesSectionOne?.title}
-                description={settings.companiesSectionOne?.description}
-                order={settings.companiesSectionOne?.order}
-              />
-            )
-          ))}
+      {showCompaniesSectionOneSideNav && (
+        <AdvertisementSideNav
+          header={settings.companiesSectionOne.title}
+          description={settings.companiesSectionOne.description}
+          data={companiesSectionOne}
+          closeAction={() => {
+            setShowCompaniesSectionOneSideNav(false);
+          }}
+        />
+      )}
 
-        {settings.companiesSectionTwo.show &&
-          (companiesSectionTwoStatus === "loading" ? (
-            <div
-              className={styles.container}
-              style={{
-                background: "#6D597A",
-                order: settings.companiesSectionTwo?.order,
-              }}
-            >
-              <Loader color="#fff" />
-            </div>
-          ) : (
-            companiesSectionTwo.length > 0 && (
-              <SectionHomePageFlex
-                data={companiesSectionTwo}
-                containerBackground="#6D597A"
-                headerFlex={settings.companiesSectionTwo?.titleRight ? 1 : 2}
-                headerBackground="#5A4E63"
-                sliderFlex={settings.companiesSectionTwo?.titleRight ? 2 : 1}
-                header={settings.companiesSectionTwo?.title}
-                description={settings.companiesSectionTwo?.description}
-                order={settings.companiesSectionTwo?.order}
-              />
-            )
-          ))}
+      {showCompaniesSectionTwoSideNav && (
+        <AdvertisementSideNav
+          header={settings.companiesSectionTwo.title}
+          description={settings.companiesSectionTwo.description}
+          data={companiesSectionTwo}
+          closeAction={() => {
+            setShowCompaniesSectionTwoSideNav(false);
+          }}
+          type="partner"
+        />
+      )}
 
-        {settings.warehousesSectionOne.show &&
-          (warehousesSectionOneStatus === "loading" ? (
-            <div
-              className={styles.container}
-              style={{
-                background: "#0B86B2",
-                order: settings.warehousesSectionOne?.order,
-              }}
-            >
-              <Loader color="#fff" />
-            </div>
-          ) : (
-            warehousesSectionOne.length > 0 && (
-              <SectionHomePageFlex
-                data={warehousesSectionOne}
-                containerBackground="#0B86B2"
-                headerFlex={settings.warehousesSectionOne?.titleRight ? 1 : 2}
-                headerBackground="#205D73"
-                sliderFlex={settings.warehousesSectionOne?.titleRight ? 2 : 1}
-                header={settings.warehousesSectionOne?.title}
-                description={settings.warehousesSectionOne?.description}
-                order={settings.warehousesSectionOne?.order}
-              />
-            )
-          ))}
+      {showWarehouseSectionOneSideNav && (
+        <AdvertisementSideNav
+          header={settings.warehousesSectionOne.title}
+          description={settings.warehousesSectionOne.description}
+          data={warehousesSectionOne}
+          closeAction={() => {
+            setShowWarehouseSectionOneSideNav(false);
+          }}
+          type="partner"
+        />
+      )}
 
-        {settings.itemsSectionOne.show &&
-          (itemsSectionOneStatus === "loading" ? (
-            <div
-              className={styles.container}
-              style={{
-                background: "#3D5A80",
-                order: settings.itemsSectionOne?.order,
-              }}
-            >
-              <Loader color="#fff" />
-            </div>
-          ) : (
-            itemsSectionOne.length > 0 && (
-              <SectionHomePageFlex
-                data={itemsSectionOne}
-                containerBackground="#3D5A80"
-                headerFlex={settings.itemsSectionOne?.titleRight ? 1 : 2}
-                headerBackground="#374569"
-                sliderFlex={settings.itemsSectionOne?.titleRight ? 2 : 1}
-                header={settings.itemsSectionOne?.title}
-                description={settings.itemsSectionOne?.description}
-                order={settings.itemsSectionOne?.order}
-                type="item"
-              />
-            )
-          ))}
+      {showItemsSectionOneSideNav && (
+        <AdvertisementSideNav
+          header={settings.itemsSectionOne.title}
+          description={settings.itemsSectionOne.description}
+          data={itemsSectionOne}
+          closeAction={() => {
+            setShowItemsSectionOneSideNav(false);
+          }}
+          type="item"
+        />
+      )}
 
-        {settings.itemsSectionTwo.show &&
-          (itemsSectionTwoStatus === "loading" ? (
-            <div
-              className={styles.container}
-              style={{
-                background: "#E56B6F",
-                order: settings.itemsSectionTwo?.order,
-              }}
-            >
-              <Loader color="#fff" />
-            </div>
-          ) : (
-            itemsSectionTwo.length > 0 && (
-              <SectionHomePageFlex
-                data={itemsSectionTwo}
-                containerBackground="#E56B6F"
-                headerFlex={settings.itemsSectionTwo?.titleRight ? 1 : 2}
-                headerBackground="#B54A58"
-                sliderFlex={settings.itemsSectionTwo?.titleRight ? 2 : 1}
-                header={settings.itemsSectionTwo?.title}
-                description={settings.itemsSectionTwo?.description}
-                order={settings.itemsSectionTwo?.order}
-                type="item"
-              />
-            )
-          ))}
+      {showItemsSectionTwoSideNav && (
+        <AdvertisementSideNav
+          header={settings.itemsSectionTwo.title}
+          description={settings.itemsSectionTwo.description}
+          data={itemsSectionTwo}
+          closeAction={() => {
+            setShowItemsSectionTwoSideNav(false);
+          }}
+          type="item"
+        />
+      )}
 
-        {settings.itemsSectionThree.show &&
-          (itemsSectionThreeStatus === "loading" ? (
-            <div
-              className={styles.container}
-              style={{
-                background: "#baa437",
-                order: settings.itemsSectionThree?.order,
-              }}
-            >
-              <Loader color="#fff" />
-            </div>
-          ) : (
-            itemsSectionThree.length > 0 && (
-              <SectionHomePageFlex
-                data={itemsSectionThree}
-                containerBackground="#baa437"
-                headerBackground="#baa437"
-                header={settings.itemsSectionThree?.title}
-                description={settings.itemsSectionThree?.description}
-                order={settings.itemsSectionThree?.order}
-                type="item"
-              />
-            )
-          ))}
-      </div> */}
+      {showItemsSectionThreeSideNav && (
+        <AdvertisementSideNav
+          header={settings.itemsSectionThree.title}
+          description={settings.itemsSectionThree.description}
+          data={itemsSectionThree}
+          closeAction={() => {
+            setShowItemsSectionThreeSideNav(false);
+          }}
+          type="item"
+        />
+      )}
     </div>
   ) : (
     <Redirect to="/signin" />

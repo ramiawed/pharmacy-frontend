@@ -1,10 +1,6 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import DefaultLogo from "../../logo.png";
-
-// components
-
-// react icons
 
 // redux-stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -23,7 +19,8 @@ import styles from "./advertisement-partner.module.scss";
 // constants and utils
 import { SERVER_URL, UserTypeConstants } from "../../utils/constants.js";
 
-function AdvertisementPartner({ user, contentColor }) {
+function AdvertisementPartner({ user }) {
+  const history = useHistory();
   const dispatch = useDispatch();
 
   const token = useSelector(selectToken);
@@ -60,7 +57,17 @@ function AdvertisementPartner({ user, contentColor }) {
   };
 
   return (
-    <div className={styles.partner_container}>
+    <div
+      className={styles.partner_container}
+      onClick={() => {
+        dispatchCompanySelectedHandler();
+        history.push("/medicines", {
+          companyId: user.type === UserTypeConstants.COMPANY ? user._id : null,
+          warehouseId:
+            user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
+        });
+      }}
+    >
       <div className={styles.logo_div}>
         <img
           src={
@@ -72,24 +79,7 @@ function AdvertisementPartner({ user, contentColor }) {
         />
       </div>
 
-      <Link
-        className={styles.content}
-        style={{
-          color: contentColor,
-        }}
-        onClick={dispatchCompanySelectedHandler}
-        to={{
-          pathname: `/medicines`,
-          state: {
-            companyId:
-              user.type === UserTypeConstants.COMPANY ? user._id : null,
-            warehouseId:
-              user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
-          },
-        }}
-      >
-        {user.name}
-      </Link>
+      <label className={styles.content}>{user.name}</label>
     </div>
   );
 }

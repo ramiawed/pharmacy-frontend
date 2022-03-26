@@ -7,10 +7,9 @@ import { v4 as uuidv4 } from "uuid";
 import ReactPaginate from "react-paginate";
 import Toast from "../../components/toast/toast.component";
 import NoContent from "../../components/no-content/no-content.component";
-import ItemsTableHeader from "../../components/items-table-header/items-table-header.component";
 import Loader from "../../components/action-loader/action-loader.component";
 import ItemsPageHeader from "../../components/items-page-header/items-page-header.component";
-import AdminItemRow from "../../components/admin-item-row/admin-item-row.component";
+import AdminItemCard from "../../components/admin-item-card/admin-item-card.component";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -23,6 +22,7 @@ import {
   selectItems,
   setPage,
   resetChangeOfferStatus,
+  cancelOperation,
 } from "../../redux/items/itemsSlices";
 import {
   changeItemWarehouseMaxQty,
@@ -38,7 +38,8 @@ import { Colors } from "../../utils/constants";
 // styles
 import paginationStyles from "../../components/pagination.module.scss";
 import generalStyles from "../../style.module.scss";
-import AdminItemCard from "../../components/admin-item-card/admin-item-card.component";
+
+let timer;
 
 function ItemsPage({ onSelectedChange }) {
   const { t } = useTranslation();
@@ -102,6 +103,20 @@ function ItemsPage({ onSelectedChange }) {
     }
   };
 
+  const keyUpHandler = () => {
+    cancelOperation();
+
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    timer = setTimeout(() => {
+      // dispatch(resetMedicinesArray());
+
+      handleSearch();
+    }, 200);
+  };
+
   useEffect(() => {
     handleSearch();
 
@@ -128,19 +143,15 @@ function ItemsPage({ onSelectedChange }) {
         company={pageState.company}
         pageState={pageState}
         search={handleEnterPress}
+        keyUpHandler={keyUpHandler}
       />
 
-      {/* {count > 0 && (
-        <ItemsTableHeader
-          user={user}
-          role={pageState.role}
-          pageState={pageState}
-          sortNameField={pageState.sortNameField}
-          sortCaliberField={pageState.sortCaliberField}
-          sortPriceField={pageState.sortPriceField}
-          sortCustomerPriceField={pageState.sortCustomerPriceField}
-        />
-      )} */}
+      {count > 0 && (
+        <div className={generalStyles.count}>
+          <span className={generalStyles.label}>{t("items-count")}</span>
+          <span className={generalStyles.count}>{count}</span>
+        </div>
+      )}
 
       {/* display items */}
       {items?.map((item) => (
@@ -179,14 +190,14 @@ function ItemsPage({ onSelectedChange }) {
 
       {status === "loading" && <Loader allowCancel={false} />}
 
-      {error && (
+      {/* {error && (
         <Toast
           bgColor={Colors.FAILED_COLOR}
           foreColor="#fff"
           toastText={t(error)}
           actionAfterTimeout={() => dispatch(resetStatus())}
         />
-      )}
+      )} */}
 
       {(activeStatus === "loading" ||
         changeOfferStatus === "loading" ||

@@ -30,6 +30,8 @@
 
   input {
     margin-inline: 8px;
+    margin-left: 8px;
+    margin-right: 8px;
   }
 }
 
@@ -44,6 +46,7 @@
     font-size: 0.5rem;
     text-align: end;
     padding-inline-end: 6px;
+    padding-left: 6px;
   }
 
   input,
@@ -51,6 +54,7 @@
     flex: 1;
     font-size: 1rem;
     padding-inline-start: 6px;
+    padding-right: 6px;
     color: $main-color;
     border: 1px solid rgba($color: $secondary-color, $alpha: 1);
     border-radius: 4px;

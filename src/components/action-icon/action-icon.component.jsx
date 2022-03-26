@@ -35,8 +35,8 @@ function Icon({ onclick, tooltip, icon, foreColor, withBackground }) {
         foreColor === Colors.GREY_COLOR ? generalStyles.fc_grey : "",
       ].join(" ")}
       onClick={(e) => {
-        e.stopPropagation();
         if (onclick) onclick();
+        e.stopPropagation();
       }}
     >
       {icon && icon()}

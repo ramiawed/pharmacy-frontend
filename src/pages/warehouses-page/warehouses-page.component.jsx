@@ -12,19 +12,17 @@ import NoContent from "../../components/no-content/no-content.component";
 import WarehousesHeader from "../../components/warehouses-header/warehouses-header.component";
 
 // redux stuff
-import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
   getWarehouses,
   resetWarehouse,
   selectWarehouses,
-  changePage,
   selectWarehousesPageState,
-  resetStatus,
   changeShowFavorites,
   cancelOperation,
   changeSearchCity,
+  resetWarehousesArray,
 } from "../../redux/warehouse/warehousesSlice";
 import {
   getFavorites,
@@ -45,6 +43,10 @@ import {
 
 // styles
 import generalStyles from "../../style.module.scss";
+import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
+import { CgMoreVertical } from "react-icons/cg";
+
+let timer;
 
 function WarehousePage({ onSelectedChange }) {
   const { t } = useTranslation();
@@ -53,9 +55,9 @@ function WarehousePage({ onSelectedChange }) {
   // selectors
   const isOnline = useSelector(selectOnlineStatus);
   const { token, user } = useSelector(selectUserData);
-  const { warehouses, count, status, error } = useSelector(selectWarehouses);
+  const { warehouses, count, status } = useSelector(selectWarehouses);
   const { searchName, searchCity } = useSelector(selectWarehousesPageState);
-  const { displayType, page } = useSelector(selectWarehousesPageState);
+  const { displayType } = useSelector(selectWarehousesPageState);
 
   // select favorites from favoriteSlice
   const { error: favoriteError } = useSelector(selectFavorites);
@@ -63,7 +65,7 @@ function WarehousePage({ onSelectedChange }) {
   const [favoritesError, setFavoritesError] = useState(favoriteError);
 
   // handle search
-  const handleSearch = (page) => {
+  const handleSearch = () => {
     dispatch(changeShowFavorites());
 
     if (
@@ -78,11 +80,7 @@ function WarehousePage({ onSelectedChange }) {
       getWarehouses({
         token,
       })
-    )
-      .then(unwrapResult)
-      .then(() => {
-        dispatch(changePage(page + 1));
-      });
+    );
   };
 
   const handleMoreResult = () => {
@@ -91,21 +89,32 @@ function WarehousePage({ onSelectedChange }) {
       return;
     }
 
-    handleSearch(page);
+    handleSearch();
   };
 
   const handleEnterPress = () => {
-    dispatch(resetWarehouse());
-    dispatch(changePage(1));
-    handleSearch(1);
+    dispatch(resetWarehousesArray());
+    handleSearch();
   };
 
   const refreshHandler = () => {
     dispatch(resetFavorites());
     dispatch(getFavorites({ token }));
     dispatch(resetWarehouse());
-    dispatch(changePage(1));
-    handleSearch(1);
+    handleSearch();
+  };
+
+  const keyUpHandler = (event) => {
+    if (event.keyCode === 13) return;
+    cancelOperation();
+
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    timer = setTimeout(() => {
+      handleEnterPress();
+    }, 200);
   };
 
   useEffect(() => {
@@ -122,13 +131,13 @@ function WarehousePage({ onSelectedChange }) {
 
   return user &&
     (user.type === UserTypeConstants.ADMIN ||
-      user.type === UserTypeConstants.PHARMACY ||
-      user.type === UserTypeConstants.COMPANY) ? (
+      user.type === UserTypeConstants.PHARMACY) ? (
     <div className={generalStyles.container}>
       <WarehousesHeader
         count={count}
         search={handleEnterPress}
         refreshHandler={refreshHandler}
+        keyUpHandler={keyUpHandler}
       />
 
       {count > 0 && (
@@ -182,11 +191,14 @@ function WarehousePage({ onSelectedChange }) {
       )}
 
       {warehouses.length < count && (
-        <Button
-          text={t("more")}
-          action={handleMoreResult}
-          bgColor={Colors.SECONDARY_COLOR}
-        />
+        <div className={generalStyles.flex_container}>
+          <ButtonWithIcon
+            text={t("more")}
+            action={handleMoreResult}
+            bgColor={Colors.SECONDARY_COLOR}
+            icon={() => <CgMoreVertical />}
+          />
+        </div>
       )}
 
       {warehouses.length === count && status !== "loading" && count !== 0 && (
@@ -197,18 +209,6 @@ function WarehousePage({ onSelectedChange }) {
         >
           {t("no-more")}
         </p>
-      )}
-
-      {error && (
-        <Toast
-          bgColor={Colors.FAILED_COLOR}
-          foreColor="#fff"
-          actionAfterTimeout={() => {
-            dispatch(resetStatus());
-          }}
-        >
-          {t(error)}
-        </Toast>
       )}
 
       {favoritesError && (

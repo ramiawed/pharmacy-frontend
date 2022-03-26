@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Route, Router, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import { Detector } from "react-detect-offline";
 
 // components
@@ -76,7 +76,7 @@ function App() {
         </Toast>
       )}
 
-      <Detector
+      {/* <Detector
         polling={{
           url: "https://ipv4.icanhazip.com",
         }}
@@ -88,7 +88,7 @@ function App() {
             </div>
           )
         }
-      />
+      /> */}
     </div>
   );
 }

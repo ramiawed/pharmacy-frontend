@@ -30,16 +30,9 @@ import { BASEURL, Colors, UserTypeConstants } from "../../utils/constants";
 // styles
 import generalStyles from "../../style.module.scss";
 import searchContainerStyles from "../search-container/search-container.module.scss";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
-function ItemsPageHeader({
-  user,
-  role,
-  warehouse,
-  count,
-  company,
-  pageState,
-  search,
-}) {
+function ItemsPageHeader({ user, company, pageState, search, keyUpHandler }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -58,6 +51,7 @@ function ItemsPageHeader({
           resetField={() => {
             dispatch(setSearchName(""));
           }}
+          onkeyup={keyUpHandler}
         />
 
         {(user.type === UserTypeConstants.WAREHOUSE ||
@@ -74,6 +68,7 @@ function ItemsPageHeader({
             resetField={() => {
               dispatch(setSearchCompanyName(""));
             }}
+            onkeyup={keyUpHandler}
           />
         )}
 
@@ -91,6 +86,7 @@ function ItemsPageHeader({
             resetField={() => {
               dispatch(setSearchWarehouseName(""));
             }}
+            onkeyup={keyUpHandler}
           />
         )}
 
@@ -101,6 +97,7 @@ function ItemsPageHeader({
             onChange={() => {
               dispatch(setSearchDeletedItems(!pageState.searchDeletedItems));
               dispatch(setSearchActiveItems(false));
+              keyUpHandler();
             }}
           />
           <label>{t("deleted-items")}</label>
@@ -113,6 +110,7 @@ function ItemsPageHeader({
             onChange={() => {
               dispatch(setSearchDeletedItems(false));
               dispatch(setSearchActiveItems(!pageState.searchActiveItems));
+              keyUpHandler();
             }}
           />
           <label>{t("active-items")}</label>
@@ -127,6 +125,7 @@ function ItemsPageHeader({
                 onChange={() => {
                   dispatch(setSearchInWarehouse(!pageState.searchInWarehouse));
                   dispatch(setSearchOutWarehouse(false));
+                  keyUpHandler();
                 }}
               />
               <label>{t("warehouse-in-warehouse")}</label>
@@ -141,6 +140,7 @@ function ItemsPageHeader({
                   dispatch(
                     setSearchOutWarehouse(!pageState.searchOutWarehouse)
                   );
+                  keyUpHandler();
                 }}
               />
               <label>{t("warehouse-out-warehouse")}</label>
@@ -150,19 +150,19 @@ function ItemsPageHeader({
       </SearchContainer>
 
       <div className={generalStyles.actions}>
+        <Icon
+          foreColor={Colors.MAIN_COLOR}
+          selected={false}
+          icon={() => <RiRefreshLine />}
+          tooltip={t("refresh-tooltip")}
+          onclick={search}
+          withBackground={true}
+        />
         {user.type === UserTypeConstants.COMPANY ||
         (user.type === UserTypeConstants.ADMIN &&
           company !== null &&
           company.allowAdmin) ? (
           <>
-            <Icon
-              foreColor={Colors.MAIN_COLOR}
-              selected={false}
-              icon={() => <RiRefreshLine />}
-              tooltip={t("refresh-tooltip")}
-              onclick={search}
-              withBackground={true}
-            />
             <Icon
               foreColor={Colors.MAIN_COLOR}
               selected={false}
@@ -210,6 +210,15 @@ function ItemsPageHeader({
         ) : (
           <></>
         )}
+        <Icon
+          withBackground={true}
+          tooltip={t("go-back")}
+          onclick={() => {
+            history.goBack();
+          }}
+          icon={() => <IoMdArrowRoundBack />}
+          foreColor={Colors.MAIN_COLOR}
+        />
       </div>
     </>
   );

@@ -39,7 +39,11 @@ import generalStyles from "../../style.module.scss";
 import styles from "./item-row.module.scss";
 
 // constants and utils
-import { Colors, UserTypeConstants } from "../../utils/constants";
+import {
+  checkItemExistsInWarehouse,
+  Colors,
+  UserTypeConstants,
+} from "../../utils/constants";
 
 // if logged user is
 // 1- ADMIN: highlight the row by green color if the medicine has an offer.
@@ -211,8 +215,6 @@ function ItemRow({ item, onSelectAction }) {
       .catch(() => {
         setChangeAddToWarehouseLoading(false);
       });
-
-    // e.stopPropagation();
   };
 
   const dispatchStatisticsHandler = () => {
@@ -289,17 +291,11 @@ function ItemRow({ item, onSelectAction }) {
           )}
 
           {user.type === UserTypeConstants.PHARMACY &&
-            item.existing_place[user.city] > 0 && (
+            checkItemExistsInWarehouse(item, user) && (
               <Icon
                 icon={() => <GiShoppingCart size={20} />}
-                onclick={(e) => {
+                onclick={() => {
                   setShowModal(true);
-                  // dispatch(
-                  //   changeNavSettings({
-                  //     showSearchBar: false,
-                  //   })
-                  // );
-                  e.stopPropagation();
                 }}
                 foreColor={Colors.SUCCEEDED_COLOR}
               />

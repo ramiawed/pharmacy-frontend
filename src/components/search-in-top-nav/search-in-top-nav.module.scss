@@ -72,10 +72,12 @@
   width: 100%;
   text-align: right;
   padding-inline-start: 10px;
+  padding-right: 10px;
   font-size: 0.7rem;
   font-weight: bold;
   color: $green-color;
   margin-block-start: 5px;
+  margin-top: 5px;
 }
 
 @media only screen and (min-width: $small) {
@@ -83,6 +85,8 @@
     width: 80%;
     order: 1;
     margin-inline: auto;
+    margin-left: auto;
+    margin-right: auto;
   }
 }
 
@@ -91,5 +95,7 @@
     width: 60%;
     order: 1;
     margin-inline: auto;
+    margin-left: auto;
+    margin-right: auto;
   }
 }

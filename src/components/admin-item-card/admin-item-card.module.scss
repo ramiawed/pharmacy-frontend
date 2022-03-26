@@ -11,6 +11,8 @@
   border: 1px solid $main-color;
   border-radius: 6px;
   padding-block: 4px;
+  padding-top: 4px;
+  padding-bottom: 4px;
   text-align: center;
   font-size: 1.2rem;
   box-shadow: 0 0 3px 3px rgba($color: #000000, $alpha: 0.3);
@@ -25,6 +27,7 @@
   box-shadow: 0 0 2px 2px rgba($color: #000000, $alpha: 0.3);
   border-radius: 6px;
   margin-block-end: 20px;
+  margin-bottom: 20px;
   display: flex;
   position: relative;
   flex-direction: column;
@@ -37,8 +40,9 @@
   color: $white-color;
   padding: 20px;
   text-align: center;
+  min-width: 120px;
   flex: 1;
-  font-size: 1.2rem;
+  font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s;
 }
@@ -57,20 +61,32 @@
     div {
       flex: 1;
       padding-inline-start: 10px;
+      padding-right: 10px;
+      overflow: hidden;
 
       .label {
         color: $secondary-color;
         font-size: 0.8rem;
-        min-width: 50px;
-        width: 75px;
         display: inline-block;
         text-align: start;
+      }
+
+      .label.first {
+        min-width: 75px;
+        width: 75px;
       }
 
       .value {
         color: $main-color;
         margin-inline-start: 10px;
+        margin-right: 10px;
         font-size: 1rem;
+      }
+
+      .ellipsis {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
   }
@@ -113,6 +129,10 @@
       div {
         .label {
           font-size: 0.7rem;
+
+        }
+
+        .label.first {
           min-width: 75px;
           width: 75px;
         }

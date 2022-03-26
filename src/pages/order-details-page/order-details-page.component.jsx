@@ -6,7 +6,7 @@ import axios from "axios";
 // react icons
 import { RiRefreshLine, RiSendPlaneFill } from "react-icons/ri";
 import { BsCheckAll } from "react-icons/bs";
-import { MdRemoveDone } from "react-icons/md";
+import { MdOutlineLocalShipping, MdRemoveDone } from "react-icons/md";
 
 // components
 import CartWarehouseTableHeader from "../../components/cart-warehouse-table-header/cart-warehouse-table-header.component";
@@ -196,8 +196,8 @@ function OrderDetailsPage({ location, onSelectedChange }) {
                       <Icon
                         selected={false}
                         foreColor={Colors.SUCCEEDED_COLOR}
-                        tooltip={t("mark-as-sent")}
-                        icon={() => <RiSendPlaneFill />}
+                        tooltip={t("mark-as-shipped")}
+                        icon={() => <MdOutlineLocalShipping />}
                         onclick={() => markOrdersAs("sent")}
                         withBackground={true}
                       />

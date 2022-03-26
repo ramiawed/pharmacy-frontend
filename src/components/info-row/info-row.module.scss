@@ -2,9 +2,7 @@
 
 .info_row {
   padding: 8px 12px;
-
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -13,27 +11,22 @@
 .info_row .label {
   width: 75px;
   min-width: 75px;
-
-  text-align: end;
+  text-align: start;
   padding-inline-end: 6px;
-
+  padding-left: 6px;
   color: #9d9d9d;
-
-  font-size: 0.6rem;
+  font-size: 0.8rem;
 }
 
 .info_row .value {
   flex: 1;
   color: $main-color;
-
-  font-size: 0.8rem;
 }
 
 .value input {
   width: 100%;
   color: $main-color;
   padding: 4px;
-
   border: none;
   outline: none;
 }
@@ -55,10 +48,7 @@
   .info_row .label {
     width: 100px;
     min-width: 100px;
-
     color: #9d9d9d;
-
-    font-size: 0.8rem;
   }
 
   .info_row .value {

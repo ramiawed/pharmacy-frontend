@@ -47,16 +47,21 @@ import {
   BASEURL,
   SERVER_URL,
   toEnglishNumber,
+  checkItemExistsInWarehouse,
 } from "../../utils/constants";
 
 // icons
-import { MdLocalOffer } from "react-icons/md";
-import { RiRefreshLine } from "react-icons/ri";
+import { MdAddCircle, MdLocalOffer } from "react-icons/md";
+import { RiDeleteBin5Fill, RiRefreshLine } from "react-icons/ri";
+import { GiShoppingCart } from "react-icons/gi";
 
 // styles
 import generalStyles from "../../style.module.scss";
 import styles from "./item-page.module.scss";
 import rowStyles from "../../components/row.module.scss";
+import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
+import { BsImageAlt } from "react-icons/bs";
+import { AiFillEdit } from "react-icons/ai";
 
 function ItemPage() {
   const { t } = useTranslation();
@@ -100,6 +105,7 @@ function ItemPage() {
     barcode: "",
     composition: "",
     packing: "",
+    warehouses: [],
     price: 0,
     customer_price: 0,
   });
@@ -350,19 +356,12 @@ function ItemPage() {
                 </div>
 
                 <div>
-                  <button
-                    className={[
-                      generalStyles.button,
-                      generalStyles.bg_secondary,
-                      generalStyles.fc_white,
-                      generalStyles.padding_h_12,
-                      generalStyles.padding_v_6,
-                    ].join(" ")}
-                    onClick={handleClick}
-                    // disabled={readOnly}
-                  >
-                    {t("change-logo")}
-                  </button>
+                  <ButtonWithIcon
+                    text={t("change-logo")}
+                    action={handleClick}
+                    bgColor={Colors.MAIN_COLOR}
+                    icon={() => <BsImageAlt />}
+                  />
                 </div>
               </>
             )}
@@ -370,22 +369,25 @@ function ItemPage() {
               (from === UserTypeConstants.COMPANY ||
                 from === UserTypeConstants.ADMIN) && (
                 <div className={generalStyles.margin_v_4}>
-                  <Button
+                  <ButtonWithIcon
                     text={type === "info" ? t("update-item") : t("add-item")}
-                    bgColor={Colors.SUCCEEDED_COLOR}
                     action={() => setShowUpdateConfirmModal(true)}
+                    bgColor={Colors.SUCCEEDED_COLOR}
+                    icon={() => <AiFillEdit />}
                   />
                 </div>
               )}
 
             {/* show add-to-cart button, if the user's type is PHARMACY and the item is exist in any warehouse */}
             {user.type === UserTypeConstants.PHARMACY &&
-              item.warehouses?.length > 0 && (
+              item !== null &&
+              checkItemExistsInWarehouse(item, user) && (
                 <div className={generalStyles.margin_v_4}>
-                  <Button
+                  <ButtonWithIcon
                     text={t("add-to-cart")}
                     action={() => setShowAddToCartModal(true)}
                     bgColor={Colors.SUCCEEDED_COLOR}
+                    icon={() => <GiShoppingCart />}
                   />
                 </div>
               )}
@@ -395,18 +397,20 @@ function ItemPage() {
                 ?.map((w) => w.warehouse._id)
                 .includes(user._id) ? (
                 <div className={generalStyles.margin_v_4}>
-                  <Button
+                  <ButtonWithIcon
                     text={t("remove-from-warehouse")}
                     action={removeItemFromWarehouseHandler}
                     bgColor={Colors.FAILED_COLOR}
+                    icon={() => <RiDeleteBin5Fill />}
                   />
                 </div>
               ) : (
                 <div className={generalStyles.margin_v_4}>
-                  <Button
+                  <ButtonWithIcon
                     text={t("add-to-warehouse")}
                     action={addItemToWarehouseHandler}
                     bgColor={Colors.SUCCEEDED_COLOR}
+                    icon={() => <MdAddCircle />}
                   />
                 </div>
               ))}
@@ -467,18 +471,21 @@ function ItemPage() {
                 readOnly={!allowAction}
               />
 
-              <div className={styles.horizontal_div}></div>
-
-              <Input
-                label="item-barcode"
-                id="barcode"
-                type="text"
-                value={item.barcode}
-                bordered={false}
-                icon={getIcon("medicine")}
-                onchange={handleInputChange}
-                readOnly={!allowAction}
-              />
+              {user.type === UserTypeConstants.ADMIN && (
+                <>
+                  <div className={styles.horizontal_div}></div>
+                  <Input
+                    label="item-barcode"
+                    id="barcode"
+                    type="text"
+                    value={item.barcode}
+                    bordered={false}
+                    icon={getIcon("medicine")}
+                    onchange={handleInputChange}
+                    readOnly={!allowAction}
+                  />
+                </>
+              )}
             </CardInfo>
 
             <CardInfo headerTitle={t("item-price")}>

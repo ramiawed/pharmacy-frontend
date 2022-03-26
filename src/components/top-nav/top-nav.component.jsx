@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
 
@@ -89,8 +89,7 @@ function TopNav({ onSelectedChange }) {
           </Link>
 
           {(user.type === UserTypeConstants.ADMIN ||
-            user.type === UserTypeConstants.PHARMACY ||
-            user.type === UserTypeConstants.COMPANY) && (
+            user.type === UserTypeConstants.PHARMACY) && (
             <Link
               to="/warehouses"
               className={[

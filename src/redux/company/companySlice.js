@@ -40,20 +40,15 @@ export const getCompanies = createAsyncThunk(
     try {
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
-
-      let buildUrl = `${BASEURL}/users?type=company&page=${pageState.page}&limit=9&details=some`;
+      let buildUrl = `${BASEURL}/users?type=company&isActive=true&isApproved=true&page=${pageState.page}&limit=9&details=some`;
 
       if (pageState.searchName.trim() !== "") {
-        buildUrl = buildUrl + `&name=${pageState.searchName}`;
+        buildUrl = buildUrl + `&name=${pageState.searchName.trim()}`;
       }
 
       if (pageState.searchCity !== CitiesName.ALL) {
         buildUrl = buildUrl + `&city=${pageState.searchCity}`;
       }
-
-      buildUrl = buildUrl + `&isApproved=true`;
-
-      buildUrl = buildUrl + `&isActive=true`;
 
       const response = await axios.get(buildUrl, {
         // timeout: 10000,
@@ -132,6 +127,14 @@ export const companiesSlice = createSlice({
         page: 1,
       };
     },
+    resetCompaniesArray: (state) => {
+      state.companies = [];
+      state.count = 0;
+      state.pageState = {
+        ...state.pageState,
+        page: 1,
+      };
+    },
 
     resetError: (state) => {
       state.error = null;
@@ -147,6 +150,10 @@ export const companiesSlice = createSlice({
       state.companies = [];
       state.count = 0;
       state.error = null;
+      state.pageState = {
+        ...state.pageState,
+        page: 1,
+      };
     },
 
     resetCount: (state) => {
@@ -177,6 +184,10 @@ export const companiesSlice = createSlice({
       state.companies = [...state.companies, ...action.payload.data.users];
       state.count = action.payload.count;
       state.error = null;
+      state.pageState = {
+        ...state.pageState,
+        page: Math.ceil(state.companies.length / 9) + 1,
+      };
     },
     [getCompanies.rejected]: (state, { payload }) => {
       state.status = "failed";
@@ -206,6 +217,7 @@ export const {
   changePage,
   companySliceSignOut,
   changeShowFavorites,
+  resetCompaniesArray,
 } = companiesSlice.actions;
 
 export default companiesSlice.reducer;

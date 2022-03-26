@@ -3,10 +3,18 @@
 .container {
   width: 90%;
   margin-inline: auto;
+  margin-left: auto;
+  margin-right: auto;
   margin-block: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   flex-direction: column;
   padding-block: 20px;
+  padding-top: 20px;
+  padding-bottom: 20px;
   padding-inline: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
   display: flex;
   align-items: center;
   background-color: rgba($color: $main-color, $alpha: 0.5);
@@ -35,7 +43,8 @@
     list-style-type: disc;
 
     li {
-      margin-inline-start: 10px;
+      margin-inline-start: 20px;
+      margin-right: 20px;
       color: $main-color;
       text-align: justify;
       font-family: $font-ar-01;

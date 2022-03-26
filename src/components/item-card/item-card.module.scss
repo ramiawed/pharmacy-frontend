@@ -5,6 +5,7 @@
   width: 90%;
   min-height: 300px;
   margin-block-end: 20px;
+  margin-bottom: 20px;
   position: relative;
   box-shadow: 2px 2px 5px rgba($color: $secondary-color, $alpha: 1);
   border: 1px solid $secondary-color;
@@ -127,6 +128,7 @@
       .composition {
         color: $secondary-color;
         padding-inline-start: 10px;
+        padding-right: 10px;
         font-size: 0.8rem;
       }
 
@@ -136,6 +138,7 @@
     .price {
       color: $third-color;
       margin-inline-end: 10px;
+      margin-left: 10px;
       font-weight: bolder;
 
       .customer_price {
@@ -149,6 +152,7 @@
     justify-content: flex-start;
     align-items: center;
     padding-inline-start: 20px;
+    padding-right: 20px;
 
     .label {
       width: 75px;
@@ -161,6 +165,8 @@
       color: $main-color;
       font-size: 0.9rem;
       padding-inline: 10px;
+      padding-left: 10px;
+      padding-right: 10px;
     }
   }
 }

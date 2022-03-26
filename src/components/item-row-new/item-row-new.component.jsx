@@ -26,6 +26,7 @@ import {
 import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
 import Icon from "../action-icon/action-icon.component";
 import Toast from "../toast/toast.component";
+import ButtonWithIcon from "../button-with-icon/button-with-icon.component";
 
 // react icons
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
@@ -38,7 +39,11 @@ import { VscLoading } from "react-icons/vsc";
 import styles from "./item-row-new.module.scss";
 
 // constants and utils
-import { Colors, UserTypeConstants } from "../../utils/constants";
+import {
+  checkItemExistsInWarehouse,
+  Colors,
+  UserTypeConstants,
+} from "../../utils/constants";
 
 // if logged user is
 // 1- ADMIN: highlight the row by green color if the medicine has an offer.
@@ -294,73 +299,78 @@ function ItemRowNew({ item }) {
               <label className={styles.value}>{item.customer_price}</label>
             </div>
           </div>
-          <div className={[styles.row, styles.last_row].join(" ")}>
+          <div className={[styles.row].join(" ")}>
             <div>
               <label className={styles.label}>{t("item-composition")}:</label>
               <label className={styles.value}>{item.composition}</label>
             </div>
           </div>
-        </div>
-        <div className={styles.actions}>
-          {changeAddToWarehouseLoading ? (
-            <Icon
-              icon={() => <VscLoading className={styles.loading} />}
-              onclick={() => {}}
-              foreColor={Colors.SECONDARY_COLOR}
-            />
-          ) : (
-            user.type === UserTypeConstants.WAREHOUSE &&
-            (item.warehouses.map((w) => w.warehouse._id).includes(user._id) ? (
-              <Icon
-                icon={() => <RiDeleteBin5Fill />}
-                onclick={removeItemFromWarehouseHandler}
-                tooltip={t("remove-from-warehouse-tooltip")}
-                foreColor={Colors.FAILED_COLOR}
-              />
-            ) : (
-              <Icon
-                icon={() => <MdAddCircle />}
-                onclick={addItemToWarehouseHandler}
-                tooltip={t("add-to-warehouse-tooltip")}
-                foreColor={Colors.SUCCEEDED_COLOR}
-              />
-            ))
-          )}
+          <div className={[styles.last_row].join(" ")}>
+            <div className={styles.actions}>
+              {changeAddToWarehouseLoading ? (
+                <ButtonWithIcon
+                  text={t("")}
+                  action={() => {}}
+                  bgColor={Colors.SECONDARY_COLOR}
+                  icon={() => <VscLoading className={styles.loading} />}
+                />
+              ) : (
+                user.type === UserTypeConstants.WAREHOUSE &&
+                (item.warehouses
+                  .map((w) => w.warehouse._id)
+                  .includes(user._id) ? (
+                  <ButtonWithIcon
+                    text={t("remove-from-warehouse-tooltip")}
+                    action={removeItemFromWarehouseHandler}
+                    bgColor={Colors.FAILED_COLOR}
+                    icon={() => <RiDeleteBin5Fill />}
+                  />
+                ) : (
+                  <ButtonWithIcon
+                    text={t("add-to-warehouse-tooltip")}
+                    action={addItemToWarehouseHandler}
+                    bgColor={Colors.SUCCEEDED_COLOR}
+                    icon={() => <MdAddCircle />}
+                  />
+                ))
+              )}
 
-          {user.type === UserTypeConstants.PHARMACY &&
-            item.existing_place[user.city] > 0 && (
-              <Icon
-                icon={() => <GiShoppingCart />}
-                onclick={(e) => {
-                  setShowModal(true);
-                }}
-                foreColor={Colors.SUCCEEDED_COLOR}
-              />
-            )}
+              {user.type === UserTypeConstants.PHARMACY &&
+                checkItemExistsInWarehouse(item, user) && (
+                  <ButtonWithIcon
+                    text={t("add-to-cart")}
+                    action={() => setShowModal(true)}
+                    bgColor={Colors.SUCCEEDED_COLOR}
+                    icon={() => <GiShoppingCart />}
+                  />
+                )}
 
-          {changeFavoriteLoading ? (
-            <Icon
-              icon={() => <VscLoading className={styles.loading} />}
-              onclick={() => {}}
-              foreColor={Colors.YELLOW_COLOR}
-            />
-          ) : favoritesItems
-              .map((favorite) => favorite._id)
-              .includes(item._id) ? (
-            <Icon
-              icon={() => <AiFillStar />}
-              onclick={removeItemFromFavoritesItemsHandler}
-              tooltip={t("remove-from-favorite-tooltip")}
-              foreColor={Colors.YELLOW_COLOR}
-            />
-          ) : (
-            <Icon
-              icon={() => <AiOutlineStar />}
-              onclick={addItemToFavoriteItemsHandler}
-              tooltip={t("add-to-favorite-tooltip")}
-              foreColor={Colors.YELLOW_COLOR}
-            />
-          )}
+              {changeFavoriteLoading ? (
+                <ButtonWithIcon
+                  text={t("")}
+                  action={() => {}}
+                  bgColor={Colors.YELLOW_COLOR}
+                  icon={() => <VscLoading className={styles.loading} />}
+                />
+              ) : favoritesItems
+                  .map((favorite) => favorite._id)
+                  .includes(item._id) ? (
+                <ButtonWithIcon
+                  text={t("remove-from-favorite-tooltip")}
+                  action={removeItemFromFavoritesItemsHandler}
+                  bgColor={Colors.YELLOW_COLOR}
+                  icon={() => <AiFillStar />}
+                />
+              ) : (
+                <ButtonWithIcon
+                  text={t("add-to-favorite-tooltip")}
+                  action={addItemToFavoriteItemsHandler}
+                  bgColor={Colors.YELLOW_COLOR}
+                  icon={() => <AiOutlineStar />}
+                />
+              )}
+            </div>
+          </div>
         </div>
       </div>
 

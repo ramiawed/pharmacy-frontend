@@ -156,11 +156,22 @@ export const onKeyPressForNumberInput = (event) => {
   return event.charCode >= 48 && event.charCode <= 57;
 };
 
+export const checkItemExistsInWarehouse = (item, user) => {
+  return (
+    item.warehouses.filter(
+      (w) =>
+        w.warehouse.city === user.city &&
+        w.warehouse.isActive &&
+        w.warehouse.isApproved
+    ).length > 0
+  );
+};
+
 // export const BASEURL = "https://salty-brook-65681.herokuapp.com/api/v1";
-// export const BASEURL = "http://localhost:8000/api/v1";
+export const BASEURL = "http://localhost:8000/api/v1";
 // export const BASEURL = "http://67.205.165.65/api/v1";
-export const BASEURL = "https://api.smartpharmasy.com/api/v1";
+// export const BASEURL = "https://api.smartpharmasy.com/api/v1";
 // export const SERVER_URL = "https://salty-brook-65681.herokuapp.com";
-// export const SERVER_URL = "http://localhost:8000/";
-export const SERVER_URL = "https://api.smartpharmasy.com/";
+export const SERVER_URL = "http://localhost:8000/";
+// export const SERVER_URL = "https://api.smartpharmasy.com/";
 // export const SERVER_URL = "http://67.205.165.65/";

@@ -4,7 +4,10 @@
   width: 50%;
 
   padding-block-end: 10px;
+  padding-bottom: 10px;
   margin-inline: auto;
+  margin-left: auto;
+  margin-right: auto;
 
   border-bottom: 1px solid $secondary-color;
 }
@@ -12,7 +15,7 @@
 .search_input {
   padding: 6px 12px;
   margin: 0 6px;
-  
+
   flex: 1;
 
   border: none;

@@ -35,7 +35,7 @@ import generalStyles from "../../style.module.scss";
 import { CitiesName, Colors, UserTypeConstants } from "../../utils/constants";
 import { selectUser } from "../../redux/auth/authSlice";
 
-function WarehousesHeader({ search, refreshHandler, count }) {
+function WarehousesHeader({ search, refreshHandler, count, keyUpHandler }) {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -77,6 +77,7 @@ function WarehousesHeader({ search, refreshHandler, count }) {
           placeholder="search-by-warehouse-name"
           onEnterPress={search}
           resetField={() => dispatch(changeSearchName(""))}
+          onkeyup={keyUpHandler}
         />
 
         {user.type === UserTypeConstants.ADMIN && (

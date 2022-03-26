@@ -41,7 +41,7 @@ export const getWarehouses = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      let buildUrl = `${BASEURL}/users?type=warehouse&page=${pageState.page}&limit=9&details=some`;
+      let buildUrl = `${BASEURL}/users?type=warehouse&isActive=true&isApproved=true&page=${pageState.page}&limit=9&details=some`;
 
       if (pageState.searchName.trim() !== "") {
         buildUrl = buildUrl + `&name=${pageState.searchName}`;
@@ -50,10 +50,6 @@ export const getWarehouses = createAsyncThunk(
       if (pageState.searchCity !== CitiesName.ALL) {
         buildUrl = buildUrl + `&city=${pageState.searchCity}`;
       }
-
-      buildUrl = buildUrl + `&isApproved=true`;
-
-      buildUrl = buildUrl + `&isActive=true`;
 
       const response = await axios.get(buildUrl, {
         // timeout: 10000,
@@ -67,6 +63,7 @@ export const getWarehouses = createAsyncThunk(
 
       return response.data;
     } catch (err) {
+      resetCancelAndSource();
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }
@@ -79,7 +76,6 @@ export const getWarehouses = createAsyncThunk(
         return rejectWithValue("network failed");
       }
 
-      resetCancelAndSource();
       return rejectWithValue(err.response.data);
     }
   }
@@ -145,6 +141,18 @@ export const warehousesSlice = createSlice({
       state.warehouses = [];
       state.count = 0;
       state.error = null;
+      state.pageState = {
+        ...state.pageState,
+        page: 1,
+      };
+    },
+    resetWarehousesArray: (state) => {
+      state.warehouses = [];
+      state.count = 0;
+      state.pageState = {
+        ...state.pageState,
+        page: 1,
+      };
     },
     resetCount: (state) => {
       state.count = 0;
@@ -173,6 +181,10 @@ export const warehousesSlice = createSlice({
       state.warehouses = [...state.warehouses, ...action.payload.data.users];
       state.count = action.payload.count;
       state.error = null;
+      state.pageState = {
+        ...state.pageState,
+        page: Math.ceil(state.warehouses.length / 9) + 1,
+      };
     },
     [getWarehouses.rejected]: (state, { payload }) => {
       state.status = "failed";
@@ -202,6 +214,7 @@ export const {
   changePage,
   changeShowFavorites,
   warehouseSliceSignOut,
+  resetWarehousesArray,
 } = warehousesSlice.actions;
 
 export default warehousesSlice.reducer;

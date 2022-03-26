@@ -9,22 +9,26 @@
   justify-content: center;
 }
 
-.add_button {
-  padding: 8px 12px;
-  margin-block-start: 8px auto;
+// .add_button {
+//   padding: 8px 12px;
+//   // margin-block-start: 8px auto;
+//   padding-top: 8px;
 
-  color: $white-color;
+//   color: $white-color;
 
-  border: none;
-  outline: none;
+//   border: none;
+//   outline: none;
 
-  border-radius: 6px;
-}
+//   border-radius: 6px;
+// }
 
 .info {
   flex: 1;
   height: calc(100vh - 160px);
   overflow: scroll;
+  padding-inline: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .logo {

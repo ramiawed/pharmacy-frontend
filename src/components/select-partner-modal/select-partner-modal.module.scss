@@ -1,11 +1,13 @@
 @import "../../variables.scss";
 
 .search_container {
-
   width: 50%;
   margin-inline: auto;
+  margin-left: auto;
+  margin-right: auto;
   border-bottom: 1px solid $secondary-color;
   padding-block-end: 10px;
+  padding-bottom: 10px;
 }
 
 .search_input {

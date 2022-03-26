@@ -6,6 +6,7 @@
   color: $white-color;
   padding: 5px 5px;
   margin-block-end: 4px;
+  margin-bottom: 4px;
   font-size: 0.8rem;
   cursor: pointer;
   transition: all 0.2s;
@@ -24,6 +25,8 @@
   background: $white-color;
   color: $third-color;
   padding-inline: 12px;
+  padding-left: 12px;
+  padding-right: 12px;
   border-radius: 50%;
 }
 
@@ -38,7 +41,10 @@
   align-items: center;
   justify-content: center;
   margin-block: auto;
+  margin-top: auto;
+  margin-bottom: auto;
   margin-inline-end: 10px;
+  margin-left: 10px;
   position: relative;
 }
 
@@ -49,6 +55,8 @@
   top: 5px;
   background: black;
   padding-inline: 4px;
+  padding-left: 4px;
+  padding-right: 4px;
   border-radius: 4px;
   font-size: 0.7rem;
 }

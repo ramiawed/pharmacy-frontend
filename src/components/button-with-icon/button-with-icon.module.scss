@@ -1,0 +1,19 @@
+@import '../../variables.scss';
+
+.button {
+  width: 125px;
+  height: 30px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-inline: 4px;
+  margin-left: 4px;
+  margin-right: 4px;
+
+  &:hover {
+    box-shadow: 0 0 3px 3px rgba(0, 0, 0, 0.3);
+  }
+}

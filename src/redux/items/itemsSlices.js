@@ -40,11 +40,22 @@ const initialState = {
   },
 };
 
+export const cancelOperation = () => {
+  if (source) {
+    source.cancel("operation canceled by user");
+  }
+};
+
+const resetCancelAndSource = () => {
+  CancelToken = null;
+  source = null;
+};
+
 export const getItems = createAsyncThunk(
   "items/getItems",
   async ({ token }, { rejectWithValue, getState }) => {
     CancelToken = axios.CancelToken;
-    source = CancelToken.source;
+    source = CancelToken.source();
 
     const {
       items: { pageState },
@@ -62,7 +73,7 @@ export const getItems = createAsyncThunk(
       }
 
       if (pageState.searchName.trim() !== "") {
-        buildUrl = buildUrl + `&itemName=${pageState.searchName}`;
+        buildUrl = buildUrl + `&itemName=${pageState.searchName.trim()}`;
       }
 
       if (pageState.searchCompanyName.trim() !== "") {
@@ -101,8 +112,11 @@ export const getItems = createAsyncThunk(
         },
       });
 
+      resetCancelAndSource();
+
       return response.data;
     } catch (err) {
+      resetCancelAndSource();
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
         return rejectWithValue("timeout");
       }

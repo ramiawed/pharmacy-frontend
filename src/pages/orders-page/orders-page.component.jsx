@@ -13,6 +13,7 @@ import TableHeader from "../../components/table-header/table-header.component";
 import Icon from "../../components/action-icon/action-icon.component";
 
 // redux stuff
+import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
@@ -28,13 +29,15 @@ import {
 import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 
 // react icons
-import { BsCheckAll, BsCheck } from "react-icons/bs";
+import { BsCheckAll } from "react-icons/bs";
 import {
   MdOutlineCheckBox,
   MdOutlineCheckBoxOutlineBlank,
   MdOutlineIndeterminateCheckBox,
+  MdOutlineLocalShipping,
   MdRemoveDone,
 } from "react-icons/md";
+import { RiMailUnreadLine, RiSendPlaneFill } from "react-icons/ri";
 
 // styles
 import styles from "./orders-page.module.scss";
@@ -44,8 +47,6 @@ import tableStyles from "../../components/table.module.scss";
 
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import { RiMailUnreadLine } from "react-icons/ri";
-import { unwrapResult } from "@reduxjs/toolkit";
 
 // return the count of selected orders
 const calculateSelectedOrdersCount = (orders) => {
@@ -192,7 +193,7 @@ function OrdersPage({ onSelectedChange }) {
                     selected={false}
                     foreColor={Colors.SUCCEEDED_COLOR}
                     tooltip={t("mark-as-sent")}
-                    icon={() => <BsCheck />}
+                    icon={() => <RiSendPlaneFill />}
                     onclick={() => markOrdersAs("sent")}
                     withBackground={true}
                   />
@@ -204,8 +205,8 @@ function OrdersPage({ onSelectedChange }) {
                     <Icon
                       selected={false}
                       foreColor={Colors.SUCCEEDED_COLOR}
-                      tooltip={t("mark-as-sent")}
-                      icon={() => <BsCheck />}
+                      tooltip={t("mark-as-shipped")}
+                      icon={() => <MdOutlineLocalShipping />}
                       onclick={() => markOrdersAs("sent")}
                       withBackground={true}
                     />
@@ -234,9 +235,11 @@ function OrdersPage({ onSelectedChange }) {
             <div className={styles.highlight}>
               <RiMailUnreadLine color={Colors.SECONDARY_COLOR} />
               <label>{t("unread")}</label>
+              <MdOutlineLocalShipping color={Colors.SUCCEEDED_COLOR} />
+              <label>{t("shipped")}</label>
               <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
               <label>{t("received")}</label>
-              <BsCheck color={Colors.SUCCEEDED_COLOR} />
+              <RiSendPlaneFill color={Colors.SUCCEEDED_COLOR} />
               <label>{t("sent")}</label>
               <MdRemoveDone color={Colors.FAILED_COLOR} />
               <label>{t("will-dont-serve")}</label>

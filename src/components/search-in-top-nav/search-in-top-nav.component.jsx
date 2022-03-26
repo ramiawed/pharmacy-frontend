@@ -61,14 +61,10 @@ function SearchInTopNav() {
 
     companiesBuildUrl =
       companiesBuildUrl +
-      `/users?type=company&page=1&limit=25&isActive=true&name=${searchName}`;
+      `/users?type=company&page=1&limit=25&isActive=true&isApproved=true&name=${searchName}`;
 
-    let queryString = `/users?type=warehouse&page=1&limit=25&isActive=true&name=${searchName}`;
-    if (
-      user.type === UserTypeConstants.WAREHOUSE ||
-      user.type === UserTypeConstants.PHARMACY ||
-      user.type === UserTypeConstants.GUEST
-    ) {
+    let queryString = `/users?type=warehouse&page=1&limit=25&isActive=true&isApproved=true&name=${searchName}`;
+    if (user.type === UserTypeConstants.PHARMACY) {
       queryString = queryString + `&city=${user.city}`;
     }
     warehousesBuildUrl = warehousesBuildUrl + queryString;
@@ -86,7 +82,10 @@ function SearchInTopNav() {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      if (user.type !== UserTypeConstants.GUEST) {
+      if (
+        user.type === UserTypeConstants.PHARMACY ||
+        user.type === UserTypeConstants.ADMIN
+      ) {
         const warehousesResponse = await axios.get(warehousesBuildUrl, {
           cancelToken: source.token,
           headers: { Authorization: `Bearer ${token}` },
@@ -142,7 +141,7 @@ function SearchInTopNav() {
     }
   };
 
-  const keyUpHandler = (event) => {
+  const keyUpHandler = () => {
     if (source !== null) {
       source.cancel("cancel");
     }

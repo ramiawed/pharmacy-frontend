@@ -40,6 +40,7 @@ import styles from "./item-card.module.scss";
 
 // constants and utils
 import {
+  checkItemExistsInWarehouse,
   Colors,
   SERVER_URL,
   UserTypeConstants,
@@ -214,7 +215,7 @@ function ItemCard({ companyItem }) {
         setChangeAddToWarehouseLoading(false);
       });
 
-    // e.stopPropagation();
+    e.stopPropagation();
   };
 
   const dispatchStatisticsHandler = () => {
@@ -294,7 +295,7 @@ function ItemCard({ companyItem }) {
           )}
 
           {user.type === UserTypeConstants.PHARMACY &&
-            companyItem.existing_place[user.city] > 0 && (
+            checkItemExistsInWarehouse(companyItem, user) && (
               <Icon
                 icon={() => <GiShoppingCart size={24} />}
                 onclick={() => setShowModal(true)}

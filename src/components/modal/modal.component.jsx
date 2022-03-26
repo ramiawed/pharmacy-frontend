@@ -66,7 +66,10 @@ const Modal = ({
           {okModal && (
             <button
               className={styles.ok_button}
-              onClick={okModal}
+              onClick={(e) => {
+                okModal();
+                e.stopPropagation();
+              }}
               style={{
                 backgroundColor: color,
               }}
@@ -77,7 +80,10 @@ const Modal = ({
 
           <button
             className={styles.cancel_button}
-            onClick={closeModal}
+            onClick={(e) => {
+              closeModal();
+              e.stopPropagation();
+            }}
             style={{
               color: color,
             }}

@@ -18,9 +18,13 @@ import {
 } from "../../redux/orders/ordersSlice";
 
 // icons
-import { RiDeleteBin5Fill, RiMailUnreadLine } from "react-icons/ri";
+import {
+  RiDeleteBin5Fill,
+  RiMailUnreadLine,
+  RiSendPlaneFill,
+} from "react-icons/ri";
 import { BsCheckAll, BsCheck } from "react-icons/bs";
-import { MdRemoveDone } from "react-icons/md";
+import { MdOutlineLocalShipping, MdRemoveDone } from "react-icons/md";
 
 // styles
 import rowStyles from "../row.module.scss";
@@ -129,7 +133,7 @@ function OrderRow({ order, deleteAction }) {
                 <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
               )}
               {order.pharmacyStatus === "sent" && (
-                <BsCheck color={Colors.SUCCEEDED_COLOR} />
+                <RiSendPlaneFill color={Colors.SUCCEEDED_COLOR} />
               )}
             </div>
             <label>{order.pharmacy.name}</label>
@@ -168,7 +172,7 @@ function OrderRow({ order, deleteAction }) {
               <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
             )}
             {order.warehouseStatus === "sent" && (
-              <BsCheck color={Colors.SUCCEEDED_COLOR} />
+              <MdOutlineLocalShipping color={Colors.SUCCEEDED_COLOR} />
             )}
             {order.warehouseStatus === "dontServe" && (
               <MdRemoveDone color={Colors.FAILED_COLOR} />
@@ -200,7 +204,7 @@ function OrderRow({ order, deleteAction }) {
           )}
           {user.type === UserTypeConstants.WAREHOUSE &&
             order.warehouseStatus === "sent" && (
-              <BsCheck color={Colors.SUCCEEDED_COLOR} />
+              <MdOutlineLocalShipping color={Colors.SUCCEEDED_COLOR} />
             )}
           {user.type === UserTypeConstants.WAREHOUSE &&
             order.warehouseStatus === "unread" && <RiMailUnreadLine />}
@@ -215,7 +219,7 @@ function OrderRow({ order, deleteAction }) {
 
           {user.type === UserTypeConstants.PHARMACY &&
             order.pharmacyStatus === "sent" && (
-              <BsCheck color={Colors.SUCCEEDED_COLOR} />
+              <RiSendPlaneFill color={Colors.SUCCEEDED_COLOR} />
             )}
 
           {user.type === UserTypeConstants.PHARMACY &&

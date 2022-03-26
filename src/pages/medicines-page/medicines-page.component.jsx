@@ -23,7 +23,7 @@ import { AiFillAppstore, AiFillStar } from "react-icons/ai";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import { selectFavoritesItems } from "../../redux/favorites/favoritesSlice.js";
-import medicinesSlices, {
+import {
   getMedicines,
   selectMedicines,
   cancelOperation,
@@ -47,6 +47,8 @@ import { Colors, UserTypeConstants } from "../../utils/constants";
 import { VscClearAll } from "react-icons/vsc";
 import { IoMdArrowRoundBack } from "react-icons/io";
 import ItemRowNew from "../../components/item-row-new/item-row-new.component";
+import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
+import { CgMoreVertical } from "react-icons/cg";
 
 let timer = null;
 
@@ -141,6 +143,7 @@ function MedicinesPage({ onSelectedChange }) {
             resetField={() => {
               dispatch(setSearchCompanyName(""));
             }}
+            onkeyup={keyUpHandler}
           />
         )}
 
@@ -161,6 +164,7 @@ function MedicinesPage({ onSelectedChange }) {
             resetField={() => {
               dispatch(setSearchWarehouseName(""));
             }}
+            onkeyup={keyUpHandler}
           />
         )}
 
@@ -174,6 +178,7 @@ function MedicinesPage({ onSelectedChange }) {
               onChange={() => {
                 dispatch(setSearchInWarehouse(!pageState.searchInWarehouse));
                 dispatch(setSearchOutWarehouse(false));
+                keyUpHandler();
               }}
             />
             {user.type === UserTypeConstants.WAREHOUSE && (
@@ -195,6 +200,7 @@ function MedicinesPage({ onSelectedChange }) {
               onChange={() => {
                 dispatch(setSearchOutWarehouse(!pageState.searchOutWarehouse));
                 dispatch(setSearchInWarehouse(false));
+                keyUpHandler();
               }}
             />
             {user.type === UserTypeConstants.WAREHOUSE && (
@@ -365,11 +371,14 @@ function MedicinesPage({ onSelectedChange }) {
         )}
 
         {medicines.length < count && status !== "loading" && (
-          <Button
-            text={t("more")}
-            action={handleMoreResult}
-            bgColor={Colors.SECONDARY_COLOR}
-          />
+          <div className={generalStyles.flex_container}>
+            <ButtonWithIcon
+              text={t("more")}
+              action={handleMoreResult}
+              bgColor={Colors.SECONDARY_COLOR}
+              icon={() => <CgMoreVertical />}
+            />
+          </div>
         )}
 
         {medicines.length === count && status !== "loading" && count !== 0 && (

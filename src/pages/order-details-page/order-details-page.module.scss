@@ -14,6 +14,7 @@
   justify-content: flex-start;
 
   margin-block-end: 6px;
+  margin-bottom: 6px;
 }
 
 .label {
@@ -25,6 +26,8 @@
 .name {
   color: $main-color;
   margin-inline: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
   font-size: 1rem;
   font-weight: bold;
 }
@@ -33,6 +36,8 @@
   text-align: left;
   color: $green-color;
   padding-inline: 6px;
+  padding-right: 6px;
+  padding-left: 6px;
 }
 
 .actions_div {
@@ -42,4 +47,5 @@
   order: 2;
   flex: 1;
   margin-block-end: 10px;
+  margin-bottom: 10px;
 }

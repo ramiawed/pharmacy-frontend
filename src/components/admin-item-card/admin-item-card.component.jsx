@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
-import OfferImage from "../../offer-image.jpg";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -28,7 +27,6 @@ import { BsCheck } from "react-icons/bs";
 
 // styles
 import generalStyles from "../../style.module.scss";
-import tableStyles from "../table.module.scss";
 import styles from "./admin-item-card.module.scss";
 
 // constants
@@ -219,7 +217,7 @@ function AdminItemCard({
           </div>
         )}
         <div
-          className={styles.name}
+          className={[styles.name, styles.ellipsis].join(" ")}
           onClick={() => {
             history.push("/item", {
               from: user.type,
@@ -245,7 +243,9 @@ function AdminItemCard({
             user.type === UserTypeConstants.WAREHOUSE) && (
             <div className={[styles.row].join(" ")}>
               <div>
-                <label className={styles.label}>{t("item-company")}:</label>
+                <label className={[styles.label, styles.first].join(" ")}>
+                  {t("item-company")}:
+                </label>
                 <label className={styles.value}>{item.company.name}</label>
               </div>
             </div>
@@ -253,7 +253,9 @@ function AdminItemCard({
 
           <div className={[styles.row].join(" ")}>
             <div>
-              <label className={styles.label}>{t("item-available")}:</label>
+              <label className={[styles.label, styles.first].join(" ")}>
+                {t("item-available")}:
+              </label>
               <label
                 className={styles.value}
                 style={{
@@ -280,7 +282,9 @@ function AdminItemCard({
           </div>
           <div className={styles.row}>
             <div>
-              <label className={styles.label}>{t("item-formula")}:</label>
+              <label className={[styles.label, styles.first].join(" ")}>
+                {t("item-formula")}:
+              </label>
               <label className={styles.value}>{item.formula}</label>
             </div>
             <div>
@@ -290,14 +294,18 @@ function AdminItemCard({
           </div>
           <div className={styles.row}>
             <div>
-              <label className={styles.label}>{t("item-packing")}:</label>
+              <label className={[styles.label, styles.first].join(" ")}>
+                {t("item-packing")}:
+              </label>
               <label className={styles.value}>{item.packing}</label>
             </div>
           </div>
           <div className={styles.row}>
             {user.type !== UserTypeConstants.GUEST && (
               <div>
-                <label className={styles.label}>{t("item-price")}:</label>
+                <label className={[styles.label, styles.first].join(" ")}>
+                  {t("item-price")}:
+                </label>
                 <label className={styles.value}>{item.price}</label>
               </div>
             )}
@@ -320,7 +328,13 @@ function AdminItemCard({
           )}
           <div className={[styles.row, styles.last_row].join(" ")}>
             <div>
-              <label className={styles.label}>{t("item-composition")}:</label>
+              <label
+                className={[styles.label, styles.first, styles.ellipsis].join(
+                  " "
+                )}
+              >
+                {t("item-composition")}:
+              </label>
               <label className={styles.value}>{item.composition}</label>
             </div>
           </div>

@@ -44,7 +44,6 @@ import {
   getItemsSectionThree,
   selectItemsSectionThree,
 } from "../../redux/advertisements/itemsSectionThreeSlice";
-
 import { selectAdvertisements } from "../../redux/advertisements/advertisementsSlice";
 
 // styles
@@ -72,38 +71,26 @@ function HomePage({ onSelectedChange }) {
   // selectors
   const { user, token } = useSelector(selectUserData);
 
-  const {
-    companiesSectionOne,
-    companiesSectionOneStatus,
-    refresh: companiesOneRefresh,
-  } = useSelector(selectCompaniesSectionOne);
+  const { companiesSectionOne, refresh: companiesOneRefresh } = useSelector(
+    selectCompaniesSectionOne
+  );
 
-  const {
-    companiesSectionTwo,
-    companiesSectionTwoStatus,
-    refresh: companiesTwoRefresh,
-  } = useSelector(selectCompaniesSectionTwo);
+  const { companiesSectionTwo, refresh: companiesTwoRefresh } = useSelector(
+    selectCompaniesSectionTwo
+  );
 
-  const {
-    warehousesSectionOne,
-    warehousesSectionOneStatus,
-    refresh: warehouseOneRefresh,
-  } = useSelector(selectWarehousesSectionOne);
-  const {
-    itemsSectionOne,
-    itemsSectionOneStatus,
-    refresh: itemsOneRefresh,
-  } = useSelector(selectItemsSectionOne);
-  const {
-    itemsSectionTwo,
-    itemsSectionTwoStatus,
-    refresh: itemsTwoRefresh,
-  } = useSelector(selectItemsSectionTwo);
-  const {
-    itemsSectionThree,
-    itemsSectionThreeStatus,
-    refresh: itemsThreeRefresh,
-  } = useSelector(selectItemsSectionThree);
+  const { warehousesSectionOne, refresh: warehouseOneRefresh } = useSelector(
+    selectWarehousesSectionOne
+  );
+  const { itemsSectionOne, refresh: itemsOneRefresh } = useSelector(
+    selectItemsSectionOne
+  );
+  const { itemsSectionTwo, refresh: itemsTwoRefresh } = useSelector(
+    selectItemsSectionTwo
+  );
+  const { itemsSectionThree, refresh: itemsThreeRefresh } = useSelector(
+    selectItemsSectionThree
+  );
 
   const { advertisements } = useSelector(selectAdvertisements);
   const [backgroundImages, setBackgroundImages] = useState(

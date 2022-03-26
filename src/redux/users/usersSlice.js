@@ -12,8 +12,8 @@ import {
   UserTypeConstants,
 } from "../../utils/constants";
 
-let CancelToken;
-let source;
+let CancelToken = null;
+let source = null;
 
 const initialState = {
   status: "idle",

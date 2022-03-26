@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import {
+  cancelOperation,
   changeDisplayType,
   changeSearchCity,
   changeSearchName,
@@ -30,11 +31,10 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 
 // styles
 import generalStyles from "../../style.module.scss";
-
 // constants and utils
 import { CitiesName, Colors, UserTypeConstants } from "../../utils/constants";
 
-function CompaniesHeader({ search, refreshHandler, count }) {
+function CompaniesHeader({ search, refreshHandler, count, keyUpHandler }) {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -54,40 +54,39 @@ function CompaniesHeader({ search, refreshHandler, count }) {
 
   return (
     <>
-      <>
-        <SearchContainer searchAction={search}>
-          <SearchInput
-            label="user-name"
-            id="search-name"
-            type="text"
-            value={searchName}
-            onchange={(e) => {
-              dispatch(changeSearchName(e.target.value));
-            }}
-            placeholder="search-by-company-name"
-            onEnterPress={search}
-            resetField={() => dispatch(changeSearchName(""))}
-          />
+      <SearchContainer searchAction={search}>
+        <SearchInput
+          label="user-name"
+          id="search-name"
+          type="text"
+          value={searchName}
+          onchange={(e) => {
+            dispatch(changeSearchName(e.target.value));
+          }}
+          placeholder="search-by-company-name"
+          onEnterPress={search}
+          resetField={() => dispatch(changeSearchName(""))}
+          onkeyup={keyUpHandler}
+        />
 
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              backgroundColor: Colors.WHITE_COLOR,
-              borderRadius: "6px",
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-start",
+            backgroundColor: Colors.WHITE_COLOR,
+            borderRadius: "6px",
+          }}
+        >
+          <CitiesDropDown
+            onSelectionChange={citiesNameChangeHandler}
+            defaultValue={{
+              value: searchCity,
+              label: t(searchCity.toLowerCase()),
             }}
-          >
-            <CitiesDropDown
-              onSelectionChange={citiesNameChangeHandler}
-              defaultValue={{
-                value: searchCity,
-                label: t(searchCity.toLowerCase()),
-              }}
-              caption="user-city"
-            />
-          </div>
-        </SearchContainer>
-      </>
+            caption="user-city"
+          />
+        </div>
+      </SearchContainer>
       <div
         className={[generalStyles.actions, generalStyles.margin_v_4].join(" ")}
       >

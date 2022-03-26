@@ -17,6 +17,8 @@
   align-items: center;
   justify-content: flex-start;
   padding-block: 8px;
+  padding-bottom: 8px;
+  padding-top: 8px;
   border-bottom: 1px solid rgba($color: $secondary-color, $alpha: 0.3);
   color: $secondary-color;
 }
@@ -34,12 +36,16 @@
 
 .row .label_value {
   padding-inline: 12px;
+  padding-right: 12px;
+  padding-left: 12px;
   font-size: 0.7rem;
 }
 
 @media only screen and (min-width: $small) {
   .row {
     padding-block: 4px;
+    padding-bottom: 4px;
+    padding-top: 4px;
   }
 
   .header {

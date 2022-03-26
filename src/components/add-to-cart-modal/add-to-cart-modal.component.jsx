@@ -73,7 +73,12 @@ function AddToCartModal({ item, close, setAddItemToCartMsg }) {
   // get all the warehouse that contains this item
   // put asterisk after warehouse name if the warehouse has an offer
   const itemWarehousesOption = item.warehouses
-    .filter((w) => w.warehouse.city === user.city)
+    .filter(
+      (w) =>
+        w.warehouse.city === user.city &&
+        w.warehouse.isActive &&
+        w.warehouse.isApproved
+    )
     .map((w) => {
       const asterisk = w.offer.offers.length > 0 ? "*" : "";
 

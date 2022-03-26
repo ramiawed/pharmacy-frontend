@@ -41,6 +41,8 @@ import {
   SERVER_URL,
   BASEURL,
 } from "../../utils/constants";
+import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
+import { BsImageAlt } from "react-icons/bs";
 
 function UserProfilePage({ onSelectedChange }) {
   const { t } = useTranslation();
@@ -168,19 +170,12 @@ function UserProfilePage({ onSelectedChange }) {
             </div>
 
             <div>
-              <button
-                className={[
-                  generalStyles.button,
-                  generalStyles.bg_secondary,
-                  generalStyles.fc_white,
-                  generalStyles.padding_h_12,
-                  generalStyles.padding_v_6,
-                ].join(" ")}
-                onClick={handleClick}
-                // disabled={readOnly}
-              >
-                {t("change-logo")}
-              </button>
+              <ButtonWithIcon
+                text={t("change-logo")}
+                action={handleClick}
+                bgColor={Colors.MAIN_COLOR}
+                icon={() => <BsImageAlt />}
+              />
             </div>
           </div>
 

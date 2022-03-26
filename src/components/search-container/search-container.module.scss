@@ -21,6 +21,7 @@
 .search_container.expanded {
   padding: 8px;
   padding-inline-start: 3px;
+  padding-right: 3px;
   z-index: 10;
 }
 
@@ -44,5 +45,6 @@
 .checkbox_div label {
   font-size: 0.7rem;
   padding-inline-start: 10px;
+  padding-right: 10px;
   color: $white-color;
 }

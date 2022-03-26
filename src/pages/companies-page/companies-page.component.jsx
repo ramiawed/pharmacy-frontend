@@ -13,27 +13,27 @@ import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
 import ReactLoading from "react-loading";
 
+import { CgMoreVertical } from "react-icons/cg";
+
 // components
 import PartnerRow from "../../components/partner-row/partner-row.component";
 import PartnerCard from "../../components/partner-card/partner-card.component";
 import Button from "../../components/button/button.component";
-import Toast from "../../components/toast/toast.component";
 import NoContent from "../../components/no-content/no-content.component";
 import CompaniesHeader from "../../components/companies-header/companies-header.component";
+import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 
 // redux stuff
-import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
   cancelOperation,
-  changePage,
   changeShowFavorites,
   getCompanies,
   resetCompanies,
-  resetStatus,
   selectCompanies,
   selectCompaniesPageState,
+  resetCompaniesArray,
 } from "../../redux/company/companySlice";
 import {
   getFavorites,
@@ -49,7 +49,9 @@ import generalStyles from "../../style.module.scss";
 
 // constants and utils
 import { CitiesName, Colors } from "../../utils/constants";
-import { NonceProvider } from "react-select";
+import autoMergeLevel1 from "redux-persist/es/stateReconciler/autoMergeLevel1";
+
+let timer;
 
 function CompaniesPage({ onSelectedChange }) {
   const { t } = useTranslation();
@@ -60,9 +62,9 @@ function CompaniesPage({ onSelectedChange }) {
   // select logged user and it's token from authSlice
   const { token, user } = useSelector(selectUserData);
   // select companies from companySlice
-  const { companies, count, status, error } = useSelector(selectCompanies);
+  const { companies, count, status } = useSelector(selectCompanies);
   const { searchName, searchCity } = useSelector(selectCompaniesPageState);
-  const { displayType, page } = useSelector(selectCompaniesPageState);
+  const { displayType } = useSelector(selectCompaniesPageState);
   const isOnline = useSelector(selectOnlineStatus);
 
   // search handler
@@ -75,14 +77,9 @@ function CompaniesPage({ onSelectedChange }) {
   // if any of the search state (searchName, searchCity) is not empty, add it to query string
   // get the companies from DB
   // depends on the reset field, add one to page, or reset to 1
-  const handleSearch = (page) => {
+  const handleSearch = () => {
     dispatch(changeShowFavorites(false));
-
-    dispatch(getCompanies({ token }))
-      .then(unwrapResult)
-      .then(() => {
-        dispatch(changePage(page + 1));
-      });
+    dispatch(getCompanies({ token }));
   };
 
   // get the next 9 companies from DB
@@ -93,7 +90,7 @@ function CompaniesPage({ onSelectedChange }) {
       return;
     }
 
-    handleSearch(page);
+    handleSearch();
   };
 
   // when press enter in search input field
@@ -101,17 +98,28 @@ function CompaniesPage({ onSelectedChange }) {
   // 2- search based on the new search engines
   // 3- reset the page to 1
   const handleEnterPress = () => {
-    dispatch(resetCompanies());
-    dispatch(changePage(1));
-    handleSearch(1);
+    dispatch(resetCompaniesArray());
+    handleSearch();
   };
 
   const refreshHandler = () => {
     dispatch(resetFavorites());
     dispatch(getFavorites({ token }));
     dispatch(resetCompanies());
-    dispatch(changePage(1));
-    handleSearch(1);
+    handleSearch();
+  };
+
+  const keyUpHandler = (event) => {
+    if (event.keyCode === 13) return;
+    cancelOperation();
+
+    if (timer) {
+      clearTimeout(timer);
+    }
+
+    timer = setTimeout(() => {
+      handleEnterPress();
+    }, 200);
   };
 
   useEffect(() => {
@@ -132,6 +140,7 @@ function CompaniesPage({ onSelectedChange }) {
         search={handleEnterPress}
         refreshHandler={refreshHandler}
         count={count}
+        keyUpHandler={keyUpHandler}
       />
 
       {count > 0 && (
@@ -185,11 +194,14 @@ function CompaniesPage({ onSelectedChange }) {
       )}
 
       {companies.length < count && (
-        <Button
-          text={t("more")}
-          action={handleMoreResult}
-          bgColor={Colors.SECONDARY_COLOR}
-        />
+        <div className={generalStyles.flex_container}>
+          <ButtonWithIcon
+            text={t("more")}
+            action={handleMoreResult}
+            bgColor={Colors.SECONDARY_COLOR}
+            icon={() => <CgMoreVertical />}
+          />
+        </div>
       )}
 
       {companies.length === count && status !== "loading" && count !== 0 && (
@@ -205,7 +217,7 @@ function CompaniesPage({ onSelectedChange }) {
       {/* show loading animation when data is loading */}
       {/* {status === "loading" && <Loader allowCancel={false} />} */}
 
-      {error && (
+      {/* {error && (
         <Toast
           bgColor={Colors.FAILED_COLOR}
           foreColor="#fff"
@@ -215,7 +227,7 @@ function CompaniesPage({ onSelectedChange }) {
         >
           {t(error)}
         </Toast>
-      )}
+      )} */}
     </div>
   ) : (
     <Redirect to="/signin" />

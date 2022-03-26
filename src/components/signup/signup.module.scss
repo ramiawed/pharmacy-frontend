@@ -9,6 +9,8 @@
   background: rgba($color: $main-color, $alpha: 1);
 
   padding-block: 40px;
+  padding-bottom: 40px;
+  padding-top: 40px;
 
   .signin {
     position: absolute;
@@ -19,6 +21,8 @@
     .signin_button {
       display: inline-block;
       margin-inline: 5px;
+      margin-left: 5px;
+      margin-right: 5px;
       color: $third-color;
       font-weight: bold;
       cursor: pointer;

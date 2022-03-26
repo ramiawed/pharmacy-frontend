@@ -88,12 +88,19 @@
   align-items: center;
   flex-wrap: wrap;
   padding-block: 20px;
+
+  padding-bottom: 20px;
+  padding-top: 20px;
 }
 
 .container {
   width: 98%;
   margin-block: 12px;
+  margin-top: 12px;
+  margin-bottom: 12px;
   padding-block: 12px;
+  padding-bottom: 12px;
+  padding-top: 12px;
   border-radius: 6px;
   box-shadow: 3px 3px 5px rgba($color: #000, $alpha: 0.3);
 }
@@ -104,6 +111,7 @@
   justify-content: space-evenly;
   flex-direction: column;
   padding-block-end: 10px;
+  padding-bottom: 10px;
   min-height: calc(50vh);
 }
 
@@ -111,6 +119,8 @@
   width: 50%;
   height: 1px;
   margin-block: 10px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   background-color: #e3e3e3;
 }
 
@@ -124,11 +134,14 @@
     width: 1px;
     height: 150px;
     margin-block: 0;
+    margin-top: 0;
+    margin-bottom: 0;
   }
 
   .describe_container {
     flex-direction: row;
     padding-block-end: 10px;
+    padding-bottom: 10px;
   }
 
   .introduces {

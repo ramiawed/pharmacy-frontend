@@ -1,8 +1,6 @@
-import React, { lazy, Suspense, useState } from "react";
+import React, { lazy, Suspense } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
-
-import SearchHome from "../search-home/search-home.component";
 
 // react-icons
 import { VscClose } from "react-icons/vsc";
@@ -35,10 +33,7 @@ import {
   medicinesSliceSignOut,
   resetMedicines,
 } from "../../redux/medicines/medicinesSlices";
-import {
-  changeNavSettings,
-  selectNavigationSlice,
-} from "../../redux/navs/navigationSlice";
+import { changeNavSettings } from "../../redux/navs/navigationSlice";
 
 // styles
 import styles from "./side-nav.module.scss";
@@ -75,9 +70,6 @@ function SideNav({
 
   // selectors
   const { user } = useSelector(selectUserData);
-  const {
-    setting: { showSearchBar },
-  } = useSelector(selectNavigationSlice);
 
   const handleSignOut = () => {
     dispatch(authSliceSignOut());
@@ -215,8 +207,6 @@ function SideNav({
           </Link>
         </div>
       </div>
-
-      {showSearchBar && <SearchHome />}
     </>
   );
 }

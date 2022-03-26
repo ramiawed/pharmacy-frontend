@@ -91,15 +91,7 @@ function EditableCity({
 
   return (
     <>
-      <div
-        className={styles.info_row}
-        onDoubleClick={() => {
-          if (editable) {
-            setIsEditable(true);
-            setPreviousValue(value);
-          }
-        }}
-      >
+      <div className={styles.info_row}>
         <label className={styles.label}>{labelText}</label>
         {isEditable ? (
           <div className={styles.value}>

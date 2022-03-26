@@ -11,6 +11,7 @@
   left: -50vw;
   overflow: scroll;
   padding-inline-end: 40px;
+  padding-left: 40px;
 
   animation-name: move_advertisement_side_nav;
   animation-duration: 0.1s;
@@ -39,6 +40,8 @@
     text-align: center;
     color: $main-color;
     margin-block: 10px;
+    margin-top: 10px;
+    margin-bottom: 10px;
     font-family: $font-ar-01;
     font-weight: bold;
   }
@@ -52,6 +55,7 @@
 
   .data {
     margin-block-start: 20px;
+    margin-top: 20px;
     width: 100%;
     display: flex;
     align-items: flex-start;
@@ -61,6 +65,7 @@
     .data_container {
       width: 45%;
       margin-block-end: 20px;
+      margin-bottom: 20px;
     }
   }
 }

@@ -44,6 +44,7 @@ function Input({
         <label
           style={{
             color: "#9d9d9d",
+            width: "85px",
           }}
           htmlFor={id}
         >

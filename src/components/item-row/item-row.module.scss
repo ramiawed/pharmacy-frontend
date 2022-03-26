@@ -41,6 +41,8 @@
     &::after {
       content: '';
       margin-inline: 4px;
+      margin-left: 4px;
+      margin-right: 4px;
       color: $main-color;
     }
   }

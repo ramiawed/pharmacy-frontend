@@ -20,7 +20,8 @@ function Icon({ onclick, tooltip, icon, foreColor, withBackground }) {
       style={{
         background: withBackground ? "#e3e3e3" : "transparent",
         borderRadius: "3px",
-        marginInline: withBackground ? "2px" : "0",
+        marginLeft: withBackground ? "2px" : "0",
+        marginRight: withBackground ? "2px" : "0",
         padding: withBackground ? "2px" : "0",
       }}
       className={[

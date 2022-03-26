@@ -6,13 +6,7 @@ function IntroduceUs() {
   return (
     <div className={styles.container}>
       <h2>من نحن</h2>
-      <hr
-        style={{
-          width: "50%",
-          marginInline: "auto",
-          marginBlock: "10px",
-        }}
-      />
+      <hr className={styles.separator} />
       <p>
         سمارت فارما هو اول موقع ويب وتطبيق الكتروني مختص في التسويق والمبيعات
         الصيدلانية، نعتمد على الربط بين الصيدليات واحتياجاتهم من الشركات

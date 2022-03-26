@@ -12,13 +12,7 @@ function GuestIntroduce() {
         <IoIosPeople />
       </div>
       <h2>الضيوف</h2>
-      <hr
-        style={{
-          width: "80%",
-          marginInline: "auto",
-          marginBlock: "10px",
-        }}
-      />
+      <hr className={styles.separator} />
       <ul>
         <li>التعرف على منتجات الشركات وتركيباتها واستطباباتها</li>
         <li>معرفة أسعار العموم</li>

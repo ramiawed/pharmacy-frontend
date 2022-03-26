@@ -12,13 +12,7 @@ function WarehouseIntroduce() {
         <FaWarehouse />
       </div>
       <h2>المستودعات</h2>
-      <hr
-        style={{
-          width: "80%",
-          marginInline: "auto",
-          marginBlock: "10px",
-        }}
-      />
+      <hr className={styles.separator} />
       <ul>
         <li>مراقبة ومتابعة الطلبات القادمة من الصيدليات</li>
         <li>إضافة عروض او حسومات على المنتجات المتوفرة لديك.</li>

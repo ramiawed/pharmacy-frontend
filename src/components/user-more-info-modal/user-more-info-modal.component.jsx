@@ -169,6 +169,8 @@ function UserMoreInfoModal({ user, close }) {
               width: "300px",
               height: "300px",
               marginInline: "auto",
+              marginLeft: "auto",
+              marginRight: "auto",
             }}
             alt="Thumb"
           />

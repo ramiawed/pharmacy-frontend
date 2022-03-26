@@ -11,13 +11,7 @@ function PharmacyIntroduce() {
         <GiMedicines />
       </div>
       <h2>الصيدليات</h2>
-      <hr
-        style={{
-          width: "80%",
-          marginInline: "auto",
-          marginBlock: "10px",
-        }}
-      />
+      <hr className={styles.separator} />
       <ul>
         <li>امكانية التعرف والوصول الى أكثر من 12 ألف منتج</li>
         <li>

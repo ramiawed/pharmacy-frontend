@@ -30,10 +30,7 @@ function Footer() {
         <div className={styles.communication_info}>
           <RiFacebookCircleFill
             size={24}
-            style={{
-              cursor: "pointer",
-              marginInline: "4px",
-            }}
+            className={styles.icon}
             onClick={() =>
               window.open(
                 "https://www.facebook.com/Smart-Pharma-106820748580558/",
@@ -43,10 +40,7 @@ function Footer() {
           />
           <RiInstagramFill
             size={24}
-            style={{
-              cursor: "pointer",
-              marginInline: "4px",
-            }}
+            className={styles.icon}
             onClick={() =>
               window.open(
                 "https://www.instagram.com/p/CZsAC7Rrocc/?utm_medium=copy_link",
@@ -56,20 +50,14 @@ function Footer() {
           />
           <RiTelegramFill
             size={24}
-            style={{
-              cursor: "pointer",
-              marginInline: "4px",
-            }}
+            className={styles.icon}
             onClick={() =>
               window.open("https://t.me/+8SM-2Zfg8fcyNDdk", "_blank")
             }
           />
           <RiWhatsappFill
             size={24}
-            style={{
-              cursor: "pointer",
-              marginInline: "4px",
-            }}
+            className={styles.icon}
             onClick={() => {
               setShowWhatsappModal(true);
             }}

@@ -303,13 +303,7 @@ function HomePage({ onSelectedChange }) {
 
       <div className={styles.introduces}>
         <IntroduceUs />
-        <hr
-          style={{
-            width: "90%",
-            marginInline: "auto",
-            marginBlock: "10px",
-          }}
-        />
+        <hr className={styles.separator01} />
         <WarehouseIntroduce />
         <PharmacyIntroduce />
         <GuestIntroduce />

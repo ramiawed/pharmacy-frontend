@@ -44,6 +44,8 @@ function SearchContainer({ children, searchAction }) {
                   style={{
                     marginBlockStart: "4px",
                     marginInline: "auto",
+                    marginLeft: "auto",
+                    marginRight: "auto",
                     width: "50%",
                   }}
                   className={[
@@ -64,6 +66,8 @@ function SearchContainer({ children, searchAction }) {
               <div
                 style={{
                   marginInline: "4px",
+                  marginLeft: "4px",
+                  marginRight: "4px",
                 }}
               >
                 <Icon

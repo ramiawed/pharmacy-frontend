@@ -126,6 +126,8 @@ function OrderRow({ order, deleteAction }) {
                 display: "flex",
                 borderLeft: `1px solid ${Colors.SECONDARY_COLOR}`,
                 marginInline: "10px",
+                marginLeft: "10px",
+                marginRight: "10px",
                 padding: "5px",
               }}
             >
@@ -164,6 +166,8 @@ function OrderRow({ order, deleteAction }) {
               display: "flex",
               borderLeft: `1px solid ${Colors.SECONDARY_COLOR}`,
               marginInline: "10px",
+              marginLeft: "10px",
+              marginRight: "10px",
               padding: "5px",
             }}
           >

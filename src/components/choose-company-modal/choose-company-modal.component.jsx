@@ -121,12 +121,7 @@ function ChooseCompanyModal({ close, chooseAction, url }) {
             />
           </div>
 
-          <div
-            style={{
-              maxHeight: "300px",
-              overflow: "auto",
-            }}
-          >
+          <div className={styles.data_container}>
             {data?.length > 0 &&
               data.map((d) => (
                 <Row key={d._id} data={d} addAction={addAction} />

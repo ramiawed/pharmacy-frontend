@@ -9,19 +9,6 @@
   justify-content: center;
 }
 
-// .add_button {
-//   padding: 8px 12px;
-//   // margin-block-start: 8px auto;
-//   padding-top: 8px;
-
-//   color: $white-color;
-
-//   border: none;
-//   outline: none;
-
-//   border-radius: 6px;
-// }
-
 .info {
   flex: 1;
   height: calc(100vh - 160px);
@@ -44,6 +31,10 @@
     height: 200px;
     border-radius: 6px;
   }
+}
+
+.hide {
+  display: none;
 }
 
 

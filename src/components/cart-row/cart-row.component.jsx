@@ -59,11 +59,11 @@ function CartRow({ cartItem, inOrderDetails }) {
           : cartItem.item.customer_price}
       </label>
 
-      {!inOrderDetails && (
+      {/* {!inOrderDetails && (
         <label className={tableStyles.label_small}>
           {cartItem.warehouse.maxQty ? cartItem.warehouse.maxQty : ""}
         </label>
-      )}
+      )} */}
 
       {inOrderDetails ? (
         <div className={[tableStyles.label_small, styles.qty].join(" ")}>
@@ -119,7 +119,7 @@ function CartRow({ cartItem, inOrderDetails }) {
           <Icon
             icon={() => <RiDeleteBin5Fill size={20} />}
             foreColor={Colors.FAILED_COLOR}
-            tooltip="delete-cart-row"
+            tooltip={t("delete-cart-row")}
             onclick={() => dispatch(removeItemFromCart(cartItem))}
           />
         </label>

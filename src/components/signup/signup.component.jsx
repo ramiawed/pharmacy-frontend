@@ -789,38 +789,6 @@ function SignUp() {
             </form>
           </div>
         )}
-
-        {/* <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-          }}
-        >
-          <input
-            type="checkbox"
-            value={licenseCheck}
-            defaultValue={licenseCheck}
-            onChange={() => {
-              setLicenseCheck(!licenseCheck);
-            }}
-          />
-          <label
-            style={{
-              paddingInline: "10px",
-              color: Colors.WHITE_COLOR,
-            }}
-          >
-            {t("agree-license")}،
-            <span
-              className={styles.read_license}
-              onClick={() => {
-                setShowLicenseModal(true);
-              }}
-            >
-              {t("read-license")}
-            </span>
-          </label>
-        </div> */}
       </div>
 
       {Object.entries(error).length > 0 && (

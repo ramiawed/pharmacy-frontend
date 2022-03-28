@@ -36,6 +36,11 @@
     text-align: justify;
   }
 
+  p.strong {
+    font-weight: bold;
+    text-decoration: underline;
+  }
+
   button {
     display: block;
     padding-inline: 20px;

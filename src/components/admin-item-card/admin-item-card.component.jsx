@@ -18,6 +18,7 @@ import {
 import Modal from "../modal/modal.component";
 import OffersModal from "../offers-modal/offers-modal.component";
 import Icon from "../action-icon/action-icon.component";
+import ButtonWithIcon from "../button-with-icon/button-with-icon.component";
 
 // react-icons
 import { AiFillEdit } from "react-icons/ai";
@@ -256,12 +257,7 @@ function AdminItemCard({
               <label className={[styles.label, styles.first].join(" ")}>
                 {t("item-available")}:
               </label>
-              <label
-                className={styles.value}
-                style={{
-                  display: "inline-block",
-                }}
-              >
+              <label className={[styles.value, styles.inline_block].join(" ")}>
                 {item.isActive ? (
                   <Icon
                     icon={() => <BsCheck />}
@@ -326,7 +322,7 @@ function AdminItemCard({
               </div>
             </div>
           )}
-          <div className={[styles.row, styles.last_row].join(" ")}>
+          <div className={[styles.row].join(" ")}>
             <div>
               <label
                 className={[styles.label, styles.first, styles.ellipsis].join(
@@ -338,44 +334,48 @@ function AdminItemCard({
               <label className={styles.value}>{item.composition}</label>
             </div>
           </div>
+
+          {((user.type === UserTypeConstants.ADMIN &&
+            role === UserTypeConstants.WAREHOUSE) ||
+            user.type === UserTypeConstants.WAREHOUSE) && (
+            <div className={styles.actions}>
+              <ButtonWithIcon
+                icon={() => <AiFillEdit />}
+                action={() => {
+                  setShowChangeMaxQtyModal(true);
+                  setPrevMaxQty(maxQty);
+                }}
+                text={t("change-max-qty-header")}
+                bgColor={Colors.MAIN_COLOR}
+              />
+
+              <ButtonWithIcon
+                icon={() => <MdLocalOffer />}
+                text={t("nav-offers")}
+                action={() => {
+                  setShowOfferModal(true);
+                }}
+                bgColor={Colors.MAIN_COLOR}
+              />
+
+              {deleteLoading ? (
+                <ButtonWithIcon
+                  icon={() => <VscLoading className={generalStyles.loading} />}
+                  action={() => {}}
+                  bgColor={Colors.FAILED_COLOR}
+                  text=""
+                />
+              ) : (
+                <ButtonWithIcon
+                  icon={() => <RiDeleteBin5Fill />}
+                  action={deleteFromWarehouseHandler}
+                  bgColor={Colors.FAILED_COLOR}
+                  text={t("remove-from-warehouse")}
+                />
+              )}
+            </div>
+          )}
         </div>
-
-        {((user.type === UserTypeConstants.ADMIN &&
-          role === UserTypeConstants.WAREHOUSE) ||
-          user.type === UserTypeConstants.WAREHOUSE) && (
-          <div className={styles.actions}>
-            <Icon
-              icon={() => <AiFillEdit />}
-              onclick={() => {
-                setShowChangeMaxQtyModal(true);
-                setPrevMaxQty(maxQty);
-              }}
-              tooltip={t("change-max-qty-header")}
-            />
-
-            <Icon
-              icon={() => <MdLocalOffer />}
-              tooltip={t("nav-offers")}
-              onclick={() => {
-                setShowOfferModal(true);
-              }}
-            />
-
-            {deleteLoading ? (
-              <Icon
-                icon={() => <VscLoading className={generalStyles.loading} />}
-                onclick={() => {}}
-                foreColor={Colors.FAILED_COLOR}
-              />
-            ) : (
-              <Icon
-                icon={() => <RiDeleteBin5Fill />}
-                onclick={deleteFromWarehouseHandler}
-                foreColor={Colors.FAILED_COLOR}
-              />
-            )}
-          </div>
-        )}
       </div>
 
       {showModal && (

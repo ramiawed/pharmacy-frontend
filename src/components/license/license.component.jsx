@@ -63,12 +63,7 @@ function License({ action }) {
           موافقتك و لدينا سبب مبرر لمعالجة بياناتك، أو نحن ملزمون قانونا بالقيام
           بذلك.
         </li>
-        <p
-          style={{
-            fontWeight: "bold",
-            textDecoration: "underline",
-          }}
-        >
+        <p className={styles.strong}>
           حيثما نحتاج لتزويدك بالخدمة التي طلبتها أو للدخول في عقد فإننا نستخدم
           معلوماتك:{" "}
         </p>
@@ -81,12 +76,7 @@ function License({ action }) {
             تواجهنا في طلبك.{" "}
           </li>
         </ul>
-        <p
-          style={{
-            fontWeight: "bold",
-            textDecoration: "underline",
-          }}
-        >
+        <p className={styles.strong}>
           نقوم أيضا بمعالجة بياناتك حيث يكون لدينا سبب مبرر للقيام بذلك، على
           سبيل المثال تخصيص خدماتنا، بما في ذلك معالجة البيانات لجعل الأمر أسهل
           وأسرع بالنسبة لك لتقديم الخدمات. أدرجنا هذه الأسباب أدناه:{" "}
@@ -144,12 +134,7 @@ function License({ action }) {
           حقوق معينة فيما يتعلق بهذا النوع من المعالجة. الرجاء مراجعة قسم
           "حقوقك" أدناه لمزيد من المعلومات.{" "}
         </p>
-        <p
-          style={{
-            fontWeight: "bold",
-            textDecoration: "underline",
-          }}
-        >
+        <p className={styles.strong}>
           عندما نكون ملزمين قانونيا بالقيام بذلك، يجوز لنا استخدام معلوماتك من
           أجل:
         </p>
@@ -175,12 +160,7 @@ function License({ action }) {
           اللوائح أو القوانين المعمول بها، مثل الحفاظ على المعلومات لأغراض
           التقارير التنظيمية.
         </li>
-        <p
-          style={{
-            fontWeight: "bold",
-            textDecoration: "underline",
-          }}
-        >
+        <p className={styles.strong}>
           عند تحديد فترات الاستبقاء ذات الصلة، سنأخذ في الاعتبار العوامل
           التالية:{" "}
         </p>
@@ -205,12 +185,7 @@ function License({ action }) {
           و تخزينها على خوادمنا الموجودة داخل الجمهورية العربية السورية. نحن
           حريصون و شفافون للغاية بشأن من تتم مشاركة معلوماتك معه.
         </li>
-        <p
-          style={{
-            fontWeight: "bold",
-            textDecoration: "underline",
-          }}
-        >
+        <p className={styles.strong}>
           نحن نشارك معلوماتك مع مزودي خدمة الطرف الثالث. تشمل أنواع مزودي خدمة
           الجهات الخارجية الذين نشاركهم معلوماتك معهم:
         </p>
@@ -236,14 +211,7 @@ function License({ action }) {
             مستشاريهم
           </li>
         </ul>
-        <p
-          style={{
-            fontWeight: "bold",
-            textDecoration: "underline",
-          }}
-        >
-          قد نشارك أيضا معلوماتك:
-        </p>
+        <p className={styles.strong}>قد نشارك أيضا معلوماتك:</p>
         <ul className={styles.second}>
           <li>
             إذا كنا ملزمين بالكشف عن معلوماتك أو مشاركتها من أجل الامتثال ( و/

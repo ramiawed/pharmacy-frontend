@@ -34,16 +34,10 @@ import {
 } from "../../redux/users/usersSlice";
 import { useDispatch, useSelector } from "react-redux";
 
+import styles from "./admin-search-modal.module.scss";
+
 const Separator = () => {
-  return (
-    <div
-      style={{
-        height: "1px",
-        // background: "rgba(0, 0, 0, 0.3)",
-        margin: "6px 0",
-      }}
-    ></div>
-  );
+  return <div className={styles.separator}></div>;
 };
 
 function AdminUsersSearchModal({ close, search, enterPress }) {

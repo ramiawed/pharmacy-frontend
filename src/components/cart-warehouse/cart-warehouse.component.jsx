@@ -11,21 +11,27 @@ import {
 } from "../../redux/online/onlineSlice";
 import { selectUserData } from "../../redux/auth/authSlice";
 import { addStatistics } from "../../redux/statistics/statisticsSlice";
+import { selectSettings } from "../../redux/settings/settingsSlice";
+import { saveOrder, setRefresh } from "../../redux/orders/ordersSlice";
 
 // components
 import CartRow from "../cart-row/cart-row.component";
-import Button from "../button/button.component";
 import CartWarehouseTableHeader from "../cart-warehouse-table-header/cart-warehouse-table-header.component";
 import Modal from "../modal/modal.component";
 import Loader from "../action-loader/action-loader.component";
+import ButtonWithIcon from "../button-with-icon/button-with-icon.component";
+import CartItemCard from "../cart-item-card/cart-item-card.component";
+
+// icon
+import { FiSend } from "react-icons/fi";
+import { MdExpandMore, MdExpandLess } from "react-icons/md";
 
 // styles
 import styles from "./cart-warehouse.module.scss";
 
 // constants
 import { BASEURL, Colors, OfferTypes } from "../../utils/constants";
-import { selectSettings } from "../../redux/settings/settingsSlice";
-import { saveOrder, setRefresh } from "../../redux/orders/ordersSlice";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 function CartWarehouse({ warehouse }) {
   const { t } = useTranslation();
@@ -44,6 +50,7 @@ function CartWarehouse({ warehouse }) {
   const [showFailedModal, setShowFailedModal] = useState(false);
   const [showLoadingModal, setShowLoadingModal] = useState(false);
   const [showConfirmSaveOrder, setShowConfirmSaveOrder] = useState(false);
+  const [expanded, setExpanded] = useState(false);
 
   const computeTotalPrice = () => {
     let total = 0;
@@ -71,58 +78,68 @@ function CartWarehouse({ warehouse }) {
 
     setShowLoadingModal(true);
 
-    let cartItemsToSend = cartItems
-      .filter((item) => item.warehouse.warehouse.name === warehouse)
-      .map((e) => {
-        return {
-          itemName: e.item.name,
-          companyName: e.item.company.name,
-          warehouseName: e.warehouse.warehouse.name,
-          formula: e.item.formula,
-          caliber: e.item.caliber,
-          packing: e.item.packing,
-          price: e.item.price,
-          customerPrice: e.item.customer_price,
-          quantity: e.qty,
-          bonus: e.bonusType
-            ? `${e.bonus} ${e.bonusType === "pieces" ? "قطع" : "%"}`
-            : "",
-          totalPrice:
-            e.qty * e.item.price -
-            (e.bonus && e.bonusType === "percentage"
-              ? (e.qty * e.item.price * e.bonus) / 100
-              : 0),
-        };
-      });
+    // let cartItemsToSend = cartItems
+    //   .filter((item) => item.warehouse.warehouse.name === warehouse)
+    //   .map((e) => {
+    //     return {
+    //       itemName: e.item.name,
+    //       companyName: e.item.company.name,
+    //       warehouseName: e.warehouse.warehouse.name,
+    //       formula: e.item.formula,
+    //       caliber: e.item.caliber,
+    //       packing: e.item.packing,
+    //       price: e.item.price,
+    //       customerPrice: e.item.customer_price,
+    //       quantity: e.qty,
+    //       bonus: e.bonusType
+    //         ? `${e.bonus} ${e.bonusType === "pieces" ? "قطع" : "%"}`
+    //         : "",
+    //       totalPrice:
+    //         e.qty * e.item.price -
+    //         (e.bonus && e.bonusType === "percentage"
+    //           ? (e.qty * e.item.price * e.bonus) / 100
+    //           : 0),
+    //     };
+    //   });
 
-    cartItemsToSend = [
-      ...cartItemsToSend,
-      {
-        itemName: "",
-        companyName: "",
-        warehouseName: "",
-        formula: "",
-        caliber: "",
-        packing: "",
-        price: "",
-        customerPrice: "",
-        quantity: "",
-        bonus: "",
-        totalPrice: computeTotalPrice(),
-      },
-    ];
+    // cartItemsToSend = [
+    //   ...cartItemsToSend,
+    //   {
+    //     itemName: "",
+    //     companyName: "",
+    //     warehouseName: "",
+    //     formula: "",
+    //     caliber: "",
+    //     packing: "",
+    //     price: "",
+    //     customerPrice: "",
+    //     quantity: "",
+    //     bonus: "",
+    //     totalPrice: computeTotalPrice(),
+    //   },
+    // ];
 
-    axios
-      .post(
-        `${BASEURL}/users/sendemail`,
-        { cartItems: cartItemsToSend },
-        {
-          timeout: 25000,
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      )
+    let obj = {
+      pharmacy: user._id,
+      warehouse: cartItems.filter(
+        (item) => item.warehouse.warehouse.name === warehouse
+      )[0].warehouse.warehouse._id,
+      items: cartItems
+        .filter((item) => item.warehouse.warehouse.name === warehouse)
+        .map((e) => {
+          return {
+            item: e.item._id,
+            qty: e.qty,
+            bonus: e.bonus,
+            bonusType: e.bonusType,
+            price: e.item.price,
+            customer_price: e.item.customer_price,
+          };
+        }),
+    };
+
+    dispatch(saveOrder({ obj, token }))
+      .then(unwrapResult)
       .then(() => {
         dispatch(
           addStatistics({
@@ -136,55 +153,77 @@ function CartWarehouse({ warehouse }) {
         );
         setShowLoadingModal(false);
         setShowSuccessModal(true);
-        if (saveOrders) {
-          let obj = {
-            pharmacy: user._id,
-            warehouse: cartItems.filter(
-              (item) => item.warehouse.warehouse.name === warehouse
-            )[0].warehouse.warehouse._id,
-            items: cartItems
-              .filter((item) => item.warehouse.warehouse.name === warehouse)
-              .map((e) => {
-                return {
-                  item: e.item._id,
-                  qty: e.qty,
-                  bonus: e.bonus,
-                  bonusType: e.bonusType,
-                  price: e.item.price,
-                  customer_price: e.item.customer_price,
-                };
-              }),
-          };
-
-          dispatch(saveOrder({ obj, token }));
-          dispatch(setRefresh(true));
-        }
       })
       .catch((err) => {
         setShowLoadingModal(false);
         setShowFailedModal(true);
       });
+    dispatch(setRefresh(true));
+
+    // axios
+    //   .post(
+    //     `${BASEURL}/users/sendemail`,
+    //     { cartItems: cartItemsToSend },
+    //     {
+    //       timeout: 25000,
+    //       headers: {
+    //         Authorization: `Bearer ${token}`,
+    //       },
+    //     }
+    //   )
+    //   .then(() => {
+    //     setShowLoadingModal(false);
+    //     setShowSuccessModal(true);
+    //   })
+    //   .catch((err) => {
+    //     setShowLoadingModal(false);
+    //     setShowFailedModal(true);
+    //   });
   };
 
   return (
     <>
-      <h4 className={styles.header}>{warehouse}</h4>
-      <CartWarehouseTableHeader />
-      {cartItems
-        .filter((item) => item.warehouse.warehouse.name === warehouse)
-        .map((item, index) => (
-          <CartRow cartItem={item} key={index} />
-        ))}
+      <div className={styles.header}>
+        <div className={styles.name} onClick={() => setExpanded(!expanded)}>
+          <label className={styles.icon}>
+            {expanded ? <MdExpandMore /> : <MdExpandLess />}
+          </label>
+          <label>{warehouse}</label>
+        </div>
+        <label>
+          <ButtonWithIcon
+            text={t("send-order")}
+            bgColor={Colors.SUCCEEDED_COLOR}
+            action={() => setShowConfirmSaveOrder(true)}
+            icon={() => <FiSend />}
+          />
+        </label>
+        <label className={styles.total_price}>
+          {t("total-invoice-price")} {computeTotalPrice()}
+        </label>
+      </div>
 
-      <p className={styles.total_price}>
-        {t("total-invoice-price")} {computeTotalPrice()}
-      </p>
+      {expanded && (
+        <>
+          <div className={styles.on_large}>
+            <CartWarehouseTableHeader />
+          </div>
 
-      <Button
-        text={t("send-order")}
-        bgColor={Colors.SUCCEEDED_COLOR}
-        action={() => setShowConfirmSaveOrder(true)}
-      />
+          {cartItems
+            .filter((item) => item.warehouse.warehouse.name === warehouse)
+            .map((item, index) => (
+              <div key={index}>
+                <div className={styles.on_large}>
+                  <CartRow cartItem={item} />
+                </div>
+                <div className={styles.on_small}>
+                  <CartItemCard cartItem={item} />
+                </div>
+              </div>
+            ))}
+          <div className={styles.separator}></div>
+        </>
+      )}
 
       {showLoadingModal && <Loader allowCancel={false} />}
 
@@ -195,7 +234,7 @@ function CartWarehouse({ warehouse }) {
             dispatch(resetCartItems(warehouse));
           }}
           header={t("send-order")}
-          cancelLabel={t("cancel-label")}
+          cancelLabel={t("close-label")}
           small={true}
           green={true}
         >
@@ -209,7 +248,7 @@ function CartWarehouse({ warehouse }) {
             setShowFailedModal(false);
           }}
           header={t("send-order")}
-          cancelLabel={t("cancel-label")}
+          cancelLabel={t("close-label")}
           small={true}
         >
           {t("send-order-failed")}

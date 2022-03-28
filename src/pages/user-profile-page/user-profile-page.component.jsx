@@ -155,7 +155,7 @@ function UserProfilePage({ onSelectedChange }) {
               />
             </div>
 
-            <div style={{ display: "none" }}>
+            <div className={styles.hide}>
               <form encType="multipart/form-data">
                 <div>
                   <input

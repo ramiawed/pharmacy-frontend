@@ -197,10 +197,12 @@ function AddToCartModal({ item, close, setAddItemToCartMsg }) {
             <div className={styles.offer} key={index}>
               <p>
                 <label>{t("quantity-label")}</label>
-                <label className={styles.value} style={{ padding: "0 6px" }}>
+                <label
+                  className={[styles.value, styles.with_padding].join(" ")}
+                >
                   {o.qty}
                 </label>
-                <label style={{ paddingLeft: "20px" }}>
+                <label className={styles.left_padding}>
                   {t("after-quantity-label")}
                 </label>
               </p>

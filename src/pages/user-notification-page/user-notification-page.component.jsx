@@ -100,11 +100,11 @@ function UserNotificationPage({ onSelectedChange }) {
       </Header>
 
       <div className={generalStyles.container_with_header}>
-        {/* <Notifications /> */}
-
         <div
           style={{
             paddingInline: "10px",
+            paddingLeft: "10px",
+            paddingRight: "10px",
           }}
         >
           {userNotifications.map((note, index) => (

@@ -80,6 +80,8 @@ function FavoritesPage({ onSelectedChange }) {
         <div
           style={{
             paddingInline: "10px",
+            paddingLeft: "10px",
+            paddingRight: "10px",
           }}
         >
           <CardInfo headerTitle={t("nav-items")}>

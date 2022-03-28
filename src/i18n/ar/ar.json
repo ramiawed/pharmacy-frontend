@@ -483,7 +483,7 @@
   "general-error": "الرجاء المحاولة مرة جديدة",
   "image-size-must-be-less-than": "حجم الصورة يجب ان يكون اقل من ٥١٢ كيلو بايت",
   "no-result-found": "لا يوجد نتائج",
-  "change-max-qty-header": "تغيير قيمة الحد الاعلى للطلب",
+  "change-max-qty-header": "الحد الأعلى للطلب",
   "item-available": "متوفر من الشركة",
   "item-not-available": "غير متوفر من الشركة",
   "agree-license": "أوافق على شروط الخصوصية بعد أن قمت بقراءتها",

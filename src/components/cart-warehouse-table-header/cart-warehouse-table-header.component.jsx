@@ -19,9 +19,9 @@ function CartWarehouseTableHeader({ withoutMaxQty }) {
         {t("item-caliber")}/{t("item-packing")}
       </label>
       <label className={tableStyles.label_small}>{t("price")}</label>
-      {!withoutMaxQty && (
+      {/* {!withoutMaxQty && (
         <label className={tableStyles.label_small}>{t("item-max-qty")}</label>
-      )}
+      )} */}
 
       <label className={tableStyles.label_small}>{t("selected-qty")}</label>
       <label className={tableStyles.label_xsmall}>{t("offer-label")}</label>

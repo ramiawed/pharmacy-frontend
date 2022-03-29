@@ -62,7 +62,7 @@ export const getItems = createAsyncThunk(
     } = getState();
 
     try {
-      let buildUrl = `${BASEURL}/items?page=${pageState.page}&limit=9`;
+      let buildUrl = `${BASEURL}/items?forAdmin=true&page=${pageState.page}&limit=9`;
 
       if (pageState.company) {
         buildUrl = buildUrl + `&companyId=${pageState.company._id}`;

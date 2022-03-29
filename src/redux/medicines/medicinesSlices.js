@@ -47,7 +47,7 @@ export const getMedicines = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      let buildUrl = `${BASEURL}/items?isAllowed=true&isActive=true&page=${pageState.page}&limit=9`;
+      let buildUrl = `${BASEURL}/items?forAdmin=false&isActive=true&page=${pageState.page}&limit=9`;
 
       if (pageState.searchName.trim() !== "") {
         buildUrl = buildUrl + `&itemName=${pageState.searchName}`;

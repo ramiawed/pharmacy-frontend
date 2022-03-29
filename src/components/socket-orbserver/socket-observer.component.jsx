@@ -263,19 +263,18 @@ function SocketObserver() {
       user.type === UserTypeConstants.PHARMACY ||
       user.type === UserTypeConstants.ADMIN
     ) {
-      socket.on("warehouse-add-bonus", (data) => {
-        dispatch(warehouseAddBonusSocket(data));
-        if (user.type === UserTypeConstants.ADMIN) {
-          dispatch(warehouseAddBonusSocketItemsSlice(data));
-        }
-      });
-
-      socket.on("warehouse-add-or-delete-item", (data) => {
-        dispatch(warehouseAddOrRemoveItemSocket(data));
-        if (user.type === UserTypeConstants.ADMIN) {
-          dispatch(warehouseAddOrRemoveItemSocketItemsSlice(data));
-        }
-      });
+      // socket.on("warehouse-add-bonus", (data) => {
+      //   dispatch(warehouseAddBonusSocket(data));
+      //   if (user.type === UserTypeConstants.ADMIN) {
+      //     dispatch(warehouseAddBonusSocketItemsSlice(data));
+      //   }
+      // });
+      // socket.on("warehouse-add-or-delete-item", (data) => {
+      //   dispatch(warehouseAddOrRemoveItemSocket(data));
+      //   if (user.type === UserTypeConstants.ADMIN) {
+      //     dispatch(warehouseAddOrRemoveItemSocketItemsSlice(data));
+      //   }
+      // });
     }
 
     socket.connect();

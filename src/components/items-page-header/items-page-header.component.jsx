@@ -72,23 +72,22 @@ function ItemsPageHeader({ user, company, pageState, search, keyUpHandler }) {
           />
         )}
 
-        {(user.type === UserTypeConstants.COMPANY ||
-          (user.type === UserTypeConstants.ADMIN &&
-            pageState.role !== UserTypeConstants.WAREHOUSE)) && (
-          <SearchInput
-            label="item-warehouse"
-            id="item-warehouse"
-            type="text"
-            value={pageState.searchWarehouseName}
-            onchange={(e) => dispatch(setSearchWarehouseName(e.target.value))}
-            placeholder="search-by-warehouse-name"
-            onEnterPress={search}
-            resetField={() => {
-              dispatch(setSearchWarehouseName(""));
-            }}
-            onkeyup={keyUpHandler}
-          />
-        )}
+        {user.type === UserTypeConstants.ADMIN &&
+          pageState.role !== UserTypeConstants.WAREHOUSE && (
+            <SearchInput
+              label="item-warehouse"
+              id="item-warehouse"
+              type="text"
+              value={pageState.searchWarehouseName}
+              onchange={(e) => dispatch(setSearchWarehouseName(e.target.value))}
+              placeholder="search-by-warehouse-name"
+              onEnterPress={search}
+              resetField={() => {
+                dispatch(setSearchWarehouseName(""));
+              }}
+              onkeyup={keyUpHandler}
+            />
+          )}
 
         <div className={searchContainerStyles.checkbox_div}>
           <input
@@ -116,7 +115,7 @@ function ItemsPageHeader({ user, company, pageState, search, keyUpHandler }) {
           <label>{t("active-items")}</label>
         </div>
 
-        {user.type !== UserTypeConstants.WAREHOUSE && (
+        {user.type === UserTypeConstants.ADMIN && (
           <>
             <div className={searchContainerStyles.checkbox_div}>
               <input

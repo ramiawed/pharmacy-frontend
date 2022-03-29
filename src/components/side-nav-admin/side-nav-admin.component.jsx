@@ -13,6 +13,8 @@ import { CgProfile } from "react-icons/cg";
 import { selectSettings } from "../../redux/settings/settingsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  itemsSliceSignOut,
+  resetPageState,
   setCompany,
   setRole,
   setWarehouse,
@@ -73,6 +75,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.ITEMS);
+          dispatch(resetPageState());
           dispatch(setCompany(null));
           dispatch(setWarehouse(null));
           dispatch(setRole(UserTypeConstants.ADMIN));

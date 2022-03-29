@@ -18,6 +18,7 @@ function Input({
   onEnterPress,
   resetField,
   readOnly,
+  smallFont,
 }) {
   const { t } = useTranslation();
 
@@ -40,17 +41,7 @@ function Input({
       className={[styles.input_div, bordered ? styles.bordered : ""].join(" ")}
     >
       {icon && icon}
-      {label && (
-        <label
-          style={{
-            color: "#9d9d9d",
-            width: "85px",
-          }}
-          htmlFor={id}
-        >
-          {t(label)}
-        </label>
-      )}
+      {label && <label htmlFor={id}>{t(label)}</label>}
 
       <input
         placeholder={placeholder ? t(`${placeholder}`) : ""}
@@ -65,6 +56,7 @@ function Input({
           }
         }}
         disabled={readOnly}
+        className={smallFont ? styles.small_font : ""}
       />
       {resetField && value && (
         <AiFillCloseCircle

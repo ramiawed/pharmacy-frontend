@@ -35,6 +35,8 @@ import tableStyles from "../table.module.scss";
 import { Colors, UserTypeConstants } from "../../utils/constants";
 import {
   setCompany,
+  setSearchCompanyName,
+  setSearchWarehouseName,
   setRole,
   setWarehouse,
 } from "../../redux/items/itemsSlices";
@@ -345,7 +347,17 @@ function UserRow({ user }) {
   const userNameClickHandler = () => {
     dispatch(setCompany(user.type === UserTypeConstants.COMPANY ? user : null));
     dispatch(
+      setSearchCompanyName(
+        user.type === UserTypeConstants.COMPANY ? user.name : ""
+      )
+    );
+    dispatch(
       setWarehouse(user.type === UserTypeConstants.WAREHOUSE ? user : null)
+    );
+    dispatch(
+      setSearchWarehouseName(
+        user.type === UserTypeConstants.WAREHOUSE ? user.name : ""
+      )
     );
     dispatch(
       setRole(
@@ -366,9 +378,6 @@ function UserRow({ user }) {
               onClick={userNameClickHandler}
               to={{
                 pathname: "/items",
-                state: {
-                  user: loggedUser,
-                },
               }}
               className={rowStyles.hover_underline}
             >

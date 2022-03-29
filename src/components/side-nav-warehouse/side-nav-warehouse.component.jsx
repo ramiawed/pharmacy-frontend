@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/auth/authSlice";
 import { selectSettings } from "../../redux/settings/settingsSlice";
 import {
+  resetPageState,
   setCompany,
   setRole,
   setSearchWarehouseName,
@@ -40,6 +41,7 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.ITEMS);
+          dispatch(resetPageState());
           dispatch(setCompany(null));
           dispatch(setWarehouse(user));
           dispatch(setSearchWarehouseName(""));

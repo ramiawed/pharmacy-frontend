@@ -188,6 +188,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
             placeholder="search-by-name"
             onEnterPress={enterPress}
             resetField={() => dispatch(setSearchName(""))}
+            smallFont={true}
           />
         </div>
         <div>
@@ -302,6 +303,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
               placeholder="search-by-employee-name"
               onEnterPress={enterPress}
               resetField={() => dispatch(setSearchEmployeeName(""))}
+              smallFont={true}
             />
           </div>
           <div>
@@ -317,6 +319,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
               placeholder="search-by-certificate"
               onEnterPress={enterPress}
               resetField={() => dispatch(setSearchCertificateName(""))}
+              smallFont={true}
             />
           </div>
         </RowWith2Children>
@@ -338,6 +341,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
                 placeholder="search-by-company-name"
                 onEnterPress={enterPress}
                 resetField={() => dispatch(setSearchCompanyName(""))}
+                smallFont={true}
               />
             </div>
             <div>
@@ -353,6 +357,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
                 placeholder="search-by-job-title"
                 onEnterPress={enterPress}
                 resetField={() => dispatch(setSearchJobTitle(""))}
+                smallFont={true}
               />
             </div>
           </RowWith2Children>
@@ -376,6 +381,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
             resetField={(e) => {
               dispatch(setSearchAddressDetails(""));
             }}
+            smallFont={true}
           />
         </div>
       </>

@@ -15,17 +15,14 @@
 
 .input_div input {
   width: 75px;
-
+  font-size: 1.1rem;
   margin-inline-start: 8px;
   margin-right: 8px;
   padding: 4px 0px;
-
   outline: none;
   border: none;
-
   color: $main-color;
   background-color: $white-color;
-
   flex: 1;
 }
 
@@ -45,13 +42,11 @@
 
 .input_div .icon_error {
   width: 30px;
-
   color: $third-color;
 }
 
 .input_div .icon_clear {
   width: 30px;
-
   color: $main-color;
 }
 

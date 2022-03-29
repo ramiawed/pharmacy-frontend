@@ -355,7 +355,7 @@ function AdminItemCard({
                 action={() => {
                   setShowOfferModal(true);
                 }}
-                bgColor={Colors.MAIN_COLOR}
+                bgColor={Colors.SUCCEEDED_COLOR}
               />
 
               {deleteLoading ? (

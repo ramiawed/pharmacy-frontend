@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
   addItem,
-  changeItemLogo,
   resetAddStatus,
   resetUpdateStatus,
   selectItems,
@@ -32,8 +31,6 @@ import Input from "../../components/input/input.component";
 import Toast from "../../components/toast/toast.component";
 import AddToCartModal from "../../components/add-to-cart-modal/add-to-cart-modal.component";
 import OffersModal from "../../components/offers-modal/offers-modal.component";
-import InputFileImage from "../../components/input-file-image/input-file-image.component";
-import Button from "../../components/button/button.component";
 import Loader from "../../components/action-loader/action-loader.component";
 import Icon from "../../components/action-icon/action-icon.component";
 import Header from "../../components/header/header.component";
@@ -602,7 +599,13 @@ function ItemPage() {
               user.type === UserTypeConstants.PHARMACY && (
                 <CardInfo headerTitle={t("warehouses")}>
                   {item.warehouses
-                    .filter((w) => w.warehouse.city === user.city)
+                    .filter((w) => {
+                      return (
+                        w.warehouse.city === user.city &&
+                        w.warehouse.isActive === true &&
+                        w.warehouse.isApproved === true
+                      );
+                    })
                     .map((w, index) => (
                       <div
                         className={[

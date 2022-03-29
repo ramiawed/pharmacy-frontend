@@ -10,17 +10,27 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
+
+  label {
+    color: $grey-color;
+    width: 60px;
+    font-size: 0.5rem;
+  }
 }
 
 .input_div input {
-  width: 75px;
   margin-inline-start: 8px;
   margin-right: 8px;
   padding: 4px 0px;
+  font-size: 1.1rem;
   outline: none;
   border: none;
   color: $main-color;
   flex: 1;
+}
+
+.input_div input.small_font {
+  font-size: 0.7rem;
 }
 
 .input_div input:disabled {
@@ -49,16 +59,18 @@
 
 @media only screen and (min-width: $small) {
   .input_div label {
-    // font-size: 0.7rem;
     padding: 0 12px;
     text-align: left;
+    font-size: 0.57rem;
+    width: 85px;
   }
 }
 
 @media only screen and (min-width: $medium) {
   .input_div label {
-    // font-size: 0.7rem;
     padding: 0 12px;
     text-align: left;
+    font-size: 0.7rem;
+    width: 85px;
   }
 }

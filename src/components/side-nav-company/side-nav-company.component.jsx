@@ -7,6 +7,7 @@ import { SideNavLinks, UserTypeConstants } from "../../utils/constants.js";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/auth/authSlice";
 import {
+  resetPageState,
   setCompany,
   setRole,
   setWarehouse,
@@ -31,6 +32,7 @@ function SideNavCompany({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.ITEMS);
+          dispatch(resetPageState());
           dispatch(setCompany(user));
           dispatch(setWarehouse(null));
           dispatch(setRole(UserTypeConstants.COMPANY));

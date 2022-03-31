@@ -105,7 +105,7 @@ function ItemsSectionTwoSettings() {
         <ChooseItemModal
           close={() => setShowChooseModal(false)}
           chooseAction={addItemToSectionTwo}
-          url={`${BASEURL}/items?limit=9&isActive=true&inSectionTwo=false`}
+          url={`${BASEURL}/items?limit=15&isActive=true&inSectionTwo=false`}
         />
       )}
 

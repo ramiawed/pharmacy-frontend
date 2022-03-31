@@ -45,7 +45,7 @@ export const getOrders = createAsyncThunk(
 
       const { page } = obj;
 
-      let buildUrl = `${BASEURL}/orders?page=${page}&limit=9`;
+      let buildUrl = `${BASEURL}/orders?page=${page}&limit=15`;
 
       if (pageState.searchPharmacyName.length > 0) {
         buildUrl = buildUrl + `&pharmacyName=${pageState.searchPharmacyName}`;

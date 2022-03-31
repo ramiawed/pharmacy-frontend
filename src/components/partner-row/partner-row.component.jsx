@@ -37,6 +37,7 @@ import rowStyles from "../row.module.scss";
 
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
+import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
 
 function PartnerRow({ partner, isSearch, withoutBoxShadow, onSelectAction }) {
   const { t } = useTranslation();
@@ -148,6 +149,15 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow, onSelectAction }) {
 
       if (partner.type === UserTypeConstants.WAREHOUSE) {
         dispatch(setSearchWarehouseName(partner.name));
+      }
+
+      if (
+        partner.type === UserTypeConstants.WAREHOUSE &&
+        user.type === UserTypeConstants.PHARMACY
+      ) {
+        dispatch(setSelectedWarehouse(partner._id));
+      } else {
+        dispatch(setSelectedWarehouse(null));
       }
       history.push("/medicines");
     }

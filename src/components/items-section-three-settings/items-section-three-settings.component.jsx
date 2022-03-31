@@ -105,7 +105,7 @@ function ItemsSectionThreeSettings() {
         <ChooseItemModal
           close={() => setShowChooseModal(false)}
           chooseAction={addItemToSectionThree}
-          url={`${BASEURL}/items?limit=9&isActive=true&inSectionThree=false`}
+          url={`${BASEURL}/items?limit=15&isActive=true&inSectionThree=false`}
         />
       )}
 

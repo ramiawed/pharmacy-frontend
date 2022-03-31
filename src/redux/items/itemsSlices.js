@@ -62,7 +62,7 @@ export const getItems = createAsyncThunk(
     } = getState();
 
     try {
-      let buildUrl = `${BASEURL}/items?forAdmin=true&page=${pageState.page}&limit=9`;
+      let buildUrl = `${BASEURL}/items?forAdmin=true&page=${pageState.page}&limit=15`;
 
       if (pageState.company) {
         buildUrl = buildUrl + `&companyId=${pageState.company._id}`;
@@ -597,7 +597,7 @@ export const itemsSlice = createSlice({
       state.error = "";
       // state.pageState = {
       //   ...state.pageState,
-      //   page: Math.ceil(state.items.length / 9) + 1,
+      //   page: Math.ceil(state.items.length / 15) + 1,
       // };
     },
     [getItems.rejected]: (state, { payload }) => {

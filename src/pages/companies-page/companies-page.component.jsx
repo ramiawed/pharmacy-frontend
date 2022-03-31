@@ -68,7 +68,7 @@ function CompaniesPage({ onSelectedChange }) {
   const isOnline = useSelector(selectOnlineStatus);
 
   // search handler
-  // /users?type=company&page=page&limit=9
+  // /users?type=company&page=page&limit=15
   // this method take 2 params
   // 1- page: determine which page you want to get its rows from DB
   // 2- reset: boolean param, determine if you have to reset the page to 1 or not.
@@ -82,7 +82,7 @@ function CompaniesPage({ onSelectedChange }) {
     dispatch(getCompanies({ token }));
   };
 
-  // get the next 9 companies from DB
+  // get the next 15 companies from DB
   // and add one to page
   const handleMoreResult = () => {
     if (!isOnline) {

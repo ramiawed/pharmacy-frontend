@@ -40,7 +40,7 @@ export const getCompanies = createAsyncThunk(
     try {
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
-      let buildUrl = `${BASEURL}/users?type=company&isActive=true&isApproved=true&page=${pageState.page}&limit=9&details=some`;
+      let buildUrl = `${BASEURL}/users?type=company&isActive=true&isApproved=true&page=${pageState.page}&limit=15&details=some`;
 
       if (pageState.searchName.trim() !== "") {
         buildUrl = buildUrl + `&name=${pageState.searchName.trim()}`;
@@ -186,7 +186,7 @@ export const companiesSlice = createSlice({
       state.error = null;
       state.pageState = {
         ...state.pageState,
-        page: Math.ceil(state.companies.length / 9) + 1,
+        page: Math.ceil(state.companies.length / 15) + 1,
       };
     },
     [getCompanies.rejected]: (state, { payload }) => {

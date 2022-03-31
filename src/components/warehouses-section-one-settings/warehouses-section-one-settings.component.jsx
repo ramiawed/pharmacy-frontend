@@ -105,7 +105,7 @@ function WarehousesSectionOneSettings() {
         <ChooseWarehouseModal
           close={() => setShowChooseModal(false)}
           chooseAction={addWarehouseToSectionOne}
-          url={`${BASEURL}/users?limit=9&isActive=true&type=warehouse&inSectionOne=false`}
+          url={`${BASEURL}/users?limit=15&isActive=true&type=warehouse&inSectionOne=false`}
         />
       )}
 

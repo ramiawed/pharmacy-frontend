@@ -102,7 +102,7 @@ function AdminNotificationPage({ onSelectedChange }) {
               <ReactPaginate
                 previousLabel={t("previous")}
                 nextLabel={t("next")}
-                pageCount={Math.ceil(count / 9)}
+                pageCount={Math.ceil(count / 15)}
                 forcePage={page - 1}
                 onPageChange={handlePageClick}
                 containerClassName={paginationStyles.pagination}

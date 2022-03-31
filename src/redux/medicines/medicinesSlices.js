@@ -47,7 +47,7 @@ export const getMedicines = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      let buildUrl = `${BASEURL}/items?forAdmin=false&isActive=true&page=${pageState.page}&limit=9`;
+      let buildUrl = `${BASEURL}/items?forAdmin=false&isActive=true&page=${pageState.page}&limit=15`;
 
       if (pageState.searchName.trim() !== "") {
         buildUrl = buildUrl + `&itemName=${pageState.searchName}`;
@@ -369,7 +369,7 @@ export const medicinesSlice = createSlice({
       state.error = "";
       state.pageState = {
         ...state.pageState,
-        page: Math.ceil(state.medicines.length / 9) + 1,
+        page: Math.ceil(state.medicines.length / 15) + 1,
       };
     },
     [getMedicines.rejected]: (state, { error, meta, payload }) => {

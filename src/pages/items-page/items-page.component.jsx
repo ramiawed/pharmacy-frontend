@@ -171,7 +171,7 @@ function ItemsPage({ onSelectedChange }) {
         <ReactPaginate
           previousLabel={t("previous")}
           nextLabel={t("next")}
-          pageCount={Math.ceil(count / 9)}
+          pageCount={Math.ceil(count / 15)}
           forcePage={pageState.page - 1}
           onPageChange={handlePageClick}
           containerClassName={paginationStyles.pagination}

@@ -25,7 +25,7 @@ export const getWarehouseItems = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      let buildUrl = `${BASEURL}/items/warehouseItems?page=${queryString.page}&limit=9`;
+      let buildUrl = `${BASEURL}/items/warehouseItems?page=${queryString.page}&limit=15`;
 
       if (queryString.name) {
         buildUrl = buildUrl + `&name=${queryString.name}`;

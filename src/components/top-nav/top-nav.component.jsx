@@ -38,6 +38,7 @@ import {
 } from "../../redux/medicines/medicinesSlices";
 import SearchInTopNav from "../search-in-top-nav/search-in-top-nav.component";
 import Icon from "../action-icon/action-icon.component";
+import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
 
 function TopNav({ onSelectedChange }) {
   const history = useHistory();
@@ -116,6 +117,7 @@ function TopNav({ onSelectedChange }) {
             ].join(" ")}
             onClick={() => {
               onSelectedChange(TopNavLinks.MEDICINES);
+              dispatch(setSelectedWarehouse(null));
               if (history.location.pathname !== "/medicines") {
                 dispatch(resetMedicinesArray());
                 dispatch(resetMedicines());

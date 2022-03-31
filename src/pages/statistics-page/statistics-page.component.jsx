@@ -81,7 +81,7 @@ function StatisticsPage({ onSelectedChange }) {
       field,
       type,
       page: p,
-      limit: 9,
+      limit: 15,
     };
 
     // build the query string

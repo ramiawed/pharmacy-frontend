@@ -42,6 +42,7 @@ import {
   SERVER_URL,
   UserTypeConstants,
 } from "../../utils/constants.js";
+import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
 
 function PartnerCard({ partner, fullWidth }) {
   const { t } = useTranslation();
@@ -151,6 +152,15 @@ function PartnerCard({ partner, fullWidth }) {
 
       if (partner.type === UserTypeConstants.WAREHOUSE) {
         dispatch(setSearchWarehouseName(partner.name));
+      }
+
+      if (
+        partner.type === UserTypeConstants.WAREHOUSE &&
+        user.type === UserTypeConstants.PHARMACY
+      ) {
+        dispatch(setSelectedWarehouse(partner._id));
+      } else {
+        dispatch(setSelectedWarehouse(null));
       }
       history.push("/medicines");
     }

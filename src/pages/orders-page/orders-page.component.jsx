@@ -235,10 +235,10 @@ function OrdersPage({ onSelectedChange }) {
             <div className={styles.highlight}>
               <RiMailUnreadLine color={Colors.SECONDARY_COLOR} />
               <label>{t("unread")}</label>
-              <MdOutlineLocalShipping color={Colors.SUCCEEDED_COLOR} />
-              <label>{t("shipped")}</label>
               <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
               <label>{t("received")}</label>
+              <MdOutlineLocalShipping color={Colors.SUCCEEDED_COLOR} />
+              <label>{t("shipped")}</label>
               <RiSendPlaneFill color={Colors.SUCCEEDED_COLOR} />
               <label>{t("sent")}</label>
               <MdRemoveDone color={Colors.FAILED_COLOR} />
@@ -315,7 +315,7 @@ function OrdersPage({ onSelectedChange }) {
           <ReactPaginate
             previousLabel={t("previous")}
             nextLabel={t("next")}
-            pageCount={Math.ceil(count / 9)}
+            pageCount={Math.ceil(count / 15)}
             forcePage={pageState.page - 1}
             onPageChange={handlePageClick}
             containerClassName={paginationStyles.pagination}

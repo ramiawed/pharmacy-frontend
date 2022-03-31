@@ -6,9 +6,10 @@
   display: flex;
   flex-direction: row;
   justify-content: flex-start;
+  background-color: #81bbf5;
 
   position: fixed;
-  top: 80px;
+  top: 120px;
 
   border-radius: 15px;
   box-shadow: 2px 2px 5px rgb(84, 83, 83);
@@ -42,16 +43,16 @@
 }
 
 .header {
-  font-size: 0.8rem;
+  font-size: 12px;
   font-weight: bold;
-  color: $third-color;
+  color: $main-color;
 }
 
 .description {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-size: 0.6rem;
+  font-size: 10px;
   color: $white-color;
 }
 

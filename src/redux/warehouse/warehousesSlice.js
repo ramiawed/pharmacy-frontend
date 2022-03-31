@@ -10,6 +10,7 @@ const initialState = {
   warehouses: [],
   count: 0,
   error: "",
+  selectedWarehouse: null,
   pageState: {
     searchName: "",
     searchCity: CitiesName.ALL,
@@ -41,7 +42,7 @@ export const getWarehouses = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      let buildUrl = `${BASEURL}/users?type=warehouse&isActive=true&isApproved=true&page=${pageState.page}&limit=9&details=some`;
+      let buildUrl = `${BASEURL}/users?type=warehouse&isActive=true&isApproved=true&page=${pageState.page}&limit=15&details=some`;
 
       if (pageState.searchName.trim() !== "") {
         buildUrl = buildUrl + `&name=${pageState.searchName}`;
@@ -120,6 +121,10 @@ export const warehousesSlice = createSlice({
       };
     },
 
+    setSelectedWarehouse: (state, action) => {
+      state.selectedWarehouse = action.payload;
+    },
+
     resetWarehousePageState: (state) => {
       state.pageState = {
         searchName: "",
@@ -183,7 +188,7 @@ export const warehousesSlice = createSlice({
       state.error = null;
       state.pageState = {
         ...state.pageState,
-        page: Math.ceil(state.warehouses.length / 9) + 1,
+        page: Math.ceil(state.warehouses.length / 15) + 1,
       };
     },
     [getWarehouses.rejected]: (state, { payload }) => {
@@ -215,6 +220,7 @@ export const {
   changeShowFavorites,
   warehouseSliceSignOut,
   resetWarehousesArray,
+  setSelectedWarehouse,
 } = warehousesSlice.actions;
 
 export default warehousesSlice.reducer;

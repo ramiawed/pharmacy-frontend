@@ -33,7 +33,8 @@ import { FaArrowAltCircleUp } from "react-icons/fa";
 import styles from "./main-page.module.scss";
 
 // constants
-import { UserTypeConstants } from "../../utils/constants";
+import { Colors, UserTypeConstants } from "../../utils/constants";
+import NotificationToast from "../../components/notification-toast/notification-toast.component";
 
 const CompanyRoutes = lazy(() =>
   import("../../pages/company-routes/company-routes.component")

@@ -120,7 +120,7 @@ function FavoritesItemsSettings() {
         <ChooseItemModal
           close={() => setShowChooseModal(false)}
           chooseAction={addToFavoritesItems}
-          url={`${BASEURL}/items?limit=9&isActive=true&isFavorite=false`}
+          url={`${BASEURL}/items?limit=15&isActive=true&isFavorite=false`}
         />
       )}
 

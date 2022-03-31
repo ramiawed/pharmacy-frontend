@@ -29,6 +29,7 @@ import {
 
 // styles
 import styles from "./add-to-cart-modal.module.scss";
+import { selectWarehouses } from "../../redux/warehouse/warehousesSlice";
 
 // check if there is an offer for entered quantity in a specific warehouse
 const checkOfferQty = (selectedWarehouse, qty) => {
@@ -68,6 +69,7 @@ function AddToCartModal({ item, close, setAddItemToCartMsg }) {
   // selectors
   const { token, user } = useSelector(selectUserData);
   const isOnline = useSelector(selectOnlineStatus);
+  const { selectedWarehouse: sWarehouse } = useSelector(selectWarehouses);
 
   // build the warehouse option array that contains this item
   // get all the warehouse that contains this item
@@ -90,11 +92,19 @@ function AddToCartModal({ item, close, setAddItemToCartMsg }) {
 
   // select the first warehouse in the list
   const [selectedWarehouse, setSelectedWarehouse] = useState(
-    item.warehouses.filter((w) => w.warehouse.city === user.city)[0]
+    sWarehouse !== null
+      ? item.warehouses
+          .filter((w) => w.warehouse.city === user.city)
+          .find((w) => w.warehouse._id == sWarehouse)
+      : item.warehouses.filter((w) => w.warehouse.city === user.city)[0]
   );
 
   const [offer, setOffer] = useState(
-    item.warehouses.filter((w) => w.warehouse.city === user.city)[0].offer
+    sWarehouse !== null
+      ? item.warehouses
+          .filter((w) => w.warehouse.city === user.city)
+          .find((w) => w.warehouse._id == sWarehouse).offer
+      : item.warehouses.filter((w) => w.warehouse.city === user.city)[0].offer
   );
   const [qty, setQty] = useState("");
   const [qtyError, setQtyError] = useState(false);
@@ -168,8 +178,10 @@ function AddToCartModal({ item, close, setAddItemToCartMsg }) {
             foreColor="#fff"
             options={itemWarehousesOption}
             onchange={handleWarehouseChange}
-            defaultOption={itemWarehousesOption[0]}
-            // caption="item-warehouse"
+            defaultOption={{
+              label: selectedWarehouse.warehouse.name,
+              value: selectedWarehouse.warehouse._id,
+            }}
           />
         </div>
 

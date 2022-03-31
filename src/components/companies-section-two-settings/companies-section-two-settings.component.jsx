@@ -103,7 +103,7 @@ function CompaniesSectionTwoSettings() {
         <ChooseCompanyModal
           close={() => setShowChooseModal(false)}
           chooseAction={addCompanyToSectionTwo}
-          url={`${BASEURL}/users?limit=9&isActive=true&type=company&inSectionTwo=false`}
+          url={`${BASEURL}/users?limit=15&isActive=true&type=company&inSectionTwo=false`}
         />
       )}
 

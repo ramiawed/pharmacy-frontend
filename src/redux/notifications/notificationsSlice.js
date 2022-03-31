@@ -25,7 +25,7 @@ export const getAllNotifications = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.get(
-        `${BASEURL}/notifications?page=${page}&limit=9`,
+        `${BASEURL}/notifications?page=${page}&limit=15`,
         {
           // timeout: 10000,
           cancelToken: source.token,

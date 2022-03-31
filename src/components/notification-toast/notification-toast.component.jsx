@@ -5,12 +5,12 @@ import { SERVER_URL } from "../../utils/constants";
 // style
 import styles from "./notification-toast.module.scss";
 
-function NotificationToast({ bgColor, actionAfterTimeout, data, close }) {
+function NotificationToast({ actionAfterTimeout, data, close }) {
   const history = useHistory();
 
   useEffect(() => {
     let timer = setTimeout(() => {
-      actionAfterTimeout();
+      if (actionAfterTimeout) actionAfterTimeout();
     }, 10000);
 
     return () => {
@@ -21,9 +21,6 @@ function NotificationToast({ bgColor, actionAfterTimeout, data, close }) {
   return (
     <div
       className={styles.toast_container}
-      style={{
-        backgroundColor: bgColor,
-      }}
       onClick={() => {
         history.push(`/notification/${data._id}`);
         close();

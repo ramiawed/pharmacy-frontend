@@ -49,6 +49,7 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 import ItemRowNew from "../../components/item-row-new/item-row-new.component";
 import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 import { CgMoreVertical } from "react-icons/cg";
+import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
 
 let timer = null;
 
@@ -85,7 +86,10 @@ function MedicinesPage({ onSelectedChange }) {
     handleSearch();
   };
 
-  const keyUpHandler = () => {
+  const keyUpHandler = (e) => {
+    if (e.target.id === "item-warehouse") {
+      dispatch(setSelectedWarehouse(null));
+    }
     cancelOperation();
 
     if (timer) {

@@ -68,7 +68,6 @@ function NotificationPage({ onSelectedChange }) {
           <div div className={generalStyles.container_with_header}>
             <div className={styles.content_div}>
               <div className={styles.row}>
-                {/* <label>{t("header")}</label> */}
                 <p className={styles.header} style={{ flex: 1 }}>
                   {notification.header}
                 </p>

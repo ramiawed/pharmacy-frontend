@@ -96,7 +96,7 @@ function AddToCartModal({ item, close, setAddItemToCartMsg }) {
   const [offer, setOffer] = useState(
     item.warehouses.filter((w) => w.warehouse.city === user.city)[0].offer
   );
-  const [qty, setQty] = useState();
+  const [qty, setQty] = useState("");
   const [qtyError, setQtyError] = useState(false);
 
   const handleWarehouseChange = (val) => {

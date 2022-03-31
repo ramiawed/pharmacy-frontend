@@ -277,6 +277,7 @@ function OrdersPage({ onSelectedChange }) {
                 style={{
                   display: "flex",
                   paddingInlineStart: "10px",
+                  paddingRight: "10ppx",
                 }}
               >
                 {t("pharmacy-name")}
@@ -290,6 +291,7 @@ function OrdersPage({ onSelectedChange }) {
                 style={{
                   display: "flex",
                   paddingInlineStart: "10px",
+                  paddingRight: "10px",
                 }}
               >
                 {t("warehouse-name")}

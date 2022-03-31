@@ -297,7 +297,9 @@ function ItemPage() {
   return user ? (
     <>
       <Header>
-        <h2>{item.name}</h2>
+        <h2 className={item?.name.length > 15 ? "small_font" : ""}>
+          {item?.name.length !== 0 ? item.name : "اسم المنتج"}
+        </h2>
         <div className={generalStyles.refresh_icon}>
           <Icon
             selected={false}

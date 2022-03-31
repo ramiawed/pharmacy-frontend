@@ -16,7 +16,7 @@ import styles from "./button-with-icon.module.scss";
 
 // constants
 
-function ButtonWithIcon({ action, text, bgColor, icon }) {
+function ButtonWithIcon({ action, text, bgColor, icon, smallText }) {
   const [hover, setHover] = useState(false);
 
   const toggleHover = () => {

@@ -68,7 +68,7 @@ textarea:disabled {
   color: $secondary-color;
 }
 
-@media only screen and (min-width: $small) {
+@media only screen and (min-width: $medium) {
   .content {
     flex-direction: row;
     align-items: flex-start;

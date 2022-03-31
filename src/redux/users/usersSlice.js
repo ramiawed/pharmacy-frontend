@@ -68,7 +68,7 @@ export const getUsers = createAsyncThunk(
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      let buildUrl = `/users?page=${pageState.page}&limit=9&details=all`;
+      let buildUrl = `/users?page=${pageState.page}&limit=15&details=all`;
 
       if (pageState.searchName.trim() !== "") {
         buildUrl = buildUrl + `&name=${pageState.searchName}`;

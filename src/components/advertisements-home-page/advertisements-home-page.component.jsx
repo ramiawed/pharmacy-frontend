@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import LogoWithDotsImage from "../../logo-with-dots.jpg";
+import LogoWithDotsImage from "../../sign-in-out-image.jpg";
 import OrderOnlineImage from "../../order-online.jpg";
 import WarehouseWithOffersImage from "../../warehouses-with-offers.jpg";
 import FreeServicesImage from "../../free-services.jpg";

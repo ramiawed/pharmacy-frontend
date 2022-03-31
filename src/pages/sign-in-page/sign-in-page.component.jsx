@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import Logo from "../../logo.png";
+import Logo from "../../sign-in-out-image.jpg";
 
 // components
 import SignIn from "../../components/signin/signin.component";
@@ -59,7 +59,7 @@ function SignInPage() {
     <div className={styles.container}>
       <div className={styles.image}>
         <img src={Logo} alt="thumb" className={styles.img} />
-        <p>{t("app-slogan")}</p>
+        {/* <p>{t("app-slogan")}</p> */}
       </div>
       <div className={styles.content}>
         <SignIn />

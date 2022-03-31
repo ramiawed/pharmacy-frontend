@@ -32,7 +32,7 @@ import ButtonWithIcon from "../button-with-icon/button-with-icon.component";
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { GiShoppingCart } from "react-icons/gi";
 import { RiDeleteBin5Fill } from "react-icons/ri";
-import { MdAddCircle } from "react-icons/md";
+import { MdAddCircle, MdExpandLess, MdExpandMore } from "react-icons/md";
 import { VscLoading } from "react-icons/vsc";
 
 // styles
@@ -108,6 +108,7 @@ function ItemRowNew({ item }) {
   const [changeAddToWarehouseLoading, setChangeAddToWarehouseLoading] =
     useState(false);
   const [addItemToCart, setAddItemToCart] = useState("");
+  const [expanded, setExpanded] = useState(false);
 
   // method to handle add company to user's favorite
   const addItemToFavoriteItemsHandler = (e) => {
@@ -234,144 +235,138 @@ function ItemRowNew({ item }) {
     }
   };
 
+  const rowClickHandler = () => {
+    if (
+      user.type === UserTypeConstants.PHARMACY ||
+      user.type === UserTypeConstants.GUEST
+    ) {
+      dispatch(
+        addStatistics({
+          obj: {
+            sourceUser: user._id,
+            targetItem: item._id,
+            action: "choose-item",
+          },
+          token,
+        })
+      );
+    }
+    history.push("/item", {
+      from: user.type,
+      type: "info",
+      allowAction: false,
+      itemId: item._id,
+      companyId: item.company._id,
+      warehouseId: user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
+    });
+  };
+
   // render method
   return (
     <>
-      <div className={styles.container}>
-        {checkOffer(item, user) && (
-          <div className={[styles.ribbon_2].join(" ")}>
-            <span>{t("offer")}</span>
-          </div>
-        )}
+      <div className={styles.item_row} onClick={rowClickHandler}>
+        {checkOffer(item, user) && <div className={styles.offer_div}></div>}
+        <div className={styles.first_row}>
+          <label className={[styles.item_name].join(" ")}>
+            <label
+              className={styles.icon}
+              onClick={(e) => {
+                setExpanded(!expanded);
+                e.stopPropagation();
+              }}
+            >
+              {expanded ? <MdExpandLess /> : <MdExpandMore />}
+            </label>
+            <label>{item.name}</label>
+          </label>
 
-        <div
-          className={styles.name}
-          onClick={() => {
-            dispatchStatisticsHandler();
+          {changeAddToWarehouseLoading ? (
+            <Icon
+              text={t("")}
+              onclick={() => {}}
+              foreColor={Colors.SECONDARY_COLOR}
+              icon={() => <VscLoading className={styles.loading} />}
+            />
+          ) : (
+            user.type === UserTypeConstants.WAREHOUSE &&
+            (item.warehouses.map((w) => w.warehouse._id).includes(user._id) ? (
+              <Icon
+                text={t("remove-from-warehouse-tooltip")}
+                onclick={removeItemFromWarehouseHandler}
+                foreColor={Colors.FAILED_COLOR}
+                icon={() => <RiDeleteBin5Fill />}
+              />
+            ) : (
+              <Icon
+                text={t("add-to-warehouse-tooltip")}
+                onclick={addItemToWarehouseHandler}
+                foreColor={Colors.SUCCEEDED_COLOR}
+                icon={() => <MdAddCircle />}
+              />
+            ))
+          )}
 
-            history.push("/item", {
-              from: user.type,
-              type: "info",
-              allowAction: false,
-              itemId: item._id,
-              companyId: item.company._id,
-              warehouseId:
-                user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
-            });
-          }}
-        >
-          {item.name}
+          {user.type === UserTypeConstants.PHARMACY &&
+            checkItemExistsInWarehouse(item, user) && (
+              <Icon
+                text={t("add-to-cart")}
+                onclick={() => setShowModal(true)}
+                foreColor={Colors.SUCCEEDED_COLOR}
+                icon={() => <GiShoppingCart />}
+              />
+            )}
+
+          {changeFavoriteLoading ? (
+            <Icon
+              text={t("")}
+              onclick={() => {}}
+              foreColor={Colors.YELLOW_COLOR}
+              icon={() => <VscLoading className={styles.loading} />}
+            />
+          ) : favoritesItems
+              .map((favorite) => favorite._id)
+              .includes(item._id) ? (
+            <Icon
+              text={t("remove-from-favorite-tooltip")}
+              onclick={removeItemFromFavoritesItemsHandler}
+              foreColor={Colors.YELLOW_COLOR}
+              icon={() => <AiFillStar />}
+            />
+          ) : (
+            <Icon
+              text={t("add-to-favorite-tooltip")}
+              onclick={addItemToFavoriteItemsHandler}
+              foreColor={Colors.YELLOW_COLOR}
+              icon={() => <AiOutlineStar />}
+            />
+          )}
         </div>
-        <div className={styles.details}>
-          <div className={[styles.row].join(" ")}>
-            <div>
-              <label className={styles.label}>{t("item-company")}:</label>
-              <label className={styles.value}>{item.company.name}</label>
-            </div>
-          </div>
-          <div className={styles.row}>
-            <div>
-              <label className={styles.label}>{t("item-formula")}:</label>
-              <label className={styles.value}>{item.formula}</label>
-            </div>
-            <div>
-              <label className={styles.label}>{t("item-caliber")}:</label>
-              <label className={styles.value}>{item.caliber}</label>
-            </div>
-          </div>
-          <div className={styles.row}>
-            <div>
+
+        <div className={styles.second_row}>
+          <label className={styles.item_company}>{item.company.name}</label>
+          <label className={styles.item_price}>{item.price}</label>
+          <label className={styles.item_customer_price}>
+            {item.customer_price}
+          </label>
+        </div>
+
+        {expanded && (
+          <>
+            <div className={styles.separator}></div>
+            <div className={styles.details_row}>
               <label className={styles.label}>{t("item-packing")}:</label>
               <label className={styles.value}>{item.packing}</label>
             </div>
-          </div>
-          <div className={styles.row}>
-            {user.type !== UserTypeConstants.GUEST && (
-              <div>
-                <label className={styles.label}>{t("item-price")}:</label>
-                <label className={styles.value}>{item.price}</label>
-              </div>
-            )}
-            <div>
-              <label className={styles.label}>
-                {t("item-customer-price")}:
-              </label>
-              <label className={styles.value}>{item.customer_price}</label>
+            <div className={styles.details_row}>
+              <label className={styles.label}>{t("item-caliber")}:</label>
+              <label className={styles.value}>{item.caliber}</label>
             </div>
-          </div>
-          <div className={[styles.row].join(" ")}>
-            <div>
+            <div className={styles.details_row}>
               <label className={styles.label}>{t("item-composition")}:</label>
               <label className={styles.value}>{item.composition}</label>
             </div>
-          </div>
-          <div className={[styles.last_row].join(" ")}>
-            <div className={styles.actions}>
-              {changeAddToWarehouseLoading ? (
-                <ButtonWithIcon
-                  text={t("")}
-                  action={() => {}}
-                  bgColor={Colors.SECONDARY_COLOR}
-                  icon={() => <VscLoading className={styles.loading} />}
-                />
-              ) : (
-                user.type === UserTypeConstants.WAREHOUSE &&
-                (item.warehouses
-                  .map((w) => w.warehouse._id)
-                  .includes(user._id) ? (
-                  <ButtonWithIcon
-                    text={t("remove-from-warehouse-tooltip")}
-                    action={removeItemFromWarehouseHandler}
-                    bgColor={Colors.FAILED_COLOR}
-                    icon={() => <RiDeleteBin5Fill />}
-                  />
-                ) : (
-                  <ButtonWithIcon
-                    text={t("add-to-warehouse-tooltip")}
-                    action={addItemToWarehouseHandler}
-                    bgColor={Colors.SUCCEEDED_COLOR}
-                    icon={() => <MdAddCircle />}
-                  />
-                ))
-              )}
-
-              {user.type === UserTypeConstants.PHARMACY &&
-                checkItemExistsInWarehouse(item, user) && (
-                  <ButtonWithIcon
-                    text={t("add-to-cart")}
-                    action={() => setShowModal(true)}
-                    bgColor={Colors.SUCCEEDED_COLOR}
-                    icon={() => <GiShoppingCart />}
-                  />
-                )}
-
-              {changeFavoriteLoading ? (
-                <ButtonWithIcon
-                  text={t("")}
-                  action={() => {}}
-                  bgColor={Colors.YELLOW_COLOR}
-                  icon={() => <VscLoading className={styles.loading} />}
-                />
-              ) : favoritesItems
-                  .map((favorite) => favorite._id)
-                  .includes(item._id) ? (
-                <ButtonWithIcon
-                  text={t("remove-from-favorite-tooltip")}
-                  action={removeItemFromFavoritesItemsHandler}
-                  bgColor={Colors.YELLOW_COLOR}
-                  icon={() => <AiFillStar />}
-                />
-              ) : (
-                <ButtonWithIcon
-                  text={t("add-to-favorite-tooltip")}
-                  action={addItemToFavoriteItemsHandler}
-                  bgColor={Colors.YELLOW_COLOR}
-                  icon={() => <AiOutlineStar />}
-                />
-              )}
-            </div>
-          </div>
-        </div>
+          </>
+        )}
       </div>
 
       {showModal && (

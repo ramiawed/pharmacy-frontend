@@ -347,6 +347,7 @@ function AdminItemCard({
                 }}
                 text={t("change-max-qty-header")}
                 bgColor={Colors.MAIN_COLOR}
+                smallText={true}
               />
 
               <ButtonWithIcon
@@ -356,6 +357,7 @@ function AdminItemCard({
                   setShowOfferModal(true);
                 }}
                 bgColor={Colors.SUCCEEDED_COLOR}
+                smallText={true}
               />
 
               {deleteLoading ? (
@@ -371,6 +373,7 @@ function AdminItemCard({
                   action={deleteFromWarehouseHandler}
                   bgColor={Colors.FAILED_COLOR}
                   text={t("remove-from-warehouse")}
+                  smallText={true}
                 />
               )}
             </div>

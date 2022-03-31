@@ -74,7 +74,7 @@ function OrderPageHeader({ count, pageState, search }) {
     },
     {
       value: WarehouseOrderStatus.SENT,
-      label: t("sent"),
+      label: t("shipped"),
     },
     {
       value: WarehouseOrderStatus.WILL_DONT_SERVER,

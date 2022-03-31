@@ -1,15 +1,19 @@
 import React from "react";
-import { useTranslation } from "react-i18next";
-import { IoMdArrowRoundBack } from "react-icons/io";
 import { useHistory } from "react-router-dom";
-import { Colors } from "../../utils/constants";
+
+// components
 import Icon from "../action-icon/action-icon.component";
+
+// icons
+import { IoMdArrowRoundBack } from "react-icons/io";
+
+// constants
+import { Colors } from "../../utils/constants";
 
 // style
 import styles from "./header.module.scss";
 
 function Header({ children }) {
-  const { t } = useTranslation();
   const history = useHistory();
 
   return (

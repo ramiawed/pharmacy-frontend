@@ -1,6 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import Logo from "../../logo.png";
+import Logo from "../../sign-in-out-image.jpg";
 
 // components
 import SignUp from "../../components/signup/signup.component";
@@ -14,7 +14,7 @@ function SignUpPage() {
     <div className={styles.container}>
       <div className={styles.image}>
         <img src={Logo} alt="thumb" className={styles.img} />
-        <p>{t("app-slogan")}</p>
+        {/* <p>{t("app-slogan")}</p> */}
       </div>
       <div className={styles.content}>
         <SignUp />

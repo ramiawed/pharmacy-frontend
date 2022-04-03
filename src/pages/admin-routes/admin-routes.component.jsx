@@ -55,6 +55,9 @@ const OrderDetailsPage = lazy(() =>
   import("../order-details-page/order-details-page.component")
 );
 const NotFound = lazy(() => import("../not-found/not-found.component"));
+const BackupRestorePage = lazy(() =>
+  import("../backup-restore-page/backup-restore-page.component")
+);
 
 function AdminRoutes({ changeOptionHandler }) {
   return (
@@ -314,6 +317,20 @@ function AdminRoutes({ changeOptionHandler }) {
                 selectedTopNavOption: "",
                 collapsedSideNavOption: true,
                 selectedSideNavOption: SideNavLinks.NOTIFICATIONS,
+                showTopNav: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+        </Route>
+
+        <Route exact path="/admin/backup-restore">
+          <BackupRestorePage
+            onSelectedChange={() => {
+              changeOptionHandler({
+                selectedTopNavOption: "",
+                collapsedSideNavOption: true,
+                selectedSideNavOption: SideNavLinks.BACKUP_RESTORE,
                 showTopNav: false,
                 showSearchBar: false,
               });

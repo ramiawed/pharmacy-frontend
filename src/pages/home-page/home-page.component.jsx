@@ -94,7 +94,7 @@ function HomePage({ onSelectedChange }) {
 
   const { advertisements } = useSelector(selectAdvertisements);
   const [backgroundImages, setBackgroundImages] = useState(
-    advertisements.map((a) => a.logo_url)[0]
+    advertisements?.map((a) => a.logo_url)[0]
   );
   const { settings } = useSelector(selectSettings);
   const currentImage = useRef(0);

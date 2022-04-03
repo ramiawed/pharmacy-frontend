@@ -17,13 +17,13 @@ import NewAdvertisement from "../../components/new-advertisement/new-advertiseme
 import Loader from "../../components/action-loader/action-loader.component";
 import Toast from "../../components/toast/toast.component";
 import AdvertisementCard from "../../components/advertisement-card/advertisement-card.component";
+import NoContent from "../../components/no-content/no-content.component";
 
 // styles
 import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
-import NoContent from "../../components/no-content/no-content.component";
 
 function AdvertisementsPage({ onSelectedChange }) {
   const { t } = useTranslation();

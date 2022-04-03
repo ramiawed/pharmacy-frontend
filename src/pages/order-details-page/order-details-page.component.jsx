@@ -153,6 +153,22 @@ function OrderDetailsPage({ location, onSelectedChange }) {
 
                   <div className={styles.row}>
                     <label className={styles.label}>
+                      {t("user-address-details")}:{" "}
+                    </label>
+                    <label className={styles.name}>
+                      {orderDetails.pharmacy.addressDetails}
+                    </label>
+                  </div>
+
+                  <div className={styles.row}>
+                    <label className={styles.label}>{t("user-mobile")}: </label>
+                    <label className={styles.name}>
+                      {orderDetails.pharmacy.mobile}
+                    </label>
+                  </div>
+
+                  <div className={styles.row}>
+                    <label className={styles.label}>
                       {t("warehouse-name")}:{" "}
                     </label>
                     <label className={styles.name}>
@@ -163,7 +179,7 @@ function OrderDetailsPage({ location, onSelectedChange }) {
                   <div className={styles.row}>
                     <label className={styles.label}>{t("date-label")}: </label>
                     <label className={styles.name}>
-                      {new Date(orderDetails.orderDate).toLocaleDateString()}
+                      {new Date(orderDetails.createdAt).toLocaleDateString()}
                     </label>
                   </div>
                 </div>
@@ -229,7 +245,7 @@ function OrderDetailsPage({ location, onSelectedChange }) {
                       "_" +
                       orderDetails.warehouse.name +
                       "_" +
-                      new Date(orderDetails.orderDate).toLocaleDateString()
+                      new Date(orderDetails.createdAt).toLocaleDateString()
                     }
                   />
                 </div>

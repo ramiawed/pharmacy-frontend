@@ -4,18 +4,13 @@ import { Colors } from "../../utils/constants";
 import TableHeader from "../table-header/table-header.component";
 
 import tableStyles from "../table.module.scss";
+import styles from "./excel-file-criteria.module.scss";
 
 function ExcelFileCriteria({ action }) {
   const { t } = useTranslation();
   return (
     <>
-      <p
-        style={{
-          color: Colors.FAILED_COLOR,
-          fontWeight: "bold",
-          fontSize: "1.2rem",
-        }}
-      >
+      <p className={styles.header}>
         {t("excel-file-should-contains-this-columns")}
       </p>
       <TableHeader>

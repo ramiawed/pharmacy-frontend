@@ -5,7 +5,11 @@ import { useTranslation } from "react-i18next";
 import { HiUsers } from "react-icons/hi";
 import { GiMedicines } from "react-icons/gi";
 import { RiAdvertisementFill } from "react-icons/ri";
-import { MdNotificationsActive, MdOutlineSettings } from "react-icons/md";
+import {
+  MdBackup,
+  MdNotificationsActive,
+  MdOutlineSettings,
+} from "react-icons/md";
 import { BsFillEnvelopeFill, BsFillBarChartLineFill } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 
@@ -219,6 +223,32 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           </div>
           {!collapsed && (
             <div className={styles.nav_label}>{t("nav-statistics")}</div>
+          )}
+        </div>
+      </Link>
+      <Link
+        className={[
+          styles.link,
+          selectedOption === SideNavLinks.BACKUP_RESTORE
+            ? `${styles.selected}`
+            : "",
+        ].join(" ")}
+        onClick={() => {
+          onSelectedChange(SideNavLinks.BACKUP_RESTORE);
+        }}
+        to="/admin/backup-restore"
+      >
+        <div className={styles.nav}>
+          <div className={styles.nav_icon}>
+            <MdBackup size={20} />
+            {collapsed && (
+              <label className={styles.tooltip}>
+                {t("nav-backup-restore")}
+              </label>
+            )}
+          </div>
+          {!collapsed && (
+            <div className={styles.nav_label}>{t("nav-backup-restore")}</div>
           )}
         </div>
       </Link>

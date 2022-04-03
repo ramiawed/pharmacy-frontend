@@ -23,7 +23,7 @@ import {
   RiMailUnreadLine,
   RiSendPlaneFill,
 } from "react-icons/ri";
-import { BsCheckAll, BsCheck } from "react-icons/bs";
+import { BsCheckAll } from "react-icons/bs";
 import { MdOutlineLocalShipping, MdRemoveDone } from "react-icons/md";
 
 // styles
@@ -192,7 +192,7 @@ function OrderRow({ order, deleteAction }) {
           rowClickHandler(order._id);
         }}
       >
-        {order.orderDate.split("T")[0]}
+        {order.createdAt?.split("T")[0]}
       </label>
 
       <label className={tableStyles.label_xsmall}>

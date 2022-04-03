@@ -94,6 +94,7 @@ export const SideNavLinks = {
   PROFILE: "profile",
   SETTINGS: "settings",
   STATISTICS: "statistics",
+  BACKUP_RESTORE: "backup-restore",
 };
 
 export const TopNavLinks = {

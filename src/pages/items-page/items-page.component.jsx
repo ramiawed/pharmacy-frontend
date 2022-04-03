@@ -93,14 +93,12 @@ function ItemsPage({ onSelectedChange }) {
   };
 
   const changeItemMaxQty = (obj) => {
-    if (obj.qty) {
-      dispatch(changeItemWarehouseMaxQty({ obj, token }))
-        .then(unwrapResult)
-        .then(() => {
-          handleSearch(pageState.page);
-        })
-        .catch(() => {});
-    }
+    dispatch(changeItemWarehouseMaxQty({ obj, token }))
+      .then(unwrapResult)
+      .then(() => {
+        handleSearch(pageState.page);
+      })
+      .catch(() => {});
   };
 
   const keyUpHandler = () => {

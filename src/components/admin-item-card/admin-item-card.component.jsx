@@ -457,8 +457,9 @@ function AdminItemCard({
             changeItemMaxQty({
               itemId: item._id,
               warehouseId: warehouse._id,
-              qty: Number.parseInt(maxQty),
+              qty: (maxQty + "").length === 0 ? 0 : Number.parseInt(maxQty),
             });
+
             setShowChangeMaxQtyModal(false);
           }}
           small={true}

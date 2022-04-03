@@ -165,13 +165,13 @@ function OrdersPage({ onSelectedChange }) {
     (user.type === UserTypeConstants.ADMIN ||
       user.type === UserTypeConstants.WAREHOUSE ||
       user.type === UserTypeConstants.PHARMACY) ? (
-    <>
+    <div className={generalStyles.container}>
       <OrderPageHeader
         pageState={pageState}
         count={count}
         search={handleEnterPress}
       />
-      <div className={generalStyles.container}>
+      <div>
         {orders.length > 0 && (
           <div className={styles.action_highlight_container}>
             <div className={styles.actions_div}>
@@ -343,7 +343,7 @@ function OrdersPage({ onSelectedChange }) {
           />
         )}
       </div>
-    </>
+    </div>
   ) : (
     <Redirect to="/" />
   );

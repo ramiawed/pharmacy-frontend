@@ -35,10 +35,13 @@ import {
 
 // styles
 import generalStyles from "../../style.module.scss";
+import { useHistory } from "react-router-dom";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 function OrderPageHeader({ count, pageState, search }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const history = useHistory();
 
   // selectors
   const user = useSelector(selectUser);
@@ -282,13 +285,23 @@ function OrderPageHeader({ count, pageState, search }) {
           />
         </div>
       </SearchContainer>
-      <div className={generalStyles.refresh_icon}>
+      <div className={generalStyles.actions}>
         <Icon
-          foreColor={Colors.SECONDARY_COLOR}
+          foreColor={Colors.MAIN_COLOR}
           selected={false}
           icon={() => <RiRefreshLine />}
           tooltip={t("refresh-tooltip")}
           onclick={search}
+          withBackground={true}
+        />
+
+        <Icon
+          onclick={() => {
+            history.goBack();
+          }}
+          icon={() => <IoMdArrowRoundBack />}
+          foreColor={Colors.MAIN_COLOR}
+          withBackground={true}
         />
       </div>
     </>

@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
+// icons
 import { HiUsers } from "react-icons/hi";
 import { GiMedicines } from "react-icons/gi";
 import { RiAdvertisementFill } from "react-icons/ri";
@@ -17,13 +18,13 @@ import { CgProfile } from "react-icons/cg";
 import { selectSettings } from "../../redux/settings/settingsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  itemsSliceSignOut,
   resetPageState,
   setCompany,
   setRole,
   setWarehouse,
 } from "../../redux/items/itemsSlices";
-import { selectOrders, setRefresh } from "../../redux/orders/ordersSlice";
+import { setRefresh } from "../../redux/orders/ordersSlice";
+import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
 
 // styles
 import styles from "../side-nav.module.scss";
@@ -39,7 +40,6 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
   const {
     settings: { saveOrders },
   } = useSelector(selectSettings);
-  const { unreadCount } = useSelector(selectOrders);
 
   return (
     <>
@@ -55,6 +55,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.PARTNERS);
+          dispatch(setSelectedWarehouse(null));
         }}
         to="/admin/partners"
       >
@@ -83,6 +84,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           dispatch(setCompany(null));
           dispatch(setWarehouse(null));
           dispatch(setRole(UserTypeConstants.ADMIN));
+          dispatch(setSelectedWarehouse(null));
         }}
         to={{
           pathname: "/items",
@@ -110,6 +112,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.ADVERTISEMENTS);
+          dispatch(setSelectedWarehouse(null));
         }}
         to="/admin/advertisements"
       >
@@ -135,6 +138,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.NOTIFICATIONS);
+          dispatch(setSelectedWarehouse(null));
         }}
         to="/admin/notifications"
       >
@@ -160,6 +164,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           onClick={() => {
             onSelectedChange(SideNavLinks.ORDERS);
             dispatch(setRefresh(true));
+            dispatch(setSelectedWarehouse(null));
           }}
           to="/orders"
         >
@@ -187,6 +192,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.SETTINGS);
+          dispatch(setSelectedWarehouse(null));
         }}
         to="/admin/settings"
       >
@@ -202,6 +208,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           )}
         </div>
       </Link>
+
       <Link
         className={[
           styles.link,
@@ -211,6 +218,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.STATISTICS);
+          dispatch(setSelectedWarehouse(null));
         }}
         to="/admin/statistics"
       >
@@ -226,6 +234,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           )}
         </div>
       </Link>
+
       <Link
         className={[
           styles.link,
@@ -235,6 +244,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.BACKUP_RESTORE);
+          dispatch(setSelectedWarehouse(null));
         }}
         to="/admin/backup-restore"
       >
@@ -252,6 +262,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           )}
         </div>
       </Link>
+
       <Link
         className={[
           styles.link,
@@ -259,6 +270,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.PROFILE);
+          dispatch(setSelectedWarehouse(null));
         }}
         to="/profile"
       >

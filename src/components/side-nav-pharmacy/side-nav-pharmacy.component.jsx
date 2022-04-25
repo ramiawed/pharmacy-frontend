@@ -7,13 +7,15 @@ import styles from "../side-nav.module.scss";
 
 // constants
 import { SideNavLinks } from "../../utils/constants.js";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectSettings } from "../../redux/settings/settingsSlice";
 import { CgProfile } from "react-icons/cg";
 import { BsFillEnvelopeFill } from "react-icons/bs";
+import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
 
 function SideNavPharmacy({ selectedOption, onSelectedChange, collapsed }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const {
     settings: { saveOrders },
   } = useSelector(selectSettings);
@@ -28,6 +30,7 @@ function SideNavPharmacy({ selectedOption, onSelectedChange, collapsed }) {
           ].join(" ")}
           onClick={() => {
             onSelectedChange(SideNavLinks.ORDERS);
+            dispatch(setSelectedWarehouse(null));
           }}
           to="/orders"
         >
@@ -51,6 +54,7 @@ function SideNavPharmacy({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.PROFILE);
+          dispatch(setSelectedWarehouse(null));
         }}
         to="/profile"
       >

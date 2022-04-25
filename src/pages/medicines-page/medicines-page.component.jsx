@@ -10,7 +10,6 @@ import SearchContainer from "../../components/search-container/search-container.
 import SearchInput from "../../components/search-input/search-input.component";
 import ItemRow from "../../components/item-row/item-row.component";
 import NoContent from "../../components/no-content/no-content.component";
-import Button from "../../components/button/button.component";
 import Icon from "../../components/action-icon/action-icon.component";
 import MedicinesSearchString from "../../components/medicines-search-string/medicines-search-string.component";
 
@@ -153,7 +152,8 @@ function MedicinesPage({ onSelectedChange }) {
 
         {/* {user.type !== UserTypeConstants.GUEST && warehouseId === null && ( */}
         {(user.type === UserTypeConstants.ADMIN ||
-          user.type === UserTypeConstants.PHARMACY) && (
+          (user.type === UserTypeConstants.PHARMACY &&
+            pageState.searchWarehouseId === null)) && (
           <SearchInput
             label="item-warehouse"
             id="item-warehouse"

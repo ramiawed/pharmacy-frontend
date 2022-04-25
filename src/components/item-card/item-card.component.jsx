@@ -32,7 +32,7 @@ import {
   removeFavoriteItem,
   selectFavoritesItems,
 } from "../../redux/favorites/favoritesSlice";
-import { selectToken, selectUser } from "../../redux/auth/authSlice";
+import { selectUserData } from "../../redux/auth/authSlice";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -98,9 +98,8 @@ function ItemCard({ companyItem }) {
   const dispatch = useDispatch();
 
   const isOnline = useSelector(selectOnlineStatus);
-  const user = useSelector(selectUser);
+  const { user, token } = useSelector(selectUserData);
   const favorites = useSelector(selectFavoritesItems);
-  const token = useSelector(selectToken);
   const [showModal, setShowModal] = useState(false);
 
   const [changeFavoriteLoading, setChangeFavoriteLoading] = useState(false);

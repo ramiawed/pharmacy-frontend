@@ -28,8 +28,9 @@ import { selectSettings } from "../../redux/settings/settingsSlice";
 import {
   resetMedicines,
   setSearchCompanyName,
-  setSearchWarehouseName,
+  setSearchWarehouseId,
 } from "../../redux/medicines/medicinesSlices";
+import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -37,7 +38,6 @@ import rowStyles from "../row.module.scss";
 
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
-import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
 
 function PartnerRow({ partner, isSearch, withoutBoxShadow, onSelectAction }) {
   const { t } = useTranslation();
@@ -117,19 +117,20 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow, onSelectAction }) {
     if (onSelectAction) {
       onSelectAction();
     }
+
     if (
       partner.type === UserTypeConstants.WAREHOUSE &&
-      user.type === UserTypeConstants.WAREHOUSE
+      (user.type === UserTypeConstants.WAREHOUSE ||
+        user.type === UserTypeConstants.COMPANY ||
+        user.type === UserTypeConstants.GUEST)
     ) {
       return;
     }
+
     if (allowShowingWarehouseMedicines) {
       // if the partner type is pharmacy or normal, change the selectedCount
       // and selectedDates for this company
-      if (
-        user.type === UserTypeConstants.PHARMACY ||
-        user.type === UserTypeConstants.GUEST
-      ) {
+      if (user.type === UserTypeConstants.PHARMACY) {
         dispatch(
           addStatistics({
             obj: {
@@ -148,7 +149,7 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow, onSelectAction }) {
       }
 
       if (partner.type === UserTypeConstants.WAREHOUSE) {
-        dispatch(setSearchWarehouseName(partner.name));
+        dispatch(setSearchWarehouseId(partner._id));
       }
 
       if (

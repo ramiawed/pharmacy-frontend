@@ -18,7 +18,6 @@ import styles from "./sign-in-page.module.scss";
 import HomePageLoader from "../../components/home-page-loader/home-page-loader.component";
 
 function SignInPage() {
-  const { t } = useTranslation();
   const [checkingToken, setCheckingToken] = useState(true);
   const dispatch = useDispatch();
 

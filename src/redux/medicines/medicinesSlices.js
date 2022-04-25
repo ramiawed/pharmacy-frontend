@@ -16,6 +16,8 @@ const initialState = {
   removeFromWarehouseError: "",
   pageState: {
     searchName: "",
+    searchWarehouseId: null,
+    searchCompanyId: null,
     searchCompanyName: "",
     searchWarehouseName: "",
     searchInWarehouse: false,
@@ -51,6 +53,10 @@ export const getMedicines = createAsyncThunk(
 
       if (pageState.searchName.trim() !== "") {
         buildUrl = buildUrl + `&itemName=${pageState.searchName}`;
+      }
+
+      if (pageState.searchWarehouseId !== null) {
+        buildUrl = buildUrl + `&warehouseId=${pageState.searchWarehouseId}`;
       }
 
       if (pageState.searchCompanyName.trim() !== "") {
@@ -223,10 +229,17 @@ export const medicinesSlice = createSlice({
       };
     },
 
-    setSearchCompanyName: (state, action) => {
+    setSearchCompanyId: (state, action) => {
       state.pageState = {
         ...state.pageState,
-        searchName: action.payload,
+        searchCompanyId: action.payload,
+      };
+    },
+
+    setSearchWarehouseId: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchWarehouseId: action.payload,
       };
     },
 
@@ -318,6 +331,8 @@ export const medicinesSlice = createSlice({
         searchName: "",
         searchCompanyName: "",
         searchWarehouseName: "",
+        searchWarehouseId: null,
+        searchCompanyId: null,
         searchInWarehouse: false,
         searchOutWarehouse: false,
         city: "",
@@ -339,6 +354,8 @@ export const medicinesSlice = createSlice({
         searchName: "",
         searchCompanyName: "",
         searchWarehouseName: "",
+        searchWarehouseId: null,
+        searchCompanyId: null,
         searchInWarehouse: false,
         searchOutWarehouse: false,
         city: "",
@@ -356,6 +373,18 @@ export const medicinesSlice = createSlice({
       state.addToWarehouseError = "";
       state.removeFromWarehouseStatus = "idle";
       state.removeFromWarehouseError = "";
+      state.pageState = {
+        searchName: "",
+        searchCompanyName: "",
+        searchWarehouseName: "",
+        searchWarehouseId: null,
+        searchCompanyId: null,
+        searchInWarehouse: false,
+        searchOutWarehouse: false,
+        city: "",
+        displayType: "list",
+        page: 1,
+      };
     },
   },
   extraReducers: {
@@ -445,6 +474,8 @@ export const {
   resetRemoveFromWarehouseStatus,
   resetRemoveFromWarehouseError,
   setSearchName,
+  setSearchCompanyId,
+  setSearchWarehouseId,
   setSearchCompanyName,
   setSearchWarehouseName,
   setSearchInWarehouse,

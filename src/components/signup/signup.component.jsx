@@ -66,7 +66,6 @@ function SignUp() {
   const { user: authUser } = useSelector(selectUserData);
 
   // own state
-  const [licenseCheck, setLicenseCheck] = useState(false);
   const [showLicenseModel, setShowLicenseModal] = useState(false);
   const [networkError, setNetworkError] = useState("");
   const [signupLoading, setSignupLoading] = useState(false);
@@ -262,15 +261,6 @@ function SignUp() {
         },
       });
     } else if (e.target.id === "type") {
-      // change the type of the user
-      // reset employee name and certificate name and guestDetails
-      // (job, company name, job title
-      // if (
-      //   e.target.value === UserTypeConstants.WAREHOUSE ||
-      //   e.target.value === UserTypeConstants.COMPANY
-      // ) {
-      //   // inputFileRef.current.value = "";
-      // }
       if (e.target.value === UserTypeConstants.WAREHOUSE) {
         setUserNamePlaceHolder("enter-warehouse-name");
         setUserPaperUrlLabel("");

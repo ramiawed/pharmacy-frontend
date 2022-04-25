@@ -18,7 +18,6 @@ import { CgMoreVertical } from "react-icons/cg";
 // components
 import PartnerRow from "../../components/partner-row/partner-row.component";
 import PartnerCard from "../../components/partner-card/partner-card.component";
-import Button from "../../components/button/button.component";
 import NoContent from "../../components/no-content/no-content.component";
 import CompaniesHeader from "../../components/companies-header/companies-header.component";
 import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
@@ -49,7 +48,6 @@ import generalStyles from "../../style.module.scss";
 
 // constants and utils
 import { CitiesName, Colors } from "../../utils/constants";
-import autoMergeLevel1 from "redux-persist/es/stateReconciler/autoMergeLevel1";
 
 let timer;
 

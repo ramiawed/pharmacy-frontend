@@ -4,7 +4,6 @@
 // Props
 // item: the item that the pharmacy will buy
 // close: action to close the modal
-
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
@@ -18,6 +17,7 @@ import { selectUserData } from "../../redux/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { addStatistics } from "../../redux/statistics/statisticsSlice";
 import { selectOnlineStatus } from "../../redux/online/onlineSlice";
+import { selectWarehouses } from "../../redux/warehouse/warehousesSlice";
 
 // constants and utils
 import {
@@ -29,12 +29,11 @@ import {
 
 // styles
 import styles from "./add-to-cart-modal.module.scss";
-import { selectWarehouses } from "../../redux/warehouse/warehousesSlice";
 
 // check if there is an offer for entered quantity in a specific warehouse
 const checkOfferQty = (selectedWarehouse, qty) => {
   // check if the specified warehouse has an offer
-  if (selectedWarehouse.offer.offers.length > 0) {
+  if (selectedWarehouse?.offer.offers.length > 0) {
     // through all the offers, check if the entered quantity has an offer
     for (let i = 0; i < selectedWarehouse.offer.offers.length; i++) {
       // check if the entered quantity has an offer
@@ -95,7 +94,7 @@ function AddToCartModal({ item, close, setAddItemToCartMsg }) {
     sWarehouse !== null
       ? item.warehouses
           .filter((w) => w.warehouse.city === user.city)
-          .find((w) => w.warehouse._id == sWarehouse)
+          .find((w) => w.warehouse._id === sWarehouse)
       : item.warehouses.filter((w) => w.warehouse.city === user.city)[0]
   );
 

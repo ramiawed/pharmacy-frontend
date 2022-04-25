@@ -8,9 +8,13 @@ import styles from "../side-nav.module.scss";
 // constants
 import { SideNavLinks } from "../../utils/constants.js";
 import { CgProfile } from "react-icons/cg";
+import { useDispatch } from "react-redux";
+import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
 
 function SideNavGuest({ selectedOption, onSelectedChange, collapsed }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
+
   return (
     <>
       <Link
@@ -20,6 +24,7 @@ function SideNavGuest({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.PROFILE);
+          dispatch(setSelectedWarehouse(null));
         }}
         to="/profile"
       >

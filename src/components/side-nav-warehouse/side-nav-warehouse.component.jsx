@@ -21,6 +21,7 @@ import { selectOrders } from "../../redux/orders/ordersSlice";
 import { BsFillEnvelopeFill } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { GiMedicines } from "react-icons/gi";
+import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
 
 function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
   const { t } = useTranslation();
@@ -30,7 +31,6 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
   const {
     settings: { saveOrders },
   } = useSelector(selectSettings);
-  const { unreadCount } = useSelector(selectOrders);
 
   return (
     <>
@@ -46,6 +46,7 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
           dispatch(setWarehouse(user));
           dispatch(setSearchWarehouseName(""));
           dispatch(setRole(UserTypeConstants.WAREHOUSE));
+          dispatch(setSelectedWarehouse(null));
         }}
         to={{
           pathname: "/items",
@@ -72,6 +73,7 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
           ].join(" ")}
           onClick={() => {
             onSelectedChange(SideNavLinks.ORDERS);
+            dispatch(setSelectedWarehouse(null));
           }}
           to="/orders"
         >
@@ -99,6 +101,7 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.PROFILE);
+          dispatch(setSelectedWarehouse(null));
         }}
         to="/profile"
       >

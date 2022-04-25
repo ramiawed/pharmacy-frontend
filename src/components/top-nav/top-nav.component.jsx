@@ -9,9 +9,16 @@ import { selectFavorites } from "../../redux/favorites/favoritesSlice";
 import { selectCartItemCount } from "../../redux/cart/cartSlice";
 import { selectUserNotifications } from "../../redux/userNotifications/userNotificationsSlice";
 import { selectNavigationSlice } from "../../redux/navs/navigationSlice";
+import {
+  resetMedicines,
+  resetMedicinesArray,
+} from "../../redux/medicines/medicinesSlices";
+import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
 
 // components
 import IconWithNumber from "../icon-with-number/icon-with-number.component";
+import SearchInTopNav from "../search-in-top-nav/search-in-top-nav.component";
+import Icon from "../action-icon/action-icon.component";
 
 // icons
 import { GiShoppingCart } from "react-icons/gi";
@@ -32,13 +39,6 @@ import {
   TopNavLinks,
   UserTypeConstants,
 } from "../../utils/constants.js";
-import {
-  resetMedicines,
-  resetMedicinesArray,
-} from "../../redux/medicines/medicinesSlices";
-import SearchInTopNav from "../search-in-top-nav/search-in-top-nav.component";
-import Icon from "../action-icon/action-icon.component";
-import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
 
 function TopNav({ onSelectedChange }) {
   const history = useHistory();
@@ -71,7 +71,10 @@ function TopNav({ onSelectedChange }) {
               styles.link,
               history.location.pathname === "/" ? styles.selected : null,
             ].join(" ")}
-            onClick={() => onSelectedChange(TopNavLinks.HOME)}
+            onClick={() => {
+              onSelectedChange(TopNavLinks.HOME);
+              dispatch(setSelectedWarehouse(null));
+            }}
           >
             {t("nav-main-page")}
           </Link>
@@ -84,7 +87,10 @@ function TopNav({ onSelectedChange }) {
                 ? styles.selected
                 : null,
             ].join(" ")}
-            onClick={() => onSelectedChange(TopNavLinks.COMPANIES)}
+            onClick={() => {
+              onSelectedChange(TopNavLinks.COMPANIES);
+              dispatch(setSelectedWarehouse(null));
+            }}
           >
             {t("nav-company")}
           </Link>
@@ -99,7 +105,10 @@ function TopNav({ onSelectedChange }) {
                   ? styles.selected
                   : null,
               ].join(" ")}
-              onClick={() => onSelectedChange(TopNavLinks.WAREHOUSES)}
+              onClick={() => {
+                onSelectedChange(TopNavLinks.WAREHOUSES);
+                dispatch(setSelectedWarehouse(null));
+              }}
             >
               {t("nav-warehouse")}
             </Link>
@@ -147,7 +156,10 @@ function TopNav({ onSelectedChange }) {
                 ? styles.selected
                 : null,
             ].join(" ")}
-            onClick={() => onSelectedChange(TopNavLinks.FAVORITES)}
+            onClick={() => {
+              onSelectedChange(TopNavLinks.FAVORITES);
+              dispatch(setSelectedWarehouse(null));
+            }}
           >
             <IconWithNumber
               value={
@@ -168,7 +180,10 @@ function TopNav({ onSelectedChange }) {
                   ? styles.selected
                   : null,
               ].join(" ")}
-              onClick={() => onSelectedChange(TopNavLinks.NOTIFICATIONS)}
+              onClick={() => {
+                onSelectedChange(TopNavLinks.NOTIFICATIONS);
+                dispatch(setSelectedWarehouse(null));
+              }}
             >
               <IconWithNumber
                 value={unReadNotificationCount}
@@ -184,7 +199,10 @@ function TopNav({ onSelectedChange }) {
                 styles.link,
                 history.location.pathname === "/cart" ? styles.selected : null,
               ].join(" ")}
-              onClick={() => onSelectedChange(TopNavLinks.CART)}
+              onClick={() => {
+                onSelectedChange(TopNavLinks.CART);
+                dispatch(setSelectedWarehouse(null));
+              }}
             >
               <IconWithNumber
                 value={total}
@@ -211,7 +229,10 @@ function TopNav({ onSelectedChange }) {
             styles.link,
             history.location.pathname === "/favorites" ? styles.selected : null,
           ].join(" ")}
-          onClick={() => onSelectedChange(TopNavLinks.FAVORITES)}
+          onClick={() => {
+            onSelectedChange(TopNavLinks.FAVORITES);
+            dispatch(setSelectedWarehouse(null));
+          }}
         >
           <IconWithNumber
             value={
@@ -232,7 +253,10 @@ function TopNav({ onSelectedChange }) {
                 ? styles.selected
                 : null,
             ].join(" ")}
-            onClick={() => onSelectedChange(TopNavLinks.NOTIFICATIONS)}
+            onClick={() => {
+              onSelectedChange(TopNavLinks.NOTIFICATIONS);
+              dispatch(setSelectedWarehouse(null));
+            }}
           >
             <IconWithNumber
               value={unReadNotificationCount}
@@ -248,7 +272,10 @@ function TopNav({ onSelectedChange }) {
               styles.link,
               history.location.pathname === "/cart" ? styles.selected : null,
             ].join(" ")}
-            onClick={() => onSelectedChange(TopNavLinks.CART)}
+            onClick={() => {
+              onSelectedChange(TopNavLinks.CART);
+              dispatch(setSelectedWarehouse(null));
+            }}
           >
             <IconWithNumber
               value={total}

@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Route, Switch } from "react-router-dom";
-import { Detector } from "react-detect-offline";
 
 // components
 import MainPage from "./pages/main-page/main-page.component";
@@ -18,14 +17,10 @@ import {
   selectOnlineMsg,
 } from "./redux/online/onlineSlice";
 
-// icons
-import { RiWifiOffLine } from "react-icons/ri";
-
 // constants
 import { Colors } from "./utils/constants";
 
 // styles
-import generalStyles from "./style.module.scss";
 import styles from "./app.module.scss";
 
 // slicker
@@ -75,20 +70,6 @@ function App() {
           <p>{t(onlineMsg)}</p>
         </Toast>
       )}
-
-      {/* <Detector
-        polling={{
-          url: "https://ipv4.icanhazip.com",
-        }}
-        render={({ online }) =>
-          !online && (
-            <div className={generalStyles.no_internet_container}>
-              <RiWifiOffLine color={Colors.FAILED_COLOR} size={20} />
-              <p>No internet connection</p>
-            </div>
-          )
-        }
-      /> */}
     </div>
   );
 }

@@ -10,6 +10,10 @@ import { SideNavLinks } from "../../utils/constants.js";
 import { CgProfile } from "react-icons/cg";
 import { useDispatch } from "react-redux";
 import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
+import {
+  setSearchCompanyId,
+  setSearchWarehouseId,
+} from "../../redux/medicines/medicinesSlices";
 
 function SideNavGuest({ selectedOption, onSelectedChange, collapsed }) {
   const { t } = useTranslation();
@@ -24,7 +28,9 @@ function SideNavGuest({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.PROFILE);
-          dispatch(setSelectedWarehouse(null));
+          dispatch(setSearchWarehouseId(null));
+          dispatch(setSearchCompanyId(null));
+          // dispatch(setSelectedWarehouse(null));
         }}
         to="/profile"
       >

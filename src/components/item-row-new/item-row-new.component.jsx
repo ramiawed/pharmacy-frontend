@@ -26,7 +26,6 @@ import {
 import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
 import Icon from "../action-icon/action-icon.component";
 import Toast from "../toast/toast.component";
-import ButtonWithIcon from "../button-with-icon/button-with-icon.component";
 
 // react icons
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";

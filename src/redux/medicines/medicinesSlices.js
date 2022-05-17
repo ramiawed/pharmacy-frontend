@@ -55,6 +55,10 @@ export const getMedicines = createAsyncThunk(
         buildUrl = buildUrl + `&itemName=${pageState.searchName}`;
       }
 
+      if (pageState.searchCompanyId !== null) {
+        buildUrl = buildUrl + `&companyId=${pageState.searchCompanyId}`;
+      }
+
       if (pageState.searchWarehouseId !== null) {
         buildUrl = buildUrl + `&warehouseId=${pageState.searchWarehouseId}`;
       }

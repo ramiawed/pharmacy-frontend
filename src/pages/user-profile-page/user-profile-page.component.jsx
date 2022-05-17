@@ -9,7 +9,6 @@ import Logo from "../../logo.png";
 import Header from "../../components/header/header.component";
 import CardInfo from "../../components/card-info/card-info.component";
 import InfoRow from "../../components/info-row/info-row.component";
-// import InputFileImage from "../../components/input-file-image/input-file-image.component";
 import ChangePassword from "../../components/change-password/change-password.component";
 import DeleteMe from "../../components/delete-me/delete-me.component";
 import Button from "../../components/button/button.component";
@@ -43,6 +42,7 @@ import {
 } from "../../utils/constants";
 import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 import { BsImageAlt } from "react-icons/bs";
+import Toast from "../../components/toast/toast.component";
 
 function UserProfilePage({ onSelectedChange }) {
   const { t } = useTranslation();
@@ -56,6 +56,7 @@ function UserProfilePage({ onSelectedChange }) {
   // own state
   const [userObj, setUserObj] = useState({});
   const [loading, setLoading] = useState(false);
+  const [imageSizeWarningMsg, setImageSizeWarningMsg] = useState("");
 
   const handleClick = () => {
     inputFileRef.current.click();
@@ -63,28 +64,31 @@ function UserProfilePage({ onSelectedChange }) {
 
   const fileSelectedHandler = (event) => {
     if (event.target.files[0]) {
-      setLoading(true);
-      // setSelectedFile(event.target.files[0]);
-      let formData = new FormData();
-      formData.append("file", event.target.files[0]);
+      if (parseFloat(event.target.files[0].size / 1024).toFixed(2) < 512) {
+        setLoading(true);
+        // setSelectedFile(event.target.files[0]);
+        let formData = new FormData();
+        formData.append("file", event.target.files[0]);
 
-      const config = {
-        headers: {
-          "content-type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      };
+        const config = {
+          headers: {
+            "content-type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        };
 
-      axios.post(`${BASEURL}/users/upload`, formData, config).then((res) => {
-        dispatch(changeLogoURL(res.data.data.name));
-        getMyInfo();
-        setLoading(false);
-      });
+        axios.post(`${BASEURL}/users/upload`, formData, config).then((res) => {
+          dispatch(changeLogoURL(res.data.data.name));
+          getMyInfo();
+          setLoading(false);
+        });
+      } else {
+        setImageSizeWarningMsg("image-size-must-be-less-than");
+      }
     }
   };
 
   const handleInputChange = (field, val) => {
-    console.log(field, val);
     setUserObj({
       ...userObj,
       [field]: val,
@@ -165,6 +169,7 @@ function UserProfilePage({ onSelectedChange }) {
                     onChange={fileSelectedHandler}
                     ref={inputFileRef}
                     stye={{ display: "none" }}
+                    accept="image/png, image/gif, image/jpeg"
                   />
                 </div>
               </form>
@@ -355,6 +360,18 @@ function UserProfilePage({ onSelectedChange }) {
             </CardInfo>
           </div>
         </div>
+
+        {imageSizeWarningMsg && (
+          <Toast
+            bgColor={Colors.FAILED_COLOR}
+            foreColor="#fff"
+            actionAfterTimeout={() => {
+              setImageSizeWarningMsg("");
+            }}
+          >
+            <p>{t("image-size-must-be-less-than")}</p>
+          </Toast>
+        )}
 
         <UserProfileNotifications />
       </div>

@@ -12,6 +12,8 @@ import ItemRow from "../../components/item-row/item-row.component";
 import NoContent from "../../components/no-content/no-content.component";
 import Icon from "../../components/action-icon/action-icon.component";
 import MedicinesSearchString from "../../components/medicines-search-string/medicines-search-string.component";
+import ItemRowNew from "../../components/item-row-new/item-row-new.component";
+import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 
 // react-icons
 import { FaSearch, FaListUl } from "react-icons/fa";
@@ -36,6 +38,7 @@ import {
   resetMedicinesArray,
   resetMedicinesPageState,
 } from "../../redux/medicines/medicinesSlices";
+import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -45,10 +48,7 @@ import searchContainerStyles from "../../components/search-container/search-cont
 import { Colors, UserTypeConstants } from "../../utils/constants";
 import { VscClearAll } from "react-icons/vsc";
 import { IoMdArrowRoundBack } from "react-icons/io";
-import ItemRowNew from "../../components/item-row-new/item-row-new.component";
-import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 import { CgMoreVertical } from "react-icons/cg";
-import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
 
 let timer = null;
 
@@ -131,7 +131,7 @@ function MedicinesPage({ onSelectedChange }) {
           onkeyup={keyUpHandler}
         />
         {/* // {user.type !== UserTypeConstants.GUEST && companyId === null && ( */}
-        {user.type !== UserTypeConstants.GUEST && (
+        {pageState.searchCompanyId === null && (
           <SearchInput
             label="item-company"
             id="item-company"
@@ -151,26 +151,25 @@ function MedicinesPage({ onSelectedChange }) {
         )}
 
         {/* {user.type !== UserTypeConstants.GUEST && warehouseId === null && ( */}
-        {(user.type === UserTypeConstants.ADMIN ||
-          (user.type === UserTypeConstants.PHARMACY &&
-            pageState.searchWarehouseId === null)) && (
-          <SearchInput
-            label="item-warehouse"
-            id="item-warehouse"
-            type="text"
-            value={pageState.searchWarehouseName}
-            onchange={(e) => {
-              dispatch(setSearchWarehouseName(e.target.value));
-            }}
-            icon={<FaSearch />}
-            placeholder="search-by-warehouse-name"
-            onEnterPress={handleEnterPress}
-            resetField={() => {
-              dispatch(setSearchWarehouseName(""));
-            }}
-            onkeyup={keyUpHandler}
-          />
-        )}
+        {pageState.searchWarehouseId === null &&
+          user.type !== UserTypeConstants.GUEST && (
+            <SearchInput
+              label="item-warehouse"
+              id="item-warehouse"
+              type="text"
+              value={pageState.searchWarehouseName}
+              onchange={(e) => {
+                dispatch(setSearchWarehouseName(e.target.value));
+              }}
+              icon={<FaSearch />}
+              placeholder="search-by-warehouse-name"
+              onEnterPress={handleEnterPress}
+              resetField={() => {
+                dispatch(setSearchWarehouseName(""));
+              }}
+              onkeyup={keyUpHandler}
+            />
+          )}
 
         {/* {user.type !== UserTypeConstants.GUEST && warehouseId === null && ( */}
         {user.type !== UserTypeConstants.GUEST && (

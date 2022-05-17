@@ -12,6 +12,8 @@ import { selectNavigationSlice } from "../../redux/navs/navigationSlice";
 import {
   resetMedicines,
   resetMedicinesArray,
+  setSearchCompanyId,
+  setSearchWarehouseId,
 } from "../../redux/medicines/medicinesSlices";
 import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
 
@@ -73,7 +75,9 @@ function TopNav({ onSelectedChange }) {
             ].join(" ")}
             onClick={() => {
               onSelectedChange(TopNavLinks.HOME);
-              dispatch(setSelectedWarehouse(null));
+              dispatch(setSearchWarehouseId(null));
+              dispatch(setSearchCompanyId(null));
+              // dispatch(setSelectedWarehouse(null));
             }}
           >
             {t("nav-main-page")}
@@ -89,7 +93,9 @@ function TopNav({ onSelectedChange }) {
             ].join(" ")}
             onClick={() => {
               onSelectedChange(TopNavLinks.COMPANIES);
-              dispatch(setSelectedWarehouse(null));
+              dispatch(setSearchWarehouseId(null));
+              dispatch(setSearchCompanyId(null));
+              // dispatch(setSelectedWarehouse(null));
             }}
           >
             {t("nav-company")}
@@ -107,7 +113,9 @@ function TopNav({ onSelectedChange }) {
               ].join(" ")}
               onClick={() => {
                 onSelectedChange(TopNavLinks.WAREHOUSES);
-                dispatch(setSelectedWarehouse(null));
+                dispatch(setSearchWarehouseId(null));
+                dispatch(setSearchCompanyId(null));
+                // dispatch(setSelectedWarehouse(null));
               }}
             >
               {t("nav-warehouse")}
@@ -126,7 +134,9 @@ function TopNav({ onSelectedChange }) {
             ].join(" ")}
             onClick={() => {
               onSelectedChange(TopNavLinks.MEDICINES);
-              dispatch(setSelectedWarehouse(null));
+              dispatch(setSearchWarehouseId(null));
+              dispatch(setSearchCompanyId(null));
+              // dispatch(setSelectedWarehouse(null));
               if (history.location.pathname !== "/medicines") {
                 dispatch(resetMedicinesArray());
                 dispatch(resetMedicines());
@@ -158,7 +168,9 @@ function TopNav({ onSelectedChange }) {
             ].join(" ")}
             onClick={() => {
               onSelectedChange(TopNavLinks.FAVORITES);
-              dispatch(setSelectedWarehouse(null));
+              dispatch(setSearchWarehouseId(null));
+              dispatch(setSearchCompanyId(null));
+              // dispatch(setSelectedWarehouse(null));
             }}
           >
             <IconWithNumber
@@ -182,7 +194,9 @@ function TopNav({ onSelectedChange }) {
               ].join(" ")}
               onClick={() => {
                 onSelectedChange(TopNavLinks.NOTIFICATIONS);
-                dispatch(setSelectedWarehouse(null));
+                dispatch(setSearchWarehouseId(null));
+                dispatch(setSearchCompanyId(null));
+                // dispatch(setSelectedWarehouse(null));
               }}
             >
               <IconWithNumber
@@ -201,7 +215,9 @@ function TopNav({ onSelectedChange }) {
               ].join(" ")}
               onClick={() => {
                 onSelectedChange(TopNavLinks.CART);
-                dispatch(setSelectedWarehouse(null));
+                dispatch(setSearchWarehouseId(null));
+                dispatch(setSearchCompanyId(null));
+                // dispatch(setSelectedWarehouse(null));
               }}
             >
               <IconWithNumber
@@ -231,7 +247,9 @@ function TopNav({ onSelectedChange }) {
           ].join(" ")}
           onClick={() => {
             onSelectedChange(TopNavLinks.FAVORITES);
-            dispatch(setSelectedWarehouse(null));
+            dispatch(setSearchWarehouseId(null));
+            dispatch(setSearchCompanyId(null));
+            // dispatch(setSelectedWarehouse(null));
           }}
         >
           <IconWithNumber
@@ -255,7 +273,9 @@ function TopNav({ onSelectedChange }) {
             ].join(" ")}
             onClick={() => {
               onSelectedChange(TopNavLinks.NOTIFICATIONS);
-              dispatch(setSelectedWarehouse(null));
+              dispatch(setSearchWarehouseId(null));
+              dispatch(setSearchCompanyId(null));
+              // dispatch(setSelectedWarehouse(null));
             }}
           >
             <IconWithNumber
@@ -274,7 +294,9 @@ function TopNav({ onSelectedChange }) {
             ].join(" ")}
             onClick={() => {
               onSelectedChange(TopNavLinks.CART);
-              dispatch(setSelectedWarehouse(null));
+              dispatch(setSearchWarehouseId(null));
+              dispatch(setSearchCompanyId(null));
+              // dispatch(setSelectedWarehouse(null));
             }}
           >
             <IconWithNumber

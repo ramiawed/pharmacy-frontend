@@ -56,7 +56,7 @@
   "user-type": "نوع الشريك",
   "user-created-at": "تاريخ إنشاء الحساب",
   "user-employee-name": "اسم الموظف",
-  "user-certificate-name": "اسم الشهادة",
+  "user-certificate-name": "اسم شهادة الترخيص",
   "user-job": "المسمى",
   "user-company-name": "اسم الشركة",
   "user-company-name-small": "ش",
@@ -438,7 +438,7 @@
   "add-item-confirm-msg": "هل تريد إضافة الدواء؟",
   "update-item-confirm-msg": "هل تريد تعديل الدواء؟",
   "show-advertisement-on-home-page": "إظهار الإعلانات على الصفحة الرئيسية",
-  "contact-phone-number": "0943063066",
+  "contact-phone-number": "0956660333",
   "you-have": "لديك",
   "orders-msg": "طلب/طلبات جديدة",
   "choose-paper-url-pharmacy": "صورة عن ترخيص الصيدلية أو البطاقة النقابية حصراً",
@@ -496,5 +496,9 @@
   "item-not-available": "غير متوفر من الشركة",
   "agree-license": "أوافق على شروط الخصوصية بعد أن قمت بقراءتها",
   "read-license": "قراءة شروط الخصوصية",
-  "license-header": "شروط الخصوصية"
+  "license-header": "شروط الخصوصية",
+  "upload-paper-error": "حدث خطأ أثناء تحميل الصورة، امتداد الصورة يجب ان يكون png, jpeg, gif",
+  "optional-placeholder": "قيمة هذا الحقل اختيارية",
+  "mandatory-placeholder": "قيمة هذا الحقل اجبارية",
+  "paper-url-size-error": "حجم صورة الترخيص يجب أن تكون أقل من ٥١٢ كيلو بايت"
 }

@@ -57,6 +57,13 @@
   color: $secondary-color;
 }
 
+.input::placeholder {
+  font-size: 0.8rem;
+  color: $secondary-color;
+  // font-style: italic;
+  // padding-left: 10px;
+}
+
 @media only screen and (min-width: $small) {
   .input_div label {
     padding: 0 12px;

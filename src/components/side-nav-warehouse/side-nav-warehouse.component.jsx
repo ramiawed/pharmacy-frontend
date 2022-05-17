@@ -22,6 +22,10 @@ import { BsFillEnvelopeFill } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { GiMedicines } from "react-icons/gi";
 import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
+import {
+  setSearchCompanyId,
+  setSearchWarehouseId,
+} from "../../redux/medicines/medicinesSlices";
 
 function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
   const { t } = useTranslation();
@@ -46,7 +50,9 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
           dispatch(setWarehouse(user));
           dispatch(setSearchWarehouseName(""));
           dispatch(setRole(UserTypeConstants.WAREHOUSE));
-          dispatch(setSelectedWarehouse(null));
+          dispatch(setSearchWarehouseId(null));
+          dispatch(setSearchCompanyId(null));
+          // dispatch(setSelectedWarehouse(null));
         }}
         to={{
           pathname: "/items",
@@ -73,7 +79,9 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
           ].join(" ")}
           onClick={() => {
             onSelectedChange(SideNavLinks.ORDERS);
-            dispatch(setSelectedWarehouse(null));
+            dispatch(setSearchWarehouseId(null));
+            dispatch(setSearchCompanyId(null));
+            // dispatch(setSelectedWarehouse(null));
           }}
           to="/orders"
         >
@@ -101,7 +109,9 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.PROFILE);
-          dispatch(setSelectedWarehouse(null));
+          dispatch(setSearchWarehouseId(null));
+          dispatch(setSearchCompanyId(null));
+          // dispatch(setSelectedWarehouse(null));
         }}
         to="/profile"
       >

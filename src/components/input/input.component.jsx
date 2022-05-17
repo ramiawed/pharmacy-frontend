@@ -56,7 +56,7 @@ function Input({
           }
         }}
         disabled={readOnly}
-        className={smallFont ? styles.small_font : ""}
+        className={[smallFont ? styles.small_font : "", styles.input].join(" ")}
       />
       {resetField && value && (
         <AiFillCloseCircle

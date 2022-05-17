@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import axios from "axios";
 
 // redux stuff
+import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { resetCartItems, selectCartItems } from "../../redux/cart/cartSlice";
 import {
@@ -11,7 +11,6 @@ import {
 } from "../../redux/online/onlineSlice";
 import { selectUserData } from "../../redux/auth/authSlice";
 import { addStatistics } from "../../redux/statistics/statisticsSlice";
-import { selectSettings } from "../../redux/settings/settingsSlice";
 import { saveOrder, setRefresh } from "../../redux/orders/ordersSlice";
 
 // components
@@ -30,8 +29,7 @@ import { MdExpandMore, MdExpandLess } from "react-icons/md";
 import styles from "./cart-warehouse.module.scss";
 
 // constants
-import { BASEURL, Colors, OfferTypes } from "../../utils/constants";
-import { unwrapResult } from "@reduxjs/toolkit";
+import { Colors, OfferTypes } from "../../utils/constants";
 
 function CartWarehouse({ warehouse }) {
   const { t } = useTranslation();
@@ -41,9 +39,6 @@ function CartWarehouse({ warehouse }) {
   const isOnline = useSelector(selectOnlineStatus);
   const { token, user } = useSelector(selectUserData);
   const cartItems = useSelector(selectCartItems);
-  const {
-    settings: { saveOrders },
-  } = useSelector(selectSettings);
 
   // own state
   const [showSuccessModal, setShowSuccessModal] = useState(false);
@@ -77,47 +72,6 @@ function CartWarehouse({ warehouse }) {
     }
 
     setShowLoadingModal(true);
-
-    // let cartItemsToSend = cartItems
-    //   .filter((item) => item.warehouse.warehouse.name === warehouse)
-    //   .map((e) => {
-    //     return {
-    //       itemName: e.item.name,
-    //       companyName: e.item.company.name,
-    //       warehouseName: e.warehouse.warehouse.name,
-    //       formula: e.item.formula,
-    //       caliber: e.item.caliber,
-    //       packing: e.item.packing,
-    //       price: e.item.price,
-    //       customerPrice: e.item.customer_price,
-    //       quantity: e.qty,
-    //       bonus: e.bonusType
-    //         ? `${e.bonus} ${e.bonusType === "pieces" ? "قطع" : "%"}`
-    //         : "",
-    //       totalPrice:
-    //         e.qty * e.item.price -
-    //         (e.bonus && e.bonusType === "percentage"
-    //           ? (e.qty * e.item.price * e.bonus) / 100
-    //           : 0),
-    //     };
-    //   });
-
-    // cartItemsToSend = [
-    //   ...cartItemsToSend,
-    //   {
-    //     itemName: "",
-    //     companyName: "",
-    //     warehouseName: "",
-    //     formula: "",
-    //     caliber: "",
-    //     packing: "",
-    //     price: "",
-    //     customerPrice: "",
-    //     quantity: "",
-    //     bonus: "",
-    //     totalPrice: computeTotalPrice(),
-    //   },
-    // ];
 
     let obj = {
       pharmacy: user._id,
@@ -159,26 +113,6 @@ function CartWarehouse({ warehouse }) {
         setShowFailedModal(true);
       });
     dispatch(setRefresh(true));
-
-    // axios
-    //   .post(
-    //     `${BASEURL}/users/sendemail`,
-    //     { cartItems: cartItemsToSend },
-    //     {
-    //       timeout: 25000,
-    //       headers: {
-    //         Authorization: `Bearer ${token}`,
-    //       },
-    //     }
-    //   )
-    //   .then(() => {
-    //     setShowLoadingModal(false);
-    //     setShowSuccessModal(true);
-    //   })
-    //   .catch((err) => {
-    //     setShowLoadingModal(false);
-    //     setShowFailedModal(true);
-    //   });
   };
 
   return (

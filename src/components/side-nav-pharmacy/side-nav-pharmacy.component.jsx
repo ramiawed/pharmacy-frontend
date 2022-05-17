@@ -12,6 +12,10 @@ import { selectSettings } from "../../redux/settings/settingsSlice";
 import { CgProfile } from "react-icons/cg";
 import { BsFillEnvelopeFill } from "react-icons/bs";
 import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
+import {
+  setSearchCompanyId,
+  setSearchWarehouseId,
+} from "../../redux/medicines/medicinesSlices";
 
 function SideNavPharmacy({ selectedOption, onSelectedChange, collapsed }) {
   const { t } = useTranslation();
@@ -30,7 +34,9 @@ function SideNavPharmacy({ selectedOption, onSelectedChange, collapsed }) {
           ].join(" ")}
           onClick={() => {
             onSelectedChange(SideNavLinks.ORDERS);
-            dispatch(setSelectedWarehouse(null));
+            dispatch(setSearchWarehouseId(null));
+            dispatch(setSearchCompanyId(null));
+            // dispatch(setSelectedWarehouse(null));
           }}
           to="/orders"
         >
@@ -54,7 +60,9 @@ function SideNavPharmacy({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.PROFILE);
-          dispatch(setSelectedWarehouse(null));
+          dispatch(setSearchWarehouseId(null));
+          dispatch(setSearchCompanyId(null));
+          // dispatch(setSelectedWarehouse(null));
         }}
         to="/profile"
       >

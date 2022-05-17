@@ -13,6 +13,8 @@ import Toast from "../toast/toast.component";
 import Button from "../button/button.component";
 import Loader from "../action-loader/action-loader.component";
 import CitiesDropDown from "../cities-dropdown/cities-dropdown.component";
+import Modal from "../modal/modal.component";
+import License from "../license/license.component";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
@@ -34,8 +36,6 @@ import { getIcon } from "../../utils/icons.js";
 
 // styles
 import styles from "./signup.module.scss";
-import Modal from "../modal/modal.component";
-import License from "../license/license.component";
 
 const containerVariant = {
   hidden: {
@@ -76,6 +76,7 @@ function SignUp() {
   const [userPaperUrlLabel, setUserPaperUrlLabel] = useState(
     "choose-paper-url-guest"
   );
+  const [uploadPaperError, setUploadPaperError] = useState("");
 
   // states for each field
   const [user, setUser] = useState({
@@ -391,8 +392,12 @@ function SignUp() {
       user.type === UserTypeConstants.PHARMACY ||
       user.type === UserTypeConstants.GUEST
     ) {
-      if (user.paperUrl === null) {
+      if (user.paperUrl === null || user.paper?.length === 0) {
         errorObj["paperUrl"] = "enter-paper-url";
+      }
+
+      if (user.paperUrl !== null && user.paperUrl.size > 512000) {
+        errorObj["paperUrl"] = "paper-url-size-error";
       }
     }
 
@@ -409,44 +414,67 @@ function SignUp() {
     }
   };
 
-  const newAccountHandler = () => {
+  const newAccountHandler = async () => {
     setShowLicenseModal(false);
     setSignupLoading(true);
-    axios
-      .post(`${BASEURL}/users/signup`, user, {})
-      .then((response) => {
-        // if create user succeeded
-        if (
-          user.type === UserTypeConstants.PHARMACY ||
-          user.type === UserTypeConstants.GUEST
-        ) {
-          const data = new FormData();
-          data.append("id", response.data.data.id);
-          data.append("file", user.paperUrl);
 
-          const config = {
-            headers: {
-              "content-type": "multipart/form-data",
-            },
-          };
+    if (
+      user.type === UserTypeConstants.PHARMACY ||
+      user.type === UserTypeConstants.GUEST
+    ) {
+      const data = new FormData();
+      data.append("file", user.paperUrl);
 
-          axios
-            .post(`${BASEURL}/users/upload-license`, data, config)
-            .then(() => {
-              // user type is not normal
-              // redirect to approve page
-              setSignupLoading(false);
-              setSignupSucceeded(true);
-            })
-            .catch(() => {});
+      const config = {
+        headers: {
+          "content-type": "multipart/form-data",
+        },
+      };
+
+      try {
+        const uploadResponse = await axios.post(
+          `${BASEURL}/users/upload-license`,
+          data,
+          config
+        );
+        if (uploadResponse && uploadResponse.data.data.name !== "") {
+          try {
+            await axios.post(
+              `${BASEURL}/users/signup`,
+              { ...user, paper_url: uploadResponse.data.data.name },
+              {}
+            );
+            setSignupLoading(false);
+            setSignupSucceeded(true);
+          } catch (err) {
+            if (
+              err.code === "ECONNABORTED" &&
+              err.message.startsWith("timeout")
+            ) {
+              setNetworkError("timeout");
+            } else if (!err.response) {
+              setNetworkError("network failed");
+            } else {
+              setError({
+                [err.response.data.field[0]]: err.response.data.message,
+              });
+            }
+
+            setSignupLoading(false);
+          }
         } else {
-          // user type is not normal
-          // redirect to approve page
-          setSignupLoading(false);
-          setSignupSucceeded(true);
+          setUploadPaperError(t("upload-paper-error"));
         }
-      })
-      .catch((err) => {
+      } catch (err) {
+        setUploadPaperError("upload-paper-error");
+        setSignupLoading(false);
+      }
+    } else {
+      try {
+        await axios.post(`${BASEURL}/users/signup`, user, {});
+        setSignupLoading(false);
+        setSignupSucceeded(true);
+      } catch (err) {
         if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
           setNetworkError("timeout");
         } else if (!err.response) {
@@ -458,7 +486,30 @@ function SignUp() {
         }
 
         setSignupLoading(false);
+      }
+    }
+  };
+
+  const inputFileChangeHandler = (e) => {
+    if (e.target.files[0]) {
+      setUser({
+        ...user,
+        paperUrl: e.target.files[0],
       });
+      setError({
+        ...error,
+        paperUrl: "",
+      });
+    } else {
+      setUser({
+        ...user,
+        paperUrl: null,
+      });
+      setError({
+        ...error,
+        paperUrl: "",
+      });
+    }
   };
 
   return authUser ? (
@@ -564,6 +615,7 @@ function SignUp() {
             value={user.username}
             onchange={inputChangeHandler}
             error={error.username?.length > 0}
+            placeholder="mandatory-placeholder"
           />
         </div>
 
@@ -577,6 +629,7 @@ function SignUp() {
             value={user.password}
             onchange={inputChangeHandler}
             error={error.password?.length > 0}
+            placeholder="mandatory-placeholder"
           />
         </div>
 
@@ -590,6 +643,7 @@ function SignUp() {
             value={user.passwordConfirm}
             onchange={inputChangeHandler}
             error={error.passwordConfirm?.length > 0}
+            placeholder="mandatory-placeholder"
           />
         </div>
 
@@ -605,6 +659,7 @@ function SignUp() {
                 value={user.employeeName}
                 onchange={inputChangeHandler}
                 error={error.employeeName?.length > 0}
+                placeholder="mandatory-placeholder"
               />
             </div>
 
@@ -617,6 +672,7 @@ function SignUp() {
                 value={user.certificateName}
                 onchange={inputChangeHandler}
                 error={error.certificateName?.length > 0}
+                placeholder="mandatory-placeholder"
               />
             </div>
           </>
@@ -650,6 +706,7 @@ function SignUp() {
                     value={user.guestDetails.companyName}
                     onchange={inputChangeHandler}
                     error={error.companyName?.length > 0}
+                    placeholder="mandatory-placeholder"
                   />
                 </div>
 
@@ -662,6 +719,7 @@ function SignUp() {
                     value={user.guestDetails.jobTitle}
                     onchange={inputChangeHandler}
                     error={error.jobTitle?.length > 0}
+                    placeholder="mandatory-placeholder"
                   />
                 </div>
               </>
@@ -686,6 +744,7 @@ function SignUp() {
             id="email"
             value={user.email}
             onchange={inputChangeHandler}
+            placeholder="optional-placeholder"
           />
         </div>
 
@@ -698,6 +757,7 @@ function SignUp() {
             id="phone"
             value={user.phone}
             onchange={inputChangeHandler}
+            placeholder="optional-placeholder"
           />
         </div>
 
@@ -711,6 +771,7 @@ function SignUp() {
             value={user.mobile}
             onchange={inputChangeHandler}
             error={error.mobile?.length > 0}
+            placeholder="mandatory-placeholder"
           />
         </div>
 
@@ -742,6 +803,7 @@ function SignUp() {
             value={user.addressDetails}
             onchange={inputChangeHandler}
             error={error.addressDetails?.length > 0}
+            placeholder="mandatory-placeholder"
           />
         </div>
 
@@ -763,17 +825,9 @@ function SignUp() {
                   type="file"
                   name="file"
                   ref={inputFileRef}
+                  accept="image/png, image/gif, image/jpeg"
                   stye={{ display: "none" }}
-                  onChange={(e) => {
-                    setUser({
-                      ...user,
-                      paperUrl: e.target.files[0],
-                    });
-                    setError({
-                      ...error,
-                      paperUrl: "",
-                    });
-                  }}
+                  onChange={inputFileChangeHandler}
                 />
               </>
             </form>
@@ -808,6 +862,18 @@ function SignUp() {
           }}
         >
           <p>{t(networkError)}</p>
+        </Toast>
+      )}
+
+      {uploadPaperError && (
+        <Toast
+          bgColor={Colors.FAILED_COLOR}
+          foreColor="#fff"
+          actionAfterTimeout={() => {
+            setUploadPaperError("");
+          }}
+        >
+          <p>{t(uploadPaperError)}</p>
         </Toast>
       )}
 

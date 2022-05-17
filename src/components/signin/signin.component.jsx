@@ -16,8 +16,8 @@ import Loader from "../action-loader/action-loader.component";
 import Modal from "../modal/modal.component";
 
 // redux
-import { useDispatch, useSelector } from "react-redux";
 import { unwrapResult } from "@reduxjs/toolkit";
+import { useDispatch, useSelector } from "react-redux";
 import {
   authSign,
   selectUserData,
@@ -30,14 +30,13 @@ import {
 } from "../../redux/online/onlineSlice";
 import { addStatistics } from "../../redux/statistics/statisticsSlice";
 import { getAllSettings } from "../../redux/settings/settingsSlice";
+import { getAllAdvertisements } from "../../redux/advertisements/advertisementsSlice";
 
 // styles
 import styles from "./signin.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
-import { getAllAdvertisements } from "../../redux/advertisements/advertisementsSlice";
-import License from "../license/license.component";
 
 // constants use for motion
 const containerVariant = {

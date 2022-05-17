@@ -27,6 +27,7 @@ import {
 import { selectSettings } from "../../redux/settings/settingsSlice";
 import {
   resetMedicines,
+  setSearchCompanyId,
   setSearchCompanyName,
   setSearchWarehouseId,
 } from "../../redux/medicines/medicinesSlices";
@@ -145,21 +146,21 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow, onSelectAction }) {
       dispatch(resetMedicines());
 
       if (partner.type === UserTypeConstants.COMPANY) {
-        dispatch(setSearchCompanyName(partner.name));
+        dispatch(setSearchCompanyId(partner._id));
       }
 
       if (partner.type === UserTypeConstants.WAREHOUSE) {
         dispatch(setSearchWarehouseId(partner._id));
       }
 
-      if (
-        partner.type === UserTypeConstants.WAREHOUSE &&
-        user.type === UserTypeConstants.PHARMACY
-      ) {
-        dispatch(setSelectedWarehouse(partner._id));
-      } else {
-        dispatch(setSelectedWarehouse(null));
-      }
+      // if (
+      //   partner.type === UserTypeConstants.WAREHOUSE &&
+      //   user.type === UserTypeConstants.PHARMACY
+      // ) {
+      //   dispatch(setSelectedWarehouse(partner._id));
+      // } else {
+      //   dispatch(setSelectedWarehouse(null));
+      // }
       history.push("/medicines");
     }
   };

@@ -153,14 +153,14 @@ function PartnerCard({ partner, fullWidth }) {
         dispatch(setSearchWarehouseId(partner._id));
       }
 
-      if (
-        partner.type === UserTypeConstants.WAREHOUSE &&
-        user.type === UserTypeConstants.PHARMACY
-      ) {
-        dispatch(setSelectedWarehouse(partner._id));
-      } else {
-        dispatch(setSelectedWarehouse(null));
-      }
+      // if (
+      //   partner.type === UserTypeConstants.WAREHOUSE &&
+      //   user.type === UserTypeConstants.PHARMACY
+      // ) {
+      //   dispatch(setSelectedWarehouse(partner._id));
+      // } else {
+      //   dispatch(setSelectedWarehouse(null));
+      // }
       history.push("/medicines");
     }
   };

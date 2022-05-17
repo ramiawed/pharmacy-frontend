@@ -29,6 +29,7 @@ import {
 
 // styles
 import styles from "./add-to-cart-modal.module.scss";
+import { selectMedicines } from "../../redux/medicines/medicinesSlices";
 
 // check if there is an offer for entered quantity in a specific warehouse
 const checkOfferQty = (selectedWarehouse, qty) => {
@@ -68,7 +69,9 @@ function AddToCartModal({ item, close, setAddItemToCartMsg }) {
   // selectors
   const { token, user } = useSelector(selectUserData);
   const isOnline = useSelector(selectOnlineStatus);
-  const { selectedWarehouse: sWarehouse } = useSelector(selectWarehouses);
+  const {
+    pageState: { searchWarehouseId: sWarehouse },
+  } = useSelector(selectMedicines);
 
   // build the warehouse option array that contains this item
   // get all the warehouse that contains this item

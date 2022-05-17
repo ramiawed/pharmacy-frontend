@@ -31,6 +31,10 @@ import styles from "../side-nav.module.scss";
 
 // constants
 import { SideNavLinks, UserTypeConstants } from "../../utils/constants.js";
+import {
+  setSearchCompanyId,
+  setSearchWarehouseId,
+} from "../../redux/medicines/medicinesSlices";
 
 function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
   const { t } = useTranslation();
@@ -55,7 +59,9 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.PARTNERS);
-          dispatch(setSelectedWarehouse(null));
+          dispatch(setSearchWarehouseId(null));
+          dispatch(setSearchCompanyId(null));
+          // dispatch(setSelectedWarehouse(null));
         }}
         to="/admin/partners"
       >
@@ -84,7 +90,9 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           dispatch(setCompany(null));
           dispatch(setWarehouse(null));
           dispatch(setRole(UserTypeConstants.ADMIN));
-          dispatch(setSelectedWarehouse(null));
+          dispatch(setSearchWarehouseId(null));
+          dispatch(setSearchCompanyId(null));
+          // dispatch(setSelectedWarehouse(null));
         }}
         to={{
           pathname: "/items",
@@ -112,7 +120,9 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.ADVERTISEMENTS);
-          dispatch(setSelectedWarehouse(null));
+          dispatch(setSearchWarehouseId(null));
+          dispatch(setSearchCompanyId(null));
+          // dispatch(setSelectedWarehouse(null));
         }}
         to="/admin/advertisements"
       >
@@ -138,7 +148,9 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.NOTIFICATIONS);
-          dispatch(setSelectedWarehouse(null));
+          dispatch(setSearchWarehouseId(null));
+          dispatch(setSearchCompanyId(null));
+          // dispatch(setSelectedWarehouse(null));
         }}
         to="/admin/notifications"
       >
@@ -164,7 +176,9 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           onClick={() => {
             onSelectedChange(SideNavLinks.ORDERS);
             dispatch(setRefresh(true));
-            dispatch(setSelectedWarehouse(null));
+            dispatch(setSearchWarehouseId(null));
+            dispatch(setSearchCompanyId(null));
+            // dispatch(setSelectedWarehouse(null));
           }}
           to="/orders"
         >
@@ -192,7 +206,10 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.SETTINGS);
-          dispatch(setSelectedWarehouse(null));
+          dispatch(setSearchWarehouseId(null));
+          dispatch(setSearchCompanyId(null));
+
+          // dispatch(setSelectedWarehouse(null));
         }}
         to="/admin/settings"
       >
@@ -218,7 +235,9 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.STATISTICS);
-          dispatch(setSelectedWarehouse(null));
+          dispatch(setSearchWarehouseId(null));
+          dispatch(setSearchCompanyId(null));
+          // dispatch(setSelectedWarehouse(null));
         }}
         to="/admin/statistics"
       >
@@ -244,7 +263,9 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.BACKUP_RESTORE);
-          dispatch(setSelectedWarehouse(null));
+          dispatch(setSearchWarehouseId(null));
+          dispatch(setSearchCompanyId(null));
+          // dispatch(setSelectedWarehouse(null));
         }}
         to="/admin/backup-restore"
       >
@@ -270,7 +291,9 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.PROFILE);
-          dispatch(setSelectedWarehouse(null));
+          dispatch(setSearchWarehouseId(null));
+          dispatch(setSearchCompanyId(null));
+          // dispatch(setSelectedWarehouse(null));
         }}
         to="/profile"
       >

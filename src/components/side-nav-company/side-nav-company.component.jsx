@@ -18,6 +18,10 @@ import styles from "../side-nav.module.scss";
 import { GiMedicines } from "react-icons/gi";
 import { CgProfile } from "react-icons/cg";
 import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice.js";
+import {
+  setSearchCompanyId,
+  setSearchWarehouseId,
+} from "../../redux/medicines/medicinesSlices.js";
 
 function SideNavCompany({ selectedOption, onSelectedChange, collapsed }) {
   const { t } = useTranslation();
@@ -37,7 +41,9 @@ function SideNavCompany({ selectedOption, onSelectedChange, collapsed }) {
           dispatch(setCompany(user));
           dispatch(setWarehouse(null));
           dispatch(setRole(UserTypeConstants.COMPANY));
-          dispatch(setSelectedWarehouse(null));
+          dispatch(setSearchWarehouseId(null));
+          dispatch(setSearchCompanyId(null));
+          // dispatch(setSelectedWarehouse(null));
         }}
         to={{
           pathname: "/items",
@@ -63,7 +69,9 @@ function SideNavCompany({ selectedOption, onSelectedChange, collapsed }) {
         ].join(" ")}
         onClick={() => {
           onSelectedChange(SideNavLinks.PROFILE);
-          dispatch(setSelectedWarehouse(null));
+          dispatch(setSearchWarehouseId(null));
+          dispatch(setSearchCompanyId(null));
+          // dispatch(setSelectedWarehouse(null));
         }}
         to="/profile"
       >

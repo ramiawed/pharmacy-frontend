@@ -3,6 +3,7 @@ import { Route, Switch } from "react-router-dom";
 import { SideNavLinks, TopNavLinks } from "../../utils/constants";
 
 import HomePageLoader from "../../components/home-page-loader/home-page-loader.component";
+
 const CartPage = lazy(() => import("../cart-page/cart-page.component"));
 const AdminUsersPage = lazy(() =>
   import("../admin-users-page/admin-users-page.component")
@@ -58,6 +59,7 @@ const NotFound = lazy(() => import("../not-found/not-found.component"));
 const BackupRestorePage = lazy(() =>
   import("../backup-restore-page/backup-restore-page.component")
 );
+const OffersPage = lazy(() => import("../offers-page/offers-page.component"));
 
 function AdminRoutes({ changeOptionHandler }) {
   return (
@@ -97,6 +99,20 @@ function AdminRoutes({ changeOptionHandler }) {
             onSelectedChange={() => {
               changeOptionHandler({
                 selectedTopNavOption: TopNavLinks.MEDICINES,
+                collapsedSideNavOption: true,
+                selectedSideNavOption: "",
+                showTopNav: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+        </Route>
+
+        <Route exact path="/offers">
+          <OffersPage
+            onSelectedChange={() => {
+              changeOptionHandler({
+                selectedTopNavOption: TopNavLinks.OFFERS,
                 collapsedSideNavOption: true,
                 selectedSideNavOption: "",
                 showTopNav: false,

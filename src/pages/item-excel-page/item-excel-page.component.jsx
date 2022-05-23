@@ -23,6 +23,7 @@ import {
   MdOutlineIndeterminateCheckBox,
 } from "react-icons/md";
 import { RiPlayListAddFill } from "react-icons/ri";
+import { AiFillDelete } from "react-icons/ai";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -45,7 +46,6 @@ import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors, toEnglishNumber } from "../../utils/constants";
-import { AiFillDelete } from "react-icons/ai";
 
 function ItemExcelPage() {
   const user = useSelector(selectUser);
@@ -139,6 +139,13 @@ function ItemExcelPage() {
             ...obj,
             name: "",
             selected: false,
+          };
+        }
+
+        if (!d.nameAr) {
+          obj = {
+            ...obj,
+            nameAr: "",
           };
         }
 

@@ -218,7 +218,7 @@ function AdminItemCard({
           </div>
         )}
         <div
-          className={[styles.name, styles.ellipsis].join(" ")}
+          className={[styles.nameContainer, styles.ellipsis].join(" ")}
           onClick={() => {
             history.push("/item", {
               from: user.type,
@@ -233,7 +233,8 @@ function AdminItemCard({
             });
           }}
         >
-          {item.name}
+          <label className={styles.name}>{item.name}</label>
+          <label className={styles.name}>{item.nameAr}</label>
         </div>
 
         <div className={styles.details}>

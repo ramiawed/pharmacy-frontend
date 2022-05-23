@@ -17,7 +17,6 @@ import { selectUserData } from "../../redux/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { addStatistics } from "../../redux/statistics/statisticsSlice";
 import { selectOnlineStatus } from "../../redux/online/onlineSlice";
-import { selectWarehouses } from "../../redux/warehouse/warehousesSlice";
 
 // constants and utils
 import {

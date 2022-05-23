@@ -5,26 +5,22 @@ import { useHistory } from "react-router-dom";
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import {
-  cancelOperation,
   changeDisplayType,
   changeSearchCity,
   changeSearchName,
-  changeShowFavorites,
   resetCompaniesPageState,
   selectCompaniesPageState,
 } from "../../redux/company/companySlice";
-import { selectFavoritesPartners } from "../../redux/favorites/favoritesSlice";
-import CitiesDropDown from "../cities-dropdown/cities-dropdown.component";
 
 // components
 import SearchContainer from "../search-container/search-container.component";
 import SearchInput from "../search-input/search-input.component";
 import Icon from "../action-icon/action-icon.component";
-import PartnerRow from "../partner-row/partner-row.component";
+import CitiesDropDown from "../cities-dropdown/cities-dropdown.component";
 
 // react icons
 import { RiRefreshLine } from "react-icons/ri";
-import { AiFillAppstore, AiFillStar } from "react-icons/ai";
+import { AiFillAppstore } from "react-icons/ai";
 import { FaListUl } from "react-icons/fa";
 import { VscClearAll } from "react-icons/vsc";
 import { IoMdArrowRoundBack } from "react-icons/io";
@@ -32,17 +28,16 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 // styles
 import generalStyles from "../../style.module.scss";
 // constants and utils
-import { CitiesName, Colors, UserTypeConstants } from "../../utils/constants";
+import { CitiesName, Colors } from "../../utils/constants";
 
 function CompaniesHeader({ search, refreshHandler, count, keyUpHandler }) {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { searchName, searchCity, displayType, showFavorites } = useSelector(
+  const { searchName, searchCity, displayType } = useSelector(
     selectCompaniesPageState
   );
-  const favorites = useSelector(selectFavoritesPartners);
 
   // Guest types are (Student, Pharmacist, Employee)
   // uses with the SelectCustom
@@ -98,7 +93,6 @@ function CompaniesHeader({ search, refreshHandler, count, keyUpHandler }) {
           tooltip={t("refresh-tooltip")}
           onclick={() => {
             refreshHandler();
-            dispatch(changeShowFavorites(false));
           }}
           icon={() => <RiRefreshLine />}
         />
@@ -112,47 +106,10 @@ function CompaniesHeader({ search, refreshHandler, count, keyUpHandler }) {
             onclick={() => {
               dispatch(resetCompaniesPageState());
               refreshHandler();
-              dispatch(changeShowFavorites(false));
             }}
             icon={() => <VscClearAll />}
           />
         )}
-
-        {/* show favorites */}
-        <div className={generalStyles.relative}>
-          <Icon
-            withBackground={true}
-            foreColor={
-              showFavorites ? Colors.SUCCEEDED_COLOR : Colors.MAIN_COLOR
-            }
-            tooltip={t("show-favorite-tooltip")}
-            onclick={() => dispatch(changeShowFavorites(!showFavorites))}
-            icon={() => <AiFillStar />}
-          />
-
-          {showFavorites && (
-            <div
-              className={[
-                generalStyles.favorites_content,
-                generalStyles.bg_white,
-              ].join(" ")}
-            >
-              {showFavorites &&
-                favorites &&
-                favorites
-                  .filter(
-                    (favorite) => favorite.type === UserTypeConstants.COMPANY
-                  )
-                  .map((favorite) => (
-                    <PartnerRow
-                      key={favorite._id}
-                      partner={favorite}
-                      withoutBoxShadow={true}
-                    />
-                  ))}
-            </div>
-          )}
-        </div>
 
         {/* display card option */}
         <Icon
@@ -163,7 +120,6 @@ function CompaniesHeader({ search, refreshHandler, count, keyUpHandler }) {
           tooltip={t("show-item-as-card-tooltip")}
           onclick={() => {
             dispatch(changeDisplayType("card"));
-            dispatch(changeShowFavorites(false));
           }}
           icon={() => <AiFillAppstore />}
         />
@@ -177,7 +133,6 @@ function CompaniesHeader({ search, refreshHandler, count, keyUpHandler }) {
           tooltip={t("show-item-as-row-tooltip")}
           onclick={() => {
             dispatch(changeDisplayType("list"));
-            dispatch(changeShowFavorites(false));
           }}
           icon={() => <FaListUl />}
         />

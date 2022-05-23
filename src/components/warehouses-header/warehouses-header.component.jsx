@@ -8,22 +8,19 @@ import {
   changeDisplayType,
   changeSearchCity,
   changeSearchName,
-  changeShowFavorites,
   resetWarehousePageState,
   selectWarehousesPageState,
 } from "../../redux/warehouse/warehousesSlice";
-import { selectFavoritesPartners } from "../../redux/favorites/favoritesSlice";
 
 // components
 import SearchContainer from "../search-container/search-container.component";
 import SearchInput from "../search-input/search-input.component";
 import Icon from "../action-icon/action-icon.component";
-import PartnerRow from "../partner-row/partner-row.component";
 import CitiesDropDown from "../cities-dropdown/cities-dropdown.component";
 
 // react icons
 import { RiRefreshLine } from "react-icons/ri";
-import { AiFillAppstore, AiFillStar } from "react-icons/ai";
+import { AiFillAppstore } from "react-icons/ai";
 import { FaListUl } from "react-icons/fa";
 import { VscClearAll } from "react-icons/vsc";
 import { IoMdArrowRoundBack } from "react-icons/io";
@@ -41,10 +38,9 @@ function WarehousesHeader({ search, refreshHandler, count, keyUpHandler }) {
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
 
-  const { searchName, searchCity, displayType, showFavorites } = useSelector(
+  const { searchName, searchCity, displayType } = useSelector(
     selectWarehousesPageState
   );
-  const favorites = useSelector(selectFavoritesPartners);
 
   // when you change the selected city
   const citiesNameChangeHandler = (val) => {
@@ -54,13 +50,11 @@ function WarehousesHeader({ search, refreshHandler, count, keyUpHandler }) {
   // select card as display type
   const selectCardDisplayTypeHandler = () => {
     dispatch(changeDisplayType("card"));
-    dispatch(changeShowFavorites(false));
   };
 
   // select list as display type
   const selectListDisplayTypeHandler = () => {
     dispatch(changeDisplayType("list"));
-    dispatch(changeShowFavorites(false));
   };
 
   return (
@@ -123,47 +117,11 @@ function WarehousesHeader({ search, refreshHandler, count, keyUpHandler }) {
             onclick={() => {
               dispatch(resetWarehousePageState());
               refreshHandler();
-              dispatch(changeShowFavorites(false));
             }}
             icon={() => <VscClearAll />}
             withBackground={true}
           />
         )}
-
-        {/* show favorites */}
-        <div className={generalStyles.relative}>
-          <Icon
-            foreColor={
-              showFavorites ? Colors.SUCCEEDED_COLOR : Colors.MAIN_COLOR
-            }
-            tooltip={t("show-favorite-tooltip")}
-            onclick={() => dispatch(changeShowFavorites(!showFavorites))}
-            icon={() => <AiFillStar />}
-            withBackground={true}
-          />
-
-          {showFavorites && (
-            <div
-              className={[
-                generalStyles.favorites_content,
-                generalStyles.bg_white,
-              ].join(" ")}
-            >
-              {showFavorites &&
-                favorites
-                  .filter(
-                    (favorite) => favorite.type === UserTypeConstants.WAREHOUSE
-                  )
-                  .map((favorite) => (
-                    <PartnerRow
-                      key={favorite._id}
-                      partner={favorite}
-                      withoutBoxShadow={true}
-                    />
-                  ))}
-            </div>
-          )}
-        </div>
 
         {/* display card option */}
         <Icon

@@ -15,6 +15,7 @@ import Loader from "../../components/action-loader/action-loader.component";
 import NoContent from "../../components/no-content/no-content.component";
 import Icon from "../../components/action-icon/action-icon.component";
 import Header from "../../components/header/header.component";
+import { ExportCSV } from "../../components/export-csv/export-csv.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -32,7 +33,8 @@ import {
   OfferTypes,
   UserTypeConstants,
 } from "../../utils/constants";
-import { ExportCSV } from "../../components/export-csv/export-csv.component";
+import CartItemCard from "../../components/cart-item-card/cart-item-card.component";
+import CardInfo from "../../components/card-info/card-info.component";
 
 function OrderDetailsPage({ location, onSelectedChange }) {
   const { t } = useTranslation();
@@ -141,123 +143,141 @@ function OrderDetailsPage({ location, onSelectedChange }) {
           <div className={generalStyles.container_with_header}>
             {orderDetails ? (
               <>
-                <div className={styles.basic_details_container}>
-                  <div className={styles.row}>
-                    <label className={styles.label}>
-                      {t("pharmacy-name")}:{" "}
-                    </label>
-                    <label className={styles.name}>
-                      {orderDetails.pharmacy.name}
-                    </label>
-                  </div>
+                <div className={styles.container}>
+                  <CardInfo headerTitle={t("order-details")}>
+                    <div className={styles.basic_details_container}>
+                      <div className={styles.row}>
+                        <label className={styles.label}>
+                          {t("pharmacy-name")}:{" "}
+                        </label>
+                        <label className={styles.name}>
+                          {orderDetails.pharmacy.name}
+                        </label>
+                      </div>
 
-                  <div className={styles.row}>
-                    <label className={styles.label}>
-                      {t("user-address-details")}:{" "}
-                    </label>
-                    <label className={styles.name}>
-                      {orderDetails.pharmacy.addressDetails}
-                    </label>
-                  </div>
+                      <div className={styles.row}>
+                        <label className={styles.label}>
+                          {t("user-address-details")}:{" "}
+                        </label>
+                        <label className={styles.name}>
+                          {orderDetails.pharmacy.addressDetails}
+                        </label>
+                      </div>
 
-                  <div className={styles.row}>
-                    <label className={styles.label}>{t("user-mobile")}: </label>
-                    <label className={styles.name}>
-                      {orderDetails.pharmacy.mobile}
-                    </label>
-                  </div>
+                      <div className={styles.row}>
+                        <label className={styles.label}>
+                          {t("user-mobile")}:{" "}
+                        </label>
+                        <label className={styles.name}>
+                          {orderDetails.pharmacy.mobile}
+                        </label>
+                      </div>
 
-                  <div className={styles.row}>
-                    <label className={styles.label}>
-                      {t("warehouse-name")}:{" "}
-                    </label>
-                    <label className={styles.name}>
-                      {orderDetails.warehouse.name}
-                    </label>
-                  </div>
+                      <div className={styles.row}>
+                        <label className={styles.label}>
+                          {t("warehouse-name")}:{" "}
+                        </label>
+                        <label className={styles.name}>
+                          {orderDetails.warehouse.name}
+                        </label>
+                      </div>
 
-                  <div className={styles.row}>
-                    <label className={styles.label}>{t("date-label")}: </label>
-                    <label className={styles.name}>
-                      {new Date(orderDetails.createdAt).toLocaleDateString()}
-                    </label>
-                  </div>
+                      <div className={styles.row}>
+                        <label className={styles.label}>
+                          {t("date-label")}:{" "}
+                        </label>
+                        <label className={styles.name}>
+                          {new Date(
+                            orderDetails.createdAt
+                          ).toLocaleDateString()}
+                        </label>
+                      </div>
+                      <div className={styles.row}>
+                        <label className={styles.label}>
+                          {t("total-invoice-price")}:{" "}
+                        </label>
+                        <label className={styles.name}>
+                          {computeTotalPrice()}
+                        </label>
+                      </div>
+                    </div>
+
+                    <div className={styles.actions_div}>
+                      {user.type === UserTypeConstants.PHARMACY && (
+                        <Icon
+                          selected={false}
+                          foreColor={Colors.SUCCEEDED_COLOR}
+                          tooltip={t("mark-as-received")}
+                          icon={() => <BsCheckAll />}
+                          onclick={() => markOrdersAs("received")}
+                          withBackground={true}
+                        />
+                      )}
+
+                      {user.type === UserTypeConstants.PHARMACY && (
+                        <Icon
+                          selected={false}
+                          foreColor={Colors.SUCCEEDED_COLOR}
+                          tooltip={t("mark-as-sent")}
+                          icon={() => <RiSendPlaneFill />}
+                          onclick={() => markOrdersAs("sent")}
+                          withBackground={true}
+                        />
+                      )}
+
+                      {user.type === UserTypeConstants.WAREHOUSE && (
+                        <>
+                          <Icon
+                            selected={false}
+                            foreColor={Colors.SUCCEEDED_COLOR}
+                            tooltip={t("mark-as-shipped")}
+                            icon={() => <MdOutlineLocalShipping />}
+                            onclick={() => markOrdersAs("sent")}
+                            withBackground={true}
+                          />
+
+                          <Icon
+                            selected={false}
+                            foreColor={Colors.SUCCEEDED_COLOR}
+                            tooltip={t("mark-as-received")}
+                            icon={() => <BsCheckAll />}
+                            onclick={() => markOrdersAs("received")}
+                            withBackground={true}
+                          />
+
+                          <Icon
+                            selected={false}
+                            foreColor={Colors.FAILED_COLOR}
+                            tooltip={t("mark-as-will-dont-server")}
+                            icon={() => <MdRemoveDone />}
+                            onclick={() => markOrdersAs("dontServe")}
+                            withBackground={true}
+                          />
+                        </>
+                      )}
+
+                      <ExportCSV
+                        csvData={orderDetails.items}
+                        fileName={
+                          orderDetails.pharmacy.name +
+                          "_" +
+                          orderDetails.warehouse.name +
+                          "_" +
+                          new Date(orderDetails.createdAt).toLocaleDateString()
+                        }
+                      />
+                    </div>
+                  </CardInfo>
                 </div>
-
-                <div className={styles.actions_div}>
-                  {user.type === UserTypeConstants.PHARMACY && (
-                    <Icon
-                      selected={false}
-                      foreColor={Colors.SUCCEEDED_COLOR}
-                      tooltip={t("mark-as-received")}
-                      icon={() => <BsCheckAll />}
-                      onclick={() => markOrdersAs("received")}
-                      withBackground={true}
-                    />
-                  )}
-
-                  {user.type === UserTypeConstants.PHARMACY && (
-                    <Icon
-                      selected={false}
-                      foreColor={Colors.SUCCEEDED_COLOR}
-                      tooltip={t("mark-as-sent")}
-                      icon={() => <RiSendPlaneFill />}
-                      onclick={() => markOrdersAs("sent")}
-                      withBackground={true}
-                    />
-                  )}
-
-                  {user.type === UserTypeConstants.WAREHOUSE && (
-                    <>
-                      <Icon
-                        selected={false}
-                        foreColor={Colors.SUCCEEDED_COLOR}
-                        tooltip={t("mark-as-shipped")}
-                        icon={() => <MdOutlineLocalShipping />}
-                        onclick={() => markOrdersAs("sent")}
-                        withBackground={true}
-                      />
-
-                      <Icon
-                        selected={false}
-                        foreColor={Colors.SUCCEEDED_COLOR}
-                        tooltip={t("mark-as-received")}
-                        icon={() => <BsCheckAll />}
-                        onclick={() => markOrdersAs("received")}
-                        withBackground={true}
-                      />
-
-                      <Icon
-                        selected={false}
-                        foreColor={Colors.FAILED_COLOR}
-                        tooltip={t("mark-as-will-dont-server")}
-                        icon={() => <MdRemoveDone />}
-                        onclick={() => markOrdersAs("dontServe")}
-                        withBackground={true}
-                      />
-                    </>
-                  )}
-
-                  <ExportCSV
-                    csvData={orderDetails.items}
-                    fileName={
-                      orderDetails.pharmacy.name +
-                      "_" +
-                      orderDetails.warehouse.name +
-                      "_" +
-                      new Date(orderDetails.createdAt).toLocaleDateString()
-                    }
-                  />
-                </div>
-
-                <CartWarehouseTableHeader withoutMaxQty={true} />
 
                 {orderDetails.items.map((item, index) => (
-                  <CartRow key={index} cartItem={item} inOrderDetails={true} />
+                  <CartItemCard
+                    key={index}
+                    cartItem={item}
+                    withoutMaxQty="without"
+                    inOrderDetails={true}
+                  />
                 ))}
-                <p className={styles.total_price}>
-                  {t("total-invoice-price")} {computeTotalPrice()}
-                </p>
               </>
             ) : (
               <NoContent msg={t(emptyMsg)} />

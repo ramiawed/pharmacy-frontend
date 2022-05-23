@@ -44,8 +44,6 @@ function FavoritesPage({ onSelectedChange }) {
   const { user, token } = useSelector(selectUserData);
 
   // get the favorites partners and favorites items from favoritesSlice
-  // const favoritesPartners = useSelector(selectFavoritesPartners);
-  // const favoritesItems = useSelector(selectFavoritesItems);
   const {
     favorites_partners: favoritesPartners,
     favorites_items: favoritesItems,

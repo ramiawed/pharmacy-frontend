@@ -15,7 +15,6 @@ const initialState = {
     searchName: "",
     searchCity: CitiesName.ALL,
     displayType: "list",
-    showFavorites: false,
     page: 1,
   },
 };
@@ -114,13 +113,6 @@ export const warehousesSlice = createSlice({
       };
     },
 
-    changeShowFavorites: (state, action) => {
-      state.pageState = {
-        ...state.pageState,
-        showFavorites: action.payload,
-      };
-    },
-
     setSelectedWarehouse: (state, action) => {
       state.selectedWarehouse = action.payload;
     },
@@ -130,7 +122,6 @@ export const warehousesSlice = createSlice({
         searchName: "",
         searchCity: CitiesName.ALL,
         displayType: "list",
-        showFavorites: false,
         page: 1,
       };
     },
@@ -171,7 +162,6 @@ export const warehousesSlice = createSlice({
         searchName: "",
         searchCity: CitiesName.ALL,
         displayType: "list",
-        showFavorites: false,
         page: 1,
       };
     },
@@ -217,7 +207,6 @@ export const {
   changeSearchCity,
   changeDisplayType,
   changePage,
-  changeShowFavorites,
   warehouseSliceSignOut,
   resetWarehousesArray,
   setSelectedWarehouse,

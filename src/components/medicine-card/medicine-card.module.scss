@@ -74,10 +74,8 @@
   transition: all 1s;
 }
 
-
 .company_name {
   font-size: 1.5rem;
-  // color: rgb(86, 227, 25);
   color: $white-color;
   text-align: center;
   background-color: $main-color;
@@ -109,30 +107,28 @@
     border-top: 1px solid $secondary-color;
     width: 100%;
     display: flex;
+    flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
 
-    .name_details {
-      flex: 1;
+    .name {
+      color: $main-color;
+      font-size: 20px;
+      font-weight: bold;
+    }
+
+    .secondRow {
+      width: 100%;
       display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      align-items: flex-start;
+      flex-direction: row;
+      align-items: center;
+      border-bottom: 1px solid rgba($color: $secondary-color, $alpha: 1);
 
-      .name {
+      .nameAr {
+        flex: 1;
         color: $main-color;
-        font-size: 1.5rem;
+        font-size: 18px;
         font-weight: bold;
       }
-
-      .composition {
-        color: $secondary-color;
-        padding-inline-start: 10px;
-        padding-right: 10px;
-        font-size: 0.8rem;
-      }
-
-
     }
 
     .price {
@@ -151,20 +147,16 @@
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    padding-inline-start: 20px;
-    padding-right: 20px;
 
     .label {
-      width: 75px;
+      min-width: 60px;
       font-size: 0.7rem;
       color: $grey-color;
-      text-align: end;
     }
 
     .value {
       color: $main-color;
       font-size: 0.9rem;
-      padding-inline: 10px;
       padding-left: 10px;
       padding-right: 10px;
     }

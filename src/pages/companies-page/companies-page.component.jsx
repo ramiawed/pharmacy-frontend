@@ -27,7 +27,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
   cancelOperation,
-  changeShowFavorites,
   getCompanies,
   resetCompanies,
   selectCompanies,
@@ -76,7 +75,6 @@ function CompaniesPage({ onSelectedChange }) {
   // get the companies from DB
   // depends on the reset field, add one to page, or reset to 1
   const handleSearch = () => {
-    dispatch(changeShowFavorites(false));
     dispatch(getCompanies({ token }));
   };
 

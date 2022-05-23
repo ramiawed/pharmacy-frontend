@@ -6,10 +6,10 @@ import ReactLoading from "react-loading";
 // components
 import PartnerRow from "../../components/partner-row/partner-row.component";
 import PartnerCard from "../../components/partner-card/partner-card.component";
-import Button from "../../components/button/button.component";
 import Toast from "../../components/toast/toast.component";
 import NoContent from "../../components/no-content/no-content.component";
 import WarehousesHeader from "../../components/warehouses-header/warehouses-header.component";
+import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -19,7 +19,6 @@ import {
   resetWarehouse,
   selectWarehouses,
   selectWarehousesPageState,
-  changeShowFavorites,
   cancelOperation,
   changeSearchCity,
   resetWarehousesArray,
@@ -43,7 +42,8 @@ import {
 
 // styles
 import generalStyles from "../../style.module.scss";
-import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
+
+// icons
 import { CgMoreVertical } from "react-icons/cg";
 
 let timer;
@@ -66,8 +66,6 @@ function WarehousePage({ onSelectedChange }) {
 
   // handle search
   const handleSearch = () => {
-    dispatch(changeShowFavorites());
-
     if (
       user.type === UserTypeConstants.PHARMACY ||
       user.type === UserTypeConstants.GUEST ||

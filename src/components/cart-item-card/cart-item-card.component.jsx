@@ -8,6 +8,7 @@ import { useTranslation } from "react-i18next";
 // react icons
 import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
 import { RiDeleteBin5Fill } from "react-icons/ri";
+import { MdExpandLess, MdExpandMore } from "react-icons/md";
 
 // redux stuff
 import { useDispatch } from "react-redux";
@@ -23,7 +24,7 @@ import styles from "./cart-item-card.module.scss";
 // constants
 import { Colors, OfferTypes } from "../../utils/constants";
 
-function CartItemCard({ cartItem, inOrderDetails }) {
+function CartItemCard({ cartItem, inOrderDetails, withoutMaxQty }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState(false);
@@ -32,20 +33,27 @@ function CartItemCard({ cartItem, inOrderDetails }) {
     <>
       <div className={styles.container}>
         <div className={styles.header}>
-          <div
-            className={[styles.name, styles.ellipsis].join(" ")}
-            onClick={() => {
+          <label
+            className={styles.icon}
+            onClick={(e) => {
               setExpanded(!expanded);
+              e.stopPropagation();
             }}
           >
-            {cartItem.item.name}
+            {expanded ? <MdExpandLess /> : <MdExpandMore />}
+          </label>
+          <div className={[styles.name, styles.ellipsis].join(" ")}>
+            <label>{cartItem.item.name}</label>
+            <label>{cartItem.item.nameAr}</label>
           </div>
-          <div
-            className={styles.delete_icon}
-            onClick={() => dispatch(removeItemFromCart(cartItem))}
-          >
-            <RiDeleteBin5Fill color={Colors.FAILED_COLOR} />
-          </div>
+          {!inOrderDetails && (
+            <div
+              className={styles.delete_icon}
+              onClick={() => dispatch(removeItemFromCart(cartItem))}
+            >
+              <RiDeleteBin5Fill size={20} color={Colors.FAILED_COLOR} />
+            </div>
+          )}
         </div>
 
         <div className={styles.details}>
@@ -112,25 +120,30 @@ function CartItemCard({ cartItem, inOrderDetails }) {
             </div>
           </div>
 
-          {expanded && (
-            <>
-              <div className={[styles.row, styles.first].join(" ")}>
-                <div>
-                  <label className={styles.label}>{t("item-max-qty")}:</label>
-                  <label className={styles.value}>
-                    {cartItem.warehouse.maxQty ? cartItem.warehouse.maxQty : ""}
-                  </label>
+          {expanded &&
+            (withoutMaxQty === "without" ? (
+              <></>
+            ) : (
+              <>
+                <div className={[styles.row, styles.first].join(" ")}>
+                  <div>
+                    <label className={styles.label}>{t("item-max-qty")}:</label>
+                    <label className={styles.value}>
+                      {cartItem.warehouse.maxQty
+                        ? cartItem.warehouse.maxQty
+                        : ""}
+                    </label>
+                  </div>
                 </div>
-              </div>
-            </>
-          )}
+              </>
+            ))}
 
           <div className={styles.row}>
             <div>
               <label className={[styles.label, styles.first].join(" ")}>
                 {t("quantity-label")}:
               </label>
-              {!cartItem.bonus && (
+              {!cartItem.bonus && !inOrderDetails && (
                 <label
                   onClick={() => {
                     if (cartItem.qty > 0) dispatch(decreaseItemQty(cartItem));
@@ -149,7 +162,7 @@ function CartItemCard({ cartItem, inOrderDetails }) {
 
               <label className={styles.qty}>{cartItem.qty}</label>
 
-              {!cartItem.bonus && (
+              {!cartItem.bonus && !inOrderDetails && (
                 <label
                   onClick={() => {
                     if (

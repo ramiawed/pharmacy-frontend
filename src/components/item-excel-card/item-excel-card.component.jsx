@@ -58,6 +58,16 @@ function ItemExcelRow({
       </div>
 
       <div className={styles.row}>
+        <label>{t("item-name-ar")}:</label>
+        <input
+          id="nameAr"
+          type="text"
+          value={item.nameAr}
+          onChange={(e) => onchange(e, index)}
+        />
+      </div>
+
+      <div className={styles.row}>
         <label>{t("item-formula")}:</label>
         <input
           id="formula"

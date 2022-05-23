@@ -26,11 +26,14 @@
 .container {
   box-shadow: 0 0 2px 2px rgba($color: #000000, $alpha: 0.3);
   border-radius: 6px;
-  margin-block-end: 20px;
-  margin-bottom: 20px;
   display: flex;
   position: relative;
   flex-direction: column;
+  width: 100%;
+  margin: auto;
+  margin-block-end: 10px;
+  margin-bottom: 10px;
+  margin-top: 10px;
 }
 
 .header {
@@ -42,16 +45,31 @@
   border-bottom: 2px solid rgba($color: #000000, $alpha: 0.3);
 }
 
+.icon {
+  background-color: $main-color;
+  color: $white-color;
+  display: inline-block;
+  display: flex;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-right: 5px;
+  margin-top: 5px;
+  align-self: flex-start;
+}
+
 .name {
   color: $main-color;
   font-weight: bold;
-  padding: 8px;
+  padding-right: 8px;
   text-align: start;
-  min-width: 120px;
   flex: 1;
-  font-size: 1rem;
+  font-size: 20px;
   cursor: pointer;
   transition: all 0.3s;
+
+  display: flex;
+  flex-direction: column;
+
 }
 
 .delete_icon {
@@ -218,4 +236,16 @@
   background: $yellow-color;
   box-shadow: 0 calc(-1*var(--f)) 0 inset #0005;
   color: $main-color;
+}
+
+@media only screen and (min-width: $small) {
+  .container {
+    width: 70%;
+  }
+}
+
+@media only screen and (min-width: $medium) {
+  .container {
+    width: 50%;
+  }
 }

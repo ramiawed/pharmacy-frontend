@@ -17,8 +17,15 @@
     flex: 1;
 
     .name {
-      color: $main-color;
       font-weight: bold;
+    }
+
+    .small {
+      font-size: 14px;
+    }
+
+    .large {
+      font-size: 18px;
     }
 
     label {
@@ -35,8 +42,7 @@
   }
 
   label {
-    color: $grey-color;
-    font-size: 0.8rem;
+    color: $main-color;
 
     &::after {
       content: '';
@@ -46,6 +52,4 @@
       color: $main-color;
     }
   }
-
-
 }

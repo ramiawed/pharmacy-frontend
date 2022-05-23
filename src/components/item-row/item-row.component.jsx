@@ -20,7 +20,6 @@ import {
   addItemToWarehouse,
   removeItemFromWarehouse,
 } from "../../redux/medicines/medicinesSlices";
-import { changeNavSettings } from "../../redux/navs/navigationSlice";
 
 // components
 import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
@@ -92,7 +91,7 @@ const checkOffer = (item, user) => {
   return result;
 };
 
-function ItemRow({ item, onSelectAction }) {
+function ItemRow({ item, onSelectAction, small }) {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -258,9 +257,26 @@ function ItemRow({ item, onSelectAction }) {
         }}
       >
         <div className={styles.details}>
-          <label className={styles.name}>{item.name}</label>
-          <label>{item.company.name}</label>
-          <label>{item.caliber}</label>
+          <label
+            className={[styles.name, small ? styles.small : styles.large].join(
+              " "
+            )}
+          >
+            {item.name}
+          </label>
+          <label
+            className={[styles.name, small ? styles.small : styles.large].join(
+              " "
+            )}
+          >
+            {item.nameAr}
+          </label>
+          <label className={[small ? styles.small : styles.large].join(" ")}>
+            {item.company.name}
+          </label>
+          <label className={[small ? styles.small : styles.large].join(" ")}>
+            {item.caliber}
+          </label>
         </div>
         <div className={styles.actions}>
           {changeAddToWarehouseLoading ? (

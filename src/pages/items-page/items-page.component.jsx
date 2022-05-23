@@ -50,7 +50,6 @@ function ItemsPage({ onSelectedChange }) {
   const dispatch = useDispatch();
   const {
     status,
-    error,
     count,
     items,
     activeStatus,

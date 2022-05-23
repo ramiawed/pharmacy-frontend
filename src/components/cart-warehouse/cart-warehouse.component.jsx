@@ -14,8 +14,6 @@ import { addStatistics } from "../../redux/statistics/statisticsSlice";
 import { saveOrder, setRefresh } from "../../redux/orders/ordersSlice";
 
 // components
-import CartRow from "../cart-row/cart-row.component";
-import CartWarehouseTableHeader from "../cart-warehouse-table-header/cart-warehouse-table-header.component";
 import Modal from "../modal/modal.component";
 import Loader from "../action-loader/action-loader.component";
 import ButtonWithIcon from "../button-with-icon/button-with-icon.component";
@@ -116,7 +114,7 @@ function CartWarehouse({ warehouse }) {
   };
 
   return (
-    <>
+    <div className={[styles.container]}>
       <div className={styles.header}>
         <div className={styles.name} onClick={() => setExpanded(!expanded)}>
           <label className={styles.icon}>
@@ -129,33 +127,20 @@ function CartWarehouse({ warehouse }) {
             text={t("send-order")}
             bgColor={Colors.SUCCEEDED_COLOR}
             action={() => setShowConfirmSaveOrder(true)}
-            icon={() => <FiSend />}
           />
         </label>
-        <label className={styles.total_price}>
-          {t("total-invoice-price")} {computeTotalPrice()}
-        </label>
+        <label className={styles.total_price}>{computeTotalPrice()}</label>
       </div>
 
       {expanded && (
         <>
-          <div className={styles.on_large}>
-            <CartWarehouseTableHeader />
-          </div>
-
           {cartItems
             .filter((item) => item.warehouse.warehouse.name === warehouse)
             .map((item, index) => (
               <div key={index}>
-                <div className={styles.on_large}>
-                  <CartRow cartItem={item} />
-                </div>
-                <div className={styles.on_small}>
-                  <CartItemCard cartItem={item} />
-                </div>
+                <CartItemCard cartItem={item} inOrderDetails={false} />
               </div>
             ))}
-          <div className={styles.separator}></div>
         </>
       )}
 
@@ -203,7 +188,7 @@ function CartWarehouse({ warehouse }) {
           {t("confirm-save-order")}
         </Modal>
       )}
-    </>
+    </div>
   );
 }
 

@@ -314,7 +314,7 @@ export const medicinesSlice = createSlice({
           return {
             ...m,
             warehouses: action.payload.warehouses,
-            existing_place: action.payload.existing_place,
+            // existing_place: action.payload.existing_place,
           };
         }
         return m;

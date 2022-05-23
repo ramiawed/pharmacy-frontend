@@ -14,7 +14,6 @@ const initialState = {
     searchName: "",
     searchCity: CitiesName.ALL,
     displayType: "list",
-    showFavorites: false,
     page: 1,
   },
 };
@@ -112,13 +111,6 @@ export const companiesSlice = createSlice({
       };
     },
 
-    changeShowFavorites: (state, action) => {
-      state.pageState = {
-        ...state.pageState,
-        showFavorites: action.payload,
-      };
-    },
-
     resetCompaniesPageState: (state) => {
       state.pageState = {
         searchName: "",
@@ -169,7 +161,6 @@ export const companiesSlice = createSlice({
         searchName: "",
         searchCity: CitiesName.ALL,
         displayType: "list",
-        showFavorites: false,
         page: 1,
       };
     },
@@ -216,7 +207,6 @@ export const {
   changeDisplayType,
   changePage,
   companySliceSignOut,
-  changeShowFavorites,
   resetCompaniesArray,
 } = companiesSlice.actions;
 

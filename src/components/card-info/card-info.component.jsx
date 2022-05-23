@@ -27,6 +27,7 @@ function CardInfo({ headerTitle, children, type }) {
         className={[
           styles.header,
           type === "warning" ? styles.warning : null,
+          expanded ? styles.expanded : null,
         ].join(" ")}
       >
         <p>{headerTitle}</p>

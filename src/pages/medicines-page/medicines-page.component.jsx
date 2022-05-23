@@ -1,29 +1,30 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
 import ReactLoading from "react-loading";
 import { useHistory } from "react-router-dom";
 
 // components
-import ItemCard from "../../components/item-card/item-card.component";
 import SearchContainer from "../../components/search-container/search-container.component";
 import SearchInput from "../../components/search-input/search-input.component";
-import ItemRow from "../../components/item-row/item-row.component";
 import NoContent from "../../components/no-content/no-content.component";
 import Icon from "../../components/action-icon/action-icon.component";
 import MedicinesSearchString from "../../components/medicines-search-string/medicines-search-string.component";
-import ItemRowNew from "../../components/item-row-new/item-row-new.component";
+import MedicineRow from "../../components/medicine-row/medicine-row.component";
 import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
+import MedicineCard from "../../components/medicine-card/medicine-card.component";
 
 // react-icons
 import { FaSearch, FaListUl } from "react-icons/fa";
 import { RiRefreshLine } from "react-icons/ri";
-import { AiFillAppstore, AiFillStar } from "react-icons/ai";
+import { AiFillAppstore } from "react-icons/ai";
+import { VscClearAll } from "react-icons/vsc";
+import { IoMdArrowRoundBack } from "react-icons/io";
+import { CgMoreVertical } from "react-icons/cg";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
-import { selectFavoritesItems } from "../../redux/favorites/favoritesSlice.js";
 import {
   getMedicines,
   selectMedicines,
@@ -46,9 +47,6 @@ import searchContainerStyles from "../../components/search-container/search-cont
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import { VscClearAll } from "react-icons/vsc";
-import { IoMdArrowRoundBack } from "react-icons/io";
-import { CgMoreVertical } from "react-icons/cg";
 
 let timer = null;
 
@@ -60,10 +58,6 @@ function MedicinesPage({ onSelectedChange }) {
   // selectors
   const { token, user } = useSelector(selectUserData);
   const { medicines, count, status, pageState } = useSelector(selectMedicines);
-  const favoritesItems = useSelector(selectFavoritesItems);
-
-  // own state
-  const [showFavorites, setShowFavorites] = useState(false);
 
   // handle search
   const handleSearch = () => {
@@ -245,43 +239,10 @@ function MedicinesPage({ onSelectedChange }) {
               onclick={() => {
                 dispatch(resetMedicinesPageState());
                 handleEnterPress();
-                setShowFavorites(false);
               }}
               icon={() => <VscClearAll />}
             />
           )}
-
-          <div className={generalStyles.relative}>
-            <Icon
-              withBackground={true}
-              icon={() => <AiFillStar />}
-              foreColor={
-                showFavorites ? Colors.SUCCEEDED_COLOR : Colors.MAIN_COLOR
-              }
-              tooltip={t("show-favorite-tooltip")}
-              onclick={() => setShowFavorites(!showFavorites)}
-            />
-
-            {showFavorites && (
-              <div
-                className={[
-                  generalStyles.favorites_content,
-                  generalStyles.favorites_content_wider,
-                  generalStyles.bg_white,
-                ].join(" ")}
-              >
-                {showFavorites &&
-                  favoritesItems.map((item) => (
-                    <ItemRow
-                      key={item._id}
-                      item={item}
-                      isFavorite={true}
-                      isSmallFavorite={true}
-                    />
-                  ))}
-              </div>
-            )}
-          </div>
 
           <Icon
             withBackground={true}
@@ -327,7 +288,7 @@ function MedicinesPage({ onSelectedChange }) {
 
         {pageState.displayType === "list" &&
           medicines.map((medicine) => (
-            <ItemRowNew key={medicine._id} item={medicine} />
+            <MedicineRow key={medicine._id} item={medicine} />
           ))}
 
         {pageState.displayType === "card" && (
@@ -338,7 +299,7 @@ function MedicinesPage({ onSelectedChange }) {
             ].join(" ")}
           >
             {medicines.map((medicine) => (
-              <ItemCard key={medicine._id} companyItem={medicine} />
+              <MedicineCard key={medicine._id} companyItem={medicine} />
             ))}
           </div>
         )}

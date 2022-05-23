@@ -216,7 +216,7 @@ function SearchInTopNav() {
                   <ItemRow
                     key={d._id}
                     item={d}
-                    isSearch={true}
+                    small={true}
                     onSelectAction={resetSearch}
                   />
                 ))}

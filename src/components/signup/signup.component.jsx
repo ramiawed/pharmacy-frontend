@@ -392,7 +392,7 @@ function SignUp() {
       user.type === UserTypeConstants.PHARMACY ||
       user.type === UserTypeConstants.GUEST
     ) {
-      if (user.paperUrl === null || user.paper?.length === 0) {
+      if (user.paperUrl === null || user.paper?.length === 0 || !user.paper) {
         errorObj["paperUrl"] = "enter-paper-url";
       }
 

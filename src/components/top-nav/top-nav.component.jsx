@@ -77,7 +77,6 @@ function TopNav({ onSelectedChange }) {
               onSelectedChange(TopNavLinks.HOME);
               dispatch(setSearchWarehouseId(null));
               dispatch(setSearchCompanyId(null));
-              // dispatch(setSelectedWarehouse(null));
             }}
           >
             {t("nav-main-page")}
@@ -95,7 +94,6 @@ function TopNav({ onSelectedChange }) {
               onSelectedChange(TopNavLinks.COMPANIES);
               dispatch(setSearchWarehouseId(null));
               dispatch(setSearchCompanyId(null));
-              // dispatch(setSelectedWarehouse(null));
             }}
           >
             {t("nav-company")}
@@ -115,7 +113,6 @@ function TopNav({ onSelectedChange }) {
                 onSelectedChange(TopNavLinks.WAREHOUSES);
                 dispatch(setSearchWarehouseId(null));
                 dispatch(setSearchCompanyId(null));
-                // dispatch(setSelectedWarehouse(null));
               }}
             >
               {t("nav-warehouse")}
@@ -136,7 +133,7 @@ function TopNav({ onSelectedChange }) {
               onSelectedChange(TopNavLinks.MEDICINES);
               dispatch(setSearchWarehouseId(null));
               dispatch(setSearchCompanyId(null));
-              // dispatch(setSelectedWarehouse(null));
+
               if (history.location.pathname !== "/medicines") {
                 dispatch(resetMedicinesArray());
                 dispatch(resetMedicines());
@@ -145,10 +142,29 @@ function TopNav({ onSelectedChange }) {
           >
             {t("nav-medicines")}
           </Link>
+
+          {(user.type === UserTypeConstants.ADMIN ||
+            user.type === UserTypeConstants.PHARMACY) && (
+            <Link
+              to="/offers"
+              className={[
+                styles.link,
+                history.location.pathname === "/offers"
+                  ? styles.selected
+                  : null,
+              ].join(" ")}
+              onClick={() => {
+                onSelectedChange(TopNavLinks.OFFERS);
+                dispatch(setSearchWarehouseId(null));
+                dispatch(setSearchCompanyId(null));
+              }}
+            >
+              {t("nav-offers")}
+            </Link>
+          )}
         </div>
 
         <div className={styles.end}>
-          {/* <div className={styles.search_icon_div}> */}
           <FiSearch
             className={styles.search_icon}
             size={20}
@@ -156,7 +172,6 @@ function TopNav({ onSelectedChange }) {
               setShowTopSearchBar(true);
             }}
           />
-          {/* </div> */}
 
           <Link
             to="/favorites"
@@ -170,7 +185,6 @@ function TopNav({ onSelectedChange }) {
               onSelectedChange(TopNavLinks.FAVORITES);
               dispatch(setSearchWarehouseId(null));
               dispatch(setSearchCompanyId(null));
-              // dispatch(setSelectedWarehouse(null));
             }}
           >
             <IconWithNumber
@@ -196,7 +210,6 @@ function TopNav({ onSelectedChange }) {
                 onSelectedChange(TopNavLinks.NOTIFICATIONS);
                 dispatch(setSearchWarehouseId(null));
                 dispatch(setSearchCompanyId(null));
-                // dispatch(setSelectedWarehouse(null));
               }}
             >
               <IconWithNumber
@@ -217,7 +230,6 @@ function TopNav({ onSelectedChange }) {
                 onSelectedChange(TopNavLinks.CART);
                 dispatch(setSearchWarehouseId(null));
                 dispatch(setSearchCompanyId(null));
-                // dispatch(setSelectedWarehouse(null));
               }}
             >
               <IconWithNumber
@@ -249,7 +261,6 @@ function TopNav({ onSelectedChange }) {
             onSelectedChange(TopNavLinks.FAVORITES);
             dispatch(setSearchWarehouseId(null));
             dispatch(setSearchCompanyId(null));
-            // dispatch(setSelectedWarehouse(null));
           }}
         >
           <IconWithNumber
@@ -275,7 +286,6 @@ function TopNav({ onSelectedChange }) {
               onSelectedChange(TopNavLinks.NOTIFICATIONS);
               dispatch(setSearchWarehouseId(null));
               dispatch(setSearchCompanyId(null));
-              // dispatch(setSelectedWarehouse(null));
             }}
           >
             <IconWithNumber
@@ -296,7 +306,6 @@ function TopNav({ onSelectedChange }) {
               onSelectedChange(TopNavLinks.CART);
               dispatch(setSearchWarehouseId(null));
               dispatch(setSearchCompanyId(null));
-              // dispatch(setSelectedWarehouse(null));
             }}
           >
             <IconWithNumber

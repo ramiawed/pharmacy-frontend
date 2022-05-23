@@ -12,7 +12,6 @@ const FavoritesPage = lazy(() =>
 );
 const HomePage = lazy(() => import("../home-page/home-page.component"));
 const ItemPage = lazy(() => import("../item-page/item-page.component"));
-const ItemsPage = lazy(() => import("../items-page/items-page.component"));
 const MedicinesPage = lazy(() =>
   import("../medicines-page/medicines-page.component")
 );
@@ -33,6 +32,7 @@ const OrdersPage = lazy(() => import("../orders-page/orders-page.component"));
 const OrderDetailsPage = lazy(() =>
   import("../order-details-page/order-details-page.component")
 );
+const OffersPage = lazy(() => import("../offers-page/offers-page.component"));
 
 function PharmacyRoutes({ changeOptionHandler }) {
   return (
@@ -72,6 +72,20 @@ function PharmacyRoutes({ changeOptionHandler }) {
               onSelectedChange={() => {
                 changeOptionHandler({
                   selectedTopNavOption: TopNavLinks.MEDICINES,
+                  collapsedSideNavOption: true,
+                  selectedSideNavOption: "",
+                  showTopNav: false,
+                  showSearchBar: false,
+                });
+              }}
+            />
+          </Route>
+
+          <Route exact path="/offers">
+            <OffersPage
+              onSelectedChange={() => {
+                changeOptionHandler({
+                  selectedTopNavOption: TopNavLinks.OFFERS,
                   collapsedSideNavOption: true,
                   selectedSideNavOption: "",
                   showTopNav: false,

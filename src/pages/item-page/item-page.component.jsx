@@ -422,9 +422,20 @@ function ItemPage() {
                 type="text"
                 value={item.name}
                 bordered={false}
-                icon={getIcon("medicine")}
                 onchange={handleInputChange}
                 error={itemError.name?.length > 0}
+                readOnly={!allowAction}
+              />
+              <div className={styles.horizontal_div}></div>
+
+              <Input
+                label="item-trade-name-ar"
+                id="nameAr"
+                type="text"
+                value={item.nameAr}
+                bordered={false}
+                onchange={handleInputChange}
+                error={itemError.nameAr?.length > 0}
                 readOnly={!allowAction}
               />
 
@@ -436,7 +447,6 @@ function ItemPage() {
                 type="text"
                 value={item.formula}
                 bordered={false}
-                icon={getIcon("medicine")}
                 onchange={handleInputChange}
                 error={itemError.formula?.length > 0}
                 readOnly={!allowAction}
@@ -450,7 +460,6 @@ function ItemPage() {
                 type="text"
                 value={item.caliber}
                 bordered={false}
-                icon={getIcon("medicine")}
                 onchange={handleInputChange}
                 error={itemError.caliber?.length > 0}
                 readOnly={!allowAction}
@@ -464,7 +473,6 @@ function ItemPage() {
                 type="text"
                 value={item.packing}
                 bordered={false}
-                icon={getIcon("medicine")}
                 onchange={handleInputChange}
                 error={itemError.packing?.length > 0}
                 readOnly={!allowAction}
@@ -479,7 +487,7 @@ function ItemPage() {
                     type="text"
                     value={item.barcode}
                     bordered={false}
-                    icon={getIcon("medicine")}
+                    // icon={getIcon("medicine")}
                     onchange={handleInputChange}
                     readOnly={!allowAction}
                   />
@@ -500,7 +508,6 @@ function ItemPage() {
                     type="number"
                     value={item.price}
                     bordered={false}
-                    icon={getIcon("price")}
                     onchange={handleInputChange}
                     error={itemError.price?.length > 0}
                     readOnly={!allowAction}
@@ -520,7 +527,6 @@ function ItemPage() {
                   type="number"
                   value={item.customer_price}
                   bordered={false}
-                  icon={getIcon("price")}
                   onchange={handleInputChange}
                   error={itemError.customer_price?.length > 0}
                   readOnly={!allowAction}

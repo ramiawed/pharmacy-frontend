@@ -100,7 +100,7 @@ function OffersModal({
     const offerObj = {
       mode:
         offers.length === 0
-          ? ""
+          ? null
           : quantityOfferType
           ? OfferTypes.PIECES
           : OfferTypes.PERCENTAGE,

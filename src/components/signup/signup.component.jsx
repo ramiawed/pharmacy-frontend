@@ -401,9 +401,9 @@ function SignUp() {
         errorObj["paperUrl"] = "enter-paper-url";
       }
 
-      if (user.paperUrl !== null && user.paperUrl.size > 2048000) {
-        errorObj["paperUrl"] = "paper-url-size-error";
-      }
+      // if (user.paperUrl !== null && user.paperUrl.size > 5242880) {
+      //   errorObj["paperUrl"] = "paper-url-size-error";
+      // }
     }
 
     // send post request to server to create a new user
@@ -471,7 +471,6 @@ function SignUp() {
           setUploadPaperError(t("upload-paper-error"));
         }
       } catch (err) {
-        console.log(err);
         setUploadPaperError("upload-paper-error");
         setSignupLoading(false);
       }

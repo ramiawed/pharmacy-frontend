@@ -504,5 +504,5 @@
   "upload-paper-error": "حدث خطأ أثناء تحميل الصورة، امتداد الصورة يجب ان يكون png, jpeg, gif",
   "optional-placeholder": "قيمة هذا الحقل اختيارية",
   "mandatory-placeholder": "قيمة هذا الحقل اجبارية",
-  "paper-url-size-error": "حجم صورة الترخيص يجب أن تكون أقل من 2 ميفا بايت"
+  "paper-url-size-error": "حجم صورة الترخيص يجب أن تكون أقل من 5 ميفا بايت"
 }

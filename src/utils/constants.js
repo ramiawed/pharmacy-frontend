@@ -169,6 +169,52 @@ export const checkItemExistsInWarehouse = (item, user) => {
   );
 };
 
+// if logged user is
+// 1- ADMIN: highlight the row by green color if the medicine has an offer.
+// 2- COMPANY: don't highlight the row never.
+// 3- GUEST: don't highlight the row never.
+// 4- WAREHOUSE: highlight the row by green if the medicine has an offer by logging warehouse.
+// 5- PHARMACY: highlight the row by green if the medicine has an offer by any warehouse
+// in the same city with the logging user
+export const checkOffer = (item, user) => {
+  if (
+    user.type === UserTypeConstants.GUEST ||
+    user.type === UserTypeConstants.COMPANY
+  ) {
+    return false;
+  }
+
+  let result = false;
+
+  if (user.type === UserTypeConstants.ADMIN) {
+    item.warehouses.forEach((w) => {
+      if (w.offer.offers.length > 0) {
+        result = true;
+      }
+    });
+  }
+
+  if (user.type === UserTypeConstants.WAREHOUSE) {
+    item.warehouses
+      .filter((w) => w.warehouse._id === user._id)
+      .forEach((w) => {
+        if (w.offer.offers.length > 0) {
+          result = true;
+        }
+      });
+  }
+
+  if (user.type === UserTypeConstants.PHARMACY) {
+    item.warehouses.forEach((w) => {
+      if (w.warehouse.city === user.city && w.offer.offers.length > 0) {
+        result = true;
+      }
+    });
+  }
+
+  return result;
+};
+
 // export const BASEURL = "https://salty-brook-65681.herokuapp.com/api/v1";
 // export const BASEURL = "http://localhost:8000/api/v1";
 // export const BASEURL = "http://67.205.165.65/api/v1";

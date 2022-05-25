@@ -41,58 +41,13 @@ import styles from "./medicine-card.module.scss";
 // constants and utils
 import {
   checkItemExistsInWarehouse,
+  checkOffer,
   Colors,
   SERVER_URL,
   UserTypeConstants,
 } from "../../utils/constants.js";
 
-// if logged user is
-// 1- ADMIN: highlight the row by green color if the medicine has an offer.
-// 2- COMPANY: don't highlight the row never.
-// 3- GUEST: don't highlight the row never.
-// 4- WAREHOUSE: highlight the row by green if the medicine has an offer by logging warehouse.
-// 5- PHARMACY: highlight the row by green if the medicine has an offer by any warehouse
-// in the same city with the logging user
-const checkOffer = (item, user) => {
-  if (
-    user.type === UserTypeConstants.GUEST ||
-    user.type === UserTypeConstants.COMPANY
-  ) {
-    return false;
-  }
-
-  let result = false;
-
-  if (user.type === UserTypeConstants.ADMIN) {
-    item.warehouses.forEach((w) => {
-      if (w.offer.offers.length > 0) {
-        result = true;
-      }
-    });
-  }
-
-  if (user.type === UserTypeConstants.WAREHOUSE) {
-    item.warehouses
-      .filter((w) => w.warehouse._id === user._id)
-      .forEach((w) => {
-        if (w.offer.offers.length > 0) {
-          result = true;
-        }
-      });
-  }
-
-  if (user.type === UserTypeConstants.PHARMACY) {
-    item.warehouses.forEach((w) => {
-      if (w.warehouse.city === user.city && w.offer.offers.length > 0) {
-        result = true;
-      }
-    });
-  }
-
-  return result;
-};
-
-function MedicineCard({ companyItem, forOfferPage }) {
+function MedicineCard({ companyItem }) {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -252,14 +207,12 @@ function MedicineCard({ companyItem, forOfferPage }) {
         });
       }}
     >
-      {!forOfferPage && checkOffer(companyItem, user) && (
+      {checkOffer(companyItem, user) && (
         <div className={[styles.ribbon_2].join(" ")}>
           <span>{t("offer")}</span>
         </div>
       )}
-      <div className={styles.company_name}>
-        {forOfferPage ? companyItem.company[0].name : companyItem.company.name}
-      </div>
+      <div className={styles.company_name}>{companyItem.company.name}</div>
       <div
         style={{
           flex: 1,

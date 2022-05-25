@@ -39,58 +39,12 @@ import styles from "./medicine-row.module.scss";
 // constants and utils
 import {
   checkItemExistsInWarehouse,
+  checkOffer,
   Colors,
   UserTypeConstants,
 } from "../../utils/constants";
 
-// if logged user is
-// 1- ADMIN: highlight the row by green color if the medicine has an offer.
-// 2- COMPANY: don't highlight the row never.
-// 3- GUEST: don't highlight the row never.
-// 4- WAREHOUSE: highlight the row by green if the medicine has an offer by logging warehouse.
-// 5- PHARMACY: highlight the row by green if the medicine has an offer by any warehouse
-// in the same city with the logging user
-const checkOffer = (item, user) => {
-  // don't show the offer if the logged user is GUEST or COMPANY
-  if (
-    user.type === UserTypeConstants.GUEST ||
-    user.type === UserTypeConstants.COMPANY
-  ) {
-    return false;
-  }
-
-  let result = false;
-
-  if (user.type === UserTypeConstants.ADMIN) {
-    item.warehouses.forEach((w) => {
-      if (w.offer.offers.length > 0) {
-        result = true;
-      }
-    });
-  }
-
-  if (user.type === UserTypeConstants.WAREHOUSE) {
-    item.warehouses
-      .filter((w) => w.warehouse._id === user._id)
-      .forEach((w) => {
-        if (w.offer.offers.length > 0) {
-          result = true;
-        }
-      });
-  }
-
-  if (user.type === UserTypeConstants.PHARMACY) {
-    item.warehouses.forEach((w) => {
-      if (w.warehouse.city === user.city && w.offer.offers.length > 0) {
-        result = true;
-      }
-    });
-  }
-
-  return result;
-};
-
-function MedicineRow({ item, forOfferPage }) {
+function MedicineRow({ item }) {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -246,9 +200,7 @@ function MedicineRow({ item, forOfferPage }) {
   return (
     <>
       <div className={styles.item_row} onClick={rowClickHandler}>
-        {!forOfferPage && checkOffer(item, user) && (
-          <div className={styles.offer_div}></div>
-        )}
+        {checkOffer(item, user) && <div className={styles.offer_div}></div>}
         <div className={styles.first_row}>
           <label className={[styles.item_name].join(" ")}>
             <label
@@ -329,9 +281,7 @@ function MedicineRow({ item, forOfferPage }) {
         </div>
 
         <div className={styles.second_row}>
-          <label className={styles.item_company}>
-            {forOfferPage ? item.company[0].name : item.company.name}
-          </label>
+          <label className={styles.item_company}>{item.company.name}</label>
           <label className={styles.item_price}>{item.price}</label>
           <label className={styles.item_customer_price}>
             {item.customer_price}

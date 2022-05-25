@@ -396,7 +396,7 @@ function SignUp() {
         errorObj["paperUrl"] = "enter-paper-url";
       }
 
-      if (user.paperUrl !== null && user.paperUrl.size > 512000) {
+      if (user.paperUrl !== null && user.paperUrl.size > 2048000) {
         errorObj["paperUrl"] = "paper-url-size-error";
       }
     }

@@ -36,6 +36,7 @@ import { getIcon } from "../../utils/icons.js";
 
 // styles
 import styles from "./signup.module.scss";
+import { GiConsoleController } from "react-icons/gi";
 
 const containerVariant = {
   hidden: {
@@ -392,7 +393,11 @@ function SignUp() {
       user.type === UserTypeConstants.PHARMACY ||
       user.type === UserTypeConstants.GUEST
     ) {
-      if (user.paperUrl === null || user.paper?.length === 0 || !user.paper) {
+      if (
+        user.paperUrl === null ||
+        user.paperUrl?.length === 0 ||
+        !user.paperUrl
+      ) {
         errorObj["paperUrl"] = "enter-paper-url";
       }
 
@@ -466,6 +471,7 @@ function SignUp() {
           setUploadPaperError(t("upload-paper-error"));
         }
       } catch (err) {
+        console.log(err);
         setUploadPaperError("upload-paper-error");
         setSignupLoading(false);
       }
@@ -825,7 +831,7 @@ function SignUp() {
                   type="file"
                   name="file"
                   ref={inputFileRef}
-                  accept="image/png, image/gif, image/jpeg"
+                  accept="image/png, image/gif, image/jpeg, image/jpg"
                   stye={{ display: "none" }}
                   onChange={inputFileChangeHandler}
                 />

@@ -26,7 +26,7 @@ import styles from "./action-loader.module.scss";
 // constants
 import { Colors } from "../../utils/constants";
 
-function Loader({ onclick, allowCancel }) {
+function Loader({ onclick, allowCancel, msg1, msg2 }) {
   const { t } = useTranslation();
   const [showButton, setShowButton] = useState(false);
 
@@ -53,6 +53,8 @@ function Loader({ onclick, allowCancel }) {
             bgColor={Colors.SECONDARY_COLOR}
           />
         )}
+        {msg1 && <p className={styles.msg}>{t(msg1)}</p>}
+        {msg2 && <p className={styles.msg}>{t(msg2)}</p>}
       </div>
     </>
   );

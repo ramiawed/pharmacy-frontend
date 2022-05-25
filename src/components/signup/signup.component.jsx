@@ -36,7 +36,6 @@ import { getIcon } from "../../utils/icons.js";
 
 // styles
 import styles from "./signup.module.scss";
-import { GiConsoleController } from "react-icons/gi";
 
 const containerVariant = {
   hidden: {
@@ -78,6 +77,8 @@ function SignUp() {
     "choose-paper-url-guest"
   );
   const [uploadPaperError, setUploadPaperError] = useState("");
+  const [loadingSignUpMsg, setLoadingSignUpMsg] = useState("");
+  const [loadingPaperUrlMsg, setLoadingPaperUrlMsg] = useState("");
 
   // states for each field
   const [user, setUser] = useState({
@@ -422,77 +423,132 @@ function SignUp() {
   const newAccountHandler = async () => {
     setShowLicenseModal(false);
     setSignupLoading(true);
+    setLoadingSignUpMsg("create-user-msg");
 
-    if (
-      user.type === UserTypeConstants.PHARMACY ||
-      user.type === UserTypeConstants.GUEST
-    ) {
-      const data = new FormData();
-      data.append("file", user.paperUrl);
+    try {
+      const userResponse = await axios.post(
+        `${BASEURL}/users/signup`,
+        user,
+        {}
+      );
 
-      const config = {
-        headers: {
-          "content-type": "multipart/form-data",
-        },
-      };
+      if (
+        user.type === UserTypeConstants.PHARMACY ||
+        user.type === UserTypeConstants.GUEST
+      ) {
+        setLoadingSignUpMsg("create-user-succeeded-msg");
+        setLoadingPaperUrlMsg("paper-loading-msg");
+        const data = new FormData();
+        data.append("file", user.paperUrl);
+        data.append("id", userResponse.data.data.id);
 
-      try {
-        const uploadResponse = await axios.post(
-          `${BASEURL}/users/upload-license`,
-          data,
-          config
-        );
-        if (uploadResponse && uploadResponse.data.data.name !== "") {
-          try {
-            await axios.post(
-              `${BASEURL}/users/signup`,
-              { ...user, paper_url: uploadResponse.data.data.name },
-              {}
-            );
-            setSignupLoading(false);
-            setSignupSucceeded(true);
-          } catch (err) {
-            if (
-              err.code === "ECONNABORTED" &&
-              err.message.startsWith("timeout")
-            ) {
-              setNetworkError("timeout");
-            } else if (!err.response) {
-              setNetworkError("network failed");
-            } else {
-              setError({
-                [err.response.data.field[0]]: err.response.data.message,
-              });
-            }
+        const config = {
+          headers: {
+            "content-type": "multipart/form-data",
+          },
+        };
 
-            setSignupLoading(false);
-          }
-        } else {
-          setUploadPaperError(t("upload-paper-error"));
+        try {
+          await axios.post(`${BASEURL}/users/upload-license`, data, config);
+          setLoadingSignUpMsg("");
+          setLoadingPaperUrlMsg("");
+          setSignupLoading(false);
+          setSignupSucceeded(true);
+        } catch (err) {
+          setLoadingSignUpMsg("");
+          setLoadingPaperUrlMsg("");
+          setSignupLoading(false);
+          setSignupSucceeded(true);
         }
-      } catch (err) {
-        setUploadPaperError("upload-paper-error");
-        setSignupLoading(false);
-      }
-    } else {
-      try {
-        await axios.post(`${BASEURL}/users/signup`, user, {});
+      } else {
+        setLoadingSignUpMsg("");
         setSignupLoading(false);
         setSignupSucceeded(true);
-      } catch (err) {
-        if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
-          setNetworkError("timeout");
-        } else if (!err.response) {
-          setNetworkError("network failed");
-        } else {
-          setError({
-            [err.response.data.field[0]]: err.response.data.message,
-          });
-        }
-
-        setSignupLoading(false);
       }
+    } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        setNetworkError("timeout");
+      } else if (!err.response) {
+        setNetworkError("network failed");
+      } else {
+        setError({
+          [err.response.data.field[0]]: err.response.data.message,
+        });
+      }
+
+      setSignupLoading(false);
     }
+
+    // if (
+    //   user.type === UserTypeConstants.PHARMACY ||
+    //   user.type === UserTypeConstants.GUEST
+    // ) {
+    //   const data = new FormData();
+    //   data.append("file", user.paperUrl);
+
+    //   const config = {
+    //     headers: {
+    //       "content-type": "multipart/form-data",
+    //     },
+    //   };
+
+    //   try {
+    //     const uploadResponse = await axios.post(
+    //       `${BASEURL}/users/upload-license`,
+    //       data,
+    //       config
+    //     );
+    //     if (uploadResponse && uploadResponse.data.data.name !== "") {
+    //       try {
+    //         await axios.post(
+    //           `${BASEURL}/users/signup`,
+    //           { ...user, paper_url: uploadResponse.data.data.name },
+    //           {}
+    //         );
+    //         setSignupLoading(false);
+    //         setSignupSucceeded(true);
+    //       } catch (err) {
+    //         if (
+    //           err.code === "ECONNABORTED" &&
+    //           err.message.startsWith("timeout")
+    //         ) {
+    //           setNetworkError("timeout");
+    //         } else if (!err.response) {
+    //           setNetworkError("network failed");
+    //         } else {
+    //           setError({
+    //             [err.response.data.field[0]]: err.response.data.message,
+    //           });
+    //         }
+
+    //         setSignupLoading(false);
+    //       }
+    //     } else {
+    //       setUploadPaperError(t("upload-paper-error"));
+    //     }
+    //   } catch (err) {
+    //     setUploadPaperError("upload-paper-error");
+    //     setSignupLoading(false);
+    //   }
+    // } else {
+    //   try {
+    //     await axios.post(`${BASEURL}/users/signup`, user, {});
+    //     setSignupLoading(false);
+    //     setSignupSucceeded(true);
+    //   } catch (err) {
+    //     if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+    //       setNetworkError("timeout");
+    //     } else if (!err.response) {
+    //       setNetworkError("network failed");
+    //     } else {
+    //       setError({
+    //         [err.response.data.field[0]]: err.response.data.message,
+    //       });
+    //     }
+
+    //     setSignupLoading(false);
+    //   }
+    // }
   };
 
   const inputFileChangeHandler = (e) => {
@@ -882,7 +938,13 @@ function SignUp() {
         </Toast>
       )}
 
-      {signupLoading && <Loader allowCancel={false} />}
+      {signupLoading && (
+        <Loader
+          allowCancel={false}
+          msg1={loadingSignUpMsg}
+          msg2={loadingPaperUrlMsg}
+        />
+      )}
 
       {showLicenseModel && (
         <Modal

@@ -5,11 +5,9 @@ import { useTranslation } from "react-i18next";
 import { useDispatch, useSelector } from "react-redux";
 import {
   cancelOperation,
-  getAllAdvertisements,
   resetError,
   selectAdvertisements,
 } from "../../redux/advertisements/advertisementsSlice";
-import { selectToken } from "../../redux/auth/authSlice";
 
 // components
 import AdvertisementPageHeader from "../../components/advertisement-page-header/advertisement-page-header.component";

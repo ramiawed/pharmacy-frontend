@@ -1,9 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 
-import LogoWithDotsImage from "../../sign-in-out-image.jpg";
 import OrderOnlineImage from "../../order-online.jpg";
 import WarehouseWithOffersImage from "../../warehouses-with-offers.jpg";
-import FreeServicesImage from "../../free-services.jpg";
 
 import styles from "./advertisements-home-page.module.scss";
 
@@ -11,10 +9,8 @@ let timer = null;
 
 function AdvertisementsHomePage({ advertisements }) {
   const backgrounds = [
-    LogoWithDotsImage,
-    OrderOnlineImage,
-    WarehouseWithOffersImage,
-    FreeServicesImage,
+    // OrderOnlineImage,
+    // WarehouseWithOffersImage,
     ...advertisements,
   ];
   const [index, setIndex] = useState(0);
@@ -36,7 +32,9 @@ function AdvertisementsHomePage({ advertisements }) {
     };
   }, []);
 
-  return (
+  return backgrounds.length === 0 ? (
+    <></>
+  ) : (
     <div className={styles.container}>
       <div className={styles.image}>
         <div

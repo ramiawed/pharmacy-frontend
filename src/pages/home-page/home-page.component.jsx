@@ -118,10 +118,6 @@ function HomePage({ onSelectedChange }) {
     if (settings.itemsSectionThree.show && itemsThreeRefresh)
       dispatch(getItemsSectionThree({ token }));
 
-    // if (settings.showAdvertisements) {
-    //   dispatch(getAllAdvertisements({ token }));
-    // }
-
     const timer = setInterval(() => {
       if (currentImage.current === advertisements.length - 1) {
         currentImage.current = 0;

@@ -15,7 +15,6 @@ import {
   setSearchCompanyId,
   setSearchWarehouseId,
 } from "../../redux/medicines/medicinesSlices";
-import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
 
 // components
 import IconWithNumber from "../icon-with-number/icon-with-number.component";
@@ -122,6 +121,9 @@ function TopNav({ onSelectedChange }) {
           <Link
             to={{
               pathname: "/medicines",
+              state: {
+                myCompanies: [],
+              },
             }}
             className={[
               styles.link,

@@ -282,7 +282,9 @@ function MedicineRow({ item }) {
 
         <div className={styles.second_row}>
           <label className={styles.item_company}>{item.company.name}</label>
-          <label className={styles.item_price}>{item.price}</label>
+          {user.type !== UserTypeConstants.GUEST && (
+            <label className={styles.item_price}>{item.price}</label>
+          )}
           <label className={styles.item_customer_price}>
             {item.customer_price}
           </label>

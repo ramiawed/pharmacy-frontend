@@ -9,6 +9,7 @@ import Button from "../button/button.component";
 // react icons
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { VscLoading } from "react-icons/vsc";
+import { FaHandshake, FaHandshakeSlash } from "react-icons/fa";
 
 // redux-stuff
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -19,7 +20,11 @@ import {
   removeFavorite,
   selectFavoritesError,
 } from "../../redux/favorites/favoritesSlice";
-import { selectUserData } from "../../redux/auth/authSlice";
+import {
+  addCompanyToOurCompanies,
+  removeCompanyFromOurCompanies,
+  selectUserData,
+} from "../../redux/auth/authSlice";
 import { addStatistics } from "../../redux/statistics/statisticsSlice";
 import {
   changeOnlineMsg,
@@ -43,6 +48,8 @@ import {
   SERVER_URL,
   UserTypeConstants,
 } from "../../utils/constants.js";
+import Icon from "../action-icon/action-icon.component";
+import ButtonWithIcon from "../button-with-icon/button-with-icon.component";
 
 function PartnerCard({ partner, fullWidth }) {
   const { t } = useTranslation();
@@ -61,6 +68,8 @@ function PartnerCard({ partner, fullWidth }) {
   // own state
   // state to display a loader icon when partner dispatch addToFavorite or removeFromFavorite
   const [changeFavoriteLoading, setChangeFavoriteLoading] = useState(false);
+  const [changeLinkCompanyToWarehouse, setChangeLinkCompanyToWarehouse] =
+    useState(false);
 
   // determine if the partner can see the medicines in specific warehouse
   const allowShowingWarehouseMedicines =
@@ -118,6 +127,44 @@ function PartnerCard({ partner, fullWidth }) {
       .catch(() => setChangeFavoriteLoading(false));
   };
 
+  const addCompanyToOurCompaniesHandler = (e) => {
+    // check the internet connection
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
+    setChangeLinkCompanyToWarehouse(true);
+
+    dispatch(addCompanyToOurCompanies({ companyId: partner._id, token }))
+      .then(unwrapResult)
+      .then(() => {
+        setChangeLinkCompanyToWarehouse(false);
+      })
+      .catch(() => {
+        setChangeLinkCompanyToWarehouse(false);
+      });
+  };
+
+  const removeCompanyFromOurCompaniesHandler = (e) => {
+    // check the internet connection
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
+    setChangeLinkCompanyToWarehouse(true);
+
+    dispatch(removeCompanyFromOurCompanies({ companyId: partner._id, token }))
+      .then(unwrapResult)
+      .then(() => {
+        setChangeLinkCompanyToWarehouse(false);
+      })
+      .catch(() => {
+        setChangeLinkCompanyToWarehouse(false);
+      });
+  };
+
   const partnerCardClickHandler = () => {
     if (
       partner.type === UserTypeConstants.WAREHOUSE &&
@@ -153,15 +200,10 @@ function PartnerCard({ partner, fullWidth }) {
         dispatch(setSearchWarehouseId(partner._id));
       }
 
-      // if (
-      //   partner.type === UserTypeConstants.WAREHOUSE &&
-      //   user.type === UserTypeConstants.PHARMACY
-      // ) {
-      //   dispatch(setSelectedWarehouse(partner._id));
-      // } else {
-      //   dispatch(setSelectedWarehouse(null));
-      // }
-      history.push("/medicines");
+      history.push({
+        pathname: "/medicines",
+        state: { myCompanies: partner.ourCompanies },
+      });
     }
   };
 
@@ -217,6 +259,41 @@ function PartnerCard({ partner, fullWidth }) {
             </div>
           )
         ) : null}
+
+        {user.type === UserTypeConstants.WAREHOUSE &&
+        partner.type === UserTypeConstants.COMPANY ? (
+          changeLinkCompanyToWarehouse ? (
+            <div>
+              <Icon
+                icon={() => (
+                  <VscLoading className={generalStyles.loading} size={20} />
+                )}
+                onclick={() => {}}
+                foreColor={Colors.YELLOW_COLOR}
+              />
+            </div>
+          ) : (
+            <div>
+              {user.ourCompanies.includes(partner._id) ? (
+                <ButtonWithIcon
+                  text={t("remove-company-from-warehouse-tooltip")}
+                  action={removeCompanyFromOurCompaniesHandler}
+                  bgColor={Colors.FAILED_COLOR}
+                  icon={() => <FaHandshakeSlash size={20} />}
+                />
+              ) : (
+                <ButtonWithIcon
+                  text={t("add-company-to-warehouse-tooltip")}
+                  action={addCompanyToOurCompaniesHandler}
+                  bgColor={Colors.SUCCEEDED_COLOR}
+                  icon={() => <FaHandshake size={20} />}
+                />
+              )}
+            </div>
+          )
+        ) : (
+          <></>
+        )}
 
         {(partner.type === UserTypeConstants.COMPANY ||
           (partner.type === UserTypeConstants.WAREHOUSE &&

@@ -230,6 +230,7 @@
   "single-item": "منتج",
   "choose-file": "اختر الملف",
   "items-count": "عدد المنتجات",
+  "offers-count": "عدد العروض",
   "companies-count": "عدد الشركات",
   "warehouses-count": "عدد المستودعات",
   "correct-items-count": "عدد المنتجات المحققة للشروط",
@@ -489,8 +490,6 @@
   "search-by-name-composition-barcode": "بحث من خلال الاسم التجاري، المادة الفعالة، الباركود",
   "who-we-are": "من نحن",
   "why-we-are": "لماذا نحن",
-  "app-home-page-describe": "ستحصل دائمًا على صفقة جيدة، مع خدمة استثنائية تجعل تجربة الطلب الخاصة بك من الشركات والمستودعات سهلة وسلسة قدر الإمكان.",
-  "why-we-are-describe": "",
   "new-user-added": "شريك جديد قام بإنشاء حساب، يرجى تفعيل حسابه",
   "general-error": "الرجاء المحاولة مرة جديدة",
   "image-size-must-be-less-than": "حجم الصورة يجب ان يكون اقل من ٥١٢ كيلو بايت",
@@ -507,5 +506,7 @@
   "paper-url-size-error": "حجم صورة الترخيص يجب أن تكون أقل من 5 ميفا بايت",
   "create-user-msg": "يتم إنشاء حساب جديد، يرجى الانتظار لثواني",
   "create-user-succeeded-msg": "تم إنشاء الحساب بنجاح",
-  "paper-loading-msg": "يتم الان تحميل الصورة، الرجاء الانتظار لثواني، زمن الانتظار متعلق بحجم الصورة"
+  "paper-loading-msg": "يتم الان تحميل الصورة، الرجاء الانتظار لثواني، زمن الانتظار متعلق بحجم الصورة",
+  "add-company-to-warehouse-tooltip": "إضافة الشركة إلى المستودع",
+  "remove-company-from-warehouse-tooltip": "حذف الشركة من المستودع"
 }

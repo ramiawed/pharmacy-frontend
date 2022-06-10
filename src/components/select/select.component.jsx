@@ -78,6 +78,7 @@ function SelectCustom({
         <label
           style={{
             minWidth: "100px",
+            textAlign: "right",
           }}
         >
           {t(caption)}

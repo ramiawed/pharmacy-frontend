@@ -35,7 +35,7 @@ function ButtonWithIcon({ action, text, bgColor, icon, smallText }) {
       onMouseEnter={toggleHover}
       onMouseLeave={toggleHover}
     >
-      <p>{text}</p>
+      <p style={{ padding: "10px" }}>{text}</p>
       {icon && icon()}
     </div>
   );

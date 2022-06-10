@@ -132,13 +132,13 @@
     }
 
     .price {
-      color: $third-color;
+      color: rgb(86, 227, 25);
       margin-inline-end: 10px;
       margin-left: 10px;
       font-weight: bolder;
 
       .customer_price {
-        color: rgb(86, 227, 25);
+        color: $third-color;
       }
     }
   }

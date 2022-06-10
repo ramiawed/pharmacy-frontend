@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 // react-icons
-import { VscSettings } from "react-icons/vsc";
+import { FaFilter } from "react-icons/fa";
 
 // styles
 import styles from "./search-container.module.scss";
@@ -72,7 +72,7 @@ function SearchContainer({ children, searchAction }) {
               >
                 <Icon
                   onclick={() => setMoreSearchOptions(!moreSearchOptions)}
-                  icon={() => <VscSettings />}
+                  icon={() => <FaFilter />}
                 />
               </div>
             )}

@@ -185,7 +185,7 @@ function OffersPage({ onSelectedChange }) {
 
         {count > 0 && (
           <div className={generalStyles.count}>
-            <span className={generalStyles.label}>{t("items-count")}</span>
+            <span className={generalStyles.label}>{t("offers-count")}</span>
             <span className={generalStyles.count}>{count}</span>
           </div>
         )}

@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
 import ReactLoading from "react-loading";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 // components
 import SearchContainer from "../../components/search-container/search-container.component";
@@ -39,7 +39,6 @@ import {
   resetMedicinesArray,
   resetMedicinesPageState,
 } from "../../redux/medicines/medicinesSlices";
-import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -47,6 +46,7 @@ import searchContainerStyles from "../../components/search-container/search-cont
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
+import SelectCustom from "../../components/select/select.component";
 
 let timer = null;
 
@@ -54,10 +54,35 @@ function MedicinesPage({ onSelectedChange }) {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
+  const location = useLocation();
+
+  console.log(location.state);
+
+  const companiesOptions = [
+    { value: "", label: t("all-companies") },
+    ...location.state.myCompanies.map((c) => {
+      return { value: c._id, label: c.name };
+    }),
+  ];
 
   // selectors
   const { token, user } = useSelector(selectUserData);
   const { medicines, count, status, pageState } = useSelector(selectMedicines);
+
+  const selectedCompany = companiesOptions.find(
+    (c) => c.label === pageState.searchCompanyName
+  );
+
+  const changeCompanySelectionHandler = (val) => {
+    if (val === "") {
+      dispatch(setSearchCompanyName(""));
+      handleEnterPress();
+    } else {
+      const selectedCompany = companiesOptions.find((c) => c.value === val);
+      dispatch(setSearchCompanyName(selectedCompany.label));
+      handleEnterPress();
+    }
+  };
 
   // handle search
   const handleSearch = () => {
@@ -80,9 +105,6 @@ function MedicinesPage({ onSelectedChange }) {
   };
 
   const keyUpHandler = (e) => {
-    if (e.target.id === "item-warehouse") {
-      dispatch(setSelectedWarehouse(null));
-    }
     cancelOperation();
 
     if (timer) {
@@ -108,6 +130,7 @@ function MedicinesPage({ onSelectedChange }) {
   return user ? (
     <>
       <SearchContainer searchAction={handleEnterPress}>
+        {/* search by medicine name, barcode */}
         <SearchInput
           label="user-name"
           id="search-name"
@@ -124,27 +147,58 @@ function MedicinesPage({ onSelectedChange }) {
           }}
           onkeyup={keyUpHandler}
         />
-        {/* // {user.type !== UserTypeConstants.GUEST && companyId === null && ( */}
-        {pageState.searchCompanyId === null && (
-          <SearchInput
-            label="item-company"
-            id="item-company"
-            type="text"
-            value={pageState.searchCompanyName}
-            onchange={(e) => {
-              dispatch(setSearchCompanyName(e.target.value));
+
+        {/* search by company name */}
+        {pageState.searchCompanyId === null &&
+          pageState.searchWarehouseId === null && (
+            <SearchInput
+              label="item-company"
+              id="item-company"
+              type="text"
+              value={pageState.searchCompanyName}
+              onchange={(e) => {
+                dispatch(setSearchCompanyName(e.target.value));
+              }}
+              icon={<FaSearch />}
+              placeholder="search-by-company-name"
+              onEnterPress={handleEnterPress}
+              resetField={() => {
+                dispatch(setSearchCompanyName(""));
+              }}
+              onkeyup={keyUpHandler}
+            />
+          )}
+
+        {/* search by warehouse's companies */}
+        {pageState.searchWarehouseId !== null && (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "flex-start",
+              backgroundColor: Colors.WHITE_COLOR,
+              borderRadius: "6px",
+              marginBottom: "4px",
+              padding: "2px 0",
             }}
-            icon={<FaSearch />}
-            placeholder="search-by-company-name"
-            onEnterPress={handleEnterPress}
-            resetField={() => {
-              dispatch(setSearchCompanyName(""));
-            }}
-            onkeyup={keyUpHandler}
-          />
+          >
+            <SelectCustom
+              bgColor={Colors.SECONDARY_COLOR}
+              foreColor="#fff"
+              options={companiesOptions}
+              onchange={changeCompanySelectionHandler}
+              defaultOption={
+                selectedCompany
+                  ? selectedCompany
+                  : {
+                      value: "",
+                      label: t("all-companies"),
+                    }
+              }
+              caption={t("companies")}
+            />
+          </div>
         )}
 
-        {/* {user.type !== UserTypeConstants.GUEST && warehouseId === null && ( */}
         {pageState.searchWarehouseId === null &&
           user.type !== UserTypeConstants.GUEST && (
             <SearchInput
@@ -165,7 +219,6 @@ function MedicinesPage({ onSelectedChange }) {
             />
           )}
 
-        {/* {user.type !== UserTypeConstants.GUEST && warehouseId === null && ( */}
         {user.type !== UserTypeConstants.GUEST && (
           <div className={searchContainerStyles.checkbox_div}>
             <input
@@ -187,7 +240,6 @@ function MedicinesPage({ onSelectedChange }) {
           </div>
         )}
 
-        {/* {user.type !== UserTypeConstants.GUEST && warehouseId === null && ( */}
         {user.type !== UserTypeConstants.GUEST && (
           <div className={searchContainerStyles.checkbox_div}>
             <input

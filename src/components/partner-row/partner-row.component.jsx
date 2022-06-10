@@ -5,6 +5,7 @@ import { useHistory } from "react-router-dom";
 // react icons
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { VscLoading } from "react-icons/vsc";
+import { FaHandshake, FaHandshakeSlash } from "react-icons/fa";
 
 // components
 import Icon from "../action-icon/action-icon.component";
@@ -18,7 +19,11 @@ import {
   removeFavorite,
   selectFavoritesError,
 } from "../../redux/favorites/favoritesSlice";
-import { selectUserData } from "../../redux/auth/authSlice";
+import {
+  addCompanyToOurCompanies,
+  removeCompanyFromOurCompanies,
+  selectUserData,
+} from "../../redux/auth/authSlice";
 import { addStatistics } from "../../redux/statistics/statisticsSlice";
 import {
   changeOnlineMsg,
@@ -28,10 +33,8 @@ import { selectSettings } from "../../redux/settings/settingsSlice";
 import {
   resetMedicines,
   setSearchCompanyId,
-  setSearchCompanyName,
   setSearchWarehouseId,
 } from "../../redux/medicines/medicinesSlices";
-import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -52,11 +55,14 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow, onSelectAction }) {
   const isOnline = useSelector(selectOnlineStatus);
   const favorites = useSelector(selectFavoritesPartners);
   const favoritesError = useSelector(selectFavoritesError);
+
   const { token, user } = useSelector(selectUserData);
 
   // own state
   // state to display a loader icon when partner dispatch addToFavorite or removeFromFavorite
   const [changeFavoriteLoading, setChangeFavoriteLoading] = useState(false);
+  const [changeLinkCompanyToWarehouse, setChangeLinkCompanyToWarehouse] =
+    useState(false);
 
   // determine if the partner can see the medicines in specific warehouse
   const allowShowingWarehouseMedicines =
@@ -93,6 +99,44 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow, onSelectAction }) {
       })
       .catch(() => {
         setChangeFavoriteLoading(false);
+      });
+  };
+
+  const addCompanyToOurCompaniesHandler = (e) => {
+    // check the internet connection
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
+    setChangeLinkCompanyToWarehouse(true);
+
+    dispatch(addCompanyToOurCompanies({ companyId: partner._id, token }))
+      .then(unwrapResult)
+      .then(() => {
+        setChangeLinkCompanyToWarehouse(false);
+      })
+      .catch(() => {
+        setChangeLinkCompanyToWarehouse(false);
+      });
+  };
+
+  const removeCompanyFromOurCompaniesHandler = (e) => {
+    // check the internet connection
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
+    setChangeLinkCompanyToWarehouse(true);
+
+    dispatch(removeCompanyFromOurCompanies({ companyId: partner._id, token }))
+      .then(unwrapResult)
+      .then(() => {
+        setChangeLinkCompanyToWarehouse(false);
+      })
+      .catch(() => {
+        setChangeLinkCompanyToWarehouse(false);
       });
   };
 
@@ -153,15 +197,11 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow, onSelectAction }) {
         dispatch(setSearchWarehouseId(partner._id));
       }
 
-      // if (
-      //   partner.type === UserTypeConstants.WAREHOUSE &&
-      //   user.type === UserTypeConstants.PHARMACY
-      // ) {
-      //   dispatch(setSelectedWarehouse(partner._id));
-      // } else {
-      //   dispatch(setSelectedWarehouse(null));
-      // }
-      history.push("/medicines");
+      history.push({
+        pathname: "/medicines",
+        state: { myCompanies: partner.ourCompanies },
+      });
+      // history.push("/medicines");
     }
   };
 
@@ -188,40 +228,82 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow, onSelectAction }) {
           {partner.name}
         </label>
 
-        {changeFavoriteLoading ? (
-          <div className={[rowStyles.padding_end].join(" ")}>
-            <Icon
-              icon={() => (
-                <VscLoading className={generalStyles.loading} size={20} />
-              )}
-              onclick={() => {}}
-              foreColor={Colors.YELLOW_COLOR}
-            />
-          </div>
-        ) : (
-          <div className={[rowStyles.padding_end].join(" ")}>
-            {favoritesError === "" ? (
-              favorites &&
-              favorites
-                .map((favorite) => favorite._id)
-                .includes(partner._id) ? (
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "row",
+          }}
+        >
+          {user.type === UserTypeConstants.WAREHOUSE &&
+          partner.type === UserTypeConstants.COMPANY ? (
+            changeLinkCompanyToWarehouse ? (
+              <div>
                 <Icon
-                  icon={() => <AiFillStar size={20} />}
-                  onclick={removePartnerFromFavoriteHandler}
+                  icon={() => (
+                    <VscLoading className={generalStyles.loading} size={20} />
+                  )}
+                  onclick={() => {}}
                   foreColor={Colors.YELLOW_COLOR}
-                  tooltip={t("remove-from-favorite-tooltip")}
                 />
-              ) : (
-                <Icon
-                  icon={() => <AiOutlineStar size={20} />}
-                  onclick={addPartnerToFavorite}
-                  foreColor={Colors.YELLOW_COLOR}
-                  tooltip={t("add-to-favorite-tooltip")}
-                />
-              )
-            ) : null}
-          </div>
-        )}
+              </div>
+            ) : (
+              <div>
+                {user.ourCompanies.includes(partner._id) ? (
+                  <Icon
+                    icon={() => <FaHandshakeSlash size={20} />}
+                    onclick={removeCompanyFromOurCompaniesHandler}
+                    foreColor={Colors.FAILED_COLOR}
+                    tooltip={t("remove-company-from-warehouse-tooltip")}
+                  />
+                ) : (
+                  <Icon
+                    icon={() => <FaHandshake size={20} />}
+                    onclick={addCompanyToOurCompaniesHandler}
+                    foreColor={Colors.SUCCEEDED_COLOR}
+                    tooltip={t("add-company-to-warehouse-tooltip")}
+                  />
+                )}
+              </div>
+            )
+          ) : (
+            <></>
+          )}
+
+          {changeFavoriteLoading ? (
+            <div>
+              <Icon
+                icon={() => (
+                  <VscLoading className={generalStyles.loading} size={20} />
+                )}
+                onclick={() => {}}
+                foreColor={Colors.YELLOW_COLOR}
+              />
+            </div>
+          ) : (
+            <div>
+              {favoritesError === "" ? (
+                favorites &&
+                favorites
+                  .map((favorite) => favorite._id)
+                  .includes(partner._id) ? (
+                  <Icon
+                    icon={() => <AiFillStar size={20} />}
+                    onclick={removePartnerFromFavoriteHandler}
+                    foreColor={Colors.YELLOW_COLOR}
+                    tooltip={t("remove-from-favorite-tooltip")}
+                  />
+                ) : (
+                  <Icon
+                    icon={() => <AiOutlineStar size={20} />}
+                    onclick={addPartnerToFavorite}
+                    foreColor={Colors.YELLOW_COLOR}
+                    tooltip={t("add-to-favorite-tooltip")}
+                  />
+                )
+              ) : null}
+            </div>
+          )}
+        </div>
       </div>
     </>
   );

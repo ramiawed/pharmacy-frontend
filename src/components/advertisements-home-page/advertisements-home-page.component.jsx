@@ -1,27 +1,53 @@
 import React, { useEffect, useRef, useState } from "react";
-
-import OrderOnlineImage from "../../order-online.jpg";
-import WarehouseWithOffersImage from "../../warehouses-with-offers.jpg";
+import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { selectUserData } from "../../redux/auth/authSlice";
+import { SERVER_URL } from "../../utils/constants";
 
 import styles from "./advertisements-home-page.module.scss";
 
 let timer = null;
 
 function AdvertisementsHomePage({ advertisements }) {
-  const backgrounds = [
-    // OrderOnlineImage,
-    // WarehouseWithOffersImage,
-    ...advertisements,
-  ];
+  const history = useHistory();
+  const { user } = useSelector(selectUserData);
   const [index, setIndex] = useState(0);
   const i = useRef(0);
 
   const startTimer = () => {
     timer = setInterval(() => {
-      i.current = i.current === backgrounds.length - 1 ? 0 : i.current + 1;
+      i.current = i.current === advertisements.length - 1 ? 0 : i.current + 1;
 
       setIndex(i.current);
     }, 7000);
+  };
+
+  const onAdvertisementPressHandler = (adv) => {
+    console.log(adv);
+    if (adv.company !== null) {
+      history.push({
+        pathname: "/medicines",
+        state: { myCompanies: [] },
+      });
+    }
+
+    if (adv.warehouse !== null) {
+      history.push({
+        pathname: "/medicines",
+        state: { myCompanies: adv.warehouse.ourCompanies },
+      });
+    }
+
+    if (adv.medicine !== null) {
+      history.push("/item", {
+        from: user.type,
+        type: "info",
+        allowAction: false,
+        itemId: adv.medicine,
+        companyId: null,
+        warehouseId: null,
+      });
+    }
   };
 
   useEffect(() => {
@@ -32,7 +58,7 @@ function AdvertisementsHomePage({ advertisements }) {
     };
   }, []);
 
-  return backgrounds.length === 0 ? (
+  return advertisements.length === 0 ? (
     <></>
   ) : (
     <div className={styles.container}>
@@ -40,7 +66,7 @@ function AdvertisementsHomePage({ advertisements }) {
         <div
           className={[styles.bottom_image].join(" ")}
           style={{
-            backgroundImage: `url(${backgrounds[index]})`,
+            backgroundImage: `url(${SERVER_URL}advertisements/${advertisements[index].logo_url})`,
           }}
         ></div>
         <div
@@ -50,14 +76,15 @@ function AdvertisementsHomePage({ advertisements }) {
           onMouseLeave={() => {
             startTimer();
           }}
+          onClick={() => onAdvertisementPressHandler(advertisements[index])}
           className={styles.top_image}
           style={{
-            backgroundImage: `url(${backgrounds[index]})`,
+            backgroundImage: `url(${SERVER_URL}advertisements/${advertisements[index].logo_url})`,
           }}
         ></div>
       </div>
       <div className={styles.dots}>
-        {backgrounds.map((b, index) => (
+        {advertisements.map((b, index) => (
           <div
             className={[
               styles.dot,

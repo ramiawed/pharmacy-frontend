@@ -171,7 +171,6 @@ function AddToCartModal({ item, close, setAddItemToCartMsg }) {
         okModal={handleAddItemToCart}
         small={true}
       >
-        {/* <div className={styles.warehouse_row}> */}
         <div className={styles.select_warehouse}>
           <label>{t("item-warehouse")}</label>
           <SelectCustom

@@ -1,5 +1,6 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 
 // components
 import SearchContainer from "../search-container/search-container.component";
@@ -22,6 +23,7 @@ import {
 
 // icons
 import { RiRefreshLine } from "react-icons/ri";
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 // constants and utils
 import {
@@ -35,8 +37,7 @@ import {
 
 // styles
 import generalStyles from "../../style.module.scss";
-import { useHistory } from "react-router-dom";
-import { IoMdArrowRoundBack } from "react-icons/io";
+import styles from "./orders-page-header.module.scss";
 
 function OrderPageHeader({ count, pageState, search }) {
   const { t } = useTranslation();
@@ -163,15 +164,8 @@ function OrderPageHeader({ count, pageState, search }) {
         )}
 
         {user.type === UserTypeConstants.ADMIN && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              backgroundColor: Colors.WHITE_COLOR,
-              borderRadius: "6px",
-              marginBottom: "4px",
-            }}
-          >
+          <div className={styles.selectDiv}>
+            <label>{t("admin-order-status")}</label>
             <SelectCustom
               bgColor={Colors.SECONDARY_COLOR}
               foreColor="#fff"
@@ -181,20 +175,12 @@ function OrderPageHeader({ count, pageState, search }) {
                 value: pageState.adminOrderStatus,
                 label: t(pageState.adminOrderStatus),
               }}
-              caption={t("admin-order-status")}
             />
           </div>
         )}
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-start",
-            backgroundColor: Colors.WHITE_COLOR,
-            borderRadius: "6px",
-            marginBottom: "4px",
-          }}
-        >
+        <div className={styles.selectDiv}>
+          <label>{t("warehouse-order-status")}</label>
           <SelectCustom
             bgColor={Colors.SECONDARY_COLOR}
             foreColor="#fff"
@@ -204,19 +190,11 @@ function OrderPageHeader({ count, pageState, search }) {
               value: pageState.warehouseOrderStatus,
               label: t(pageState.warehouseOrderStatus),
             }}
-            caption={t("warehouse-order-status")}
           />
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-start",
-            backgroundColor: Colors.WHITE_COLOR,
-            borderRadius: "6px",
-            marginBottom: "4px",
-          }}
-        >
+        <div className={styles.selectDiv}>
+          <label>{t("pharmacy-order-status")}</label>
           <SelectCustom
             bgColor={Colors.SECONDARY_COLOR}
             foreColor="#fff"
@@ -226,19 +204,11 @@ function OrderPageHeader({ count, pageState, search }) {
               value: pageState.pharmacyOrderStatus,
               label: t(pageState.pharmacyOrderStatus),
             }}
-            caption={t("pharmacy-order-status")}
           />
         </div>
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-start",
-            backgroundColor: Colors.WHITE_COLOR,
-            borderRadius: "6px",
-            marginBottom: "4px",
-          }}
-        >
+        <div className={styles.selectDiv}>
+          <label>{t("dates-within")}</label>
           <SelectCustom
             bgColor={Colors.SECONDARY_COLOR}
             foreColor="#fff"
@@ -253,7 +223,6 @@ function OrderPageHeader({ count, pageState, search }) {
                 }`
               ),
             }}
-            caption={t("dates-within")}
           />
         </div>
 

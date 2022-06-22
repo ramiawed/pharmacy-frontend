@@ -508,5 +508,7 @@
   "create-user-succeeded-msg": "تم إنشاء الحساب بنجاح",
   "paper-loading-msg": "يتم الان تحميل الصورة، الرجاء الانتظار لثواني، زمن الانتظار متعلق بحجم الصورة",
   "add-company-to-warehouse-tooltip": "إضافة الشركة إلى المستودع",
-  "remove-company-from-warehouse-tooltip": "حذف الشركة من المستودع"
+  "remove-company-from-warehouse-tooltip": "حذف الشركة من المستودع",
+  "selection": "تحديد",
+  "no-offers": "لا يوجد عرض"
 }

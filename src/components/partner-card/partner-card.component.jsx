@@ -5,6 +5,8 @@ import Logo from "../../logo.png";
 
 // components
 import Button from "../button/button.component";
+import Icon from "../action-icon/action-icon.component";
+import ButtonWithIcon from "../button-with-icon/button-with-icon.component";
 
 // react icons
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
@@ -36,7 +38,6 @@ import {
   setSearchCompanyName,
   setSearchWarehouseId,
 } from "../../redux/medicines/medicinesSlices";
-import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -48,8 +49,6 @@ import {
   SERVER_URL,
   UserTypeConstants,
 } from "../../utils/constants.js";
-import Icon from "../action-icon/action-icon.component";
-import ButtonWithIcon from "../button-with-icon/button-with-icon.component";
 
 function PartnerCard({ partner, fullWidth }) {
   const { t } = useTranslation();

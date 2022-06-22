@@ -13,6 +13,7 @@ import MedicinesSearchString from "../../components/medicines-search-string/medi
 import MedicineRow from "../../components/medicine-row/medicine-row.component";
 import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 import MedicineCard from "../../components/medicine-card/medicine-card.component";
+import SelectCustom from "../../components/select/select.component";
 
 // react-icons
 import { FaSearch, FaListUl } from "react-icons/fa";
@@ -43,10 +44,10 @@ import {
 // styles
 import generalStyles from "../../style.module.scss";
 import searchContainerStyles from "../../components/search-container/search-container.module.scss";
+import styles from "./medicines-page.module.scss";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import SelectCustom from "../../components/select/select.component";
 
 let timer = null;
 
@@ -55,8 +56,6 @@ function MedicinesPage({ onSelectedChange }) {
   const history = useHistory();
   const dispatch = useDispatch();
   const location = useLocation();
-
-  console.log(location.state);
 
   const companiesOptions = [
     { value: "", label: t("all-companies") },
@@ -171,16 +170,8 @@ function MedicinesPage({ onSelectedChange }) {
 
         {/* search by warehouse's companies */}
         {pageState.searchWarehouseId !== null && (
-          <div
-            style={{
-              display: "flex",
-              justifyContent: "flex-start",
-              backgroundColor: Colors.WHITE_COLOR,
-              borderRadius: "6px",
-              marginBottom: "4px",
-              padding: "2px 0",
-            }}
-          >
+          <div className={styles.selectDiv}>
+            <label>{t("companies")}</label>
             <SelectCustom
               bgColor={Colors.SECONDARY_COLOR}
               foreColor="#fff"
@@ -194,7 +185,6 @@ function MedicinesPage({ onSelectedChange }) {
                       label: t("all-companies"),
                     }
               }
-              caption={t("companies")}
             />
           </div>
         )}

@@ -21,7 +21,6 @@ function SelectCustom({
   options,
   onchange,
   defaultOption,
-  caption,
 }) {
   const { t } = useTranslation();
   // custom style for the Select Component.
@@ -31,13 +30,10 @@ function SelectCustom({
       background: "#fff",
       borderColor: bgColor,
       color: bgColor,
-      minHeight: "30px",
-      height: "30px",
+      minHeight: "35px",
+      height: "35px",
       boxShadow: state.isFocused ? null : null,
-      minWidth: "125px",
-      width: "160px",
       borderRadius: "6px",
-      marginLeft: "5px",
       flex: 1,
     }),
     menu: (provided, state) => ({
@@ -74,24 +70,14 @@ function SelectCustom({
 
   return (
     <div className={styles.order_container}>
-      {caption && (
-        <label
-          style={{
-            minWidth: "100px",
-            textAlign: "right",
-          }}
-        >
-          {t(caption)}
-        </label>
-      )}
-
-      {/* third-party component react-select */}
       <Select
         styles={customStyles}
         options={options}
         defaultValue={defaultOption}
         onChange={(e) => onchange(e.value)}
       />
+
+      {/* third-party component react-select */}
     </div>
   );
 }

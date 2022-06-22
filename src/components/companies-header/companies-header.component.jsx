@@ -27,6 +27,7 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 
 // styles
 import generalStyles from "../../style.module.scss";
+import styles from "./companies-header.module.scss";
 // constants and utils
 import { CitiesName, Colors } from "../../utils/constants";
 
@@ -64,21 +65,14 @@ function CompaniesHeader({ search, refreshHandler, count, keyUpHandler }) {
           onkeyup={keyUpHandler}
         />
 
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-start",
-            backgroundColor: Colors.WHITE_COLOR,
-            borderRadius: "6px",
-          }}
-        >
+        <div className={styles.selectDiv}>
+          <label>{t("user-city")}</label>
           <CitiesDropDown
             onSelectionChange={citiesNameChangeHandler}
             defaultValue={{
               value: searchCity,
               label: t(searchCity.toLowerCase()),
             }}
-            caption="user-city"
           />
         </div>
       </SearchContainer>

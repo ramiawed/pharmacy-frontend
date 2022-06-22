@@ -81,11 +81,9 @@ function NotificationRow({ notification, index, setSuccessDeletingMsg }) {
 
       <div className={styles.inner_container} onClick={showNotificationDetails}>
         <div className={styles.row}>
-          <label>{t("header")}</label>
           <p className={styles.header}>{notification.header}</p>
         </div>
         <div className={styles.row}>
-          <label>{t("body")}</label>
           <p className={styles.body}>{notification.body}</p>
         </div>
 

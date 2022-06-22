@@ -232,14 +232,14 @@ function MedicineRow({ item }) {
                 text={t("remove-from-warehouse-tooltip")}
                 onclick={removeItemFromWarehouseHandler}
                 foreColor={Colors.FAILED_COLOR}
-                icon={() => <RiDeleteBin5Fill />}
+                icon={() => <RiDeleteBin5Fill size={24} />}
               />
             ) : (
               <Icon
                 text={t("add-to-warehouse-tooltip")}
                 onclick={addItemToWarehouseHandler}
                 foreColor={Colors.SUCCEEDED_COLOR}
-                icon={() => <MdAddCircle />}
+                icon={() => <MdAddCircle size={24} />}
               />
             ))
           )}
@@ -250,7 +250,7 @@ function MedicineRow({ item }) {
                 text={t("add-to-cart")}
                 onclick={() => setShowModal(true)}
                 foreColor={Colors.SUCCEEDED_COLOR}
-                icon={() => <GiShoppingCart />}
+                icon={() => <GiShoppingCart size={24} />}
               />
             )}
 
@@ -268,14 +268,14 @@ function MedicineRow({ item }) {
               text={t("remove-from-favorite-tooltip")}
               onclick={removeItemFromFavoritesItemsHandler}
               foreColor={Colors.YELLOW_COLOR}
-              icon={() => <AiFillStar />}
+              icon={() => <AiFillStar size={24} />}
             />
           ) : (
             <Icon
               text={t("add-to-favorite-tooltip")}
               onclick={addItemToFavoriteItemsHandler}
               foreColor={Colors.YELLOW_COLOR}
-              icon={() => <AiOutlineStar />}
+              icon={() => <AiOutlineStar size={24} />}
             />
           )}
         </div>

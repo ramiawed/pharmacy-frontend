@@ -1,4 +1,18 @@
+@import '../../variables.scss';
+
 .separator {
   height: 1px;
   margin: 6px 0;
+}
+
+.selectDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  label {
+    margin-left: 10px;
+    color: $secondary-color;
+    min-width: 65px;
+  }
 }

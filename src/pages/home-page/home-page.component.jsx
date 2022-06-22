@@ -291,11 +291,7 @@ function HomePage({ onSelectedChange }) {
         )}
       </div>
 
-      <AdvertisementsHomePage
-        advertisements={advertisements.map(
-          (a) => `${SERVER_URL}/advertisements/${a.logo_url}`
-        )}
-      />
+      <AdvertisementsHomePage advertisements={advertisements} />
 
       <div className={styles.introduces}>
         <IntroduceUs />

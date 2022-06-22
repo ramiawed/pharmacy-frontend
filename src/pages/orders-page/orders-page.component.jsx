@@ -171,9 +171,26 @@ function OrdersPage({ onSelectedChange }) {
         count={count}
         search={handleEnterPress}
       />
-      <div>
+      <div
+        style={{
+          maxWidth: "600px",
+          margin: "auto",
+        }}
+      >
         {orders.length > 0 && (
           <div className={styles.action_highlight_container}>
+            <div className={styles.highlight}>
+              <RiMailUnreadLine color={Colors.SECONDARY_COLOR} />
+              <label>{t("unread")}</label>
+              <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
+              <label>{t("received")}</label>
+              <MdOutlineLocalShipping color={Colors.SUCCEEDED_COLOR} />
+              <label>{t("shipped")}</label>
+              <RiSendPlaneFill color={Colors.SUCCEEDED_COLOR} />
+              <label>{t("sent")}</label>
+              <MdRemoveDone color={Colors.FAILED_COLOR} />
+              <label>{t("will-dont-serve")}</label>
+            </div>
             <div className={styles.actions_div}>
               {user.type === UserTypeConstants.PHARMACY &&
                 selectedOrdersCount > 0 && (
@@ -231,76 +248,46 @@ function OrdersPage({ onSelectedChange }) {
                   </>
                 )}
             </div>
-
-            <div className={styles.highlight}>
-              <RiMailUnreadLine color={Colors.SECONDARY_COLOR} />
-              <label>{t("unread")}</label>
-              <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
-              <label>{t("received")}</label>
-              <MdOutlineLocalShipping color={Colors.SUCCEEDED_COLOR} />
-              <label>{t("shipped")}</label>
-              <RiSendPlaneFill color={Colors.SUCCEEDED_COLOR} />
-              <label>{t("sent")}</label>
-              <MdRemoveDone color={Colors.FAILED_COLOR} />
-              <label>{t("will-dont-serve")}</label>
-            </div>
           </div>
         )}
 
         {count > 0 && (
-          <TableHeader>
+          <div
+            style={{
+              maxWidth: "600px",
+              margin: "auto",
+            }}
+          >
             {user.type !== UserTypeConstants.ADMIN && (
-              <label
-                style={{
-                  width: "40px",
-                }}
-              >
-                <div onClick={changeOrdersSelection}>
-                  {selectedOrdersCount === orders.length && (
-                    <MdOutlineCheckBox size={20} color={Colors.WHITE_COLOR} />
+              <div onClick={changeOrdersSelection} className={styles.selection}>
+                {selectedOrdersCount === orders.length && (
+                  <MdOutlineCheckBox size={20} color={Colors.MAIN_COLOR} />
+                )}
+                {selectedOrdersCount === 0 && (
+                  <MdOutlineCheckBoxOutlineBlank
+                    size={20}
+                    color={Colors.MAIN_COLOR}
+                  />
+                )}
+                {selectedOrdersCount < orders.length &&
+                  selectedOrdersCount !== 0 && (
+                    <MdOutlineIndeterminateCheckBox
+                      size={20}
+                      color={Colors.MAIN_COLOR}
+                    />
                   )}
-                  {selectedOrdersCount === 0 && (
-                    <MdOutlineCheckBoxOutlineBlank size={20} />
-                  )}
-                  {selectedOrdersCount < orders.length &&
-                    selectedOrdersCount !== 0 && (
-                      <MdOutlineIndeterminateCheckBox size={20} />
-                    )}
-                </div>
-              </label>
+                <label
+                  style={{
+                    marginRight: "5px",
+                    fontSize: "16px",
+                    color: Colors.MAIN_COLOR,
+                  }}
+                >
+                  {t("selection")}
+                </label>
+              </div>
             )}
-
-            {(user.type === UserTypeConstants.ADMIN ||
-              user.type === UserTypeConstants.WAREHOUSE) && (
-              <label
-                className={tableStyles.label_medium}
-                style={{
-                  display: "flex",
-                  paddingInlineStart: "10px",
-                  paddingRight: "10ppx",
-                }}
-              >
-                {t("pharmacy-name")}
-              </label>
-            )}
-
-            {(user.type === UserTypeConstants.ADMIN ||
-              user.type === UserTypeConstants.PHARMACY) && (
-              <label
-                className={tableStyles.label_medium}
-                style={{
-                  display: "flex",
-                  paddingInlineStart: "10px",
-                  paddingRight: "10px",
-                }}
-              >
-                {t("warehouse-name")}
-              </label>
-            )}
-
-            <label className={tableStyles.label_small}>{t("date-label")}</label>
-            <label className={tableStyles.label_xsmall}></label>
-          </TableHeader>
+          </div>
         )}
 
         {orders?.map((order) => (

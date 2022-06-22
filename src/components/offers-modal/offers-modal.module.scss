@@ -9,8 +9,6 @@
   margin: auto;
   margin-block-end: 10px;
   margin-bottom: 10px;
-
-  // border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .checkboxes_div {
@@ -18,14 +16,14 @@
   justify-content: flex-start;
   align-items: center;
 
-  color: $secondary-color;
+  color: $main-color;
   padding-block-end: 10px;
   padding-bottom: 10px;
   border-bottom: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .checkboxes_div>label {
-  font-size: 0.8rem;
+  font-size: 16px;
 }
 
 .offer_type_checkbox {
@@ -37,5 +35,6 @@
 }
 
 .offer_type_checkbox label {
+  font-size: 16px;
   padding: 0 4px;
 }

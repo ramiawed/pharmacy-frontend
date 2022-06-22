@@ -191,7 +191,8 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
             smallFont={true}
           />
         </div>
-        <div>
+        <div className={styles.selectDiv}>
+          <label>{t("user-city")}</label>
           <SelectCustom
             bgColor={Colors.SECONDARY_COLOR}
             foreColor="#fff"
@@ -201,26 +202,31 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
               value: pageState.searchCity,
               label: t(pageState.searchCity.toLowerCase()),
             }}
-            caption="user-city"
+            // caption="user-city"
           />
         </div>
       </RowWith2Children>
 
       <Separator />
       <RowWith2Children>
-        <SelectCustom
-          bgColor={Colors.SECONDARY_COLOR}
-          foreColor="#fff"
-          options={userTypeOptions}
-          onchange={handleSearchTypeChange}
-          defaultOption={{
-            value: pageState.userType,
-            label: t(pageState.userType.toLowerCase()),
-          }}
-          caption="user-type"
-        />
+        <div className={styles.selectDiv}>
+          <label>{t("user-type")}</label>
+          <SelectCustom
+            bgColor={Colors.SECONDARY_COLOR}
+            foreColor="#fff"
+            options={userTypeOptions}
+            onchange={handleSearchTypeChange}
+            defaultOption={{
+              value: pageState.userType,
+              label: t(pageState.userType.toLowerCase()),
+            }}
+            // caption="user-type"
+          />
+        </div>
+
         {pageState.userType === UserTypeConstants.GUEST ? (
-          <>
+          <div className={styles.selectDiv}>
+            <label>{t("user-job")}</label>
             <SelectCustom
               bgColor={Colors.SECONDARY_COLOR}
               foreColor="#fff"
@@ -230,9 +236,9 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
                 value: pageState.searchJob,
                 label: t(pageState.searchJob.toLowerCase()),
               }}
-              caption="user-job"
-            />{" "}
-          </>
+              // caption="user-job"
+            />
+          </div>
         ) : (
           <div></div>
         )}
@@ -243,17 +249,21 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
       {pageState.userType === UserTypeConstants.WAREHOUSE && (
         <>
           <RowWith2Children>
-            <SelectCustom
-              bgColor={Colors.SECONDARY_COLOR}
-              foreColor="#fff"
-              options={showWarehouseItems}
-              onchange={handleShowItems}
-              defaultOption={{
-                value: pageState.showItems,
-                label: t(pageState.showItems.toLowerCase()),
-              }}
-              caption="show-warehouse-items"
-            />
+            <div className={styles.selectDiv}>
+              <label>{t("show-warehouse-items")}</label>
+              <SelectCustom
+                bgColor={Colors.SECONDARY_COLOR}
+                foreColor="#fff"
+                options={showWarehouseItems}
+                onchange={handleShowItems}
+                defaultOption={{
+                  value: pageState.showItems,
+                  label: t(pageState.showItems.toLowerCase()),
+                }}
+                // caption="show-warehouse-items"
+              />
+            </div>
+
             <div></div>
           </RowWith2Children>
           <Separator />
@@ -261,28 +271,34 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
       )}
 
       <RowWith2Children>
-        <SelectCustom
-          bgColor={Colors.SECONDARY_COLOR}
-          foreColor="#fff"
-          options={approvedState}
-          onchange={handleApproveChange}
-          defaultOption={{
-            value: pageState.approved,
-            label: t(pageState.approved.toLowerCase()),
-          }}
-          caption="approved-state"
-        />
-        <SelectCustom
-          bgColor={Colors.SECONDARY_COLOR}
-          foreColor="#fff"
-          options={deletedState}
-          onchange={handleActiveChange}
-          defaultOption={{
-            value: pageState.active,
-            label: t(pageState.active.toLowerCase()),
-          }}
-          caption="approved-state"
-        />
+        <div className={styles.selectDiv}>
+          <label>{t("approved-state")}</label>
+          <SelectCustom
+            bgColor={Colors.SECONDARY_COLOR}
+            foreColor="#fff"
+            options={approvedState}
+            onchange={handleApproveChange}
+            defaultOption={{
+              value: pageState.approved,
+              label: t(pageState.approved.toLowerCase()),
+            }}
+            // caption="approved-state"
+          />
+        </div>
+        <div className={styles.selectDiv}>
+          <label>{t("approved-state")}</label>
+          <SelectCustom
+            bgColor={Colors.SECONDARY_COLOR}
+            foreColor="#fff"
+            options={deletedState}
+            onchange={handleActiveChange}
+            defaultOption={{
+              value: pageState.active,
+              label: t(pageState.active.toLowerCase()),
+            }}
+            // caption="approved-state"
+          />
+        </div>
       </RowWith2Children>
 
       <Separator />

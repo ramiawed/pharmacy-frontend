@@ -5,7 +5,6 @@
   align-items: center;
   justify-content: flex-start;
 
-  order: 2;
   flex: 1;
   margin-bottom: 5px;
 }
@@ -20,16 +19,15 @@
 .highlight {
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: center;
+  flex-wrap: wrap;
   margin-block: 10px;
   margin-top: 10px;
   margin-bottom: 10px;
-
-  order: 1;
 }
 
 .highlight label {
-  font-size: 10px;
+  font-size: 14px;
   color: $secondary-color;
   margin-inline: 4px;
   margin-left: 4px;
@@ -41,18 +39,9 @@
   flex-direction: column;
 }
 
-@media only screen and (min-width: $small) {
-  .action_highlight_container {
-    flex-direction: row;
-  }
-
-  .highlight {
-    order: 2;
-  }
-
-  .actions_div {
-    order: 1;
-  }
-
-
+.selection {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  margin-bottom: 5px;
 }

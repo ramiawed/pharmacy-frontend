@@ -39,7 +39,6 @@ function CitiesDropDown({ onSelectionChange, defaultValue, caption }) {
         options={citiesOptions}
         onchange={onSelectionChange}
         defaultOption={defaultValue}
-        caption={caption.length > 0 ? caption : ""}
       />
     </>
   );

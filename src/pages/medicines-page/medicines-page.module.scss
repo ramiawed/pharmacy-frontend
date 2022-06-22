@@ -1,0 +1,17 @@
+@import "../../variables.scss";
+
+.selectDiv {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  background-color: $white-color;
+  border-radius: 6px;
+  margin-bottom: 4px;
+
+  label {
+    color: $secondary-color;
+    font-size: 14px;
+    margin-right: 8px;
+    margin-left: 8px;
+  }
+}

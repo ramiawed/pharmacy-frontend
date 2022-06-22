@@ -3,6 +3,7 @@ import { useTranslation } from "react-i18next";
 import { v4 as uuidv4 } from "uuid";
 
 // redux stuff
+import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
 import { changeItemWarehouseOffer } from "../../redux/warehouseItems/warehouseItemsSlices";
 
@@ -19,7 +20,6 @@ import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors, OfferTypes, toEnglishNumber } from "../../utils/constants";
-import { unwrapResult } from "@reduxjs/toolkit";
 
 function OffersModal({
   item,

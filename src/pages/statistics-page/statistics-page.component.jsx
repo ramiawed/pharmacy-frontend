@@ -304,7 +304,7 @@ function StatisticsPage({ onSelectedChange }) {
               <label className={tableStyles.label_xsmall}>
                 <Icon
                   selected={false}
-                  icon={() => <IoMdMore size={20} />}
+                  icon={() => <IoMdMore size={24} />}
                   tooltip={t("statistics-dates")}
                   onclick={() => {
                     setSelectedStatistics(stat);

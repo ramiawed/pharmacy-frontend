@@ -85,7 +85,7 @@ function SettingRow({ data, tooltip, action, type }) {
             />
           ) : (
             <Icon
-              icon={() => <RiDeleteBin5Fill size={20} />}
+              icon={() => <RiDeleteBin5Fill size={24} />}
               foreColor={Colors.FAILED_COLOR}
               onclick={removeFromAdvertisementSectionHandler}
               tooltip={t(tooltip)}

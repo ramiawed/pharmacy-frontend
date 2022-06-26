@@ -30,6 +30,7 @@ import {
   IoMdNotificationsOutline,
 } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
+import { BsFillBookmarksFill } from "react-icons/bs";
 
 // style
 import styles from "./top-nav.module.scss";
@@ -40,6 +41,7 @@ import {
   TopNavLinks,
   UserTypeConstants,
 } from "../../utils/constants.js";
+import { selectSavedItems } from "../../redux/savedItems/savedItemsSlice";
 
 function TopNav({ onSelectedChange }) {
   const history = useHistory();
@@ -54,6 +56,7 @@ function TopNav({ onSelectedChange }) {
   const allFavorites = useSelector(selectFavorites);
   const user = useSelector(selectUser);
   const total = useSelector(selectCartItemCount);
+  const { count: savedItemsCount } = useSelector(selectSavedItems);
 
   // own state
   const [showTopSearchBar, setShowTopSearchBar] = useState(false);
@@ -169,7 +172,7 @@ function TopNav({ onSelectedChange }) {
         <div className={styles.end}>
           <FiSearch
             className={styles.search_icon}
-            size={20}
+            size={24}
             onClick={() => {
               setShowTopSearchBar(true);
             }}
@@ -194,8 +197,8 @@ function TopNav({ onSelectedChange }) {
                 allFavorites.favorites_partners.length +
                 allFavorites.favorites_items.length
               }
-              fillIcon={<AiFillStar size={20} />}
-              noFillIcon={<AiOutlineStar size={20} />}
+              fillIcon={<AiFillStar size={24} />}
+              noFillIcon={<AiOutlineStar size={24} />}
             />
           </Link>
 
@@ -216,11 +219,35 @@ function TopNav({ onSelectedChange }) {
             >
               <IconWithNumber
                 value={unReadNotificationCount}
-                fillIcon={<IoMdNotifications size={20} />}
-                noFillIcon={<IoMdNotificationsOutline size={20} />}
+                fillIcon={<IoMdNotifications size={24} />}
+                noFillIcon={<IoMdNotificationsOutline size={24} />}
               />
             </Link>
           )}
+
+          {user.type === UserTypeConstants.PHARMACY && (
+            <Link
+              to="/saved-items"
+              className={[
+                styles.link,
+                history.location.pathname === "/saved-items"
+                  ? styles.selected
+                  : null,
+              ].join(" ")}
+              onClick={() => {
+                onSelectedChange(TopNavLinks.SAVEDITEMS);
+                dispatch(setSearchWarehouseId(null));
+                dispatch(setSearchCompanyId(null));
+              }}
+            >
+              <IconWithNumber
+                value={savedItemsCount}
+                fillIcon={<BsFillBookmarksFill size={24} />}
+                noFillIcon={<BsFillBookmarksFill size={24} />}
+              />
+            </Link>
+          )}
+
           {user.type === UserTypeConstants.PHARMACY && (
             <Link
               to="/cart"
@@ -236,8 +263,8 @@ function TopNav({ onSelectedChange }) {
             >
               <IconWithNumber
                 value={total}
-                fillIcon={<GiShoppingCart size={20} />}
-                noFillIcon={<GiShoppingCart size={20} />}
+                fillIcon={<GiShoppingCart size={24} />}
+                noFillIcon={<GiShoppingCart size={24} />}
               />
             </Link>
           )}
@@ -247,7 +274,7 @@ function TopNav({ onSelectedChange }) {
       <div className={styles.float_div}>
         <FiSearch
           className={styles.search_icon}
-          size={20}
+          size={24}
           onClick={() => {
             setShowTopSearchBar(true);
           }}
@@ -270,8 +297,8 @@ function TopNav({ onSelectedChange }) {
               allFavorites.favorites_partners.length +
               allFavorites.favorites_items.length
             }
-            fillIcon={<AiFillStar size={20} />}
-            noFillIcon={<AiOutlineStar size={20} />}
+            fillIcon={<AiFillStar size={24} />}
+            noFillIcon={<AiOutlineStar size={24} />}
           />
         </Link>
 
@@ -292,11 +319,35 @@ function TopNav({ onSelectedChange }) {
           >
             <IconWithNumber
               value={unReadNotificationCount}
-              fillIcon={<IoMdNotifications size={20} />}
-              noFillIcon={<IoMdNotificationsOutline size={20} />}
+              fillIcon={<IoMdNotifications size={24} />}
+              noFillIcon={<IoMdNotificationsOutline size={24} />}
             />
           </Link>
         )}
+
+        {user.type === UserTypeConstants.PHARMACY && (
+          <Link
+            to="/saved-items"
+            className={[
+              styles.link,
+              history.location.pathname === "/saved-items"
+                ? styles.selected
+                : null,
+            ].join(" ")}
+            onClick={() => {
+              onSelectedChange(TopNavLinks.SAVEDITEMS);
+              dispatch(setSearchWarehouseId(null));
+              dispatch(setSearchCompanyId(null));
+            }}
+          >
+            <IconWithNumber
+              value={savedItemsCount}
+              fillIcon={<BsFillBookmarksFill size={24} />}
+              noFillIcon={<BsFillBookmarksFill size={24} />}
+            />
+          </Link>
+        )}
+
         {user.type === UserTypeConstants.PHARMACY && (
           <Link
             to="/cart"
@@ -312,8 +363,8 @@ function TopNav({ onSelectedChange }) {
           >
             <IconWithNumber
               value={total}
-              fillIcon={<GiShoppingCart size={20} />}
-              noFillIcon={<GiShoppingCart size={20} />}
+              fillIcon={<GiShoppingCart size={24} />}
+              noFillIcon={<GiShoppingCart size={24} />}
             />
           </Link>
         )}

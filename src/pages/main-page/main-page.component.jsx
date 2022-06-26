@@ -16,6 +16,7 @@ import {
   selectNavigationSlice,
 } from "../../redux/navs/navigationSlice";
 import { selectAdvertisements } from "../../redux/advertisements/advertisementsSlice";
+import { getSavedItems } from "../../redux/savedItems/savedItemsSlice";
 
 // components
 import TopNav from "../../components/top-nav/top-nav.component";
@@ -86,6 +87,9 @@ function MainPage() {
         user.type === UserTypeConstants.WAREHOUSE
       ) {
         dispatch(getUnreadOrders({ token }));
+      }
+      if (user.type === UserTypeConstants.PHARMACY) {
+        dispatch(getSavedItems({ token }));
       }
     }
   }, [dispatch, token, user]);

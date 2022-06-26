@@ -9,13 +9,13 @@ import { BsCheckAll } from "react-icons/bs";
 import { MdOutlineLocalShipping, MdRemoveDone } from "react-icons/md";
 
 // components
-import CartWarehouseTableHeader from "../../components/cart-warehouse-table-header/cart-warehouse-table-header.component";
-import CartRow from "../../components/cart-row/cart-row.component";
 import Loader from "../../components/action-loader/action-loader.component";
 import NoContent from "../../components/no-content/no-content.component";
 import Icon from "../../components/action-icon/action-icon.component";
 import Header from "../../components/header/header.component";
 import { ExportCSV } from "../../components/export-csv/export-csv.component";
+import CartItemCard from "../../components/cart-item-card/cart-item-card.component";
+import CardInfo from "../../components/card-info/card-info.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -33,8 +33,6 @@ import {
   OfferTypes,
   UserTypeConstants,
 } from "../../utils/constants";
-import CartItemCard from "../../components/cart-item-card/cart-item-card.component";
-import CardInfo from "../../components/card-info/card-info.component";
 
 function OrderDetailsPage({ location, onSelectedChange }) {
   const { t } = useTranslation();

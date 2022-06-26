@@ -60,7 +60,7 @@ function AdvertisementPageHeader({ isNew, setIsNew }) {
               onclick={() => {
                 setIsNew(true);
               }}
-              icon={() => <MdAddCircle size={20} />}
+              icon={() => <MdAddCircle size={24} />}
               withBackground={true}
             />
             {/* Refresh */}

@@ -46,6 +46,7 @@ import generalStyles from "../../style.module.scss";
 
 // constants and utils
 import { Colors } from "../../utils/constants";
+import { savedItemsSliceSignOut } from "../../redux/savedItems/savedItemsSlice";
 
 function DeleteMe() {
   const { t } = useTranslation();
@@ -103,6 +104,7 @@ function DeleteMe() {
         dispatch(notificationsSignOut());
         dispatch(settingsSignOut());
         dispatch(usersNotificationsSignOut());
+        dispatch(savedItemsSliceSignOut());
         localStorage.removeItem("token");
       })
       .catch(() => {

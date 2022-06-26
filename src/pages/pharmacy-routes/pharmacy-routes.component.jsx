@@ -34,6 +34,10 @@ const OrderDetailsPage = lazy(() =>
 );
 const OffersPage = lazy(() => import("../offers-page/offers-page.component"));
 
+const SavedItemsPage = lazy(() =>
+  import("../saved-items-page/saved-items-page.component")
+);
+
 function PharmacyRoutes({ changeOptionHandler }) {
   return (
     <>
@@ -155,19 +159,19 @@ function PharmacyRoutes({ changeOptionHandler }) {
             />
           </Route>
 
-          {/* <Route exact path="/items">
-            <ItemsPage
+          <Route exact path="/saved-items">
+            <SavedItemsPage
               onSelectedChange={() => {
                 changeOptionHandler({
                   selectedTopNavOption: "",
                   collapsedSideNavOption: true,
-                  selectedSideNavOption: SideNavLinks.ITEMS,
+                  selectedSideNavOption: TopNavLinks.SAVEDITEMS,
                   showTopNav: false,
                   showSearchBar: false,
                 });
               }}
             />
-          </Route> */}
+          </Route>
 
           <Route exact path="/notifications">
             <UserNotificationPage

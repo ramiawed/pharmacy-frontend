@@ -233,7 +233,7 @@ function PartnerCard({ partner, fullWidth }) {
                 " "
               )}
             >
-              <VscLoading className={generalStyles.loading} size={20} />
+              <VscLoading className={generalStyles.loading} size={24} />
             </div>
           ) : (
             <div
@@ -265,7 +265,7 @@ function PartnerCard({ partner, fullWidth }) {
             <div>
               <Icon
                 icon={() => (
-                  <VscLoading className={generalStyles.loading} size={20} />
+                  <VscLoading className={generalStyles.loading} size={24} />
                 )}
                 onclick={() => {}}
                 foreColor={Colors.YELLOW_COLOR}
@@ -278,14 +278,14 @@ function PartnerCard({ partner, fullWidth }) {
                   text={t("remove-company-from-warehouse-tooltip")}
                   action={removeCompanyFromOurCompaniesHandler}
                   bgColor={Colors.FAILED_COLOR}
-                  icon={() => <FaHandshakeSlash size={20} />}
+                  icon={() => <FaHandshakeSlash size={24} />}
                 />
               ) : (
                 <ButtonWithIcon
                   text={t("add-company-to-warehouse-tooltip")}
                   action={addCompanyToOurCompaniesHandler}
                   bgColor={Colors.SUCCEEDED_COLOR}
-                  icon={() => <FaHandshake size={20} />}
+                  icon={() => <FaHandshake size={24} />}
                 />
               )}
             </div>

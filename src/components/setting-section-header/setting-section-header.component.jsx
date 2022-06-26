@@ -111,19 +111,19 @@ function SettingSectionHeader({
         {edit ? (
           <>
             <Icon
-              icon={() => <IoCheckmarkDoneCircle size={20} />}
+              icon={() => <IoCheckmarkDoneCircle size={24} />}
               foreColor={Colors.SUCCEEDED_COLOR}
               onclick={editHandler}
             />
             <Icon
-              icon={() => <AiFillCloseCircle size={20} />}
+              icon={() => <AiFillCloseCircle size={24} />}
               foreColor={Colors.FAILED_COLOR}
               onclick={closeHandler}
             />
           </>
         ) : (
           <Icon
-            icon={() => <AiFillEdit size={20} />}
+            icon={() => <AiFillEdit size={24} />}
             foreColor={Colors.MAIN_COLOR}
             onclick={() => {
               setEdit(true);

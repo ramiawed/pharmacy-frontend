@@ -510,5 +510,9 @@
   "add-company-to-warehouse-tooltip": "إضافة الشركة إلى المستودع",
   "remove-company-from-warehouse-tooltip": "حذف الشركة من المستودع",
   "selection": "تحديد",
-  "no-offers": "لا يوجد عرض"
+  "no-offers": "لا يوجد عرض",
+  "add-item-to-saved-items-tooltip": "إضافة المنتج إلى لائحة المحفوظات",
+  "remove-item-from-saved-items-tooltip": "حذف المنتج من لائحة المحفوظات",
+  "saved-items": "المنتجات المحفوظة",
+  "no-saved-items": "لا يوجد منتجات محفوظة"
 }

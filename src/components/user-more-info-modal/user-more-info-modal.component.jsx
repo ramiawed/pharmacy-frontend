@@ -66,7 +66,7 @@ function UserMoreInfoModal({ user, close }) {
             onclick={() => {
               setShowUserDocument(true);
             }}
-            icon={() => <FiImage size={20} />}
+            icon={() => <FiImage size={24} />}
           />
 
           {/* </label> */}

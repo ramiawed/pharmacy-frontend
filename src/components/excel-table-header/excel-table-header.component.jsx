@@ -26,13 +26,13 @@ function ExcelTableHeader({
       <label className={tableStyles.label_xsmall}>
         <div onClick={itemsSelectionChange}>
           {selectValue === "all" && (
-            <MdOutlineCheckBox size={20} color={Colors.WHITE_COLOR} />
+            <MdOutlineCheckBox size={24} color={Colors.WHITE_COLOR} />
           )}
           {selectValue === "none" && (
-            <MdOutlineCheckBoxOutlineBlank size={20} />
+            <MdOutlineCheckBoxOutlineBlank size={24} />
           )}
           {selectValue === "some" && (
-            <MdOutlineIndeterminateCheckBox size={20} />
+            <MdOutlineIndeterminateCheckBox size={24} />
           )}
         </div>
       </label>

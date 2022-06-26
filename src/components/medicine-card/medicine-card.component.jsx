@@ -13,6 +13,7 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdAddCircle } from "react-icons/md";
 import { GiShoppingCart } from "react-icons/gi";
 import { VscLoading } from "react-icons/vsc";
+import { BsFillBookmarkPlusFill, BsFillBookmarkDashFill } from "react-icons/bs";
 
 // redux-stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -46,6 +47,12 @@ import {
   SERVER_URL,
   UserTypeConstants,
 } from "../../utils/constants.js";
+import {
+  addSavedItem,
+  removeSavedItem,
+  selectSavedItems,
+} from "../../redux/savedItems/savedItemsSlice";
+import { BiListMinus, BiListPlus } from "react-icons/bi";
 
 function MedicineCard({ companyItem }) {
   const { t } = useTranslation();
@@ -55,9 +62,11 @@ function MedicineCard({ companyItem }) {
   const isOnline = useSelector(selectOnlineStatus);
   const { user, token } = useSelector(selectUserData);
   const favorites = useSelector(selectFavoritesItems);
-  const [showModal, setShowModal] = useState(false);
+  const { savedItems } = useSelector(selectSavedItems);
 
+  const [showModal, setShowModal] = useState(false);
   const [changeFavoriteLoading, setChangeFavoriteLoading] = useState(false);
+  const [changeSaveItemLoading, setChangeSaveItemLoading] = useState(false);
   const [changeAddToWarehouseLoading, setChangeAddToWarehouseLoading] =
     useState(false);
 
@@ -172,6 +181,45 @@ function MedicineCard({ companyItem }) {
     e.stopPropagation();
   };
 
+  // method to handle add item to user's savedItem
+  const addItemToSavedItemsHandler = (e) => {
+    // check the internet connection
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
+    setChangeSaveItemLoading(true);
+
+    dispatch(addSavedItem({ obj: { savedItemId: companyItem._id }, token }))
+      .then(unwrapResult)
+      .then(() => {
+        setChangeSaveItemLoading(false);
+      })
+      .catch(() => {
+        setChangeSaveItemLoading(false);
+      });
+  };
+
+  const removeItemFromSavedItemsHandler = (e) => {
+    // check the internet connection
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
+    setChangeSaveItemLoading(true);
+
+    dispatch(removeSavedItem({ obj: { savedItemId: companyItem._id }, token }))
+      .then(unwrapResult)
+      .then(() => {
+        setChangeSaveItemLoading(false);
+      })
+      .catch(() => {
+        setChangeSaveItemLoading(false);
+      });
+  };
+
   const dispatchStatisticsHandler = () => {
     if (
       user.type === UserTypeConstants.PHARMACY ||
@@ -222,7 +270,7 @@ function MedicineCard({ companyItem }) {
           {changeAddToWarehouseLoading ? (
             <Icon
               icon={() => (
-                <VscLoading className={generalStyles.loading} size={20} />
+                <VscLoading className={generalStyles.loading} size={24} />
               )}
               onclick={() => {}}
               foreColor={Colors.SECONDARY_COLOR}
@@ -248,14 +296,38 @@ function MedicineCard({ companyItem }) {
             ))
           )}
 
-          {user.type === UserTypeConstants.PHARMACY &&
-            checkItemExistsInWarehouse(companyItem, user) && (
+          {user.type === UserTypeConstants.PHARMACY ? (
+            checkItemExistsInWarehouse(companyItem, user) ? (
               <Icon
                 icon={() => <GiShoppingCart size={24} />}
                 onclick={() => setShowModal(true)}
                 foreColor={Colors.SUCCEEDED_COLOR}
               />
-            )}
+            ) : changeSaveItemLoading ? (
+              <Icon
+                text={t("")}
+                onclick={() => {}}
+                foreColor={Colors.YELLOW_COLOR}
+                icon={() => <VscLoading className={styles.loading} />}
+              />
+            ) : savedItems.map((si) => si._id).includes(companyItem._id) ? (
+              <Icon
+                tooltip={t("remove-item-from-saved-items-tooltip")}
+                onclick={removeItemFromSavedItemsHandler}
+                foreColor={Colors.FAILED_COLOR}
+                icon={() => <BsFillBookmarkDashFill size={24} />}
+              />
+            ) : (
+              <Icon
+                tooltip={t("add-item-to-saved-items-tooltip")}
+                onclick={addItemToSavedItemsHandler}
+                foreColor={Colors.SUCCEEDED_COLOR}
+                icon={() => <BsFillBookmarkPlusFill size={24} />}
+              />
+            )
+          ) : (
+            <></>
+          )}
 
           {changeFavoriteLoading ? (
             <Icon

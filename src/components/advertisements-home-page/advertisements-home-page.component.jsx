@@ -1,7 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { selectUserData } from "../../redux/auth/authSlice";
+import {
+  resetMedicines,
+  setSearchCompanyId,
+  setSearchWarehouseId,
+} from "../../redux/medicines/medicinesSlices";
 import { SERVER_URL } from "../../utils/constants";
 
 import styles from "./advertisements-home-page.module.scss";
@@ -10,6 +15,7 @@ let timer = null;
 
 function AdvertisementsHomePage({ advertisements }) {
   const history = useHistory();
+  const dispatch = useDispatch();
   const { user } = useSelector(selectUserData);
   const [index, setIndex] = useState(0);
   const i = useRef(0);
@@ -23,8 +29,9 @@ function AdvertisementsHomePage({ advertisements }) {
   };
 
   const onAdvertisementPressHandler = (adv) => {
-    console.log(adv);
     if (adv.company !== null) {
+      dispatch(resetMedicines());
+      dispatch(setSearchCompanyId(adv.company._id));
       history.push({
         pathname: "/medicines",
         state: { myCompanies: [] },
@@ -32,6 +39,8 @@ function AdvertisementsHomePage({ advertisements }) {
     }
 
     if (adv.warehouse !== null) {
+      dispatch(resetMedicines());
+      dispatch(setSearchWarehouseId(adv.warehouse._id));
       history.push({
         pathname: "/medicines",
         state: { myCompanies: adv.warehouse.ourCompanies },
@@ -39,6 +48,7 @@ function AdvertisementsHomePage({ advertisements }) {
     }
 
     if (adv.medicine !== null) {
+      dispatch(resetMedicines());
       history.push("/item", {
         from: user.type,
         type: "info",

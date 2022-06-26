@@ -51,7 +51,7 @@ function CartItemCard({ cartItem, inOrderDetails, withoutMaxQty }) {
               className={styles.delete_icon}
               onClick={() => dispatch(removeItemFromCart(cartItem))}
             >
-              <RiDeleteBin5Fill size={20} color={Colors.FAILED_COLOR} />
+              <RiDeleteBin5Fill size={24} color={Colors.FAILED_COLOR} />
             </div>
           )}
         </div>

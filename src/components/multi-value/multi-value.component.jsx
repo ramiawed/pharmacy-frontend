@@ -89,7 +89,7 @@ function MultiValue({
                 className={[generalStyles.icon, generalStyles.fc_red].join(" ")}
               >
                 <RiDeleteBin5Fill
-                  size={20}
+                  size={24}
                   onClick={() => deleteHandler(value.key)}
                 />
                 <div className={generalStyles.tooltip}>

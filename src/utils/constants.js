@@ -107,6 +107,7 @@ export const TopNavLinks = {
   NOTIFICATIONS: "notifications",
   OFFERS: "offers",
   SIGNOUT: "signout",
+  SAVEDITEMS: "saved-items",
 };
 
 export const OrderOptions = {

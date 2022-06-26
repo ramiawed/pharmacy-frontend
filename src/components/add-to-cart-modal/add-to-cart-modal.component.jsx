@@ -29,6 +29,7 @@ import {
 // styles
 import styles from "./add-to-cart-modal.module.scss";
 import { selectMedicines } from "../../redux/medicines/medicinesSlices";
+import { removeSavedItem } from "../../redux/savedItems/savedItemsSlice";
 
 // check if there is an offer for entered quantity in a specific warehouse
 const checkOfferQty = (selectedWarehouse, qty) => {
@@ -61,7 +62,7 @@ const checkOfferQty = (selectedWarehouse, qty) => {
   return 0;
 };
 
-function AddToCartModal({ item, close, setAddItemToCartMsg }) {
+function AddToCartModal({ item, close, setAddItemToCartMsg, fromSavedItems }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -159,6 +160,9 @@ function AddToCartModal({ item, close, setAddItemToCartMsg }) {
 
     close();
     setAddItemToCartMsg("add-item-to-cart");
+    if (fromSavedItems) {
+      dispatch(removeSavedItem({ obj: { savedItemId: item._id }, token }));
+    }
   };
 
   return (

@@ -261,18 +261,18 @@ function OrdersPage({ onSelectedChange }) {
             {user.type !== UserTypeConstants.ADMIN && (
               <div onClick={changeOrdersSelection} className={styles.selection}>
                 {selectedOrdersCount === orders.length && (
-                  <MdOutlineCheckBox size={20} color={Colors.MAIN_COLOR} />
+                  <MdOutlineCheckBox size={24} color={Colors.MAIN_COLOR} />
                 )}
                 {selectedOrdersCount === 0 && (
                   <MdOutlineCheckBoxOutlineBlank
-                    size={20}
+                    size={24}
                     color={Colors.MAIN_COLOR}
                   />
                 )}
                 {selectedOrdersCount < orders.length &&
                   selectedOrdersCount !== 0 && (
                     <MdOutlineIndeterminateCheckBox
-                      size={20}
+                      size={24}
                       color={Colors.MAIN_COLOR}
                     />
                   )}

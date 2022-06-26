@@ -32,6 +32,7 @@ import { GiShoppingCart } from "react-icons/gi";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdAddCircle, MdExpandLess, MdExpandMore } from "react-icons/md";
 import { VscLoading } from "react-icons/vsc";
+import { BsFillBookmarkPlusFill, BsFillBookmarkDashFill } from "react-icons/bs";
 
 // styles
 import styles from "./medicine-row.module.scss";
@@ -43,6 +44,11 @@ import {
   Colors,
   UserTypeConstants,
 } from "../../utils/constants";
+import {
+  addSavedItem,
+  removeSavedItem,
+  selectSavedItems,
+} from "../../redux/savedItems/savedItemsSlice";
 
 function MedicineRow({ item }) {
   const { t } = useTranslation();
@@ -53,10 +59,12 @@ function MedicineRow({ item }) {
   const isOnline = useSelector(selectOnlineStatus);
   const { user, token } = useSelector(selectUserData);
   const favoritesItems = useSelector(selectFavoritesItems);
+  const { savedItems } = useSelector(selectSavedItems);
 
   // own state
   const [showModal, setShowModal] = useState(false);
   const [changeFavoriteLoading, setChangeFavoriteLoading] = useState(false);
+  const [changeSaveItemLoading, setChangeSaveItemLoading] = useState(false);
   const [changeAddToWarehouseLoading, setChangeAddToWarehouseLoading] =
     useState(false);
   const [addItemToCart, setAddItemToCart] = useState("");
@@ -170,6 +178,45 @@ function MedicineRow({ item }) {
       });
   };
 
+  // method to handle add item to user's savedItem
+  const addItemToSavedItemsHandler = (e) => {
+    // check the internet connection
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
+    setChangeSaveItemLoading(true);
+
+    dispatch(addSavedItem({ obj: { savedItemId: item._id }, token }))
+      .then(unwrapResult)
+      .then(() => {
+        setChangeSaveItemLoading(false);
+      })
+      .catch(() => {
+        setChangeSaveItemLoading(false);
+      });
+  };
+
+  const removeItemFromSavedItemsHandler = (e) => {
+    // check the internet connection
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
+    setChangeSaveItemLoading(true);
+
+    dispatch(removeSavedItem({ obj: { savedItemId: item._id }, token }))
+      .then(unwrapResult)
+      .then(() => {
+        setChangeSaveItemLoading(false);
+      })
+      .catch(() => {
+        setChangeSaveItemLoading(false);
+      });
+  };
+
   const rowClickHandler = () => {
     if (
       user.type === UserTypeConstants.PHARMACY ||
@@ -244,15 +291,39 @@ function MedicineRow({ item }) {
             ))
           )}
 
-          {user.type === UserTypeConstants.PHARMACY &&
-            checkItemExistsInWarehouse(item, user) && (
+          {user.type === UserTypeConstants.PHARMACY ? (
+            checkItemExistsInWarehouse(item, user) ? (
               <Icon
                 text={t("add-to-cart")}
                 onclick={() => setShowModal(true)}
                 foreColor={Colors.SUCCEEDED_COLOR}
                 icon={() => <GiShoppingCart size={24} />}
               />
-            )}
+            ) : changeSaveItemLoading ? (
+              <Icon
+                text={t("")}
+                onclick={() => {}}
+                foreColor={Colors.YELLOW_COLOR}
+                icon={() => <VscLoading className={styles.loading} />}
+              />
+            ) : savedItems.map((si) => si._id).includes(item._id) ? (
+              <Icon
+                tooltip={t("remove-item-from-saved-items-tooltip")}
+                onclick={removeItemFromSavedItemsHandler}
+                foreColor={Colors.FAILED_COLOR}
+                icon={() => <BsFillBookmarkDashFill size={24} />}
+              />
+            ) : (
+              <Icon
+                tooltip={t("add-item-to-saved-items-tooltip")}
+                onclick={addItemToSavedItemsHandler}
+                foreColor={Colors.SUCCEEDED_COLOR}
+                icon={() => <BsFillBookmarkPlusFill size={24} />}
+              />
+            )
+          ) : (
+            <></>
+          )}
 
           {changeFavoriteLoading ? (
             <Icon
@@ -314,6 +385,7 @@ function MedicineRow({ item }) {
           item={item}
           close={() => setShowModal(false)}
           setAddItemToCartMsg={setAddItemToCart}
+          fromSavedItems={true}
         />
       )}
 

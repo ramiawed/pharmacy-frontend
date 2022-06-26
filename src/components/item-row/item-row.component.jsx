@@ -32,6 +32,7 @@ import { GiShoppingCart } from "react-icons/gi";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdAddCircle } from "react-icons/md";
 import { VscLoading } from "react-icons/vsc";
+import { BsFillBookmarkPlusFill, BsFillBookmarkDashFill } from "react-icons/bs";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -43,6 +44,11 @@ import {
   Colors,
   UserTypeConstants,
 } from "../../utils/constants";
+import {
+  addSavedItem,
+  removeSavedItem,
+  selectSavedItems,
+} from "../../redux/savedItems/savedItemsSlice";
 
 // if logged user is
 // 1- ADMIN: highlight the row by green color if the medicine has an offer.
@@ -100,10 +106,12 @@ function ItemRow({ item, onSelectAction, small }) {
   const isOnline = useSelector(selectOnlineStatus);
   const { user, token } = useSelector(selectUserData);
   const favoritesItems = useSelector(selectFavoritesItems);
+  const { savedItems } = useSelector(selectSavedItems);
 
   // own state
   const [showModal, setShowModal] = useState(false);
   const [changeFavoriteLoading, setChangeFavoriteLoading] = useState(false);
+  const [changeSaveItemLoading, setChangeSaveItemLoading] = useState(false);
   const [changeAddToWarehouseLoading, setChangeAddToWarehouseLoading] =
     useState(false);
   const [addItemToCart, setAddItemToCart] = useState("");
@@ -234,6 +242,44 @@ function ItemRow({ item, onSelectAction, small }) {
     }
   };
 
+  const addItemToSavedItemsHandler = (e) => {
+    // check the internet connection
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
+    setChangeSaveItemLoading(true);
+
+    dispatch(addSavedItem({ obj: { savedItemId: item._id }, token }))
+      .then(unwrapResult)
+      .then(() => {
+        setChangeSaveItemLoading(false);
+      })
+      .catch(() => {
+        setChangeSaveItemLoading(false);
+      });
+  };
+
+  const removeItemFromSavedItemsHandler = (e) => {
+    // check the internet connection
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
+    setChangeSaveItemLoading(true);
+
+    dispatch(removeSavedItem({ obj: { savedItemId: item._id }, token }))
+      .then(unwrapResult)
+      .then(() => {
+        setChangeSaveItemLoading(false);
+      })
+      .catch(() => {
+        setChangeSaveItemLoading(false);
+      });
+  };
+
   // render method
   return (
     <>
@@ -282,7 +328,7 @@ function ItemRow({ item, onSelectAction, small }) {
           {changeAddToWarehouseLoading ? (
             <Icon
               icon={() => (
-                <VscLoading className={generalStyles.loading} size={20} />
+                <VscLoading className={generalStyles.loading} size={24} />
               )}
               onclick={() => {}}
               foreColor={Colors.SECONDARY_COLOR}
@@ -291,14 +337,14 @@ function ItemRow({ item, onSelectAction, small }) {
             user.type === UserTypeConstants.WAREHOUSE &&
             (item.warehouses.map((w) => w.warehouse._id).includes(user._id) ? (
               <Icon
-                icon={() => <RiDeleteBin5Fill size={20} />}
+                icon={() => <RiDeleteBin5Fill size={24} />}
                 onclick={removeItemFromWarehouseHandler}
                 tooltip={t("remove-from-warehouse-tooltip")}
                 foreColor={Colors.FAILED_COLOR}
               />
             ) : (
               <Icon
-                icon={() => <MdAddCircle size={20} />}
+                icon={() => <MdAddCircle size={24} />}
                 onclick={addItemToWarehouseHandler}
                 tooltip={t("add-to-warehouse-tooltip")}
                 foreColor={Colors.SUCCEEDED_COLOR}
@@ -306,21 +352,45 @@ function ItemRow({ item, onSelectAction, small }) {
             ))
           )}
 
-          {user.type === UserTypeConstants.PHARMACY &&
-            checkItemExistsInWarehouse(item, user) && (
+          {user.type === UserTypeConstants.PHARMACY ? (
+            checkItemExistsInWarehouse(item, user) ? (
               <Icon
-                icon={() => <GiShoppingCart size={20} />}
+                icon={() => <GiShoppingCart size={24} />}
                 onclick={() => {
                   setShowModal(true);
                 }}
                 foreColor={Colors.SUCCEEDED_COLOR}
               />
-            )}
+            ) : changeSaveItemLoading ? (
+              <Icon
+                text={t("")}
+                onclick={() => {}}
+                foreColor={Colors.YELLOW_COLOR}
+                icon={() => <VscLoading className={styles.loading} />}
+              />
+            ) : savedItems.map((si) => si._id).includes(item._id) ? (
+              <Icon
+                tooltip={t("remove-item-from-saved-items-tooltip")}
+                onclick={removeItemFromSavedItemsHandler}
+                foreColor={Colors.FAILED_COLOR}
+                icon={() => <BsFillBookmarkDashFill size={24} />}
+              />
+            ) : (
+              <Icon
+                tooltip={t("add-item-to-saved-items-tooltip")}
+                onclick={addItemToSavedItemsHandler}
+                foreColor={Colors.SUCCEEDED_COLOR}
+                icon={() => <BsFillBookmarkPlusFill size={24} />}
+              />
+            )
+          ) : (
+            <></>
+          )}
 
           {changeFavoriteLoading ? (
             <Icon
               icon={() => (
-                <VscLoading className={generalStyles.loading} size={20} />
+                <VscLoading className={generalStyles.loading} size={24} />
               )}
               onclick={() => {}}
               foreColor={Colors.YELLOW_COLOR}
@@ -329,14 +399,14 @@ function ItemRow({ item, onSelectAction, small }) {
               .map((favorite) => favorite._id)
               .includes(item._id) ? (
             <Icon
-              icon={() => <AiFillStar size={20} />}
+              icon={() => <AiFillStar size={24} />}
               onclick={removeItemFromFavoritesItemsHandler}
               tooltip={t("remove-from-favorite-tooltip")}
               foreColor={Colors.YELLOW_COLOR}
             />
           ) : (
             <Icon
-              icon={() => <AiOutlineStar size={20} />}
+              icon={() => <AiOutlineStar size={24} />}
               onclick={addItemToFavoriteItemsHandler}
               tooltip={t("add-to-favorite-tooltip")}
               foreColor={Colors.YELLOW_COLOR}

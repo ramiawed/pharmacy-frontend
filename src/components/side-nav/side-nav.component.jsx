@@ -42,6 +42,7 @@ import generalStyles from "../../style.module.scss";
 
 // constants
 import { SERVER_URL, UserTypeConstants } from "../../utils/constants";
+import { savedItemsSliceSignOut } from "../../redux/savedItems/savedItemsSlice";
 
 const SideNavAdmin = lazy(() =>
   import("../side-nav-admin/side-nav-admin.component")
@@ -94,6 +95,7 @@ function SideNav({
     dispatch(notificationsSignOut());
     dispatch(settingsSignOut());
     dispatch(usersNotificationsSignOut());
+    dispatch(savedItemsSliceSignOut());
     localStorage.removeItem("token");
   };
 
@@ -195,7 +197,7 @@ function SideNav({
           >
             <div className={styles.nav}>
               <div className={styles.nav_icon}>
-                <GoSignOut size={20} />
+                <GoSignOut size={24} />
                 {collapsed && (
                   <label className={styles.tooltip}>{t("nav-sign-out")}</label>
                 )}

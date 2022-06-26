@@ -427,13 +427,13 @@ function ItemExcelPage() {
                     onClick={itemsSelectionChangeHandler}
                   >
                     {itemsSelectValue === "all" && (
-                      <MdOutlineCheckBox size={20} color={Colors.MAIN_COLOR} />
+                      <MdOutlineCheckBox size={24} color={Colors.MAIN_COLOR} />
                     )}
                     {itemsSelectValue === "none" && (
-                      <MdOutlineCheckBoxOutlineBlank size={20} />
+                      <MdOutlineCheckBoxOutlineBlank size={24} />
                     )}
                     {itemsSelectValue === "some" && (
-                      <MdOutlineIndeterminateCheckBox size={20} />
+                      <MdOutlineIndeterminateCheckBox size={24} />
                     )}
                   </div>
                   {withUpdate ? (

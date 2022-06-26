@@ -84,6 +84,7 @@ import { Colors, SERVER_URL, UserTypeConstants } from "../../utils/constants";
 
 // socket
 import socketIoClient from "socket.io-client";
+import { savedItemsSliceSignOut } from "../../redux/savedItems/savedItemsSlice";
 
 const socket = socketIoClient(`${SERVER_URL}`, { autoConnect: false });
 
@@ -122,6 +123,7 @@ function SocketObserver() {
     dispatch(notificationsSignOut());
     dispatch(settingsSignOut());
     dispatch(usersNotificationsSignOut());
+    dispatch(savedItemsSliceSignOut());
     localStorage.removeItem("token");
   };
 

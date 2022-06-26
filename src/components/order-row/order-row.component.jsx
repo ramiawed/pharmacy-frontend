@@ -117,10 +117,10 @@ function OrderRow({ order, deleteAction }) {
             }}
           >
             {order.pharmacyStatus === "received" && (
-              <BsCheckAll size={20} color={Colors.SUCCEEDED_COLOR} />
+              <BsCheckAll size={24} color={Colors.SUCCEEDED_COLOR} />
             )}
             {order.pharmacyStatus === "sent" && (
-              <RiSendPlaneFill size={20} color={Colors.SUCCEEDED_COLOR} />
+              <RiSendPlaneFill size={24} color={Colors.SUCCEEDED_COLOR} />
             )}
             <label className={styles.name}>{order.pharmacy.name}</label>
             <label className={styles.address}>
@@ -138,19 +138,19 @@ function OrderRow({ order, deleteAction }) {
             }}
           >
             {order.warehouseStatus === "unread" && (
-              <RiMailUnreadLine size={20} color={Colors.MAIN_COLOR} />
+              <RiMailUnreadLine size={24} color={Colors.MAIN_COLOR} />
             )}
             {order.warehouseStatus === "received" && (
-              <BsCheckAll size={20} color={Colors.SUCCEEDED_COLOR} />
+              <BsCheckAll size={24} color={Colors.SUCCEEDED_COLOR} />
             )}
             {order.warehouseStatus === "sent" && (
               <MdOutlineLocalShipping
-                size={20}
+                size={24}
                 color={Colors.SUCCEEDED_COLOR}
               />
             )}
             {order.warehouseStatus === "dontServe" && (
-              <MdRemoveDone size={20} color={Colors.FAILED_COLOR} />
+              <MdRemoveDone size={24} color={Colors.FAILED_COLOR} />
             )}
             <label className={styles.name}>{order.warehouse.name}</label>
           </div>
@@ -168,38 +168,38 @@ function OrderRow({ order, deleteAction }) {
 
       <div className={styles.actions}>
         {user.type === UserTypeConstants.ADMIN && !order.seenByAdmin && (
-          <RiMailUnreadLine size={20} color={Colors.MAIN_COLOR} />
+          <RiMailUnreadLine size={24} color={Colors.MAIN_COLOR} />
         )}
         {user.type === UserTypeConstants.WAREHOUSE &&
           order.warehouseStatus === "sent" && (
-            <MdOutlineLocalShipping size={20} color={Colors.SUCCEEDED_COLOR} />
+            <MdOutlineLocalShipping size={24} color={Colors.SUCCEEDED_COLOR} />
           )}
         {user.type === UserTypeConstants.WAREHOUSE &&
           order.warehouseStatus === "unread" && (
-            <RiMailUnreadLine size={20} color={Colors.MAIN_COLOR} />
+            <RiMailUnreadLine size={24} color={Colors.MAIN_COLOR} />
           )}
         {user.type === UserTypeConstants.WAREHOUSE &&
           order.warehouseStatus === "received" && (
-            <BsCheckAll size={20} color={Colors.SUCCEEDED_COLOR} />
+            <BsCheckAll size={24} color={Colors.SUCCEEDED_COLOR} />
           )}
         {user.type === UserTypeConstants.WAREHOUSE &&
           order.warehouseStatus === "dontServe" && (
-            <MdRemoveDone size={20} color={Colors.FAILED_COLOR} />
+            <MdRemoveDone size={24} color={Colors.FAILED_COLOR} />
           )}
 
         {user.type === UserTypeConstants.PHARMACY &&
           order.pharmacyStatus === "sent" && (
-            <RiSendPlaneFill size={20} color={Colors.SUCCEEDED_COLOR} />
+            <RiSendPlaneFill size={24} color={Colors.SUCCEEDED_COLOR} />
           )}
 
         {user.type === UserTypeConstants.PHARMACY &&
           order.pharmacyStatus === "received" && (
-            <BsCheckAll size={20} color={Colors.SUCCEEDED_COLOR} />
+            <BsCheckAll size={24} color={Colors.SUCCEEDED_COLOR} />
           )}
 
         {user.type !== UserTypeConstants.WAREHOUSE ? (
           <Icon
-            icon={() => <RiDeleteBin5Fill size={20} />}
+            icon={() => <RiDeleteBin5Fill size={24} />}
             onclick={() => {
               setShowDeleteModal(true);
             }}

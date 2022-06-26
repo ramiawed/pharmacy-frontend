@@ -36,7 +36,7 @@ function SideNavGuest({ selectedOption, onSelectedChange, collapsed }) {
       >
         <div className={styles.nav}>
           <div className={styles.nav_icon}>
-            <CgProfile size={20} />
+            <CgProfile size={24} />
             {collapsed && (
               <label className={styles.tooltip}>{t("nav-profile")}</label>
             )}

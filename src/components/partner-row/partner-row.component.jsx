@@ -240,7 +240,7 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow, onSelectAction }) {
               <div>
                 <Icon
                   icon={() => (
-                    <VscLoading className={generalStyles.loading} size={20} />
+                    <VscLoading className={generalStyles.loading} size={24} />
                   )}
                   onclick={() => {}}
                   foreColor={Colors.YELLOW_COLOR}
@@ -250,14 +250,14 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow, onSelectAction }) {
               <div>
                 {user.ourCompanies.includes(partner._id) ? (
                   <Icon
-                    icon={() => <FaHandshakeSlash size={20} />}
+                    icon={() => <FaHandshakeSlash size={24} />}
                     onclick={removeCompanyFromOurCompaniesHandler}
                     foreColor={Colors.FAILED_COLOR}
                     tooltip={t("remove-company-from-warehouse-tooltip")}
                   />
                 ) : (
                   <Icon
-                    icon={() => <FaHandshake size={20} />}
+                    icon={() => <FaHandshake size={24} />}
                     onclick={addCompanyToOurCompaniesHandler}
                     foreColor={Colors.SUCCEEDED_COLOR}
                     tooltip={t("add-company-to-warehouse-tooltip")}
@@ -273,7 +273,7 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow, onSelectAction }) {
             <div>
               <Icon
                 icon={() => (
-                  <VscLoading className={generalStyles.loading} size={20} />
+                  <VscLoading className={generalStyles.loading} size={24} />
                 )}
                 onclick={() => {}}
                 foreColor={Colors.YELLOW_COLOR}
@@ -287,14 +287,14 @@ function PartnerRow({ partner, isSearch, withoutBoxShadow, onSelectAction }) {
                   .map((favorite) => favorite._id)
                   .includes(partner._id) ? (
                   <Icon
-                    icon={() => <AiFillStar size={20} />}
+                    icon={() => <AiFillStar size={24} />}
                     onclick={removePartnerFromFavoriteHandler}
                     foreColor={Colors.YELLOW_COLOR}
                     tooltip={t("remove-from-favorite-tooltip")}
                   />
                 ) : (
                   <Icon
-                    icon={() => <AiOutlineStar size={20} />}
+                    icon={() => <AiOutlineStar size={24} />}
                     onclick={addPartnerToFavorite}
                     foreColor={Colors.YELLOW_COLOR}
                     tooltip={t("add-to-favorite-tooltip")}

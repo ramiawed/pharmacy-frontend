@@ -26,6 +26,7 @@ import NotificationsSlice from "./redux/notifications/notificationsSlice";
 import UserNotificationsSlice from "./redux/userNotifications/userNotificationsSlice";
 import navigationSlice from "./redux/navs/navigationSlice";
 import offersSlice from "./redux/offers/offersSlices";
+import savedItemsSlice from "./redux/savedItems/savedItemsSlice";
 
 const reducers = combineReducers({
   auth: authSlice,
@@ -52,6 +53,7 @@ const reducers = combineReducers({
   userNotifications: UserNotificationsSlice,
   navigationSlice: navigationSlice,
   offers: offersSlice,
+  savedItems: savedItemsSlice,
 });
 
 const persistConfig = {

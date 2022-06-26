@@ -67,7 +67,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
       >
         <div className={styles.nav}>
           <div className={styles.nav_icon}>
-            <HiUsers size={20} />
+            <HiUsers size={24} />
             {collapsed && (
               <label className={styles.tooltip}>
                 {t(SideNavLinks.PARTNERS)}
@@ -100,7 +100,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
       >
         <div className={styles.nav}>
           <div className={styles.nav_icon}>
-            <GiMedicines size={20} />
+            <GiMedicines size={24} />
             {collapsed && (
               <label className={styles.tooltip}>{t("nav-items")}</label>
             )}
@@ -131,7 +131,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
             {collapsed && (
               <label className={styles.tooltip}>{t("nav-advertise")}</label>
             )}
-            <RiAdvertisementFill size={20} />
+            <RiAdvertisementFill size={24} />
           </div>
           {!collapsed && (
             <div className={styles.nav_label}>{t("nav-advertise")}</div>
@@ -156,7 +156,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
       >
         <div className={styles.nav}>
           <div className={styles.nav_icon}>
-            <MdNotificationsActive size={20} />
+            <MdNotificationsActive size={24} />
             {collapsed && (
               <label className={styles.tooltip}>{t("nav-notifications")}</label>
             )}
@@ -184,7 +184,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
         >
           <div className={styles.nav}>
             <div className={styles.nav_icon}>
-              <BsFillEnvelopeFill size={20} />
+              <BsFillEnvelopeFill size={24} />
               {collapsed && (
                 <label className={styles.tooltip}>{t("nav-orders")}</label>
               )}
@@ -215,7 +215,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
       >
         <div className={styles.nav}>
           <div className={styles.nav_icon}>
-            <MdOutlineSettings size={20} />
+            <MdOutlineSettings size={24} />
             {collapsed && (
               <label className={styles.tooltip}>{t("nav-settings")}</label>
             )}
@@ -243,7 +243,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
       >
         <div className={styles.nav}>
           <div className={styles.nav_icon}>
-            <BsFillBarChartLineFill size={20} />
+            <BsFillBarChartLineFill size={24} />
             {collapsed && (
               <label className={styles.tooltip}>{t("nav-statistics")}</label>
             )}
@@ -271,7 +271,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
       >
         <div className={styles.nav}>
           <div className={styles.nav_icon}>
-            <MdBackup size={20} />
+            <MdBackup size={24} />
             {collapsed && (
               <label className={styles.tooltip}>
                 {t("nav-backup-restore")}
@@ -299,7 +299,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
       >
         <div className={styles.nav}>
           <div className={styles.nav_icon}>
-            <CgProfile size={20} />
+            <CgProfile size={24} />
             {collapsed && (
               <label className={styles.tooltip}>{t("nav-profile")}</label>
             )}

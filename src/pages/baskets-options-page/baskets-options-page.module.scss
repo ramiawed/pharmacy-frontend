@@ -1,0 +1,22 @@
+@import '../../variables.scss';
+
+.option {
+  width: 400px;
+  height: 30vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px auto;
+  color: $main-color;
+  font-size: 24px;
+  border-radius: 12px;
+  box-shadow: 0 0 3px 3px rgba($color: #000000, $alpha: 0.2);
+
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    background-color: $main-color;
+    color: $white-color;
+  }
+}

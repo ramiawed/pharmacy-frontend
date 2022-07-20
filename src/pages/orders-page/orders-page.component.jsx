@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router";
 import { useTranslation } from "react-i18next";
 
@@ -9,7 +9,6 @@ import OrderRow from "../../components/order-row/order-row.component";
 import NoContent from "../../components/no-content/no-content.component";
 import Loader from "../../components/action-loader/action-loader.component";
 import Toast from "../../components/toast/toast.component";
-import TableHeader from "../../components/table-header/table-header.component";
 import Icon from "../../components/action-icon/action-icon.component";
 
 // redux stuff
@@ -26,6 +25,16 @@ import {
   setPage,
   updateOrders,
 } from "../../redux/orders/ordersSlice";
+import {
+  changeAllOrdersSelection as basketChangeAllOrdersSelection,
+  deleteOrder as basketDeleteOrder,
+  getOrders as basketGetOrders,
+  getUnreadOrders as basketGetUnreadOrders,
+  resetStatus as basketResetStatus,
+  selectBasketOrders as basketSelectOrders,
+  setPage as basketSetPage,
+  updateOrders as basketUpdateOrders,
+} from "../../redux/basketOrdersSlice/basketOrdersSlice";
 import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 
 // react icons
@@ -43,10 +52,10 @@ import { RiMailUnreadLine, RiSendPlaneFill } from "react-icons/ri";
 import styles from "./orders-page.module.scss";
 import paginationStyles from "../../components/pagination.module.scss";
 import generalStyles from "../../style.module.scss";
-import tableStyles from "../../components/table.module.scss";
 
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants";
+import ResultModal from "../../components/result-modal/result-modal.component";
 
 // return the count of selected orders
 const calculateSelectedOrdersCount = (orders) => {
@@ -57,17 +66,20 @@ const calculateSelectedOrdersCount = (orders) => {
   return count;
 };
 
-function OrdersPage({ onSelectedChange }) {
+function OrdersPage({ onSelectedChange, type }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   // selectors
   const { token, user } = useSelector(selectUserData);
   const { status, error, count, orders, refresh, pageState, forceRefresh } =
-    useSelector(selectOrders);
+    useSelector(type === "order" ? selectOrders : basketSelectOrders);
   const isOnline = useSelector(selectOnlineStatus);
 
   const selectedOrdersCount = calculateSelectedOrdersCount(orders);
+
+  const [showResultModal, setShowResultModal] = useState(false);
+  const [resultModalParams, setResultModalParams] = useState({});
 
   // handle to change the status of the order
   const markOrdersAs = (verb) => {
@@ -95,42 +107,89 @@ function OrdersPage({ onSelectedChange }) {
         };
       }
       dispatch(
-        updateOrders({
-          obj: {
-            ids,
-            body,
-          },
-          token,
-        })
+        type === "order"
+          ? updateOrders({
+              obj: {
+                ids,
+                body,
+              },
+              token,
+            })
+          : basketUpdateOrders({
+              obj: {
+                ids,
+                body,
+              },
+              token,
+            })
       )
         .then(unwrapResult)
         .then(() => {
-          dispatch(getUnreadOrders({ token }));
+          dispatch(
+            type === "order"
+              ? getUnreadOrders({ token })
+              : basketGetUnreadOrders({ token })
+          );
         });
     }
   };
 
   // search handler
   const handleSearch = (page) => {
-    dispatch(setPage(page));
+    dispatch(type === "order" ? setPage(page) : basketSetPage(page));
 
     dispatch(
-      getOrders({
-        obj: {
-          page,
-        },
-        token,
-      })
+      type === "order"
+        ? getOrders({
+            obj: {
+              page,
+            },
+            token,
+          })
+        : basketGetOrders({
+            obj: {
+              page,
+            },
+            token,
+          })
     );
   };
 
   const deleteOrderHandler = (orderId) => {
     dispatch(
-      deleteOrder({
-        token,
-        orderId,
+      type === "order"
+        ? deleteOrder({
+            token,
+            orderId,
+          })
+        : basketDeleteOrder({
+            token,
+            orderId,
+          })
+    )
+      .then(unwrapResult)
+      .then(() => {
+        setResultModalParams({
+          msg: "order-deleted-successfully-msg",
+          type: "success",
+          closeModal: () => {
+            setResultModalParams(null);
+            setShowResultModal(false);
+          },
+        });
+        setShowResultModal(true);
       })
-    );
+      .catch((err) => {
+        setResultModalParams({
+          msg: "order-deleted-failed-msg",
+          type: "failed",
+          closeModal: () => {
+            setResultModalParams(null);
+            setShowResultModal(false);
+          },
+        });
+        setShowResultModal(true);
+      });
   };
 
   const handlePageClick = (e) => {
@@ -148,8 +207,12 @@ function OrdersPage({ onSelectedChange }) {
   const changeOrdersSelection = () => {
     dispatch(
       selectedOrdersCount === orders.length
-        ? changeAllOrdersSelection(false)
-        : changeAllOrdersSelection(true)
+        ? type === "order"
+          ? changeAllOrdersSelection(false)
+          : basketChangeAllOrdersSelection(false)
+        : type === "order"
+        ? changeAllOrdersSelection(true)
+        : basketChangeAllOrdersSelection(true)
     );
   };
 
@@ -170,6 +233,7 @@ function OrdersPage({ onSelectedChange }) {
         pageState={pageState}
         count={count}
         search={handleEnterPress}
+        type={type}
       />
       <div
         style={{
@@ -251,7 +315,7 @@ function OrdersPage({ onSelectedChange }) {
           </div>
         )}
 
-        {count > 0 && (
+        {orders.length > 0 && (
           <div
             style={{
               maxWidth: "600px",
@@ -295,10 +359,11 @@ function OrdersPage({ onSelectedChange }) {
             order={order}
             key={order._id}
             deleteAction={deleteOrderHandler}
+            type={type}
           />
         ))}
 
-        {count > 0 && isOnline && (
+        {orders.length > 0 && isOnline && (
           <ReactPaginate
             previousLabel={t("previous")}
             nextLabel={t("next")}
@@ -315,7 +380,11 @@ function OrdersPage({ onSelectedChange }) {
 
         {count === 0 && status !== "loading" && (
           <>
-            <NoContent msg={t("no-orders-found")} />
+            <NoContent
+              msg={t(
+                type === "order" ? "no-orders-found" : "no-basket-orders-found"
+              )}
+            />
           </>
         )}
 
@@ -326,10 +395,19 @@ function OrdersPage({ onSelectedChange }) {
             bgColor={Colors.FAILED_COLOR}
             foreColor="#fff"
             toastText={t(error)}
-            actionAfterTimeout={() => dispatch(resetStatus())}
+            actionAfterTimeout={() =>
+              dispatch(type === "order" ? resetStatus() : basketResetStatus())
+            }
           />
         )}
       </div>
+      {showResultModal && (
+        <ResultModal
+          msg={resultModalParams.msg}
+          closeModal={resultModalParams.closeModal}
+          type={resultModalParams.type}
+        />
+      )}
     </div>
   ) : (
     <Redirect to="/" />

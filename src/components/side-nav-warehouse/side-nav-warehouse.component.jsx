@@ -18,7 +18,7 @@ import {
   setWarehouse,
 } from "../../redux/items/itemsSlices";
 import { selectOrders } from "../../redux/orders/ordersSlice";
-import { BsFillEnvelopeFill } from "react-icons/bs";
+import { BsBasket2Fill, BsFillEnvelopeFill } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { GiMedicines } from "react-icons/gi";
 import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
@@ -67,6 +67,31 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
           </div>
           {!collapsed && (
             <div className={styles.nav_label}>{t("nav-items")}</div>
+          )}
+        </div>
+      </Link>
+
+      <Link
+        className={[
+          styles.link,
+          selectedOption === SideNavLinks.BASKETS ? `${styles.selected}` : "",
+        ].join(" ")}
+        onClick={() => {
+          onSelectedChange(SideNavLinks.BASKETS);
+          dispatch(setSearchWarehouseId(null));
+          dispatch(setSearchCompanyId(null));
+        }}
+        to="/baskets"
+      >
+        <div className={styles.nav}>
+          <div className={styles.nav_icon}>
+            {collapsed && (
+              <label className={styles.tooltip}>{t("nav-baskets")}</label>
+            )}
+            <BsBasket2Fill size={24} />
+          </div>
+          {!collapsed && (
+            <div className={styles.nav_label}>{t("nav-baskets")}</div>
           )}
         </div>
       </Link>

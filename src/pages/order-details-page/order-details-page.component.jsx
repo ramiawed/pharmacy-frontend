@@ -13,9 +13,9 @@ import Loader from "../../components/action-loader/action-loader.component";
 import NoContent from "../../components/no-content/no-content.component";
 import Icon from "../../components/action-icon/action-icon.component";
 import Header from "../../components/header/header.component";
-import { ExportCSV } from "../../components/export-csv/export-csv.component";
 import CartItemCard from "../../components/cart-item-card/cart-item-card.component";
 import CardInfo from "../../components/card-info/card-info.component";
+import { ExportCSV } from "../../components/export-csv/export-csv.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";

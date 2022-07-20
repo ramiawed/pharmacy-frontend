@@ -65,8 +65,6 @@ function AdminNotificationsHeader({ isNew, setIsNew }) {
             />
           </>
         )}
-
-        {/* Refresh */}
       </div>
     </>
   );

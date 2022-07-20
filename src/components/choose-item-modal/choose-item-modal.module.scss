@@ -1,44 +1,59 @@
 @import "../../variables.scss";
 
 .search_container {
-  width: 50%;
-
   padding-block-end: 10px;
   padding-bottom: 10px;
   margin-inline: auto;
   margin-left: auto;
   margin-right: auto;
-
   border-bottom: 1px solid $secondary-color;
 }
 
 .search_input {
   padding: 6px 12px;
   margin: 0 6px;
-
   flex: 1;
-
   border: none;
   outline: none;
 }
 
 .item_row {
   padding: 5px 10px;
-
-  color: $secondary-color;
-
+  color: $main-color;
   display: flex;
-  justify-content: space-between;
+  justify-content: flex-start;
   align-items: center;
-
   border-bottom: 1px solid rgba($color: $secondary-color, $alpha: 0.3);
 }
 
-.item_name {
-  flex: 3;
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+
+  label {
+    color: $grey-color;
+    font-size: 12px;
+    width: 50px;
+  }
+
+  p {
+    color: $main-color;
+    font-size: 16px;
+  }
 }
 
-.small {
+.item_details {
   flex: 1;
-  font-size: 0.7rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.actions_div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
 }

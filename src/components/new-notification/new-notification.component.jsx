@@ -6,6 +6,7 @@ import axios from "axios";
 import { unwrapResult } from "@reduxjs/toolkit";
 import { selectToken } from "../../redux/auth/authSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { addNotification } from "../../redux/notifications/notificationsSlice";
 
 // components
 import Icon from "../action-icon/action-icon.component";
@@ -20,8 +21,7 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 import styles from "./new-notification.module.scss";
 
 // constants
-import { BASEURL, Colors } from "../../utils/constants";
-import { addNotification } from "../../redux/notifications/notificationsSlice";
+import { Colors } from "../../utils/constants";
 
 function NewNotification({ setIsNew, setSuccessAddingMsg }) {
   const inputFileRef = useRef(null);
@@ -73,13 +73,6 @@ function NewNotification({ setIsNew, setSuccessAddingMsg }) {
     formData.append("title", header);
     formData.append("description", body);
 
-    // const config = {
-    //   headers: {
-    //     "content-type": "multipart/form-data",
-    //     Authorization: `Bearer ${token}`,
-    //   },
-    // };
-
     dispatch(addNotification({ data: formData, token }))
       .then(unwrapResult)
       .then(() => {
@@ -89,14 +82,6 @@ function NewNotification({ setIsNew, setSuccessAddingMsg }) {
         setSuccessAddingMsg("add-notification-msg");
       })
       .catch((err) => {});
-
-    // axios.post(`${BASEURL}/notifications/add`, formData, config).then((res) => {
-    // dispatch(addNotification(res.data.data.notification));
-    //   setBody("");
-    //   setHeader("");
-    //   setSelectedImage(null);
-    //   setSuccessAddingMsg("add-notification-msg");
-    // });
   };
 
   return (

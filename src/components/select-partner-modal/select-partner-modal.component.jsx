@@ -24,7 +24,7 @@ import generalStyles from "../../style.module.scss";
 // constants
 import { Colors } from "../../utils/constants";
 
-function SelectPartnerModal({ close, chooseAction, url, header }) {
+function SelectPartnerModal({ close, chooseAction, url, header, placeholder }) {
   const { t } = useTranslation();
   const token = useSelector(selectToken);
 
@@ -103,7 +103,7 @@ function SelectPartnerModal({ close, chooseAction, url, header }) {
             <IoIosSearch color={Colors.SECONDARY_COLOR} size={24} />
             <input
               className={styles.search_input}
-              placeholder={t("enter-company-name")}
+              placeholder={t(placeholder)}
               value={searchName}
               onChange={(e) => setSearchName(e.target.value)}
               onKeyDown={keyDownHandler}

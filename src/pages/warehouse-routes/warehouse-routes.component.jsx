@@ -34,6 +34,15 @@ const OrdersPage = lazy(() => import("../orders-page/orders-page.component"));
 const OrderDetailsPage = lazy(() =>
   import("../order-details-page/order-details-page.component")
 );
+const BasketsOptionsPage = lazy(() =>
+  import("../baskets-options-page/baskets-options-page.component")
+);
+const BasketsPage = lazy(() =>
+  import("../baskets-page/baskets-page.component")
+);
+const BasketOrderDetailsPage = lazy(() =>
+  import("../basket-order-details-page/basket-order-details-page.component")
+);
 
 function WarehouseRoutes({ changeOptionHandler }) {
   return (
@@ -75,6 +84,63 @@ function WarehouseRoutes({ changeOptionHandler }) {
                   selectedTopNavOption: TopNavLinks.MEDICINES,
                   collapsedSideNavOption: true,
                   selectedSideNavOption: "",
+                  showTopNav: false,
+                  showSearchBar: false,
+                });
+              }}
+            />
+          </Route>
+
+          <Route exact path="/baskets">
+            <BasketsOptionsPage
+              onSelectedChange={() => {
+                changeOptionHandler({
+                  selectedTopNavOption: "",
+                  collapsedSideNavOption: true,
+                  selectedSideNavOption: SideNavLinks.BASKETS,
+                  showTopNav: false,
+                  showSearchBar: false,
+                });
+              }}
+            />
+          </Route>
+
+          <Route exact path="/all-baskets">
+            <BasketsPage
+              onSelectedChange={() => {
+                changeOptionHandler({
+                  selectedTopNavOption: "",
+                  collapsedSideNavOption: true,
+                  selectedSideNavOption: SideNavLinks.BASKETS,
+                  showTopNav: false,
+                  showSearchBar: false,
+                });
+              }}
+            />
+          </Route>
+
+          <Route exact path="/ordered-baskets">
+            <OrdersPage
+              type="basket"
+              onSelectedChange={() => {
+                changeOptionHandler({
+                  selectedTopNavOption: "",
+                  collapsedSideNavOption: true,
+                  selectedSideNavOption: SideNavLinks.BASKETS,
+                  showTopNav: false,
+                  showSearchBar: false,
+                });
+              }}
+            />
+          </Route>
+
+          <Route exact path="/basket-order-details">
+            <BasketOrderDetailsPage
+              onSelectedChange={() => {
+                changeOptionHandler({
+                  selectedTopNavOption: "",
+                  collapsedSideNavOption: true,
+                  selectedSideNavOption: SideNavLinks.BASKETS,
                   showTopNav: false,
                   showSearchBar: false,
                 });
@@ -172,6 +238,7 @@ function WarehouseRoutes({ changeOptionHandler }) {
 
           <Route exact path="/orders">
             <OrdersPage
+              type="order"
               onSelectedChange={() => {
                 changeOptionHandler({
                   selectedTopNavOption: "",

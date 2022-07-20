@@ -95,6 +95,7 @@ export const SideNavLinks = {
   SETTINGS: "settings",
   STATISTICS: "statistics",
   BACKUP_RESTORE: "backup-restore",
+  BASKETS: "baskets",
 };
 
 export const TopNavLinks = {

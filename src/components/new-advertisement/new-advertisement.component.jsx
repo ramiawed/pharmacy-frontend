@@ -280,6 +280,7 @@ function NewAdvertisement({ isNew, setIsNew }) {
           close={() => setShowSelectCompanyModal(false)}
           chooseAction={(data) => selectCompanyHandler(data)}
           url={`${BASEURL}/users?limit=15&isActive=true&isApproved=true&type=company`}
+          placeholder="enter-company-name"
         />
       )}
 
@@ -289,6 +290,7 @@ function NewAdvertisement({ isNew, setIsNew }) {
           close={() => setShowSelectWarehouseModal(false)}
           chooseAction={(data) => selectWarehouseHandler(data)}
           url={`${BASEURL}/users?limit=15&isActive=true&isApproved=true&type=warehouse`}
+          placeholder="enter-warehouse-name"
         />
       )}
 

@@ -1,0 +1,96 @@
+@import '../../variables.scss';
+
+.item_row {
+  position: relative;
+  margin: 5px 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  background-color: $white-color;
+  border-radius: 12px;
+
+
+  .free_div {
+    height: 70px;
+    width: 50px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+
+    label {
+      color: $main-color;
+      font-size: 18px;
+    }
+  }
+
+  .content_div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 5px;
+    padding: 10px;
+
+    .name_div {
+      width: 100%;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+
+      label {
+        padding-right: 6px;
+        color: $main-color;
+        font-size: 18px;
+      }
+    }
+
+
+    .content_details {
+      margin-top: 5px;
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
+
+      .cell {
+        display: flex;
+        justify-content: flex-start;
+        flex-direction: column;
+        width: 19%;
+
+        .cell_header {
+          text-align: center;
+          font-size: 12px;
+          font-weight: bold;
+          color: $green-color;
+        }
+
+        input {
+          outline: none;
+          border: 1px solid rgba($color: $secondary-color, $alpha: 1);
+          border-radius: 6px;
+          text-align: center;
+          font-size: 18px;
+          color: $main-color;
+        }
+
+        .value {
+          font-size: 18px;
+          color: $main-color;
+          text-align: center;
+        }
+      }
+    }
+  }
+
+  .delete_div {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

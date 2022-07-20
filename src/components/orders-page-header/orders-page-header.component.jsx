@@ -21,6 +21,16 @@ import {
   setWarehouseOrderStatus,
 } from "../../redux/orders/ordersSlice";
 
+import {
+  setAdminOrderStatus as basketSetAdminOrderStatus,
+  setDateOption as basketSetDateOption,
+  setPharmacyOrderStatus as basketSetPharmacyOrderStatus,
+  setSearchDate as basketSetSearchDate,
+  setSearchPharmacyName as basketSetSearchPharmacyName,
+  setSearchWarehouseName as basketSetSearchWarehouseName,
+  setWarehouseOrderStatus as basketSetWarehouseOrderStatus,
+} from "../../redux/basketOrdersSlice/basketOrdersSlice";
+
 // icons
 import { RiRefreshLine } from "react-icons/ri";
 import { IoMdArrowRoundBack } from "react-icons/io";
@@ -39,7 +49,7 @@ import {
 import generalStyles from "../../style.module.scss";
 import styles from "./orders-page-header.module.scss";
 
-function OrderPageHeader({ count, pageState, search }) {
+function OrderPageHeader({ pageState, search, type }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -60,7 +70,7 @@ function OrderPageHeader({ count, pageState, search }) {
   ];
 
   const handleDateOptions = (val) => {
-    dispatch(setDateOption(val));
+    dispatch(type === "order" ? setDateOption(val) : basketSetDateOption(val));
   };
 
   const warehouseOrderStatusOptions = [
@@ -87,7 +97,11 @@ function OrderPageHeader({ count, pageState, search }) {
   ];
 
   const handleWarehouseOrderStatusOption = (val) => {
-    dispatch(setWarehouseOrderStatus(val));
+    dispatch(
+      type === "order"
+        ? setWarehouseOrderStatus(val)
+        : basketSetWarehouseOrderStatus(val)
+    );
   };
 
   const pharmacyOrderStatusOptions = [
@@ -107,7 +121,11 @@ function OrderPageHeader({ count, pageState, search }) {
   ];
 
   const handlePharmacyOrderStatusOption = (val) => {
-    dispatch(setPharmacyOrderStatus(val));
+    dispatch(
+      type === "order"
+        ? setPharmacyOrderStatus(val)
+        : basketSetPharmacyOrderStatus(val)
+    );
   };
 
   const adminOrderStatusOptions = [
@@ -127,7 +145,11 @@ function OrderPageHeader({ count, pageState, search }) {
   ];
 
   const handleAdminOrderStatusOption = (val) => {
-    dispatch(setAdminOrderStatus(val));
+    dispatch(
+      type === "order"
+        ? setAdminOrderStatus(val)
+        : basketSetAdminOrderStatus(val)
+    );
   };
 
   return (
@@ -139,11 +161,21 @@ function OrderPageHeader({ count, pageState, search }) {
             id="pharmacy-name"
             type="text"
             value={pageState.searchPharmacyName}
-            onchange={(e) => dispatch(setSearchPharmacyName(e.target.value))}
-            placeholder="search"
+            onchange={(e) =>
+              dispatch(
+                type === "order"
+                  ? setSearchPharmacyName(e.target.value)
+                  : basketSetSearchPharmacyName(e.target.value)
+              )
+            }
+            placeholder="enter-pharmacy-name-placeholder"
             onEnterPress={search}
             resetField={() => {
-              dispatch(setSearchPharmacyName(""));
+              dispatch(
+                type === "order"
+                  ? setSearchPharmacyName("")
+                  : basketSetSearchPharmacyName("")
+              );
             }}
           />
         )}
@@ -154,11 +186,21 @@ function OrderPageHeader({ count, pageState, search }) {
             id="warehouse-name"
             type="text"
             value={pageState.searchWarehouseName}
-            onchange={(e) => dispatch(setSearchWarehouseName(e.target.value))}
-            placeholder="search"
+            onchange={(e) =>
+              dispatch(
+                type === "order"
+                  ? setSearchWarehouseName(e.target.value)
+                  : basketSetSearchWarehouseName(e.target.value)
+              )
+            }
+            placeholder="enter-warehouse-name-placeholder"
             onEnterPress={search}
             resetField={() => {
-              dispatch(setSearchWarehouseName(""));
+              dispatch(
+                type === "order"
+                  ? setSearchWarehouseName("")
+                  : basketSetSearchWarehouseName("")
+              );
             }}
           />
         )}
@@ -249,7 +291,11 @@ function OrderPageHeader({ count, pageState, search }) {
             type="date"
             value={pageState.date}
             onChange={(e) => {
-              dispatch(setSearchDate(e.target.value));
+              dispatch(
+                type === "order"
+                  ? setSearchDate(e.target.value)
+                  : basketSetSearchDate(e.target.value)
+              );
             }}
           />
         </div>

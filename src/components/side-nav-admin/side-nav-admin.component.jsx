@@ -11,7 +11,11 @@ import {
   MdNotificationsActive,
   MdOutlineSettings,
 } from "react-icons/md";
-import { BsFillEnvelopeFill, BsFillBarChartLineFill } from "react-icons/bs";
+import {
+  BsFillEnvelopeFill,
+  BsFillBarChartLineFill,
+  BsBasket2Fill,
+} from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 
 // react redux
@@ -92,7 +96,6 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           dispatch(setRole(UserTypeConstants.ADMIN));
           dispatch(setSearchWarehouseId(null));
           dispatch(setSearchCompanyId(null));
-          // dispatch(setSelectedWarehouse(null));
         }}
         to={{
           pathname: "/items",
@@ -107,6 +110,31 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           </div>
           {!collapsed && (
             <div className={styles.nav_label}>{t("nav-items")}</div>
+          )}
+        </div>
+      </Link>
+
+      <Link
+        className={[
+          styles.link,
+          selectedOption === SideNavLinks.BASKETS ? `${styles.selected}` : "",
+        ].join(" ")}
+        onClick={() => {
+          onSelectedChange(SideNavLinks.BASKETS);
+          dispatch(setSearchWarehouseId(null));
+          dispatch(setSearchCompanyId(null));
+        }}
+        to="/baskets"
+      >
+        <div className={styles.nav}>
+          <div className={styles.nav_icon}>
+            {collapsed && (
+              <label className={styles.tooltip}>{t("nav-baskets")}</label>
+            )}
+            <BsBasket2Fill size={24} />
+          </div>
+          {!collapsed && (
+            <div className={styles.nav_label}>{t("nav-baskets")}</div>
           )}
         </div>
       </Link>
@@ -193,9 +221,6 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
               <div className={styles.nav_label}>{t("nav-orders")} </div>
             )}
           </div>
-          {/* {unreadCount > 0 && (
-            <span className={styles.badge}>{unreadCount}</span>
-          )} */}
         </Link>
       )}
 
@@ -208,8 +233,6 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           onSelectedChange(SideNavLinks.SETTINGS);
           dispatch(setSearchWarehouseId(null));
           dispatch(setSearchCompanyId(null));
-
-          // dispatch(setSelectedWarehouse(null));
         }}
         to="/admin/settings"
       >

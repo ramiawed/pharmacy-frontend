@@ -16,6 +16,11 @@ import {
   selectedChange,
   updateOrder,
 } from "../../redux/orders/ordersSlice";
+import {
+  decrementUnreadOrder as basketDecrementUnreadOrder,
+  selectedChange as basketSelectedChange,
+  updateOrder as basketUpdateOrder,
+} from "../../redux/basketOrdersSlice/basketOrdersSlice";
 
 // icons
 import {
@@ -32,7 +37,7 @@ import styles from "./order-row.module.scss";
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
 
-function OrderRow({ order, deleteAction }) {
+function OrderRow({ order, deleteAction, type }) {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -63,15 +68,27 @@ function OrderRow({ order, deleteAction }) {
       }
 
       if (Object.keys(obj).length > 0) {
-        dispatch(updateOrder({ id, obj, token }))
+        dispatch(
+          type === "order"
+            ? updateOrder({ id, obj, token })
+            : basketUpdateOrder({ id, obj, token })
+        )
           .then(unwrapResult)
           .then(() => {
-            dispatch(decrementUnreadOrder({ token }));
+            dispatch(
+              type === "order"
+                ? decrementUnreadOrder({ token })
+                : basketDecrementUnreadOrder({ token })
+            );
           });
       }
     }
 
-    history.push(`/order-details?${id}`);
+    if (type === "order") {
+      history.push(`/order-details?${id}`);
+    } else {
+      history.push(`/basket-order-details?${id}`);
+    }
   };
 
   const modalOkHandler = (id, warehouseStatus) => {
@@ -96,7 +113,11 @@ function OrderRow({ order, deleteAction }) {
             value={order.selected}
             checked={order.selected}
             onChange={() => {
-              dispatch(selectedChange(order._id));
+              dispatch(
+                type === "order"
+                  ? selectedChange(order._id)
+                  : basketSelectedChange(order._id)
+              );
             }}
           />
         </div>

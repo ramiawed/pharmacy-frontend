@@ -20,7 +20,6 @@ import ButtonWithIcon from "../button-with-icon/button-with-icon.component";
 import CartItemCard from "../cart-item-card/cart-item-card.component";
 
 // icon
-import { FiSend } from "react-icons/fi";
 import { MdExpandMore, MdExpandLess } from "react-icons/md";
 
 // styles

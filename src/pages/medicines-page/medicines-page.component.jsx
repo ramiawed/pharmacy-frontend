@@ -39,6 +39,10 @@ import {
   setDisplayType,
   resetMedicinesArray,
   resetMedicinesPageState,
+  addIdToCompaniesIds,
+  removeIdFromCompaniesId,
+  addIdToWarehousesIds,
+  removeIdFromWarehousesId,
 } from "../../redux/medicines/medicinesSlices";
 
 // styles
@@ -48,6 +52,7 @@ import styles from "./medicines-page.module.scss";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
+import SearchPartnerContainer from "../../components/search-partner-container/search-partner-container.component";
 
 let timer = null;
 
@@ -150,7 +155,16 @@ function MedicinesPage({ onSelectedChange }) {
         {/* search by company name */}
         {pageState.searchCompanyId === null &&
           pageState.searchWarehouseId === null && (
-            <SearchInput
+            <SearchPartnerContainer
+              label={t("item-company")}
+              partners={pageState?.searchCompaniesIds}
+              addId={addIdToCompaniesIds}
+              removeId={removeIdFromCompaniesId}
+              partnerType={UserTypeConstants.COMPANY}
+            />
+          )}
+
+        {/* <SearchInput
               label="item-company"
               id="item-company"
               type="text"
@@ -165,8 +179,7 @@ function MedicinesPage({ onSelectedChange }) {
                 dispatch(setSearchCompanyName(""));
               }}
               onkeyup={keyUpHandler}
-            />
-          )}
+            /> */}
 
         {/* search by warehouse's companies */}
         {pageState.searchWarehouseId !== null && (
@@ -191,7 +204,16 @@ function MedicinesPage({ onSelectedChange }) {
 
         {pageState.searchWarehouseId === null &&
           user.type !== UserTypeConstants.GUEST && (
-            <SearchInput
+            <SearchPartnerContainer
+              label={t("item-warehouse")}
+              partners={pageState?.searchWarehousesIds}
+              addId={addIdToWarehousesIds}
+              removeId={removeIdFromWarehousesId}
+              partnerType={UserTypeConstants.WAREHOUSE}
+            />
+          )}
+
+        {/* <SearchInput
               label="item-warehouse"
               id="item-warehouse"
               type="text"
@@ -206,8 +228,7 @@ function MedicinesPage({ onSelectedChange }) {
                 dispatch(setSearchWarehouseName(""));
               }}
               onkeyup={keyUpHandler}
-            />
-          )}
+            /> */}
 
         {user.type !== UserTypeConstants.GUEST && (
           <div className={searchContainerStyles.checkbox_div}>

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 import axios from "axios";
 
 // redux stuff
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 
 // react icons
@@ -21,15 +22,26 @@ import styles from "./search-in-top-nav.module.scss";
 
 // constants
 import { Colors, BASEURL, UserTypeConstants } from "../../utils/constants";
+import {
+  addCompanyToOurCompaniesHandler,
+  addPartnerToFavoriteHandler,
+  partnerRowClickHandler,
+  removeCompanyFromOurCompaniesHandler,
+  removePartnerFromFavoriteHandler,
+} from "../../utils/handlers";
+import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 
 let CancelToken = null;
 let source = null;
 
 function SearchInTopNav() {
+  const history = useHistory();
+  const dispatch = useDispatch();
   const { t } = useTranslation();
 
   // selectors
   const { user, token } = useSelector(selectUserData);
+  const isOnline = useSelector(selectOnlineStatus);
 
   // own states
   const [searchName, setSearchName] = useState("");
@@ -230,6 +242,49 @@ function SearchInTopNav() {
                     isSearch={true}
                     type="company"
                     onSelectAction={resetSearch}
+                    addPartnerToFavoriteHandler={() =>
+                      addPartnerToFavoriteHandler(
+                        company,
+                        isOnline,
+                        dispatch,
+                        token,
+                        user
+                      )
+                    }
+                    addCompanyToOurCompaniesHandler={() =>
+                      addCompanyToOurCompaniesHandler(
+                        company,
+                        isOnline,
+                        dispatch,
+                        token
+                      )
+                    }
+                    removeCompanyFromOurCompaniesHandler={() => {
+                      removeCompanyFromOurCompaniesHandler(
+                        company,
+                        isOnline,
+                        dispatch,
+                        token
+                      );
+                    }}
+                    removePartnerFromFavoriteHandler={() => {
+                      removePartnerFromFavoriteHandler(
+                        company,
+                        isOnline,
+                        dispatch,
+                        token
+                      );
+                    }}
+                    partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
+                      partnerRowClickHandler(
+                        company,
+                        allowShowingWarehouseMedicines,
+                        user,
+                        dispatch,
+                        token,
+                        history
+                      )
+                    }
                   />
                 ))}
 
@@ -243,6 +298,33 @@ function SearchInTopNav() {
                     isSearch={true}
                     type="warehouse"
                     onSelectAction={resetSearch}
+                    addPartnerToFavoriteHandler={() =>
+                      addPartnerToFavoriteHandler(
+                        warehouse,
+                        isOnline,
+                        dispatch,
+                        token,
+                        user
+                      )
+                    }
+                    removePartnerFromFavoriteHandler={() => {
+                      removePartnerFromFavoriteHandler(
+                        warehouse,
+                        isOnline,
+                        dispatch,
+                        token
+                      );
+                    }}
+                    partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
+                      partnerRowClickHandler(
+                        warehouse,
+                        allowShowingWarehouseMedicines,
+                        user,
+                        dispatch,
+                        token,
+                        history
+                      )
+                    }
                   />
                 ))}
               </>

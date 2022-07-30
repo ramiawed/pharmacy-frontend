@@ -12,6 +12,7 @@ import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
 import ReactLoading from "react-loading";
+import { useHistory } from "react-router-dom";
 
 import { CgMoreVertical } from "react-icons/cg";
 
@@ -48,10 +49,20 @@ import generalStyles from "../../style.module.scss";
 // constants and utils
 import { CitiesName, Colors } from "../../utils/constants";
 
+// handlers
+import {
+  addCompanyToOurCompaniesHandler,
+  addPartnerToFavoriteHandler,
+  partnerRowClickHandler,
+  removeCompanyFromOurCompaniesHandler,
+  removePartnerFromFavoriteHandler,
+} from "../../utils/handlers";
+
 let timer;
 
 function CompaniesPage({ onSelectedChange }) {
   const { t } = useTranslation();
+  const history = useHistory();
   const dispatch = useDispatch();
 
   // selectors
@@ -149,7 +160,53 @@ function CompaniesPage({ onSelectedChange }) {
       {/* display partner as list */}
       {displayType === "list" &&
         companies.map((company) => (
-          <PartnerRow key={company._id} partner={company} />
+          <PartnerRow
+            key={company._id}
+            partner={company}
+            addPartnerToFavoriteHandler={() =>
+              addPartnerToFavoriteHandler(
+                company,
+                isOnline,
+                dispatch,
+                token,
+                user
+              )
+            }
+            addCompanyToOurCompaniesHandler={() =>
+              addCompanyToOurCompaniesHandler(
+                company,
+                isOnline,
+                dispatch,
+                token
+              )
+            }
+            removeCompanyFromOurCompaniesHandler={() => {
+              removeCompanyFromOurCompaniesHandler(
+                company,
+                isOnline,
+                dispatch,
+                token
+              );
+            }}
+            removePartnerFromFavoriteHandler={() => {
+              removePartnerFromFavoriteHandler(
+                company,
+                isOnline,
+                dispatch,
+                token
+              );
+            }}
+            partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
+              partnerRowClickHandler(
+                company,
+                allowShowingWarehouseMedicines,
+                user,
+                dispatch,
+                token,
+                history
+              )
+            }
+          />
         ))}
 
       {/* display partner as a card */}
@@ -161,7 +218,53 @@ function CompaniesPage({ onSelectedChange }) {
           ].join(" ")}
         >
           {companies.map((company) => (
-            <PartnerCard key={company._id} partner={company} />
+            <PartnerCard
+              key={company._id}
+              partner={company}
+              addPartnerToFavoriteHandler={() =>
+                addPartnerToFavoriteHandler(
+                  company,
+                  isOnline,
+                  dispatch,
+                  token,
+                  user
+                )
+              }
+              addCompanyToOurCompaniesHandler={() =>
+                addCompanyToOurCompaniesHandler(
+                  company,
+                  isOnline,
+                  dispatch,
+                  token
+                )
+              }
+              removeCompanyFromOurCompaniesHandler={() => {
+                removeCompanyFromOurCompaniesHandler(
+                  company,
+                  isOnline,
+                  dispatch,
+                  token
+                );
+              }}
+              removePartnerFromFavoriteHandler={() => {
+                removePartnerFromFavoriteHandler(
+                  company,
+                  isOnline,
+                  dispatch,
+                  token
+                );
+              }}
+              partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
+                partnerRowClickHandler(
+                  company,
+                  allowShowingWarehouseMedicines,
+                  user,
+                  dispatch,
+                  token,
+                  history
+                )
+              }
+            />
           ))}
         </div>
       )}
@@ -209,21 +312,6 @@ function CompaniesPage({ onSelectedChange }) {
           {t("no-more")}
         </p>
       )}
-
-      {/* show loading animation when data is loading */}
-      {/* {status === "loading" && <Loader allowCancel={false} />} */}
-
-      {/* {error && (
-        <Toast
-          bgColor={Colors.FAILED_COLOR}
-          foreColor="#fff"
-          actionAfterTimeout={() => {
-            dispatch(resetStatus());
-          }}
-        >
-          {t(error)}
-        </Toast>
-      )} */}
     </div>
   ) : (
     <Redirect to="/signin" />

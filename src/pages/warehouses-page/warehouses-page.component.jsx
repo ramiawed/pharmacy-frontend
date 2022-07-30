@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
 import ReactLoading from "react-loading";
+import { useHistory } from "react-router-dom";
 
 // components
 import PartnerRow from "../../components/partner-row/partner-row.component";
@@ -46,10 +47,18 @@ import generalStyles from "../../style.module.scss";
 // icons
 import { CgMoreVertical } from "react-icons/cg";
 
+// handlers
+import {
+  addPartnerToFavoriteHandler,
+  partnerRowClickHandler,
+  removePartnerFromFavoriteHandler,
+} from "../../utils/handlers";
+
 let timer;
 
 function WarehousePage({ onSelectedChange }) {
   const { t } = useTranslation();
+  const history = useHistory();
   const dispatch = useDispatch();
 
   // selectors
@@ -148,7 +157,37 @@ function WarehousePage({ onSelectedChange }) {
       {/* display as list */}
       {displayType === "list" &&
         warehouses.map((warehouse) => (
-          <PartnerRow key={warehouse._id} partner={warehouse} />
+          <PartnerRow
+            key={warehouse._id}
+            partner={warehouse}
+            addPartnerToFavoriteHandler={() =>
+              addPartnerToFavoriteHandler(
+                warehouse,
+                isOnline,
+                dispatch,
+                token,
+                user
+              )
+            }
+            removePartnerFromFavoriteHandler={() => {
+              removePartnerFromFavoriteHandler(
+                warehouse,
+                isOnline,
+                dispatch,
+                token
+              );
+            }}
+            partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
+              partnerRowClickHandler(
+                warehouse,
+                allowShowingWarehouseMedicines,
+                user,
+                dispatch,
+                token,
+                history
+              )
+            }
+          />
         ))}
 
       {/* display as card */}
@@ -160,7 +199,37 @@ function WarehousePage({ onSelectedChange }) {
           ].join(" ")}
         >
           {warehouses.map((warehouse) => (
-            <PartnerCard key={warehouse._id} partner={warehouse} />
+            <PartnerCard
+              key={warehouse._id}
+              partner={warehouse}
+              addPartnerToFavoriteHandler={() =>
+                addPartnerToFavoriteHandler(
+                  warehouse,
+                  isOnline,
+                  dispatch,
+                  token,
+                  user
+                )
+              }
+              removePartnerFromFavoriteHandler={() => {
+                removePartnerFromFavoriteHandler(
+                  warehouse,
+                  isOnline,
+                  dispatch,
+                  token
+                );
+              }}
+              partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
+                partnerRowClickHandler(
+                  warehouse,
+                  allowShowingWarehouseMedicines,
+                  user,
+                  dispatch,
+                  token,
+                  history
+                )
+              }
+            />
           ))}
         </div>
       )}

@@ -7,7 +7,7 @@
 
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -17,6 +17,7 @@ import {
   selectFavorites,
 } from "../../redux/favorites/favoritesSlice";
 import { selectUserData } from "../../redux/auth/authSlice";
+import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 
 // components
 import CardInfo from "../../components/card-info/card-info.component";
@@ -35,7 +36,17 @@ import generalStyles from "../../style.module.scss";
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
 
+// handlers
+import {
+  addCompanyToOurCompaniesHandler,
+  addPartnerToFavoriteHandler,
+  partnerRowClickHandler,
+  removeCompanyFromOurCompaniesHandler,
+  removePartnerFromFavoriteHandler,
+} from "../../utils/handlers";
+
 function FavoritesPage({ onSelectedChange }) {
+  const history = useHistory();
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -49,6 +60,7 @@ function FavoritesPage({ onSelectedChange }) {
     favorites_items: favoritesItems,
     status,
   } = useSelector(selectFavorites);
+  const isOnline = useSelector(selectOnlineStatus);
 
   const refreshFavoritesHandler = () => {
     dispatch(resetFavorites());
@@ -108,6 +120,44 @@ function FavoritesPage({ onSelectedChange }) {
                     key={favorite._id}
                     partner={favorite}
                     withoutBoxShadow={true}
+                    addPartnerToFavoriteHandler={() =>
+                      addPartnerToFavoriteHandler(
+                        favorite,
+                        isOnline,
+                        dispatch,
+                        token,
+                        user
+                      )
+                    }
+                    addCompanyToOurCompaniesHandler={() =>
+                      addCompanyToOurCompaniesHandler(favorite, dispatch, token)
+                    }
+                    removeCompanyFromOurCompaniesHandler={() => {
+                      removeCompanyFromOurCompaniesHandler(
+                        favorite,
+                        isOnline,
+                        dispatch,
+                        token
+                      );
+                    }}
+                    removePartnerFromFavoriteHandler={() => {
+                      removePartnerFromFavoriteHandler(
+                        favorite,
+                        isOnline,
+                        dispatch,
+                        token
+                      );
+                    }}
+                    partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
+                      partnerRowClickHandler(
+                        favorite,
+                        allowShowingWarehouseMedicines,
+                        user,
+                        dispatch,
+                        token,
+                        history
+                      )
+                    }
                   />
                 ))}
           </CardInfo>
@@ -126,6 +176,50 @@ function FavoritesPage({ onSelectedChange }) {
                       key={favorite._id}
                       partner={favorite}
                       withoutBoxShadow={true}
+                      addPartnerToFavoriteHandler={() =>
+                        addPartnerToFavoriteHandler(
+                          favorite,
+                          isOnline,
+                          dispatch,
+                          token,
+                          user
+                        )
+                      }
+                      addCompanyToOurCompaniesHandler={() =>
+                        addCompanyToOurCompaniesHandler(
+                          favorite,
+                          dispatch,
+                          token
+                        )
+                      }
+                      removeCompanyFromOurCompaniesHandler={() => {
+                        removeCompanyFromOurCompaniesHandler(
+                          favorite,
+                          isOnline,
+                          dispatch,
+                          token
+                        );
+                      }}
+                      removePartnerFromFavoriteHandler={() => {
+                        removePartnerFromFavoriteHandler(
+                          favorite,
+                          isOnline,
+                          dispatch,
+                          token
+                        );
+                      }}
+                      partnerRowClickHandler={(
+                        allowShowingWarehouseMedicines
+                      ) =>
+                        partnerRowClickHandler(
+                          favorite,
+                          allowShowingWarehouseMedicines,
+                          user,
+                          dispatch,
+                          token,
+                          history
+                        )
+                      }
                     />
                   ))}
             </CardInfo>

@@ -31,6 +31,7 @@ import {
   setUserActive,
   setUserApproved,
   setUserType,
+  setSearchMobile,
 } from "../../redux/users/usersSlice";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -242,6 +243,28 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
         ) : (
           <div></div>
         )}
+      </RowWith2Children>
+
+      <Separator />
+      <RowWith2Children>
+        <div className={styles.selectDiv}>
+        <Input
+            label="user-mobile"
+            id="search-mobile"
+            type="text"
+            value={pageState.searchMobile}
+            onchange={(e) => {
+              dispatch(setSearchMobile(e.target.value));
+            }}
+            bordered={true}
+            placeholder="search-by-mobile"
+            onEnterPress={enterPress}
+            resetField={() => dispatch(setSearchMobile(""))}
+            smallFont={true}
+          />
+        </div>
+
+       <div></div>
       </RowWith2Children>
 
       <Separator />

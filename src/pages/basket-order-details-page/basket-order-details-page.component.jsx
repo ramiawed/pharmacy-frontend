@@ -128,7 +128,7 @@ const BasketOrderDetailsPage = ({ onSelectedChange }) => {
                     <div className={styles.basic_details_container}>
                       <div className={styles.row}>
                         <label className={styles.label}>
-                          {t("pharmacy-name")}:{" "}
+                          {t("pharmacy-name")}:
                         </label>
                         <label className={styles.name}>
                           {orderDetails.pharmacy.name}
@@ -137,7 +137,16 @@ const BasketOrderDetailsPage = ({ onSelectedChange }) => {
 
                       <div className={styles.row}>
                         <label className={styles.label}>
-                          {t("user-address-details")}:{" "}
+                          {t("user-certificate-name")}:
+                        </label>
+                        <label className={styles.name}>
+                          {orderDetails.pharmacy.certificateName}
+                        </label>
+                      </div>
+
+                      <div className={styles.row}>
+                        <label className={styles.label}>
+                          {t("user-address-details")}:
                         </label>
                         <label className={styles.name}>
                           {orderDetails.pharmacy.addressDetails}
@@ -146,7 +155,7 @@ const BasketOrderDetailsPage = ({ onSelectedChange }) => {
 
                       <div className={styles.row}>
                         <label className={styles.label}>
-                          {t("user-mobile")}:{" "}
+                          {t("user-mobile")}:
                         </label>
                         <label className={styles.name}>
                           {orderDetails.pharmacy.mobile}
@@ -155,7 +164,7 @@ const BasketOrderDetailsPage = ({ onSelectedChange }) => {
 
                       <div className={styles.row}>
                         <label className={styles.label}>
-                          {t("warehouse-name")}:{" "}
+                          {t("warehouse-name")}:
                         </label>
                         <label className={styles.name}>
                           {orderDetails.warehouse.name}
@@ -164,7 +173,7 @@ const BasketOrderDetailsPage = ({ onSelectedChange }) => {
 
                       <div className={styles.row}>
                         <label className={styles.label}>
-                          {t("date-label")}:{" "}
+                          {t("date-label")}:
                         </label>
                         <label className={styles.name}>
                           {new Date(

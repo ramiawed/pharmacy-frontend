@@ -32,7 +32,7 @@ import generalStyles from "../../style.module.scss";
 import searchContainerStyles from "../search-container/search-container.module.scss";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
-function ItemsPageHeader({ user, company, pageState, search, keyUpHandler }) {
+function ItemsPageHeader({ user, company, pageState, search, keyUpHandler, warehouse }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -200,7 +200,7 @@ function ItemsPageHeader({ user, company, pageState, search, keyUpHandler }) {
             />
 
             <ExportCSVFromURL
-              url={`${BASEURL}/items/allItem/${
+              url={`${BASEURL}/items/allItemForCompany/${
                 user.type === UserTypeConstants.COMPANY ? user._id : company._id
               }`}
               fileName="filename"
@@ -209,6 +209,18 @@ function ItemsPageHeader({ user, company, pageState, search, keyUpHandler }) {
         ) : (
           <></>
         )}
+
+      {(user.type === UserTypeConstants.WAREHOUSE ||
+        user.type === UserTypeConstants.ADMIN) && (
+          <ExportCSVFromURL
+              url={`${BASEURL}/items/allItemForWarehouse/${
+                user.type === UserTypeConstants.WAREHOUSE ? user._id : warehouse._id
+              }`}
+              fileName="filename"
+            />
+        )
+      }
+
         <Icon
           withBackground={true}
           tooltip={t("go-back")}

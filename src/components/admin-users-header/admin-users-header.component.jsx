@@ -53,6 +53,7 @@ function AdminUsersHeader({
     searchEmployeeName,
     searchCertificateName,
     searchCompanyName,
+    searchMobile,
     searchJobTitle,
     approved,
     active,
@@ -72,7 +73,8 @@ function AdminUsersHeader({
     (active === UserActiveState.ALL ? 0 : 1) +
     (userType === UserTypeConstants.ALL ? 0 : 1) +
     (searchJob === GuestJob.NONE ? 0 : 1) +
-    (showItems === ShowWarehouseItems.ALL ? 0 : 1);
+    (showItems === ShowWarehouseItems.ALL ? 0 : 1) +
+    (searchMobile.length > 0 ? 1 : 0);
 
   const orderFilterCount = Object.entries(pageState.orderBy).length;
 

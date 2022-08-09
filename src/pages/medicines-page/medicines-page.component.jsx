@@ -43,6 +43,7 @@ import {
   removeIdFromCompaniesId,
   addIdToWarehousesIds,
   removeIdFromWarehousesId,
+  setSearchHaveOffer,
 } from "../../redux/medicines/medicinesSlices";
 
 // styles
@@ -155,16 +156,7 @@ function MedicinesPage({ onSelectedChange }) {
         {/* search by company name */}
         {pageState.searchCompanyId === null &&
           pageState.searchWarehouseId === null && (
-            <SearchPartnerContainer
-              label={t("item-company")}
-              partners={pageState?.searchCompaniesIds}
-              addId={addIdToCompaniesIds}
-              removeId={removeIdFromCompaniesId}
-              partnerType={UserTypeConstants.COMPANY}
-            />
-          )}
-
-        {/* <SearchInput
+            <SearchInput
               label="item-company"
               id="item-company"
               type="text"
@@ -179,7 +171,17 @@ function MedicinesPage({ onSelectedChange }) {
                 dispatch(setSearchCompanyName(""));
               }}
               onkeyup={keyUpHandler}
-            /> */}
+            />
+            
+          )}
+
+        {/* <SearchPartnerContainer
+              label={t("item-company")}
+              partners={pageState?.searchCompaniesIds}
+              addId={addIdToCompaniesIds}
+              removeId={removeIdFromCompaniesId}
+              partnerType={UserTypeConstants.COMPANY}
+            />*/}
 
         {/* search by warehouse's companies */}
         {pageState.searchWarehouseId !== null && (
@@ -204,16 +206,7 @@ function MedicinesPage({ onSelectedChange }) {
 
         {pageState.searchWarehouseId === null &&
           user.type !== UserTypeConstants.GUEST && (
-            <SearchPartnerContainer
-              label={t("item-warehouse")}
-              partners={pageState?.searchWarehousesIds}
-              addId={addIdToWarehousesIds}
-              removeId={removeIdFromWarehousesId}
-              partnerType={UserTypeConstants.WAREHOUSE}
-            />
-          )}
-
-        {/* <SearchInput
+            <SearchInput
               label="item-warehouse"
               id="item-warehouse"
               type="text"
@@ -228,9 +221,19 @@ function MedicinesPage({ onSelectedChange }) {
                 dispatch(setSearchWarehouseName(""));
               }}
               onkeyup={keyUpHandler}
+            />
+          )}
+
+
+          {/* <SearchPartnerContainer
+              label={t("item-warehouse")}
+              partners={pageState?.searchWarehousesIds}
+              addId={addIdToWarehousesIds}
+              removeId={removeIdFromWarehousesId}
+              partnerType={UserTypeConstants.WAREHOUSE}
             /> */}
 
-        {user.type !== UserTypeConstants.GUEST && (
+        {user.type !== UserTypeConstants.GUEST && !pageState.searchWarehouseId && (
           <div className={searchContainerStyles.checkbox_div}>
             <input
               type="checkbox"
@@ -251,7 +254,7 @@ function MedicinesPage({ onSelectedChange }) {
           </div>
         )}
 
-        {user.type !== UserTypeConstants.GUEST && (
+        {user.type !== UserTypeConstants.GUEST && !pageState.searchWarehouseId  && (
           <div className={searchContainerStyles.checkbox_div}>
             <input
               type="checkbox"
@@ -269,6 +272,21 @@ function MedicinesPage({ onSelectedChange }) {
             {user.type !== UserTypeConstants.WAREHOUSE && (
               <label>{t("pharmacy-out-warehouse")}</label>
             )}
+          </div>
+        )}
+
+        {user.type !== UserTypeConstants.GUEST && (pageState.searchWarehouseId || pageState.searchCompanyId) && (
+          <div className={searchContainerStyles.checkbox_div}>
+            <input
+              type="checkbox"
+              value={pageState.searchHaveOffer}
+              checked={pageState.searchHaveOffer}
+              onChange={() => {
+                dispatch(setSearchHaveOffer(!pageState.searchHaveOffer));
+                keyUpHandler();
+              }}
+            />
+              <label>{t("medicies-have-offer-label")}</label>
           </div>
         )}
       </SearchContainer>

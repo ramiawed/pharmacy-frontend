@@ -29,6 +29,7 @@ const initialState = {
     searchCertificateName: "",
     searchCompanyName: "",
     searchJobTitle: "",
+    searchMobile: "",
     approved: UserApprovedState.ALL,
     active: UserActiveState.ALL,
     userType: UserTypeConstants.ALL,
@@ -102,6 +103,10 @@ export const getUsers = createAsyncThunk(
 
       if (pageState.searchJobTitle.trim() !== "") {
         buildUrl = buildUrl + `&jobTitle=${pageState.searchJobTitle}`;
+      }
+
+      if (pageState.searchMobile.trim() !== "") {
+        buildUrl = buildUrl + `&mobile=${pageState.searchMobile}`;
       }
 
       if (pageState.searchJob !== GuestJob.NONE) {
@@ -345,6 +350,13 @@ export const usersSlice = createSlice({
       };
     },
 
+    setSearchMobile: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchMobile: action.payload,
+      };
+    },
+
     setUserApproved: (state, action) => {
       state.pageState = {
         ...state.pageState,
@@ -407,6 +419,7 @@ export const usersSlice = createSlice({
         searchCertificateName: "",
         searchCompanyName: "",
         searchJobTitle: "",
+        searchMobile: "",
         approved: UserApprovedState.ALL,
         active: UserActiveState.ALL,
         userType: UserTypeConstants.ALL,
@@ -436,6 +449,7 @@ export const usersSlice = createSlice({
         searchCertificateName: "",
         searchCompanyName: "",
         searchJobTitle: "",
+        searchMobile: "",
         approved: UserApprovedState.ALL,
         active: UserActiveState.ALL,
         userType: UserTypeConstants.ALL,
@@ -537,6 +551,7 @@ export const {
   setSearchCertificateName,
   setSearchCompanyName,
   setSearchJobTitle,
+  setSearchMobile,
   setUserApproved,
   setUserActive,
   setUserType,

@@ -304,24 +304,31 @@ function ItemRow({ item, onSelectAction, small }) {
       >
         <div className={styles.details}>
           <label
-            className={[styles.name, small ? styles.small : styles.large].join(
+            className={[styles.name].join(
               " "
             )}
           >
             {item.name}
           </label>
+
+          
           <label
-            className={[styles.name, small ? styles.small : styles.large].join(
+            className={[styles.name].join(
               " "
             )}
           >
             {item.nameAr}
           </label>
-          <label className={[small ? styles.small : styles.large].join(" ")}>
+          
+          
+          <label className={[styles.companyName].join(" ")}>
             {item.company.name}
           </label>
-          <label className={[small ? styles.small : styles.large].join(" ")}>
+          <label className={[styles.caliber].join(" ")}>
             {item.caliber}
+          </label>
+          <label className={[styles.composition].join(" ")}>
+            {item.composition}
           </label>
         </div>
         <div className={styles.actions}>

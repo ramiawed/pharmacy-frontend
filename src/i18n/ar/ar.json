@@ -131,6 +131,7 @@
   "search-by-company-name": "بحث من خلال اسم الشركة",
   "search-by-job-title": "بحث من خلال المسمى الوظيفي",
   "search-by-item-name": "بحث من خلال اسم المنتج",
+  "search-by-mobile": "بحث من خلال رقم الموبايل",
   "search-home-placeholder": "اسم المنتج - الاسم التجاري - الباركود - اسم الشركة - اسم المستودع",
   "search-engines": "محركات البحث",
   "search-by-warehouse-name": "بحث من خلال اسم المستودع",
@@ -555,5 +556,6 @@
   "no-basket-orders-found": "لا يوجد طلبات للسلات",
   "no-basket-to-order": "لا يوجد سلات للطلب",
   "order-deleted-successfully-msg": "تم حذف الطلب بنجاح",
-  "order-deleted-failed-msg": "حدث خطأ أثناء حذف الطلب، الرجاء المحاولة مرة اخرى"
+  "order-deleted-failed-msg": "حدث خطأ أثناء حذف الطلب، الرجاء المحاولة مرة اخرى",
+  "medicies-have-offer-label": "المنتجات التي عليها عرض"
 }

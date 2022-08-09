@@ -91,6 +91,7 @@ function OrderDetailsPage({ location, onSelectedChange }) {
           setEmptyMsg("order-deleted");
         } else {
           setOrderDetails(response.data.data.order);
+          console.log(response.data.data.order);
         }
       })
       .catch((err) => {
@@ -146,7 +147,7 @@ function OrderDetailsPage({ location, onSelectedChange }) {
                     <div className={styles.basic_details_container}>
                       <div className={styles.row}>
                         <label className={styles.label}>
-                          {t("pharmacy-name")}:{" "}
+                          {t("pharmacy-name")}:
                         </label>
                         <label className={styles.name}>
                           {orderDetails.pharmacy.name}
@@ -155,7 +156,16 @@ function OrderDetailsPage({ location, onSelectedChange }) {
 
                       <div className={styles.row}>
                         <label className={styles.label}>
-                          {t("user-address-details")}:{" "}
+                          {t("user-certificate-name")}:
+                        </label>
+                        <label className={styles.name}>
+                          {orderDetails.pharmacy.certificateName}
+                        </label>
+                      </div>
+
+                      <div className={styles.row}>
+                        <label className={styles.label}>
+                          {t("user-address-details")}:
                         </label>
                         <label className={styles.name}>
                           {orderDetails.pharmacy.addressDetails}
@@ -164,7 +174,7 @@ function OrderDetailsPage({ location, onSelectedChange }) {
 
                       <div className={styles.row}>
                         <label className={styles.label}>
-                          {t("user-mobile")}:{" "}
+                          {t("user-mobile")}:
                         </label>
                         <label className={styles.name}>
                           {orderDetails.pharmacy.mobile}
@@ -173,7 +183,7 @@ function OrderDetailsPage({ location, onSelectedChange }) {
 
                       <div className={styles.row}>
                         <label className={styles.label}>
-                          {t("warehouse-name")}:{" "}
+                          {t("warehouse-name")}:
                         </label>
                         <label className={styles.name}>
                           {orderDetails.warehouse.name}
@@ -182,7 +192,7 @@ function OrderDetailsPage({ location, onSelectedChange }) {
 
                       <div className={styles.row}>
                         <label className={styles.label}>
-                          {t("date-label")}:{" "}
+                          {t("date-label")}:
                         </label>
                         <label className={styles.name}>
                           {new Date(
@@ -192,7 +202,7 @@ function OrderDetailsPage({ location, onSelectedChange }) {
                       </div>
                       <div className={styles.row}>
                         <label className={styles.label}>
-                          {t("total-invoice-price")}:{" "}
+                          {t("total-invoice-price")}:
                         </label>
                         <label className={styles.name}>
                           {computeTotalPrice()}

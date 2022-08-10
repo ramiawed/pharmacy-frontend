@@ -211,7 +211,7 @@ function ItemsPageHeader({ user, company, pageState, search, keyUpHandler, wareh
         )}
 
       {(user.type === UserTypeConstants.WAREHOUSE ||
-        user.type === UserTypeConstants.ADMIN) && (
+        user.type === UserTypeConstants.ADMIN) && warehouse !== null && (
           <ExportCSVFromURL
               url={`${BASEURL}/items/allItemForWarehouse/${
                 user.type === UserTypeConstants.WAREHOUSE ? user._id : warehouse._id

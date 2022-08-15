@@ -3,14 +3,14 @@ import { Link } from "react-router-dom";
 
 // redux stuff
 import { useDispatch } from "react-redux";
-import { statisticsSliceSignOut } from "../../redux/statistics/statisticsSlice";
+import { setActionType, statisticsSliceSignOut } from "../../redux/statistics/statisticsSlice";
 
 // styles
 import styles from "./statistics-card.module.scss";
 import generalStyles from "../../style.module.scss";
 import rowStyles from "../row.module.scss";
 
-function StatisticsCard({ title, field, type, backgroundColor }) {
+function StatisticsCard({ title, actionType, backgroundColor }) {
   const dispatch = useDispatch();
 
   return (
@@ -23,6 +23,7 @@ function StatisticsCard({ title, field, type, backgroundColor }) {
       <Link
         onClick={() => {
           dispatch(statisticsSliceSignOut());
+          dispatch(setActionType(actionType))
         }}
         className={[
           generalStyles.fc_white,
@@ -32,8 +33,6 @@ function StatisticsCard({ title, field, type, backgroundColor }) {
         to={{
           pathname: "/admin/statistics/option",
           state: {
-            field,
-            type,
             title,
           },
         }}

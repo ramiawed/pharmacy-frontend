@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useTranslation } from "react-i18next";
-import { Redirect, useLocation } from "react-router-dom";
+import { Redirect, useHistory, useLocation } from "react-router-dom";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -8,24 +8,26 @@ import { unwrapResult } from "@reduxjs/toolkit";
 import {
   getStatistics,
   resetStatistics,
+  resetStatisticsArray,
   resetStatisticsError,
   selectStatistics,
   setDateOption,
   setPage,
   setSearchDate,
+  setSearchDate1,
   setSearchName,
 } from "../../redux/statistics/statisticsSlice";
-import { selectUser } from "../../redux/auth/authSlice.js";
+import { selectUserData } from "../../redux/auth/authSlice.js";
 
 // icons
-import { IoMdMore } from "react-icons/io";
+import { IoMdMore, IoMdArrowRoundBack } from "react-icons/io";
 import { RiRefreshLine } from "react-icons/ri";
+import { CgMoreVertical } from "react-icons/cg";
 
 // components
-import Header from "../../components/header/header.component";
+import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 import TableHeader from "../../components/table-header/table-header.component";
 import SelectCustom from "../../components/select/select.component";
-import Button from "../../components/button/button.component";
 import Modal from "../../components/modal/modal.component";
 import SearchContainer from "../../components/search-container/search-container.component";
 import SearchInput from "../../components/search-input/search-input.component";
@@ -35,26 +37,24 @@ import Toast from "../../components/toast/toast.component";
 import Icon from "../../components/action-icon/action-icon.component";
 
 // styles
-import tableStyles from "../../components/table.module.scss";
 import rowStyles from "../../components/row.module.scss";
 import generalStyles from "../../style.module.scss";
+import styles from "./statistics-page.module.scss";
 
 // constants and utils
 import { Colors, DateOptions, UserTypeConstants } from "../../utils/constants";
 
 function StatisticsPage({ onSelectedChange }) {
   const { t } = useTranslation();
+  const history = useHistory();
   const dispatch = useDispatch();
   const location = useLocation();
-  const { field, type, title } = location.state
-    ? location.state
-    : { field: null, type: null, title: null };
+  const { title } = location.state ? location.state : { title: null };
 
   // selectors
   const { statistics, count, pageState, error, status } =
     useSelector(selectStatistics);
-  const user = useSelector(selectUser);
-
+  const { user, token } = useSelector(selectUserData);
   // own state
   const [showMoreInfo, setShowMoreInfo] = useState(false);
   const [selectedStatistics, setSelectedStatistics] = useState(null);
@@ -73,235 +73,199 @@ function StatisticsPage({ onSelectedChange }) {
 
   const handleDateOptions = (val) => {
     dispatch(setDateOption(val));
+    if (pageState.date !== "") {
+      if (val === DateOptions.ONE_DAY) {
+        let nextDay = new Date(pageState.date);
+        nextDay.setDate(nextDay.getDate() + 1);
+        dispatch(setSearchDate1(nextDay.toISOString().split("T")[0]));
+      }
+
+      if (val === DateOptions.THREE_DAY) {
+        let nextThreeDays = new Date(pageState.date);
+        nextThreeDays.setDate(nextThreeDays.getDate() + 3);
+        dispatch(setSearchDate1(nextThreeDays.toISOString().split("T")[0]));
+      }
+
+      if (val === DateOptions.ONE_WEEK) {
+        let nextWeek = new Date(pageState.date);
+        nextWeek.setDate(nextWeek.getDate() + 7);
+        dispatch(setSearchDate1(nextWeek.toISOString().split("T")[0]));
+      }
+
+      if (val === DateOptions.TWO_WEEK) {
+        let nextTwoWeek = new Date(pageState.date);
+        nextTwoWeek.setDate(nextTwoWeek.getDate() + 14);
+        dispatch(setSearchDate1(nextTwoWeek.toISOString().split("T")[0]));
+      }
+
+      if (val === DateOptions.ONE_MONTH) {
+        let nextMonth = new Date(pageState.date);
+        nextMonth.setMonth(nextMonth.getMonth() + 1);
+        dispatch(setSearchDate1(nextMonth.toISOString().split("T")[0]));
+      }
+
+      if (val === DateOptions.TWO_MONTH) {
+        let nextTwoMonth = new Date(pageState.date);
+        nextTwoMonth.setMonth(nextTwoMonth.getMonth() + 2);
+        dispatch(setSearchDate1(nextTwoMonth.toISOString().split("T")[0]));
+      }
+
+      if (val === DateOptions.SIX_MONTH) {
+        let nextSixMonth = new Date(pageState.date);
+        nextSixMonth.setMonth(nextSixMonth.getMonth() + 6);
+        dispatch(setSearchDate1(nextSixMonth.toISOString().split("T")[0]));
+      }
+
+      if (val === DateOptions.ONE_YEAR) {
+        let nextYear = new Date(pageState.date);
+        nextYear.setFullYear(nextYear.getFullYear() + 1);
+        dispatch(setSearchDate1(nextYear.toISOString().split("T")[0]));
+      }
+    }
   };
 
   // handle search
-  const handleSearch = (p) => {
-    let obj = {
-      field,
-      type,
-      page: p,
-      limit: 15,
-    };
-
-    // build the query string
-
-    if (pageState.searchName.trim().length !== 0) {
-      obj = {
-        ...obj,
-        name: pageState.searchName,
-      };
-    }
-
-    // One Day
-    if (pageState.dateOption === DateOptions.ONE_DAY) {
-      let nextDay = new Date(pageState.date);
-      nextDay.setDate(nextDay.getDate() + 1);
-      obj = {
-        ...obj,
-        date: new Date(pageState.date),
-        date1: nextDay,
-      };
-    }
-
-    // Three Days
-    if (pageState.dateOption === DateOptions.THREE_DAY) {
-      let nextThreeDays = new Date(pageState.date);
-      nextThreeDays.setDate(nextThreeDays.getDate() + 3);
-      obj = {
-        ...obj,
-        date: new Date(pageState.date),
-        date1: nextThreeDays,
-      };
-    }
-
-    // One Week
-    if (pageState.dateOption === DateOptions.ONE_WEEK) {
-      let nextWeek = new Date(pageState.date);
-      nextWeek.setDate(nextWeek.getDate() + 7);
-      obj = {
-        ...obj,
-        date: new Date(pageState.date),
-        date1: nextWeek,
-      };
-    }
-
-    // Two Week
-    if (pageState.dateOption === DateOptions.TWO_WEEK) {
-      let nextTwoWeek = new Date(pageState.date);
-      nextTwoWeek.setDate(nextTwoWeek.getDate() + 14);
-      obj = {
-        ...obj,
-        date: new Date(pageState.date),
-        date1: nextTwoWeek,
-      };
-    }
-
-    // One Month
-    if (pageState.dateOption === DateOptions.ONE_MONTH) {
-      let nextMonth = new Date(pageState.date);
-      nextMonth.setMonth(nextMonth.getMonth() + 1);
-
-      obj = {
-        ...obj,
-        date: new Date(pageState.date),
-        date1: nextMonth,
-      };
-    }
-
-    // Two Month
-    if (pageState.dateOption === DateOptions.TWO_MONTH) {
-      let nextTwoMonth = new Date(pageState.date);
-      nextTwoMonth.setMonth(nextTwoMonth.getMonth() + 2);
-
-      obj = {
-        ...obj,
-        date: new Date(pageState.date),
-        date1: nextTwoMonth,
-      };
-    }
-
-    // Six Month
-    if (pageState.dateOption === DateOptions.SIX_MONTH) {
-      let nextSixMonth = new Date(pageState.date);
-      nextSixMonth.setMonth(nextSixMonth.getMonth() + 6);
-
-      obj = {
-        ...obj,
-        date: new Date(pageState.date),
-        date1: nextSixMonth,
-      };
-    }
-
-    // One Year
-    if (pageState.dateOption === DateOptions.ONE_YEAR) {
-      let nextYear = new Date(pageState.date);
-      nextYear.setFullYear(nextYear.getFullYear() + 1);
-
-      obj = {
-        ...obj,
-        date: new Date(pageState.date),
-        date1: nextYear,
-      };
-    }
-
-    dispatch(getStatistics({ obj }))
+  const handleSearch = () => {
+    dispatch(getStatistics({ token }))
       .then(unwrapResult)
-      .then(() => {
-        dispatch(setPage(p + 1));
-      });
+      .then(() => {});
   };
 
   const handleEnterPress = () => {
     dispatch(resetStatistics());
     dispatch(setPage(1));
-    handleSearch(1);
+    handleSearch();
   };
 
   const handleMoreResult = () => {
-    handleSearch(pageState.page);
+    handleSearch();
   };
 
   useEffect(() => {
-    if (statistics.length === 0) handleSearch(1);
+    if (statistics.length === 0) handleSearch();
     onSelectedChange();
+
+    return () => {
+      dispatch(resetStatisticsArray());
+      dispatch(setPage(1));
+    };
   }, []);
 
   return user &&
     user.type === UserTypeConstants.ADMIN &&
-    title &&
-    type &&
-    field ? (
+    pageState.actionType !== "" ? (
     <div className={generalStyles.container}>
-      <Header>
-        <h2 className={generalStyles.header_title}>{title}</h2>
-        <div style={{ position: "relative", height: "50px" }}>
-          <SearchContainer searchAction={handleEnterPress}>
-            <SearchInput
-              label="statistics-name"
-              id="item-name"
-              type="text"
-              value={pageState.searchName}
-              onchange={(e) => dispatch(setSearchName(e.target.value))}
-              placeholder="search"
-              onEnterPress={handleEnterPress}
-              resetField={() => {
-                dispatch(setSearchName(""));
-              }}
-            />
-            <div
-              className={[
-                generalStyles.flex_container,
-                generalStyles.padding_v_6,
-              ].join(" ")}
-            >
-              <label style={{ fontSize: "0.7rem" }}>{t("dates-within")}</label>
-              <SelectCustom
-                bgColor={Colors.SECONDARY_COLOR}
-                foreColor="#fff"
-                options={dateOptions}
-                onchange={handleDateOptions}
-                defaultOption={{
-                  value: pageState.dateOption,
-                  label: t(
-                    `${
-                      dateOptions.find((o) => o.value === pageState.dateOption)
-                        .label
-                    }`
-                  ),
-                }}
-              />
-            </div>
-
-            <div
-              className={[
-                generalStyles.flex_container,
-                generalStyles.padding_v_6,
-              ].join(" ")}
-            >
-              <label style={{ fontSize: "0.7rem" }}>{t("date-label")}</label>
-              <input
-                type="date"
-                value={pageState.date}
-                onChange={(e) => {
-                  dispatch(setSearchDate(e.target.value));
-                }}
-              />
-            </div>
-          </SearchContainer>
-        </div>
-
-        <div className={generalStyles.refresh_icon}>
-          {/* refresh */}
-          <Icon
-            selected={false}
-            foreColor={Colors.SECONDARY_COLOR}
-            tooltip={t("refresh-tooltip")}
-            onclick={() => {
-              handleEnterPress();
+      <SearchContainer searchAction={handleEnterPress}>
+        <SearchInput
+          label="statistics-name"
+          id="item-name"
+          type="text"
+          value={pageState.searchName}
+          onchange={(e) => dispatch(setSearchName(e.target.value))}
+          placeholder="search"
+          onEnterPress={handleEnterPress}
+          resetField={() => {
+            dispatch(setSearchName(""));
+          }}
+        />
+        <div className={styles.selectDiv}>
+          <label>{t("dates-within")}</label>
+          <SelectCustom
+            bgColor={Colors.SECONDARY_COLOR}
+            foreColor="#fff"
+            options={dateOptions}
+            onchange={handleDateOptions}
+            defaultOption={{
+              value: pageState.dateOption,
+              label: t(
+                `${
+                  dateOptions.find((o) => o.value === pageState.dateOption)
+                    .label
+                }`
+              ),
             }}
-            icon={() => <RiRefreshLine />}
           />
         </div>
-      </Header>
+
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "flex-start",
+            backgroundColor: Colors.WHITE_COLOR,
+            borderRadius: "6px",
+            marginBottom: "4px",
+          }}
+        >
+          <label
+            style={{
+              color: Colors.SECONDARY_COLOR,
+              minWidth: "100px",
+              paddingInlineStart: "10px",
+            }}
+          >
+            {t("date-label")}
+          </label>
+          <input
+            type="date"
+            value={pageState.date}
+            onChange={(e) => {
+              dispatch(dispatch(setSearchDate(e.target.value)));
+            }}
+          />
+        </div>
+      </SearchContainer>
+
+      <div
+        className={[generalStyles.actions, generalStyles.margin_v_4].join(" ")}
+      >
+        {/* refresh */}
+        <Icon
+          withBackground={true}
+          selected={false}
+          foreColor={Colors.MAIN_COLOR}
+          tooltip={t("refresh-tooltip")}
+          onclick={() => {
+            handleEnterPress();
+          }}
+          icon={() => <RiRefreshLine />}
+        />
+
+        <Icon
+          withBackground={true}
+          tooltip={t("go-back")}
+          onclick={() => {
+            history.goBack();
+          }}
+          icon={() => <IoMdArrowRoundBack />}
+          foreColor={Colors.MAIN_COLOR}
+        />
+      </div>
+
+      {title && <p className={styles.title}>{title}</p>}
 
       {statistics.length > 0 && (
         <>
           <TableHeader>
-            <label className={[tableStyles.label_medium].join(" ")}>
+            <label className={[styles.header_label, styles.name].join(" ")}>
               {t("statistics-name")}
             </label>
-            <label className={[tableStyles.label_medium].join(" ")}>
+            <label className={[styles.header_label, styles.count].join(" ")}>
               {t("statistics-count")}
             </label>
-            <label className={[tableStyles.label_xsmall].join(" ")}></label>
+            <label
+              className={[styles.header_table, styles.action_div].join(" ")}
+            ></label>
           </TableHeader>
 
-          {statistics.map((stat) => (
-            <div key={stat._id} className={rowStyles.container}>
-              <label className={tableStyles.label_medium}>{stat.name}</label>
-              <label className={tableStyles.label_medium}>{stat.count}</label>
-              <label className={tableStyles.label_xsmall}>
+          {statistics.map((stat, index) => (
+            <div key={index} className={rowStyles.container}>
+              <label className={[styles.name, styles.value_label].join(" ")}>
+                {stat.data.name}
+              </label>
+              <label className={[styles.count, styles.value_label].join(" ")}>
+                {stat.count}
+              </label>
+              <label className={styles.action_div}>
                 <Icon
                   selected={false}
                   icon={() => <IoMdMore size={24} />}
@@ -321,12 +285,21 @@ function StatisticsPage({ onSelectedChange }) {
         <NoContent msg={t("no-statistics")} />
       )}
 
-      {statistics.length < count && (
-        <Button
-          text={t("more")}
-          action={handleMoreResult}
-          bgColor={Colors.SECONDARY_COLOR}
-        />
+      {count > 0 && status !== "loading" && (
+        <div className={generalStyles.count}>
+          {statistics.length} / {count}
+        </div>
+      )}
+
+      {statistics.length < count && statistics.length !== 0 && (
+        <div className={generalStyles.flex_container}>
+          <ButtonWithIcon
+            text={t("more")}
+            action={handleMoreResult}
+            bgColor={Colors.SECONDARY_COLOR}
+            icon={() => <CgMoreVertical />}
+          />
+        </div>
       )}
 
       {statistics.length === count && status !== "loading" && count !== 0 && (

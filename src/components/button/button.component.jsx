@@ -33,7 +33,6 @@ function Button({ action, text, bgColor, tooltip, loading, icon }) {
         bgColor === Colors.MAIN_COLOR ? generalStyles.bg_main : "",
         generalStyles.fc_white,
         generalStyles.block,
-        // generalStyles.margin_h_auto,
         generalStyles.padding_v_6,
         generalStyles.padding_h_12,
       ].join(" ")}

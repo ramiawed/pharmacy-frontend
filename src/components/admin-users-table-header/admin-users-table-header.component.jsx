@@ -18,7 +18,7 @@ function AdminUserTableHeader() {
         <label className={tableStyles.label_small}>{t("user-delete")}</label>
         <label className={tableStyles.label_small}>{t("show-medicines")}</label>
         <label className={tableStyles.label_small}>{t("user-type")}</label>
-        <label
+        {/* <label
           className={[tableStyles.label_large, tableStyles.hide_on_small].join(
             " "
           )}
@@ -32,7 +32,7 @@ function AdminUserTableHeader() {
           ].join(" ")}
         >
           {t("user-phone")}
-        </label>
+        </label> */}
         <label
           className={[
             tableStyles.label_medium,

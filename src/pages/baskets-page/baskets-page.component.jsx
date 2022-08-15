@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router-dom";
-
-// icons
+import ReactLoading from "react-loading";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -10,7 +9,6 @@ import { selectUserData } from "../../redux/auth/authSlice";
 import {
   cancelOperation,
   getBaskets,
-  resetBaskets,
   resetBasketsArray,
   selectBaskets,
 } from "../../redux/baskets/basketsSlice";
@@ -22,13 +20,17 @@ import {
 // components
 import BasketPageHeader from "../../components/baskets-page-header/baskets-page-header.component";
 import Basket from "../../components/basket/basket.component";
+import NoContent from "../../components/no-content/no-content.component";
+import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 
 // constants
-import { UserTypeConstants } from "../../utils/constants";
+import { Colors, UserTypeConstants } from "../../utils/constants";
 
 // styles
 import generalStyles from "../../style.module.scss";
-import NoContent from "../../components/no-content/no-content.component";
+
+// icons
+import { CgMoreVertical } from "react-icons/cg";
 
 const BasketsPage = ({ onSelectedChange }) => {
   const { t } = useTranslation();
@@ -57,13 +59,8 @@ const BasketsPage = ({ onSelectedChange }) => {
     handleSearch();
   };
 
-  const refreshHandler = () => {
-    dispatch(resetBaskets());
-    handleSearch();
-  };
-
   useEffect(() => {
-    if (baskets.length === 0) handleSearch(1);
+    if (baskets.length === 0) handleSearch();
 
     window.scrollTo(0, 0);
 
@@ -79,20 +76,14 @@ const BasketsPage = ({ onSelectedChange }) => {
     user.type === UserTypeConstants.WAREHOUSE ? (
     <>
       <BasketPageHeader isNew={isNew} setIsNew={setIsNew} />
-      {count > 0 && !isNew && (
-        <div className={generalStyles.count}>
-          <span className={generalStyles.label}>{t("baskets-count")}</span>
-          <span className={generalStyles.count}>{count}</span>
-        </div>
-      )}
-
-      {count === 0 && status !== "loading" && !isNew && (
-        <>
-          <NoContent msg={t("no-basket-to-order")} />
-        </>
-      )}
 
       <div className={generalStyles.container_with_header}>
+        {count > 0 && !isNew && (
+          <div className={generalStyles.count}>
+            <span className={generalStyles.label}>{t("baskets-count")}</span>
+            <span className={generalStyles.count}>{count}</span>
+          </div>
+        )}
         <div
           style={{
             paddingInline: "10px",
@@ -113,6 +104,39 @@ const BasketsPage = ({ onSelectedChange }) => {
           )}
         </div>
       </div>
+
+      {count === 0 && status !== "loading" && !isNew && (
+        <>
+          <NoContent msg={t("no-basket-to-order")} />
+        </>
+      )}
+
+      {status === "loading" && (
+        <div className={generalStyles.flex_container}>
+          <ReactLoading color={Colors.SECONDARY_COLOR} type="cylon" />
+        </div>
+      )}
+
+      {baskets.length < count && (
+        <div className={generalStyles.flex_container}>
+          <ButtonWithIcon
+            text={t("more")}
+            action={handleMoreResult}
+            bgColor={Colors.SECONDARY_COLOR}
+            icon={() => <CgMoreVertical />}
+          />
+        </div>
+      )}
+
+      {baskets.length === count && status !== "loading" && count !== 0 && (
+        <p
+          className={[generalStyles.center, generalStyles.fc_secondary].join(
+            " "
+          )}
+        >
+          {t("no-more")}
+        </p>
+      )}
     </>
   ) : (
     <Redirect to="/" />

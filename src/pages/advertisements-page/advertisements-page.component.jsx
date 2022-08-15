@@ -49,7 +49,9 @@ function AdvertisementsPage({ onSelectedChange }) {
       <div className={generalStyles.container_with_header}>
         <NewAdvertisement isNew={isNew} setIsNew={setIsNew} />
 
-        {advertisements.length === 0 && !isNew && <NoContent />}
+        {advertisements.length === 0 && !isNew && (
+          <NoContent msg={t("no-advertisements")} />
+        )}
 
         {advertisements.map((adv) => (
           <AdvertisementCard advertisement={adv} key={adv._id} />

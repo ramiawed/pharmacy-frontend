@@ -87,7 +87,12 @@ function ItemsSectionTwoSettings() {
                 />
               ))}
 
-              <div className={generalStyles.padding_v_6}>
+              <div
+                className={[
+                  generalStyles.padding_v_6,
+                  generalStyles.flex_container,
+                ].join(" ")}
+              >
                 <Button
                   text="add-label"
                   action={() => {

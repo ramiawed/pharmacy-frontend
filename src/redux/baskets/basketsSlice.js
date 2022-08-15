@@ -149,7 +149,6 @@ export const removeBasket = createAsyncThunk(
     try {
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
-      console.log(basketId, token);
 
       const response = await axios.post(
         `${BASEURL}/baskets/remove`,

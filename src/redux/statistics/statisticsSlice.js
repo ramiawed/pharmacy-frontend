@@ -11,8 +11,10 @@ const initialState = {
   count: 0,
   error: "",
   pageState: {
+    actionType: "",
     searchName: "",
     date: "",
+    date1: "",
     dateOption: "",
     page: 1,
   },
@@ -26,7 +28,6 @@ export const addStatistics = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(`${BASEURL}/statistics`, obj, {
-        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -53,7 +54,7 @@ export const addStatistics = createAsyncThunk(
 
 export const getStatistics = createAsyncThunk(
   "statistics/getStatistics",
-  async ({ obj }, { rejectWithValue, getState }) => {
+  async ({ token }, { rejectWithValue, getState }) => {
     const {
       statistics: { pageState },
     } = getState();
@@ -62,24 +63,21 @@ export const getStatistics = createAsyncThunk(
       source = CancelToken.source();
 
       let response;
-      let queryString = "";
+      let queryString = `${BASEURL}/statistics?actiontype=${pageState.actionType}&page=${pageState.page}&limit=15`;
 
-      if (obj.type === "users") {
-        queryString = `${BASEURL}/statistics/users?page=${pageState.page}&limit=${obj.limit}&field=${obj.field}`;
-      } else {
-        queryString = `${BASEURL}/statistics/items?page=${pageState.page}&limit=${obj.limit}&field=${obj.field}`;
+      if (pageState.searchName.trim() !== "") {
+        queryString = queryString + `&name=${pageState.searchName}`;
       }
 
-      if (obj.name) {
-        queryString = queryString + `&name=${obj.name}`;
-      }
-
-      if (obj.date) {
-        queryString = queryString + `&date=${obj.date}&date1=${obj.date1}`;
+      if (pageState.dateOption !== "" && pageState.date !== "") {
+        queryString =
+          queryString + `&date=${pageState.date}&date1=${pageState.date1}`;
       }
 
       response = await axios.get(queryString, {
-        // timeout: 10000,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
         cancelToken: source.token,
       });
 
@@ -120,10 +118,19 @@ export const statisticsSlice = createSlice({
     },
     resetPageState: (state) => {
       state.pageState = {
+        actionType: "",
         searchName: "",
         date: "",
+        date1: "",
         dateOption: "",
         page: 1,
+      };
+    },
+
+    setActionType: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        actionType: action.payload,
       };
     },
 
@@ -141,6 +148,13 @@ export const statisticsSlice = createSlice({
       };
     },
 
+    setSearchDate1: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        date1: action.payload,
+      };
+    },
+
     setDateOption: (state, action) => {
       state.pageState = {
         ...state.pageState,
@@ -155,12 +169,17 @@ export const statisticsSlice = createSlice({
       };
     },
 
+    resetStatisticsArray: (state) => {
+      state.statistics = [];
+    },
+
     statisticsSliceSignOut: (state) => {
       state.status = "idle";
       state.statistics = [];
       state.count = 0;
       state.error = "";
       state.pageState = {
+        actionType: "",
         searchName: "",
         date: "",
         dateOption: "",
@@ -175,6 +194,10 @@ export const statisticsSlice = createSlice({
     [getStatistics.fulfilled]: (state, action) => {
       state.status = "success";
       state.statistics = [...state.statistics, ...action.payload.data.data];
+      state.pageState = {
+        ...state.pageState,
+        page: state.pageState.page + 1,
+      };
       state.count = action.payload.count;
     },
     [getStatistics.rejected]: (state, { payload }) => {
@@ -200,9 +223,12 @@ export const {
   resetPageState,
   setSearchName,
   setSearchDate,
+  setSearchDate1,
   setDateOption,
   setPage,
   statisticsSliceSignOut,
+  setActionType,
+  resetStatisticsArray,
 } = statisticsSlice.actions;
 
 export default statisticsSlice.reducer;

@@ -24,47 +24,44 @@ function StatisticsOptionsPage({ onSelectedChange }) {
   }, []);
 
   return user && user.type === UserTypeConstants.ADMIN ? (
-    <div className={[generalStyles.flex_container].join(" ")}>
+    <div
+      className={[generalStyles.flex_container, generalStyles.container].join(
+        " "
+      )}
+    >
       <StatisticsCard
         title={t("statistics-sign-in")}
-        field="signinDates"
-        type="users"
+        actionType="user-sign-in"
         backgroundColor={AdditionalColors[0]}
       />
       <StatisticsCard
         title={t("statistics-selected-company")}
-        field="selectedDates"
-        type="users"
+        actionType="choose-company"
         backgroundColor={AdditionalColors[1]}
       />
       <StatisticsCard
         title={t("statistics-selected-item")}
-        field="selectedDates"
-        type="items"
+        actionType="choose-item"
         backgroundColor={AdditionalColors[2]}
       />
       <StatisticsCard
         title={t("statistics-item-added-to-card")}
-        field="addedToCartDates"
-        type="items"
+        actionType="item-added-to-cart"
         backgroundColor={AdditionalColors[3]}
       />
       <StatisticsCard
         title={t("statistics-user-order")}
-        field="orderDates"
-        type="users"
+        actionType="user-made-an-order"
         backgroundColor={AdditionalColors[4]}
       />
       <StatisticsCard
         title={t("statistics-user-added-to-favorite")}
-        field="addedToFavoriteDates"
-        type="users"
+        actionType="user-added-to-favorite"
         backgroundColor={AdditionalColors[5]}
       />
       <StatisticsCard
         title={t("statistics-item-added-to-favorite")}
-        field="addedToFavoriteDates"
-        type="items"
+        actionType="item-added-to-favorite"
         backgroundColor={AdditionalColors[0]}
       />
     </div>

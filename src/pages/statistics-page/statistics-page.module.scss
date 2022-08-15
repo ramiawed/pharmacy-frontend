@@ -1,0 +1,48 @@
+@import '../../variables.scss';
+
+.header_label {
+    color: $white-color;
+    font-size: 20px;
+}
+
+.name {
+    flex: 3;
+}
+
+.count {
+    flex: 1;
+}
+
+.action_div {
+    width: 40px;
+}
+
+.value_label {
+    color: $main-color;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.selectDiv {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    background-color: $white-color;
+    border-radius: 6px;
+    margin-bottom: 4px;
+  
+    label {
+      min-width: 95px;
+      color: $secondary-color;
+      font-size: 14px;
+      margin-right: 8px;
+    }
+  }
+
+.title {
+    font-size: 18px;
+    color: $green-color;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 5px;
+}

@@ -91,7 +91,6 @@ function OrderDetailsPage({ location, onSelectedChange }) {
           setEmptyMsg("order-deleted");
         } else {
           setOrderDetails(response.data.data.order);
-          console.log(response.data.data.order);
         }
       })
       .catch((err) => {

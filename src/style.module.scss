@@ -355,27 +355,6 @@ span.count {
   flex-direction: column;
 }
 
-.no_content_icon {
-  font-size: 15rem;
-  margin: 10px 0;
-  color: $white-color;
-
-  animation-name: rotate-icon;
-  animation-duration: 3s;
-  animation-iteration-count: infinite;
-  animation-direction: alternate-reverse;
-}
-
-@keyframes rotate-icon {
-  0% {
-    transform: rotateZ(0deg);
-  }
-
-  100% {
-    transform: rotateZ(180deg);
-  }
-}
-
 // end of style the div that display an icon the indicates that there is no result
 
 .flex_container {

@@ -471,7 +471,7 @@ function UserRow({ user }) {
           {t(user.type)}
         </label>
 
-        <label
+        {/* <label
           className={[tableStyles.label_large, tableStyles.hide_on_small].join(
             " "
           )}
@@ -485,7 +485,7 @@ function UserRow({ user }) {
           ].join(" ")}
         >
           {user.phone}
-        </label>
+        </label> */}
         <label
           className={[
             tableStyles.label_medium,

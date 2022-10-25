@@ -155,40 +155,48 @@ function WarehousePage({ onSelectedChange }) {
       )}
 
       {/* display as list */}
-      {displayType === "list" &&
-        warehouses.map((warehouse) => (
-          <PartnerRow
-            key={warehouse._id}
-            partner={warehouse}
-            addPartnerToFavoriteHandler={() =>
-              addPartnerToFavoriteHandler(
-                warehouse,
-                isOnline,
-                dispatch,
-                token,
-                user
-              )
-            }
-            removePartnerFromFavoriteHandler={() => {
-              removePartnerFromFavoriteHandler(
-                warehouse,
-                isOnline,
-                dispatch,
-                token
-              );
-            }}
-            partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
-              partnerRowClickHandler(
-                warehouse,
-                allowShowingWarehouseMedicines,
-                user,
-                dispatch,
-                token,
-                history
-              )
-            }
-          />
-        ))}
+      {displayType === "list" && (
+        <div
+          className={[
+            generalStyles.flex_container,
+            generalStyles.margin_top_10,
+          ].join(" ")}
+        >
+          {warehouses.map((warehouse) => (
+            <PartnerRow
+              key={warehouse._id}
+              partner={warehouse}
+              addPartnerToFavoriteHandler={() =>
+                addPartnerToFavoriteHandler(
+                  warehouse,
+                  isOnline,
+                  dispatch,
+                  token,
+                  user
+                )
+              }
+              removePartnerFromFavoriteHandler={() => {
+                removePartnerFromFavoriteHandler(
+                  warehouse,
+                  isOnline,
+                  dispatch,
+                  token
+                );
+              }}
+              partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
+                partnerRowClickHandler(
+                  warehouse,
+                  allowShowingWarehouseMedicines,
+                  user,
+                  dispatch,
+                  token,
+                  history
+                )
+              }
+            />
+          ))}
+        </div>
+      )}
 
       {/* display as card */}
       {displayType === "card" && (

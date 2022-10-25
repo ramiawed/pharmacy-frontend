@@ -15,6 +15,7 @@ import {
   setSearchCompanyId,
   setSearchWarehouseId,
 } from "../../redux/medicines/medicinesSlices";
+import { selectSavedItems } from "../../redux/savedItems/savedItemsSlice";
 
 // components
 import IconWithNumber from "../icon-with-number/icon-with-number.component";
@@ -41,7 +42,6 @@ import {
   TopNavLinks,
   UserTypeConstants,
 } from "../../utils/constants.js";
-import { selectSavedItems } from "../../redux/savedItems/savedItemsSlice";
 
 function TopNav({ onSelectedChange }) {
   const history = useHistory();

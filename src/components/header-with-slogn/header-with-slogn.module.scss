@@ -1,0 +1,36 @@
+@import "../../variables.scss";
+
+.app_name {
+    text-align: center;
+    margin-bottom: 15px;
+    order: 1;
+
+    h2 {
+        font-size: 36px;
+        font-weight: bold;
+        color: $offer-color;
+        text-shadow: 2px 2px 5px#000;
+        font-family: "Great Vibes", cursive;
+    }
+
+    p {
+        font-size: 24px;
+        color: $white-color;
+        text-shadow: 2px 2px 5px#000;
+        font-family: "Dancing Script", cursive;
+    }
+}
+
+@media only screen and (min-width: $medium) {
+    .app_name {
+        order: 2;
+
+        h2 {
+            font-size: 48px;
+        }
+
+        p {
+            font-size: 28px;
+        }
+    }
+}

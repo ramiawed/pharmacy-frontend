@@ -18,7 +18,7 @@ import {
 } from "../../redux/favorites/favoritesSlice";
 
 // components
-import AddToCartOfferModal from "../add-to-cart-offer-modal/add-to-cart-offer-modal.component";
+import AddToCartOfferModal from "../../modals/add-to-cart-offer-modal/add-to-cart-offer-modal.component";
 import Icon from "../action-icon/action-icon.component";
 import Toast from "../toast/toast.component";
 

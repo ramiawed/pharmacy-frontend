@@ -15,18 +15,17 @@ import {
   selectFavoritesError,
 } from "../../redux/favorites/favoritesSlice";
 import { selectUserData } from "../../redux/auth/authSlice";
-
 import { selectSettings } from "../../redux/settings/settingsSlice";
 
 // styles
-import rowStyles from "../row.module.scss";
+import styles from "./partner-row.module.scss";
 
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants.js";
 
 function PartnerRow({
   partner,
-  isSearch,
+  fullWidth,
   withoutBoxShadow,
   onSelectAction,
   addPartnerToFavoriteHandler,
@@ -58,34 +57,17 @@ function PartnerRow({
     <>
       <div
         className={[
-          isSearch ? rowStyles.search_container : rowStyles.container,
-          withoutBoxShadow ? rowStyles.without_box_shadow : "",
+          fullWidth ? styles.full_width_container : styles.container,
+          withoutBoxShadow ? styles.without_box_shadow : "",
         ].join(" ")}
-        style={{
-          cursor: "pointer",
-        }}
         onClick={() => {
           if (onSelectAction) onSelectAction();
           partnerRowClickHandler(allowShowingWarehouseMedicines);
         }}
       >
-        <label
-          className={[rowStyles.hover_underline, rowStyles.padding_start].join(
-            " "
-          )}
-          style={{
-            fontSize: "16px",
-          }}
-        >
-          {partner.name}
-        </label>
+        <label className={styles.name}>{partner.name}</label>
 
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "row",
-          }}
-        >
+        <div className={styles.actions_div}>
           {user.type === UserTypeConstants.WAREHOUSE &&
           partner.type === UserTypeConstants.COMPANY ? (
             <div>

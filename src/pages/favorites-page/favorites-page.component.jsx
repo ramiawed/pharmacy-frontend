@@ -118,6 +118,7 @@ function FavoritesPage({ onSelectedChange }) {
                 .map((favorite) => (
                   <PartnerRow
                     key={favorite._id}
+                    fullWidth={true}
                     partner={favorite}
                     withoutBoxShadow={true}
                     addPartnerToFavoriteHandler={() =>
@@ -175,6 +176,7 @@ function FavoritesPage({ onSelectedChange }) {
                     <PartnerRow
                       key={favorite._id}
                       partner={favorite}
+                      fullWidth={true}
                       withoutBoxShadow={true}
                       addPartnerToFavoriteHandler={() =>
                         addPartnerToFavoriteHandler(

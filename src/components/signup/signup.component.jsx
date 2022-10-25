@@ -13,7 +13,7 @@ import Toast from "../toast/toast.component";
 import Button from "../button/button.component";
 import Loader from "../action-loader/action-loader.component";
 import CitiesDropDown from "../cities-dropdown/cities-dropdown.component";
-import Modal from "../modal/modal.component";
+import Modal from "../../modals/modal/modal.component";
 import License from "../license/license.component";
 
 // redux

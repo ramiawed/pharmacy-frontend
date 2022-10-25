@@ -20,10 +20,9 @@ import { AiFillUnlock, AiFillLock } from "react-icons/ai";
 import { CgPassword } from "react-icons/cg";
 
 // components
-import Modal from "../modal/modal.component";
-import UserMoreInfoModal from "../user-more-info-modal/user-more-info-modal.component";
-import ActinIcon from "../action-icon/action-icon.component";
-import AdminResetUserPasswordModal from "../admin-reset-user-password-modal/admin-reset-user-password-modal";
+import Modal from "../../modals/modal/modal.component";
+import UserMoreInfoModal from "../../modals/user-more-info-modal/user-more-info-modal.component";
+import AdminResetUserPasswordModal from "../../modals/admin-reset-user-password-modal/admin-reset-user-password-modal";
 import Icon from "../action-icon/action-icon.component";
 
 // styles

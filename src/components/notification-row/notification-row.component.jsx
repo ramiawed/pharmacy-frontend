@@ -13,7 +13,7 @@ import {
 } from "../../redux/userNotifications/userNotificationsSlice";
 
 // components
-import Modal from "../modal/modal.component";
+import Modal from "../../modals/modal/modal.component";
 
 // icons
 import { RiDeleteBin5Fill } from "react-icons/ri";

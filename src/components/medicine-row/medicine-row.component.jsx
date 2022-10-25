@@ -20,9 +20,14 @@ import {
   addItemToWarehouse,
   removeItemFromWarehouse,
 } from "../../redux/medicines/medicinesSlices";
+import {
+  addSavedItem,
+  removeSavedItem,
+  selectSavedItems,
+} from "../../redux/savedItems/savedItemsSlice";
 
 // components
-import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
+import AddToCartModal from "../../modals/add-to-cart-modal/add-to-cart-modal.component";
 import Icon from "../action-icon/action-icon.component";
 import Toast from "../toast/toast.component";
 
@@ -44,11 +49,6 @@ import {
   Colors,
   UserTypeConstants,
 } from "../../utils/constants";
-import {
-  addSavedItem,
-  removeSavedItem,
-  selectSavedItems,
-} from "../../redux/savedItems/savedItemsSlice";
 
 function MedicineRow({ item }) {
   const { t } = useTranslation();

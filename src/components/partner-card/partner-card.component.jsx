@@ -33,7 +33,6 @@ import {
 
 function PartnerCard({
   partner,
-  fullWidth,
   addPartnerToFavoriteHandler,
   addCompanyToOurCompaniesHandler,
   removePartnerFromFavoriteHandler,
@@ -59,23 +58,26 @@ function PartnerCard({
       partner.allowShowingMedicines);
 
   return (
-    <div
-      className={[
-        styles.partner_container,
-        fullWidth ? styles.full_width : "",
-      ].join(" ")}
-    >
-      <p className={styles.partner_name}>{partner.name}</p>
+    <div className={[styles.partner_container].join(" ")}>
+      <p className={[styles.partner_name, styles.section].join(" ")}>
+        {partner.name}
+      </p>
 
-      {partner.logo_url?.length > 0 ? (
-        <img
-          src={`${SERVER_URL}/profiles/${partner.logo_url}`}
-          className={styles.partner_logo}
-          alt="thumb"
-        />
-      ) : (
-        <img src={Logo} className={styles.partner_logo} alt="thumb" />
-      )}
+      <div className={styles.section}>
+        {partner.logo_url?.length > 0 ? (
+          <img
+            src={`${SERVER_URL}/profiles/${partner.logo_url}`}
+            className={[styles.partner_logo, styles.section].join(" ")}
+            alt="thumb"
+          />
+        ) : (
+          <img
+            src={Logo}
+            className={[styles.partner_logo, styles.section].join(" ")}
+            alt="thumb"
+          />
+        )}
+      </div>
 
       <div className={styles.from_top}>
         {favoritesError === "" ? (

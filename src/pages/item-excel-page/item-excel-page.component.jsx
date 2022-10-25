@@ -5,10 +5,8 @@ import * as XLSX from "xlsx";
 
 // components
 import InputFile from "../../components/input-file/input-file.component";
-import ItemExcelRow from "../../components/item-excel-row/item-excel-row.component";
-import Modal from "../../components/modal/modal.component";
+import Modal from "../../modals/modal/modal.component";
 import Toast from "../../components/toast/toast.component";
-import ExcelTableHeader from "../../components/excel-table-header/excel-table-header.component";
 import Header from "../../components/header/header.component";
 import Icon from "../../components/action-icon/action-icon.component";
 import Loader from "../../components/action-loader/action-loader.component";

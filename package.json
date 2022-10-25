@@ -15,7 +15,7 @@
     "gh-pages": "^3.2.3",
     "i18next": "^20.2.2",
     "i18next-browser-languagedetector": "^6.1.1",
-    "node-sass": "^7.0.1",
+    "node-sass": "^7.0.3",
     "pusher-js": "^7.0.3",
     "react": "^17.0.2",
     "react-detect-offline": "^2.4.5",

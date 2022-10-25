@@ -7,7 +7,7 @@
   "sign-up": "حساب جديد",
   "sign-in": "تسجيل دخول",
   "remember-me": "حفط بيانات التسجيل",
-  "sign-up-sentence": "إذا لم يكن لديك حساب، قم بإنشاء حساب خاص",
+  "sign-up-sentence": "اذا لم يكن لديك حساب لدى سمارت فارما اضغط هنا",
   "sign-in-sentence": "إذا كان لديك حساب خاص، قم بتسجيل الدخول",
   "aleppo": "حلب",
   "damascus": "دمشق",
@@ -558,5 +558,7 @@
   "no-basket-to-order": "لا يوجد سلات للطلب",
   "order-deleted-successfully-msg": "تم حذف الطلب بنجاح",
   "order-deleted-failed-msg": "حدث خطأ أثناء حذف الطلب، الرجاء المحاولة مرة اخرى",
-  "medicies-have-offer-label": "المنتجات التي عليها عرض"
+  "medicies-have-offer-label": "المنتجات التي عليها عرض",
+  "contact-us-via-whatsapp": "للتواصل معنا عن طريق الواتساب",
+  "contact-us-via-telegram": "للتواصل معنا عن طريق التلغرام"
 }

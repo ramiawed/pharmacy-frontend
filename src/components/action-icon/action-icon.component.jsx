@@ -1,10 +1,11 @@
-// component the show an icon with tooltip
+// component to show an icon with tooltip
 
 // Props:
 // onclick: action to execute when press on the icon
 // tooltip: text show when hover over the icon
 // foreColor: the color of the icon
 // icon: the icon that show in this component
+// withBackground: to determine if the background is transparent or #e3e3e3
 
 import React from "react";
 

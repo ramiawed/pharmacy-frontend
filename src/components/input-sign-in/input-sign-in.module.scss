@@ -3,7 +3,7 @@
 .input_div {
   min-width: 100%;
   margin: 4px 0;
-  padding: 4px 8px;
+  padding: 4px 4px;
   border-radius: 8px;
   color: $main-color;
   display: flex;
@@ -15,7 +15,7 @@
 
 .input_div input {
   width: 75px;
-  font-size: 1.1rem;
+  font-size: 14px;
   margin-inline-start: 8px;
   margin-right: 8px;
   padding: 4px 0px;
@@ -31,12 +31,17 @@
   color: $secondary-color;
 }
 
+.input_div input::placeholder {
+  font-weight: bold;
+  font-size: 12px;
+}
+
 .bordered {
   border: 1px solid $main-color;
 }
 
 .input_div label {
-  font-size: 0.7rem;
+  font-size: 12px;
   text-align: left;
 }
 
@@ -49,19 +54,3 @@
   width: 30px;
   color: $main-color;
 }
-
-// @media only screen and (min-width: $small) {
-//   .input_div label {
-//     font-size: 0.7rem;
-//     padding: 0 12px;
-//     text-align: left;
-//   }
-// }
-
-// @media only screen and (min-width: $medium) {
-//   .input_div label {
-//     font-size: 0.7rem;
-//     padding: 0 12px;
-//     text-align: left;
-//   }
-// }

@@ -28,6 +28,7 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 // styles
 import generalStyles from "../../style.module.scss";
 import styles from "./companies-header.module.scss";
+
 // constants and utils
 import { CitiesName, Colors } from "../../utils/constants";
 

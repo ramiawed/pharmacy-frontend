@@ -29,15 +29,15 @@ import {
 import CardInfo from "../../components/card-info/card-info.component";
 import Input from "../../components/input/input.component";
 import Toast from "../../components/toast/toast.component";
-import AddToCartModal from "../../components/add-to-cart-modal/add-to-cart-modal.component";
-import OffersModal from "../../components/offers-modal/offers-modal.component";
+import AddToCartModal from "../../modals/add-to-cart-modal/add-to-cart-modal.component";
+import OffersModal from "../../modals/offers-modal/offers-modal.component";
 import Loader from "../../components/action-loader/action-loader.component";
 import Icon from "../../components/action-icon/action-icon.component";
 import Header from "../../components/header/header.component";
-import Modal from "../../components/modal/modal.component";
+import Modal from "../../modals/modal/modal.component";
+import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 
 // constants and utils
-import { getIcon } from "../../utils/icons";
 import {
   Colors,
   UserTypeConstants,
@@ -51,14 +51,13 @@ import {
 import { MdAddCircle, MdLocalOffer } from "react-icons/md";
 import { RiDeleteBin5Fill, RiRefreshLine } from "react-icons/ri";
 import { GiShoppingCart } from "react-icons/gi";
+import { BsImageAlt } from "react-icons/bs";
+import { AiFillEdit } from "react-icons/ai";
 
 // styles
 import generalStyles from "../../style.module.scss";
 import styles from "./item-page.module.scss";
 import rowStyles from "../../components/row.module.scss";
-import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
-import { BsImageAlt } from "react-icons/bs";
-import { AiFillEdit } from "react-icons/ai";
 
 function ItemPage() {
   const { t } = useTranslation();

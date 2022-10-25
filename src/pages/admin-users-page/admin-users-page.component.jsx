@@ -8,8 +8,8 @@ import NoContent from "../../components/no-content/no-content.component";
 import AdminUsersHeader from "../../components/admin-users-header/admin-users-header.component";
 import AdminUserTableHeader from "../../components/admin-users-table-header/admin-users-table-header.component";
 import AdminUsersNotifications from "../../components/admin-users-notifications/admin-users-notification.component";
-import AdminUsersSearchModal from "../../components/admin-search-modal/admin-search-modal.component";
-import AdminUsersOrderModal from "../../components/admin-order-modal/admin-order-modal.component";
+import AdminUsersSearchModal from "../../modals/admin-search-modal/admin-search-modal.component";
+import AdminUsersOrderModal from "../../modals/admin-order-modal/admin-order-modal.component";
 
 // 3-party library (loading, paginate)
 import ReactPaginate from "react-paginate";

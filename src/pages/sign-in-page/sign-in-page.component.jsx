@@ -1,29 +1,45 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { Redirect } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import Logo from "../../sign-in-out-image.jpg";
 
 // components
 import SignIn from "../../components/signin/signin.component";
+import HomePageLoader from "../../components/home-page-loader/home-page-loader.component";
+import Loader from "../../components/action-loader/action-loader.component";
+import HeaderWithSlogn from "../../components/header-with-slogn/header-with-slogn.component";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-import { authSignWithToken, selectUser } from "../../redux/auth/authSlice";
+import {
+  authSignWithToken,
+  cancelOperation,
+  selectUserData,
+} from "../../redux/auth/authSlice";
 import { addStatistics } from "../../redux/statistics/statisticsSlice";
 import { getAllSettings } from "../../redux/settings/settingsSlice";
+import { getFavorites } from "../../redux/favorites/favoritesSlice";
+import { getAllAdvertisements } from "../../redux/advertisements/advertisementsSlice";
+import { getSavedItems } from "../../redux/savedItems/savedItemsSlice";
 
 // styles
-import styles from "./sign-in-page.module.scss";
-import HomePageLoader from "../../components/home-page-loader/home-page-loader.component";
+import generalStyles from "../../style.module.scss";
+
+// constants
+import { UserTypeConstants } from "../../utils/constants";
 
 function SignInPage() {
-  const [checkingToken, setCheckingToken] = useState(true);
   const dispatch = useDispatch();
+  const { user, status } = useSelector(selectUserData);
 
-  const user = useSelector(selectUser);
+  // own state
+  const [checkingToken, setCheckingToken] = useState(true);
 
-  useEffect(() => {
+  // handlers
+  const cancelOperationHandler = () => {
+    cancelOperation();
+  };
+
+  const runCheckToken = useCallback(() => {
     const token = localStorage.getItem("token");
 
     if (token) {
@@ -40,6 +56,11 @@ function SignInPage() {
             })
           );
           dispatch(getAllSettings({ token: result.token }));
+          dispatch(getFavorites({ token: result.token }));
+          dispatch(getAllAdvertisements({ token: result.token }));
+          if (user.type === UserTypeConstants.PHARMACY) {
+            dispatch(getSavedItems({ token }));
+          }
           setCheckingToken(false);
         })
         .catch(() => {
@@ -48,22 +69,26 @@ function SignInPage() {
     } else {
       setCheckingToken(false);
     }
-  }, []);
+  }, [dispatch, user]);
+
+  useEffect(() => {
+    runCheckToken();
+  });
 
   return checkingToken ? (
     <HomePageLoader />
   ) : user ? (
     <Redirect to="/" />
   ) : (
-    <div className={styles.container}>
-      <div className={styles.image}>
-        <img src={Logo} alt="thumb" className={styles.img} />
-        {/* <p>{t("app-slogan")}</p> */}
-      </div>
-      <div className={styles.content}>
+    <>
+      <div className={generalStyles.sign_container}>
         <SignIn />
+        <HeaderWithSlogn />
       </div>
-    </div>
+      {status === "loading" && (
+        <Loader allowCancel={true} onclick={cancelOperationHandler} />
+      )}
+    </>
   );
 }
 

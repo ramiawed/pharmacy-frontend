@@ -14,12 +14,12 @@ import {
 import { saveOrder } from "../../redux/basketOrdersSlice/basketOrdersSlice";
 
 // components
-import Modal from "../modal/modal.component";
+import Modal from "../../modals/modal/modal.component";
 import Button from "../button/button.component";
 import Icon from "../action-icon/action-icon.component";
-import ChooseItemModal from "../choose-item-modal/choose-item-modal.component";
+import ChooseItemModal from "../../modals/choose-item-modal/choose-item-modal.component";
 import BasketItemRow from "../basket-item-row/basket-item-row.component";
-import SelectPartnerModal from "../select-partner-modal/select-partner-modal.component";
+import SelectPartnerModal from "../../modals/select-partner-modal/select-partner-modal.component";
 import ResultModal from "../result-modal/result-modal.component";
 
 // icons

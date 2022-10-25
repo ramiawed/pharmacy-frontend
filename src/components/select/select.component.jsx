@@ -11,6 +11,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import Select from "react-select";
+import { Colors } from "../../utils/constants";
 
 // style
 import styles from "./select.module.scss";
@@ -45,14 +46,15 @@ function SelectCustom({
       ...provided,
       color: state.isSelected ? bgColor : foreColor,
       background: state.isSelected ? foreColor : bgColor,
-      height: "30px",
-      fontSize: "16px",
+      height: "36px",
+      fontSize: "18px",
     }),
     valueContainer: (provided, state) => ({
       ...provided,
       height: "30px",
       padding: "0 6px",
-      fontSize: "14px",
+      fontSize: "18px",
+      color: Colors.MAIN_COLOR,
     }),
 
     input: (provided, state) => ({

@@ -85,7 +85,7 @@ function CompaniesPage({ onSelectedChange }) {
   // if any of the search state (searchName, searchCity) is not empty, add it to query string
   // get the companies from DB
   // depends on the reset field, add one to page, or reset to 1
-  const handleSearch = () => {
+  const searchHandler = () => {
     dispatch(getCompanies({ token }));
   };
 
@@ -97,7 +97,7 @@ function CompaniesPage({ onSelectedChange }) {
       return;
     }
 
-    handleSearch();
+    searchHandler();
   };
 
   // when press enter in search input field
@@ -106,14 +106,14 @@ function CompaniesPage({ onSelectedChange }) {
   // 3- reset the page to 1
   const handleEnterPress = () => {
     dispatch(resetCompaniesArray());
-    handleSearch();
+    searchHandler();
   };
 
   const refreshHandler = () => {
     dispatch(resetFavorites());
     dispatch(getFavorites({ token }));
     dispatch(resetCompanies());
-    handleSearch();
+    searchHandler();
   };
 
   const keyUpHandler = (event) => {
@@ -130,7 +130,7 @@ function CompaniesPage({ onSelectedChange }) {
   };
 
   useEffect(() => {
-    if (companies.length === 0) handleSearch(1);
+    if (companies.length === 0) searchHandler(1);
 
     window.scrollTo(0, 0);
 
@@ -158,56 +158,64 @@ function CompaniesPage({ onSelectedChange }) {
       )}
 
       {/* display partner as list */}
-      {displayType === "list" &&
-        companies.map((company) => (
-          <PartnerRow
-            key={company._id}
-            partner={company}
-            addPartnerToFavoriteHandler={() =>
-              addPartnerToFavoriteHandler(
-                company,
-                isOnline,
-                dispatch,
-                token,
-                user
-              )
-            }
-            addCompanyToOurCompaniesHandler={() =>
-              addCompanyToOurCompaniesHandler(
-                company,
-                isOnline,
-                dispatch,
-                token
-              )
-            }
-            removeCompanyFromOurCompaniesHandler={() => {
-              removeCompanyFromOurCompaniesHandler(
-                company,
-                isOnline,
-                dispatch,
-                token
-              );
-            }}
-            removePartnerFromFavoriteHandler={() => {
-              removePartnerFromFavoriteHandler(
-                company,
-                isOnline,
-                dispatch,
-                token
-              );
-            }}
-            partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
-              partnerRowClickHandler(
-                company,
-                allowShowingWarehouseMedicines,
-                user,
-                dispatch,
-                token,
-                history
-              )
-            }
-          />
-        ))}
+      {displayType === "list" && (
+        <div
+          className={[
+            generalStyles.flex_container,
+            generalStyles.margin_top_10,
+          ].join(" ")}
+        >
+          {companies.map((company) => (
+            <PartnerRow
+              key={company._id}
+              partner={company}
+              addPartnerToFavoriteHandler={() =>
+                addPartnerToFavoriteHandler(
+                  company,
+                  isOnline,
+                  dispatch,
+                  token,
+                  user
+                )
+              }
+              addCompanyToOurCompaniesHandler={() =>
+                addCompanyToOurCompaniesHandler(
+                  company,
+                  isOnline,
+                  dispatch,
+                  token
+                )
+              }
+              removeCompanyFromOurCompaniesHandler={() => {
+                removeCompanyFromOurCompaniesHandler(
+                  company,
+                  isOnline,
+                  dispatch,
+                  token
+                );
+              }}
+              removePartnerFromFavoriteHandler={() => {
+                removePartnerFromFavoriteHandler(
+                  company,
+                  isOnline,
+                  dispatch,
+                  token
+                );
+              }}
+              partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
+                partnerRowClickHandler(
+                  company,
+                  allowShowingWarehouseMedicines,
+                  user,
+                  dispatch,
+                  token,
+                  history
+                )
+              }
+            />
+          ))}
+        </div>
+      )}
 
       {/* display partner as a card */}
       {displayType === "card" && (

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 // components
+import ChooseItemModal from "../../modals/choose-item-modal/choose-item-modal.component";
 import CardInfo from "../card-info/card-info.component";
 import Button from "../button/button.component";
 import Toast from "../toast/toast.component";
@@ -29,7 +30,6 @@ import generalStyles from "../../style.module.scss";
 
 // constants
 import { BASEURL, Colors } from "../../utils/constants";
-import ChooseItemModal from "../choose-item-modal/choose-item-modal.component";
 
 function ItemsSectionTwoSettings() {
   const { t } = useTranslation();

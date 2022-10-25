@@ -4,7 +4,7 @@ import { IoMdAddCircle, IoMdClose } from "react-icons/io";
 import { useDispatch } from "react-redux";
 
 import { BASEURL, Colors } from "../../utils/constants";
-import SelectPartnerModal from "../select-partner-modal/select-partner-modal.component";
+import SelectPartnerModal from "../../modals/select-partner-modal/select-partner-modal.component";
 
 import styles from "./search-partner-container.module.scss";
 

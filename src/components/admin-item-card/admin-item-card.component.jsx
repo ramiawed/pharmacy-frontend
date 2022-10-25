@@ -15,8 +15,8 @@ import {
 } from "../../redux/online/onlineSlice";
 
 // components
-import Modal from "../modal/modal.component";
-import OffersModal from "../offers-modal/offers-modal.component";
+import Modal from "../../modals/modal/modal.component";
+import OffersModal from "../../modals/offers-modal/offers-modal.component";
 import Icon from "../action-icon/action-icon.component";
 import ButtonWithIcon from "../button-with-icon/button-with-icon.component";
 

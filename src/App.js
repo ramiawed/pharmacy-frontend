@@ -1,6 +1,7 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Route, Switch } from "react-router-dom";
+import Logo from "./sign-in-out-image.jpg";
 
 // components
 import MainPage from "./pages/main-page/main-page.component";

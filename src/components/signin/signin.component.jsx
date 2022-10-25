@@ -1,9 +1,8 @@
 // libraries
 import React, { useState } from "react";
-import { Redirect, useHistory } from "react-router";
-import { motion } from "framer-motion";
+import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
-import Logo from "../../logo.png";
+import Logo from "../../smal-logo.png";
 
 // react-icons
 import { HiUser } from "react-icons/hi";
@@ -12,8 +11,7 @@ import { RiLockPasswordLine } from "react-icons/ri";
 // component
 import InputSignIn from "../input-sign-in/input-sign-in.component";
 import Button from "../button/button.component";
-import Loader from "../action-loader/action-loader.component";
-import Modal from "../modal/modal.component";
+import Modal from "../../modals/modal/modal.component";
 
 // redux
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -22,7 +20,6 @@ import {
   authSign,
   selectUserData,
   resetError,
-  cancelOperation,
 } from "../../redux/auth/authSlice";
 import {
   changeOnlineMsg,
@@ -38,21 +35,6 @@ import styles from "./signin.module.scss";
 // constants
 import { Colors } from "../../utils/constants";
 
-// constants use for motion
-const containerVariant = {
-  hidden: {
-    opacity: 0,
-    left: "100vw",
-  },
-  visible: {
-    opacity: 1,
-    left: "0",
-    transition: {
-      type: "spring",
-    },
-  },
-};
-
 // Sign in component
 function SignIn() {
   const { t } = useTranslation();
@@ -63,7 +45,7 @@ function SignIn() {
   // state that indicates if there is a internet connection or not
   const isOnline = useSelector(selectOnlineStatus);
   // state from user state redux
-  const { status, user, error } = useSelector(selectUserData);
+  const { error } = useSelector(selectUserData);
 
   // state holds the username and password
   // used in the input fields
@@ -193,29 +175,13 @@ function SignIn() {
     signInHandler();
   };
 
-  const cancelOperationHandler = () => {
-    cancelOperation();
-  };
-
-  return user ? (
-    <Redirect to="/" />
-  ) : (
-    <>
-      <motion.div
-        className={[styles.container].join(" ")}
-        variants={containerVariant}
-        initial="hidden"
-        animate="visible"
-      >
-        <div className={styles.signup}>
-          <label>{t("sign-up-sentence")}</label>
-          <label className={styles.signup_button} onClick={signupHandler}>
-            {t("sign-up")}
-          </label>
+  return (
+    <div className={styles.outer_container}>
+      <div className={[styles.container].join(" ")}>
+        <div className={styles.header}>
+          <h3>{t("sign-in")}</h3>
+          <img src={Logo} alt="thumb" className={styles.img} />
         </div>
-        <img src={Logo} alt="thumb" />
-
-        <h3>{t("sign-in")}</h3>
 
         {/* username */}
         <InputSignIn
@@ -249,18 +215,20 @@ function SignIn() {
           defaultValue={rememberMeOption}
           onChange={() => setRememberMeOption(!rememberMeOption)}
         >
-          <input type="checkbox" />
-          <label>{t("remember-me")}</label>
-        </div>
+          <div>
+            <input id="remember" type="checkbox" />
+            <label htmlFor="remember">{t("remember-me")}</label>
+          </div>
 
-        <p
-          className={styles.forget_password}
-          onClick={() => {
-            setShowForgetPasswordModal(true);
-          }}
-        >
-          {t("forget-password")}
-        </p>
+          <p
+            className={styles.forget_password}
+            onClick={() => {
+              setShowForgetPasswordModal(true);
+            }}
+          >
+            {t("forget-password")}
+          </p>
+        </div>
 
         {/* Error sections */}
         <>
@@ -278,18 +246,32 @@ function SignIn() {
           {error && <p className={styles.error}>{t(error)}</p>}
         </>
 
-        <Button
-          text={t("sign-in")}
-          action={signInHandler}
-          bgColor={Colors.FAILED_COLOR}
-        />
+        <div
+          style={{
+            marginTop: "15px",
+          }}
+        >
+          <Button
+            text={t("sign-in")}
+            action={signInHandler}
+            bgColor={Colors.FAILED_COLOR}
+          />
+        </div>
+      </div>
 
-        {/* </div> */}
+      <div
+        className={[styles.container, styles.bottom_container].join(" ")}
+        onClick={signupHandler}
+      >
+        <div className={styles.signup}>
+          <label style={{ cursor: "pointer", fontSize: "14px" }}>
+            {t("sign-up-sentence")}
+          </label>
+          <br />
+          <label className={styles.signup_button}>{t("sign-up")}</label>
+        </div>
+      </div>
 
-        {status === "loading" && (
-          <Loader allowCancel={true} onclick={cancelOperationHandler} />
-        )}
-      </motion.div>
       {showForgetPasswordModal && (
         <Modal
           closeModal={() => {
@@ -300,13 +282,16 @@ function SignIn() {
           small={true}
           green={true}
         >
-          <p>
-            {t("forget-password-msg")}
-            {t("contact-us-through-whatsapp")}: {t("contact-phone-number")}
+          <p>{t("forget-password-msg")}</p>
+          <p style={{ color: "#25D366" }}>
+            {t("contact-us-via-whatsapp")} : {t("contact-phone-number")}
+          </p>
+          <p style={{ color: "#229ED9" }}>
+            {t("contact-us-via-telegram")} : {t("contact-phone-number")}
           </p>
         </Modal>
       )}
-    </>
+    </div>
   );
 }
 

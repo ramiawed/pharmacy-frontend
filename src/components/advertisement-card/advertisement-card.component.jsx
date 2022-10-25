@@ -9,7 +9,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteAdvertisement } from "../../redux/advertisements/advertisementsSlice";
 import { selectToken } from "../../redux/auth/authSlice";
 import { Colors, SERVER_URL } from "../../utils/constants";
-import Modal from "../modal/modal.component";
+
+// components
+import Modal from "../../modals/modal/modal.component";
 
 // styles
 import styles from "../new-advertisement/new-advertisement.module.scss";

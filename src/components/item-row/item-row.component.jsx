@@ -22,7 +22,7 @@ import {
 } from "../../redux/medicines/medicinesSlices";
 
 // components
-import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
+import AddToCartModal from "../../modals/add-to-cart-modal/add-to-cart-modal.component";
 import Icon from "../action-icon/action-icon.component";
 import Toast from "../toast/toast.component";
 
@@ -303,30 +303,14 @@ function ItemRow({ item, onSelectAction, small }) {
         }}
       >
         <div className={styles.details}>
-          <label
-            className={[styles.name].join(
-              " "
-            )}
-          >
-            {item.name}
-          </label>
+          <label className={[styles.name].join(" ")}>{item.name}</label>
 
-          
-          <label
-            className={[styles.name].join(
-              " "
-            )}
-          >
-            {item.nameAr}
-          </label>
-          
-          
+          <label className={[styles.name].join(" ")}>{item.nameAr}</label>
+
           <label className={[styles.companyName].join(" ")}>
             {item.company.name}
           </label>
-          <label className={[styles.caliber].join(" ")}>
-            {item.caliber}
-          </label>
+          <label className={[styles.caliber].join(" ")}>{item.caliber}</label>
           <label className={[styles.composition].join(" ")}>
             {item.composition}
           </label>

@@ -14,7 +14,7 @@ import { addStatistics } from "../../redux/statistics/statisticsSlice";
 import { saveOrder, setRefresh } from "../../redux/orders/ordersSlice";
 
 // components
-import Modal from "../modal/modal.component";
+import Modal from "../../modals/modal/modal.component";
 import Loader from "../action-loader/action-loader.component";
 import ButtonWithIcon from "../button-with-icon/button-with-icon.component";
 import CartItemCard from "../cart-item-card/cart-item-card.component";

@@ -28,7 +28,7 @@ import { CgMoreVertical } from "react-icons/cg";
 import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 import TableHeader from "../../components/table-header/table-header.component";
 import SelectCustom from "../../components/select/select.component";
-import Modal from "../../components/modal/modal.component";
+import Modal from "../../modals/modal/modal.component";
 import SearchContainer from "../../components/search-container/search-container.component";
 import SearchInput from "../../components/search-input/search-input.component";
 import NoContent from "../../components/no-content/no-content.component";

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 // components
-import ChooseCompanyModal from "../choose-company-modal/choose-company-modal.component";
+import ChooseCompanyModal from "../../modals/choose-company-modal/choose-company-modal.component";
 import CardInfo from "../card-info/card-info.component";
 import Button from "../button/button.component";
 import Toast from "../toast/toast.component";

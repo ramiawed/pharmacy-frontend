@@ -37,19 +37,19 @@ import styles from "./main-page.module.scss";
 import { UserTypeConstants } from "../../utils/constants";
 
 const CompanyRoutes = lazy(() =>
-  import("../../pages/company-routes/company-routes.component")
+  import("../../routes/company-routes/company-routes.component")
 );
 const WarehouseRoutes = lazy(() =>
-  import("../warehouse-routes/warehouse-routes.component")
+  import("../../routes/warehouse-routes/warehouse-routes.component")
 );
 const GuestRoutes = lazy(() =>
-  import("../../pages/guest-routes/guest-routes.component")
+  import("../../routes/guest-routes/guest-routes.component")
 );
 const PharmacyRoutes = lazy(() =>
-  import("../pharmacy-routes/pharmacy-routes.component")
+  import("../../routes/pharmacy-routes/pharmacy-routes.component")
 );
 const AdminRoutes = lazy(() =>
-  import("../admin-routes/admin-routes.component")
+  import("../../routes/admin-routes/admin-routes.component")
 );
 
 // MainPage

@@ -35,7 +35,8 @@ div.end {
 }
 
 div .link {
-  font-size: 18px;
+  font-size: 16px;
+  text-shadow: 2px 2px 5px rgba($color: #000000, $alpha: 1);
   background-color: $main-color;
   color: $white-color;
   text-align: center;
@@ -43,7 +44,6 @@ div .link {
   cursor: pointer;
   transition: all 0.1s ease;
 }
-
 
 div.end .link {
   font-size: 12px;
@@ -150,7 +150,6 @@ div.end .link.selected {
   div.end .link {
     padding: 4px 8px;
     margin: 0 6px;
-
   }
 
   div.center .link:hover,

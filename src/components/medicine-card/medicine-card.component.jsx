@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import Logo from "../../logo.png";
 
 // components
-import AddToCartModal from "../add-to-cart-modal/add-to-cart-modal.component";
+import AddToCartModal from "../../modals/add-to-cart-modal/add-to-cart-modal.component";
 import Icon from "../action-icon/action-icon.component";
 
 // react icons

@@ -4,7 +4,7 @@ import { useHistory } from "react-router";
 
 // components
 import Icon from "../action-icon/action-icon.component";
-import Modal from "../modal/modal.component";
+import Modal from "../../modals/modal/modal.component";
 import Toast from "../toast/toast.component";
 
 // react-redux

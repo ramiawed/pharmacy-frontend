@@ -239,7 +239,7 @@ function SearchInTopNav() {
                   <PartnerRow
                     key={company._id}
                     partner={company}
-                    isSearch={true}
+                    fullWidth={true}
                     type="company"
                     onSelectAction={resetSearch}
                     addPartnerToFavoriteHandler={() =>
@@ -295,7 +295,7 @@ function SearchInTopNav() {
                   <PartnerRow
                     key={warehouse._id}
                     partner={warehouse}
-                    isSearch={true}
+                    fullWidth={true}
                     type="warehouse"
                     onSelectAction={resetSearch}
                     addPartnerToFavoriteHandler={() =>

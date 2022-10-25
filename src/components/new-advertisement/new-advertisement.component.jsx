@@ -9,8 +9,8 @@ import { selectUserData } from "../../redux/auth/authSlice";
 // components
 import Icon from "../action-icon/action-icon.component";
 import Button from "../button/button.component";
-import SelectPartnerModal from "../select-partner-modal/select-partner-modal.component";
-import SelectMedicineModal from "../select-medicine-modal/select-medicine-modal.component";
+import SelectPartnerModal from "../../modals/select-partner-modal/select-partner-modal.component";
+import SelectMedicineModal from "../../modals/select-medicine-modal/select-medicine-modal.component";
 import Toast from "../toast/toast.component";
 
 // icons

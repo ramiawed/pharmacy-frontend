@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 // components
-import Modal from "../modal/modal.component";
+import Modal from "../../modals/modal/modal.component";
 
 // react-icons
 import {

@@ -25,9 +25,10 @@ function StatisticsOptionsPage({ onSelectedChange }) {
 
   return user && user.type === UserTypeConstants.ADMIN ? (
     <div
-      className={[generalStyles.flex_container, generalStyles.container].join(
-        " "
-      )}
+      className={[
+        generalStyles.flex_container,
+        generalStyles.container_with_header,
+      ].join(" ")}
     >
       <StatisticsCard
         title={t("statistics-sign-in")}

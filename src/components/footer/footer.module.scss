@@ -3,22 +3,16 @@
 .footer_container {
   background-color: $main-color;
   color: $white-color;
-
   margin-block-start: auto;
   margin-top: auto;
-
   width: 100vw;
-
   padding: 10px;
-
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-
   font-size: 0.7rem;
-
-  z-index: 10;
+  // z-index: 10;
 }
 
 .row {

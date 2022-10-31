@@ -2,7 +2,8 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { AiFillCloseCircle } from "react-icons/ai";
 
-import styles from "./search-input.module.scss";
+// components
+import SearchRowContainer from "../search-row-container/search-row-container.component";
 
 function SearchInput({
   type,
@@ -26,7 +27,7 @@ function SearchInput({
   };
 
   return (
-    <div className={styles.input_div}>
+    <SearchRowContainer>
       {label && <label htmlFor={id}>{t(label)}</label>}
 
       <input
@@ -39,12 +40,11 @@ function SearchInput({
         onKeyUp={onkeyup && onkeyup}
       />
       {resetField && value && (
-        <AiFillCloseCircle
-          onClick={() => resetField(id)}
-          className={styles.icon_close}
-        />
+        <span>
+          <AiFillCloseCircle onClick={() => resetField(id)} size="24" />
+        </span>
       )}
-    </div>
+    </SearchRowContainer>
   );
 }
 

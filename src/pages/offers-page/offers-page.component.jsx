@@ -5,15 +5,12 @@ import ReactLoading from "react-loading";
 import { useHistory } from "react-router-dom";
 
 // components
-import SearchContainer from "../../components/search-container/search-container.component";
-import SearchInput from "../../components/search-input/search-input.component";
 import NoContent from "../../components/no-content/no-content.component";
 import Icon from "../../components/action-icon/action-icon.component";
 import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 import OfferRow from "../../components/offer-row/offer-row.component";
 
 // react-icons
-import { FaSearch } from "react-icons/fa";
 import { RiRefreshLine } from "react-icons/ri";
 import { VscClearAll } from "react-icons/vsc";
 import { IoMdArrowRoundBack } from "react-icons/io";
@@ -26,9 +23,6 @@ import {
   getOffers,
   selectOfferMedicines,
   cancelOperation,
-  setSearchName,
-  setSearchCompanyName,
-  setSearchWarehouseName,
   resetOfferItemsArray,
   resetOfferItemsPageState,
 } from "../../redux/offers/offersSlices";
@@ -38,6 +32,7 @@ import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
+import OffersSearchEngine from "../../components/offers-search-engine/offers-search-engine.component";
 
 let timer = null;
 
@@ -92,60 +87,12 @@ function OffersPage({ onSelectedChange }) {
     (user.type === UserTypeConstants.PHARMACY ||
       user.type === UserTypeConstants.ADMIN) ? (
     <>
-      <SearchContainer searchAction={handleEnterPress}>
-        <SearchInput
-          label="user-name"
-          id="search-name"
-          type="text"
-          value={pageState.searchName}
-          onchange={(e) => {
-            dispatch(setSearchName(e.target.value));
-          }}
-          icon={<FaSearch />}
-          placeholder="search-by-name-composition-barcode"
-          onEnterPress={handleEnterPress}
-          resetField={() => {
-            dispatch(setSearchName(""));
-          }}
-          onkeyup={keyUpHandler}
-        />
+      <OffersSearchEngine
+        handleEnterPress={handleEnterPress}
+        keyUpHandler={keyUpHandler}
+      />
 
-        <SearchInput
-          label="item-company"
-          id="item-company"
-          type="text"
-          value={pageState.searchCompanyName}
-          onchange={(e) => {
-            dispatch(setSearchCompanyName(e.target.value));
-          }}
-          icon={<FaSearch />}
-          placeholder="search-by-company-name"
-          onEnterPress={handleEnterPress}
-          resetField={() => {
-            dispatch(setSearchCompanyName(""));
-          }}
-          onkeyup={keyUpHandler}
-        />
-
-        <SearchInput
-          label="item-warehouse"
-          id="item-warehouse"
-          type="text"
-          value={pageState.searchWarehouseName}
-          onchange={(e) => {
-            dispatch(setSearchWarehouseName(e.target.value));
-          }}
-          icon={<FaSearch />}
-          placeholder="search-by-warehouse-name"
-          onEnterPress={handleEnterPress}
-          resetField={() => {
-            dispatch(setSearchWarehouseName(""));
-          }}
-          onkeyup={keyUpHandler}
-        />
-      </SearchContainer>
-
-      <div className={generalStyles.container}>
+      <div className={generalStyles.container_with_header}>
         {/* <MedicinesSearchString pageState={pageState} user={user} /> */}
 
         <div className={generalStyles.actions}>

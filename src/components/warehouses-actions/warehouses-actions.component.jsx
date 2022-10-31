@@ -6,17 +6,12 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeDisplayType,
-  changeSearchCity,
-  changeSearchName,
-  resetCompaniesPageState,
-  selectCompaniesPageState,
-} from "../../redux/company/companySlice";
+  resetWarehousePageState,
+  selectWarehousesPageState,
+} from "../../redux/warehouse/warehousesSlice";
 
 // components
-import SearchContainer from "../search-container/search-container.component";
-import SearchInput from "../search-input/search-input.component";
 import Icon from "../action-icon/action-icon.component";
-import CitiesDropDown from "../cities-dropdown/cities-dropdown.component";
 
 // react icons
 import { RiRefreshLine } from "react-icons/ri";
@@ -27,109 +22,77 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 
 // styles
 import generalStyles from "../../style.module.scss";
-import styles from "./companies-header.module.scss";
 
 // constants and utils
 import { CitiesName, Colors } from "../../utils/constants";
 
-function CompaniesHeader({ search, refreshHandler, count, keyUpHandler }) {
+function WarehousesActions({ refreshHandler }) {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
 
   const { searchName, searchCity, displayType } = useSelector(
-    selectCompaniesPageState
+    selectWarehousesPageState
   );
 
-  // Guest types are (Student, Pharmacist, Employee)
-  // uses with the SelectCustom
-  const citiesNameChangeHandler = (val) => {
-    // if the user type is Normal and the job is Student or Pharmacist
-    // so the user doesn't contains info about company name and job title
-    dispatch(changeSearchCity(val));
+  // select card as display type
+  const selectCardDisplayTypeHandler = () => {
+    dispatch(changeDisplayType("card"));
+  };
+
+  // select list as display type
+  const selectListDisplayTypeHandler = () => {
+    dispatch(changeDisplayType("list"));
   };
 
   return (
     <>
-      <SearchContainer searchAction={search}>
-        <SearchInput
-          label="user-name"
-          id="search-name"
-          type="text"
-          value={searchName}
-          onchange={(e) => {
-            dispatch(changeSearchName(e.target.value));
-          }}
-          placeholder="search-by-company-name"
-          onEnterPress={search}
-          resetField={() => dispatch(changeSearchName(""))}
-          onkeyup={keyUpHandler}
-        />
-
-        <div className={styles.selectDiv}>
-          <label>{t("user-city")}</label>
-          <CitiesDropDown
-            onSelectionChange={citiesNameChangeHandler}
-            defaultValue={{
-              value: searchCity,
-              label: t(searchCity.toLowerCase()),
-            }}
-          />
-        </div>
-      </SearchContainer>
-      <div
-        className={[generalStyles.actions, generalStyles.margin_v_4].join(" ")}
-      >
+      {/* action's buttons */}
+      <div className={[generalStyles.actions].join(" ")}>
         {/* refresh */}
         <Icon
-          withBackground={true}
-          selected={false}
           foreColor={Colors.MAIN_COLOR}
           tooltip={t("refresh-tooltip")}
-          onclick={() => {
-            refreshHandler();
-          }}
+          onclick={refreshHandler}
           icon={() => <RiRefreshLine />}
+          withBackground={true}
         />
 
+        {/* clear search filter */}
         {(searchName.length > 0 || searchCity !== CitiesName.ALL) && (
           <Icon
-            withBackground={true}
             selected={false}
             foreColor={Colors.MAIN_COLOR}
             tooltip={t("clear-filter-tooltip")}
             onclick={() => {
-              dispatch(resetCompaniesPageState());
+              dispatch(resetWarehousePageState());
               refreshHandler();
             }}
             icon={() => <VscClearAll />}
+            withBackground={true}
           />
         )}
 
         {/* display card option */}
         <Icon
-          withBackground={true}
           foreColor={
             displayType === "card" ? Colors.SUCCEEDED_COLOR : Colors.MAIN_COLOR
           }
           tooltip={t("show-item-as-card-tooltip")}
-          onclick={() => {
-            dispatch(changeDisplayType("card"));
-          }}
+          onclick={selectCardDisplayTypeHandler}
           icon={() => <AiFillAppstore />}
+          withBackground={true}
         />
 
         {/* display list option */}
         <Icon
-          withBackground={true}
           foreColor={
             displayType === "list" ? Colors.SUCCEEDED_COLOR : Colors.MAIN_COLOR
           }
           tooltip={t("show-item-as-row-tooltip")}
-          onclick={() => {
-            dispatch(changeDisplayType("list"));
-          }}
+          onclick={selectListDisplayTypeHandler}
           icon={() => <FaListUl />}
+          withBackground={true}
         />
 
         <Icon
@@ -146,4 +109,4 @@ function CompaniesHeader({ search, refreshHandler, count, keyUpHandler }) {
   );
 }
 
-export default CompaniesHeader;
+export default WarehousesActions;

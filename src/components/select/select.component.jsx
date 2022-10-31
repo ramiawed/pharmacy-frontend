@@ -9,7 +9,6 @@
 
 // 3-party component
 import React from "react";
-import { useTranslation } from "react-i18next";
 import Select from "react-select";
 import { Colors } from "../../utils/constants";
 
@@ -23,7 +22,6 @@ function SelectCustom({
   onchange,
   defaultOption,
 }) {
-  const { t } = useTranslation();
   // custom style for the Select Component.
   const customStyles = {
     control: (provided, state) => ({
@@ -33,6 +31,7 @@ function SelectCustom({
       color: bgColor,
       minHeight: "35px",
       height: "35px",
+      maxHeight: "100px",
       boxShadow: state.isFocused ? null : null,
       borderRadius: "6px",
       flex: 1,
@@ -41,19 +40,20 @@ function SelectCustom({
       ...provided,
       background: bgColor,
       zIndex: 15,
+      maxHeight: "20px",
     }),
     option: (provided, state) => ({
       ...provided,
       color: state.isSelected ? bgColor : foreColor,
       background: state.isSelected ? foreColor : bgColor,
       height: "36px",
-      fontSize: "18px",
+      fontSize: "16px",
     }),
     valueContainer: (provided, state) => ({
       ...provided,
       height: "30px",
       padding: "0 6px",
-      fontSize: "18px",
+      fontSize: "16px",
       color: Colors.MAIN_COLOR,
     }),
 

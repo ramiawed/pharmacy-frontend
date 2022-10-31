@@ -8,8 +8,9 @@ import ReactPaginate from "react-paginate";
 import Toast from "../../components/toast/toast.component";
 import NoContent from "../../components/no-content/no-content.component";
 import Loader from "../../components/action-loader/action-loader.component";
-import ItemsPageHeader from "../../components/items-page-header/items-page-header.component";
 import AdminItemCard from "../../components/admin-item-card/admin-item-card.component";
+import ItemsPageActions from "../../components/items-page-actions/items-page-actions.component";
+import ItemsSearchEngine from "../../components/items-search-engine/items-search-engine.component";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -17,7 +18,6 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getItems,
   resetActiveStatus,
-  resetStatus,
   resetItems,
   selectItems,
   setPage,
@@ -125,69 +125,65 @@ function ItemsPage({ onSelectedChange }) {
   }, [pageState.sortFields, pageState.warehouse, pageState.role]);
 
   return user ? (
-    <div
-      className={generalStyles.container}
-      style={{
-        marginTop: "55px",
-        paddingInlineStart: "50px",
-      }}
-    >
-      <ItemsPageHeader
+    <>
+      <ItemsSearchEngine
         user={user}
-        role={pageState.role}
-        warehouse={pageState.warehouse}
-        count={count}
-        company={pageState.company}
         pageState={pageState}
         search={handleEnterPress}
         keyUpHandler={keyUpHandler}
       />
-
-      {count > 0 && (
-        <div className={generalStyles.count}>
-          <span className={generalStyles.label}>{t("items-count")}</span>
-          <span className={generalStyles.count}>{count}</span>
-        </div>
-      )}
-
-      {/* display items */}
-      {items?.map((item) => (
-        <AdminItemCard
-          key={uuidv4()}
-          item={item}
+      <div className={generalStyles.container_with_header}>
+        <ItemsPageActions
           user={user}
           warehouse={pageState.warehouse}
-          role={pageState.role}
-          deleteItemFromWarehouse={deleteItemFromWarehouse}
-          changeItemMaxQty={changeItemMaxQty}
+          company={pageState.company}
+          search={handleEnterPress}
         />
-      ))}
+        {count > 0 && (
+          <div className={generalStyles.count}>
+            <span className={generalStyles.label}>{t("items-count")}</span>
+            <span className={generalStyles.count}>{count}</span>
+          </div>
+        )}
 
-      {/* show the pagination option when the items in not empty and the internet connection is well */}
-      {count > 0 && isOnline && (
-        <ReactPaginate
-          previousLabel={t("previous")}
-          nextLabel={t("next")}
-          pageCount={Math.ceil(count / 15)}
-          forcePage={pageState.page - 1}
-          onPageChange={handlePageClick}
-          containerClassName={paginationStyles.pagination}
-          previousLinkClassName={paginationStyles.pagination_link}
-          nextLinkClassName={paginationStyles.pagination_link}
-          disabledClassName={paginationStyles.pagination_link_disabled}
-          activeClassName={paginationStyles.pagination_link_active}
-        />
-      )}
+        {/* display items */}
+        {items?.map((item) => (
+          <AdminItemCard
+            key={uuidv4()}
+            item={item}
+            user={user}
+            warehouse={pageState.warehouse}
+            role={pageState.role}
+            deleteItemFromWarehouse={deleteItemFromWarehouse}
+            changeItemMaxQty={changeItemMaxQty}
+          />
+        ))}
 
-      {count === 0 && status !== "loading" && (
-        <>
-          <NoContent msg={t("no-medicines")} />
-        </>
-      )}
+        {/* show the pagination option when the items in not empty and the internet connection is well */}
+        {count > 0 && isOnline && (
+          <ReactPaginate
+            previousLabel={t("previous")}
+            nextLabel={t("next")}
+            pageCount={Math.ceil(count / 15)}
+            forcePage={pageState.page - 1}
+            onPageChange={handlePageClick}
+            containerClassName={paginationStyles.pagination}
+            previousLinkClassName={paginationStyles.pagination_link}
+            nextLinkClassName={paginationStyles.pagination_link}
+            disabledClassName={paginationStyles.pagination_link_disabled}
+            activeClassName={paginationStyles.pagination_link_active}
+          />
+        )}
 
-      {status === "loading" && <Loader allowCancel={false} />}
+        {count === 0 && status !== "loading" && (
+          <>
+            <NoContent msg={t("no-medicines")} />
+          </>
+        )}
 
-      {/* {error && (
+        {status === "loading" && <Loader allowCancel={false} />}
+
+        {/* {error && (
         <Toast
           bgColor={Colors.FAILED_COLOR}
           foreColor="#fff"
@@ -196,37 +192,38 @@ function ItemsPage({ onSelectedChange }) {
         />
       )} */}
 
-      {(activeStatus === "loading" ||
-        changeOfferStatus === "loading" ||
-        warehouseOfferStatus === "loading") && <Loader allowCancel={false} />}
+        {(activeStatus === "loading" ||
+          changeOfferStatus === "loading" ||
+          warehouseOfferStatus === "loading") && <Loader allowCancel={false} />}
 
-      {activeStatus === "succeeded" && (
-        <Toast
-          bgColor={Colors.SUCCEEDED_COLOR}
-          foreColor="#fff"
-          toastText={t("update-succeeded")}
-          actionAfterTimeout={() => dispatch(resetActiveStatus())}
-        />
-      )}
+        {activeStatus === "succeeded" && (
+          <Toast
+            bgColor={Colors.SUCCEEDED_COLOR}
+            foreColor="#fff"
+            toastText={t("update-succeeded")}
+            actionAfterTimeout={() => dispatch(resetActiveStatus())}
+          />
+        )}
 
-      {activeError && (
-        <Toast
-          bgColor={Colors.FAILED_COLOR}
-          foreColor="#fff"
-          toastText={t(activeError)}
-          actionAfterTimeout={() => dispatch(resetActiveStatus())}
-        />
-      )}
+        {activeError && (
+          <Toast
+            bgColor={Colors.FAILED_COLOR}
+            foreColor="#fff"
+            toastText={t(activeError)}
+            actionAfterTimeout={() => dispatch(resetActiveStatus())}
+          />
+        )}
 
-      {changeOfferStatus === "succeeded" && (
-        <Toast
-          bgColor={Colors.SUCCEEDED_COLOR}
-          foreColor="#fff"
-          toastText={t("update-succeeded")}
-          actionAfterTimeout={() => dispatch(resetChangeOfferStatus())}
-        />
-      )}
-    </div>
+        {changeOfferStatus === "succeeded" && (
+          <Toast
+            bgColor={Colors.SUCCEEDED_COLOR}
+            foreColor="#fff"
+            toastText={t("update-succeeded")}
+            actionAfterTimeout={() => dispatch(resetChangeOfferStatus())}
+          />
+        )}
+      </div>
+    </>
   ) : (
     <Redirect to="/signin" />
   );

@@ -4,10 +4,11 @@ import { useTranslation } from "react-i18next";
 // react-icons
 import { FaFilter } from "react-icons/fa";
 
+// components
+import Icon from "../action-icon/action-icon.component";
+
 // styles
 import styles from "./search-container.module.scss";
-import generalStyles from "../../style.module.scss";
-import Icon from "../action-icon/action-icon.component";
 
 function SearchContainer({ children, searchAction }) {
   const { t } = useTranslation();
@@ -16,13 +17,7 @@ function SearchContainer({ children, searchAction }) {
   const [moreSearchOptions, setMoreSearchOptions] = useState(false);
 
   return (
-    <div
-      className={[
-        styles.search_container,
-        styles.expanded,
-        moreSearchOptions ? styles.expanded_with_options : "",
-      ].join(" ")}
-    >
+    <div className={[styles.search_container, styles.expanded].join(" ")}>
       <div className={styles.expanded_div}>
         {true && (
           <>
@@ -37,25 +32,11 @@ function SearchContainer({ children, searchAction }) {
 
               {moreSearchOptions && (
                 <button
+                  className={styles.search_button}
                   onClick={() => {
                     searchAction();
                     setMoreSearchOptions(false);
                   }}
-                  style={{
-                    marginBlockStart: "4px",
-                    marginInline: "auto",
-                    marginLeft: "auto",
-                    marginRight: "auto",
-                    width: "50%",
-                  }}
-                  className={[
-                    generalStyles.button,
-                    generalStyles.bg_main,
-                    generalStyles.fc_white,
-                    generalStyles.block,
-                    generalStyles.padding_v_6,
-                    generalStyles.padding_h_8,
-                  ].join(" ")}
                 >
                   {t("search")}
                 </button>
@@ -65,41 +46,30 @@ function SearchContainer({ children, searchAction }) {
             {childrenArray.length > 1 && (
               <div
                 style={{
-                  marginInline: "4px",
-                  marginLeft: "4px",
-                  marginRight: "4px",
+                  paddingRight: "4px",
+                  paddingLight: "4px",
                 }}
               >
                 <Icon
                   onclick={() => setMoreSearchOptions(!moreSearchOptions)}
-                  icon={() => <FaFilter />}
+                  icon={() => <FaFilter size={24} />}
                 />
               </div>
             )}
 
             {childrenArray.length === 1 && (
-              <div
-                className={[generalStyles.icon, generalStyles.margin_h_4].join(
-                  " "
-                )}
+              <button
+                className={[
+                  styles.search_button,
+                  styles.small_search_button,
+                ].join(" ")}
                 onClick={() => {
                   searchAction();
                   setMoreSearchOptions(false);
                 }}
               >
-                <button
-                  className={[
-                    generalStyles.button,
-                    generalStyles.bg_secondary,
-                    generalStyles.fc_white,
-                    generalStyles.block,
-                    generalStyles.padding_v_6,
-                    generalStyles.padding_h_8,
-                  ].join(" ")}
-                >
-                  {t("search")}
-                </button>
-              </div>
+                {t("search")}
+              </button>
             )}
           </>
         )}

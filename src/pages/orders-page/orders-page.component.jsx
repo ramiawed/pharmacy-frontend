@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router";
 import { useTranslation } from "react-i18next";
+import { useHistory } from "react-router-dom";
 
 // components
-import OrderPageHeader from "../../components/orders-page-header/orders-page-header.component";
 import ReactPaginate from "react-paginate";
 import OrderRow from "../../components/order-row/order-row.component";
 import NoContent from "../../components/no-content/no-content.component";
 import Loader from "../../components/action-loader/action-loader.component";
 import Toast from "../../components/toast/toast.component";
 import Icon from "../../components/action-icon/action-icon.component";
+import ResultModal from "../../components/result-modal/result-modal.component";
+import OrdersSearchEngine from "../../components/orders-search-engine/orders-search-engine.component";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -46,7 +48,11 @@ import {
   MdOutlineLocalShipping,
   MdRemoveDone,
 } from "react-icons/md";
-import { RiMailUnreadLine, RiSendPlaneFill } from "react-icons/ri";
+import {
+  RiMailUnreadLine,
+  RiRefreshLine,
+  RiSendPlaneFill,
+} from "react-icons/ri";
 
 // styles
 import styles from "./orders-page.module.scss";
@@ -55,7 +61,8 @@ import generalStyles from "../../style.module.scss";
 
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import ResultModal from "../../components/result-modal/result-modal.component";
+
+import { IoMdArrowRoundBack } from "react-icons/io";
 
 // return the count of selected orders
 const calculateSelectedOrdersCount = (orders) => {
@@ -68,6 +75,7 @@ const calculateSelectedOrdersCount = (orders) => {
 
 function OrdersPage({ onSelectedChange, type }) {
   const { t } = useTranslation();
+  const history = useHistory();
   const dispatch = useDispatch();
 
   // selectors
@@ -228,70 +236,55 @@ function OrdersPage({ onSelectedChange, type }) {
     (user.type === UserTypeConstants.ADMIN ||
       user.type === UserTypeConstants.WAREHOUSE ||
       user.type === UserTypeConstants.PHARMACY) ? (
-    <div className={generalStyles.container}>
-      <OrderPageHeader
+    <>
+      <OrdersSearchEngine
         pageState={pageState}
-        count={count}
         search={handleEnterPress}
         type={type}
       />
-      <div
-        style={{
-          maxWidth: "600px",
-          margin: "auto",
-        }}
-      >
-        {orders.length > 0 && (
-          <div className={styles.action_highlight_container}>
-            <div className={styles.highlight}>
-              <RiMailUnreadLine color={Colors.SECONDARY_COLOR} />
-              <label>{t("unread")}</label>
-              <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
-              <label>{t("received")}</label>
-              <MdOutlineLocalShipping color={Colors.SUCCEEDED_COLOR} />
-              <label>{t("shipped")}</label>
-              <RiSendPlaneFill color={Colors.SUCCEEDED_COLOR} />
-              <label>{t("sent")}</label>
-              <MdRemoveDone color={Colors.FAILED_COLOR} />
-              <label>{t("will-dont-serve")}</label>
-            </div>
-            <div className={styles.actions_div}>
-              {user.type === UserTypeConstants.PHARMACY &&
-                selectedOrdersCount > 0 && (
-                  <Icon
-                    selected={false}
-                    foreColor={Colors.SUCCEEDED_COLOR}
-                    tooltip={t("mark-as-received")}
-                    icon={() => <BsCheckAll />}
-                    onclick={() => markOrdersAs("received")}
-                    withBackground={true}
-                  />
-                )}
+      <div className={generalStyles.container_with_header}>
+        <div className={generalStyles.actions}>
+          <Icon
+            foreColor={Colors.MAIN_COLOR}
+            selected={false}
+            icon={() => <RiRefreshLine />}
+            tooltip={t("refresh-tooltip")}
+            onclick={handleEnterPress}
+            withBackground={true}
+          />
 
-              {user.type === UserTypeConstants.PHARMACY &&
-                selectedOrdersCount > 0 && (
-                  <Icon
-                    selected={false}
-                    foreColor={Colors.SUCCEEDED_COLOR}
-                    tooltip={t("mark-as-sent")}
-                    icon={() => <RiSendPlaneFill />}
-                    onclick={() => markOrdersAs("sent")}
-                    withBackground={true}
-                  />
-                )}
-
-              {user.type === UserTypeConstants.WAREHOUSE &&
-                selectedOrdersCount > 0 && (
-                  <>
-                    <Icon
-                      selected={false}
-                      foreColor={Colors.SUCCEEDED_COLOR}
-                      tooltip={t("mark-as-shipped")}
-                      icon={() => <MdOutlineLocalShipping />}
-                      onclick={() => markOrdersAs("sent")}
-                      withBackground={true}
-                    />
-
+          <Icon
+            onclick={() => {
+              history.goBack();
+            }}
+            icon={() => <IoMdArrowRoundBack />}
+            foreColor={Colors.MAIN_COLOR}
+            withBackground={true}
+          />
+        </div>
+        <div
+          style={{
+            maxWidth: "600px",
+            margin: "auto",
+          }}
+        >
+          {orders.length > 0 && (
+            <div className={styles.action_highlight_container}>
+              <div className={styles.highlight}>
+                <RiMailUnreadLine color={Colors.SECONDARY_COLOR} />
+                <label>{t("unread")}</label>
+                <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
+                <label>{t("received")}</label>
+                <MdOutlineLocalShipping color={Colors.SUCCEEDED_COLOR} />
+                <label>{t("shipped")}</label>
+                <RiSendPlaneFill color={Colors.SUCCEEDED_COLOR} />
+                <label>{t("sent")}</label>
+                <MdRemoveDone color={Colors.FAILED_COLOR} />
+                <label>{t("will-dont-serve")}</label>
+              </div>
+              <div className={styles.actions_div}>
+                {user.type === UserTypeConstants.PHARMACY &&
+                  selectedOrdersCount > 0 && (
                     <Icon
                       selected={false}
                       foreColor={Colors.SUCCEEDED_COLOR}
@@ -300,115 +293,155 @@ function OrdersPage({ onSelectedChange, type }) {
                       onclick={() => markOrdersAs("received")}
                       withBackground={true}
                     />
+                  )}
 
+                {user.type === UserTypeConstants.PHARMACY &&
+                  selectedOrdersCount > 0 && (
                     <Icon
                       selected={false}
-                      foreColor={Colors.FAILED_COLOR}
-                      tooltip={t("mark-as-will-dont-server")}
-                      icon={() => <MdRemoveDone />}
-                      onclick={() => markOrdersAs("dontServe")}
+                      foreColor={Colors.SUCCEEDED_COLOR}
+                      tooltip={t("mark-as-sent")}
+                      icon={() => <RiSendPlaneFill />}
+                      onclick={() => markOrdersAs("sent")}
                       withBackground={true}
                     />
-                  </>
-                )}
-            </div>
-          </div>
-        )}
+                  )}
 
-        {orders.length > 0 && (
-          <div
-            style={{
-              maxWidth: "600px",
-              margin: "auto",
-            }}
-          >
-            {user.type !== UserTypeConstants.ADMIN && (
-              <div onClick={changeOrdersSelection} className={styles.selection}>
-                {selectedOrdersCount === orders.length && (
-                  <MdOutlineCheckBox size={24} color={Colors.MAIN_COLOR} />
-                )}
-                {selectedOrdersCount === 0 && (
-                  <MdOutlineCheckBoxOutlineBlank
-                    size={24}
-                    color={Colors.MAIN_COLOR}
-                  />
-                )}
-                {selectedOrdersCount < orders.length &&
-                  selectedOrdersCount !== 0 && (
-                    <MdOutlineIndeterminateCheckBox
+                {user.type === UserTypeConstants.WAREHOUSE &&
+                  selectedOrdersCount > 0 && (
+                    <>
+                      <Icon
+                        selected={false}
+                        foreColor={Colors.SUCCEEDED_COLOR}
+                        tooltip={t("mark-as-shipped")}
+                        icon={() => <MdOutlineLocalShipping />}
+                        onclick={() => markOrdersAs("sent")}
+                        withBackground={true}
+                      />
+
+                      <Icon
+                        selected={false}
+                        foreColor={Colors.SUCCEEDED_COLOR}
+                        tooltip={t("mark-as-received")}
+                        icon={() => <BsCheckAll />}
+                        onclick={() => markOrdersAs("received")}
+                        withBackground={true}
+                      />
+
+                      <Icon
+                        selected={false}
+                        foreColor={Colors.FAILED_COLOR}
+                        tooltip={t("mark-as-will-dont-server")}
+                        icon={() => <MdRemoveDone />}
+                        onclick={() => markOrdersAs("dontServe")}
+                        withBackground={true}
+                      />
+                    </>
+                  )}
+              </div>
+            </div>
+          )}
+
+          {orders.length > 0 && (
+            <div
+              style={{
+                maxWidth: "600px",
+                margin: "auto",
+              }}
+            >
+              {user.type !== UserTypeConstants.ADMIN && (
+                <div
+                  onClick={changeOrdersSelection}
+                  className={styles.selection}
+                >
+                  {selectedOrdersCount === orders.length && (
+                    <MdOutlineCheckBox size={24} color={Colors.MAIN_COLOR} />
+                  )}
+                  {selectedOrdersCount === 0 && (
+                    <MdOutlineCheckBoxOutlineBlank
                       size={24}
                       color={Colors.MAIN_COLOR}
                     />
                   )}
-                <label
-                  style={{
-                    marginRight: "5px",
-                    fontSize: "16px",
-                    color: Colors.MAIN_COLOR,
-                  }}
-                >
-                  {t("selection")}
-                </label>
-              </div>
-            )}
-          </div>
-        )}
-
-        {orders?.map((order) => (
-          <OrderRow
-            order={order}
-            key={order._id}
-            deleteAction={deleteOrderHandler}
-            type={type}
-          />
-        ))}
-
-        {orders.length > 0 && isOnline && (
-          <ReactPaginate
-            previousLabel={t("previous")}
-            nextLabel={t("next")}
-            pageCount={Math.ceil(count / 15)}
-            forcePage={pageState.page - 1}
-            onPageChange={handlePageClick}
-            containerClassName={paginationStyles.pagination}
-            previousLinkClassName={paginationStyles.pagination_link}
-            nextLinkClassName={paginationStyles.pagination_link}
-            disabledClassName={paginationStyles.pagination_link_disabled}
-            activeClassName={paginationStyles.pagination_link_active}
-          />
-        )}
-
-        {count === 0 && status !== "loading" && (
-          <>
-            <NoContent
-              msg={t(
-                type === "order" ? "no-orders-found" : "no-basket-orders-found"
+                  {selectedOrdersCount < orders.length &&
+                    selectedOrdersCount !== 0 && (
+                      <MdOutlineIndeterminateCheckBox
+                        size={24}
+                        color={Colors.MAIN_COLOR}
+                      />
+                    )}
+                  <label
+                    style={{
+                      marginRight: "5px",
+                      fontSize: "16px",
+                      color: Colors.MAIN_COLOR,
+                    }}
+                  >
+                    {t("selection")}
+                  </label>
+                </div>
               )}
+            </div>
+          )}
+
+          {orders?.map((order) => (
+            <OrderRow
+              order={order}
+              key={order._id}
+              deleteAction={deleteOrderHandler}
+              type={type}
             />
-          </>
-        )}
+          ))}
 
-        {status === "loading" && <Loader allowCancel={false} />}
+          {orders.length > 0 && isOnline && (
+            <ReactPaginate
+              previousLabel={t("previous")}
+              nextLabel={t("next")}
+              pageCount={Math.ceil(count / 15)}
+              forcePage={pageState.page - 1}
+              onPageChange={handlePageClick}
+              containerClassName={paginationStyles.pagination}
+              previousLinkClassName={paginationStyles.pagination_link}
+              nextLinkClassName={paginationStyles.pagination_link}
+              disabledClassName={paginationStyles.pagination_link_disabled}
+              activeClassName={paginationStyles.pagination_link_active}
+            />
+          )}
 
-        {error && (
-          <Toast
-            bgColor={Colors.FAILED_COLOR}
-            foreColor="#fff"
-            toastText={t(error)}
-            actionAfterTimeout={() =>
-              dispatch(type === "order" ? resetStatus() : basketResetStatus())
-            }
+          {count === 0 && status !== "loading" && (
+            <>
+              <NoContent
+                msg={t(
+                  type === "order"
+                    ? "no-orders-found"
+                    : "no-basket-orders-found"
+                )}
+              />
+            </>
+          )}
+
+          {status === "loading" && <Loader allowCancel={false} />}
+
+          {error && (
+            <Toast
+              bgColor={Colors.FAILED_COLOR}
+              foreColor="#fff"
+              toastText={t(error)}
+              actionAfterTimeout={() =>
+                dispatch(type === "order" ? resetStatus() : basketResetStatus())
+              }
+            />
+          )}
+        </div>
+        {showResultModal && (
+          <ResultModal
+            msg={resultModalParams.msg}
+            closeModal={resultModalParams.closeModal}
+            type={resultModalParams.type}
           />
         )}
       </div>
-      {showResultModal && (
-        <ResultModal
-          msg={resultModalParams.msg}
-          closeModal={resultModalParams.closeModal}
-          type={resultModalParams.type}
-        />
-      )}
-    </div>
+    </>
   ) : (
     <Redirect to="/" />
   );

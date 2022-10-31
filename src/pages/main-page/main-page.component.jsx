@@ -132,108 +132,108 @@ function MainPage() {
       ) : (
         <>
           <SocketObserver />
-          <div className={styles.container}>
-            <div className={styles.hamburger_menu}>
-              <p className={styles.selectedOption}>
-                {t(selectedTopNavOption)}
-                {t(selectedSideNavOption)}
-              </p>
-              <GiHamburgerMenu
-                color="white"
-                size={32}
-                style={{
-                  padding: "4px",
-                }}
-                onClick={(e) => {
-                  changeNavigationSettingHandler({
-                    collapsedSideNavOption: true,
-                    showTopNav: !showTopNav,
-                    showSearchBar: false,
-                  });
-
-                  e.stopPropagation();
-                }}
-              />
-            </div>
-
-            <TopNav
-              selectedOption={selectedTopNavOption}
-              onSelectedChange={(val) => {
+          <SideNav
+            collapsed={collapsedSideNavOption}
+            onCollapsedChange={() => {
+              changeNavigationSettingHandler({
+                collapsedSideNavOption: !collapsedSideNavOption,
+                showTopNav: false,
+              });
+            }}
+            selectedOption={selectedSideNavOption}
+            onSelectedChange={(val) => {
+              changeNavigationSettingHandler({
+                selectedSideNavOption: val,
+                selectedTopNavOption: "",
+                collapsedSideNavOption: true,
+                showSearchBar: false,
+              });
+            }}
+            showSearchBar={showSearchBar}
+          />
+          <div className={styles.hamburger_menu}>
+            <p className={styles.selectedOption}>
+              {t(selectedTopNavOption)}
+              {t(selectedSideNavOption)}
+            </p>
+            <GiHamburgerMenu
+              color="white"
+              size={32}
+              style={{
+                padding: "4px",
+              }}
+              onClick={(e) => {
                 changeNavigationSettingHandler({
-                  selectedTopNavOption: val,
                   collapsedSideNavOption: true,
-                  selectedSideNavOption: "",
-                  searchNavShow: false,
+                  showTopNav: !showTopNav,
                   showSearchBar: false,
                 });
+
+                e.stopPropagation();
               }}
             />
-
-            <SideNav
-              collapsed={collapsedSideNavOption}
-              onCollapsedChange={() => {
-                changeNavigationSettingHandler({
-                  collapsedSideNavOption: !collapsedSideNavOption,
-                  showTopNav: false,
-                });
-              }}
-              selectedOption={selectedSideNavOption}
-              onSelectedChange={(val) => {
-                changeNavigationSettingHandler({
-                  selectedSideNavOption: val,
-                  selectedTopNavOption: "",
-                  collapsedSideNavOption: true,
-                  showSearchBar: false,
-                });
-              }}
-              showSearchBar={showSearchBar}
-            />
-
-            <div className={styles.content_area}>
-              <Suspense fallback={<HomePageLoader />}>
-                {user.type === UserTypeConstants.COMPANY && (
-                  <CompanyRoutes
-                    changeOptionHandler={changeNavigationSettingHandler}
-                  />
-                )}
-                {user.type === UserTypeConstants.WAREHOUSE && (
-                  <WarehouseRoutes
-                    changeOptionHandler={changeNavigationSettingHandler}
-                  />
-                )}
-                {user.type === UserTypeConstants.GUEST && (
-                  <GuestRoutes
-                    changeOptionHandler={changeNavigationSettingHandler}
-                  />
-                )}
-
-                {user.type === UserTypeConstants.PHARMACY && (
-                  <PharmacyRoutes
-                    changeOptionHandler={changeNavigationSettingHandler}
-                  />
-                )}
-
-                {user.type === UserTypeConstants.ADMIN && (
-                  <AdminRoutes
-                    changeOptionHandler={changeNavigationSettingHandler}
-                  />
-                )}
-              </Suspense>
-            </div>
-            <Footer />
-
-            {toTopVisible && (
-              <FaArrowAltCircleUp
-                className={styles.toTop}
-                onClick={() => {
-                  window.scrollTo({
-                    top: 0,
-                    behavior: "smooth",
-                  });
-                }}
-              />
-            )}
           </div>
+
+          <TopNav
+            selectedOption={selectedTopNavOption}
+            onSelectedChange={(val) => {
+              changeNavigationSettingHandler({
+                selectedTopNavOption: val,
+                collapsedSideNavOption: true,
+                selectedSideNavOption: "",
+                searchNavShow: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+          {/* <div className={styles.container}> */}
+
+          <div className={styles.content_area}>
+            <Suspense fallback={<HomePageLoader />}>
+              {user.type === UserTypeConstants.COMPANY && (
+                <CompanyRoutes
+                  changeOptionHandler={changeNavigationSettingHandler}
+                />
+              )}
+              {user.type === UserTypeConstants.WAREHOUSE && (
+                <WarehouseRoutes
+                  changeOptionHandler={changeNavigationSettingHandler}
+                />
+              )}
+              {user.type === UserTypeConstants.GUEST && (
+                <GuestRoutes
+                  changeOptionHandler={changeNavigationSettingHandler}
+                />
+              )}
+
+              {user.type === UserTypeConstants.PHARMACY && (
+                <PharmacyRoutes
+                  changeOptionHandler={changeNavigationSettingHandler}
+                />
+              )}
+
+              {user.type === UserTypeConstants.ADMIN && (
+                <AdminRoutes
+                  changeOptionHandler={changeNavigationSettingHandler}
+                />
+              )}
+            </Suspense>
+          </div>
+          <Footer />
+
+          {toTopVisible && (
+            <FaArrowAltCircleUp
+              size={48}
+              className={styles.toTop}
+              onClick={() => {
+                window.scrollTo({
+                  top: 0,
+                  behavior: "smooth",
+                });
+              }}
+            />
+          )}
+          {/* </div> */}
         </>
       )}
     </ErrorBoundary>

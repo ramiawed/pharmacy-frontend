@@ -1,0 +1,63 @@
+@import "../../variables.scss";
+
+.container {
+    background: $white-color;
+    color: $secondary-color;
+    border-radius: 6px;
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    margin-bottom: 5px;
+
+    label {
+        font-size: 12px;
+        font-weight: bold;
+        width: 100px;
+        text-align: left;
+        color: $white-color;
+        background-color: $main-color;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 10px;
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+    }
+
+    input[type="text"],
+    input[type="date"] {
+        margin-inline-end: 8px;
+        margin-left: 8px;
+        padding: 4px 0px;
+        outline: none;
+        border: none;
+        color: $main-color;
+        flex: 1;
+        text-align: right;
+    }
+
+    input[type="text"]::placeholder {
+        color: #000;
+        font-size: 12px;
+    }
+
+    span {
+        position: absolute;
+        left: 10px;
+        color: $secondary-color;
+        align-self: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+}
+
+@media only screen and (min-width: $medium) {
+    .container {
+        label {
+            font-size: 14px;
+            width: 125px;
+        }
+    }
+}

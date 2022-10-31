@@ -20,8 +20,9 @@ import { CgMoreVertical } from "react-icons/cg";
 import PartnerRow from "../../components/partner-row/partner-row.component";
 import PartnerCard from "../../components/partner-card/partner-card.component";
 import NoContent from "../../components/no-content/no-content.component";
-import CompaniesHeader from "../../components/companies-header/companies-header.component";
 import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
+import CompaniesActions from "../../components/companies-actions/companies-actions.component";
+import CompaniesSearchEngine from "../../components/companies-search-engine/companies-search-engine.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -142,185 +143,187 @@ function CompaniesPage({ onSelectedChange }) {
   }, []);
 
   return user ? (
-    <div className={generalStyles.container}>
-      <CompaniesHeader
+    <>
+      <CompaniesSearchEngine
         search={handleEnterPress}
-        refreshHandler={refreshHandler}
-        count={count}
         keyUpHandler={keyUpHandler}
       />
-
-      {count > 0 && (
-        <div className={generalStyles.count}>
-          <span className={generalStyles.label}>{t("companies-count")}</span>
-          <span className={generalStyles.count}>{count}</span>
-        </div>
-      )}
-
-      {/* display partner as list */}
-      {displayType === "list" && (
-        <div
-          className={[
-            generalStyles.flex_container,
-            generalStyles.margin_top_10,
-          ].join(" ")}
-        >
-          {companies.map((company) => (
-            <PartnerRow
-              key={company._id}
-              partner={company}
-              addPartnerToFavoriteHandler={() =>
-                addPartnerToFavoriteHandler(
-                  company,
-                  isOnline,
-                  dispatch,
-                  token,
-                  user
-                )
-              }
-              addCompanyToOurCompaniesHandler={() =>
-                addCompanyToOurCompaniesHandler(
-                  company,
-                  isOnline,
-                  dispatch,
-                  token
-                )
-              }
-              removeCompanyFromOurCompaniesHandler={() => {
-                removeCompanyFromOurCompaniesHandler(
-                  company,
-                  isOnline,
-                  dispatch,
-                  token
-                );
-              }}
-              removePartnerFromFavoriteHandler={() => {
-                removePartnerFromFavoriteHandler(
-                  company,
-                  isOnline,
-                  dispatch,
-                  token
-                );
-              }}
-              partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
-                partnerRowClickHandler(
-                  company,
-                  allowShowingWarehouseMedicines,
-                  user,
-                  dispatch,
-                  token,
-                  history
-                )
-              }
-            />
-          ))}
-        </div>
-      )}
-
-      {/* display partner as a card */}
-      {displayType === "card" && (
-        <div
-          className={[
-            generalStyles.flex_container,
-            generalStyles.margin_top_10,
-          ].join(" ")}
-        >
-          {companies.map((company) => (
-            <PartnerCard
-              key={company._id}
-              partner={company}
-              addPartnerToFavoriteHandler={() =>
-                addPartnerToFavoriteHandler(
-                  company,
-                  isOnline,
-                  dispatch,
-                  token,
-                  user
-                )
-              }
-              addCompanyToOurCompaniesHandler={() =>
-                addCompanyToOurCompaniesHandler(
-                  company,
-                  isOnline,
-                  dispatch,
-                  token
-                )
-              }
-              removeCompanyFromOurCompaniesHandler={() => {
-                removeCompanyFromOurCompaniesHandler(
-                  company,
-                  isOnline,
-                  dispatch,
-                  token
-                );
-              }}
-              removePartnerFromFavoriteHandler={() => {
-                removePartnerFromFavoriteHandler(
-                  company,
-                  isOnline,
-                  dispatch,
-                  token
-                );
-              }}
-              partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
-                partnerRowClickHandler(
-                  company,
-                  allowShowingWarehouseMedicines,
-                  user,
-                  dispatch,
-                  token,
-                  history
-                )
-              }
-            />
-          ))}
-        </div>
-      )}
-
-      {count > 0 && status !== "loading" && (
-        <div className={generalStyles.count}>
-          {companies.length} / {count}
-        </div>
-      )}
-
-      {companies.length === 0 &&
-        status !== "loading" &&
-        searchName.length === 0 &&
-        searchCity === CitiesName.ALL && <NoContent msg={t("no-companies")} />}
-
-      {companies.length === 0 &&
-        status !== "loading" &&
-        (searchName.length !== 0 || searchCity !== CitiesName.ALL) && (
-          <NoContent msg={t("no-result-found")} />
+      <div className={generalStyles.container_with_header}>
+        <CompaniesActions refreshHandler={refreshHandler} />
+        {count > 0 && (
+          <div className={generalStyles.count}>
+            <span className={generalStyles.label}>{t("companies-count")}</span>
+            <span className={generalStyles.count}>{count}</span>
+          </div>
         )}
 
-      {status === "loading" && (
-        <div className={generalStyles.flex_container}>
-          <ReactLoading color={Colors.SECONDARY_COLOR} type="cylon" />
-        </div>
-      )}
+        {/* display partner as list */}
+        {displayType === "list" && (
+          <div
+            className={[
+              generalStyles.flex_container,
+              generalStyles.margin_top_10,
+            ].join(" ")}
+          >
+            {companies.map((company) => (
+              <PartnerRow
+                key={company._id}
+                partner={company}
+                addPartnerToFavoriteHandler={() =>
+                  addPartnerToFavoriteHandler(
+                    company,
+                    isOnline,
+                    dispatch,
+                    token,
+                    user
+                  )
+                }
+                addCompanyToOurCompaniesHandler={() =>
+                  addCompanyToOurCompaniesHandler(
+                    company,
+                    isOnline,
+                    dispatch,
+                    token
+                  )
+                }
+                removeCompanyFromOurCompaniesHandler={() => {
+                  removeCompanyFromOurCompaniesHandler(
+                    company,
+                    isOnline,
+                    dispatch,
+                    token
+                  );
+                }}
+                removePartnerFromFavoriteHandler={() => {
+                  removePartnerFromFavoriteHandler(
+                    company,
+                    isOnline,
+                    dispatch,
+                    token
+                  );
+                }}
+                partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
+                  partnerRowClickHandler(
+                    company,
+                    allowShowingWarehouseMedicines,
+                    user,
+                    dispatch,
+                    token,
+                    history
+                  )
+                }
+              />
+            ))}
+          </div>
+        )}
 
-      {companies.length < count && (
-        <div className={generalStyles.flex_container}>
-          <ButtonWithIcon
-            text={t("more")}
-            action={handleMoreResult}
-            bgColor={Colors.SECONDARY_COLOR}
-            icon={() => <CgMoreVertical />}
-          />
-        </div>
-      )}
+        {/* display partner as a card */}
+        {displayType === "card" && (
+          <div
+            className={[
+              generalStyles.flex_container,
+              generalStyles.margin_top_10,
+            ].join(" ")}
+          >
+            {companies.map((company) => (
+              <PartnerCard
+                key={company._id}
+                partner={company}
+                addPartnerToFavoriteHandler={() =>
+                  addPartnerToFavoriteHandler(
+                    company,
+                    isOnline,
+                    dispatch,
+                    token,
+                    user
+                  )
+                }
+                addCompanyToOurCompaniesHandler={() =>
+                  addCompanyToOurCompaniesHandler(
+                    company,
+                    isOnline,
+                    dispatch,
+                    token
+                  )
+                }
+                removeCompanyFromOurCompaniesHandler={() => {
+                  removeCompanyFromOurCompaniesHandler(
+                    company,
+                    isOnline,
+                    dispatch,
+                    token
+                  );
+                }}
+                removePartnerFromFavoriteHandler={() => {
+                  removePartnerFromFavoriteHandler(
+                    company,
+                    isOnline,
+                    dispatch,
+                    token
+                  );
+                }}
+                partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
+                  partnerRowClickHandler(
+                    company,
+                    allowShowingWarehouseMedicines,
+                    user,
+                    dispatch,
+                    token,
+                    history
+                  )
+                }
+              />
+            ))}
+          </div>
+        )}
 
-      {companies.length === count && status !== "loading" && count !== 0 && (
-        <p
-          className={[generalStyles.center, generalStyles.fc_secondary].join(
-            " "
+        {count > 0 && status !== "loading" && (
+          <div className={generalStyles.count}>
+            {companies.length} / {count}
+          </div>
+        )}
+
+        {companies.length === 0 &&
+          status !== "loading" &&
+          searchName.length === 0 &&
+          searchCity === CitiesName.ALL && (
+            <NoContent msg={t("no-companies")} />
           )}
-        >
-          {t("no-more")}
-        </p>
-      )}
-    </div>
+
+        {companies.length === 0 &&
+          status !== "loading" &&
+          (searchName.length !== 0 || searchCity !== CitiesName.ALL) && (
+            <NoContent msg={t("no-result-found")} />
+          )}
+
+        {status === "loading" && (
+          <div className={generalStyles.flex_container}>
+            <ReactLoading color={Colors.SECONDARY_COLOR} type="cylon" />
+          </div>
+        )}
+
+        {companies.length < count && (
+          <div className={generalStyles.flex_container}>
+            <ButtonWithIcon
+              text={t("more")}
+              action={handleMoreResult}
+              bgColor={Colors.SECONDARY_COLOR}
+              icon={() => <CgMoreVertical />}
+            />
+          </div>
+        )}
+
+        {companies.length === count && status !== "loading" && count !== 0 && (
+          <p
+            className={[generalStyles.center, generalStyles.fc_secondary].join(
+              " "
+            )}
+          >
+            {t("no-more")}
+          </p>
+        )}
+      </div>
+    </>
   ) : (
     <Redirect to="/signin" />
   );

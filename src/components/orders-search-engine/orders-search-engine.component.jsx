@@ -1,12 +1,11 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
 
 // components
 import SearchContainer from "../search-container/search-container.component";
 import SearchInput from "../search-input/search-input.component";
-import SelectCustom from "../select/select.component";
-import Icon from "../action-icon/action-icon.component";
+import SearchRowContainer from "../search-row-container/search-row-container.component";
+import SelectSearch from "../select-search/select-search.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -31,28 +30,18 @@ import {
   setWarehouseOrderStatus as basketSetWarehouseOrderStatus,
 } from "../../redux/basketOrdersSlice/basketOrdersSlice";
 
-// icons
-import { RiRefreshLine } from "react-icons/ri";
-import { IoMdArrowRoundBack } from "react-icons/io";
-
 // constants and utils
 import {
   AdminOrderStatus,
-  Colors,
   DateOptions,
   PharmacyOrderStatus,
   UserTypeConstants,
   WarehouseOrderStatus,
 } from "../../utils/constants";
 
-// styles
-import generalStyles from "../../style.module.scss";
-import styles from "./orders-page-header.module.scss";
-
-function OrderPageHeader({ pageState, search, type }) {
+function OrdersSearchEngine({ pageState, search, type }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const history = useHistory();
 
   // selectors
   const user = useSelector(selectUser);
@@ -206,87 +195,53 @@ function OrderPageHeader({ pageState, search, type }) {
         )}
 
         {user.type === UserTypeConstants.ADMIN && (
-          <div className={styles.selectDiv}>
-            <label>{t("admin-order-status")}</label>
-            <SelectCustom
-              bgColor={Colors.SECONDARY_COLOR}
-              foreColor="#fff"
-              options={adminOrderStatusOptions}
-              onchange={handleAdminOrderStatusOption}
-              defaultOption={{
-                value: pageState.adminOrderStatus,
-                label: t(pageState.adminOrderStatus),
-              }}
-            />
-          </div>
+          <SelectSearch
+            text="admin-order-status"
+            options={adminOrderStatusOptions}
+            changeHandler={handleAdminOrderStatusOption}
+            defaultOption={{
+              value: pageState.adminOrderStatus,
+              label: t(pageState.adminOrderStatus),
+            }}
+          />
         )}
 
-        <div className={styles.selectDiv}>
-          <label>{t("warehouse-order-status")}</label>
-          <SelectCustom
-            bgColor={Colors.SECONDARY_COLOR}
-            foreColor="#fff"
-            options={warehouseOrderStatusOptions}
-            onchange={handleWarehouseOrderStatusOption}
-            defaultOption={{
-              value: pageState.warehouseOrderStatus,
-              label: t(pageState.warehouseOrderStatus),
-            }}
-          />
-        </div>
-
-        <div className={styles.selectDiv}>
-          <label>{t("pharmacy-order-status")}</label>
-          <SelectCustom
-            bgColor={Colors.SECONDARY_COLOR}
-            foreColor="#fff"
-            options={pharmacyOrderStatusOptions}
-            onchange={handlePharmacyOrderStatusOption}
-            defaultOption={{
-              value: pageState.pharmacyOrderStatus,
-              label: t(pageState.pharmacyOrderStatus),
-            }}
-          />
-        </div>
-
-        <div className={styles.selectDiv}>
-          <label>{t("dates-within")}</label>
-          <SelectCustom
-            bgColor={Colors.SECONDARY_COLOR}
-            foreColor="#fff"
-            options={dateOptions}
-            onchange={handleDateOptions}
-            defaultOption={{
-              value: pageState.dateOption,
-              label: t(
-                `${
-                  dateOptions.find((o) => o.value === pageState.dateOption)
-                    .label
-                }`
-              ),
-            }}
-          />
-        </div>
-
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-start",
-            backgroundColor: Colors.WHITE_COLOR,
-            borderRadius: "6px",
-            marginBottom: "4px",
+        <SelectSearch
+          text="warehouse-order-status"
+          options={warehouseOrderStatusOptions}
+          changeHandler={handleWarehouseOrderStatusOption}
+          defaultOption={{
+            value: pageState.warehouseOrderStatus,
+            label: t(pageState.warehouseOrderStatus),
           }}
-        >
-          <label
-            style={{
-              fontSize: "0.7rem",
-              color: Colors.SECONDARY_COLOR,
-              minWidth: "100px",
-              paddingInlineStart: "10px",
-            }}
-          >
-            {t("date-label")}
-          </label>
+        />
+
+        <SelectSearch
+          text="pharmacy-order-status"
+          options={pharmacyOrderStatusOptions}
+          changeHandler={handlePharmacyOrderStatusOption}
+          defaultOption={{
+            value: pageState.pharmacyOrderStatus,
+            label: t(pageState.pharmacyOrderStatus),
+          }}
+        />
+
+        <SelectSearch
+          text="dates-within"
+          options={dateOptions}
+          changeHandler={handleDateOptions}
+          defaultOption={{
+            value: pageState.dateOption,
+            label: t(
+              `${
+                dateOptions.find((o) => o.value === pageState.dateOption).label
+              }`
+            ),
+          }}
+        />
+
+        <SearchRowContainer>
+          <label>{t("date-label")}</label>
           <input
             type="date"
             value={pageState.date}
@@ -298,29 +253,10 @@ function OrderPageHeader({ pageState, search, type }) {
               );
             }}
           />
-        </div>
+        </SearchRowContainer>
       </SearchContainer>
-      <div className={generalStyles.actions}>
-        <Icon
-          foreColor={Colors.MAIN_COLOR}
-          selected={false}
-          icon={() => <RiRefreshLine />}
-          tooltip={t("refresh-tooltip")}
-          onclick={search}
-          withBackground={true}
-        />
-
-        <Icon
-          onclick={() => {
-            history.goBack();
-          }}
-          icon={() => <IoMdArrowRoundBack />}
-          foreColor={Colors.MAIN_COLOR}
-          withBackground={true}
-        />
-      </div>
     </>
   );
 }
 
-export default OrderPageHeader;
+export default OrdersSearchEngine;

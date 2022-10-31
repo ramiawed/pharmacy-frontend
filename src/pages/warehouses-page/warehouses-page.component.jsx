@@ -9,8 +9,9 @@ import PartnerRow from "../../components/partner-row/partner-row.component";
 import PartnerCard from "../../components/partner-card/partner-card.component";
 import Toast from "../../components/toast/toast.component";
 import NoContent from "../../components/no-content/no-content.component";
-import WarehousesHeader from "../../components/warehouses-header/warehouses-header.component";
 import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
+import WarehousesActions from "../../components/warehouses-actions/warehouses-actions.component";
+import WarehousesSearchEngine from "../../components/warehouses-search-engine/warehouses-search-engine.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -139,165 +140,167 @@ function WarehousePage({ onSelectedChange }) {
   return user &&
     (user.type === UserTypeConstants.ADMIN ||
       user.type === UserTypeConstants.PHARMACY) ? (
-    <div className={generalStyles.container}>
-      <WarehousesHeader
-        count={count}
+    <>
+      <WarehousesSearchEngine
         search={handleEnterPress}
-        refreshHandler={refreshHandler}
         keyUpHandler={keyUpHandler}
       />
-
-      {count > 0 && (
-        <div className={generalStyles.count}>
-          <span className={generalStyles.label}>{t("warehouses-count")}</span>
-          <span className={generalStyles.count}>{count}</span>
-        </div>
-      )}
-
-      {/* display as list */}
-      {displayType === "list" && (
-        <div
-          className={[
-            generalStyles.flex_container,
-            generalStyles.margin_top_10,
-          ].join(" ")}
-        >
-          {warehouses.map((warehouse) => (
-            <PartnerRow
-              key={warehouse._id}
-              partner={warehouse}
-              addPartnerToFavoriteHandler={() =>
-                addPartnerToFavoriteHandler(
-                  warehouse,
-                  isOnline,
-                  dispatch,
-                  token,
-                  user
-                )
-              }
-              removePartnerFromFavoriteHandler={() => {
-                removePartnerFromFavoriteHandler(
-                  warehouse,
-                  isOnline,
-                  dispatch,
-                  token
-                );
-              }}
-              partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
-                partnerRowClickHandler(
-                  warehouse,
-                  allowShowingWarehouseMedicines,
-                  user,
-                  dispatch,
-                  token,
-                  history
-                )
-              }
-            />
-          ))}
-        </div>
-      )}
-
-      {/* display as card */}
-      {displayType === "card" && (
-        <div
-          className={[
-            generalStyles.flex_container,
-            generalStyles.margin_top_10,
-          ].join(" ")}
-        >
-          {warehouses.map((warehouse) => (
-            <PartnerCard
-              key={warehouse._id}
-              partner={warehouse}
-              addPartnerToFavoriteHandler={() =>
-                addPartnerToFavoriteHandler(
-                  warehouse,
-                  isOnline,
-                  dispatch,
-                  token,
-                  user
-                )
-              }
-              removePartnerFromFavoriteHandler={() => {
-                removePartnerFromFavoriteHandler(
-                  warehouse,
-                  isOnline,
-                  dispatch,
-                  token
-                );
-              }}
-              partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
-                partnerRowClickHandler(
-                  warehouse,
-                  allowShowingWarehouseMedicines,
-                  user,
-                  dispatch,
-                  token,
-                  history
-                )
-              }
-            />
-          ))}
-        </div>
-      )}
-
-      {count > 0 && status !== "loading" && (
-        <div className={generalStyles.count}>
-          {warehouses.length} / {count}
-        </div>
-      )}
-
-      {warehouses.length === 0 &&
-        status !== "loading" &&
-        searchName.length === 0 &&
-        searchCity === CitiesName.ALL && <NoContent msg={t("no-warehouses")} />}
-
-      {warehouses.length === 0 &&
-        status !== "loading" &&
-        (searchName.length !== 0 || searchCity !== CitiesName.ALL) && (
-          <NoContent msg={t("no-result-found")} />
+      <div className={generalStyles.container_with_header}>
+        <WarehousesActions refreshHandler={refreshHandler} />
+        {count > 0 && (
+          <div className={generalStyles.count}>
+            <span className={generalStyles.label}>{t("warehouses-count")}</span>
+            <span className={generalStyles.count}>{count}</span>
+          </div>
         )}
 
-      {status === "loading" && (
-        <div className={generalStyles.flex_container}>
-          <ReactLoading color={Colors.SECONDARY_COLOR} type="cylon" />
-        </div>
-      )}
+        {/* display as list */}
+        {displayType === "list" && (
+          <div
+            className={[
+              generalStyles.flex_container,
+              generalStyles.margin_top_10,
+            ].join(" ")}
+          >
+            {warehouses.map((warehouse) => (
+              <PartnerRow
+                key={warehouse._id}
+                partner={warehouse}
+                addPartnerToFavoriteHandler={() =>
+                  addPartnerToFavoriteHandler(
+                    warehouse,
+                    isOnline,
+                    dispatch,
+                    token,
+                    user
+                  )
+                }
+                removePartnerFromFavoriteHandler={() => {
+                  removePartnerFromFavoriteHandler(
+                    warehouse,
+                    isOnline,
+                    dispatch,
+                    token
+                  );
+                }}
+                partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
+                  partnerRowClickHandler(
+                    warehouse,
+                    allowShowingWarehouseMedicines,
+                    user,
+                    dispatch,
+                    token,
+                    history
+                  )
+                }
+              />
+            ))}
+          </div>
+        )}
 
-      {warehouses.length < count && (
-        <div className={generalStyles.flex_container}>
-          <ButtonWithIcon
-            text={t("more")}
-            action={handleMoreResult}
-            bgColor={Colors.SECONDARY_COLOR}
-            icon={() => <CgMoreVertical />}
-          />
-        </div>
-      )}
+        {/* display as card */}
+        {displayType === "card" && (
+          <div
+            className={[
+              generalStyles.flex_container,
+              generalStyles.margin_top_10,
+            ].join(" ")}
+          >
+            {warehouses.map((warehouse) => (
+              <PartnerCard
+                key={warehouse._id}
+                partner={warehouse}
+                addPartnerToFavoriteHandler={() =>
+                  addPartnerToFavoriteHandler(
+                    warehouse,
+                    isOnline,
+                    dispatch,
+                    token,
+                    user
+                  )
+                }
+                removePartnerFromFavoriteHandler={() => {
+                  removePartnerFromFavoriteHandler(
+                    warehouse,
+                    isOnline,
+                    dispatch,
+                    token
+                  );
+                }}
+                partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
+                  partnerRowClickHandler(
+                    warehouse,
+                    allowShowingWarehouseMedicines,
+                    user,
+                    dispatch,
+                    token,
+                    history
+                  )
+                }
+              />
+            ))}
+          </div>
+        )}
 
-      {warehouses.length === count && status !== "loading" && count !== 0 && (
-        <p
-          className={[generalStyles.center, generalStyles.fc_secondary].join(
-            " "
+        {count > 0 && status !== "loading" && (
+          <div className={generalStyles.count}>
+            {warehouses.length} / {count}
+          </div>
+        )}
+
+        {warehouses.length === 0 &&
+          status !== "loading" &&
+          searchName.length === 0 &&
+          searchCity === CitiesName.ALL && (
+            <NoContent msg={t("no-warehouses")} />
           )}
-        >
-          {t("no-more")}
-        </p>
-      )}
 
-      {favoritesError && (
-        <Toast
-          bgColor={Colors.FAILED_COLOR}
-          foreColor="#fff"
-          actionAfterTimeout={() => {
-            setFavoritesError("");
-          }}
-        >
-          {t(favoriteError)}
-        </Toast>
-      )}
-    </div>
+        {warehouses.length === 0 &&
+          status !== "loading" &&
+          (searchName.length !== 0 || searchCity !== CitiesName.ALL) && (
+            <NoContent msg={t("no-result-found")} />
+          )}
+
+        {status === "loading" && (
+          <div className={generalStyles.flex_container}>
+            <ReactLoading color={Colors.SECONDARY_COLOR} type="cylon" />
+          </div>
+        )}
+
+        {warehouses.length < count && (
+          <div className={generalStyles.flex_container}>
+            <ButtonWithIcon
+              text={t("more")}
+              action={handleMoreResult}
+              bgColor={Colors.SECONDARY_COLOR}
+              icon={() => <CgMoreVertical />}
+            />
+          </div>
+        )}
+
+        {warehouses.length === count && status !== "loading" && count !== 0 && (
+          <p
+            className={[generalStyles.center, generalStyles.fc_secondary].join(
+              " "
+            )}
+          >
+            {t("no-more")}
+          </p>
+        )}
+
+        {favoritesError && (
+          <Toast
+            bgColor={Colors.FAILED_COLOR}
+            foreColor="#fff"
+            actionAfterTimeout={() => {
+              setFavoritesError("");
+            }}
+          >
+            {t(favoriteError)}
+          </Toast>
+        )}
+      </div>
+    </>
   ) : (
     <Redirect to="/" />
   );

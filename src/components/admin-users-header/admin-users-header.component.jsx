@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // redux stuff
@@ -15,11 +14,13 @@ import { selectToken } from "../../redux/auth/authSlice";
 import Header from "../header/header.component";
 import IconWithNumber from "../icon-with-number/icon-with-number.component";
 import Icon from "../action-icon/action-icon.component";
+import AdminUsersSearchString from "../admin-users-search-string/admin-users-search-string.component";
 
 // react icons
 import { BiSortAZ } from "react-icons/bi";
 import { RiRefreshLine } from "react-icons/ri";
 import { HiOutlineSearch } from "react-icons/hi";
+import { VscClearAll } from "react-icons/vsc";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -34,8 +35,6 @@ import {
   UserApprovedState,
   UserTypeConstants,
 } from "../../utils/constants";
-import { VscClearAll } from "react-icons/vsc";
-import AdminUsersSearchString from "../admin-users-search-string/admin-users-search-string.component";
 
 function AdminUsersHeader({
   count,
@@ -44,7 +43,6 @@ function AdminUsersHeader({
   showOrderModalHandler,
 }) {
   const { t } = useTranslation();
-  const history = useHistory();
   const dispatch = useDispatch();
 
   const {

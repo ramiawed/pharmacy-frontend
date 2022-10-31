@@ -54,68 +54,64 @@ function PartnerRow({
       partner.allowShowingMedicines);
 
   return (
-    <>
-      <div
-        className={[
-          fullWidth ? styles.full_width_container : styles.container,
-          withoutBoxShadow ? styles.without_box_shadow : "",
-        ].join(" ")}
-        onClick={() => {
-          if (onSelectAction) onSelectAction();
-          partnerRowClickHandler(allowShowingWarehouseMedicines);
-        }}
-      >
-        <label className={styles.name}>{partner.name}</label>
+    <div
+      className={[
+        fullWidth ? styles.full_width_container : styles.container,
+        withoutBoxShadow ? styles.without_box_shadow : "",
+      ].join(" ")}
+      onClick={() => {
+        if (onSelectAction) onSelectAction();
+        partnerRowClickHandler(allowShowingWarehouseMedicines);
+      }}
+    >
+      <label className={styles.name}>{partner.name}</label>
 
-        <div className={styles.actions_div}>
-          {user.type === UserTypeConstants.WAREHOUSE &&
-          partner.type === UserTypeConstants.COMPANY ? (
-            <div>
-              {user.ourCompanies.includes(partner._id) ? (
-                <Icon
-                  icon={() => <FaHandshakeSlash size={24} />}
-                  onclick={removeCompanyFromOurCompaniesHandler}
-                  foreColor={Colors.FAILED_COLOR}
-                  tooltip={t("remove-company-from-warehouse-tooltip")}
-                />
-              ) : (
-                <Icon
-                  icon={() => <FaHandshake size={24} />}
-                  onclick={addCompanyToOurCompaniesHandler}
-                  foreColor={Colors.SUCCEEDED_COLOR}
-                  tooltip={t("add-company-to-warehouse-tooltip")}
-                />
-              )}
-            </div>
-          ) : (
-            <></>
-          )}
-
+      <div className={styles.actions_div}>
+        {user.type === UserTypeConstants.WAREHOUSE &&
+        partner.type === UserTypeConstants.COMPANY ? (
           <div>
-            {favoritesError === "" ? (
-              favorites &&
-              favorites
-                .map((favorite) => favorite._id)
-                .includes(partner._id) ? (
-                <Icon
-                  icon={() => <AiFillStar size={24} />}
-                  onclick={removePartnerFromFavoriteHandler}
-                  foreColor={Colors.YELLOW_COLOR}
-                  tooltip={t("remove-from-favorite-tooltip")}
-                />
-              ) : (
-                <Icon
-                  icon={() => <AiOutlineStar size={24} />}
-                  onclick={addPartnerToFavoriteHandler}
-                  foreColor={Colors.YELLOW_COLOR}
-                  tooltip={t("add-to-favorite-tooltip")}
-                />
-              )
-            ) : null}
+            {user.ourCompanies.includes(partner._id) ? (
+              <Icon
+                icon={() => <FaHandshakeSlash size={24} />}
+                onclick={removeCompanyFromOurCompaniesHandler}
+                foreColor={Colors.FAILED_COLOR}
+                tooltip={t("remove-company-from-warehouse-tooltip")}
+              />
+            ) : (
+              <Icon
+                icon={() => <FaHandshake size={24} />}
+                onclick={addCompanyToOurCompaniesHandler}
+                foreColor={Colors.SUCCEEDED_COLOR}
+                tooltip={t("add-company-to-warehouse-tooltip")}
+              />
+            )}
           </div>
+        ) : (
+          <></>
+        )}
+
+        <div>
+          {favoritesError === "" ? (
+            favorites &&
+            favorites.map((favorite) => favorite._id).includes(partner._id) ? (
+              <Icon
+                icon={() => <AiFillStar size={24} />}
+                onclick={removePartnerFromFavoriteHandler}
+                foreColor={Colors.YELLOW_COLOR}
+                tooltip={t("remove-from-favorite-tooltip")}
+              />
+            ) : (
+              <Icon
+                icon={() => <AiOutlineStar size={24} />}
+                onclick={addPartnerToFavoriteHandler}
+                foreColor={Colors.YELLOW_COLOR}
+                tooltip={t("add-to-favorite-tooltip")}
+              />
+            )
+          ) : null}
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

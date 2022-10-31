@@ -6,21 +6,11 @@
   flex-direction: column;
 }
 
-.background_div {
-  width: 100vw;
-  height: 100vh;
-  position: fixed;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: cover;
-
-  opacity: 0.1;
-}
-
 .content_area {
   position: relative;
   flex: 1;
   z-index: 1;
+  min-height: calc(100vh - 106px);
 }
 
 .hamburger_menu {
@@ -45,12 +35,13 @@
   position: fixed;
   left: 10px;
   bottom: 10px;
-  font-size: 2rem;
-  color: $yellow-color;
-  opacity: 0.6;
+  color: $blue-color;
+  opacity: 0.8;
   cursor: pointer;
   transition: all 0.3s;
   z-index: 100;
+  background-color: $white-color;
+  border-radius: 50%;
 }
 
 .toTop:hover {

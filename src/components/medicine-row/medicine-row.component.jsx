@@ -27,17 +27,22 @@ import {
 } from "../../redux/savedItems/savedItemsSlice";
 
 // components
+import ItemAdditionalInfo from "../item-additional-info/item-additional-info.component";
 import AddToCartModal from "../../modals/add-to-cart-modal/add-to-cart-modal.component";
+import FullWidthLabel from "../full-width-label/full-width-label.component";
+import ThreeStateIcon from "../three-state-icon/three-state-icon.component";
+import ItemPrices from "../item-prices/item-prices.component";
+import ItemNames from "../item-names/item-names.component";
+import Separator from "../separator/separator.component";
 import Icon from "../action-icon/action-icon.component";
 import Toast from "../toast/toast.component";
 
 // react icons
-import { AiFillStar, AiOutlineStar } from "react-icons/ai";
-import { GiShoppingCart } from "react-icons/gi";
-import { RiDeleteBin5Fill } from "react-icons/ri";
-import { MdAddCircle, MdExpandLess, MdExpandMore } from "react-icons/md";
-import { VscLoading } from "react-icons/vsc";
 import { BsFillBookmarkPlusFill, BsFillBookmarkDashFill } from "react-icons/bs";
+import { MdAddCircle, MdExpandLess, MdExpandMore } from "react-icons/md";
+import { AiFillStar, AiOutlineStar } from "react-icons/ai";
+import { RiDeleteBin5Fill } from "react-icons/ri";
+import { GiShoppingCart } from "react-icons/gi";
 
 // styles
 import styles from "./medicine-row.module.scss";
@@ -249,7 +254,7 @@ function MedicineRow({ item }) {
       <div className={styles.item_row} onClick={rowClickHandler}>
         {checkOffer(item, user) && <div className={styles.offer_div}></div>}
         <div className={styles.first_row}>
-          <label className={[styles.item_name].join(" ")}>
+          <div className={[styles.item_names_container].join(" ")}>
             <label
               className={styles.icon}
               onClick={(e) => {
@@ -257,38 +262,31 @@ function MedicineRow({ item }) {
                 e.stopPropagation();
               }}
             >
-              {expanded ? <MdExpandLess /> : <MdExpandMore />}
+              {expanded ? (
+                <MdExpandLess size={24} />
+              ) : (
+                <MdExpandMore size={24} />
+              )}
             </label>
-            <div className={styles.nameDiv}>
-              <label>{item.name}</label>
-              <label className={styles.nameAr}>{item.nameAr}</label>
-            </div>
-          </label>
+            <ItemNames name={item.name} arName={item.nameAr} />
+          </div>
 
-          {changeAddToWarehouseLoading ? (
-            <Icon
-              text={t("")}
-              onclick={() => {}}
-              foreColor={Colors.SECONDARY_COLOR}
-              icon={() => <VscLoading className={styles.loading} />}
+          {user.type === UserTypeConstants.WAREHOUSE && (
+            <ThreeStateIcon
+              loading={changeAddToWarehouseLoading}
+              array={item.warehouses.map((w) => w.warehouse._id)}
+              id={user._id}
+              removeHandler={removeItemFromWarehouseHandler}
+              addHandler={addItemToWarehouseHandler}
+              removeTooltip="remove-from-warehouse-tooltip"
+              addTooltip="add-to-warehouse-tooltip"
+              removeIcon={() => (
+                <RiDeleteBin5Fill color={Colors.FAILED_COLOR} size={24} />
+              )}
+              addIcon={() => (
+                <MdAddCircle color={Colors.SUCCEEDED_COLOR} size={24} />
+              )}
             />
-          ) : (
-            user.type === UserTypeConstants.WAREHOUSE &&
-            (item.warehouses.map((w) => w.warehouse._id).includes(user._id) ? (
-              <Icon
-                text={t("remove-from-warehouse-tooltip")}
-                onclick={removeItemFromWarehouseHandler}
-                foreColor={Colors.FAILED_COLOR}
-                icon={() => <RiDeleteBin5Fill size={24} />}
-              />
-            ) : (
-              <Icon
-                text={t("add-to-warehouse-tooltip")}
-                onclick={addItemToWarehouseHandler}
-                foreColor={Colors.SUCCEEDED_COLOR}
-                icon={() => <MdAddCircle size={24} />}
-              />
-            ))
           )}
 
           {user.type === UserTypeConstants.PHARMACY ? (
@@ -299,83 +297,66 @@ function MedicineRow({ item }) {
                 foreColor={Colors.SUCCEEDED_COLOR}
                 icon={() => <GiShoppingCart size={24} />}
               />
-            ) : changeSaveItemLoading ? (
-              <Icon
-                text={t("")}
-                onclick={() => {}}
-                foreColor={Colors.YELLOW_COLOR}
-                icon={() => <VscLoading className={styles.loading} />}
-              />
-            ) : savedItems.map((si) => si._id).includes(item._id) ? (
-              <Icon
-                tooltip={t("remove-item-from-saved-items-tooltip")}
-                onclick={removeItemFromSavedItemsHandler}
-                foreColor={Colors.FAILED_COLOR}
-                icon={() => <BsFillBookmarkDashFill size={24} />}
-              />
             ) : (
-              <Icon
-                tooltip={t("add-item-to-saved-items-tooltip")}
-                onclick={addItemToSavedItemsHandler}
-                foreColor={Colors.SUCCEEDED_COLOR}
-                icon={() => <BsFillBookmarkPlusFill size={24} />}
+              <ThreeStateIcon
+                loading={changeSaveItemLoading}
+                array={savedItems.map((si) => si._id)}
+                id={item._id}
+                removeHandler={removeItemFromSavedItemsHandler}
+                addHandler={addItemToSavedItemsHandler}
+                removeTooltip="remove-item-from-saved-items-tooltip"
+                addTooltip="add-item-to-saved-items-tooltip"
+                removeIcon={() => (
+                  <BsFillBookmarkDashFill
+                    color={Colors.FAILED_COLOR}
+                    size={24}
+                  />
+                )}
+                addIcon={() => (
+                  <BsFillBookmarkPlusFill
+                    color={Colors.SUCCEEDED_COLOR}
+                    size={24}
+                  />
+                )}
               />
             )
           ) : (
             <></>
           )}
 
-          {changeFavoriteLoading ? (
-            <Icon
-              text={t("")}
-              onclick={() => {}}
-              foreColor={Colors.YELLOW_COLOR}
-              icon={() => <VscLoading className={styles.loading} />}
-            />
-          ) : favoritesItems
-              .map((favorite) => favorite._id)
-              .includes(item._id) ? (
-            <Icon
-              text={t("remove-from-favorite-tooltip")}
-              onclick={removeItemFromFavoritesItemsHandler}
-              foreColor={Colors.YELLOW_COLOR}
-              icon={() => <AiFillStar size={24} />}
-            />
-          ) : (
-            <Icon
-              text={t("add-to-favorite-tooltip")}
-              onclick={addItemToFavoriteItemsHandler}
-              foreColor={Colors.YELLOW_COLOR}
-              icon={() => <AiOutlineStar size={24} />}
-            />
-          )}
+          <ThreeStateIcon
+            loading={changeFavoriteLoading}
+            array={favoritesItems.map((favorite) => favorite._id)}
+            id={item._id}
+            removeHandler={removeItemFromFavoritesItemsHandler}
+            addHandler={addItemToFavoriteItemsHandler}
+            removeTooltip="remove-from-favorite-tooltip"
+            addTooltip="add-to-favorite-tooltip"
+            removeIcon={() => (
+              <AiFillStar size={24} color={Colors.YELLOW_COLOR} />
+            )}
+            addIcon={() => (
+              <AiOutlineStar size={24} color={Colors.YELLOW_COLOR} />
+            )}
+          />
         </div>
 
         <div className={styles.second_row}>
-          <label className={styles.item_company}>{item.company.name}</label>
-          {user.type !== UserTypeConstants.GUEST && (
-            <label className={styles.item_price}>{item.price}</label>
-          )}
-          <label className={styles.item_customer_price}>
-            {item.customer_price}
-          </label>
+          <FullWidthLabel
+            value={item.company.name}
+            color={Colors.SUCCEEDED_COLOR}
+          />
+          <ItemPrices
+            userType={user.type}
+            price={item.price}
+            customerPrice={item.customer_price}
+          />
         </div>
 
         {expanded && (
           <>
-            <div className={styles.separator}></div>
-            <div className={styles.details_row}>
-              <label className={styles.label}>{t("item-packing")}:</label>
-              <label className={styles.value}>{item.packing}</label>
-            </div>
-            <div className={styles.details_row}>
-              <label className={styles.label}>{t("item-caliber")}:</label>
-              <label className={styles.value}>{item.caliber}</label>
-            </div>
-            <div className={styles.details_row}>
-              <label className={styles.label}>{t("item-composition")}:</label>
-              <label className={styles.value}>{item.composition}</label>
-            </div>
+            <Separator />
+            <ItemAdditionalInfo item={item} />
           </>
         )}
       </div>

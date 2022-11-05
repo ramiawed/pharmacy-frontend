@@ -13,24 +13,6 @@
   min-height: calc(100vh - 106px);
 }
 
-.hamburger_menu {
-  height: 60px;
-  background-color: $main-color;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.hamburger_menu p {
-  color: $white-color;
-  font-size: 18px;
-  padding-inline-start: 10px;
-  padding-right: 10px;
-}
-
 .toTop {
   position: fixed;
   left: 10px;
@@ -47,10 +29,4 @@
 .toTop:hover {
   opacity: 1;
   transform: scale(1.1);
-}
-
-@media only screen and (min-width: $small) {
-  .hamburger_menu {
-    display: none;
-  }
 }

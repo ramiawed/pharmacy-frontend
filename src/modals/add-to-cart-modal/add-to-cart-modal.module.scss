@@ -1,40 +1,30 @@
 @import "../../variables.scss";
 
-.offer {
+.label {
+  color: $grey-color;
+  font-size: 14px;
+  min-width: 90px;
+  width: 90px;
+}
+
+.selected_qty {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 4px 0;
-  margin: 4px 0;
+}
+
+.selected_qty .input {
+  width: 100%;
+  padding: 2px 4px;
   border-radius: 6px;
-  background: $offer-color;
+  outline: none;
+  font-size: 16px;
+  border: 1px solid rgba($color: #000000, $alpha: 0.1);
   color: $main-color;
 }
 
-.value {
-  border-radius: 4px;
-  background: $white-color;
-  color: $third-color;
-  margin: 0 4px;
-  padding: 0 6px;
-}
-
-.with_padding {
-  padding: 0 6px;
-}
-
-.left_padding {
-  padding-left: 20px;
-}
-
-.max_qty_div {
-  display: flex;
-  align-items: center;
-
-  margin-block: 5px;
-  margin-top: 5px;
-  margin-bottom: 10px;
-
+.selected_qty input.error {
+  border: 1px solid rgba($color: #ff0000, $alpha: 1);
+  box-shadow: 0 0 4px 3px rgba($color: #ff0000, $alpha: 0.5);
 }
 
 .select_warehouse {
@@ -42,32 +32,3 @@
   align-items: center;
   margin-bottom: 10px;
 }
-
-.max_qty_div label,
-.select_warehouse label {
-  color: $main-color;
-  font-size: 16px;
-  margin-inline-end: 4px;
-  margin-left: 4px;
-  min-width: 85px;
-}
-
-.max_qty_div p {
-  margin: 0 5px;
-}
-
-.max_qty_div input {
-  flex: 1;
-  height: 35px;
-  padding: 2px 4px;
-  border-radius: 6px;
-  outline: none;
-  border: 1px solid rgba($color: $secondary-color, $alpha: 1);
-  font-size: 16px;
-}
-
-.max_qty_div input.error {
-  border: 1px solid rgba($color: #ff0000, $alpha: 1);
-  box-shadow: 0 0 4px 3px rgba($color: #ff0000, $alpha: 0.5);
-}
-

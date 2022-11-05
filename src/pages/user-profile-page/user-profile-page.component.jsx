@@ -138,7 +138,7 @@ function UserProfilePage({ onSelectedChange }) {
       <Header>
         <h2>{t("nav-profile")}</h2>
       </Header>
-      {loading && <Loader />}
+
       <div className={generalStyles.container_with_header}>
         <div className={styles.content}>
           <div
@@ -375,6 +375,7 @@ function UserProfilePage({ onSelectedChange }) {
 
         <UserProfileNotifications />
       </div>
+      {loading && <Loader />}
     </>
   ) : (
     <Redirect to="/" />

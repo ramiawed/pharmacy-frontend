@@ -15,6 +15,7 @@
 // style
 import React, { useEffect, useState } from "react";
 import ReactLoading from "react-loading";
+import ReactDOM from "react-dom";
 import { useTranslation } from "react-i18next";
 
 // components
@@ -40,23 +41,22 @@ function Loader({ onclick, allowCancel, msg1, msg2 }) {
     };
   }, []);
 
-  return (
-    <>
-      <div className={styles.full_size}>
-        <ReactLoading color="#fff" type="bars" height={75} width={75} />
-        {allowCancel && showButton && (
-          <Button
-            action={() => {
-              if (onclick) onclick();
-            }}
-            text={t("cancel-operation-label")}
-            bgColor={Colors.SECONDARY_COLOR}
-          />
-        )}
-        {msg1 && <p className={styles.msg}>{t(msg1)}</p>}
-        {msg2 && <p className={styles.msg}>{t(msg2)}</p>}
-      </div>
-    </>
+  return ReactDOM.createPortal(
+    <div className={styles.full_size}>
+      <ReactLoading color="#fff" type="bars" height={75} width={75} />
+      {allowCancel && showButton && (
+        <Button
+          action={() => {
+            if (onclick) onclick();
+          }}
+          text={t("cancel-operation-label")}
+          bgColor={Colors.SECONDARY_COLOR}
+        />
+      )}
+      {msg1 && <p className={styles.msg}>{t(msg1)}</p>}
+      {msg2 && <p className={styles.msg}>{t(msg2)}</p>}
+    </div>,
+    document.getElementById("loader")
   );
 }
 

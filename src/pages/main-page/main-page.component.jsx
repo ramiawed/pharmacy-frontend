@@ -27,7 +27,6 @@ import HomePageLoader from "../../components/home-page-loader/home-page-loader.c
 import SocketObserver from "../../components/socket-orbserver/socket-observer.component";
 
 // react-icons
-import { GiHamburgerMenu } from "react-icons/gi";
 import { FaArrowAltCircleUp } from "react-icons/fa";
 
 // style
@@ -55,7 +54,6 @@ const AdminRoutes = lazy(() =>
 // MainPage
 // you have to sign in first
 function MainPage() {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -71,7 +69,6 @@ function MainPage() {
       selectedTopNavOption,
       collapsedSideNavOption,
       selectedSideNavOption,
-      showTopNav,
       showSearchBar,
     },
   } = useSelector(selectNavigationSlice);
@@ -132,6 +129,8 @@ function MainPage() {
       ) : (
         <>
           <SocketObserver />
+
+          {/* <div className={styles.layout_container}></div> */}
           <SideNav
             collapsed={collapsedSideNavOption}
             onCollapsedChange={() => {
@@ -151,28 +150,6 @@ function MainPage() {
             }}
             showSearchBar={showSearchBar}
           />
-          <div className={styles.hamburger_menu}>
-            <p className={styles.selectedOption}>
-              {t(selectedTopNavOption)}
-              {t(selectedSideNavOption)}
-            </p>
-            <GiHamburgerMenu
-              color="white"
-              size={32}
-              style={{
-                padding: "4px",
-              }}
-              onClick={(e) => {
-                changeNavigationSettingHandler({
-                  collapsedSideNavOption: true,
-                  showTopNav: !showTopNav,
-                  showSearchBar: false,
-                });
-
-                e.stopPropagation();
-              }}
-            />
-          </div>
 
           <TopNav
             selectedOption={selectedTopNavOption}
@@ -186,7 +163,6 @@ function MainPage() {
               });
             }}
           />
-          {/* <div className={styles.container}> */}
 
           <div className={styles.content_area}>
             <Suspense fallback={<HomePageLoader />}>
@@ -233,7 +209,6 @@ function MainPage() {
               }}
             />
           )}
-          {/* </div> */}
         </>
       )}
     </ErrorBoundary>

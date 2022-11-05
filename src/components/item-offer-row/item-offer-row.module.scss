@@ -1,0 +1,48 @@
+@import "../../variables.scss";
+
+.item_row {
+  box-shadow: 0 0 1px 1px rgba($color: #000000, $alpha: 0.3);
+  border-radius: 6px;
+  margin-block-end: 10px;
+  margin-bottom: 10px;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-block: 5px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+
+  .first_row {
+    display: flex;
+    justify-content: flex-start;
+
+    .item_name {
+      flex: 1;
+      color: $main-color;
+      font-size: 18px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
+
+      .icon {
+        background-color: $main-color;
+        color: $white-color;
+        display: inline-block;
+        display: flex;
+        border-radius: 50%;
+        margin-left: 10px;
+        margin-top: 5px;
+        cursor: pointer;
+      }
+    }
+  }
+
+  .second_row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 30px;
+  }
+}

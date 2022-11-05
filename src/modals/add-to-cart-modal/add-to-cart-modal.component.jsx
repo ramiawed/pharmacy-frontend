@@ -33,6 +33,9 @@ import {
 
 // styles
 import styles from "./add-to-cart-modal.module.scss";
+import LabelValueRow from "../../components/label-value-row/label-value-row.component";
+import Separator from "../../components/separator/separator.component";
+import OfferDetailsRow from "../../components/offer-details-row/offer-details-row.component";
 
 // check if there is an offer for entered quantity in a specific warehouse
 const checkOfferQty = (selectedWarehouse, qty) => {
@@ -204,7 +207,7 @@ function AddToCartModal({ item, close, setAddItemToCartMsg, fromSavedItems }) {
       >
         <div>
           <div className={styles.select_warehouse}>
-            <label>{t("item-warehouse")}</label>
+            <label className={styles.label}>{t("item-warehouse")}</label>
             <SelectCustom
               bgColor={Colors.SECONDARY_COLOR}
               foreColor="#fff"
@@ -217,53 +220,32 @@ function AddToCartModal({ item, close, setAddItemToCartMsg, fromSavedItems }) {
             />
           </div>
 
-          <div className={styles.max_qty_div}>
-            <label>{t("item-max-qty")}</label>
-            <p>
-              {selectedWarehouse.maxQty === 0
-                ? t("no-limit-qty")
-                : selectedWarehouse.maxQty}
-            </p>
-          </div>
-          <div className={styles.max_qty_div}>
-            <label>{t("selected-qty")}</label>
+          <Separator />
+
+          <LabelValueRow
+            label="item-max-qty"
+            value={
+              selectedWarehouse.maxQty === 0 ? "-" : selectedWarehouse.maxQty
+            }
+          />
+
+          <Separator />
+
+          <div className={styles.selected_qty}>
+            <label className={styles.label}>{t("selected-qty")}</label>
             <input
-              className={qtyError ? styles.error : ""}
+              className={[styles.input, qtyError ? styles.error : ""].join(" ")}
               value={qty}
               onKeyPress={onKeyPressForNumberInput}
               onChange={quantityChangeHandler}
             />
           </div>
-          {/* </div> */}
+
+          <Separator />
 
           {offer?.offers.length > 0 &&
             offer.offers.map((o, index) => (
-              <div className={styles.offer} key={index}>
-                <p>
-                  <label>{t("quantity-label")}</label>
-                  <label
-                    className={[styles.value, styles.with_padding].join(" ")}
-                  >
-                    {o.qty}
-                  </label>
-                  <label className={styles.left_padding}>
-                    {t("after-quantity-label")}
-                  </label>
-                </p>
-                <p>
-                  <label>
-                    {offer.mode === OfferTypes.PIECES
-                      ? t("bonus-quantity-label")
-                      : t("bonus-percentage-label")}
-                  </label>
-                  <label className={styles.value}>{o.bonus}</label>
-                  <label>
-                    {offer.mode === OfferTypes.PIECES
-                      ? t("after-bonus-quantity-label")
-                      : t("after-bonus-percentage-label")}
-                  </label>
-                </p>
-              </div>
+              <OfferDetailsRow key={index} offer={o} offerMode={offer.mode} />
             ))}
         </div>
       </Modal>

@@ -8,7 +8,6 @@ import { useHistory } from "react-router-dom";
 import NoContent from "../../components/no-content/no-content.component";
 import Icon from "../../components/action-icon/action-icon.component";
 import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
-import OfferRow from "../../components/offer-row/offer-row.component";
 
 // react-icons
 import { RiRefreshLine } from "react-icons/ri";
@@ -33,6 +32,7 @@ import generalStyles from "../../style.module.scss";
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
 import OffersSearchEngine from "../../components/offers-search-engine/offers-search-engine.component";
+import ItemOfferRow from "../../components/item-offer-row/item-offer-row.component";
 
 let timer = null;
 
@@ -138,7 +138,7 @@ function OffersPage({ onSelectedChange }) {
         )}
 
         {medicines.map((medicine, index) => (
-          <OfferRow key={index} item={medicine} />
+          <ItemOfferRow key={index} item={medicine} />
         ))}
 
         {count > 0 && status !== "loading" && (

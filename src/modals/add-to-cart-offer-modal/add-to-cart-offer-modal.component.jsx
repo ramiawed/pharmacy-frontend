@@ -27,6 +27,9 @@ import {
 
 // styles
 import styles from "./add-to-cart-offer-modal.module.scss";
+import OfferDetailsRow from "../../components/offer-details-row/offer-details-row.component";
+import LabelValueRow from "../../components/label-value-row/label-value-row.component";
+import Separator from "../../components/separator/separator.component";
 
 // recursive method to calculate the bonus for the entered quantity
 // check if there is an offer for entered quantity in a specific warehouse
@@ -156,22 +159,23 @@ function AddToCartOfferModal({ item, close, setAddItemToCartMsg }) {
         okModal={addItemToCartHandler}
         small={true}
       >
-        <div className={styles.select_warehouse}>
-          <label className={styles.label}>{t("item-warehouse")}</label>
-          <label className={styles.value}>
-            {addToCartItem.warehouses.warehouse.name}
-          </label>
-        </div>
+        <LabelValueRow
+          label="item-warehouse"
+          value={addToCartItem.warehouses.warehouse.name}
+        />
 
-        <div className={styles.max_qty_div}>
-          <label className={styles.label}>{t("item-max-qty")}</label>
-          <p>
-            {addToCartItem.warehouses.maxQty === 0
-              ? t("no-limit-qty")
-              : addToCartItem.warehouses.maxQty}
-          </p>
-        </div>
+        <Separator />
 
+        <LabelValueRow
+          label="item-max-qty"
+          value={
+            addToCartItem.warehouses.maxQty === 0
+              ? "-"
+              : addToCartItem.warehouses.maxQty
+          }
+        />
+
+        <Separator />
         <div className={styles.selected_qty}>
           <label className={styles.label}>{t("selected-qty")}</label>
           <input
@@ -182,33 +186,14 @@ function AddToCartOfferModal({ item, close, setAddItemToCartMsg }) {
           />
         </div>
 
-        <div className={styles.separator}></div>
+        <Separator />
 
         {addToCartItem.warehouses.offer.offers.map((o, index) => (
-          <div className={styles.offer} key={index}>
-            <p>
-              <label>{t("quantity-label")}</label>
-              <label className={[styles.value, styles.with_padding].join(" ")}>
-                {o.qty}
-              </label>
-              <label className={styles.left_padding}>
-                {t("after-quantity-label")}
-              </label>
-            </p>
-            <p>
-              <label>
-                {addToCartItem.warehouses.offer.mode === OfferTypes.PIECES
-                  ? t("bonus-quantity-label")
-                  : t("bonus-percentage-label")}
-              </label>
-              <label className={styles.value}>{o.bonus}</label>
-              <label>
-                {addToCartItem.warehouses.offer.mode === OfferTypes.PIECES
-                  ? t("after-bonus-quantity-label")
-                  : t("after-bonus-percentage-label")}
-              </label>
-            </p>
-          </div>
+          <OfferDetailsRow
+            key={index}
+            offer={o}
+            offerMode={addToCartItem.warehouses.offer.mode}
+          />
         ))}
       </Modal>
     </>

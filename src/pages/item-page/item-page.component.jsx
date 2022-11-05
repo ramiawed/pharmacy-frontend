@@ -58,6 +58,7 @@ import { AiFillEdit } from "react-icons/ai";
 import generalStyles from "../../style.module.scss";
 import styles from "./item-page.module.scss";
 import rowStyles from "../../components/row.module.scss";
+import Separator from "../../components/separator/separator.component";
 
 function ItemPage() {
   const { t } = useTranslation();
@@ -425,7 +426,8 @@ function ItemPage() {
                 error={itemError.name?.length > 0}
                 readOnly={!allowAction}
               />
-              <div className={styles.horizontal_div}></div>
+              {/* <div className={styles.horizontal_div}></div> */}
+              <Separator />
 
               <Input
                 label="item-trade-name-ar"

@@ -6,7 +6,7 @@
   margin-block-end: auto;
   margin-bottom: auto;
   position: sticky;
-  top: 0px;
+  top: 0;
   z-index: 10;
   background-color: $main-color;
   color: $white-color;
@@ -15,10 +15,37 @@
   justify-content: center;
 }
 
+.left {
+  padding-left: 10px;
+  padding-right: 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  min-height: 60px;
+
+  & .selectedOption {
+    flex: 1;
+  }
+
+  & .link {
+    margin-left: 5px;
+    margin-right: 5px;
+  }
+
+  & .link:hover,
+  & .link.selected {
+    color: $third-color;
+  }
+
+  & .hamburger_menu_icon {
+    cursor: pointer;
+  }
+}
+
 .search_icon {
   color: $white-color;
   position: relative;
-  top: -5px;
   margin-inline-end: 4px;
   margin-left: 4px;
   font-size: bold;
@@ -28,15 +55,18 @@
   }
 }
 
-div.center,
-div.end {
+div.center {
   display: flex;
   flex-direction: column;
 }
 
+div.center.hide {
+  display: none;
+}
+
 div .link {
   font-size: 16px;
-  text-shadow: 2px 2px 5px rgba($color: #000000, $alpha: 1);
+
   background-color: $main-color;
   color: $white-color;
   text-align: center;
@@ -45,21 +75,8 @@ div .link {
   transition: all 0.1s ease;
 }
 
-div.end .link {
-  font-size: 12px;
-}
-
-div.end {
-  display: none;
-}
-
 div.center .link:hover,
 div.center .link.selected {
-  color: $third-color;
-}
-
-div.end .link:hover,
-div.end .link.selected {
   color: $third-color;
 }
 
@@ -71,28 +88,6 @@ div.end .link.selected {
   display: flex;
 }
 
-.float_div {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  position: fixed;
-  top: 20px;
-  left: 30px;
-  z-index: 10;
-}
-
-.float_div .link {
-  font-size: 12px;
-  margin-inline: 5px;
-  margin-left: 5px;
-  margin-right: 5px;
-}
-
-.float_div .link:hover,
-.float_div .link.selected {
-  color: $third-color;
-}
-
 .search_container {
   display: none;
 }
@@ -100,6 +95,7 @@ div.end .link.selected {
 .search_container_fixed {
   display: flex;
   position: fixed;
+  top: 0;
   width: 100%;
   z-index: 100;
   height: 60px;
@@ -136,43 +132,44 @@ div.end .link.selected {
     z-index: 10;
   }
 
-  div.center,
-  div.end {
+  div.center {
+    display: flex !important;
     flex-direction: row;
     align-items: center;
-  }
-
-  div .link {
-    background-color: $main-color;
-    color: $white-color;
-  }
-
-  div.center .link,
-  div.end .link {
-    padding: 4px 8px;
-    margin: 0 6px;
-  }
-
-  div.center .link:hover,
-  div.center .link.selected {
-    background-color: $third-color;
-    color: $white-color;
-    border-radius: 6px;
-  }
-
-  div.end {
-    display: flex;
-  }
-
-  div.center {
     flex: 1;
+    order: 1;
+
+    & .link {
+      padding: 4px 8px;
+      margin: 0 6px;
+    }
+
+    & .link:hover,
+    & .link.selected {
+      background-color: $third-color;
+      color: $white-color;
+      border-radius: 6px;
+    }
   }
 
-  .float_div {
-    display: none;
+  div.left {
+    order: 2;
+
+    & .selectedOption {
+      display: none;
+    }
+
+    & .hamburger_menu_icon {
+      display: none;
+    }
+
+    & .link:hover,
+    & .link.selected {
+      color: $third-color;
+    }
   }
 
-  .search_icon_div {
+  div.center .search_icon_div {
     display: flex;
     align-items: center;
     justify-content: center;

@@ -1,0 +1,29 @@
+@import "../../variables.scss";
+
+.offer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 4px 0;
+    margin: 4px 0;
+    border-radius: 6px;
+    background: $offer-color;
+    color: $main-color;
+
+    label {
+        font-size: 14px;
+    }
+}
+
+.value {
+    border-radius: 4px;
+    background: $white-color;
+    color: $third-color;
+    margin: 0 4px;
+    padding: 0 6px;
+}
+
+.left_padding {
+    padding-left: 20px;
+}

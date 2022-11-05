@@ -1,0 +1,45 @@
+@import "../../variables.scss";
+
+.details_row {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    .label {
+        font-size: 12px;
+        color: $grey-color;
+        width: 70px;
+    }
+
+    .value {
+        font-size: 14px;
+        color: $main-color;
+        flex: 1;
+    }
+}
+
+@media only screen and (min-width: $small) {
+    .details_row {
+        .label {
+            font-size: 14px;
+            width: 100px;
+        }
+
+        .value {
+            font-size: 16px;
+        }
+    }
+}
+
+@media only screen and (min-width: $medium) {
+    .details_row {
+        .label {
+            font-size: 14px;
+            width: 100px;
+        }
+
+        .value {
+            font-size: 18px;
+        }
+    }
+}

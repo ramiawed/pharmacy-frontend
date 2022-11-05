@@ -117,7 +117,7 @@ function ChooseCompanyModal({ close, chooseAction, url }) {
               action={() => {
                 getCompanies(1);
               }}
-              bgColor={Colors.SECONDARY_COLOR}
+              bgColor={Colors.SUCCEEDED_COLOR}
             />
           </div>
 
@@ -137,13 +137,13 @@ function ChooseCompanyModal({ close, chooseAction, url }) {
           </div>
 
           {data.length < count && (
-            <div className={generalStyles.padding_v_6}>
+            <div className={styles.more_btn_div}>
               <Button
                 text="more"
                 action={() => {
                   getCompanies(page);
                 }}
-                bgColor={Colors.SECONDARY_COLOR}
+                bgColor={Colors.SUCCEEDED_COLOR}
               />
             </div>
           )}
@@ -194,7 +194,7 @@ const Row = ({ data, addAction }) => {
         />
       ) : (
         <Icon
-          icon={() => <GrAddCircle />}
+          icon={() => <GrAddCircle color={Colors.SUCCEEDED_COLOR} />}
           foreColor={Colors.SUCCEEDED_COLOR}
           onclick={addToFavorites}
         />

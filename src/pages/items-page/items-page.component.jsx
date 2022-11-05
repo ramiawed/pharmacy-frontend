@@ -38,6 +38,7 @@ import { Colors } from "../../utils/constants";
 // styles
 import paginationStyles from "../../components/pagination.module.scss";
 import generalStyles from "../../style.module.scss";
+import MedicineRow from "../../components/medicine-row/medicine-row.component";
 
 let timer;
 
@@ -148,15 +149,16 @@ function ItemsPage({ onSelectedChange }) {
 
         {/* display items */}
         {items?.map((item) => (
-          <AdminItemCard
-            key={uuidv4()}
-            item={item}
-            user={user}
-            warehouse={pageState.warehouse}
-            role={pageState.role}
-            deleteItemFromWarehouse={deleteItemFromWarehouse}
-            changeItemMaxQty={changeItemMaxQty}
-          />
+          // <AdminItemCard
+          //   key={uuidv4()}
+          //   item={item}
+          //   user={user}
+          //   warehouse={pageState.warehouse}
+          //   role={pageState.role}
+          //   deleteItemFromWarehouse={deleteItemFromWarehouse}
+          //   changeItemMaxQty={changeItemMaxQty}
+          // />
+          <MedicineRow item={item} />
         ))}
 
         {/* show the pagination option when the items in not empty and the internet connection is well */}

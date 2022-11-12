@@ -31,6 +31,7 @@ function Button({ action, text, bgColor, tooltip, loading, icon }) {
         bgColor === Colors.FAILED_COLOR ? generalStyles.bg_red : "",
         bgColor === Colors.SUCCEEDED_COLOR ? generalStyles.bg_green : "",
         bgColor === Colors.MAIN_COLOR ? generalStyles.bg_main : "",
+        bgColor === Colors.OFFER_COLOR ? generalStyles.bg_offer : "",
         generalStyles.fc_white,
         generalStyles.block,
         generalStyles.padding_v_6,

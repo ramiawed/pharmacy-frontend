@@ -30,7 +30,7 @@ function SelectCustom({
       borderColor: bgColor,
       color: bgColor,
       minHeight: "35px",
-      height: "35px",
+      height: "40px",
       maxHeight: "100px",
       boxShadow: state.isFocused ? null : null,
       borderRadius: "6px",

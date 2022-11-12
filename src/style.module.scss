@@ -91,6 +91,11 @@
   background-color: $grey-color !important;
 }
 
+.bg_offer {
+  background-color: $offer-color !important;
+  color: $main-color !important;
+}
+
 // end coloring
 
 // text align
@@ -355,6 +360,7 @@ span.count {
   width: 100vw;
   min-width: 400px;
   min-height: 100vh;
+  padding: 20px;
   display: flex;
   align-items: center;
   justify-content: center;

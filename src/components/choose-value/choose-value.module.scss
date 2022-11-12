@@ -1,0 +1,39 @@
+@import "../../variables.scss";
+.container {
+    width: 100%;
+    max-height: 200px;
+    overflow: scroll;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+
+    label {
+        display: inline-block;
+        width: 95%;
+        text-align: center;
+        margin: 4px;
+        padding: 4px;
+        border-radius: 6px;
+        cursor: pointer;
+        background-color: rgba($color: $secondary-color, $alpha: 0.5);
+        color: $main-color;
+
+        &:hover {
+            background-color: rgba($color: $secondary-color, $alpha: 0.8);
+        }
+    }
+
+    label.selected {
+        background-color: rgba($color: $green-color, $alpha: 1);
+        color: $white-color;
+    }
+}
+
+@media only screen and (min-width: $small) {
+    .container {
+        label {
+            width: 45%;
+        }
+    }
+}

@@ -347,7 +347,7 @@ function MedicineRow({ item }) {
             color={Colors.SUCCEEDED_COLOR}
           />
           <ItemPrices
-            userType={user.type}
+            showPrice={user.type !== UserTypeConstants.GUEST}
             price={item.price}
             customerPrice={item.customer_price}
           />

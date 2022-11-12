@@ -76,7 +76,11 @@ function ItemOfferRow({ item }) {
                 e.stopPropagation();
               }}
             >
-              {expanded ? <MdExpandLess /> : <MdExpandMore />}
+              {expanded ? (
+                <MdExpandLess size={24} />
+              ) : (
+                <MdExpandMore size={24} />
+              )}
             </label>
             <ItemNames name={item.name} arName={item.nameAr} />
           </label>
@@ -97,7 +101,7 @@ function ItemOfferRow({ item }) {
             color={Colors.SUCCEEDED_COLOR}
           />
           <ItemPrices
-            userType={user.type}
+            showPrice={user.type !== UserTypeConstants.GUEST}
             price={item.price}
             customerPrice={item.customer_price}
           />

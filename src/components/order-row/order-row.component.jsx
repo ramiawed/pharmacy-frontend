@@ -6,6 +6,7 @@ import { useHistory } from "react-router";
 import Icon from "../action-icon/action-icon.component";
 import Modal from "../../modals/modal/modal.component";
 import Toast from "../toast/toast.component";
+import Separator from "../separator/separator.component";
 
 // react-redux
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -131,50 +132,56 @@ function OrderRow({ order, deleteAction, type }) {
       >
         {(user.type === UserTypeConstants.ADMIN ||
           user.type === UserTypeConstants.WAREHOUSE) && (
-          <div
-            className={styles.row}
-            onClick={() => {
-              rowClickHandler(order._id);
-            }}
-          >
-            {order.pharmacyStatus === "received" && (
-              <BsCheckAll size={24} color={Colors.SUCCEEDED_COLOR} />
-            )}
-            {order.pharmacyStatus === "sent" && (
-              <RiSendPlaneFill size={24} color={Colors.SUCCEEDED_COLOR} />
-            )}
-            <label className={styles.name}>{order.pharmacy.name}</label>
-            <label className={styles.address}>
-              {order.pharmacy.addressDetails}
-            </label>
-          </div>
+          <>
+            <div
+              className={styles.row}
+              onClick={() => {
+                rowClickHandler(order._id);
+              }}
+            >
+              {order.pharmacyStatus === "received" && (
+                <BsCheckAll size={24} color={Colors.SUCCEEDED_COLOR} />
+              )}
+              {order.pharmacyStatus === "sent" && (
+                <RiSendPlaneFill size={24} color={Colors.SUCCEEDED_COLOR} />
+              )}
+              <label className={styles.name}>{order.pharmacy.name}</label>
+              <label className={styles.address}>
+                {order.pharmacy.addressDetails}
+              </label>
+            </div>
+            <Separator />
+          </>
         )}
 
         {(user.type === UserTypeConstants.ADMIN ||
           user.type === UserTypeConstants.PHARMACY) && (
-          <div
-            className={styles.row}
-            onClick={() => {
-              rowClickHandler(order._id);
-            }}
-          >
-            {order.warehouseStatus === "unread" && (
-              <RiMailUnreadLine size={24} color={Colors.MAIN_COLOR} />
-            )}
-            {order.warehouseStatus === "received" && (
-              <BsCheckAll size={24} color={Colors.SUCCEEDED_COLOR} />
-            )}
-            {order.warehouseStatus === "sent" && (
-              <MdOutlineLocalShipping
-                size={24}
-                color={Colors.SUCCEEDED_COLOR}
-              />
-            )}
-            {order.warehouseStatus === "dontServe" && (
-              <MdRemoveDone size={24} color={Colors.FAILED_COLOR} />
-            )}
-            <label className={styles.name}>{order.warehouse.name}</label>
-          </div>
+          <>
+            <div
+              className={styles.row}
+              onClick={() => {
+                rowClickHandler(order._id);
+              }}
+            >
+              {order.warehouseStatus === "unread" && (
+                <RiMailUnreadLine size={24} color={Colors.MAIN_COLOR} />
+              )}
+              {order.warehouseStatus === "received" && (
+                <BsCheckAll size={24} color={Colors.SUCCEEDED_COLOR} />
+              )}
+              {order.warehouseStatus === "sent" && (
+                <MdOutlineLocalShipping
+                  size={24}
+                  color={Colors.SUCCEEDED_COLOR}
+                />
+              )}
+              {order.warehouseStatus === "dontServe" && (
+                <MdRemoveDone size={24} color={Colors.FAILED_COLOR} />
+              )}
+              <label className={styles.name}>{order.warehouse.name}</label>
+            </div>
+            <Separator />
+          </>
         )}
 
         <div

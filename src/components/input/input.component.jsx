@@ -18,7 +18,7 @@ function Input({
   onEnterPress,
   resetField,
   readOnly,
-  smallFont,
+  errorMsg,
 }) {
   const { t } = useTranslation();
 
@@ -37,34 +37,42 @@ function Input({
   // };
 
   return (
-    <div
-      className={[styles.input_div, bordered ? styles.bordered : ""].join(" ")}
-    >
-      {icon && icon}
-      {label && <label htmlFor={id}>{t(label)}</label>}
+    <div className={styles.container}>
+      <div
+        className={[styles.input_div, bordered ? styles.bordered : ""].join(
+          " "
+        )}
+      >
+        {icon && icon}
+        {label && <label htmlFor={id}>{t(label)}</label>}
 
-      <input
-        placeholder={placeholder ? t(`${placeholder}`) : ""}
-        id={id}
-        type={type === "password" ? "password" : "text"}
-        value={value}
-        onChange={onchange}
-        onKeyDown={keyDownHandler}
-        onKeyPress={(event) => {
-          if (type === "number") {
-            onKeyPressForNumberInput(event);
-          }
-        }}
-        disabled={readOnly}
-        className={[smallFont ? styles.small_font : "", styles.input].join(" ")}
-      />
-      {resetField && value && (
-        <AiFillCloseCircle
-          onClick={() => resetField(id)}
-          className={styles.icon_close}
+        <input
+          placeholder={placeholder ? t(`${placeholder}`) : ""}
+          id={id}
+          type={type === "password" ? "password" : "text"}
+          value={value}
+          onChange={onchange}
+          onKeyDown={keyDownHandler}
+          onKeyPress={(event) => {
+            if (type === "number") {
+              onKeyPressForNumberInput(event);
+            }
+          }}
+          disabled={readOnly}
+          className={[styles.input].join(" ")}
         />
-      )}
-      {error && <AiOutlineExclamationCircle className={styles.icon_error} />}
+
+        {resetField && value && (
+          <AiFillCloseCircle
+            onClick={() => resetField(id)}
+            className={styles.icon_close}
+          />
+        )}
+        {error && (
+          <AiOutlineExclamationCircle className={styles.icon_error} size={24} />
+        )}
+      </div>
+      {error && <label className={styles.error_label}>{errorMsg}</label>}
     </div>
   );
 }

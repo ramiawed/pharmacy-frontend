@@ -1,0 +1,132 @@
+@import "../../variables.scss";
+
+.container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.stage {
+    position: relative;
+    overflow: hidden;
+    width: 35px;
+    height: 35px;
+    background: $secondary-color;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+
+    label {
+        line-height: 30px;
+        font-size: 16px;
+        font-weight: bold;
+        z-index: 10;
+    }
+}
+
+.stage.active {
+    box-shadow: 0 0 2px 4px rgba($color: $offer-color, $alpha: 0.4);
+}
+
+.stage.done {
+    box-shadow: 0 0 2px 4px rgba($color: $green-color, $alpha: 0.4);
+}
+
+.separator {
+    width: 30px;
+    height: 5px;
+    background-color: $secondary-color;
+    transition: all 0.1s;
+}
+
+.separator.separator_done {
+    background-color: $green-color;
+}
+
+.stage .animation_div {
+    position: absolute;
+    display: flex;
+    flex-direction: row;
+    right: -70px;
+}
+
+.done_div {
+    width: 35px;
+    height: 35px;
+    background-color: $green-color;
+}
+
+.active_div {
+    width: 35px;
+    height: 35px;
+    background-color: $offer-color;
+}
+
+.stage .animation_div.active_slide_left {
+    animation-name: slideLeftActive;
+    animation-duration: 0.1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+}
+
+.stage .animation_div.active_slide_right {
+    animation-name: slideRightActive;
+    animation-duration: 0.1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+}
+
+.stage .animation_div.done_slide_left {
+    animation-name: slideLeftDone;
+    animation-duration: 0.1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+}
+
+.stage .animation_div.done_slide_right {
+    animation-name: slideRightDone;
+    animation-duration: 0.1s;
+    animation-fill-mode: forwards;
+    animation-timing-function: ease-out;
+}
+
+@keyframes slideLeftActive {
+    0% {
+        right: -70px;
+    }
+
+    100% {
+        right: -35px;
+    }
+}
+
+@keyframes slideLeftDone {
+    0% {
+        right: -35px;
+    }
+    100% {
+        right: 0;
+    }
+}
+
+@keyframes slideRightActive {
+    0% {
+        right: -35px;
+    }
+    100% {
+        right: -70px;
+    }
+}
+
+@keyframes slideRightDone {
+    0% {
+        right: 0;
+    }
+    100% {
+        right: -35px;
+    }
+}

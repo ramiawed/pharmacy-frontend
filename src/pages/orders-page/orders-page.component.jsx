@@ -262,12 +262,7 @@ function OrdersPage({ onSelectedChange, type }) {
             withBackground={true}
           />
         </div>
-        <div
-          style={{
-            maxWidth: "600px",
-            margin: "auto",
-          }}
-        >
+        <div>
           {orders.length > 0 && (
             <div className={styles.action_highlight_container}>
               <div className={styles.highlight}>
@@ -343,12 +338,7 @@ function OrdersPage({ onSelectedChange, type }) {
           )}
 
           {orders.length > 0 && (
-            <div
-              style={{
-                maxWidth: "600px",
-                margin: "auto",
-              }}
-            >
+            <div>
               {user.type !== UserTypeConstants.ADMIN && (
                 <div
                   onClick={changeOrdersSelection}

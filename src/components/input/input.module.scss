@@ -1,7 +1,8 @@
 @import "../../variables.scss";
 
 .input_div {
-  min-width: 100%;
+  max-width: 100%;
+  position: relative;
   margin: 4px 0;
   padding: 4px 8px;
   border-radius: 8px;
@@ -13,38 +14,39 @@
 
   label {
     color: $grey-color;
-    width: 75px;
-    font-size: 0.5rem;
+    min-width: 80px;
+    font-size: 12px;
+  }
+
+  .input {
+    margin-inline-start: 8px;
+    margin-right: 8px;
+    padding: 4px 0px;
+    font-size: 16px;
+    outline: none;
+    border: none;
+    color: $main-color;
+    width: 100%;
+
+    &:disabled {
+      background-color: transparent;
+      color: $secondary-color;
+    }
+
+    &::placeholder {
+      font-size: 12px;
+      color: $secondary-color;
+    }
   }
 }
 
-.input_div input {
-  margin-inline-start: 8px;
-  margin-right: 8px;
-  padding: 4px 0px;
-  font-size: 1.1rem;
-  outline: none;
-  border: none;
-  color: $main-color;
-  flex: 1;
-}
-
-.input_div input.small_font {
-  font-size: 0.7rem;
-}
-
-.input_div input:disabled {
-  background-color: transparent;
-  color: $secondary-color;
+.container {
+  display: flex;
+  flex-direction: column;
 }
 
 .bordered {
   border: 1px solid $secondary-color;
-}
-
-.input_div label {
-  font-size: 0.8rem;
-  text-align: left;
 }
 
 .input_div .icon_error {
@@ -57,25 +59,8 @@
   color: $secondary-color;
 }
 
-.input::placeholder {
-  font-size: 0.8rem;
-  color: $secondary-color;
-}
-
-@media only screen and (min-width: $small) {
-  .input_div label {
-    padding: 0 12px;
-    text-align: left;
-    font-size: 0.57rem;
-    width: 85px;
-  }
-}
-
-@media only screen and (min-width: $medium) {
-  .input_div label {
-    padding: 0 12px;
-    text-align: left;
-    font-size: 0.7rem;
-    width: 100px;
-  }
+.error_label {
+  font-size: 12px;
+  color: $third-color;
+  text-align: center;
 }

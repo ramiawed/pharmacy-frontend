@@ -1,107 +1,143 @@
 @import "../../variables.scss";
 
 .container {
-  width: 70%;
-  min-height: 100vh;
+  width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgba($color: $main-color, $alpha: 1);
+  padding: 20px;
+  box-shadow: 0 0 15px 3px rgba($color: $main-color, $alpha: 0.8);
+  border-radius: 12px;
+  background-color: #606ba0;
 
-  padding-block: 40px;
-  padding-bottom: 40px;
-  padding-top: 40px;
+  .header {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+  }
 
-  .signin {
-    position: absolute;
-    top: 0;
-    left: 0;
+  .signup {
     color: $white-color;
+    text-align: center;
+    cursor: pointer;
 
-    .signin_button {
+    .signup_button {
       display: inline-block;
-      margin-inline: 5px;
-      margin-left: 5px;
-      margin-right: 5px;
       color: $third-color;
       font-weight: bold;
       cursor: pointer;
-
-      &:hover {
-        text-decoration: underline;
-      }
     }
   }
 
-  img {
-    display: none;
-    width: 50%;
-    height: auto;
-  }
-
   h3 {
+    flex: 1;
     color: $white-color;
-    font-weight: 600;
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    display: inline-block;
-    letter-spacing: 1px;
+    font-weight: bold;
+    font-size: 24px;
+    text-shadow: 2px 2px 5px#000;
   }
+}
 
-  .radio_div {
-    display: flex;
-    flex-direction: row;
-    padding-right: 10px;
-    z-index: 1;
+.img {
+  width: 75px;
+  height: auto;
+  background: rgba($color: $main-color, $alpha: 1);
+  border-radius: 50%;
+  box-shadow: 0 0 15px 5px rgba($color: $offer-color, $alpha: 1);
+}
+
+.bottom_container {
+  margin-top: 15px;
+  cursor: pointer;
+
+  &:hover {
+    box-shadow: 0 0 20px 5px rgba($color: $main-color, $alpha: 1);
   }
+}
 
-  .radio {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-left: 20px;
-  }
+.outer_container {
+  order: 2;
+  width: 90vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  animation-name: signInContainerAnim;
+  animation-duration: 0.5s;
+  animation-timing-function: ease-out;
+  animation-fill-mode: forwards;
+}
 
-  .radio label {
-    padding: 4px;
+.stage_content_container {
+  width: 100%;
+  min-height: 200px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: row;
+  position: relative;
+}
+
+.final_stage_div {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  justify-content: flex-start;
+  align-items: flex-start;
+
+  button.create_account_btn {
+    width: 100%;
+    height: 80px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    background-color: $offer-color;
     color: $white-color;
-  }
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
+    color: $main-color;
+    flex: 1;
 
-  .error_ul {
-    width: 80%;
-    z-index: 1;
-    color: $third-color;
-    margin: 10px auto;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    flex-wrap: wrap;
-  }
-
-  .error_ul li {
-    min-width: 25%;
-    text-align: center;
-    list-style-type: none;
-    font-size: 0.8rem;
-  }
-
-  span.read_license {
     &:hover {
-      text-decoration: underline;
+      box-shadow: 0 0 3px 3px rgba($color: $offer-color, $alpha: 0.5);
     }
   }
 }
 
-@media (max-width: 768px) {
-  .container {
-    width: 100%;
-    padding: 40px;
-    background: linear-gradient(180deg, hsla(0, 0%, 100%, 1) 0%, $main-color 60%);
-    margin: 50px;
-    border-radius: 15px;
+@media only screen and (min-width: $small) {
+  .outer_container {
+    width: 400px;
+    justify-content: space-around;
+  }
+}
 
-    img {
-      display: inline-block;
-    }
+@media only screen and (min-width: $medium) {
+  .outer_container {
+    width: 400px;
+    order: 1;
+  }
+}
+
+@keyframes signInContainerAnim {
+  0% {
+    opacity: 0;
+    left: -100vw;
+  }
+
+  70% {
+    opacity: 1;
+    left: 0;
+    transform: scale(1);
+  }
+
+  75% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
   }
 }

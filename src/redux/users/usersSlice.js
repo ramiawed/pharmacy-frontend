@@ -30,7 +30,7 @@ const initialState = {
     searchCompanyName: "",
     searchJobTitle: "",
     searchMobile: "",
-    approved: UserApprovedState.ALL,
+    // approved: UserApprovedState.ALL,
     active: UserActiveState.ALL,
     userType: UserTypeConstants.ALL,
     searchJob: GuestJob.NONE,
@@ -111,14 +111,6 @@ export const getUsers = createAsyncThunk(
 
       if (pageState.searchJob !== GuestJob.NONE) {
         buildUrl = buildUrl + `&job=${pageState.searchJob}`;
-      }
-
-      if (pageState.approved === UserApprovedState.APPROVED) {
-        buildUrl = buildUrl + `&isApproved=${true}`;
-      }
-
-      if (pageState.approved === UserApprovedState.NOT_APPROVED) {
-        buildUrl = buildUrl + `&isApproved=${false}`;
       }
 
       if (pageState.showItems.trim() === ShowWarehouseItems.SHOW) {
@@ -357,12 +349,12 @@ export const usersSlice = createSlice({
       };
     },
 
-    setUserApproved: (state, action) => {
-      state.pageState = {
-        ...state.pageState,
-        approved: action.payload,
-      };
-    },
+    // setUserApproved: (state, action) => {
+    //   state.pageState = {
+    //     ...state.pageState,
+    //     approved: action.payload,
+    //   };
+    // },
 
     setUserActive: (state, action) => {
       state.pageState = {
@@ -420,7 +412,7 @@ export const usersSlice = createSlice({
         searchCompanyName: "",
         searchJobTitle: "",
         searchMobile: "",
-        approved: UserApprovedState.ALL,
+        // approved: UserApprovedState.ALL,
         active: UserActiveState.ALL,
         userType: UserTypeConstants.ALL,
         searchJob: GuestJob.NONE,
@@ -450,7 +442,7 @@ export const usersSlice = createSlice({
         searchCompanyName: "",
         searchJobTitle: "",
         searchMobile: "",
-        approved: UserApprovedState.ALL,
+        // approved: UserApprovedState.ALL,
         active: UserActiveState.ALL,
         userType: UserTypeConstants.ALL,
         searchJob: GuestJob.NONE,
@@ -552,7 +544,7 @@ export const {
   setSearchCompanyName,
   setSearchJobTitle,
   setSearchMobile,
-  setUserApproved,
+  // setUserApproved,
   setUserActive,
   setUserType,
   setSearchJob,

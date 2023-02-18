@@ -1,23 +1,35 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { FaSearch } from "react-icons/fa";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
+
+// components
+import SearchPartnerContainer from "../search-partner-container/search-partner-container.component";
+import ChooserContainer from "../chooser-container/chooser-container.component";
+import SearchContainer from "../search-container/search-container.component";
+import CustomCheckbox from "../custom-checkbox/custom-checkbox.component";
+import SearchInput from "../search-input/search-input.component";
+import ChooseValue from "../choose-value/choose-value.component";
+
+// redux stuff
+import { useSelector, useDispatch } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
+  addIdToCompaniesIds,
+  addIdToWarehousesIds,
+  removeIdFromCompaniesId,
+  removeIdFromWarehousesId,
   selectMedicines,
-  setSearchCompanyName,
   setSearchHaveOffer,
   setSearchInWarehouse,
   setSearchName,
   setSearchOutWarehouse,
-  setSearchWarehouseName,
+  setSearchWarehouseCompanyId,
 } from "../../redux/medicines/medicinesSlices";
-import { Colors, UserTypeConstants } from "../../utils/constants";
-import SearchContainer from "../search-container/search-container.component";
-import SearchInput from "../search-input/search-input.component";
-import SearchRowContainer from "../search-row-container/search-row-container.component";
-import SelectCustom from "../select/select.component";
+
+// icons
+import { FaSearch } from "react-icons/fa";
+
+// constants
+import { UserTypeConstants } from "../../utils/constants";
 
 // styles
 import searchContainerStyles from "../../components/search-container/search-container.module.scss";
@@ -28,197 +40,175 @@ const MedicineSearchEngine = ({ handleEnterPress, keyUpHandler, location }) => {
   const { pageState } = useSelector(selectMedicines);
   const { user } = useSelector(selectUserData);
 
-  const companiesOptions = [
-    { value: "", label: t("all-companies") },
-    ...location.state.myCompanies.map((c) => {
-      return { value: c._id, label: c.name };
-    }),
-  ];
+  const [showChooseCompanyModal, setShowChooseCompanyModal] = useState(false);
+
+  const companiesOptions = location.state.myCompanies
+    ? [
+        { value: "", label: t("all-companies") },
+        ...location.state.myCompanies?.map((c) => {
+          return { value: c._id, label: c.name };
+        }),
+      ]
+    : [];
 
   const selectedCompany = companiesOptions.find(
-    (c) => c.label === pageState.searchCompanyName
+    (c) => c.value === pageState.searchWarehouseCompanyId
   );
 
   const changeCompanySelectionHandler = (val) => {
     if (val === "") {
-      dispatch(setSearchCompanyName(""));
+      dispatch(setSearchWarehouseCompanyId(null));
       handleEnterPress();
     } else {
       const selectedCompany = companiesOptions.find((c) => c.value === val);
-      dispatch(setSearchCompanyName(selectedCompany.label));
+      dispatch(setSearchWarehouseCompanyId(selectedCompany.value));
       handleEnterPress();
     }
   };
 
+  const isThereSearch =
+    pageState.searchName.length > 0 ||
+    pageState.searchCompanyName.length > 0 ||
+    pageState.searchWarehouseName.length > 0 ||
+    pageState.searchInWarehouse ||
+    pageState.searchOutWarehouse ||
+    pageState.searchHaveOffer;
+
   return (
-    <SearchContainer searchAction={handleEnterPress}>
-      {/* search by medicine name, barcode */}
-      <SearchInput
-        label="user-name"
-        id="search-name"
-        type="text"
-        value={pageState.searchName}
-        onchange={(e) => {
-          dispatch(setSearchName(e.target.value));
-        }}
-        icon={<FaSearch />}
-        placeholder="search-by-name-composition-barcode"
-        onEnterPress={handleEnterPress}
-        resetField={() => {
-          dispatch(setSearchName(""));
-        }}
-        onkeyup={keyUpHandler}
-      />
+    <>
+      <SearchContainer
+        searchAction={handleEnterPress}
+        searchEngineAlert={isThereSearch}
+      >
+        {/* search by medicine name, barcode */}
+        <SearchInput
+          label="user-name"
+          id="search-name"
+          type="text"
+          value={pageState.searchName}
+          onchange={(e) => {
+            dispatch(setSearchName(e.target.value));
+          }}
+          icon={<FaSearch />}
+          placeholder="search-by-name-composition-barcode"
+          onEnterPress={handleEnterPress}
+          resetField={() => {
+            dispatch(setSearchName(""));
+          }}
+          onkeyup={keyUpHandler}
+        />
 
-      {/* search by company name */}
-      {pageState.searchCompanyId === null &&
-        pageState.searchWarehouseId === null && (
-          <SearchInput
-            label="item-company"
-            id="item-company"
-            type="text"
-            value={pageState.searchCompanyName}
-            onchange={(e) => {
-              dispatch(setSearchCompanyName(e.target.value));
-            }}
-            icon={<FaSearch />}
-            placeholder="search-by-company-name"
-            onEnterPress={handleEnterPress}
-            resetField={() => {
-              dispatch(setSearchCompanyName(""));
-            }}
-            onkeyup={keyUpHandler}
-          />
-        )}
-
-      {/* <SearchPartnerContainer
-        label={t("item-company")}
-        partners={pageState?.searchCompaniesIds}
-        addId={addIdToCompaniesIds}
-        removeId={removeIdFromCompaniesId}
-        partnerType={UserTypeConstants.COMPANY}
-      />*/}
-
-      {/* search by warehouse's companies */}
-      {pageState.searchWarehouseId !== null && (
-        <SearchRowContainer>
-          <label>{t("companies")}</label>
-          <SelectCustom
-            bgColor={Colors.SECONDARY_COLOR}
-            foreColor="#fff"
-            options={companiesOptions}
-            onchange={changeCompanySelectionHandler}
-            defaultOption={
-              selectedCompany
-                ? selectedCompany
-                : {
-                    value: "",
-                    label: t("all-companies"),
-                  }
-            }
-          />
-        </SearchRowContainer>
-      )}
-
-      {pageState.searchWarehouseId === null &&
-        user.type !== UserTypeConstants.GUEST && (
-          <SearchInput
-            label="item-warehouse"
-            id="item-warehouse"
-            type="text"
-            value={pageState.searchWarehouseName}
-            onchange={(e) => {
-              dispatch(setSearchWarehouseName(e.target.value));
-            }}
-            icon={<FaSearch />}
-            placeholder="search-by-warehouse-name"
-            onEnterPress={handleEnterPress}
-            resetField={() => {
-              dispatch(setSearchWarehouseName(""));
-            }}
-            onkeyup={keyUpHandler}
-          />
-        )}
-
-      {/* <SearchPartnerContainer
-        label={t("item-warehouse")}
-        partners={pageState?.searchWarehousesIds}
-        addId={addIdToWarehousesIds}
-        removeId={removeIdFromWarehousesId}
-        partnerType={UserTypeConstants.WAREHOUSE}
-      /> */}
-
-      {user.type !== UserTypeConstants.GUEST && !pageState.searchWarehouseId && (
-        <div className={searchContainerStyles.checkbox_div}>
-          <input
-            id="inWarehouseCkbox"
-            type="checkbox"
-            value={pageState.searchInWarehouse}
-            checked={pageState.searchInWarehouse}
-            onChange={() => {
-              dispatch(setSearchInWarehouse(!pageState.searchInWarehouse));
-              dispatch(setSearchOutWarehouse(false));
-              keyUpHandler();
-            }}
-          />
-          {user.type === UserTypeConstants.WAREHOUSE && (
-            <label htmlFor="inWarehouseCkbox">
-              {t("warehouse-in-warehouse")}
-            </label>
-          )}
-          {user.type !== UserTypeConstants.WAREHOUSE && (
-            <label htmlFor="inWarehouseCkbox">
-              {t("pharmacy-in-warehouse")}
-            </label>
-          )}
-        </div>
-      )}
-
-      {user.type !== UserTypeConstants.GUEST && !pageState.searchWarehouseId && (
-        <div className={searchContainerStyles.checkbox_div}>
-          <input
-            id="outWarehouseCkbox"
-            type="checkbox"
-            value={pageState.searchOutWarehouse}
-            checked={pageState.searchOutWarehouse}
-            onChange={() => {
-              dispatch(setSearchOutWarehouse(!pageState.searchOutWarehouse));
-              dispatch(setSearchInWarehouse(false));
-              keyUpHandler();
-            }}
-          />
-          {user.type === UserTypeConstants.WAREHOUSE && (
-            <label htmlFor="outWarehouseCkbox">
-              {t("warehouse-out-warehouse")}
-            </label>
-          )}
-          {user.type !== UserTypeConstants.WAREHOUSE && (
-            <label htmlFor="outWarehouseCkbox">
-              {t("pharmacy-out-warehouse")}
-            </label>
-          )}
-        </div>
-      )}
-
-      {user.type !== UserTypeConstants.GUEST &&
-        (pageState.searchWarehouseId || pageState.searchCompanyId) && (
-          <div className={searchContainerStyles.checkbox_div}>
-            <input
-              id="medicineHaveOfferCkbox"
-              type="checkbox"
-              value={pageState.searchHaveOffer}
-              checked={pageState.searchHaveOffer}
-              onChange={() => {
-                dispatch(setSearchHaveOffer(!pageState.searchHaveOffer));
-                keyUpHandler();
-              }}
+        {/* search by company name */}
+        {pageState.searchCompanyId === null &&
+          pageState.searchWarehouseId === null && (
+            <SearchPartnerContainer
+              label={t("item-company")}
+              partners={pageState?.searchCompaniesIds}
+              addId={addIdToCompaniesIds}
+              removeId={removeIdFromCompaniesId}
+              partnerType={UserTypeConstants.COMPANY}
+              action={handleEnterPress}
             />
-            <label htmlFor="medicineHaveOfferCkbox">
-              {t("medicies-have-offer-label")}
-            </label>
-          </div>
+          )}
+
+        {/* search by warehouse's companies */}
+        {pageState.searchWarehouseId !== null && (
+          <ChooserContainer
+            onclick={() => setShowChooseCompanyModal(true)}
+            selectedValue={
+              selectedCompany ? selectedCompany.label : t("all-companies")
+            }
+            label="companies"
+            styleForSearch={true}
+            withoutBorder={true}
+          />
         )}
-    </SearchContainer>
+
+        {pageState.searchWarehouseId === null &&
+          user.type !== UserTypeConstants.GUEST &&
+          user.type !== UserTypeConstants.WAREHOUSE &&
+          user.type !== UserTypeConstants.COMPANY && (
+            <SearchPartnerContainer
+              label={t("item-warehouse")}
+              partners={pageState?.searchWarehousesIds}
+              addId={addIdToWarehousesIds}
+              removeId={removeIdFromWarehousesId}
+              partnerType={UserTypeConstants.WAREHOUSE}
+              action={handleEnterPress}
+            />
+          )}
+
+        {user.type !== UserTypeConstants.GUEST &&
+          user.type !== UserTypeConstants.COMPANY &&
+          !pageState.searchWarehouseId && (
+            <div className={searchContainerStyles.checkbox_div}>
+              <CustomCheckbox
+                label={
+                  user.type === UserTypeConstants.WAREHOUSE
+                    ? t("warehouse-in-warehouse")
+                    : t("pharmacy-in-warehouse")
+                }
+                value={pageState.searchInWarehouse}
+                changeHandler={() => {
+                  dispatch(setSearchInWarehouse(!pageState.searchInWarehouse));
+                  dispatch(setSearchOutWarehouse(false));
+                  keyUpHandler();
+                }}
+              />
+            </div>
+          )}
+
+        {user.type !== UserTypeConstants.GUEST &&
+          user.type !== UserTypeConstants.COMPANY &&
+          !pageState.searchWarehouseId && (
+            <div className={searchContainerStyles.checkbox_div}>
+              <CustomCheckbox
+                label={
+                  user.type === UserTypeConstants.WAREHOUSE
+                    ? t("warehouse-out-warehouse")
+                    : t("pharmacy-out-warehouse")
+                }
+                value={pageState.searchOutWarehouse}
+                changeHandler={() => {
+                  dispatch(
+                    setSearchOutWarehouse(!pageState.searchOutWarehouse)
+                  );
+                  dispatch(setSearchInWarehouse(false));
+                  keyUpHandler();
+                }}
+              />
+            </div>
+          )}
+
+        {user.type !== UserTypeConstants.GUEST &&
+          user.type !== UserTypeConstants.COMPANY && (
+            <div className={searchContainerStyles.checkbox_div}>
+              <CustomCheckbox
+                label={t("medicies-have-offer-label")}
+                value={pageState.searchHaveOffer}
+                changeHandler={() => {
+                  dispatch(setSearchHaveOffer(!pageState.searchHaveOffer));
+                  keyUpHandler();
+                }}
+              />
+            </div>
+          )}
+      </SearchContainer>
+
+      {showChooseCompanyModal && (
+        <ChooseValue
+          headerTitle="companies"
+          close={() => {
+            setShowChooseCompanyModal(false);
+          }}
+          values={companiesOptions}
+          defaultValue={selectedCompany ? selectedCompany.value : ""}
+          chooseHandler={(value) => {
+            changeCompanySelectionHandler(value);
+          }}
+        />
+      )}
+    </>
   );
 };
 

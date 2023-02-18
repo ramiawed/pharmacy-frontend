@@ -50,7 +50,7 @@ function Loader({ onclick, allowCancel, msg1, msg2 }) {
             if (onclick) onclick();
           }}
           text={t("cancel-operation-label")}
-          bgColor={Colors.SECONDARY_COLOR}
+          bgColor={Colors.LIGHT_COLOR}
         />
       )}
       {msg1 && <p className={styles.msg}>{t(msg1)}</p>}

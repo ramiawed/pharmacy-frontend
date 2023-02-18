@@ -213,7 +213,7 @@ const CreateAccountStageTwo = ({
 
         {checking ? (
           <div className={generalStyles.flex_container}>
-            <ReactLoading color={Colors.SECONDARY_COLOR} type="cylon" />
+            <ReactLoading color={Colors.LIGHT_COLOR} type="cylon" />
           </div>
         ) : (
           <SignupStagesActions

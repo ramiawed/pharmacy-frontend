@@ -1,0 +1,55 @@
+@import "../../variables.scss";
+
+.listItem {
+    // margin-bottom: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 5px;
+
+    border-bottom: 2px solid $light-grey-color;
+    padding: 5px 0;
+
+    label {
+        display: inline-block;
+        min-width: 150px;
+        color: $main-color;
+        font-size: 14px;
+        text-align: center;
+    }
+
+    .backup_button {
+        background-color: $white-color;
+        padding: 4px 12px;
+        border: 1px solid $green-color;
+        border-radius: 6px;
+        color: $green-color;
+        outline: none;
+        cursor: pointer;
+
+        transition: all 0.3s;
+
+        &:hover {
+            background: $green-color;
+            color: $white-color;
+        }
+    }
+
+    .restore_button {
+        background-color: $white-color;
+        padding: 4px 12px;
+        border: 1px solid $dark-color;
+        border-radius: 6px;
+        color: $dark-color;
+        outline: none;
+        cursor: pointer;
+        transition: all 0.3s;
+        margin-left: 10px;
+        margin-right: 10px;
+
+        &:hover {
+            background: $dark-color;
+            color: $white-color;
+        }
+    }
+}

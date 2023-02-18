@@ -21,14 +21,18 @@ import { RiRefreshLine } from "react-icons/ri";
 import { CgMoreVertical } from "react-icons/cg";
 
 // components
-import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
-import TableHeader from "../../components/table-header/table-header.component";
-import Modal from "../../modals/modal/modal.component";
-import NoContent from "../../components/no-content/no-content.component";
-import Loader from "../../components/action-loader/action-loader.component";
-import Toast from "../../components/toast/toast.component";
-import Icon from "../../components/action-icon/action-icon.component";
 import StatisticsSearchEngine from "../../components/statistics-search-engine/statistics-search-engine.component";
+import MainContentContainer from "../../components/main-content-container/main-content-container.component";
+import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
+import NoMoreResult from "../../components/no-more-result/no-more-result.component";
+import ResultsCount from "../../components/results-count/results-count.component";
+import TableHeader from "../../components/table-header/table-header.component";
+import CylonLoader from "../../components/cylon-loader/cylon-loader.component";
+import NoContent from "../../components/no-content/no-content.component";
+import ActionBar from "../../components/action-bar/action-bar.component";
+import Toast from "../../components/toast/toast.component";
+import Icon from "../../components/icon/icon.component";
+import Modal from "../../modals/modal/modal.component";
 
 // styles
 import rowStyles from "../../components/row.module.scss";
@@ -42,6 +46,7 @@ function StatisticsPage({ onSelectedChange }) {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
+
   const location = useLocation();
   const { title } = location.state ? location.state : { title: null };
 
@@ -49,6 +54,7 @@ function StatisticsPage({ onSelectedChange }) {
   const { statistics, count, pageState, error, status } =
     useSelector(selectStatistics);
   const { user, token } = useSelector(selectUserData);
+
   // own state
   const [showMoreInfo, setShowMoreInfo] = useState(false);
   const [selectedStatistics, setSelectedStatistics] = useState(null);
@@ -86,8 +92,8 @@ function StatisticsPage({ onSelectedChange }) {
     <>
       <StatisticsSearchEngine handleEnterPress={handleEnterPress} />
 
-      <div className={generalStyles.container_with_header}>
-        <div className={[generalStyles.actions].join(" ")}>
+      <MainContentContainer>
+        <ActionBar>
           {/* refresh */}
           <Icon
             withBackground={true}
@@ -109,7 +115,7 @@ function StatisticsPage({ onSelectedChange }) {
             icon={() => <IoMdArrowRoundBack />}
             foreColor={Colors.MAIN_COLOR}
           />
-        </div>
+        </ActionBar>
 
         {title && <p className={styles.title}>{title}</p>}
 
@@ -156,33 +162,25 @@ function StatisticsPage({ onSelectedChange }) {
         )}
 
         {count > 0 && status !== "loading" && (
-          <div className={generalStyles.count}>
-            {statistics.length} / {count}
-          </div>
+          <ResultsCount count={`${statistics.length} / ${count}`} />
         )}
 
-        {statistics.length < count && statistics.length !== 0 && (
-          <div className={generalStyles.flex_container}>
+        {statistics.length < count && status !== "loading" && (
+          <ActionBar>
             <ButtonWithIcon
               text={t("more")}
               action={handleMoreResult}
-              bgColor={Colors.SECONDARY_COLOR}
+              bgColor={Colors.LIGHT_COLOR}
               icon={() => <CgMoreVertical />}
             />
-          </div>
+          </ActionBar>
         )}
 
         {statistics.length === count && status !== "loading" && count !== 0 && (
-          <p
-            className={[generalStyles.center, generalStyles.fc_secondary].join(
-              " "
-            )}
-          >
-            {t("no-more")}
-          </p>
+          <NoMoreResult msg={t("no-more")} />
         )}
 
-        {status === "loading" && <Loader allowCancel={false} />}
+        {status === "loading" && <CylonLoader />}
 
         {error && (
           <Toast
@@ -222,7 +220,7 @@ function StatisticsPage({ onSelectedChange }) {
             </div>
           </Modal>
         )}
-      </div>
+      </MainContentContainer>
     </>
   ) : (
     <Redirect to="/signin" />

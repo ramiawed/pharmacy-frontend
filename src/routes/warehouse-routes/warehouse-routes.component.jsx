@@ -44,9 +44,7 @@ const OrdersPage = lazy(() =>
 const OrderDetailsPage = lazy(() =>
   import("../../pages/order-details-page/order-details-page.component")
 );
-const BasketsOptionsPage = lazy(() =>
-  import("../../pages/baskets-options-page/baskets-options-page.component")
-);
+
 const BasketsPage = lazy(() =>
   import("../../pages/baskets-page/baskets-page.component")
 );
@@ -103,7 +101,7 @@ function WarehouseRoutes({ changeOptionHandler }) {
             />
           </Route>
 
-          <Route exact path="/baskets">
+          {/* <Route exact path="/baskets">
             <BasketsOptionsPage
               onSelectedChange={() => {
                 changeOptionHandler({
@@ -115,25 +113,10 @@ function WarehouseRoutes({ changeOptionHandler }) {
                 });
               }}
             />
-          </Route>
+          </Route> */}
 
-          <Route exact path="/all-baskets">
+          <Route exact path="/baskets">
             <BasketsPage
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: "",
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: SideNavLinks.BASKETS,
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route>
-
-          <Route exact path="/ordered-baskets">
-            <OrdersPage
-              type="basket"
               onSelectedChange={() => {
                 changeOptionHandler({
                   selectedTopNavOption: "",
@@ -153,20 +136,6 @@ function WarehouseRoutes({ changeOptionHandler }) {
                   selectedTopNavOption: "",
                   collapsedSideNavOption: true,
                   selectedSideNavOption: SideNavLinks.BASKETS,
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route>
-
-          <Route exact path="/warehouses">
-            <WarehouseRoutes
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: TopNavLinks.WAREHOUSES,
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: "",
                   showTopNav: false,
                   showSearchBar: false,
                 });

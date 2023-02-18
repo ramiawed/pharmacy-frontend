@@ -1,19 +1,19 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router-dom";
-import { v4 as uuidv4 } from "uuid";
 
 // components
-import ReactPaginate from "react-paginate";
-import Toast from "../../components/toast/toast.component";
-import NoContent from "../../components/no-content/no-content.component";
-import Loader from "../../components/action-loader/action-loader.component";
-import AdminItemCard from "../../components/admin-item-card/admin-item-card.component";
-import ItemsPageActions from "../../components/items-page-actions/items-page-actions.component";
+import MainContentContainer from "../../components/main-content-container/main-content-container.component";
 import ItemsSearchEngine from "../../components/items-search-engine/items-search-engine.component";
+import ItemsPageActions from "../../components/items-page-actions/items-page-actions.component";
+import AdminItemCard from "../../components/admin-item-card/admin-item-card.component";
+import ResultsCount from "../../components/results-count/results-count.component";
+import Loader from "../../components/action-loader/action-loader.component";
+import NoContent from "../../components/no-content/no-content.component";
+import Toast from "../../components/toast/toast.component";
+import ReactPaginate from "react-paginate";
 
 // redux stuff
-import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getItems,
@@ -23,12 +23,9 @@ import {
   setPage,
   resetChangeOfferStatus,
   cancelOperation,
+  clearFilter,
 } from "../../redux/items/itemsSlices";
-import {
-  changeItemWarehouseMaxQty,
-  removeItemFromWarehouse,
-  selectWarehouseItems,
-} from "../../redux/warehouseItems/warehouseItemsSlices";
+
 import { selectToken, selectUser } from "../../redux/auth/authSlice";
 import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 
@@ -37,8 +34,6 @@ import { Colors } from "../../utils/constants";
 
 // styles
 import paginationStyles from "../../components/pagination.module.scss";
-import generalStyles from "../../style.module.scss";
-import MedicineRow from "../../components/medicine-row/medicine-row.component";
 
 let timer;
 
@@ -57,9 +52,11 @@ function ItemsPage({ onSelectedChange }) {
     activeError,
     pageState,
     changeOfferStatus,
+    removeFromWarehouseStatus,
+    updateStatus,
   } = useSelector(selectItems);
-  const { changeOfferStatus: warehouseOfferStatus } =
-    useSelector(selectWarehouseItems);
+  // const { changeOfferStatus: warehouseOfferStatus } =
+  //   useSelector(selectWarehouseItems);
   const token = useSelector(selectToken);
 
   // handle for page change in the paginate component
@@ -78,27 +75,32 @@ function ItemsPage({ onSelectedChange }) {
     handleSearch();
   };
 
+  const clearFilterHandler = () => {
+    dispatch(clearFilter());
+    handleEnterPress();
+  };
+
   // search handler
   const handleSearch = () => {
     dispatch(getItems({ token }));
   };
 
-  const deleteItemFromWarehouse = (obj) => {
-    dispatch(removeItemFromWarehouse({ obj, token }))
-      .then(unwrapResult)
-      .then(() => {
-        handleSearch(pageState.page);
-      })
-      .catch(() => {});
-  };
+  // const deleteItemFromWarehouse = (obj) => {
+  //   dispatch(removeItemFromWarehouse({ obj, token }))
+  //     .then(unwrapResult)
+  //     .then(() => {
+  //       handleSearch(pageState.page);
+  //     })
+  //     .catch(() => {});
+  // };
 
   const changeItemMaxQty = (obj) => {
-    dispatch(changeItemWarehouseMaxQty({ obj, token }))
-      .then(unwrapResult)
-      .then(() => {
-        handleSearch(pageState.page);
-      })
-      .catch(() => {});
+    // dispatch(changeItemWarehouseMaxQty({ obj, token }))
+    //   .then(unwrapResult)
+    //   .then(() => {
+    //     handleEnterPress();
+    //   })
+    //   .catch(() => {});
   };
 
   const keyUpHandler = () => {
@@ -109,8 +111,6 @@ function ItemsPage({ onSelectedChange }) {
     }
 
     timer = setTimeout(() => {
-      // dispatch(resetMedicinesArray());
-
       handleSearch();
     }, 200);
   };
@@ -120,10 +120,12 @@ function ItemsPage({ onSelectedChange }) {
 
     onSelectedChange();
 
+    window.scrollTo(0, 0);
+
     return () => {
       dispatch(resetItems());
     };
-  }, [pageState.sortFields, pageState.warehouse, pageState.role]);
+  }, [pageState.warehouse, pageState.role]);
 
   return user ? (
     <>
@@ -133,32 +135,29 @@ function ItemsPage({ onSelectedChange }) {
         search={handleEnterPress}
         keyUpHandler={keyUpHandler}
       />
-      <div className={generalStyles.container_with_header}>
+      <MainContentContainer>
         <ItemsPageActions
           user={user}
           warehouse={pageState.warehouse}
           company={pageState.company}
           search={handleEnterPress}
+          pageState={pageState}
+          filterAction={clearFilterHandler}
         />
-        {count > 0 && (
-          <div className={generalStyles.count}>
-            <span className={generalStyles.label}>{t("items-count")}</span>
-            <span className={generalStyles.count}>{count}</span>
-          </div>
-        )}
+        {count > 0 && <ResultsCount count={count} label={t("items-count")} />}
 
         {/* display items */}
-        {items?.map((item) => (
-          // <AdminItemCard
-          //   key={uuidv4()}
-          //   item={item}
-          //   user={user}
-          //   warehouse={pageState.warehouse}
-          //   role={pageState.role}
-          //   deleteItemFromWarehouse={deleteItemFromWarehouse}
-          //   changeItemMaxQty={changeItemMaxQty}
-          // />
-          <MedicineRow item={item} />
+        {items?.map((item, index) => (
+          <AdminItemCard
+            key={index}
+            item={item}
+            user={user}
+            warehouse={pageState.warehouse}
+            role={pageState.role}
+            // deleteItemFromWarehouse={deleteItemFromWarehouse}
+            changeItemMaxQty={changeItemMaxQty}
+            index={index}
+          />
         ))}
 
         {/* show the pagination option when the items in not empty and the internet connection is well */}
@@ -178,25 +177,15 @@ function ItemsPage({ onSelectedChange }) {
         )}
 
         {count === 0 && status !== "loading" && (
-          <>
-            <NoContent msg={t("no-medicines")} />
-          </>
+          <NoContent msg={t("no-medicines")} />
         )}
 
         {status === "loading" && <Loader allowCancel={false} />}
 
-        {/* {error && (
-        <Toast
-          bgColor={Colors.FAILED_COLOR}
-          foreColor="#fff"
-          toastText={t(error)}
-          actionAfterTimeout={() => dispatch(resetStatus())}
-        />
-      )} */}
-
         {(activeStatus === "loading" ||
           changeOfferStatus === "loading" ||
-          warehouseOfferStatus === "loading") && <Loader allowCancel={false} />}
+          removeFromWarehouseStatus === "loading" ||
+          updateStatus === "loading") && <Loader allowCancel={false} />}
 
         {activeStatus === "succeeded" && (
           <Toast
@@ -224,7 +213,7 @@ function ItemsPage({ onSelectedChange }) {
             actionAfterTimeout={() => dispatch(resetChangeOfferStatus())}
           />
         )}
-      </div>
+      </MainContentContainer>
     </>
   ) : (
     <Redirect to="/signin" />

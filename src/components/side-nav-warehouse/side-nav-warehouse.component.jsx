@@ -10,22 +10,15 @@ import { SideNavLinks, UserTypeConstants } from "../../utils/constants.js";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/auth/authSlice";
 import { selectSettings } from "../../redux/settings/settingsSlice";
-import {
-  resetPageState,
-  setCompany,
-  setRole,
-  setSearchWarehouseName,
-  setWarehouse,
-} from "../../redux/items/itemsSlices";
-import { selectOrders } from "../../redux/orders/ordersSlice";
+import { resetPageState, setPageState } from "../../redux/items/itemsSlices";
 import { BsBasket2Fill, BsFillEnvelopeFill } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { GiMedicines } from "react-icons/gi";
-import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
 import {
   setSearchCompanyId,
   setSearchWarehouseId,
 } from "../../redux/medicines/medicinesSlices";
+import { orderSliceSignOut } from "../../redux/orders/ordersSlice";
 
 function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
   const { t } = useTranslation();
@@ -46,13 +39,16 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
         onClick={() => {
           onSelectedChange(SideNavLinks.ITEMS);
           dispatch(resetPageState());
-          dispatch(setCompany(null));
-          dispatch(setWarehouse(user));
-          dispatch(setSearchWarehouseName(""));
-          dispatch(setRole(UserTypeConstants.WAREHOUSE));
+          dispatch(
+            setPageState({
+              company: null,
+              warehouse: user,
+              role: UserTypeConstants.WAREHOUSE,
+            })
+          );
+
           dispatch(setSearchWarehouseId(null));
           dispatch(setSearchCompanyId(null));
-          // dispatch(setSelectedWarehouse(null));
         }}
         to={{
           pathname: "/items",
@@ -70,6 +66,34 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
           )}
         </div>
       </Link>
+
+      {saveOrders && (
+        <Link
+          className={[
+            styles.link,
+            selectedOption === SideNavLinks.ORDERS ? `${styles.selected}` : "",
+          ].join(" ")}
+          onClick={() => {
+            onSelectedChange(SideNavLinks.ORDERS);
+            dispatch(orderSliceSignOut());
+            dispatch(setSearchWarehouseId(null));
+            dispatch(setSearchCompanyId(null));
+          }}
+          to="/orders"
+        >
+          <div className={styles.nav}>
+            <div className={styles.nav_icon}>
+              <BsFillEnvelopeFill size={24} />
+              {collapsed && (
+                <label className={styles.tooltip}>{t("nav-orders")}</label>
+              )}
+            </div>
+            {!collapsed && (
+              <div className={styles.nav_label}>{t("nav-orders")} </div>
+            )}
+          </div>
+        </Link>
+      )}
 
       <Link
         className={[
@@ -96,37 +120,6 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
         </div>
       </Link>
 
-      {saveOrders && (
-        <Link
-          className={[
-            styles.link,
-            selectedOption === SideNavLinks.ORDERS ? `${styles.selected}` : "",
-          ].join(" ")}
-          onClick={() => {
-            onSelectedChange(SideNavLinks.ORDERS);
-            dispatch(setSearchWarehouseId(null));
-            dispatch(setSearchCompanyId(null));
-            // dispatch(setSelectedWarehouse(null));
-          }}
-          to="/orders"
-        >
-          <div className={styles.nav}>
-            <div className={styles.nav_icon}>
-              <BsFillEnvelopeFill size={24} />
-              {collapsed && (
-                <label className={styles.tooltip}>{t("nav-orders")}</label>
-              )}
-            </div>
-            {!collapsed && (
-              <div className={styles.nav_label}>{t("nav-orders")} </div>
-            )}
-          </div>
-          {/* {unreadCount > 0 && (
-            <span className={styles.badge}>{unreadCount}</span>
-          )} */}
-        </Link>
-      )}
-
       <Link
         className={[
           styles.link,
@@ -136,7 +129,6 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
           onSelectedChange(SideNavLinks.PROFILE);
           dispatch(setSearchWarehouseId(null));
           dispatch(setSearchCompanyId(null));
-          // dispatch(setSelectedWarehouse(null));
         }}
         to="/profile"
       >

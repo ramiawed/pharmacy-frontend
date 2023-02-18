@@ -3,79 +3,48 @@ import { useTranslation } from "react-i18next";
 import { withRouter } from "react-router";
 import axios from "axios";
 
-// react icons
-import { RiRefreshLine, RiSendPlaneFill } from "react-icons/ri";
-import { BsCheckAll } from "react-icons/bs";
-import { MdOutlineLocalShipping, MdRemoveDone } from "react-icons/md";
-
 // components
+import MainContentContainer from "../../components/main-content-container/main-content-container.component";
+import OrderDetailsActions from "../../components/order-details-actions/order-details-actions.component";
 import Loader from "../../components/action-loader/action-loader.component";
 import NoContent from "../../components/no-content/no-content.component";
-import Icon from "../../components/action-icon/action-icon.component";
 import Header from "../../components/header/header.component";
-import CartItemCard from "../../components/cart-item-card/cart-item-card.component";
-import CardInfo from "../../components/card-info/card-info.component";
-import { ExportCSV } from "../../components/export-csv/export-csv.component";
+import Toast from "../../components/toast/toast.component";
 
 // redux stuff
-import { useDispatch, useSelector } from "react-redux";
+import { unwrapResult } from "@reduxjs/toolkit";
+import { useSelector, useDispatch } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
-import { selectOrders, updateOrders } from "../../redux/orders/ordersSlice";
-
-// styles
-import generalStyles from "../../style.module.scss";
-import styles from "./order-details-page.module.scss";
+import { selectOrders, updateOrder } from "../../redux/orders/ordersSlice";
 
 // constants
 import {
   BASEURL,
   Colors,
+  formatNumber,
   OfferTypes,
-  UserTypeConstants,
+  OrdersStatusOptions,
 } from "../../utils/constants";
+
+import styles from "./order-details-page.module.scss";
+import ItemNames from "../../components/item-names/item-names.component";
 
 function OrderDetailsPage({ location, onSelectedChange }) {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
 
   const orderId = location?.search.slice(1);
 
-  const dispatch = useDispatch();
-
   // selectors
-  const { token, user } = useSelector(selectUserData);
+  const { token } = useSelector(selectUserData);
   const { status } = useSelector(selectOrders);
 
   // own states
   const [orderDetails, setOrderDetails] = useState(null);
   const [loading, setLoading] = useState(true);
   const [emptyMsg, setEmptyMsg] = useState("");
-
-  const markOrdersAs = (verb) => {
-    const ids = [orderId];
-
-    if (ids.length > 0) {
-      let body = {};
-      if (user.type === UserTypeConstants.PHARMACY) {
-        body = {
-          pharmacyStatus: verb,
-        };
-      }
-      if (user.type === UserTypeConstants.WAREHOUSE) {
-        body = {
-          warehouseStatus: verb,
-        };
-      }
-      dispatch(
-        updateOrders({
-          obj: {
-            ids,
-            body,
-          },
-          token,
-        })
-      );
-    }
-  };
+  const [changeStatusSuccessMsg, setChangeStatusSuccessMsg] = useState("");
+  const [changeStatusFailedMsg, setChangeStatusFailedMsg] = useState("");
 
   const getOrderDetails = async () => {
     setEmptyMsg("");
@@ -100,6 +69,11 @@ function OrderDetailsPage({ location, onSelectedChange }) {
     setLoading(false);
   };
 
+  const refreshHandler = () => {
+    setOrderDetails(null);
+    getOrderDetails();
+  };
+
   const computeTotalPrice = () => {
     let total = 0;
 
@@ -115,10 +89,106 @@ function OrderDetailsPage({ location, onSelectedChange }) {
     return total;
   };
 
+  const warehouseDontServeHanlder = () => {
+    dispatch(
+      updateOrder({
+        obj: {
+          status: OrdersStatusOptions.WILL_DONT_SERVER,
+          couldNotDeliverDate: Date.now(),
+        },
+        id: orderId,
+        token,
+      })
+    )
+      .then(unwrapResult)
+      .then(() => {
+        setChangeStatusSuccessMsg("change-order-status-success");
+        refreshHandler();
+      })
+      .catch(() => {
+        setChangeStatusFailedMsg("change-order-status-failed");
+      });
+  };
+
+  const confirmOrderHanlder = (date) => {
+    const confirmDate = date ? new Date(date) : new Date();
+
+    dispatch(
+      updateOrder({
+        obj: {
+          status: OrdersStatusOptions.CONFIRM,
+          confirmDate: confirmDate,
+        },
+        id: orderId,
+        token,
+      })
+    )
+      .then(unwrapResult)
+      .then(() => {
+        setChangeStatusSuccessMsg("change-order-status-success");
+        refreshHandler();
+      })
+      .catch(() => {
+        setChangeStatusFailedMsg("change-order-status-failed");
+      });
+  };
+
+  const devlierHandler = (date, time) => {
+    const deliverDate = date ? new Date(date) : new Date();
+    const deliverTime = time ? time : "";
+
+    dispatch(
+      updateOrder({
+        obj: {
+          status: OrdersStatusOptions.DELIVERY,
+          deliverDate,
+          deliverTime,
+        },
+        id: orderId,
+        token,
+      })
+    )
+      .then(unwrapResult)
+      .then(() => {
+        setChangeStatusSuccessMsg("change-order-status-success");
+        refreshHandler();
+      })
+      .catch(() => {
+        setChangeStatusFailedMsg("change-order-status-failed");
+      });
+  };
+
+  const shippedHandler = (date, time) => {
+    const shippedDate = date ? new Date(date) : null;
+    const shippedTime = time ? time : "";
+
+    dispatch(
+      updateOrder({
+        obj: {
+          status: OrdersStatusOptions.SHIPPING,
+          shippedDate,
+          shippedTime,
+        },
+        id: orderId,
+        token,
+      })
+    )
+      .then(unwrapResult)
+      .then(() => {
+        setChangeStatusSuccessMsg("change-order-status-success");
+        refreshHandler();
+      })
+      .catch(() => {
+        setChangeStatusFailedMsg("change-order-status-failed");
+      });
+  };
+
   useEffect(() => {
     getOrderDetails();
 
     onSelectedChange();
+
+    window.scrollTo(0, 0);
   }, []);
 
   return (
@@ -127,172 +197,152 @@ function OrderDetailsPage({ location, onSelectedChange }) {
         <Loader allowCancel={false} />
       ) : (
         <>
-          <Header>
-            <h2>{t("order-details")}</h2>
-            <div className={generalStyles.refresh_icon}>
-              <Icon
-                icon={() => <RiRefreshLine color={Colors.WHITE_COLOR} />}
-                foreColor={Colors.SECONDARY_COLOR}
-                tooltip={t("refresh-tooltip")}
-                onclick={getOrderDetails}
-              />
-            </div>
-          </Header>
-          <div className={generalStyles.container_with_header}>
-            {orderDetails ? (
-              <>
-                <div className={styles.container}>
-                  <CardInfo headerTitle={t("order-details")}>
-                    <div className={styles.basic_details_container}>
-                      <div className={styles.row}>
-                        <label className={styles.label}>
-                          {t("pharmacy-name")}:
-                        </label>
-                        <label className={styles.name}>
-                          {orderDetails.pharmacy.name}
-                        </label>
-                      </div>
+          {orderDetails ? (
+            <>
+              <Header title="order-details" refreshHandler={refreshHandler} />
 
-                      <div className={styles.row}>
-                        <label className={styles.label}>
-                          {t("user-certificate-name")}:
-                        </label>
-                        <label className={styles.name}>
-                          {orderDetails.pharmacy.certificateName}
-                        </label>
-                      </div>
+              {orderDetails && (
+                <OrderDetailsActions
+                  orderDetails={orderDetails}
+                  computeTotalPrice={computeTotalPrice}
+                  warehouseDontServeHanlder={warehouseDontServeHanlder}
+                  devlierHandler={devlierHandler}
+                  confirmOrderHanlder={confirmOrderHanlder}
+                  shippedHandler={shippedHandler}
+                  withSaveOption={true}
+                />
+              )}
+              <p
+                style={{
+                  textAlign: "center",
+                  color: Colors.SUCCEEDED_COLOR,
+                  textDecoration: "underline",
+                }}
+              >
+                <label>{t(orderDetails.status)}</label>
+                {orderDetails.status ===
+                  OrdersStatusOptions.WILL_DONT_SERVER && (
+                  <label>
+                    {orderDetails.couldNotDeliverDate.split("T")[0]}
+                  </label>
+                )}
+                {orderDetails.status === OrdersStatusOptions.CONFIRM && (
+                  <label>{orderDetails.confirmDate.split("T")[0]}</label>
+                )}
+                {orderDetails.status === OrdersStatusOptions.DELIVERY && (
+                  <label>
+                    {orderDetails.deliverDate?.split("T")[0]}{" "}
+                    {orderDetails.deliverTime
+                      ? `---${t("time-label")}: ${orderDetails.deliverTime}`
+                      : ""}
+                  </label>
+                )}
+                {orderDetails.status === OrdersStatusOptions.SHIPPING && (
+                  <label>
+                    {orderDetails.shippedDate
+                      ? orderDetails.shippedDate.split("T")[0]
+                      : t("shipped-done")}
+                    {orderDetails.shippedTime
+                      ? `---${t("time-label")}: ${orderDetails.shippedTime}`
+                      : ""}
+                  </label>
+                )}
+              </p>
 
-                      <div className={styles.row}>
-                        <label className={styles.label}>
-                          {t("user-address-details")}:
-                        </label>
-                        <label className={styles.name}>
-                          {orderDetails.pharmacy.addressDetails}
-                        </label>
+              {/* <OrderDetailsTableHeader /> */}
+              <MainContentContainer>
+                {orderDetails ? (
+                  <div className={styles.table}>
+                    <div className={[styles.row, styles.header].join(" ")}>
+                      <div
+                        className={[styles.cell, styles.names_container].join(
+                          " "
+                        )}
+                      >
+                        {t("item-name")}
                       </div>
-
-                      <div className={styles.row}>
-                        <label className={styles.label}>
-                          {t("user-mobile")}:
-                        </label>
-                        <label className={styles.name}>
-                          {orderDetails.pharmacy.mobile}
-                        </label>
+                      <div className={[styles.cell].join(" ")}>
+                        {t("quantity-label")}
                       </div>
-
-                      <div className={styles.row}>
-                        <label className={styles.label}>
-                          {t("warehouse-name")}:
-                        </label>
-                        <label className={styles.name}>
-                          {orderDetails.warehouse.name}
-                        </label>
+                      <div className={[styles.cell].join(" ")}>
+                        {t("offer-label")}
                       </div>
-
-                      <div className={styles.row}>
-                        <label className={styles.label}>
-                          {t("date-label")}:
-                        </label>
-                        <label className={styles.name}>
-                          {new Date(
-                            orderDetails.createdAt
-                          ).toLocaleDateString()}
-                        </label>
+                      <div className={[styles.cell].join(" ")}>
+                        {t("price")}
                       </div>
-                      <div className={styles.row}>
-                        <label className={styles.label}>
-                          {t("total-invoice-price")}:
-                        </label>
-                        <label className={styles.name}>
-                          {computeTotalPrice()}
-                        </label>
+                      <div className={[styles.cell].join(" ")}>
+                        {t("total-price-small")}
                       </div>
                     </div>
 
-                    <div className={styles.actions_div}>
-                      {user.type === UserTypeConstants.PHARMACY && (
-                        <Icon
-                          selected={false}
-                          foreColor={Colors.SUCCEEDED_COLOR}
-                          tooltip={t("mark-as-received")}
-                          icon={() => <BsCheckAll />}
-                          onclick={() => markOrdersAs("received")}
-                          withBackground={true}
-                        />
-                      )}
-
-                      {user.type === UserTypeConstants.PHARMACY && (
-                        <Icon
-                          selected={false}
-                          foreColor={Colors.SUCCEEDED_COLOR}
-                          tooltip={t("mark-as-sent")}
-                          icon={() => <RiSendPlaneFill />}
-                          onclick={() => markOrdersAs("sent")}
-                          withBackground={true}
-                        />
-                      )}
-
-                      {user.type === UserTypeConstants.WAREHOUSE && (
-                        <>
-                          <Icon
-                            selected={false}
-                            foreColor={Colors.SUCCEEDED_COLOR}
-                            tooltip={t("mark-as-shipped")}
-                            icon={() => <MdOutlineLocalShipping />}
-                            onclick={() => markOrdersAs("sent")}
-                            withBackground={true}
-                          />
-
-                          <Icon
-                            selected={false}
-                            foreColor={Colors.SUCCEEDED_COLOR}
-                            tooltip={t("mark-as-received")}
-                            icon={() => <BsCheckAll />}
-                            onclick={() => markOrdersAs("received")}
-                            withBackground={true}
-                          />
-
-                          <Icon
-                            selected={false}
-                            foreColor={Colors.FAILED_COLOR}
-                            tooltip={t("mark-as-will-dont-server")}
-                            icon={() => <MdRemoveDone />}
-                            onclick={() => markOrdersAs("dontServe")}
-                            withBackground={true}
-                          />
-                        </>
-                      )}
-
-                      <ExportCSV
-                        csvData={orderDetails.items}
-                        fileName={
-                          orderDetails.pharmacy.name +
-                          "_" +
-                          orderDetails.warehouse.name +
-                          "_" +
-                          new Date(orderDetails.createdAt).toLocaleDateString()
-                        }
-                      />
-                    </div>
-                  </CardInfo>
-                </div>
-
-                {orderDetails.items.map((item, index) => (
-                  <CartItemCard
-                    key={index}
-                    cartItem={item}
-                    withoutMaxQty="without"
-                    inOrderDetails={true}
-                  />
-                ))}
-              </>
-            ) : (
-              <NoContent msg={t(emptyMsg)} />
-            )}
-          </div>
+                    {orderDetails.items.map((item, index) => (
+                      <div
+                        className={[styles.row, styles.body].join(" ")}
+                        key={index}
+                      >
+                        <div
+                          className={[styles.cell, styles.names_container].join(
+                            " "
+                          )}
+                        >
+                          <div className={styles.item_names_cell}>
+                            <ItemNames
+                              flexDirection="column"
+                              item={item.item}
+                            />
+                          </div>
+                        </div>
+                        <div className={[styles.cell].join(" ")}>
+                          {formatNumber(item.qty)}
+                        </div>
+                        <div className={[styles.cell].join(" ")}>
+                          {formatNumber(item.bonus)}
+                        </div>
+                        <div className={[styles.cell].join(" ")}>
+                          {formatNumber(item.item.price)}
+                        </div>
+                        <div className={[styles.cell].join(" ")}>
+                          {formatNumber(
+                            item.qty * item.item.price -
+                              (item.bonus &&
+                              item.bonusType === OfferTypes.PERCENTAGE
+                                ? (item.qty * item.item.price * item.bonus) /
+                                  100
+                                : 0)
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <NoContent msg={t(emptyMsg)} />
+                )}
+              </MainContentContainer>
+            </>
+          ) : (
+            <></>
+          )}
         </>
       )}
       {status === "loading" && <Loader allowCancel={false} />}
+
+      {changeStatusSuccessMsg && (
+        <Toast
+          bgColor={Colors.SUCCEEDED_COLOR}
+          foreColor="#fff"
+          toastText={t(changeStatusSuccessMsg)}
+          actionAfterTimeout={() => setChangeStatusSuccessMsg("")}
+        />
+      )}
+
+      {changeStatusFailedMsg && (
+        <Toast
+          bgColor={Colors.FAILED_COLOR}
+          foreColor="#fff"
+          toastText={t(changeStatusFailedMsg)}
+          actionAfterTimeout={() => setChangeStatusFailedMsg("")}
+        />
+      )}
     </>
   );
 }

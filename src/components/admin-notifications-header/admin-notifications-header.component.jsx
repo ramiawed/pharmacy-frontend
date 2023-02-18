@@ -1,25 +1,25 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-// icons
-import { MdAddCircle } from "react-icons/md";
-import { RiRefreshLine } from "react-icons/ri";
-
-// components
-import Header from "../header/header.component";
-import Icon from "../action-icon/action-icon.component";
-
-// styles
-import generalStyles from "../../style.module.scss";
-
-// constants
-import { Colors } from "../../utils/constants";
+// redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllNotifications,
   resetNotifications,
 } from "../../redux/notifications/notificationsSlice";
 import { selectToken } from "../../redux/auth/authSlice";
+
+// icons
+import { MdAddCircle } from "react-icons/md";
+import { RiRefreshLine } from "react-icons/ri";
+
+// components
+import ActionBar from "../action-bar/action-bar.component";
+import Icon from "../icon/icon.component";
+import Header from "../header/header.component";
+
+// constants
+import { Colors } from "../../utils/constants";
 
 function AdminNotificationsHeader({ isNew, setIsNew }) {
   const { t } = useTranslation();
@@ -34,12 +34,8 @@ function AdminNotificationsHeader({ isNew, setIsNew }) {
 
   return (
     <>
-      <Header>
-        <h2>{t("nav-notifications")}</h2>
-      </Header>
-      <div
-        className={[generalStyles.actions, generalStyles.margin_v_4].join(" ")}
-      >
+      <Header title="nav-notifications" />
+      <ActionBar>
         {!isNew && (
           <>
             <Icon
@@ -65,7 +61,7 @@ function AdminNotificationsHeader({ isNew, setIsNew }) {
             />
           </>
         )}
-      </div>
+      </ActionBar>
     </>
   );
 }

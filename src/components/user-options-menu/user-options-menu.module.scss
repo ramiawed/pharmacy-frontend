@@ -1,0 +1,41 @@
+@import "../../variables.scss";
+
+.menu {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: $light-grey-color;
+    border-radius: 6px;
+    box-shadow: 0 0 5px 3px rgba($color: #000000, $alpha: 0.2);
+    position: absolute;
+    left: 10px;
+    z-index: 5;
+    overflow: hidden;
+}
+
+.fromTop {
+    top: 10px;
+}
+
+.fromBottom {
+    bottom: 10px;
+}
+
+.option {
+    color: $main-color;
+    border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1);
+    font-size: 12px;
+    text-align: center;
+    padding: 4px 10px;
+    cursor: pointer;
+}
+
+.option:hover {
+    text-decoration: underline;
+    background-color: $dark-color;
+    color: $white-color;
+}
+
+.option:last-child {
+    border-bottom: none;
+}

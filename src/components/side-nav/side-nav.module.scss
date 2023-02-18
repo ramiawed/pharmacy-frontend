@@ -4,6 +4,7 @@
   position: fixed;
   top: 60px;
   bottom: 0;
+  right: 0 !important;
   transition: width 0.5s;
   display: flex;
   flex-direction: column;
@@ -37,7 +38,7 @@
 
 .profile_img p {
   font-size: 14px;
-  color: #e3e3e3;
+  color: $light-grey-color;
   margin-block: 4px;
   margin-top: 4px;
   margin-bottom: 4px;
@@ -46,14 +47,13 @@
 .collapsed {
   width: 35px;
   background: $main-color;
-  box-shadow: -6px 0 6px rgba(0, 0, 0, 0.3);
   overflow: initial;
 }
 
 .showed {
   width: 100%;
   background: $main-color;
-  box-shadow: -6px 0 6px rgba(0, 0, 0, 0.3);
+  box-shadow: -3px 0 3px rgba(0, 0, 0, 0.3);
   overflow: scroll;
   z-index: 13;
 }

@@ -2,19 +2,19 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 // components
+import SearchPartnerContainer from "../search-partner-container/search-partner-container.component";
 import SearchContainer from "../search-container/search-container.component";
+import CustomCheckbox from "../custom-checkbox/custom-checkbox.component";
 import SearchInput from "../search-input/search-input.component";
 
 // redux stuff
 import { useDispatch } from "react-redux";
 import {
-  setSearchName,
-  setSearchCompanyName,
-  setSearchDeletedItems,
-  setSearchActiveItems,
-  setSearchInWarehouse,
-  setSearchOutWarehouse,
-  setSearchWarehouseName,
+  addIdToCompaniesIds,
+  removeIdFromCompaniesId,
+  addIdToWarehousesIds,
+  removeIdFromWarehousesId,
+  setPageState,
 } from "../../redux/items/itemsSlices";
 
 // icons
@@ -29,123 +29,126 @@ function ItemsSearchEngine({ user, pageState, search, keyUpHandler }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
-  return (
-    <>
-      <SearchContainer searchAction={search}>
-        <SearchInput
-          label="item-name"
-          id="item-name"
-          type="text"
-          value={pageState.searchName}
-          onchange={(e) => dispatch(setSearchName(e.target.value))}
-          placeholder="search-by-name-composition-barcode"
-          onEnterPress={search}
-          resetField={() => {
-            dispatch(setSearchName(""));
-          }}
-          onkeyup={keyUpHandler}
-        />
+  const isThereSearch =
+    pageState.searchName.trim().length > 0 ||
+    pageState.searchCompaniesIds.length > 0 ||
+    pageState.searchWarehousesIds.length > 0 ||
+    pageState.searchDeletedItems ||
+    pageState.searchActiveItems ||
+    pageState.searchInWarehouse ||
+    pageState.searchOutWarehouse;
 
-        {(user.type === UserTypeConstants.WAREHOUSE ||
-          (user.type === UserTypeConstants.ADMIN &&
-            pageState.role !== UserTypeConstants.COMPANY)) && (
-          <SearchInput
-            label="item-company"
-            id="item-company"
-            type="text"
-            value={pageState.searchCompanyName}
-            onchange={(e) => dispatch(setSearchCompanyName(e.target.value))}
-            placeholder="search-by-company-name"
-            onEnterPress={search}
-            resetField={() => {
-              dispatch(setSearchCompanyName(""));
-            }}
-            onkeyup={keyUpHandler}
+  return (
+    <SearchContainer searchAction={search} searchEngineAlert={isThereSearch}>
+      <SearchInput
+        label="item-name"
+        id="item-name"
+        type="text"
+        value={pageState.searchName}
+        onchange={(e) => dispatch(setPageState({ searchName: e.target.value }))}
+        placeholder="search-by-name-composition-barcode"
+        onEnterPress={search}
+        resetField={() => {
+          dispatch(setPageState({ searchName: "" }));
+        }}
+        onkeyup={keyUpHandler}
+      />
+
+      {(user.type === UserTypeConstants.WAREHOUSE ||
+        (user.type === UserTypeConstants.ADMIN &&
+          pageState.role !== UserTypeConstants.COMPANY)) && (
+        <SearchPartnerContainer
+          label={t("item-company")}
+          partners={pageState?.searchCompaniesIds}
+          addId={addIdToCompaniesIds}
+          removeId={removeIdFromCompaniesId}
+          partnerType={UserTypeConstants.COMPANY}
+          action={search}
+        />
+      )}
+
+      {user.type === UserTypeConstants.ADMIN &&
+        pageState.role !== UserTypeConstants.WAREHOUSE && (
+          <SearchPartnerContainer
+            label={t("item-warehouse")}
+            partners={pageState?.searchWarehousesIds}
+            addId={addIdToWarehousesIds}
+            removeId={removeIdFromWarehousesId}
+            partnerType={UserTypeConstants.WAREHOUSE}
+            action={search}
           />
         )}
 
-        {user.type === UserTypeConstants.ADMIN &&
-          pageState.role !== UserTypeConstants.WAREHOUSE && (
-            <SearchInput
-              label="item-warehouse"
-              id="item-warehouse"
-              type="text"
-              value={pageState.searchWarehouseName}
-              onchange={(e) => dispatch(setSearchWarehouseName(e.target.value))}
-              placeholder="search-by-warehouse-name"
-              onEnterPress={search}
-              resetField={() => {
-                dispatch(setSearchWarehouseName(""));
-              }}
-              onkeyup={keyUpHandler}
-            />
-          )}
+      <div className={searchContainerStyles.checkbox_div}>
+        <CustomCheckbox
+          label={t("deleted-items")}
+          value={pageState.searchDeletedItems}
+          changeHandler={() => {
+            dispatch(
+              setPageState({
+                searchDeletedItems: !pageState.searchDeletedItems,
+                searchActiveItems: false,
+              })
+            );
+            keyUpHandler();
+          }}
+        />
+      </div>
 
-        <div className={searchContainerStyles.checkbox_div}>
-          <input
-            id="deletedItems"
-            type="checkbox"
-            checked={pageState.searchDeletedItems}
-            onChange={() => {
-              dispatch(setSearchDeletedItems(!pageState.searchDeletedItems));
-              dispatch(setSearchActiveItems(false));
-              keyUpHandler();
-            }}
-          />
-          <label htmlFor="deletedItems">{t("deleted-items")}</label>
-        </div>
+      <div className={searchContainerStyles.checkbox_div}>
+        <CustomCheckbox
+          label={t("active-items")}
+          value={pageState.searchActiveItems}
+          changeHandler={() => {
+            dispatch(
+              setPageState({
+                searchDeletedItems: false,
+                searchActiveItems: !pageState.searchActiveItems,
+              })
+            );
+            keyUpHandler();
+          }}
+        />
+      </div>
 
-        <div className={searchContainerStyles.checkbox_div}>
-          <input
-            id="activeItems"
-            type="checkbox"
-            checked={pageState.searchActiveItems}
-            onChange={() => {
-              dispatch(setSearchDeletedItems(false));
-              dispatch(setSearchActiveItems(!pageState.searchActiveItems));
-              keyUpHandler();
-            }}
-          />
-          <label htmlFor="activeItems">{t("active-items")}</label>
-        </div>
-
-        {user.type === UserTypeConstants.ADMIN && (
+      {user.type === UserTypeConstants.ADMIN &&
+        !pageState.company &&
+        !pageState.warehouse && (
           <>
             <div className={searchContainerStyles.checkbox_div}>
-              <input
-                id="inWarehouse"
-                type="checkbox"
-                checked={pageState.searchInWarehouse}
-                onChange={() => {
-                  dispatch(setSearchInWarehouse(!pageState.searchInWarehouse));
-                  dispatch(setSearchOutWarehouse(false));
-                  keyUpHandler();
-                }}
-              />
-              <label htmlFor="inWarehouse">{t("warehouse-in-warehouse")}</label>
-            </div>
-
-            <div className={searchContainerStyles.checkbox_div}>
-              <input
-                id="outWarehouse"
-                type="checkbox"
-                checked={pageState.searchOutWarehouse}
-                onChange={() => {
-                  dispatch(setSearchInWarehouse(false));
+              <CustomCheckbox
+                label={t("warehouse-in-warehouse")}
+                value={pageState.searchInWarehouse}
+                changeHandler={() => {
                   dispatch(
-                    setSearchOutWarehouse(!pageState.searchOutWarehouse)
+                    setPageState({
+                      searchOutWarehouse: false,
+                      searchInWarehouse: !pageState.searchInWarehouse,
+                    })
                   );
                   keyUpHandler();
                 }}
               />
-              <label htmlFor="outWarehouse">
-                {t("warehouse-out-warehouse")}
-              </label>
+            </div>
+
+            <div className={searchContainerStyles.checkbox_div}>
+              <CustomCheckbox
+                label={t("warehouse-out-warehouse")}
+                value={pageState.searchOutWarehouse}
+                changeHandler={() => {
+                  dispatch(
+                    setPageState({
+                      searchInWarehouse: false,
+                      searchOutWarehouse: !pageState.searchOutWarehouse,
+                    })
+                  );
+                  keyUpHandler();
+                }}
+              />
             </div>
           </>
         )}
-      </SearchContainer>
-    </>
+    </SearchContainer>
   );
 }
 

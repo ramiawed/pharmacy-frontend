@@ -1,42 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 // components
-import SearchContainer from "../search-container/search-container.component";
-import SearchInput from "../search-input/search-input.component";
 import SearchRowContainer from "../search-row-container/search-row-container.component";
-import SelectSearch from "../select-search/select-search.component";
+import ChooserContainer from "../chooser-container/chooser-container.component";
+import SearchContainer from "../search-container/search-container.component";
+import ChooseValue from "../choose-value/choose-value.component";
+import SearchInput from "../search-input/search-input.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/auth/authSlice";
 import {
-  setAdminOrderStatus,
   setDateOption,
-  setPharmacyOrderStatus,
+  setOrderStatus,
   setSearchDate,
   setSearchPharmacyName,
   setSearchWarehouseName,
-  setWarehouseOrderStatus,
 } from "../../redux/orders/ordersSlice";
-
-import {
-  setAdminOrderStatus as basketSetAdminOrderStatus,
-  setDateOption as basketSetDateOption,
-  setPharmacyOrderStatus as basketSetPharmacyOrderStatus,
-  setSearchDate as basketSetSearchDate,
-  setSearchPharmacyName as basketSetSearchPharmacyName,
-  setSearchWarehouseName as basketSetSearchWarehouseName,
-  setWarehouseOrderStatus as basketSetWarehouseOrderStatus,
-} from "../../redux/basketOrdersSlice/basketOrdersSlice";
 
 // constants and utils
 import {
-  AdminOrderStatus,
   DateOptions,
-  PharmacyOrderStatus,
+  OrdersStatusOptions,
   UserTypeConstants,
-  WarehouseOrderStatus,
 } from "../../utils/constants";
 
 function OrdersSearchEngine({ pageState, search, type }) {
@@ -45,6 +32,8 @@ function OrdersSearchEngine({ pageState, search, type }) {
 
   // selectors
   const user = useSelector(selectUser);
+  const [showChooseOrderStatus, setShowChooseOrderStatus] = useState(false);
+  const [showChooseDatesOption, setShowChooseDatesOption] = useState(false);
 
   const dateOptions = [
     { value: "", label: t("choose-date") },
@@ -59,112 +48,60 @@ function OrdersSearchEngine({ pageState, search, type }) {
   ];
 
   const handleDateOptions = (val) => {
-    dispatch(type === "order" ? setDateOption(val) : basketSetDateOption(val));
+    dispatch(setDateOption(val));
   };
 
-  const warehouseOrderStatusOptions = [
+  const orderStatusOptions = [
     {
-      value: WarehouseOrderStatus.ALL,
+      value: OrdersStatusOptions.ALL,
       label: t("all"),
     },
     {
-      value: WarehouseOrderStatus.UNREAD,
-      label: t("unread"),
+      value: OrdersStatusOptions.SENT_BY_PHARMACY,
+      label: t("sent-by-pharmacy-label"),
     },
     {
-      value: WarehouseOrderStatus.RECEIVED,
-      label: t("received"),
+      value: OrdersStatusOptions.CONFIRM,
+      label: t("confirm-label"),
     },
     {
-      value: WarehouseOrderStatus.SENT,
-      label: t("shipped"),
+      value: OrdersStatusOptions.DELIVERY,
+      label: t("delivery-label"),
     },
     {
-      value: WarehouseOrderStatus.WILL_DONT_SERVER,
-      label: t("will-dont-serve"),
+      value: OrdersStatusOptions.SHIPPING,
+      label: t("shipping-label"),
+    },
+    {
+      value: OrdersStatusOptions.WILL_DONT_SERVER,
+      label: t("dont-serve-label"),
     },
   ];
 
-  const handleWarehouseOrderStatusOption = (val) => {
-    dispatch(
-      type === "order"
-        ? setWarehouseOrderStatus(val)
-        : basketSetWarehouseOrderStatus(val)
-    );
+  const handleOrderStatusOption = (val) => {
+    dispatch(setOrderStatus(val));
   };
 
-  const pharmacyOrderStatusOptions = [
-    {
-      value: PharmacyOrderStatus.ALL,
-      label: t("all"),
-    },
-
-    {
-      value: PharmacyOrderStatus.RECEIVED,
-      label: t("received"),
-    },
-    {
-      value: PharmacyOrderStatus.SENT,
-      label: t("sent"),
-    },
-  ];
-
-  const handlePharmacyOrderStatusOption = (val) => {
-    dispatch(
-      type === "order"
-        ? setPharmacyOrderStatus(val)
-        : basketSetPharmacyOrderStatus(val)
-    );
-  };
-
-  const adminOrderStatusOptions = [
-    {
-      value: AdminOrderStatus.ALL,
-      label: t("all"),
-    },
-
-    {
-      value: AdminOrderStatus.SEEN,
-      label: t("seen"),
-    },
-    {
-      value: AdminOrderStatus.NOT_SEEN,
-      label: t("not-seen"),
-    },
-  ];
-
-  const handleAdminOrderStatusOption = (val) => {
-    dispatch(
-      type === "order"
-        ? setAdminOrderStatus(val)
-        : basketSetAdminOrderStatus(val)
-    );
-  };
+  const isThereSearch =
+    pageState.searchPharmacyName.trim().length > 0 ||
+    pageState.searchWarehouseName.trim().length > 0 ||
+    pageState.orderStatus !== OrdersStatusOptions.ALL ||
+    (pageState.dateOption !== "" && pageState.date !== "");
 
   return (
     <>
-      <SearchContainer searchAction={search}>
+      <SearchContainer searchAction={search} searchEngineAlert={isThereSearch}>
         {user.type !== UserTypeConstants.PHARMACY && (
           <SearchInput
             label="pharmacy-name"
             id="pharmacy-name"
             type="text"
             value={pageState.searchPharmacyName}
-            onchange={(e) =>
-              dispatch(
-                type === "order"
-                  ? setSearchPharmacyName(e.target.value)
-                  : basketSetSearchPharmacyName(e.target.value)
-              )
-            }
+            onchange={(e) => dispatch(setSearchPharmacyName(e.target.value))}
             placeholder="enter-pharmacy-name-placeholder"
             onEnterPress={search}
             resetField={() => {
-              dispatch(
-                type === "order"
-                  ? setSearchPharmacyName("")
-                  : basketSetSearchPharmacyName("")
-              );
+              dispatch(setSearchPharmacyName(""));
             }}
           />
         )}
@@ -175,69 +112,39 @@ function OrdersSearchEngine({ pageState, search, type }) {
             id="warehouse-name"
             type="text"
             value={pageState.searchWarehouseName}
-            onchange={(e) =>
-              dispatch(
-                type === "order"
-                  ? setSearchWarehouseName(e.target.value)
-                  : basketSetSearchWarehouseName(e.target.value)
-              )
-            }
+            onchange={(e) => dispatch(setSearchWarehouseName(e.target.value))}
             placeholder="enter-warehouse-name-placeholder"
             onEnterPress={search}
             resetField={() => {
-              dispatch(
-                type === "order"
-                  ? setSearchWarehouseName("")
-                  : basketSetSearchWarehouseName("")
-              );
+              dispatch(setSearchWarehouseName(""));
             }}
           />
         )}
 
-        {user.type === UserTypeConstants.ADMIN && (
-          <SelectSearch
-            text="admin-order-status"
-            options={adminOrderStatusOptions}
-            changeHandler={handleAdminOrderStatusOption}
-            defaultOption={{
-              value: pageState.adminOrderStatus,
-              label: t(pageState.adminOrderStatus),
-            }}
-          />
-        )}
-
-        <SelectSearch
-          text="warehouse-order-status"
-          options={warehouseOrderStatusOptions}
-          changeHandler={handleWarehouseOrderStatusOption}
-          defaultOption={{
-            value: pageState.warehouseOrderStatus,
-            label: t(pageState.warehouseOrderStatus),
+        <ChooserContainer
+          onclick={() => {
+            setShowChooseOrderStatus(true);
           }}
+          selectedValue={
+            orderStatusOptions.filter(
+              (option) => option.value === pageState.orderStatus
+            )[0].label
+          }
+          label="order-status-label"
+          styleForSearch={true}
+          withoutBorder={true}
         />
 
-        <SelectSearch
-          text="pharmacy-order-status"
-          options={pharmacyOrderStatusOptions}
-          changeHandler={handlePharmacyOrderStatusOption}
-          defaultOption={{
-            value: pageState.pharmacyOrderStatus,
-            label: t(pageState.pharmacyOrderStatus),
+        <ChooserContainer
+          onclick={() => {
+            setShowChooseDatesOption(true);
           }}
-        />
-
-        <SelectSearch
-          text="dates-within"
-          options={dateOptions}
-          changeHandler={handleDateOptions}
-          defaultOption={{
-            value: pageState.dateOption,
-            label: t(
-              `${
-                dateOptions.find((o) => o.value === pageState.dateOption).label
-              }`
-            ),
-          }}
+          selectedValue={
+            dateOptions.filter((d) => d.value === pageState.dateOption)[0].label
+          }
+          label="dates-within"
+          styleForSearch={true}
+          withoutBorder={true}
         />
 
         <SearchRowContainer>
@@ -246,15 +153,39 @@ function OrdersSearchEngine({ pageState, search, type }) {
             type="date"
             value={pageState.date}
             onChange={(e) => {
-              dispatch(
-                type === "order"
-                  ? setSearchDate(e.target.value)
-                  : basketSetSearchDate(e.target.value)
-              );
+              dispatch(setSearchDate(e.target.value));
             }}
           />
         </SearchRowContainer>
       </SearchContainer>
+
+      {showChooseOrderStatus && (
+        <ChooseValue
+          headerTitle="order-status-label"
+          close={() => {
+            setShowChooseOrderStatus(false);
+          }}
+          values={orderStatusOptions}
+          defaultValue={pageState.orderStatus}
+          chooseHandler={(value) => {
+            handleOrderStatusOption(value);
+          }}
+        />
+      )}
+
+      {showChooseDatesOption && (
+        <ChooseValue
+          headerTitle="dates-within"
+          close={() => {
+            setShowChooseDatesOption(false);
+          }}
+          values={dateOptions}
+          defaultValue={pageState.dateOption}
+          chooseHandler={(value) => {
+            handleDateOptions(value);
+          }}
+        />
+      )}
     </>
   );
 }

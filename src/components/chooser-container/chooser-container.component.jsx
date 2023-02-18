@@ -3,7 +3,14 @@ import { useTranslation } from "react-i18next";
 
 import styles from "./chooser-container.module.scss";
 
-const ChooserContainer = ({ selectedValue, onclick, label, error }) => {
+const ChooserContainer = ({
+  selectedValue,
+  onclick,
+  label,
+  error,
+  styleForSearch,
+  withoutBorder,
+}) => {
   const { t } = useTranslation();
   return (
     <div
@@ -13,7 +20,11 @@ const ChooserContainer = ({ selectedValue, onclick, label, error }) => {
       }}
     >
       <div
-        className={[styles.container, error ? styles.error : ""].join(" ")}
+        className={[
+          styleForSearch ? styles.for_search : styles.container,
+          error ? styles.error : "",
+          withoutBorder ? styles.without_border : "",
+        ].join(" ")}
         onClick={onclick}
       >
         {label && <label className={styles.label}>{t(label)}</label>}

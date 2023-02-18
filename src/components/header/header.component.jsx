@@ -1,11 +1,13 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
 // components
-import Icon from "../action-icon/action-icon.component";
+import Icon from "../icon/icon.component";
 
 // icons
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { RiRefreshLine } from "react-icons/ri";
 
 // constants
 import { Colors } from "../../utils/constants";
@@ -13,21 +15,32 @@ import { Colors } from "../../utils/constants";
 // style
 import styles from "./header.module.scss";
 
-function Header({ children }) {
+function Header({ refreshHandler, title, count }) {
   const history = useHistory();
+  const { t } = useTranslation();
 
   return (
     <div className={styles.header}>
-      {children}
-      <div className={styles.back}>
+      <p>
+        {t(title)}
+        {count ? <span>{count}</span> : ""}
+      </p>
+      {refreshHandler && (
         <Icon
-          onclick={() => {
-            history.goBack();
-          }}
-          icon={() => <IoMdArrowRoundBack />}
+          selected={false}
           foreColor={Colors.WHITE_COLOR}
+          tooltip={t("refresh-tooltip")}
+          onclick={refreshHandler}
+          icon={() => <RiRefreshLine />}
         />
-      </div>
+      )}
+      <Icon
+        onclick={() => {
+          history.goBack();
+        }}
+        icon={() => <IoMdArrowRoundBack />}
+        foreColor={Colors.WHITE_COLOR}
+      />
     </div>
   );
 }

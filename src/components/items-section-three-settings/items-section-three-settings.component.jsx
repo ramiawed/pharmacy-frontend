@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 // components
-import ChooseItemModal from "../../modals/choose-item-modal/choose-item-modal.component";
+import SettingSectionHeader from "../setting-section-header/setting-section-header.component";
+import FilterItemsModal from "../../modals/filter-items-modal/filter-items-modal.component";
+import SettingRow from "../setting-row/setting-row.component";
 import CardInfo from "../card-info/card-info.component";
+import Loader from "../loader/loader.component";
 import Button from "../button/button.component";
 import Toast from "../toast/toast.component";
-import SettingRow from "../setting-row/setting-row.component";
-import SettingSectionHeader from "../setting-section-header/setting-section-header.component";
-import Loader from "../loader/loader.component";
 
 // redux stuff
 import { useSelector, useDispatch } from "react-redux";
@@ -29,7 +29,7 @@ import { selectToken } from "../../redux/auth/authSlice.js";
 import generalStyles from "../../style.module.scss";
 
 // constants
-import { BASEURL, Colors } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 
 function ItemsSectionThreeSettings() {
   const { t } = useTranslation();
@@ -107,10 +107,12 @@ function ItemsSectionThreeSettings() {
       </CardInfo>
 
       {showChooseModal && (
-        <ChooseItemModal
+        <FilterItemsModal
           close={() => setShowChooseModal(false)}
-          chooseAction={addItemToSectionThree}
-          url={`${BASEURL}/items?limit=15&isActive=true&inSectionThree=false`}
+          selectedAction={(item) => {
+            dispatch(addItemToSectionThree({ token, id: item._id }));
+            setShowChooseModal(false);
+          }}
         />
       )}
 

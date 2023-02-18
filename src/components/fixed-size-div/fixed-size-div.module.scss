@@ -1,0 +1,59 @@
+@import "../../variables.scss";
+.small {
+    width: 32px;
+    text-align: center;
+    label {
+        font-size: 12px;
+        word-wrap: break-word;
+    }
+}
+
+.medium {
+    width: 50px;
+    text-align: center;
+    label {
+        font-size: 12px;
+        word-wrap: break-word;
+    }
+}
+
+.large {
+    width: 60px;
+    text-align: center;
+    label {
+        font-size: 12px;
+    }
+}
+
+@media only screen and (min-width: $small) {
+    .small {
+        width: 40px;
+        label {
+            font-size: 14px;
+        }
+    }
+    .medium {
+        width: 60px;
+        label {
+            font-size: 14px;
+        }
+    }
+    .large {
+        width: 70px;
+        label {
+            font-size: 14px;
+        }
+    }
+}
+
+@media only screen and (min-width: $medium) {
+    .small {
+        width: 60px;
+    }
+    .medium {
+        width: 80px;
+    }
+    .large {
+        width: 90px;
+    }
+}

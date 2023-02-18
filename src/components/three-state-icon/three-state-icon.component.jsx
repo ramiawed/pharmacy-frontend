@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { VscLoading } from "react-icons/vsc";
 import { Colors } from "../../utils/constants";
-import Icon from "../action-icon/action-icon.component";
+import Icon from "../icon/icon.component";
 
 const ThreeStateIcon = ({
   loading,
@@ -21,21 +21,21 @@ const ThreeStateIcon = ({
     <>
       {loading ? (
         <Icon
-          text={t("")}
+          tooltip={t("")}
           onclick={() => {}}
           foreColor={Colors.MAIN_COLOR}
           icon={() => <VscLoading />}
         />
       ) : array.includes(id) ? (
         <Icon
-          text={t(removeTooltip)}
+          tooltip={t(removeTooltip)}
           onclick={removeHandler}
           //   foreColor={Colors.FAILED_COLOR}
           icon={removeIcon}
         />
       ) : (
         <Icon
-          text={t(addTooltip)}
+          tooltip={t(addTooltip)}
           onclick={addHandler}
           //   foreColor={Colors.SUCCEEDED_COLOR}
           icon={addIcon}

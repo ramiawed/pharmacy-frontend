@@ -2,11 +2,11 @@ import React from "react";
 
 import styles from "./header-with-slogn.module.scss";
 
-const HeaderWithSlogn = () => {
+const HeaderWithSlogn = ({ bgColor }) => {
   return (
-    <div className={styles.app_name}>
-      <h2>Smart Pharma</h2>
-      <p>be smart work smart</p>
+    <div style={{ backgroundColor: bgColor }} className={styles.app_name}>
+      {/* <h2>Smart Pharma</h2>
+      <p>be smart work smart</p> */}
     </div>
   );
 };

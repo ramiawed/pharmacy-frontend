@@ -17,15 +17,13 @@ import { selectUser } from "../../redux/auth/authSlice";
 import { selectCartWarehouse } from "../../redux/cart/cartSlice";
 
 // components
-import Header from "../../components/header/header.component";
+import MainContentContainer from "../../components/main-content-container/main-content-container.component";
 import CartWarehouse from "../../components/cart-warehouse/cart-warehouse.component";
 import NoContent from "../../components/no-content/no-content.component";
+import Header from "../../components/header/header.component";
 
 // constants and colors
 import { UserTypeConstants } from "../../utils/constants";
-
-// styles
-import generalStyles from "../../style.module.scss";
 
 function CartPage({ onSelectedChange }) {
   const { t } = useTranslation();
@@ -38,26 +36,24 @@ function CartPage({ onSelectedChange }) {
 
   useEffect(() => {
     onSelectedChange();
+
+    window.scrollTo(0, 0);
   }, []);
 
   // if there is no logged user or user type is not pharmacy
   // redirect to the main page
   return user && user.type === UserTypeConstants.PHARMACY ? (
     <>
-      <Header>
-        <h2>{t("cart")}</h2>
-      </Header>
+      <Header title="cart" />
 
-      <div className={generalStyles.container_with_header}>
+      <MainContentContainer>
         {/* if cart contains an item or more */}
         {cartWarehouse.length > 0 && (
-          <>
-            <div>
-              {cartWarehouse.map((w, index) => (
-                <CartWarehouse warehouse={w} key={index} />
-              ))}
-            </div>
-          </>
+          <div>
+            {cartWarehouse.map((w, index) => (
+              <CartWarehouse warehouse={w} key={index} wIndex={index} />
+            ))}
+          </div>
         )}
 
         {/* if the cart is empty */}
@@ -66,7 +62,7 @@ function CartPage({ onSelectedChange }) {
             <NoContent msg={t("empty-cart")} />
           </>
         )}
-      </div>
+      </MainContentContainer>
     </>
   ) : (
     <Redirect to="/signin" />

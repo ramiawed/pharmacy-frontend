@@ -15,14 +15,6 @@ function SignUpPage() {
         <HeaderWithSlogn />
       </div>
     </>
-    // <div className={styles.container}>
-    //   <div className={styles.image}>
-    //     <img src={Logo} alt="thumb" className={styles.img} />
-    //   </div>
-    //   <div className={styles.content}>
-    //     <SignUp />
-    //   </div>
-    // </div>
   );
 }
 

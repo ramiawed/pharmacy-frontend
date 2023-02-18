@@ -1,12 +1,11 @@
 import React from "react";
-
-import generalStyles from "../../style.module.scss";
 import NoContentImage from "../../no-content.jpeg";
+import styles from "./no-content.module.scss";
 import { Colors } from "../../utils/constants";
 
 function NoContent({ msg }) {
   return (
-    <div className={[generalStyles.no_content_div].join(" ")}>
+    <div className={[styles.container].join(" ")}>
       <img
         src={NoContentImage}
         alt="thumb"

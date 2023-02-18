@@ -1,14 +1,12 @@
-// component contains information about the item in the cart
-
-// Props
-// cartItem: object
-import React, { useState } from "react";
+import React from "react";
 import { useTranslation } from "react-i18next";
 
 // react icons
-import { AiFillMinusCircle, AiFillPlusCircle } from "react-icons/ai";
-import { RiDeleteBin5Fill } from "react-icons/ri";
-import { MdExpandLess, MdExpandMore } from "react-icons/md";
+import {
+  RiArrowDropLeftFill,
+  RiArrowDropRightFill,
+  RiDeleteBin5Fill,
+} from "react-icons/ri";
 
 // redux stuff
 import { useDispatch } from "react-redux";
@@ -23,186 +21,89 @@ import styles from "./cart-item-card.module.scss";
 
 // constants
 import { Colors, OfferTypes } from "../../utils/constants";
+import Icon from "../icon/icon.component";
+import ItemNames from "../item-names/item-names.component";
 
-function CartItemCard({ cartItem, inOrderDetails, withoutMaxQty }) {
+function CartItemCard({
+  cartItem,
+  inOrderDetails,
+  withoutMaxQty,
+  index,
+  iconColor,
+}) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
-  const [expanded, setExpanded] = useState(false);
+
+  const increaseHandler = () => {
+    if (
+      cartItem.warehouse.maxQty !== 0 &&
+      cartItem.qty < cartItem.warehouse.maxQty
+    )
+      dispatch(increaseItemQty(cartItem));
+    else if (cartItem.warehouse.maxQty === 0) {
+      dispatch(increaseItemQty(cartItem));
+    }
+  };
+
+  const decreaseHandler = () => {
+    if (cartItem.qty > 1) dispatch(decreaseItemQty(cartItem));
+  };
 
   return (
     <>
-      <div className={styles.container}>
-        <div className={styles.header}>
-          <label
-            className={styles.icon}
-            onClick={(e) => {
-              setExpanded(!expanded);
-              e.stopPropagation();
-            }}
-          >
-            {expanded ? <MdExpandLess /> : <MdExpandMore />}
-          </label>
-          <div className={[styles.name, styles.ellipsis].join(" ")}>
-            <label>{cartItem.item.name}</label>
-            <label>{cartItem.item.nameAr}</label>
-          </div>
-          {!inOrderDetails && (
-            <div
-              className={styles.delete_icon}
-              onClick={() => dispatch(removeItemFromCart(cartItem))}
-            >
-              <RiDeleteBin5Fill size={24} color={Colors.FAILED_COLOR} />
-            </div>
-          )}
-        </div>
+      <div
+        className={[
+          styles.item_row,
+          index % 2 === 0 ? styles.grey_bg : "",
+        ].join(" ")}
+      >
+        <div className={styles.first_row}>
+          <label className={styles.small_label}>{index + 1}</label>
+          <ItemNames flexDirection="column" item={cartItem.item} />
 
-        <div className={styles.details}>
-          {expanded && (
-            <>
-              <div className={[styles.row].join(" ")}>
-                <div>
-                  <label className={[styles.label, styles.first].join(" ")}>
-                    {t("item-company")}:
-                  </label>
-                  <label className={styles.value}>
-                    {cartItem.item.company.name}
-                  </label>
-                </div>
-              </div>
-
-              <div className={styles.row}>
-                <div>
-                  <label className={[styles.label, styles.first].join(" ")}>
-                    {t("item-formula")}:
-                  </label>
-                  <label className={styles.value}>
-                    {cartItem.item.formula}
-                  </label>
-                </div>
-                <div>
-                  <label className={styles.label}>{t("item-caliber")}:</label>
-                  <label className={styles.value}>
-                    {cartItem.item.caliber}
-                  </label>
-                </div>
-              </div>
-              <div className={styles.row}>
-                <div>
-                  <label className={[styles.label, styles.first].join(" ")}>
-                    {t("item-packing")}:
-                  </label>
-                  <label className={styles.value}>
-                    {cartItem.item.packing}
-                  </label>
-                </div>
-              </div>
-            </>
-          )}
-
-          <div className={styles.row}>
-            <div>
-              <label className={[styles.label, styles.first].join(" ")}>
-                {t("item-price")}:
-              </label>
-              <label className={[styles.value, styles.price].join(" ")}>
-                {cartItem.item.price}
-              </label>
-            </div>
-            <div>
-              <label className={styles.label}>
-                {t("item-customer-price")}:
-              </label>
-              <label
-                className={[styles.value, styles.customer_price].join(" ")}
-              >
-                {cartItem.item.customer_price}
-              </label>
-            </div>
-          </div>
-
-          {expanded &&
-            (withoutMaxQty === "without" ? (
-              <></>
+          <div className={styles.additional_container}>
+            {!cartItem.bonus && !inOrderDetails ? (
+              <Icon
+                onclick={decreaseHandler}
+                icon={() => (
+                  <RiArrowDropRightFill
+                    color={iconColor ? iconColor : Colors.MAIN_COLOR}
+                    size={32}
+                  />
+                )}
+              />
             ) : (
-              <>
-                <div className={[styles.row, styles.first].join(" ")}>
-                  <div>
-                    <label className={styles.label}>{t("item-max-qty")}:</label>
-                    <label className={styles.value}>
-                      {cartItem.warehouse.maxQty
-                        ? cartItem.warehouse.maxQty
-                        : ""}
-                    </label>
-                  </div>
-                </div>
-              </>
-            ))}
+              <label style={{ width: "32px" }}></label>
+            )}
 
-          <div className={styles.row}>
-            <div>
-              <label className={[styles.label, styles.first].join(" ")}>
-                {t("quantity-label")}:
-              </label>
-              {!cartItem.bonus && !inOrderDetails && (
-                <label
-                  onClick={() => {
-                    if (cartItem.qty > 0) dispatch(decreaseItemQty(cartItem));
-                  }}
-                  className={styles.minus}
-                >
-                  <AiFillMinusCircle
-                    color={Colors.FAILED_COLOR}
-                    style={{
-                      position: "relative",
-                      top: "5px",
-                    }}
+            <label className={styles.label}>{cartItem.qty}</label>
+
+            {!cartItem.bonus && !inOrderDetails ? (
+              <Icon
+                onclick={increaseHandler}
+                icon={() => (
+                  <RiArrowDropLeftFill
+                    color={iconColor ? iconColor : Colors.MAIN_COLOR}
+                    size={32}
                   />
-                </label>
-              )}
+                )}
+              />
+            ) : (
+              <label style={{ width: "32px" }}></label>
+            )}
 
-              <label className={styles.qty}>{cartItem.qty}</label>
+            <label className={styles.label}>
+              {cartItem.bonus && cartItem.bonus}{" "}
+              {cartItem.bonus
+                ? cartItem.bonusType === OfferTypes.PERCENTAGE
+                  ? t("after-bonus-percentage-label")
+                  : t("after-quantity-label")
+                : "-"}
+            </label>
 
-              {!cartItem.bonus && !inOrderDetails && (
-                <label
-                  onClick={() => {
-                    if (
-                      cartItem.warehouse.maxQty !== 0 &&
-                      cartItem.qty < cartItem.warehouse.maxQty
-                    )
-                      dispatch(increaseItemQty(cartItem));
-                    else if (cartItem.warehouse.maxQty === 0) {
-                      dispatch(increaseItemQty(cartItem));
-                    }
-                  }}
-                  className={styles.plus}
-                >
-                  <AiFillPlusCircle
-                    color={Colors.SUCCEEDED_COLOR}
-                    style={{
-                      position: "relative",
-                      top: "5px",
-                    }}
-                  />
-                </label>
-              )}
-            </div>
-            <div>
-              <label className={[styles.label].join(" ")}>
-                {t("offer-label")}:
-              </label>
-              <label className={styles.value}>
-                {cartItem.bonus && cartItem.bonus}
-                {cartItem.bonus
-                  ? cartItem.bonusType === OfferTypes.PERCENTAGE
-                    ? t("after-bonus-percentage-label")
-                    : t("after-quantity-label")
-                  : "-"}
-              </label>
-            </div>
-          </div>
+            <label className={styles.label}>{cartItem.item.price}</label>
 
-          <div className={[styles.sum_row].join(" ")}>
-            <label className={styles.total_price}>
+            <label className={styles.label}>
               {cartItem.qty *
                 (inOrderDetails ? cartItem.price : cartItem.item.price) -
                 (cartItem.bonus && cartItem.bonusType === OfferTypes.PERCENTAGE
@@ -214,6 +115,15 @@ function CartItemCard({ cartItem, inOrderDetails, withoutMaxQty }) {
             </label>
           </div>
         </div>
+        {!inOrderDetails && (
+          <Icon
+            foreColor={Colors.MAIN_COLOR}
+            icon={() => (
+              <RiDeleteBin5Fill size={24} color={Colors.FAILED_COLOR} />
+            )}
+            onclick={() => dispatch(removeItemFromCart(cartItem))}
+          />
+        )}
       </div>
     </>
   );

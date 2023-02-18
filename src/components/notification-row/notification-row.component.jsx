@@ -74,7 +74,7 @@ function NotificationRow({ notification, index, setSuccessDeletingMsg }) {
           />
         ) : (
           <>
-            <BiImage size={64} color={Colors.SECONDARY_COLOR} />
+            <BiImage size={64} color={Colors.LIGHT_COLOR} />
           </>
         )}
       </div>

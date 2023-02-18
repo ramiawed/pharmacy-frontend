@@ -19,17 +19,12 @@ import { addStatistics } from "../../redux/statistics/statisticsSlice";
 import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 
 // constants and utils
-import {
-  OfferTypes,
-  onKeyPressForNumberInput,
-  toEnglishNumber,
-} from "../../utils/constants";
+import { OfferTypes, toEnglishNumber } from "../../utils/constants";
 
 // styles
 import styles from "./add-to-cart-offer-modal.module.scss";
 import OfferDetailsRow from "../../components/offer-details-row/offer-details-row.component";
-import LabelValueRow from "../../components/label-value-row/label-value-row.component";
-import Separator from "../../components/separator/separator.component";
+import SearchInput from "../../components/search-input/search-input.component";
 
 // recursive method to calculate the bonus for the entered quantity
 // check if there is an offer for entered quantity in a specific warehouse
@@ -77,7 +72,9 @@ function AddToCartOfferModal({ item, close, setAddItemToCartMsg }) {
         name: item.warehouses.warehouse[0].name,
         city: item.warehouses.warehouse[0].city,
         isActive: item.warehouses.warehouse[0].isActive,
-        isApproved: item.warehouses.warehouse[0].isApproved,
+        invoiceMinTotal: item.warehouses.warehouse[0].invoiceMinTotal,
+        costOfDeliver: item.warehouses.warehouse[0].costOfDeliver,
+        fastDeliver: item.warehouses.warehouse[0].fastDeliver,
       },
     },
   };
@@ -159,34 +156,33 @@ function AddToCartOfferModal({ item, close, setAddItemToCartMsg }) {
         okModal={addItemToCartHandler}
         small={true}
       >
-        <LabelValueRow
-          label="item-warehouse"
-          value={addToCartItem.warehouses.warehouse.name}
-        />
-
-        <Separator />
-
-        <LabelValueRow
-          label="item-max-qty"
-          value={
-            addToCartItem.warehouses.maxQty === 0
-              ? "-"
-              : addToCartItem.warehouses.maxQty
-          }
-        />
-
-        <Separator />
-        <div className={styles.selected_qty}>
-          <label className={styles.label}>{t("selected-qty")}</label>
-          <input
-            className={[qtyError ? styles.error : "", styles.input].join(" ")}
-            value={qty}
-            onKeyPress={onKeyPressForNumberInput}
-            onChange={quantityChangeHandler}
-          />
+        <div className={styles.container}>
+          <label>{t("item-warehouse")}</label>
+          <label>{addToCartItem.warehouses.warehouse.name}</label>
         </div>
 
-        <Separator />
+        <div className={styles.container}>
+          <label>{t("item-max-qty")}</label>
+          <label>
+            {addToCartItem.warehouses.maxQty === 0
+              ? "-"
+              : addToCartItem.warehouses.maxQty}
+          </label>
+        </div>
+
+        <SearchInput
+          label="selected-qty"
+          id="selected-qty"
+          type="text"
+          value={qty}
+          onchange={(e) => {
+            quantityChangeHandler(e);
+          }}
+          withBorder={true}
+          hasFocus={true}
+        />
+
+        {qtyError && <label className={styles.error}>{t("enter-qty")}</label>}
 
         {addToCartItem.warehouses.offer.offers.map((o, index) => (
           <OfferDetailsRow

@@ -56,7 +56,7 @@ const Modal = ({
         <header
           className={[styles.modal_header].join(" ")}
           style={{
-            backgroundColor: color,
+            color: color,
           }}
         >
           {t(header)}
@@ -70,9 +70,6 @@ const Modal = ({
                 okModal();
                 e.stopPropagation();
               }}
-              style={{
-                backgroundColor: color,
-              }}
             >
               {t(okLabel)}
             </button>
@@ -83,9 +80,6 @@ const Modal = ({
             onClick={(e) => {
               closeModal();
               e.stopPropagation();
-            }}
-            style={{
-              color: color,
             }}
           >
             {t(cancelLabel)}

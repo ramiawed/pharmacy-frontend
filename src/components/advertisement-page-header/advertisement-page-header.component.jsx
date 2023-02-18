@@ -11,16 +11,14 @@ import { RiRefreshLine } from "react-icons/ri";
 import { MdAddCircle } from "react-icons/md";
 
 // components
-import Icon from "../action-icon/action-icon.component";
+import ActionBar from "../action-bar/action-bar.component";
+import Icon from "../icon/icon.component";
 import Header from "../header/header.component";
-
-// styles
-import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
 
-function AdvertisementPageHeader({ isNew, setIsNew }) {
+function AdvertisementPageHeader({ setIsNew }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -32,51 +30,20 @@ function AdvertisementPageHeader({ isNew, setIsNew }) {
 
   return (
     <>
-      <Header>
-        <h2>{t("nav-advertise")}</h2>
-        {isNew && (
-          <div className={generalStyles.refresh_icon}>
-            <Icon
-              selected={false}
-              foreColor={Colors.WHITE_COLOR}
-              tooltip={t("refresh-tooltip")}
-              onclick={() => {
-                refreshHandler();
-              }}
-              icon={() => <RiRefreshLine />}
-            />
-          </div>
-        )}
-      </Header>
-      <div
-        className={[generalStyles.actions, generalStyles.margin_v_4].join(" ")}
-      >
-        {!isNew && (
-          <>
-            <Icon
-              selected={false}
-              foreColor={Colors.MAIN_COLOR}
-              tooltip={t("new-advertisement")}
-              onclick={() => {
-                setIsNew(true);
-              }}
-              icon={() => <MdAddCircle size={24} />}
-              withBackground={true}
-            />
-            {/* Refresh */}
-            <Icon
-              selected={false}
-              foreColor={Colors.MAIN_COLOR}
-              tooltip={t("refresh-tooltip")}
-              onclick={() => {
-                refreshHandler();
-              }}
-              icon={() => <RiRefreshLine />}
-              withBackground={true}
-            />
-          </>
-        )}
-      </div>
+      <Header title="nav-advertise" refreshHandler={refreshHandler} />
+
+      <ActionBar>
+        <Icon
+          selected={false}
+          foreColor={Colors.MAIN_COLOR}
+          tooltip={t("new-advertisement")}
+          onclick={() => {
+            setIsNew(true);
+          }}
+          icon={() => <MdAddCircle size={24} />}
+          withBackground={true}
+        />
+      </ActionBar>
     </>
   );
 }

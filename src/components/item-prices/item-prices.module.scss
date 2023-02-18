@@ -1,23 +1,16 @@
 @import "../../variables.scss";
 
-.price_container {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    align-self: flex-end;
+.label {
+    font-size: 16px;
+    font-weight: bolder;
+    padding-left: 5px;
+    padding-right: 5px;
+}
 
-    label {
-        font-size: 16px;
-        font-weight: bolder;
-        padding-left: 5px;
-        padding-right: 5px;
-    }
+.item_price {
+    color: $green-color;
+}
 
-    .item_price {
-        color: $green-color;
-    }
-
-    .item_customer_price {
-        color: $third-color;
-    }
+.item_customer_price {
+    color: $third-color;
 }

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 
@@ -7,15 +7,15 @@ import { useSelector } from "react-redux";
 import { selectToken } from "../../redux/auth/authSlice";
 
 // components
-import Modal from "../modal/modal.component";
-import Button from "../../components/button/button.component";
-import Icon from "../../components/action-icon/action-icon.component";
+import MedicineRow from "../../components/medicine-row/medicine-row.component";
+import CylonLoader from "../../components/cylon-loader/cylon-loader.component";
 import NoContent from "../../components/no-content/no-content.component";
-import Loader from "../../components/loader/loader.component";
+import Icon from "../../components/icon/icon.component";
+import Modal from "../modal/modal.component";
 
 // icons
 import { IoIosSearch } from "react-icons/io";
-import { GrAddCircle } from "react-icons/gr";
+import { MdAddCircle } from "react-icons/md";
 
 // styles
 import styles from "./select-medicine-modal.module.scss";
@@ -24,9 +24,13 @@ import generalStyles from "../../style.module.scss";
 // constants
 import { Colors } from "../../utils/constants";
 
+let CancelToken = null;
+let source = null;
+
 function SelectMedicineModal({ close, chooseAction, url }) {
   const { t } = useTranslation();
   const token = useSelector(selectToken);
+  const searchInputRef = useRef();
 
   const [searchName, setSearchName] = useState("");
   const [data, setData] = useState([]);
@@ -42,6 +46,13 @@ function SelectMedicineModal({ close, chooseAction, url }) {
     if (event.code !== "Escape") event.stopPropagation();
   };
 
+  const keyUpHandler = () => {
+    if (source !== null) {
+      source.cancel("cancel");
+    }
+    getItems(1);
+  };
+
   const getItems = useCallback(
     async (p) => {
       try {
@@ -52,11 +63,18 @@ function SelectMedicineModal({ close, chooseAction, url }) {
           nameCondition = `&itemName=${searchName.trim()}`;
         }
 
+        CancelToken = axios.CancelToken;
+        source = CancelToken.source();
         const response = await axios.get(`${url}&page=${p}${nameCondition}`, {
+          cancelToken: source.token,
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
+
+        CancelToken = null;
+        source = null;
+
         if (p === 1) {
           setData(response.data.data.items);
         } else {
@@ -77,6 +95,8 @@ function SelectMedicineModal({ close, chooseAction, url }) {
 
   useEffect(() => {
     getItems(1);
+
+    searchInputRef.current.focus();
   }, []);
 
   return (
@@ -86,83 +106,79 @@ function SelectMedicineModal({ close, chooseAction, url }) {
       closeModal={close}
       small={true}
     >
-      {loading ? (
-        <Loader />
-      ) : (
-        <>
-          <div
-            className={[
-              styles.search_container,
-              generalStyles.flex_center_container,
-            ].join(" ")}
-          >
-            <IoIosSearch color={Colors.SECONDARY_COLOR} size={24} />
-            <input
-              className={styles.search_input}
-              placeholder={t("enter-item-trade-name")}
-              value={searchName}
-              onChange={(e) => setSearchName(e.target.value)}
-              onKeyDown={keyDownHandler}
-            />
-            <Button
+      <>
+        <div
+          className={[
+            styles.search_container,
+            generalStyles.flex_center_container,
+          ].join(" ")}
+        >
+          <IoIosSearch color={Colors.LIGHT_COLOR} size={24} />
+          <input
+            className={styles.search_input}
+            placeholder={t("enter-item-trade-name")}
+            value={searchName}
+            onChange={(e) => setSearchName(e.target.value)}
+            onKeyDown={keyDownHandler}
+            onKeyUp={keyUpHandler}
+            ref={searchInputRef}
+          />
+          {/* <Button
               text="search"
               action={() => {
                 getItems(1);
               }}
-              bgColor={Colors.SECONDARY_COLOR}
-            />
-          </div>
+              bgColor={Colors.LIGHT_COLOR}
+            /> */}
+        </div>
 
-          <div
-            style={{
-              maxHeight: "300px",
-              overflow: "auto",
-            }}
-          >
-            {data?.length > 0 &&
-              data.map((d) => <Row key={d._id} data={d} select={select} />)}
+        <div
+          style={{
+            maxHeight: "300px",
+            overflow: "auto",
+          }}
+        >
+          {data?.length > 0 &&
+            data.map((d, index) => (
+              <Row key={d._id} data={d} select={select} index={index} />
+            ))}
 
-            {data.length === 0 && searchName.length === 0 && (
-              <NoContent msg={t("search-for-item")} />
-            )}
-
-            {data.length === 0 && searchName.length !== 0 && (
-              <NoContent msg={t("search-empty")} />
-            )}
-          </div>
-
-          {data.length < count && (
-            <div className={generalStyles.padding_v_6}>
-              <Button
-                text="more"
-                action={() => {
-                  getItems(page);
-                }}
-                bgColor={Colors.SECONDARY_COLOR}
-              />
-            </div>
+          {data.length === 0 && searchName.length === 0 && (
+            <NoContent msg={t("search-for-item")} />
           )}
-        </>
-      )}
+
+          {data.length === 0 && searchName.length !== 0 && (
+            <NoContent msg={t("search-empty")} />
+          )}
+        </div>
+
+        {data.length < count && (
+          <button className={styles.more_btn} onClick={() => getItems(page)}>
+            {t("more")}
+          </button>
+        )}
+
+        {loading && <CylonLoader />}
+      </>
     </Modal>
   );
 }
 
-const Row = ({ data, select }) => {
+const Row = ({ data, select, index }) => {
   const selectMedicine = () => {
     select(data);
   };
 
   return (
     <div className={styles.item_row}>
-      <p className={styles.item_name}>{data.name}</p>
-      <p className={[styles.small].join(" ")}>{data.caliber}</p>
-      <p className={[styles.small].join(" ")}>{data.packing}</p>
+      <MedicineRow item={data} index={index} />
 
       <Icon
-        icon={() => <GrAddCircle />}
+        icon={() => <MdAddCircle size={24} />}
         foreColor={Colors.SUCCEEDED_COLOR}
         onclick={selectMedicine}
+        withBackground={true}
+        selected={false}
       />
     </div>
   );

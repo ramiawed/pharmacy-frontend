@@ -1,50 +1,35 @@
 // Table header in the admin-users component
-
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-import TableHeader from "../table-header/table-header.component";
-
-import tableStyles from "../table.module.scss";
+// components
+import ChildFlexOneDiv from "../child-flex-one-div/child-flex-one-div.component";
+import FixedSizeDiv from "../fixed-size-div/fixed-size-div.component";
+import RowContainer from "../row-container/row-container.component";
 
 function AdminUserTableHeader() {
   const { t } = useTranslation();
 
   return (
-    <>
-      <TableHeader>
-        <label className={tableStyles.label_large}>{t("user-name")}</label>
-        <label className={tableStyles.label_small}>{t("user-approve")}</label>
-        <label className={tableStyles.label_small}>{t("user-delete")}</label>
-        <label className={tableStyles.label_small}>{t("show-medicines")}</label>
-        <label className={tableStyles.label_small}>{t("user-type")}</label>
-        {/* <label
-          className={[tableStyles.label_large, tableStyles.hide_on_small].join(
-            " "
-          )}
-        >
-          {t("user-email")}
-        </label>
-        <label
-          className={[
-            tableStyles.label_medium,
-            tableStyles.hide_on_medium,
-          ].join(" ")}
-        >
-          {t("user-phone")}
-        </label> */}
-        <label
-          className={[
-            tableStyles.label_medium,
-            tableStyles.hide_on_medium,
-          ].join(" ")}
-        >
-          {t("user-mobile")}
-        </label>
-        <label className={tableStyles.label_xsmall}></label>
-        <label className={tableStyles.label_xsmall}></label>
-      </TableHeader>
-    </>
+    <RowContainer isHeader={true}>
+      <ChildFlexOneDiv>
+        <label>{t("user-name")}</label>
+      </ChildFlexOneDiv>
+
+      <FixedSizeDiv size="large">
+        <label>{t("user-type")}</label>
+      </FixedSizeDiv>
+
+      <FixedSizeDiv size="large">
+        <label>{t("user-mobile")}</label>
+      </FixedSizeDiv>
+
+      <FixedSizeDiv size="medium">
+        <label>{t("show-medicines")}</label>
+      </FixedSizeDiv>
+
+      <FixedSizeDiv size="small"></FixedSizeDiv>
+    </RowContainer>
   );
 }
 

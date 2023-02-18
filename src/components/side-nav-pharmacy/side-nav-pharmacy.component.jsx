@@ -10,12 +10,12 @@ import { SideNavLinks } from "../../utils/constants.js";
 import { useDispatch, useSelector } from "react-redux";
 import { selectSettings } from "../../redux/settings/settingsSlice";
 import { CgProfile } from "react-icons/cg";
-import { BsBasket2Fill, BsFillEnvelopeFill } from "react-icons/bs";
-import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
+import { BsFillBookmarkPlusFill, BsFillEnvelopeFill } from "react-icons/bs";
 import {
   setSearchCompanyId,
   setSearchWarehouseId,
 } from "../../redux/medicines/medicinesSlices";
+import { orderSliceSignOut } from "../../redux/orders/ordersSlice";
 
 function SideNavPharmacy({ selectedOption, onSelectedChange, collapsed }) {
   const { t } = useTranslation();
@@ -26,30 +26,6 @@ function SideNavPharmacy({ selectedOption, onSelectedChange, collapsed }) {
 
   return (
     <>
-      <Link
-        className={[
-          styles.link,
-          selectedOption === SideNavLinks.BASKETS ? `${styles.selected}` : "",
-        ].join(" ")}
-        onClick={() => {
-          onSelectedChange(SideNavLinks.BASKETS);
-          dispatch(setSearchWarehouseId(null));
-          dispatch(setSearchCompanyId(null));
-        }}
-        to="/baskets"
-      >
-        <div className={styles.nav}>
-          <div className={styles.nav_icon}>
-            {collapsed && (
-              <label className={styles.tooltip}>{t("nav-baskets")}</label>
-            )}
-            <BsBasket2Fill size={24} />
-          </div>
-          {!collapsed && (
-            <div className={styles.nav_label}>{t("nav-baskets")}</div>
-          )}
-        </div>
-      </Link>
       {saveOrders && (
         <Link
           className={[
@@ -58,9 +34,9 @@ function SideNavPharmacy({ selectedOption, onSelectedChange, collapsed }) {
           ].join(" ")}
           onClick={() => {
             onSelectedChange(SideNavLinks.ORDERS);
+            dispatch(orderSliceSignOut());
             dispatch(setSearchWarehouseId(null));
             dispatch(setSearchCompanyId(null));
-            // dispatch(setSelectedWarehouse(null));
           }}
           to="/orders"
         >
@@ -77,6 +53,34 @@ function SideNavPharmacy({ selectedOption, onSelectedChange, collapsed }) {
           </div>
         </Link>
       )}
+
+      <Link
+        className={[
+          styles.link,
+          selectedOption === SideNavLinks.SAVEDITEMS
+            ? `${styles.selected}`
+            : "",
+        ].join(" ")}
+        onClick={() => {
+          onSelectedChange(SideNavLinks.SAVEDITEMS);
+          dispatch(setSearchWarehouseId(null));
+          dispatch(setSearchCompanyId(null));
+        }}
+        to="/saved-items"
+      >
+        <div className={styles.nav}>
+          <div className={styles.nav_icon}>
+            <BsFillBookmarkPlusFill size={24} />
+            {collapsed && (
+              <label className={styles.tooltip}>{t("saved-items")}</label>
+            )}
+          </div>
+          {!collapsed && (
+            <div className={styles.nav_label}>{t("saved-items")} </div>
+          )}
+        </div>
+      </Link>
+
       <Link
         className={[
           styles.link,
@@ -86,7 +90,6 @@ function SideNavPharmacy({ selectedOption, onSelectedChange, collapsed }) {
           onSelectedChange(SideNavLinks.PROFILE);
           dispatch(setSearchWarehouseId(null));
           dispatch(setSearchCompanyId(null));
-          // dispatch(setSelectedWarehouse(null));
         }}
         to="/profile"
       >

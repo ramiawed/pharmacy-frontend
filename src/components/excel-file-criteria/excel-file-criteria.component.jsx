@@ -1,32 +1,39 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { Colors } from "../../utils/constants";
-import TableHeader from "../table-header/table-header.component";
 
-import tableStyles from "../table.module.scss";
-import styles from "./excel-file-criteria.module.scss";
+// constants
+import { Colors } from "../../utils/constants";
+
+// components
+import RowContainer from "../../components/row-container/row-container.component";
 
 function ExcelFileCriteria({ action }) {
   const { t } = useTranslation();
   return (
     <>
-      <p className={styles.header}>
+      <p
+        style={{
+          fontSize: "16px",
+          fontWeight: "bold",
+          marginBottom: "6px",
+          marginTop: "6px",
+          color: Colors.FAILED_COLOR,
+        }}
+      >
         {t("excel-file-should-contains-this-columns")}
       </p>
-      <TableHeader>
-        {action === "update" && (
-          <label className={tableStyles.label_medium}>_id</label>
-        )}
-        <label className={tableStyles.label_medium}>name</label>
-        <label className={tableStyles.label_medium}>formula</label>
-        <label className={tableStyles.label_medium}>caliber</label>
-        <label className={tableStyles.label_medium}>packing</label>
-        <label className={tableStyles.label_medium}>price</label>
-        <label className={tableStyles.label_medium}>customer_price</label>
-        <label className={tableStyles.label_medium}>barcode</label>
-        <label className={tableStyles.label_medium}>indication</label>
-        <label className={tableStyles.label_medium}>composition</label>
-      </TableHeader>
+      <RowContainer isHeader={true}>
+        {action === "update" && <label style={{ flex: 1 }}>_id</label>}
+        <label style={{ flex: 1 }}>name</label>
+        <label style={{ flex: 1 }}>formula</label>
+        <label style={{ flex: 1 }}>caliber</label>
+        <label style={{ flex: 1 }}>packing</label>
+        <label style={{ flex: 1 }}>price</label>
+        <label style={{ flex: 1 }}>customer_price</label>
+        <label style={{ flex: 1 }}>barcode</label>
+        <label style={{ flex: 1 }}>indication</label>
+        <label style={{ flex: 1 }}>composition</label>
+      </RowContainer>
       <p>{t("excel-file-warning")}</p>
       <p
         style={{

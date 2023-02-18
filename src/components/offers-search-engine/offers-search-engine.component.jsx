@@ -1,27 +1,43 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 // redux stuff
 import { useSelector, useDispatch } from "react-redux";
 import {
+  addIdToCompaniesIds,
+  addIdToWarehousesIds,
+  removeIdFromCompaniesId,
+  removeIdFromWarehousesId,
   selectOfferMedicines,
-  setSearchCompanyName,
   setSearchName,
-  setSearchWarehouseName,
 } from "../../redux/offers/offersSlices";
 
 // components
+import SearchPartnerContainer from "../search-partner-container/search-partner-container.component";
 import SearchContainer from "../search-container/search-container.component";
 import SearchInput from "../search-input/search-input.component";
 
 // icons
 import { FaSearch } from "react-icons/fa";
 
+// constants
+import { UserTypeConstants } from "../../utils/constants";
+
 const OffersSearchEngine = ({ handleEnterPress, keyUpHandler }) => {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const { pageState } = useSelector(selectOfferMedicines);
 
+  const isThereSearch =
+    pageState.searchName.length > 0 ||
+    pageState.searchCompaniesIds.length > 0 ||
+    pageState.searchWarehousesIds.length > 0;
+
   return (
-    <SearchContainer searchAction={handleEnterPress}>
+    <SearchContainer
+      searchAction={handleEnterPress}
+      searchEngineAlert={isThereSearch}
+    >
       <SearchInput
         label="user-name"
         id="search-name"
@@ -39,38 +55,22 @@ const OffersSearchEngine = ({ handleEnterPress, keyUpHandler }) => {
         onkeyup={keyUpHandler}
       />
 
-      <SearchInput
-        label="item-company"
-        id="item-company"
-        type="text"
-        value={pageState.searchCompanyName}
-        onchange={(e) => {
-          dispatch(setSearchCompanyName(e.target.value));
-        }}
-        icon={<FaSearch />}
-        placeholder="search-by-company-name"
-        onEnterPress={handleEnterPress}
-        resetField={() => {
-          dispatch(setSearchCompanyName(""));
-        }}
-        onkeyup={keyUpHandler}
+      <SearchPartnerContainer
+        label={t("item-company")}
+        partners={pageState?.searchCompaniesIds}
+        addId={addIdToCompaniesIds}
+        removeId={removeIdFromCompaniesId}
+        partnerType={UserTypeConstants.COMPANY}
+        action={handleEnterPress}
       />
 
-      <SearchInput
-        label="item-warehouse"
-        id="item-warehouse"
-        type="text"
-        value={pageState.searchWarehouseName}
-        onchange={(e) => {
-          dispatch(setSearchWarehouseName(e.target.value));
-        }}
-        icon={<FaSearch />}
-        placeholder="search-by-warehouse-name"
-        onEnterPress={handleEnterPress}
-        resetField={() => {
-          dispatch(setSearchWarehouseName(""));
-        }}
-        onkeyup={keyUpHandler}
+      <SearchPartnerContainer
+        label={t("item-warehouse")}
+        partners={pageState?.searchWarehousesIds}
+        addId={addIdToWarehousesIds}
+        removeId={removeIdFromWarehousesId}
+        partnerType={UserTypeConstants.WAREHOUSE}
+        action={handleEnterPress}
       />
     </SearchContainer>
   );

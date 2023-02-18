@@ -13,7 +13,7 @@ function Toast({
   useEffect(() => {
     setTimeout(() => {
       actionAfterTimeout();
-    }, 3000);
+    }, 10000);
   });
 
   return (

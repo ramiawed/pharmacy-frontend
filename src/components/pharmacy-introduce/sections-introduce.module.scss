@@ -1,0 +1,77 @@
+@import "../../variables.scss";
+
+.outer_container {
+  width: 100%;
+  background-color: rgba($color: $white-color, $alpha: 1);
+}
+
+.container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px 0;
+  margin: 0 auto;
+}
+
+.header_container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  order: 1;
+
+  h2 {
+    color: $offer-color;
+    text-shadow: 2px 2px 3px rgba($color: #000000, $alpha: 1);
+    font-weight: bold;
+    font-size: 1.2rem;
+    text-align: center;
+  }
+}
+
+.content_container {
+  padding: 5px;
+  position: relative;
+  width: 60%;
+  min-width: 320px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  order: 2;
+
+  ul {
+    list-style-type: disc;
+
+    li {
+      margin-inline-start: 20px;
+      margin-right: 20px;
+      color: $main-color;
+      text-align: justify;
+      font-size: 1rem;
+      font-weight: bold;
+      font-family: $font-ar-01;
+    }
+  }
+}
+
+@media only screen and (min-width: $medium) {
+  .container {
+    width: 65%;
+    flex-direction: row;
+  }
+
+  .header_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 35%;
+  }
+
+  .content_container {
+    h2 {
+      text-align: right;
+    }
+  }
+}

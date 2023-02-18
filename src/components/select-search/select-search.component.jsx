@@ -16,7 +16,7 @@ const SelectSearch = ({ options, changeHandler, defaultOption, text }) => {
     <SearchRowContainer>
       <label>{t(text)}</label>
       <SelectCustom
-        bgColor={Colors.SECONDARY_COLOR}
+        bgColor={Colors.LIGHT_COLOR}
         foreColor="#fff"
         options={options}
         onchange={changeHandler}

@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addNotification } from "../../redux/notifications/notificationsSlice";
 
 // components
-import Icon from "../action-icon/action-icon.component";
+import Icon from "../icon/icon.component";
 import Button from "../button/button.component";
 
 // icons
@@ -164,7 +164,7 @@ function NewNotification({ setIsNew, setSuccessAddingMsg }) {
             <div>
               <BiImage
                 size={128}
-                color={Colors.SECONDARY_COLOR}
+                color={Colors.LIGHT_COLOR}
                 onClick={handleAddImageClick}
                 style={{
                   cursor: "pointer",

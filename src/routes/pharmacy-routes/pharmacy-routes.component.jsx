@@ -43,19 +43,16 @@ const OrderDetailsPage = lazy(() =>
 const OffersPage = lazy(() =>
   import("../../pages/offers-page/offers-page.component")
 );
-const BasketsPage = lazy(() =>
-  import("../../pages/baskets-page/baskets-page.component")
-);
 const SavedItemsPage = lazy(() =>
   import("../../pages/saved-items-page/saved-items-page.component")
-);
-const BasketsOptionsPage = lazy(() =>
-  import("../../pages/baskets-options-page/baskets-options-page.component")
 );
 const BasketOrderDetailsPage = lazy(() =>
   import(
     "../../pages/basket-order-details-page/basket-order-details-page.component"
   )
+);
+const SpecialOffersPage = lazy(() =>
+  import("../../pages/special-offers-page/special-offers-page.component")
 );
 
 function PharmacyRoutes({ changeOptionHandler }) {
@@ -91,7 +88,7 @@ function PharmacyRoutes({ changeOptionHandler }) {
             />
           </Route>
 
-          <Route exact path="/baskets">
+          {/* <Route exact path="/baskets">
             <BasketsOptionsPage
               onSelectedChange={() => {
                 changeOptionHandler({
@@ -103,9 +100,23 @@ function PharmacyRoutes({ changeOptionHandler }) {
                 });
               }}
             />
+          </Route> */}
+
+          <Route excat path="/special-offers">
+            <SpecialOffersPage
+              onSelectedChange={() => {
+                changeOptionHandler({
+                  selectedTopNavOption: TopNavLinks.SPEACIAL_OFFERS,
+                  collapsedSideNavOption: true,
+                  selectedSideNavOption: "",
+                  showTopNav: false,
+                  showSearchBar: false,
+                });
+              }}
+            />
           </Route>
 
-          <Route exact path="/all-baskets">
+          {/* <Route exact path="/all-baskets">
             <BasketsPage
               onSelectedChange={() => {
                 changeOptionHandler({
@@ -117,7 +128,7 @@ function PharmacyRoutes({ changeOptionHandler }) {
                 });
               }}
             />
-          </Route>
+          </Route> */}
 
           <Route exact path="/ordered-baskets">
             <OrdersPage

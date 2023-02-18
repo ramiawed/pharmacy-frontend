@@ -6,12 +6,15 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeDisplayType,
-  resetWarehousePageState,
+  changeSearchCity,
+  changeSearchName,
   selectWarehousesPageState,
 } from "../../redux/warehouse/warehousesSlice";
+import { selectUser } from "../../redux/auth/authSlice";
 
 // components
-import Icon from "../action-icon/action-icon.component";
+import ActionBar from "../action-bar/action-bar.component";
+import Icon from "../icon/icon.component";
 
 // react icons
 import { RiRefreshLine } from "react-icons/ri";
@@ -20,16 +23,14 @@ import { FaListUl } from "react-icons/fa";
 import { VscClearAll } from "react-icons/vsc";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
-// styles
-import generalStyles from "../../style.module.scss";
-
 // constants and utils
-import { CitiesName, Colors } from "../../utils/constants";
+import { CitiesName, Colors, UserTypeConstants } from "../../utils/constants";
 
 function WarehousesActions({ refreshHandler }) {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   const { searchName, searchCity, displayType } = useSelector(
     selectWarehousesPageState
@@ -48,7 +49,7 @@ function WarehousesActions({ refreshHandler }) {
   return (
     <>
       {/* action's buttons */}
-      <div className={[generalStyles.actions].join(" ")}>
+      <ActionBar>
         {/* refresh */}
         <Icon
           foreColor={Colors.MAIN_COLOR}
@@ -59,14 +60,16 @@ function WarehousesActions({ refreshHandler }) {
         />
 
         {/* clear search filter */}
-        {(searchName.length > 0 || searchCity !== CitiesName.ALL) && (
+        {(searchName.length > 0 ||
+          (user.type === UserTypeConstants.ADMIN &&
+            searchCity !== CitiesName.ALL)) && (
           <Icon
             selected={false}
             foreColor={Colors.MAIN_COLOR}
             tooltip={t("clear-filter-tooltip")}
             onclick={() => {
-              dispatch(resetWarehousePageState());
-              refreshHandler();
+              dispatch(changeSearchName(""));
+              dispatch(changeSearchCity(CitiesName.ALL));
             }}
             icon={() => <VscClearAll />}
             withBackground={true}
@@ -104,7 +107,7 @@ function WarehousesActions({ refreshHandler }) {
           icon={() => <IoMdArrowRoundBack />}
           foreColor={Colors.MAIN_COLOR}
         />
-      </div>
+      </ActionBar>
     </>
   );
 }

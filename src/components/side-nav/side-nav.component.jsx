@@ -17,7 +17,6 @@ import { companySliceSignOut } from "../../redux/company/companySlice";
 import { itemsSliceSignOut } from "../../redux/items/itemsSlices";
 import { statisticsSliceSignOut } from "../../redux/statistics/statisticsSlice";
 import { warehouseSliceSignOut } from "../../redux/warehouse/warehousesSlice";
-import { warehouseItemsSliceSignOut } from "../../redux/warehouseItems/warehouseItemsSlices";
 import { orderSliceSignOut } from "../../redux/orders/ordersSlice";
 import { advertisementsSignOut } from "../../redux/advertisements/advertisementsSlice";
 import { companiesSectionOneSignOut } from "../../redux/advertisements/companiesSectionOneSlice";
@@ -44,7 +43,6 @@ import generalStyles from "../../style.module.scss";
 import { SERVER_URL, UserTypeConstants } from "../../utils/constants";
 import { savedItemsSliceSignOut } from "../../redux/savedItems/savedItemsSlice";
 import { basketsSliceSignOut } from "../../redux/baskets/basketsSlice";
-import { basketOrderSliceSignOut } from "../../redux/basketOrdersSlice/basketOrdersSlice";
 
 const SideNavAdmin = lazy(() =>
   import("../side-nav-admin/side-nav-admin.component")
@@ -83,7 +81,6 @@ function SideNav({
     dispatch(statisticsSliceSignOut());
     dispatch(usersSliceSignOut());
     dispatch(warehouseSliceSignOut());
-    dispatch(warehouseItemsSliceSignOut());
     dispatch(orderSliceSignOut());
     dispatch(resetMedicines());
     dispatch(advertisementsSignOut());
@@ -99,7 +96,6 @@ function SideNav({
     dispatch(usersNotificationsSignOut());
     dispatch(savedItemsSliceSignOut());
     dispatch(basketsSliceSignOut());
-    dispatch(basketOrderSliceSignOut());
     localStorage.removeItem("token");
   };
 

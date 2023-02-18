@@ -2,16 +2,19 @@ import React, { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
 
 // redux stuff
+import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { addAdvertisement } from "../../redux/advertisements/advertisementsSlice";
 import { selectUserData } from "../../redux/auth/authSlice";
+import { selectCompanies } from "../../redux/company/companySlice";
+import { selectWarehouses } from "../../redux/warehouse/warehousesSlice";
 
 // components
-import Icon from "../action-icon/action-icon.component";
-import Button from "../button/button.component";
-import SelectPartnerModal from "../../modals/select-partner-modal/select-partner-modal.component";
 import SelectMedicineModal from "../../modals/select-medicine-modal/select-medicine-modal.component";
+import SelectPartnerModal from "../../modals/select-partner-modal/select-partner-modal.component";
+import Modal from "../../modals/modal/modal.component";
 import Toast from "../toast/toast.component";
+import Icon from "../icon/icon.component";
 
 // icons
 import { MdAddCircle } from "react-icons/md";
@@ -24,7 +27,7 @@ import styles from "./new-advertisement.module.scss";
 // constants
 import { BASEURL, Colors } from "../../utils/constants";
 
-function NewAdvertisement({ isNew, setIsNew }) {
+function NewAdvertisement({ closeHandler, header }) {
   const { t } = useTranslation();
   const inputFileRef = useRef(null);
   const dispatch = useDispatch();
@@ -32,7 +35,9 @@ function NewAdvertisement({ isNew, setIsNew }) {
   //  selectors
   const { token } = useSelector(selectUserData);
 
-  // const [isNew, setIsNew] = useState(false);
+  const { companies } = useSelector(selectCompanies);
+  const { warehouses } = useSelector(selectWarehouses);
+
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [selectedWarehouse, setSelectedWarehouse] = useState(null);
   const [selectedMedicine, setSelectedMedicine] = useState(null);
@@ -42,14 +47,6 @@ function NewAdvertisement({ isNew, setIsNew }) {
     useState(false);
   const [showSelectMedicineModal, setShowSelectMedicineModal] = useState(false);
   const [imageErrorMsg, setImageErrorMsg] = useState("");
-
-  const resetState = () => {
-    setIsNew(false);
-    setSelectedCompany(null);
-    setSelectedWarehouse(null);
-    setSelectedMedicine(null);
-    setSelectedImage(null);
-  };
 
   const handleAddImageClick = () => {
     inputFileRef.current.click();
@@ -98,170 +95,106 @@ function NewAdvertisement({ isNew, setIsNew }) {
         selectedMedicine ? selectedMedicine._id : null
       );
 
-      dispatch(addAdvertisement({ data: formData, token }));
+      dispatch(addAdvertisement({ data: formData, token }))
+        .then(unwrapResult)
+        .then(() => closeHandler(false));
     }
   };
 
   return (
-    <div>
-      {isNew && (
-        <div
-          className={styles.new_advertisement_div}
-          style={{
-            marginBottom: "10px",
-          }}
-        >
-          <div className={styles.content}>
-            <div className={styles.links}>
-              <div className={styles.row}>
-                <label>{t("company")}:</label>
-                {selectedCompany === null ? (
+    <Modal
+      header={header}
+      cancelLabel="cancel-label"
+      closeModal={() => closeHandler(false)}
+      okLabel="ok-label"
+      okModal={addAdvertisementHandler}
+    >
+      <div className={styles.new_advertisement_div}>
+        <div className={styles.content}>
+          <div className={styles.links}>
+            {/* company */}
+            <ChoosePartnerOrItem
+              selectedObj={selectedCompany}
+              label={t("company")}
+              deleteObj={setSelectedCompany}
+              showSelectedModal={setShowSelectCompanyModal}
+            />
+            {/* warehouse */}
+            <ChoosePartnerOrItem
+              selectedObj={selectedWarehouse}
+              label={t("warehouse")}
+              deleteObj={setSelectedWarehouse}
+              showSelectedModal={setShowSelectWarehouseModal}
+            />
+            {/* item */}
+            <ChoosePartnerOrItem
+              selectedObj={selectedMedicine}
+              label={t("single-item")}
+              deleteObj={setSelectedMedicine}
+              showSelectedModal={setShowSelectMedicineModal}
+            />
+
+            <div className={styles.row}>
+              <label>{t("image-label")}:</label>
+              {selectedImage === null ? (
+                <>
                   <Icon
                     selected={false}
                     foreColor={Colors.SUCCEEDED_COLOR}
-                    onclick={() => {
-                      setShowSelectCompanyModal(true);
-                    }}
+                    onclick={handleAddImageClick}
                     icon={() => <MdAddCircle size={24} />}
                   />
-                ) : (
-                  <>
-                    <p>{selectedCompany.name}</p>
-                    <Icon
-                      selected={false}
-                      foreColor={Colors.FAILED_COLOR}
-                      onclick={() => {
-                        setSelectedCompany(null);
-                      }}
-                      icon={() => <RiDeleteBin5Fill size={24} />}
-                    />
-                  </>
-                )}
-              </div>
-              <div className={styles.row}>
-                <label>{t("warehouse")}:</label>
-                {selectedWarehouse === null ? (
-                  <Icon
-                    selected={false}
-                    foreColor={Colors.SUCCEEDED_COLOR}
-                    onclick={() => {
-                      setShowSelectWarehouseModal(true);
-                    }}
-                    icon={() => <MdAddCircle size={24} />}
-                  />
-                ) : (
-                  <>
-                    <p>{selectedWarehouse.name}</p>
-                    <Icon
-                      selected={false}
-                      foreColor={Colors.FAILED_COLOR}
-                      onclick={() => {
-                        setSelectedWarehouse(null);
-                      }}
-                      icon={() => <RiDeleteBin5Fill size={24} />}
-                    />
-                  </>
-                )}
-              </div>
-              <div className={styles.row}>
-                <label>{t("single-item")}:</label>
-                {selectedMedicine === null ? (
-                  <Icon
-                    selected={false}
-                    foreColor={Colors.SUCCEEDED_COLOR}
-                    onclick={() => {
-                      setShowSelectMedicineModal(true);
-                    }}
-                    icon={() => <MdAddCircle size={24} />}
-                  />
-                ) : (
-                  <>
-                    <p>{selectedMedicine.name}</p>
-                    <Icon
-                      selected={false}
-                      foreColor={Colors.FAILED_COLOR}
-                      onclick={() => {
-                        setSelectedMedicine(null);
-                      }}
-                      icon={() => <RiDeleteBin5Fill size={24} />}
-                    />
-                  </>
-                )}
-              </div>
-              <div className={styles.row}>
-                <label>{t("image-label")}:</label>
-                {selectedImage === null ? (
-                  <>
-                    <Icon
-                      selected={false}
-                      foreColor={Colors.SUCCEEDED_COLOR}
-                      onclick={handleAddImageClick}
-                      icon={() => <MdAddCircle size={24} />}
-                    />
-                    <div
-                      style={{
-                        display: "none",
-                      }}
-                    >
-                      <form encType="multipart/form-data">
-                        <div>
-                          <input
-                            multiple={false}
-                            accept="image/*"
-                            ref={inputFileRef}
-                            type="file"
-                            onChange={fileChangedHandler}
-                            style={{ display: "none" }}
-                          />
-                        </div>
-                      </form>
-                    </div>
-                  </>
-                ) : (
-                  <Icon
-                    icon={() => <RiDeleteBin5Fill size={24} />}
-                    selected={false}
-                    foreColor={Colors.FAILED_COLOR}
-                    onclick={() => setSelectedImage(null)}
-                  />
-                )}
-              </div>
-            </div>
-            <div className={styles.img}>
-              {selectedImage ? (
-                <img
-                  src={URL.createObjectURL(selectedImage)}
-                  className={styles.image}
-                  alt="Thumb"
-                />
-              ) : (
-                <div>
-                  <BiImage
-                    size={128}
-                    color={Colors.SECONDARY_COLOR}
-                    onClick={handleAddImageClick}
+                  <div
                     style={{
-                      cursor: "pointer",
+                      display: "none",
                     }}
-                  />
-                </div>
+                  >
+                    <form encType="multipart/form-data">
+                      <div>
+                        <input
+                          multiple={false}
+                          accept="image/*"
+                          ref={inputFileRef}
+                          type="file"
+                          onChange={fileChangedHandler}
+                          // style={{ display: "none" }}
+                        />
+                      </div>
+                    </form>
+                  </div>
+                </>
+              ) : (
+                <Icon
+                  icon={() => <RiDeleteBin5Fill size={24} />}
+                  selected={false}
+                  foreColor={Colors.FAILED_COLOR}
+                  onclick={() => setSelectedImage(null)}
+                />
               )}
             </div>
           </div>
-          <div className={styles.actions}>
-            <Button
-              action={addAdvertisementHandler}
-              text={t("add-label")}
-              bgColor={Colors.SUCCEEDED_COLOR}
-            />
-            <Button
-              action={resetState}
-              text={t("cancel-label")}
-              bgColor={Colors.FAILED_COLOR}
-            />
+          <div className={styles.img}>
+            {selectedImage ? (
+              <img
+                src={URL.createObjectURL(selectedImage)}
+                className={styles.image}
+                alt="Thumb"
+              />
+            ) : (
+              <div>
+                <BiImage
+                  size={128}
+                  color={Colors.LIGHT_COLOR}
+                  onClick={handleAddImageClick}
+                  style={{
+                    cursor: "pointer",
+                  }}
+                />
+              </div>
+            )}
           </div>
         </div>
-      )}
+      </div>
 
       {imageErrorMsg && (
         <Toast
@@ -273,27 +206,24 @@ function NewAdvertisement({ isNew, setIsNew }) {
           }}
         />
       )}
-
       {showSelectCompanyModal && (
         <SelectPartnerModal
           header="choose-company"
           close={() => setShowSelectCompanyModal(false)}
           chooseAction={(data) => selectCompanyHandler(data)}
-          url={`${BASEURL}/users?limit=15&isActive=true&isApproved=true&type=company`}
+          data={companies}
           placeholder="enter-company-name"
         />
       )}
-
       {showSelectWarehouseModal && (
         <SelectPartnerModal
           header="choose-warehouse"
           close={() => setShowSelectWarehouseModal(false)}
           chooseAction={(data) => selectWarehouseHandler(data)}
-          url={`${BASEURL}/users?limit=15&isActive=true&isApproved=true&type=warehouse`}
+          data={warehouses}
           placeholder="enter-warehouse-name"
         />
       )}
-
       {showSelectMedicineModal && (
         <SelectMedicineModal
           close={() => setShowSelectMedicineModal(false)}
@@ -301,8 +231,43 @@ function NewAdvertisement({ isNew, setIsNew }) {
           url={`${BASEURL}/items?limit=15&isActive=true`}
         />
       )}
-    </div>
+    </Modal>
   );
 }
 
 export default NewAdvertisement;
+
+const ChoosePartnerOrItem = ({
+  selectedObj,
+  label,
+  showSelectedModal,
+  deleteObj,
+}) => {
+  return (
+    <div className={styles.row}>
+      <label>{label}</label>
+      {selectedObj === null ? (
+        <Icon
+          selected={false}
+          foreColor={Colors.SUCCEEDED_COLOR}
+          onclick={() => {
+            showSelectedModal(true);
+          }}
+          icon={() => <MdAddCircle size={24} />}
+        />
+      ) : (
+        <>
+          <p>{selectedObj.name}</p>
+          <Icon
+            selected={false}
+            foreColor={Colors.FAILED_COLOR}
+            onclick={() => {
+              deleteObj(null);
+            }}
+            icon={() => <RiDeleteBin5Fill size={24} />}
+          />
+        </>
+      )}
+    </div>
+  );
+};

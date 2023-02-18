@@ -2,10 +2,10 @@ import React, { useEffect } from "react";
 import ReactLoading from "react-loading";
 
 // components
-import Button from "../../components/button/button.component";
-import NoContent from "../../components/no-content/no-content.component";
+import MainContentContainer from "../../components/main-content-container/main-content-container.component";
 import NotificationRow from "../../components/notification-row/notification-row.component";
-import Icon from "../../components/action-icon/action-icon.component";
+import NoContent from "../../components/no-content/no-content.component";
+import Button from "../../components/button/button.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -26,7 +26,6 @@ import {
 } from "../../redux/userNotifications/userNotificationsSlice";
 
 // icons
-import { RiRefreshLine } from "react-icons/ri";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -82,35 +81,12 @@ function UserNotificationPage({ onSelectedChange }) {
 
   return (
     <>
-      <Header>
-        <h2>{t("nav-notifications")}</h2>
+      <Header title="nav-notifications" refreshHandler={refreshHandler} />
 
-        <div className={generalStyles.refresh_icon}>
-          {/* Refresh */}
-          <Icon
-            selected={false}
-            foreColor={Colors.WHITE_COLOR}
-            tooltip={t("refresh-tooltip")}
-            onclick={() => {
-              refreshHandler();
-            }}
-            icon={() => <RiRefreshLine />}
-          />
-        </div>
-      </Header>
-
-      <div className={generalStyles.container_with_header}>
-        <div
-          style={{
-            paddingInline: "10px",
-            paddingLeft: "10px",
-            paddingRight: "10px",
-          }}
-        >
-          {userNotifications.map((note, index) => (
-            <NotificationRow key={note._id} notification={note} index={index} />
-          ))}
-        </div>
+      <MainContentContainer>
+        {userNotifications.map((note, index) => (
+          <NotificationRow key={note._id} notification={note} index={index} />
+        ))}
 
         {userNotifications.length === 0 && status !== "loading" && (
           <NoContent msg={t("no-notifications")} />
@@ -118,7 +94,7 @@ function UserNotificationPage({ onSelectedChange }) {
 
         {status === "loading" && (
           <div className={generalStyles.flex_container}>
-            <ReactLoading color={Colors.SECONDARY_COLOR} type="cylon" />
+            <ReactLoading color={Colors.LIGHT_COLOR} type="cylon" />
           </div>
         )}
 
@@ -126,7 +102,7 @@ function UserNotificationPage({ onSelectedChange }) {
           <Button
             text={t("more")}
             action={handleMoreResult}
-            bgColor={Colors.SECONDARY_COLOR}
+            bgColor={Colors.LIGHT_COLOR}
           />
         )}
 
@@ -142,7 +118,7 @@ function UserNotificationPage({ onSelectedChange }) {
               {t("no-more")}
             </p>
           )}
-      </div>
+      </MainContentContainer>
     </>
   );
 }

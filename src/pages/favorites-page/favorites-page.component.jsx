@@ -20,21 +20,15 @@ import { selectUserData } from "../../redux/auth/authSlice";
 import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 
 // components
+import MainContentContainer from "../../components/main-content-container/main-content-container.component";
+import ActionLoader from "../../components/action-loader/action-loader.component";
+import MedicineRow from "../../components/medicine-row/medicine-row.component";
+import PartnerRow from "../../components/partner-row/partner-row.component";
 import CardInfo from "../../components/card-info/card-info.component";
 import Header from "../../components/header/header.component";
-import PartnerRow from "../../components/partner-row/partner-row.component";
-import Icon from "../../components/action-icon/action-icon.component";
-import ItemRow from "../../components/item-row/item-row.component";
-import ActionLoader from "../../components/action-loader/action-loader.component";
-
-// icons
-import { RiRefreshLine } from "react-icons/ri";
-
-// styles
-import generalStyles from "../../style.module.scss";
 
 // constants
-import { Colors, UserTypeConstants } from "../../utils/constants.js";
+import { UserTypeConstants } from "../../utils/constants.js";
 
 // handlers
 import {
@@ -74,34 +68,17 @@ function FavoritesPage({ onSelectedChange }) {
 
   return user ? (
     <>
-      <Header>
-        <h2>{t("favorites")}</h2>
-        <div className={generalStyles.refresh_icon}>
-          <Icon
-            selected={false}
-            foreColor={Colors.WHITE_COLOR}
-            tooltip={t("refresh-tooltip")}
-            onclick={refreshFavoritesHandler}
-            icon={() => <RiRefreshLine />}
-          />
-        </div>
-      </Header>
-      <div className={generalStyles.container_with_header}>
-        <div
-          style={{
-            paddingInline: "10px",
-            paddingLeft: "10px",
-            paddingRight: "10px",
-          }}
-        >
+      <Header refreshHandler={refreshFavoritesHandler} title="favorites" />
+      <MainContentContainer>
+        <div>
           <CardInfo headerTitle={t("nav-items")}>
             {favoritesItems &&
-              favoritesItems.map((item) => (
-                <ItemRow
-                  key={item._id}
+              favoritesItems.map((item, index) => (
+                <MedicineRow
                   item={item}
-                  withoutBoxShadow={true}
-                  isFavorite={true}
+                  index={index}
+                  key={item._id}
+                  showComposition={true}
                 />
               ))}
           </CardInfo>
@@ -131,7 +108,12 @@ function FavoritesPage({ onSelectedChange }) {
                       )
                     }
                     addCompanyToOurCompaniesHandler={() =>
-                      addCompanyToOurCompaniesHandler(favorite, dispatch, token)
+                      addCompanyToOurCompaniesHandler(
+                        favorite,
+                        isOnline,
+                        dispatch,
+                        token
+                      )
                     }
                     removeCompanyFromOurCompaniesHandler={() => {
                       removeCompanyFromOurCompaniesHandler(
@@ -178,6 +160,7 @@ function FavoritesPage({ onSelectedChange }) {
                       partner={favorite}
                       fullWidth={true}
                       withoutBoxShadow={true}
+                      withoutDeliverOption={true}
                       addPartnerToFavoriteHandler={() =>
                         addPartnerToFavoriteHandler(
                           favorite,
@@ -230,7 +213,7 @@ function FavoritesPage({ onSelectedChange }) {
         {/* favorites warehouses */}
 
         {status === "loading" && <ActionLoader allowCancel={false} />}
-      </div>
+      </MainContentContainer>
     </>
   ) : (
     <Redirect to="/signin" />

@@ -11,16 +11,18 @@ import {
   removeBasketFromState,
   updateBasket,
 } from "../../redux/baskets/basketsSlice";
-import { saveOrder } from "../../redux/basketOrdersSlice/basketOrdersSlice";
+import { selectWarehouses } from "../../redux/warehouse/warehousesSlice";
+import { saveBasketOrder } from "../../redux/orders/ordersSlice";
 
 // components
-import Modal from "../../modals/modal/modal.component";
-import Button from "../button/button.component";
-import Icon from "../action-icon/action-icon.component";
+import SelectPartnerModal from "../../modals/select-partner-modal/select-partner-modal.component";
+import FilterItemsModal from "../../modals/filter-items-modal/filter-items-modal.component";
 import ChooseItemModal from "../../modals/choose-item-modal/choose-item-modal.component";
 import BasketItemRow from "../basket-item-row/basket-item-row.component";
-import SelectPartnerModal from "../../modals/select-partner-modal/select-partner-modal.component";
 import ResultModal from "../result-modal/result-modal.component";
+import Modal from "../../modals/modal/modal.component";
+import Button from "../button/button.component";
+import Icon from "../icon/icon.component";
 
 // icons
 import { MdAddCircle, MdExpandLess, MdExpandMore } from "react-icons/md";
@@ -30,7 +32,13 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 import styles from "./basket.module.scss";
 
 // constants
-import { BASEURL, Colors, UserTypeConstants } from "../../utils/constants";
+import {
+  BASEURL,
+  Colors,
+  formatNumber,
+  OrdersStatusOptions,
+  UserTypeConstants,
+} from "../../utils/constants";
 
 function Basket({ setIsNew, basket, editable, forRead }) {
   const { t } = useTranslation();
@@ -38,6 +46,7 @@ function Basket({ setIsNew, basket, editable, forRead }) {
 
   // selectors
   const { token, user } = useSelector(selectUserData);
+  const { warehouses } = useSelector(selectWarehouses);
 
   // own states
   const [basketItems, setBaskItems] = useState(basket ? basket.items : []);
@@ -94,13 +103,15 @@ function Basket({ setIsNew, basket, editable, forRead }) {
   const orderBasketHandler = () => {
     const data = {
       obj: {
-        warehouseId: basket.warehouse._id,
-        basketId: basket._id,
+        pharmacy: user._id,
+        warehouse: basket.warehouse._id,
+        basket: basket._id,
+        status: OrdersStatusOptions.SENT_BY_PHARMACY,
       },
       token,
     };
 
-    dispatch(saveOrder(data))
+    dispatch(saveBasketOrder(data))
       .then(unwrapResult)
       .then(() => {
         setResultModalParams({
@@ -384,32 +395,16 @@ function Basket({ setIsNew, basket, editable, forRead }) {
   return (
     <>
       <div
-        className={styles.basket_div}
+        className={[styles.basket_div].join(" ")}
         style={{
           backgroundColor: errorAfterCheckBasket ? "rgb(255, 132, 123)" : "",
         }}
       >
-        {!editable && (
-          <div
-            className={styles.expanded_div}
-            onClick={() => setExpanded(!expanded)}
-          >
-            {expanded ? <MdExpandLess size={16} /> : <MdExpandMore size={16} />}
-          </div>
-        )}
-
         <div className={styles.content}>
           {user.type !== UserTypeConstants.WAREHOUSE && !forRead && (
-            <div
-              className={styles.row}
-              style={{
-                backgroundColor: Colors.WHITE_COLOR,
-                padding: "5px",
-                borderRadius: "6px",
-                alignItems: "center",
-              }}
-            >
+            <div className={styles.details_row}>
               <label>{t("warehouse")}:</label>
+
               {selectedWarehouse === null ? (
                 allowEdit && (
                   <Icon
@@ -420,12 +415,13 @@ function Basket({ setIsNew, basket, editable, forRead }) {
                       setErrorAfterCheckBasket(false);
                     }}
                     icon={() => <MdAddCircle size={24} />}
+                    withBackground={true}
                   />
                 )
               ) : (
                 <>
-                  <p>{selectedWarehouse.name}</p>
-                  {allowEdit && (
+                  <label>{selectedWarehouse.name}</label>
+                  {allowEdit ? (
                     <Icon
                       selected={false}
                       foreColor={Colors.FAILED_COLOR}
@@ -434,7 +430,10 @@ function Basket({ setIsNew, basket, editable, forRead }) {
                         setCheckBasket(false);
                       }}
                       icon={() => <RiDeleteBin5Fill size={24} />}
+                      withBackground={true}
                     />
+                  ) : (
+                    <></>
                   )}
                 </>
               )}
@@ -454,74 +453,94 @@ function Basket({ setIsNew, basket, editable, forRead }) {
             </div>
           )}
 
-          {expanded ? (
-            basketItems.map((i, index) => (
+          <div className={styles.details_row}>
+            <label>{t("basket-total-items")}</label>
+            <label>{basketItems.length}</label>
+            <div
+              className={styles.expanded_div}
+              onClick={() => setExpanded(!expanded)}
+            >
+              {expanded ? (
+                <MdExpandLess size={24} />
+              ) : (
+                <MdExpandMore size={24} />
+              )}
+            </div>
+          </div>
+
+          {expanded &&
+            basketItems.map((item, index) => (
               <BasketItemRow
                 changeBonus={changeBonus}
                 changeIsFree={changeIsFree}
                 changeQty={changeQty}
                 deleteItem={deleteItem}
                 index={index}
-                item={i}
+                item={item}
                 setSelectedIndex={setSelectedIndex}
                 setShowChooseModal={setShowChooseModal}
                 key={index}
                 editable={editable}
                 allowEdit={allowEdit}
               />
-            ))
-          ) : (
-            <div className={styles.row}>
-              <label>{t("basket-total-items")}</label>
-              <input value={basketItems.length} disabled={true} />
-            </div>
-          )}
+            ))}
 
           <div className={styles.content}>
-            <div className={styles.row}>
+            <div className={styles.details_row}>
               <label>{t("basket-total-price")}</label>
-              <input value={calculateBasketTotalPrice()} disabled={true} />
+              <label>{formatNumber(calculateBasketTotalPrice())}</label>
             </div>
-            <div className={styles.row}>
+            <div className={styles.details_row}>
               <label>{t("basket-total-discount")}</label>
-              <input
-                value={totalDiscount}
-                onChange={(e) => setTotalDiscount(e.target.value)}
-                type="number"
-                min={0}
-                max={100}
-                disabled={!editable || !allowEdit}
-              />
+
+              {editable && allowEdit ? (
+                <input
+                  value={totalDiscount}
+                  onChange={(e) => setTotalDiscount(e.target.value)}
+                  type="number"
+                  min={0}
+                  max={100}
+                />
+              ) : (
+                <label>{totalDiscount}</label>
+              )}
             </div>
 
-            <div className={styles.row}>
+            <div className={styles.details_row}>
               <label>{t("basket-total-price-after-discount")}</label>
-              <input
-                value={
-                  totalDiscount !== 0
-                    ? calculateBasketTotalPrice() -
-                      (calculateBasketTotalPrice() * totalDiscount) / 100
-                    : calculateBasketTotalPrice()
-                }
-                disabled={true}
-              />
+              <label>
+                {totalDiscount !== 0
+                  ? formatNumber(
+                      calculateBasketTotalPrice() -
+                        (calculateBasketTotalPrice() * totalDiscount) / 100
+                    )
+                  : formatNumber(calculateBasketTotalPrice())}
+              </label>
             </div>
 
-            <div className={styles.row}>
+            <div className={styles.details_row}>
               <label>{t("basket-gift-label")}</label>
-              <input
-                value={gift}
-                onChange={(e) => setGift(e.target.value)}
-                disabled={!editable || !allowEdit}
-              />
+              {editable && allowEdit ? (
+                <textarea
+                  rows="2"
+                  value={gift}
+                  onChange={(e) => setGift(e.target.value)}
+                />
+              ) : (
+                <label>{gift}</label>
+              )}
             </div>
-            <div className={styles.row}>
+            <div className={styles.details_row}>
               <label>{t("basket-note-label")}</label>
-              <input
-                value={note}
-                onChange={(e) => setNote(e.target.value)}
-                disabled={!editable || !allowEdit}
-              />
+              {editable && allowEdit ? (
+                <textarea
+                  rows="2"
+                  value={note}
+                  onChange={(e) => setNote(e.target.value)}
+                />
+              ) : (
+                <label>{note}</label>
+              )}
             </div>
           </div>
         </div>
@@ -585,23 +604,26 @@ function Basket({ setIsNew, basket, editable, forRead }) {
       </div>
 
       {showChooseModal && (
-        <ChooseItemModal
-          close={() => {
-            setShowChooseModal(false);
-            setSelectedIndex(0);
-            setCheckBasket(false);
-          }}
-          setBaskItems={setBaskItems}
-          basketItems={basketItems}
-          index={selectedIndex}
-          url={`${BASEURL}/items?limit=15&isActive=true&warehouseId=${
-            user.type === UserTypeConstants.WAREHOUSE
-              ? user._id
-              : selectedWarehouse
-              ? selectedWarehouse._id
-              : ""
-          }`}
-        />
+        <>
+          {/* <FilterItemsModal close={() => setShowChooseModal(false)} /> */}
+          <ChooseItemModal
+            close={() => {
+              setShowChooseModal(false);
+              setSelectedIndex(0);
+              setCheckBasket(false);
+            }}
+            setBaskItems={setBaskItems}
+            basketItems={basketItems}
+            index={selectedIndex}
+            url={`${BASEURL}/items?limit=15&isActive=true&warehouseId=${
+              user.type === UserTypeConstants.WAREHOUSE
+                ? user._id
+                : selectedWarehouse
+                ? selectedWarehouse._id
+                : ""
+            }`}
+          />
+        </>
       )}
 
       {showSelectWarehouseModal && (
@@ -609,7 +631,7 @@ function Basket({ setIsNew, basket, editable, forRead }) {
           header="choose-warehouse"
           close={() => setShowSelectWarehouseModal(false)}
           chooseAction={(data) => selectWarehouseHandler(data)}
-          url={`${BASEURL}/users?limit=15&isActive=true&isApproved=true&type=warehouse`}
+          data={warehouses}
           placeholder="enter-warehouse-name"
         />
       )}

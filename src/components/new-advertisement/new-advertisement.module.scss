@@ -1,23 +1,14 @@
 @import "../../variables.scss";
 
 .new_advertisement_div {
-  border-radius: 6px;
-  background-color: rgba($color: $secondary-color, $alpha: 0.2);
-
   margin-bottom: 10px;
   padding: 10px;
-
   position: relative;
-
-  animation-name: animateOpacity;
-  animation-duration: 0.3s;
-  animation-fill-mode: forwards;
 }
 
 .content {
   display: flex;
   flex-direction: column;
-
 }
 
 .links_container {
@@ -27,15 +18,11 @@
 
 .img {
   flex: 1;
-
   padding: 20px;
   margin-top: 5px;
-
   background-color: $white-color;
-
   border-radius: 6px;
   box-shadow: 2px 2px 15px rgba($color: #000000, $alpha: 0.6);
-
   display: flex;
   align-items: center;
   justify-content: center;
@@ -46,56 +33,19 @@
   max-height: 320px;
 }
 
-.actions {
-  width: 120px;
-  margin-right: auto;
-  margin-top: 20px;
-
-  display: flex;
-  flex-direction: row;
-}
-
 .links {
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
 }
 
-.delete {
-  padding: 12px;
-  margin: 10px;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-  background: $white-color;
-  color: $third-color;
-
-  box-shadow: 2px 2px 5px rgba($color: #000000, $alpha: 0.6);
-  border-radius: 12px;
-
-  cursor: pointer;
-
-  transition: all 0.3s ease;
-}
-
-.delete:hover {
-  transform: scale(0.95);
-  background: $third-color;
-  color: $white-color;
-}
-
 .row {
   flex: 1;
-
   display: flex;
   flex-direction: row;
   align-items: center;
-
   padding: 12px;
   margin: 5px;
-
   background: rgba($color: $white-color, $alpha: 1);
   box-shadow: 2px 2px 5px rgba($color: #000000, $alpha: 0.6);
   border-radius: 12px;
@@ -104,29 +54,15 @@
 .row label {
   width: 75px;
   font-size: 0.8rem;
-
   color: #9d9d9d;
 }
 
 .row p {
   flex: 1;
-  color: $secondary-color;
+  color: $main-color;
   font-weight: bold;
-
   padding-inline-end: 10px;
   padding-left: 10px;
-}
-
-@keyframes animateOpacity {
-  0% {
-    opacity: 0;
-    left: -100%;
-  }
-
-  100% {
-    opacity: 1;
-    left: 0;
-  }
 }
 
 @media only screen and (min-width: $medium) {
@@ -137,10 +73,6 @@
   .links_container {
     width: 250px;
     flex-direction: column;
-  }
-
-  .delete {
-    font-size: 5rem;
   }
 
   .row {

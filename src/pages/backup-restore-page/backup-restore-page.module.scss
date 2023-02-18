@@ -1,4 +1,4 @@
-@import '../../variables.scss';
+@import "../../variables.scss";
 
 .header {
   color: $third-color;
@@ -8,47 +8,4 @@
 
 .ul {
   margin-right: 30px;
-
-  li {
-    margin-bottom: 10px;
-
-    label {
-      display: inline-block;
-      width: 75px;
-      color: $main-color;
-    }
-
-    .backup_button {
-      background-color: $white-color;
-      padding: 4px 12px;
-      border: 1px solid $green-color;
-      border-radius: 6px;
-      color: $green-color;
-      outline: none;
-      cursor: pointer;
-      margin-left: 10px;
-      transition: all 0.3s;
-
-      &:hover {
-        background: $green-color;
-        color: $white-color;
-      }
-    }
-
-    .restore_button {
-      background-color: $white-color;
-      padding: 4px 12px;
-      border: 1px solid $grey-color;
-      border-radius: 6px;
-      color: $grey-color;
-      outline: none;
-      cursor: pointer;
-      transition: all 0.3s;
-
-      &:hover {
-        background: $grey-color;
-        color: $white-color;
-      }
-    }
-  }
 }

@@ -13,7 +13,7 @@
     overflow: hidden;
     width: 35px;
     height: 35px;
-    background: $secondary-color;
+    background: $light-color;
     color: white;
     display: flex;
     align-items: center;
@@ -39,7 +39,7 @@
 .separator {
     width: 30px;
     height: 5px;
-    background-color: $secondary-color;
+    background-color: $light-color;
     transition: all 0.1s;
 }
 

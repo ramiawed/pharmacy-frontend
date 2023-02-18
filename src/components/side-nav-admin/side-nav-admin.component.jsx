@@ -21,24 +21,18 @@ import { CgProfile } from "react-icons/cg";
 // react redux
 import { selectSettings } from "../../redux/settings/settingsSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { resetPageState, setPageState } from "../../redux/items/itemsSlices";
 import {
-  resetPageState,
-  setCompany,
-  setRole,
-  setWarehouse,
-} from "../../redux/items/itemsSlices";
-import { setRefresh } from "../../redux/orders/ordersSlice";
-import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
+  setSearchCompanyId,
+  setSearchWarehouseId,
+} from "../../redux/medicines/medicinesSlices";
+import { orderSliceSignOut, setRefresh } from "../../redux/orders/ordersSlice";
 
 // styles
 import styles from "../side-nav.module.scss";
 
 // constants
 import { SideNavLinks, UserTypeConstants } from "../../utils/constants.js";
-import {
-  setSearchCompanyId,
-  setSearchWarehouseId,
-} from "../../redux/medicines/medicinesSlices";
 
 function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
   const { t } = useTranslation();
@@ -83,6 +77,7 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           )}
         </div>
       </Link>
+
       <Link
         className={[
           styles.link,
@@ -91,9 +86,13 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
         onClick={() => {
           onSelectedChange(SideNavLinks.ITEMS);
           dispatch(resetPageState());
-          dispatch(setCompany(null));
-          dispatch(setWarehouse(null));
-          dispatch(setRole(UserTypeConstants.ADMIN));
+          dispatch(
+            setPageState({
+              company: null,
+              warehouse: null,
+              role: UserTypeConstants.ADMIN,
+            })
+          );
           dispatch(setSearchWarehouseId(null));
           dispatch(setSearchCompanyId(null));
         }}
@@ -113,6 +112,35 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           )}
         </div>
       </Link>
+
+      {saveOrders && (
+        <Link
+          className={[
+            styles.link,
+            selectedOption === SideNavLinks.ORDERS ? `${styles.selected}` : "",
+          ].join(" ")}
+          onClick={() => {
+            onSelectedChange(SideNavLinks.ORDERS);
+            dispatch(setRefresh(true));
+            dispatch(orderSliceSignOut());
+            dispatch(setSearchWarehouseId(null));
+            dispatch(setSearchCompanyId(null));
+          }}
+          to="/orders"
+        >
+          <div className={styles.nav}>
+            <div className={styles.nav_icon}>
+              <BsFillEnvelopeFill size={24} />
+              {collapsed && (
+                <label className={styles.tooltip}>{t("nav-orders")}</label>
+              )}
+            </div>
+            {!collapsed && (
+              <div className={styles.nav_label}>{t("nav-orders")} </div>
+            )}
+          </div>
+        </Link>
+      )}
 
       <Link
         className={[
@@ -135,6 +163,34 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           </div>
           {!collapsed && (
             <div className={styles.nav_label}>{t("nav-baskets")}</div>
+          )}
+        </div>
+      </Link>
+
+      <Link
+        className={[
+          styles.link,
+          selectedOption === SideNavLinks.STATISTICS
+            ? `${styles.selected}`
+            : "",
+        ].join(" ")}
+        onClick={() => {
+          onSelectedChange(SideNavLinks.STATISTICS);
+          dispatch(setSearchWarehouseId(null));
+          dispatch(setSearchCompanyId(null));
+          // dispatch(setSelectedWarehouse(null));
+        }}
+        to="/admin/statistics"
+      >
+        <div className={styles.nav}>
+          <div className={styles.nav_icon}>
+            <BsFillBarChartLineFill size={24} />
+            {collapsed && (
+              <label className={styles.tooltip}>{t("nav-statistics")}</label>
+            )}
+          </div>
+          {!collapsed && (
+            <div className={styles.nav_label}>{t("nav-statistics")}</div>
           )}
         </div>
       </Link>
@@ -195,35 +251,6 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
         </div>
       </Link>
 
-      {saveOrders && (
-        <Link
-          className={[
-            styles.link,
-            selectedOption === SideNavLinks.ORDERS ? `${styles.selected}` : "",
-          ].join(" ")}
-          onClick={() => {
-            onSelectedChange(SideNavLinks.ORDERS);
-            dispatch(setRefresh(true));
-            dispatch(setSearchWarehouseId(null));
-            dispatch(setSearchCompanyId(null));
-            // dispatch(setSelectedWarehouse(null));
-          }}
-          to="/orders"
-        >
-          <div className={styles.nav}>
-            <div className={styles.nav_icon}>
-              <BsFillEnvelopeFill size={24} />
-              {collapsed && (
-                <label className={styles.tooltip}>{t("nav-orders")}</label>
-              )}
-            </div>
-            {!collapsed && (
-              <div className={styles.nav_label}>{t("nav-orders")} </div>
-            )}
-          </div>
-        </Link>
-      )}
-
       <Link
         className={[
           styles.link,
@@ -245,34 +272,6 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           </div>
           {!collapsed && (
             <div className={styles.nav_label}>{t("nav-settings")}</div>
-          )}
-        </div>
-      </Link>
-
-      <Link
-        className={[
-          styles.link,
-          selectedOption === SideNavLinks.STATISTICS
-            ? `${styles.selected}`
-            : "",
-        ].join(" ")}
-        onClick={() => {
-          onSelectedChange(SideNavLinks.STATISTICS);
-          dispatch(setSearchWarehouseId(null));
-          dispatch(setSearchCompanyId(null));
-          // dispatch(setSelectedWarehouse(null));
-        }}
-        to="/admin/statistics"
-      >
-        <div className={styles.nav}>
-          <div className={styles.nav_icon}>
-            <BsFillBarChartLineFill size={24} />
-            {collapsed && (
-              <label className={styles.tooltip}>{t("nav-statistics")}</label>
-            )}
-          </div>
-          {!collapsed && (
-            <div className={styles.nav_label}>{t("nav-statistics")}</div>
           )}
         </div>
       </Link>

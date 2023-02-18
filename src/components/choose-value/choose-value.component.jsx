@@ -26,19 +26,19 @@ const ChooseValue = ({
       small={true}
     >
       <div className={styles.container}>
-        {values.map((city) => (
+        {values.map((val) => (
           <label
-            data-value={city.value}
-            className={selectedValue === city.value ? styles.selected : ""}
-            onClick={() => setSelecledValue(city.value)}
-            key={city.value}
+            data-value={val.value}
+            className={selectedValue === val.value ? styles.selected : ""}
+            onClick={() => setSelecledValue(val.value)}
+            key={val.value}
             onDoubleClick={() => {
-              setSelecledValue(city.value);
+              setSelecledValue(val.value);
               chooseHandler(selectedValue);
               close();
             }}
           >
-            {city.label}
+            {val.label}
           </label>
         ))}
       </div>

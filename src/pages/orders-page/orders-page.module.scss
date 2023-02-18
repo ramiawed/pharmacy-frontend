@@ -1,47 +1,20 @@
-@import '../../variables.scss';
+@import "../../variables.scss";
 
-.actions_div {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-
-  flex: 1;
-  margin-bottom: 5px;
+.btn {
+  border: none;
+  outline: none;
+  background: $light-grey-color;
+  color: $main-color;
+  padding: 0 4px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-.button {
-  background: #e3e3e3;
-  border-radius: 3px;
-  margin-inline-end: 4px;
-  margin-left: 4px;
+.btn.selected {
+  background: $main-color;
+  color: $white-color;
 }
 
-.highlight {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-block: 10px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-
-.highlight label {
-  font-size: 14px;
-  color: $secondary-color;
-  margin-inline: 4px;
-  margin-left: 4px;
-  margin-right: 4px;
-}
-
-.action_highlight_container {
-  display: flex;
-  flex-direction: column;
-}
-
-.selection {
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  margin-bottom: 5px;
+.btn:hover {
+  box-shadow: inset 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
 }

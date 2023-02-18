@@ -11,6 +11,7 @@ const initialState = {
   count: 0,
   error: "",
   pageState: {
+    searchWarehousesIds: [],
     warehouseName: "",
     pharmacyName: "",
     page: 1,
@@ -41,7 +42,11 @@ export const getBaskets = createAsyncThunk(
       let buildUrl = `${BASEURL}/baskets?page=${pageState.page}&limit=15`;
 
       const response = await axios.get(buildUrl, {
-        // timeout: 10000,
+        params: {
+          searchWarehouseIds: pageState.searchWarehousesIds.map(
+            (warehouse) => warehouse.value
+          ),
+        },
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -243,9 +248,38 @@ export const basketsSlice = createSlice({
       state.count = 0;
       state.error = "";
       state.pageState = {
+        searchWarehousesIds: [],
         warehouseName: "",
         pharmacyName: "",
         page: 1,
+      };
+    },
+
+    addIdToWarehousesIds: (state, action) => {
+      const { value } = action.payload;
+      if (
+        state.pageState.searchWarehousesIds.filter(
+          (warehouse) => warehouse.value === value
+        ).length === 0
+      ) {
+        state.pageState = {
+          ...state.pageState,
+          searchWarehousesIds: [
+            ...state.pageState.searchWarehousesIds,
+            action.payload,
+          ],
+        };
+      }
+    },
+
+    removeIdFromWarehousesId: (state, action) => {
+      const id = action.payload;
+      const filteredArray = state.pageState.searchWarehousesIds.filter(
+        (i) => i.value !== id
+      );
+      state.pageState = {
+        ...state.pageState,
+        searchWarehousesIds: [...filteredArray],
       };
     },
   },
@@ -358,6 +392,8 @@ export const {
   resetError,
   resetStatus,
   removeBasketFromState,
+  addIdToWarehousesIds,
+  removeIdFromWarehousesId,
 } = basketsSlice.actions;
 
 export default basketsSlice.reducer;

@@ -6,7 +6,7 @@
   margin-inline: auto;
   margin-left: auto;
   margin-right: auto;
-  border-bottom: 1px solid $secondary-color;
+  border-bottom: 1px solid $light-color;
 }
 
 .search_input {
@@ -23,7 +23,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  border-bottom: 1px solid rgba($color: $secondary-color, $alpha: 0.3);
+  border-bottom: 1px solid rgba($color: $light-color, $alpha: 0.3);
 }
 
 .row {
@@ -33,7 +33,7 @@
   align-items: center;
 
   label {
-    color: $grey-color;
+    color: $dark-color;
     font-size: 12px;
     width: 50px;
   }

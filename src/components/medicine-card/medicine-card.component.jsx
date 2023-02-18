@@ -1,24 +1,26 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
 import Logo from "../../logo.png";
 
 // components
 import AddToCartModal from "../../modals/add-to-cart-modal/add-to-cart-modal.component";
-import Icon from "../action-icon/action-icon.component";
+import ItemInfoModal from "../../modals/item-info-modal/item-info-modal.component";
+import ThreeStateIcon from "../three-state-icon/three-state-icon.component";
+import ItemPrices from "../item-prices/item-prices.component";
+import ItemNames from "../item-names/item-names.component";
+import Icon from "../icon/icon.component";
 
 // react icons
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdAddCircle } from "react-icons/md";
 import { GiShoppingCart } from "react-icons/gi";
-import { VscLoading } from "react-icons/vsc";
 import { BsFillBookmarkPlusFill, BsFillBookmarkDashFill } from "react-icons/bs";
 
 // redux-stuff
+import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { addStatistics } from "../../redux/statistics/statisticsSlice";
-import { unwrapResult } from "@reduxjs/toolkit";
 import {
   changeOnlineMsg,
   selectOnlineStatus,
@@ -27,7 +29,11 @@ import {
   addItemToWarehouse,
   removeItemFromWarehouse,
 } from "../../redux/medicines/medicinesSlices";
-
+import {
+  addSavedItem,
+  removeSavedItem,
+  selectSavedItems,
+} from "../../redux/savedItems/savedItemsSlice";
 import {
   addFavoriteItem,
   removeFavoriteItem,
@@ -36,7 +42,6 @@ import {
 import { selectUserData } from "../../redux/auth/authSlice";
 
 // styles
-import generalStyles from "../../style.module.scss";
 import styles from "./medicine-card.module.scss";
 
 // constants and utils
@@ -47,16 +52,9 @@ import {
   SERVER_URL,
   UserTypeConstants,
 } from "../../utils/constants.js";
-import {
-  addSavedItem,
-  removeSavedItem,
-  selectSavedItems,
-} from "../../redux/savedItems/savedItemsSlice";
-import { BiListMinus, BiListPlus } from "react-icons/bi";
 
 function MedicineCard({ companyItem }) {
   const { t } = useTranslation();
-  const history = useHistory();
   const dispatch = useDispatch();
 
   const isOnline = useSelector(selectOnlineStatus);
@@ -239,121 +237,94 @@ function MedicineCard({ companyItem }) {
   };
 
   return (
-    <div
-      className={[styles.partner_container].join(" ")}
-      onClick={() => {
-        dispatchStatisticsHandler();
-
-        history.push("item", {
-          from: user.type,
-          type: "info",
-          allowAction: false,
-          itemId: companyItem._id,
-          companyId: companyItem.company._id,
-          warehouseId:
-            user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
-        });
-      }}
-    >
+    <div className={[styles.partner_container].join(" ")}>
       {checkOffer(companyItem, user) && (
         <div className={[styles.ribbon_2].join(" ")}>
           <span>{t("offer")}</span>
         </div>
       )}
-      <div className={styles.company_name}>{companyItem.company.name}</div>
+      <div
+        className={styles.company_name}
+        style={{
+          fontSize: companyItem.company.name.length > 30 ? "13px" : "16px",
+        }}
+      >
+        {companyItem.company.name}
+      </div>
       <div
         style={{
           flex: 1,
         }}
       >
         <div className={styles.icons_div}>
-          {changeAddToWarehouseLoading ? (
-            <Icon
-              icon={() => (
-                <VscLoading className={generalStyles.loading} size={24} />
+          {user.type === UserTypeConstants.WAREHOUSE && (
+            <ThreeStateIcon
+              loading={changeAddToWarehouseLoading}
+              array={companyItem.warehouses.map((w) => w.warehouse._id)}
+              id={user._id}
+              removeHandler={removeItemFromWarehouseHandler}
+              addHandler={addItemToWarehouseHandler}
+              removeTooltip="remove-from-warehouse-tooltip"
+              addTooltip="add-to-warehouse-tooltip"
+              removeIcon={() => (
+                <RiDeleteBin5Fill color={Colors.FAILED_COLOR} size={24} />
               )}
-              onclick={() => {}}
-              foreColor={Colors.SECONDARY_COLOR}
+              addIcon={() => (
+                <MdAddCircle color={Colors.SUCCEEDED_COLOR} size={24} />
+              )}
             />
-          ) : (
-            user.type === UserTypeConstants.WAREHOUSE &&
-            (companyItem.warehouses
-              .map((w) => w.warehouse._id)
-              .includes(user._id) ? (
-              <Icon
-                icon={() => <RiDeleteBin5Fill size={24} />}
-                onclick={removeItemFromWarehouseHandler}
-                tooltip={t("remove-from-warehouse-tooltip")}
-                foreColor={Colors.FAILED_COLOR}
-              />
-            ) : (
-              <Icon
-                icon={() => <MdAddCircle size={24} />}
-                onclick={addItemToWarehouseHandler}
-                tooltip={t("add-to-warehouse-tooltip")}
-                foreColor={Colors.SUCCEEDED_COLOR}
-              />
-            ))
           )}
 
           {user.type === UserTypeConstants.PHARMACY ? (
             checkItemExistsInWarehouse(companyItem, user) ? (
               <Icon
-                icon={() => <GiShoppingCart size={24} />}
+                tooltip={t("add-to-cart")}
                 onclick={() => setShowModal(true)}
                 foreColor={Colors.SUCCEEDED_COLOR}
-              />
-            ) : changeSaveItemLoading ? (
-              <Icon
-                text={t("")}
-                onclick={() => {}}
-                foreColor={Colors.YELLOW_COLOR}
-                icon={() => <VscLoading className={styles.loading} />}
-              />
-            ) : savedItems.map((si) => si._id).includes(companyItem._id) ? (
-              <Icon
-                tooltip={t("remove-item-from-saved-items-tooltip")}
-                onclick={removeItemFromSavedItemsHandler}
-                foreColor={Colors.FAILED_COLOR}
-                icon={() => <BsFillBookmarkDashFill size={24} />}
+                icon={() => <GiShoppingCart size={24} />}
               />
             ) : (
-              <Icon
-                tooltip={t("add-item-to-saved-items-tooltip")}
-                onclick={addItemToSavedItemsHandler}
-                foreColor={Colors.SUCCEEDED_COLOR}
-                icon={() => <BsFillBookmarkPlusFill size={24} />}
+              <ThreeStateIcon
+                loading={changeSaveItemLoading}
+                array={savedItems.map((si) => si._id)}
+                id={companyItem._id}
+                removeHandler={removeItemFromSavedItemsHandler}
+                addHandler={addItemToSavedItemsHandler}
+                removeTooltip="remove-item-from-saved-items-tooltip"
+                addTooltip="add-item-to-saved-items-tooltip"
+                removeIcon={() => (
+                  <BsFillBookmarkDashFill
+                    color={Colors.FAILED_COLOR}
+                    size={24}
+                  />
+                )}
+                addIcon={() => (
+                  <BsFillBookmarkPlusFill
+                    color={Colors.SUCCEEDED_COLOR}
+                    size={24}
+                  />
+                )}
               />
             )
           ) : (
             <></>
           )}
 
-          {changeFavoriteLoading ? (
-            <Icon
-              icon={() => (
-                <VscLoading className={generalStyles.loading} size={24} />
-              )}
-              onclick={() => {}}
-              foreColor={Colors.YELLOW_COLOR}
-            />
-          ) : favorites
-              .map((favorite) => favorite._id)
-              .includes(companyItem._id) ? (
-            <Icon
-              icon={() => <AiFillStar size={24} />}
-              onclick={removeItemFromFavoritesItems}
-              tooltip={t("remove-from-favorite-tooltip")}
-              foreColor={Colors.YELLOW_COLOR}
-            />
-          ) : (
-            <Icon
-              icon={() => <AiOutlineStar size={24} />}
-              onclick={addItemToFavoriteItems}
-              tooltip={t("add-to-favorite-tooltip")}
-              foreColor={Colors.YELLOW_COLOR}
-            />
-          )}
+          <ThreeStateIcon
+            loading={changeFavoriteLoading}
+            array={favorites.map((favorite) => favorite._id)}
+            id={companyItem._id}
+            removeHandler={removeItemFromFavoritesItems}
+            addHandler={addItemToFavoriteItems}
+            removeTooltip="remove-from-favorite-tooltip"
+            addTooltip="add-to-favorite-tooltip"
+            removeIcon={() => (
+              <AiFillStar size={24} color={Colors.YELLOW_COLOR} />
+            )}
+            addIcon={() => (
+              <AiOutlineStar size={24} color={Colors.YELLOW_COLOR} />
+            )}
+          />
         </div>
 
         <div className={styles.logo_div}>
@@ -371,45 +342,27 @@ function MedicineCard({ companyItem }) {
         <div className={styles.content}>
           <div className={[styles.showed_content].join(" ")}>
             <div className={styles.main_details}>
-              <label className={styles.name}>{companyItem.name}</label>
-              <div className={styles.secondRow}>
-                <label className={styles.nameAr}>{companyItem.nameAr}</label>
-
-                {user.type !== UserTypeConstants.GUEST && (
-                  <div className={styles.price}>
-                    <label>{companyItem.price}</label>
-                  </div>
-                )}
-                <div className={styles.price}>
-                  <label className={styles.customer_price}>
-                    {companyItem.customer_price}
-                  </label>
-                </div>
+              <ItemNames
+                on_click={() => {
+                  dispatchStatisticsHandler();
+                }}
+                flexDirection="column"
+                item={companyItem}
+              />
+              <div
+                style={{
+                  alignSelf: "flex-end",
+                }}
+              >
+                <ItemPrices
+                  showCustomerPrice={true}
+                  showPrice={user.type !== UserTypeConstants.GUEST}
+                  price={companyItem.price}
+                  customerPrice={companyItem.customer_price}
+                />
               </div>
             </div>
-
-            <div className={styles.info}>
-              <label className={styles.label}>{t("item-formula")}:</label>
-              <label className={styles.value}>{companyItem.formula}</label>
-            </div>
-
-            <div className={styles.info}>
-              <label className={styles.label}>{t("item-packing")}:</label>
-              <label className={styles.value}>{companyItem.packing}</label>
-            </div>
-
-            <div className={styles.info}>
-              <label className={styles.label}>{t("item-caliber")}:</label>
-              <label className={styles.value}>{companyItem.caliber}</label>
-            </div>
-
-            <div className={styles.info}>
-              <label className={styles.label}>{t("item-composition")}:</label>
-              <label className={styles.value}>{companyItem.composition}</label>
-            </div>
           </div>
-
-          <div className={styles.behind_content}></div>
         </div>
       </div>
 

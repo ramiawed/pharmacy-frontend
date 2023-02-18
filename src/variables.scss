@@ -15,10 +15,10 @@ $large: 1025px;
 $xlarge: 1201px;
 
 /* FONTS */
-$font-ar-01: 'Noto Naskh Arabic',
-serif;
-$font-ar-02: 'Lateef',
-cursive;
+$font-ar-01: "Noto Naskh Arabic", serif;
+$font-ar-02: "Lateef", cursive;
+$font-ar-03: "Tajawal", sans-serif;
+$font-ar-04: "Cairo", sans-serif;
 
 h2.small_font {
   font-size: 1.1rem;
@@ -26,8 +26,8 @@ h2.small_font {
 
 /* SCSS HEX */
 $main-color: #566092;
-$secondary-color: #acb3c3;
-$backup-color:#99cf16;
+$light-color: #858dc3;
+$backup-color: #99cf16;
 $third-color: #ff787e;
 $white-color: #ffffffff;
 $black-color: #000000ff;
@@ -36,4 +36,5 @@ $green-color: #2aa70b;
 $blue-color: #366feb;
 $yellow-color: #e9b93f;
 $offer-color: #aae3ff;
-$grey-color: #898F9C;
+$dark-color: #293664;
+$light-grey-color: #e3e3e3;

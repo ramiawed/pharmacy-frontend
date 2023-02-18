@@ -1,13 +1,19 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
-import ReactLoading from "react-loading";
 import { useHistory } from "react-router-dom";
 
 // components
-import NoContent from "../../components/no-content/no-content.component";
-import Icon from "../../components/action-icon/action-icon.component";
+import MainContentContainer from "../../components/main-content-container/main-content-container.component";
+import OffersSearchEngine from "../../components/offers-search-engine/offers-search-engine.component";
 import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
+import NoMoreResult from "../../components/no-more-result/no-more-result.component";
+import ItemOfferRow from "../../components/item-offer-row/item-offer-row.component";
+import ResultsCount from "../../components/results-count/results-count.component";
+import CylonLoader from "../../components/cylon-loader/cylon-loader.component";
+import ActionBar from "../../components/action-bar/action-bar.component";
+import NoContent from "../../components/no-content/no-content.component";
+import Icon from "../../components/icon/icon.component";
 
 // react-icons
 import { RiRefreshLine } from "react-icons/ri";
@@ -26,13 +32,8 @@ import {
   resetOfferItemsPageState,
 } from "../../redux/offers/offersSlices";
 
-// styles
-import generalStyles from "../../style.module.scss";
-
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import OffersSearchEngine from "../../components/offers-search-engine/offers-search-engine.component";
-import ItemOfferRow from "../../components/item-offer-row/item-offer-row.component";
 
 let timer = null;
 
@@ -92,10 +93,8 @@ function OffersPage({ onSelectedChange }) {
         keyUpHandler={keyUpHandler}
       />
 
-      <div className={generalStyles.container_with_header}>
-        {/* <MedicinesSearchString pageState={pageState} user={user} /> */}
-
-        <div className={generalStyles.actions}>
+      <MainContentContainer>
+        <ActionBar>
           <Icon
             withBackground={true}
             icon={() => <RiRefreshLine />}
@@ -104,8 +103,8 @@ function OffersPage({ onSelectedChange }) {
             onclick={handleEnterPress}
           />
           {(pageState.searchName.length > 0 ||
-            pageState.searchCompanyName.length > 0 ||
-            pageState.searchWarehouseName.length > 0) && (
+            pageState.searchCompaniesIds.length > 0 ||
+            pageState.searchWarehousesIds.length > 0) && (
             <Icon
               withBackground={true}
               selected={false}
@@ -128,68 +127,47 @@ function OffersPage({ onSelectedChange }) {
             icon={() => <IoMdArrowRoundBack />}
             foreColor={Colors.MAIN_COLOR}
           />
-        </div>
+        </ActionBar>
 
-        {count > 0 && (
-          <div className={generalStyles.count}>
-            <span className={generalStyles.label}>{t("offers-count")}</span>
-            <span className={generalStyles.count}>{count}</span>
-          </div>
-        )}
+        {count > 0 && <ResultsCount label={t("offers-count")} count={count} />}
 
         {medicines.map((medicine, index) => (
-          <ItemOfferRow key={index} item={medicine} />
+          <ItemOfferRow key={index} item={medicine} index={index} />
         ))}
 
         {count > 0 && status !== "loading" && (
-          <div className={generalStyles.count}>
-            {medicines.length} / {count}
-          </div>
+          <ResultsCount count={`${medicines.length} / ${count}`} />
         )}
 
         {medicines.length === 0 &&
           status !== "loading" &&
-          pageState.searchName.length === 0 &&
-          pageState.searchCompanyName.length === 0 &&
-          pageState.searchWarehouseName.length === 0 && (
+          pageState.searchName.length === 0 && (
             <NoContent msg={t("no-offers-at-all")} />
           )}
 
         {medicines.length === 0 &&
           status !== "loading" &&
-          (pageState.searchName.length !== 0 ||
-            pageState.searchCompanyName.length !== 0 ||
-            pageState.searchWarehouseName.length !== 0) && (
+          pageState.searchName.length !== 0 && (
             <NoContent msg={t("no-result-found")} />
           )}
 
-        {status === "loading" && (
-          <div className={generalStyles.flex_container}>
-            <ReactLoading color={Colors.SECONDARY_COLOR} type="cylon" />
-          </div>
-        )}
+        {status === "loading" && <CylonLoader />}
 
         {medicines.length < count && status !== "loading" && (
-          <div className={generalStyles.flex_container}>
+          <ActionBar>
             <ButtonWithIcon
               text={t("more")}
               action={handleMoreResult}
-              bgColor={Colors.SECONDARY_COLOR}
+              bgColor={Colors.SUCCEEDED_COLOR}
               icon={() => <CgMoreVertical />}
             />
-          </div>
+          </ActionBar>
         )}
 
         {medicines.length === count && status !== "loading" && count !== 0 && (
-          <p
-            className={[generalStyles.center, generalStyles.fc_secondary].join(
-              " "
-            )}
-          >
-            {t("no-more")}
-          </p>
+          <NoMoreResult msg={t("no-more")} />
         )}
-      </div>
+      </MainContentContainer>
     </>
   ) : (
     <Redirect to="/signin" />

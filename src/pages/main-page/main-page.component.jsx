@@ -1,7 +1,6 @@
 import React, { useEffect, useState, lazy, Suspense, useCallback } from "react";
 import { Redirect } from "react-router";
 import { useHistory } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 import { ErrorBoundary } from "react-error-boundary";
 
 // redux stuff
@@ -10,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getFavorites } from "../../redux/favorites/favoritesSlice";
 import { getUnreadNotification } from "../../redux/userNotifications/userNotificationsSlice";
 import { selectSettings } from "../../redux/settings/settingsSlice";
-import { getUnreadOrders } from "../../redux/orders/ordersSlice";
 import {
   changeNavSettings,
   selectNavigationSlice,
@@ -34,6 +32,8 @@ import styles from "./main-page.module.scss";
 
 // constants
 import { UserTypeConstants } from "../../utils/constants";
+import { getCompanies } from "../../redux/company/companySlice";
+import { getWarehouses } from "../../redux/warehouse/warehousesSlice";
 
 const CompanyRoutes = lazy(() =>
   import("../../routes/company-routes/company-routes.component")
@@ -83,7 +83,8 @@ function MainPage() {
         user.type === UserTypeConstants.ADMIN ||
         user.type === UserTypeConstants.WAREHOUSE
       ) {
-        dispatch(getUnreadOrders({ token }));
+        dispatch(getCompanies({ token }));
+        dispatch(getWarehouses({ token }));
       }
       if (user.type === UserTypeConstants.PHARMACY) {
         dispatch(getSavedItems({ token }));

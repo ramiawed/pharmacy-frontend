@@ -11,14 +11,12 @@ import {
 
 // components
 import AdvertisementPageHeader from "../../components/advertisement-page-header/advertisement-page-header.component";
+import MainContentContainer from "../../components/main-content-container/main-content-container.component";
+import AdvertisementCard from "../../components/advertisement-card/advertisement-card.component";
 import NewAdvertisement from "../../components/new-advertisement/new-advertisement.component";
 import Loader from "../../components/action-loader/action-loader.component";
-import Toast from "../../components/toast/toast.component";
-import AdvertisementCard from "../../components/advertisement-card/advertisement-card.component";
 import NoContent from "../../components/no-content/no-content.component";
-
-// styles
-import generalStyles from "../../style.module.scss";
+import Toast from "../../components/toast/toast.component";
 
 // constants
 import { Colors } from "../../utils/constants";
@@ -46,9 +44,7 @@ function AdvertisementsPage({ onSelectedChange }) {
   return (
     <>
       <AdvertisementPageHeader isNew={isNew} setIsNew={setIsNew} />
-      <div className={generalStyles.container_with_header}>
-        <NewAdvertisement isNew={isNew} setIsNew={setIsNew} />
-
+      <MainContentContainer>
         {advertisements.length === 0 && !isNew && (
           <NoContent msg={t("no-advertisements")} />
         )}
@@ -56,7 +52,7 @@ function AdvertisementsPage({ onSelectedChange }) {
         {advertisements.map((adv) => (
           <AdvertisementCard advertisement={adv} key={adv._id} />
         ))}
-      </div>
+      </MainContentContainer>
 
       {status === "loading" && (
         <Loader allowCancel={true} onclick={cancelOperationHandler} />
@@ -68,6 +64,13 @@ function AdvertisementsPage({ onSelectedChange }) {
           foreColor="#fff"
           toastText={t(error)}
           actionAfterTimeout={() => dispatch(resetError())}
+        />
+      )}
+
+      {isNew && (
+        <NewAdvertisement
+          closeHandler={setIsNew}
+          header={"new-advertisement"}
         />
       )}
     </>

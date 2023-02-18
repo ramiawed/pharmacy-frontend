@@ -26,16 +26,17 @@ import {
 } from "../../redux/online/onlineSlice";
 
 // components
+import MainContentContainer from "../../components/main-content-container/main-content-container.component";
+import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
+import AddToCartModal from "../../modals/add-to-cart-modal/add-to-cart-modal.component";
+import Loader from "../../components/action-loader/action-loader.component";
+import OffersModal from "../../modals/offers-modal/offers-modal.component";
+import Separator from "../../components/separator/separator.component";
 import CardInfo from "../../components/card-info/card-info.component";
+import Header from "../../components/header/header.component";
 import Input from "../../components/input/input.component";
 import Toast from "../../components/toast/toast.component";
-import AddToCartModal from "../../modals/add-to-cart-modal/add-to-cart-modal.component";
-import OffersModal from "../../modals/offers-modal/offers-modal.component";
-import Loader from "../../components/action-loader/action-loader.component";
-import Icon from "../../components/action-icon/action-icon.component";
-import Header from "../../components/header/header.component";
 import Modal from "../../modals/modal/modal.component";
-import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 
 // constants and utils
 import {
@@ -49,7 +50,7 @@ import {
 
 // icons
 import { MdAddCircle, MdLocalOffer } from "react-icons/md";
-import { RiDeleteBin5Fill, RiRefreshLine } from "react-icons/ri";
+import { RiDeleteBin5Fill } from "react-icons/ri";
 import { GiShoppingCart } from "react-icons/gi";
 import { BsImageAlt } from "react-icons/bs";
 import { AiFillEdit } from "react-icons/ai";
@@ -58,7 +59,7 @@ import { AiFillEdit } from "react-icons/ai";
 import generalStyles from "../../style.module.scss";
 import styles from "./item-page.module.scss";
 import rowStyles from "../../components/row.module.scss";
-import Separator from "../../components/separator/separator.component";
+import Icon from "../../components/icon/icon.component";
 
 function ItemPage() {
   const { t } = useTranslation();
@@ -296,26 +297,16 @@ function ItemPage() {
 
   return user ? (
     <>
-      <Header>
-        <h2 className={item?.name.length > 15 ? "small_font" : ""}>
-          {item?.name.length !== 0 ? item.name : "اسم المنتج"}
-        </h2>
-        <div className={generalStyles.refresh_icon}>
-          <Icon
-            selected={false}
-            foreColor={Colors.WHITE_COLOR}
-            tooltip={t("refresh-tooltip")}
-            icon={() => <RiRefreshLine />}
-            onclick={() => {
-              if (type === "info" && itemId) {
-                getItemFromDB();
-                window.scrollTo(0, 0);
-              }
-            }}
-          />
-        </div>
-      </Header>
-      <div className={generalStyles.container_with_header}>
+      <Header
+        title={item?.name.length !== 0 ? item.name : "اسم المنتج"}
+        refreshHandler={() => {
+          if (type === "info" && itemId) {
+            getItemFromDB();
+            window.scrollTo(0, 0);
+          }
+        }}
+      />
+      <MainContentContainer>
         <div className={styles.content}>
           <div
             className={[
@@ -536,29 +527,29 @@ function ItemPage() {
             </CardInfo>
 
             <CardInfo headerTitle={t("item-composition")}>
-              <div>
-                <textarea
-                  className={styles.textarea}
-                  placeholder={t("enter-composition")}
-                  id="composition"
-                  value={item.composition}
-                  onChange={handleInputChange}
-                  disabled={!allowAction}
-                />
-              </div>
+              {/* <div> */}
+              <textarea
+                className={styles.textarea}
+                placeholder={t("enter-composition")}
+                id="composition"
+                value={item.composition}
+                onChange={handleInputChange}
+                disabled={!allowAction}
+              />
+              {/* </div> */}
             </CardInfo>
 
             <CardInfo headerTitle={t("item-indication")}>
-              <div>
-                <textarea
-                  className={styles.textarea}
-                  placeholder={t("enter-indication")}
-                  id="indication"
-                  value={item.indication}
-                  onChange={handleInputChange}
-                  disabled={!allowAction}
-                />
-              </div>
+              {/* <div> */}
+              <textarea
+                className={styles.textarea}
+                placeholder={t("enter-indication")}
+                id="indication"
+                value={item.indication}
+                onChange={handleInputChange}
+                disabled={!allowAction}
+              />
+              {/* </div> */}
             </CardInfo>
 
             {/* IF THE USER TYPE IS ADMIN */}
@@ -579,9 +570,9 @@ function ItemPage() {
                         {w.warehouse.name}
                       </label>
 
-                      <div
-                        className={generalStyles.icon}
-                        onClick={() => {
+                      <Icon
+                        icon={() => <MdLocalOffer size={24} />}
+                        onclick={() => {
                           setSelectedWarehouseId(w.warehouse._id);
                           setAllowEdit(
                             (user.type === UserTypeConstants.WAREHOUSE &&
@@ -591,12 +582,8 @@ function ItemPage() {
                           );
                           setShowOfferModal(true);
                         }}
-                      >
-                        <MdLocalOffer />
-                        <div className={generalStyles.tooltip}>
-                          {t("nav-offers")}
-                        </div>
-                      </div>
+                        tooltip={t("nav-offers")}
+                      />
                     </div>
                   ))}
                 </CardInfo>
@@ -611,8 +598,7 @@ function ItemPage() {
                     .filter((w) => {
                       return (
                         w.warehouse.city === user.city &&
-                        w.warehouse.isActive === true &&
-                        w.warehouse.isApproved === true
+                        w.warehouse.isActive === true
                       );
                     })
                     .map((w, index) => (
@@ -628,9 +614,9 @@ function ItemPage() {
                           {w.warehouse.name}
                         </label>
 
-                        <div
-                          className={generalStyles.icon}
-                          onClick={() => {
+                        <Icon
+                          icon={() => <MdLocalOffer size={24} />}
+                          onclick={() => {
                             setSelectedWarehouseId(w.warehouse._id);
                             setAllowEdit(
                               (user.type === UserTypeConstants.WAREHOUSE &&
@@ -640,12 +626,8 @@ function ItemPage() {
                             );
                             setShowOfferModal(true);
                           }}
-                        >
-                          <MdLocalOffer />
-                          <div className={generalStyles.tooltip}>
-                            {t("nav-offers")}
-                          </div>
-                        </div>
+                          tooltip={t("nav-offers")}
+                        />
                       </div>
                     ))}
                 </CardInfo>
@@ -662,7 +644,7 @@ function ItemPage() {
             )}
           </div>
         </div>
-      </div>
+      </MainContentContainer>
       {changeLogoStatus === "loading" && <Loader allowCancel={false} />}
 
       {addToWarehouseStatus === "loading" && <Loader allowCancel={false} />}

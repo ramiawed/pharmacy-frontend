@@ -1,29 +1,7 @@
 @import "./variables.scss";
 
 * {
-  font-family: $font-ar-01;
-}
-
-.container_with_header {
-  width: 100%;
-  margin: 0 auto;
-  margin-block-start: 10px;
-  margin-top: 10px;
-  margin-block-end: 10px;
-  margin-bottom: 10px;
-  padding-inline-start: 45px;
-  padding-right: 45px;
-  padding-inline-end: 10px;
-  padding-left: 10px;
-  padding-block-end: 10px;
-  padding-bottom: 10px;
-  overflow: hidden;
-}
-
-.refresh_icon {
-  position: absolute;
-  top: 10px;
-  left: 56px;
+  font-family: $font-ar-04;
 }
 
 // coloring
@@ -40,7 +18,7 @@
 }
 
 .fc_secondary {
-  color: $secondary-color;
+  color: $light-color;
 }
 
 .fc_main {
@@ -56,7 +34,7 @@
 }
 
 .fc_grey {
-  color: $grey-color !important;
+  color: $dark-color !important;
 }
 
 .bg_green {
@@ -72,7 +50,7 @@
 }
 
 .bg_secondary {
-  background-color: $secondary-color !important;
+  background-color: $light-color !important;
 }
 
 .bg_main {
@@ -88,7 +66,7 @@
 }
 
 .bg_grey {
-  background-color: $grey-color !important;
+  background-color: $dark-color !important;
 }
 
 .bg_offer {
@@ -113,44 +91,6 @@
 
 // end text align
 
-// style for icon div
-.icon {
-  width: 32px;
-  height: 32px;
-  padding: 4px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: relative;
-  cursor: pointer;
-}
-
-.icon:hover {
-  border-radius: 50%;
-  background: rgba($color: #000000, $alpha: 0.1) !important;
-  box-shadow: inset 2px 2px 2px 1px rgba(0, 0, 0, 0.1);
-  border-radius: 3px;
-}
-
-.tooltip {
-  display: none;
-  min-width: 100px;
-  font-size: 0.7rem;
-  padding: 2px 8px;
-  background-color: rgba($color: #000000, $alpha: 0.8);
-  color: $white-color;
-  border-radius: 6px;
-  position: absolute;
-  top: 35px;
-  z-index: 50;
-}
-
-.icon:hover .tooltip {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 // end of style for icon div\
 .margin_h_auto {
   margin: 0 auto;
@@ -174,17 +114,6 @@
   position: absolute;
   top: 5px;
   left: 40px;
-}
-
-.empty {
-  width: 400px;
-  height: 400px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  border-radius: 50%;
-  margin-top: 30px;
 }
 
 // button style
@@ -258,66 +187,7 @@
   display: block;
 }
 
-.relative {
-  position: relative;
-}
-
-.actions {
-  display: flex;
-  justify-content: center;
-  margin-block-end: 10px;
-  margin-bottom: 10px;
-}
-
-// style the div that contains the favorite row
-.favorites_content {
-  min-width: 200px;
-  max-height: 300px;
-  box-shadow: 0 0 3px rgba($color: $secondary-color, $alpha: 0.5);
-  border-radius: 6px;
-  position: absolute;
-  top: 25px;
-  transform: translateX(125px);
-  overflow: auto;
-  z-index: 10;
-}
-
-.favorites_content_wider {
-  min-width: 350px;
-}
-
-div.count {
-  text-align: center;
-  color: $main-color;
-  font-size: 16px;
-  font-weight: bold;
-}
-
-span.label {
-  font-size: 16px;
-  color: $grey-color;
-}
-
-span.count {
-  font-size: 16px;
-  font-weight: bold;
-  color: $main-color;
-  padding-inline: 8px;
-  padding-left: 8px;
-  padding-right: 8px;
-}
-
 // style the div that display an icon the indicates that there is no result
-.no_content_div {
-  width: 50%;
-  height: 200px;
-  margin: 50px auto;
-  border-radius: 6px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-}
 
 // end of style the div that display an icon the indicates that there is no result
 
@@ -364,7 +234,7 @@ span.count {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: rgba($color: $main-color, $alpha: 0.8);
+  background-color: rgba($color: $white-color, $alpha: 1s);
   flex-direction: column;
 }
 

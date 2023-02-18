@@ -15,22 +15,24 @@ export const cartSlice = createSlice({
       // destructing field from action.payload
       const {
         item: { _id: itemId },
-        warehouse: {
-          warehouse: { _id: warehouseId, name: warehouseName },
-        },
+        warehouse,
       } = action.payload;
 
       // check if you order anything from this warehouse
       // if not add it to the cartWarehouse
-      if (!state.cartWarehouse.includes(warehouseName)) {
-        state.cartWarehouse = [...state.cartWarehouse, warehouseName];
+      if (
+        !state.cartWarehouse
+          .map((w) => w.name)
+          .includes(action.payload.warehouse.warehouse.name)
+      ) {
+        state.cartWarehouse = [...state.cartWarehouse, warehouse.warehouse];
       }
 
       // check if the item is already in the cart
       const findItem = state.cartItems.find(
         (item) =>
           item.item._id === itemId &&
-          item.warehouse.warehouse._id === warehouseId
+          item.warehouse.warehouse._id === warehouse.warehouse.warehouseId
       );
 
       // if the item is already in the cart, replace the item
@@ -39,7 +41,7 @@ export const cartSlice = createSlice({
           (item) =>
             !(
               item.item._id === itemId &&
-              item.warehouse.warehouse._id === warehouseId
+              item.warehouse.warehouse._id === warehouse.warehouse.warehouseId
             )
         );
 
@@ -136,16 +138,16 @@ export const cartSlice = createSlice({
 
       if (!findItemByWarehouse) {
         state.cartWarehouse = state.cartWarehouse.filter(
-          (w) => w !== warehouseName
+          (w) => w.name !== warehouseName
         );
       }
     },
     resetCartItems: (state, action) => {
       state.cartWarehouse = state.cartWarehouse.filter(
-        (w) => w !== action.payload
+        (w) => w.name !== action.payload.name
       );
       state.cartItems = state.cartItems.filter(
-        (item) => item.warehouse.warehouse.name !== action.payload
+        (item) => item.warehouse.warehouse.name !== action.payload.name
       );
     },
     cartSliceSignOut: (state) => {

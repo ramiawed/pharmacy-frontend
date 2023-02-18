@@ -1,0 +1,51 @@
+@import "../../variables.scss";
+
+.header_container {
+    border-bottom: 2px solid rgba($color: $main-color, $alpha: 0.6);
+    display: flex;
+    align-items: center;
+    background-color: $white-color;
+    padding: 5px;
+    margin-right: 45px;
+    margin-left: 10px;
+    position: sticky;
+    top: 111px;
+    z-index: 5;
+
+    .first_row {
+        flex: 1;
+        display: flex;
+        justify-content: flex-start;
+        align-items: stretch;
+        flex-direction: column;
+
+        .additional_container {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-evenly;
+            gap: 5px;
+            flex: 1;
+
+            .label {
+                color: $main-color;
+                font-size: 12px;
+                text-align: center;
+            }
+        }
+    }
+
+    .label {
+        font-size: 14px;
+        font-weight: bold;
+        width: 60px;
+        color: $green-color;
+        text-align: center;
+    }
+}
+
+@media only screen and (min-width: $small) {
+    .header_container {
+        justify-content: space-evenly;
+    }
+}

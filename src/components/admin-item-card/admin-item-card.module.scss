@@ -1,200 +1,49 @@
-@import '../../variables.scss';
+@import "../../variables.scss";
 
-.max_qty_div {
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
-}
-
-.input {
+.item_row {
   width: 100%;
-  border: 1px solid $main-color;
-  border-radius: 6px;
-  padding-block: 4px;
-  padding-top: 4px;
-  padding-bottom: 4px;
-  text-align: center;
-  font-size: 1.2rem;
-  box-shadow: 0 0 3px 3px rgba($color: #000000, $alpha: 0.3);
-
-  &:focus {
-    outline: none;
-    box-shadow: inset 0 0 3px 3px rgba($color: #000000, $alpha: 0.3);
-  }
-}
-
-.container {
-  box-shadow: 0 0 2px 2px rgba($color: #000000, $alpha: 0.3);
-  border-radius: 6px;
-  margin-block-end: 20px;
-  margin-bottom: 20px;
+  padding: 5px;
   display: flex;
+  flex-direction: column;
   position: relative;
-  flex-direction: column;
-}
 
-.nameContainer {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border-radius: 6px 6px 0 0;
-  background: $main-color;
-  color: $white-color;
-  padding: 20px;
-  min-width: 120px;
-  width: 100%;
-  flex: 1;
-  cursor: pointer;
-  transition: all 0.3s;
-
-  .name {
-    font-size: 18px;
-    font-weight: bold;
-    text-align: center;
-  }
-}
-
-.details {
-  display: flex;
-  flex-direction: column;
-
-  .row {
-    padding: 4px;
+  .first_row {
     display: flex;
-    align-items: flex-start;
-    border-bottom: 1px solid rgba($color: #000000, $alpha: 0.1);
+    justify-content: flex-start;
 
-    div {
+    .icon {
+      background-color: $main-color;
+      color: $white-color;
+      display: inline-block;
+      display: flex;
+      border-radius: 50%;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    .item_names_container {
       flex: 1;
-      padding-inline-start: 10px;
-      padding-right: 10px;
-      overflow: hidden;
-
-      .label {
-        color: $secondary-color;
-        font-size: 0.8rem;
-        display: inline-block;
-        text-align: start;
-      }
-
-      .label.first {
-        min-width: 75px;
-        width: 75px;
-      }
-
-      .value {
-        color: $main-color;
-        margin-inline-start: 10px;
-        margin-right: 10px;
-        font-size: 1rem;
-      }
-
-      .ellipsis {
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
+      color: $main-color;
+      font-size: 16px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: flex-start;
     }
   }
 
-  .row.last_row {
-    border-bottom: none;
-  }
-}
-
-.actions {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  flex-direction: row;
-  color: $main-color;
-  padding-top: 4px;
-  padding-bottom: 4px;
-}
-
-.inline_block {
-  display: inline-block;
-}
-
-@media only screen and (min-width: 769px) {
-  .container {
-    flex-direction: row;
+  .second_row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-right: 30px;
   }
 
-  .nameContainer {
-    border-radius: 0px 6px 6px 0;
-    min-width: 350px;
-    width: 350px;
-    max-width: 350px;
-
-    .name {
-      font-size: 20px;
-      font-weight: bold;
-      text-align: center;
-    }
+  .actions_row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    width: 100%;
+    gap: 5px;
   }
-
-  .details {
-    flex: 1;
-
-    .row {
-      flex-direction: row;
-      align-items: center;
-
-      div {
-        .label {
-          font-size: 14px;
-          // min-width: 100px;
-          // width: 100px;
-        }
-
-        .label.first {
-          min-width: 75px;
-          width: 75px;
-        }
-
-        .value {
-          font-size: 18px;
-        }
-      }
-    }
-  }
-}
-
-// loading icon
-.loading {
-  animation-name: loading-move;
-  animation-duration: 1s;
-  animation-iteration-count: infinite;
-}
-
-@keyframes loading-move {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-.ribbon_2 {
-  --f: 10px;
-  /* control the folded part*/
-  --r: 15px;
-  /* control the ribbon shape */
-  --t: 10px;
-  /* the top offset */
-
-  position: absolute;
-  inset: var(--t) calc(-1*var(--f)) auto auto;
-  padding: 0 10px var(--f) calc(10px + var(--r));
-  clip-path:
-    polygon(0 0, 100% 0, 100% calc(100% - var(--f)), calc(100% - var(--f)) 100%,
-      calc(100% - var(--f)) calc(100% - var(--f)), 0 calc(100% - var(--f)),
-      var(--r) calc(50% - var(--f)/2));
-  background: $yellow-color;
-  box-shadow: 0 calc(-1*var(--f)) 0 inset #0005;
-  color: $main-color;
 }

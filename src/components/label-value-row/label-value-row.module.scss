@@ -7,8 +7,13 @@
 
     .label {
         font-size: 12px;
-        color: $grey-color;
+        color: $light-color;
         width: 70px;
+        text-decoration: underline;
+    }
+
+    .large_width {
+        width: 150px;
     }
 
     .value {
@@ -24,6 +29,9 @@
             font-size: 14px;
             width: 100px;
         }
+        .large_width {
+            width: 190px;
+        }
 
         .value {
             font-size: 16px;
@@ -36,6 +44,10 @@
         .label {
             font-size: 14px;
             width: 100px;
+        }
+
+        .large_width {
+            width: 190px;
         }
 
         .value {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { AiFillCloseCircle } from "react-icons/ai";
 
@@ -15,8 +15,11 @@ function SearchInput({
   onEnterPress,
   resetField,
   onkeyup,
+  withBorder,
+  hasFocus,
 }) {
   const { t } = useTranslation();
+  const inputRef = useRef();
 
   const handleKeyPress = (event) => {
     if (event.key === "Enter") {
@@ -26,8 +29,14 @@ function SearchInput({
     }
   };
 
+  useEffect(() => {
+    if (hasFocus) {
+      inputRef.current.focus();
+    }
+  });
+
   return (
-    <SearchRowContainer>
+    <SearchRowContainer withBorder={withBorder}>
       {label && <label htmlFor={id}>{t(label)}</label>}
 
       <input
@@ -38,6 +47,7 @@ function SearchInput({
         onChange={onchange}
         onKeyPress={handleKeyPress}
         onKeyUp={onkeyup && onkeyup}
+        ref={inputRef}
       />
       {resetField && value && (
         <span>

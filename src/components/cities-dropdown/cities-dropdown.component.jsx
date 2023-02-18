@@ -34,7 +34,7 @@ function CitiesDropDown({ onSelectionChange, defaultValue, caption }) {
   return (
     <>
       <SelectCustom
-        bgColor={Colors.SECONDARY_COLOR}
+        bgColor={Colors.LIGHT_COLOR}
         foreColor="#fff"
         options={citiesOptions}
         onchange={onSelectionChange}

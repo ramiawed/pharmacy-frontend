@@ -10,7 +10,6 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: flex-start;
-
 }
 
 .row {
@@ -20,7 +19,7 @@
 
   margin-block-end: 6px;
   margin-bottom: 6px;
-  border-bottom: 1px solid #e3e3e3;
+  border-bottom: 1px solid $light-grey-color;
   width: 100%;
   padding: 6px;
 }
@@ -28,7 +27,7 @@
 .label {
   width: 85px;
   font-size: 14px;
-  color: $grey-color;
+  color: $dark-color;
 }
 
 .name {
@@ -39,7 +38,6 @@
   font-size: 18px;
   font-weight: bold;
 }
-
 
 .actions_div {
   display: flex;

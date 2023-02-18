@@ -6,7 +6,6 @@ import { BASEURL } from "../../utils/constants";
 const initialState = {
   status: "idle",
   advertisements: [],
-  forceRefresh: false,
   error: "",
 };
 
@@ -32,7 +31,6 @@ export const getAllAdvertisements = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.get(`${BASEURL}/advertisement`, {
-        // timeout: 10000,
         cancelToken: source.token,
         headers: {
           Authorization: `Bearer ${token}`,
@@ -150,23 +148,29 @@ export const advertisementsSlice = createSlice({
       state.status = "idle";
       state.error = "";
     },
-    setForceRefresh: (state, action) => {
-      state.forceRefresh = action.payload;
-    },
+
     resetAdvertisements: (state) => {
       state.status = "idle";
       state.error = "";
-      state.forceRefresh = false;
       state.advertisements = [];
     },
     advertisementsSignOut: (state) => {
       state.status = "idle";
       state.error = "";
-      state.forceRefresh = false;
       state.advertisements = [];
     },
     addAdvertisementSocket: (state, action) => {
-      state.advertisements = [action.payload, ...state.advertisements];
+      const { _id } = action.payload.data;
+      state.advertisements = state.advertisements.filter(
+        (ad) => ad._id !== _id
+      );
+      state.advertisements = [action.payload.data, ...state.advertisements];
+    },
+    deleteAdvertisementSocket: (state, action) => {
+      const { _id } = action.payload.data;
+      state.advertisements = state.advertisements.filter(
+        (ad) => ad._id !== _id
+      );
     },
   },
   extraReducers: {
@@ -179,7 +183,6 @@ export const advertisementsSlice = createSlice({
         action.payload.data.advertisement,
         ...state.advertisements,
       ];
-      state.forceRefresh = false;
     },
     [addAdvertisement.rejected]: (state, { payload }) => {
       state.status = "failed";
@@ -251,8 +254,8 @@ export const {
   resetStatus,
   resetAdvertisements,
   advertisementsSignOut,
-  setForceRefresh,
   addAdvertisementSocket,
+  deleteAdvertisementSocket,
 } = advertisementsSlice.actions;
 
 export const selectAdvertisements = (state) => state.advertisements;

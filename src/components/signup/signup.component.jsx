@@ -1,16 +1,21 @@
 // libraries
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
 import Logo from "../../smal-logo.png";
 
 // components
-import Toast from "../toast/toast.component";
-import Button from "../button/button.component";
+import CreateAccountStageThree from "../create-account-stage-three/create-account-stage-three.component";
+import CreateAccountStageFour from "../create-account-stage-four/create-account-stage-four.component";
+import CreateAccountStageOne from "../create-account-stage-one/create-account-stage-one.component";
+import CreateAccountStageTwo from "../create-account-stage-two/create-account-stage-two.component";
+import SignupStagesNumber from "../signup-stages-number/signup-stages-number.component";
 import Loader from "../action-loader/action-loader.component";
 import Modal from "../../modals/modal/modal.component";
 import License from "../license/license.component";
+import Button from "../button/button.component";
+import Toast from "../toast/toast.component";
 
 // redux
 import { useDispatch, useSelector } from "react-redux";
@@ -25,17 +30,11 @@ import {
   BASEURL,
   CitiesName,
   Colors,
-  GuestJob,
   UserTypeConstants,
 } from "../../utils/constants";
 
 // styles
 import styles from "./signup.module.scss";
-import SignupStagesNumber from "../signup-stages-number/signup-stages-number.component";
-import CreateAccountStageOne from "../create-account-stage-one/create-account-stage-one.component";
-import CreateAccountStageTwo from "../create-account-stage-two/create-account-stage-two.component";
-import CreateAccountStageThree from "../create-account-stage-three/create-account-stage-three.component";
-import CreateAccountStageFour from "../create-account-stage-four/create-account-stage-four.component";
 
 // Sign up component
 function SignUp() {
@@ -53,7 +52,6 @@ function SignUp() {
   const [stage, setStage] = useState(1);
   const [prevStage, setPrevStage] = useState(0);
 
-  // use
   const [userType, setUserType] = useState(UserTypeConstants.GUEST);
   const [stageTwoInfo, setStageTwoInfo] = useState({
     name: "",
@@ -303,7 +301,7 @@ function SignUp() {
                 onClick={createAccountHandler}
                 className={styles.create_account_btn}
               >
-                {t("sign-up")}
+                {t("sign-up-press-label")}
               </button>
               <div
                 style={{

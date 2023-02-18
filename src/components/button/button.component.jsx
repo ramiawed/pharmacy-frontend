@@ -27,7 +27,7 @@ function Button({ action, text, bgColor, tooltip, loading, icon }) {
     <button
       className={[
         generalStyles.button,
-        bgColor === Colors.SECONDARY_COLOR ? generalStyles.bg_secondary : "",
+        bgColor === Colors.LIGHT_COLOR ? generalStyles.bg_secondary : "",
         bgColor === Colors.FAILED_COLOR ? generalStyles.bg_red : "",
         bgColor === Colors.SUCCEEDED_COLOR ? generalStyles.bg_green : "",
         bgColor === Colors.MAIN_COLOR ? generalStyles.bg_main : "",

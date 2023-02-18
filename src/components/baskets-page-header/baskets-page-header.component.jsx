@@ -11,14 +11,11 @@ import {
 
 // icons
 import { MdAddCircle } from "react-icons/md";
-import { RiRefreshLine } from "react-icons/ri";
 
 // components
 import Header from "../header/header.component";
-import Icon from "../action-icon/action-icon.component";
-
-// styles
-import generalStyles from "../../style.module.scss";
+import Icon from "../icon/icon.component";
+import ActionBar from "../action-bar/action-bar.component";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
@@ -36,12 +33,9 @@ function BasketPageHeader({ isNew, setIsNew }) {
 
   return (
     <>
-      <Header>
-        <h2>{t("nav-baskets")}</h2>
-      </Header>
-      <div
-        className={[generalStyles.actions, generalStyles.margin_v_4].join(" ")}
-      >
+      <Header title="nav-baskets" refreshHandler={refreshHandler} />
+
+      <ActionBar>
         {!isNew && (
           <>
             {user.type !== UserTypeConstants.PHARMACY && (
@@ -56,20 +50,9 @@ function BasketPageHeader({ isNew, setIsNew }) {
                 withBackground={true}
               />
             )}
-
-            <Icon
-              selected={false}
-              foreColor={Colors.MAIN_COLOR}
-              tooltip={t("refresh-tooltip")}
-              onclick={() => {
-                refreshHandler();
-              }}
-              icon={() => <RiRefreshLine />}
-              withBackground={true}
-            />
           </>
         )}
-      </div>
+      </ActionBar>
     </>
   );
 }

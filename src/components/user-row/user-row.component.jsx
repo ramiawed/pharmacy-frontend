@@ -4,51 +4,46 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 // redux stuff
+import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
-import { selectToken, selectUser } from "../../redux/auth/authSlice";
+import { deleteUserForever, selectToken } from "../../redux/auth/authSlice";
 import { resetUserPassword, updateUser } from "../../redux/users/usersSlice";
 import {
   changeOnlineMsg,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
+import { setPageState } from "../../redux/items/itemsSlices";
 
 // react-icons
 import { BsFillPersonCheckFill, BsFillPersonDashFill } from "react-icons/bs";
 import { IoMdMore } from "react-icons/io";
 import { BiShow, BiHide } from "react-icons/bi";
 import { AiFillUnlock, AiFillLock } from "react-icons/ai";
-import { CgPassword } from "react-icons/cg";
 
 // components
-import Modal from "../../modals/modal/modal.component";
-import UserMoreInfoModal from "../../modals/user-more-info-modal/user-more-info-modal.component";
 import AdminResetUserPasswordModal from "../../modals/admin-reset-user-password-modal/admin-reset-user-password-modal";
-import Icon from "../action-icon/action-icon.component";
+import UserMoreInfoModal from "../../modals/user-more-info-modal/user-more-info-modal.component";
+import ChildFlexOneDiv from "../child-flex-one-div/child-flex-one-div.component";
+import UserOptionsMenu from "../user-options-menu/user-options-menu.component";
+import FixedSizeDiv from "../fixed-size-div/fixed-size-div.component";
+import RowContainer from "../row-container/row-container.component";
+import Modal from "../../modals/modal/modal.component";
+import Icon from "../icon/icon.component";
 
 // styles
-import generalStyles from "../../style.module.scss";
 import rowStyles from "../row.module.scss";
-import tableStyles from "../table.module.scss";
-
+import styles from "./user-row.module.scss";
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import {
-  setCompany,
-  setSearchCompanyName,
-  setSearchWarehouseName,
-  setRole,
-  setWarehouse,
-} from "../../redux/items/itemsSlices";
 
 // UserRow component
-function UserRow({ user }) {
+function UserRow({ user, index }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   // selectors
   const isOnline = useSelector(selectOnlineStatus);
   const token = useSelector(selectToken);
-  const loggedUser = useSelector(selectUser);
 
   // own states
   const [modalInfo, setModalInfo] = useState({
@@ -58,16 +53,16 @@ function UserRow({ user }) {
     okLabel: "ok-label",
   });
   const [showModal, setShowModal] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
   const [showMoreInfo, setShowMoreInfo] = useState(false);
   const [showResetUserPasswordModal, setShowResetUserPasswordModal] =
     useState(false);
   const [actionType, setActionType] = useState("");
-
+  const [showDeleteConfirmModel, setShowDeleteConfirmModel] = useState(false);
   const [passwordObj, setPasswordObj] = useState({
     newPassword: "",
     newPasswordConfirm: "",
   });
-
   const [passwordObjError, setPasswordObjError] = useState({
     newPassword: "",
     newPasswordConfirm: "",
@@ -162,29 +157,14 @@ function UserRow({ user }) {
     // the icon represent that the user is approve by the admin
     // when click on this icon show warning message
     if (type === "approve") {
-      if (!user.isActive) {
-        setActionType("");
-        setModalInfo({
-          ...modalInfo,
-          header: "warning",
-          body: () => {
-            return (
-              <>
-                <p>{t("can't-approve-user")}</p>
-              </>
-            );
-          },
-        });
-      } else {
-        setActionType("disapprove");
-        setModalInfo({
-          ...modalInfo,
-          header: "approve-account",
-          body: () => {
-            return <p>{t("approve-account-question")}</p>;
-          },
-        });
-      }
+      setActionType("disapprove");
+      setModalInfo({
+        ...modalInfo,
+        header: "approve-account",
+        body: () => {
+          return <p>{t("approve-account-question")}</p>;
+        },
+      });
     }
 
     if (type === "disapprove") {
@@ -194,28 +174,6 @@ function UserRow({ user }) {
         header: "disapprove-account",
         body: () => {
           return <p>{t("disapprove-account-question")}</p>;
-        },
-      });
-    }
-
-    if (type === "undo-delete") {
-      setActionType("undoDelete");
-      setModalInfo({
-        ...modalInfo,
-        header: "undo-delete-account",
-        body: () => {
-          return <p>{t("undo-delete-account-question")}</p>;
-        },
-      });
-    }
-
-    if (type === "delete") {
-      setActionType("delete");
-      setModalInfo({
-        ...modalInfo,
-        header: "delete-account",
-        body: () => {
-          return <p>{t("delete-account-question")}</p>;
         },
       });
     }
@@ -258,7 +216,7 @@ function UserRow({ user }) {
       dispatch(
         updateUser({
           body: {
-            isApproved: false,
+            isActive: false,
           },
           userId: user._id,
           token,
@@ -271,32 +229,7 @@ function UserRow({ user }) {
       dispatch(
         updateUser({
           body: {
-            isApproved: true,
-          },
-          userId: user._id,
-          token,
-        })
-      );
-    }
-
-    if (actionType === "undoDelete") {
-      dispatch(
-        updateUser({
-          body: {
             isActive: true,
-          },
-          userId: user._id,
-          token,
-        })
-      );
-    }
-
-    if (actionType === "delete") {
-      dispatch(
-        updateUser({
-          body: {
-            isActive: false,
-            isApproved: false,
           },
           userId: user._id,
           token,
@@ -343,34 +276,47 @@ function UserRow({ user }) {
     });
   };
 
+  const deleteUserForeverHandler = () => {
+    dispatch(deleteUserForever({ id: user._id, token }))
+      .then(unwrapResult)
+      .then(() => {})
+      .catch((err) => {});
+
+    setShowDeleteConfirmModel(false);
+  };
+
   const userNameClickHandler = () => {
-    dispatch(setCompany(user.type === UserTypeConstants.COMPANY ? user : null));
     dispatch(
-      setSearchCompanyName(
-        user.type === UserTypeConstants.COMPANY ? user.name : ""
-      )
-    );
-    dispatch(
-      setWarehouse(user.type === UserTypeConstants.WAREHOUSE ? user : null)
-    );
-    dispatch(
-      setSearchWarehouseName(
-        user.type === UserTypeConstants.WAREHOUSE ? user.name : ""
-      )
-    );
-    dispatch(
-      setRole(
-        user.type === UserTypeConstants.COMPANY
-          ? UserTypeConstants.COMPANY
-          : UserTypeConstants.WAREHOUSE
-      )
+      setPageState({
+        company: user.type === UserTypeConstants.COMPANY ? user : null,
+        warehouse: user.type === UserTypeConstants.WAREHOUSE ? user : null,
+        role:
+          user.type === UserTypeConstants.COMPANY
+            ? UserTypeConstants.COMPANY
+            : UserTypeConstants.WAREHOUSE,
+      })
     );
   };
 
   return (
     <>
-      <div className={[rowStyles.container].join(" ")}>
-        <label className={tableStyles.label_large}>
+      <RowContainer isEsven={index % 2}>
+        <ChildFlexOneDiv>
+          {user.isActive ? (
+            <Icon
+              tooltip={t("tooltip-undo-delete")}
+              onclick={() => userStatusChangeConfirmHandler("disapprove")}
+              icon={() => <BsFillPersonCheckFill />}
+              foreColor={Colors.SUCCEEDED_COLOR}
+            />
+          ) : (
+            <Icon
+              tooltip={t("tooltip-delete")}
+              onclick={() => userStatusChangeConfirmHandler("approve")}
+              icon={() => <BsFillPersonDashFill />}
+              foreColor={Colors.FAILED_COLOR}
+            />
+          )}
           {user.type === UserTypeConstants.COMPANY ||
           user.type === UserTypeConstants.WAREHOUSE ? (
             <Link
@@ -380,64 +326,22 @@ function UserRow({ user }) {
               }}
               className={rowStyles.hover_underline}
             >
-              {user.name}
+              <label>{user.name}</label>
             </Link>
           ) : (
-            user.name
+            <label>{user.name}</label>
           )}
-        </label>
+        </ChildFlexOneDiv>
 
-        <label
-          className={[
-            tableStyles.label_small,
-            generalStyles.flex_center_container,
-          ].join(" ")}
-        >
-          {user.isApproved ? (
-            <Icon
-              tooltip={t("tooltip-approve")}
-              onclick={() => userStatusChangeConfirmHandler("disapprove")}
-              icon={() => <AiFillUnlock />}
-              foreColor={Colors.SUCCEEDED_COLOR}
-            />
-          ) : (
-            <Icon
-              tooltip={t("tooltip-disapprove")}
-              onclick={() => userStatusChangeConfirmHandler("approve")}
-              icon={() => <AiFillLock />}
-              foreColor={Colors.FAILED_COLOR}
-            />
-          )}
-        </label>
+        <FixedSizeDiv size="large">
+          <label>{t(user.type)}</label>
+        </FixedSizeDiv>
 
-        <label
-          className={[
-            tableStyles.label_small,
-            generalStyles.flex_center_container,
-          ].join(" ")}
-        >
-          {user.isActive ? (
-            <Icon
-              tooltip={t("tooltip-undo-delete")}
-              onclick={() => userStatusChangeConfirmHandler("delete")}
-              icon={() => <BsFillPersonCheckFill />}
-              foreColor={Colors.SUCCEEDED_COLOR}
-            />
-          ) : (
-            <Icon
-              tooltip={t("tooltip-delete")}
-              onclick={() => userStatusChangeConfirmHandler("undo-delete")}
-              icon={() => <BsFillPersonDashFill />}
-              foreColor={Colors.FAILED_COLOR}
-            />
-          )}
-        </label>
-        <label
-          className={[
-            tableStyles.label_small,
-            generalStyles.flex_center_container,
-          ].join(" ")}
-        >
+        <FixedSizeDiv size="large">
+          <label>{t(user.mobile)}</label>
+        </FixedSizeDiv>
+
+        <FixedSizeDiv size="medium">
           {user.type === UserTypeConstants.WAREHOUSE ? (
             user.allowShowingMedicines ? (
               <Icon
@@ -459,62 +363,29 @@ function UserRow({ user }) {
           ) : (
             <></>
           )}
-        </label>
+        </FixedSizeDiv>
 
-        <label
-          className={[
-            tableStyles.label_small,
-            generalStyles.flex_center_container,
-          ].join(" ")}
-        >
-          {t(user.type)}
-        </label>
-
-        {/* <label
-          className={[tableStyles.label_large, tableStyles.hide_on_small].join(
-            " "
-          )}
-        >
-          {user.email}
-        </label>
-        <label
-          className={[
-            tableStyles.label_medium,
-            tableStyles.hide_on_medium,
-          ].join(" ")}
-        >
-          {user.phone}
-        </label> */}
-        <label
-          className={[
-            tableStyles.label_medium,
-            tableStyles.hide_on_medium,
-          ].join(" ")}
-        >
-          {user.mobile}
-        </label>
-        <label
-          className={[
-            tableStyles.label_xsmall,
-            generalStyles.flex_center_container,
-          ].join(" ")}
-        >
-          <Icon
-            tooltip={t("change-password-tooltip")}
-            onclick={() => setShowResetUserPasswordModal(true)}
-            icon={() => <CgPassword />}
-            foreColor={Colors.MAIN_COLOR}
-          />
-        </label>
-        <label className={tableStyles.label_xsmall}>
+        <FixedSizeDiv size="small">
           <Icon
             tooltip={t("user-more-info-title")}
-            onclick={() => setShowMoreInfo(true)}
+            onclick={() => setShowMenu(true)}
             icon={() => <IoMdMore />}
             foreColor={Colors.MAIN_COLOR}
           />
-        </label>
-      </div>
+        </FixedSizeDiv>
+
+        {showMenu && (
+          <UserOptionsMenu
+            user={user}
+            index={index}
+            closeHandler={() => setShowMenu(false)}
+            changeStatusHandler={userStatusChangeConfirmHandler}
+            changePasswordHandler={setShowResetUserPasswordModal}
+            moreInfoHandler={setShowMoreInfo}
+            deleteAccountForeverHandler={setShowDeleteConfirmModel}
+          />
+        )}
+      </RowContainer>
 
       {showModal && (
         <Modal
@@ -537,6 +408,26 @@ function UserRow({ user }) {
           passwordObjError={passwordObjError}
           handlePasswordFieldsChange={passwordFieldsChangeHandler}
         />
+      )}
+
+      {showDeleteConfirmModel && (
+        <Modal
+          header="delete-user-header"
+          cancelLabel="cancel-label"
+          okLabel="ok-label"
+          okModal={deleteUserForeverHandler}
+          closeModal={() => setShowDeleteConfirmModel(false)}
+          small={true}
+        >
+          <p>{t("do you want to delete user forever")}</p>
+        </Modal>
+      )}
+
+      {showMenu && (
+        <div
+          onClick={() => setShowMenu(false)}
+          className={styles.closable_div}
+        ></div>
       )}
 
       {showMoreInfo && (

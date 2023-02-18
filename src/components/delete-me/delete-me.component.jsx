@@ -25,7 +25,6 @@ import {
   resetMedicines,
 } from "../../redux/medicines/medicinesSlices";
 import { statisticsSliceSignOut } from "../../redux/statistics/statisticsSlice";
-import { warehouseItemsSliceSignOut } from "../../redux/warehouseItems/warehouseItemsSlices";
 import { advertisementsSignOut } from "../../redux/advertisements/advertisementsSlice";
 import { companiesSectionOneSignOut } from "../../redux/advertisements/companiesSectionOneSlice";
 import { companiesSectionTwoSignOut } from "../../redux/advertisements/companiesSectionTwoSlice";
@@ -36,6 +35,8 @@ import { warehousesSectionOneSignOut } from "../../redux/advertisements/warehous
 import { notificationsSignOut } from "../../redux/notifications/notificationsSlice";
 import { settingsSignOut } from "../../redux/settings/settingsSlice";
 import { usersNotificationsSignOut } from "../../redux/userNotifications/userNotificationsSlice";
+import { savedItemsSliceSignOut } from "../../redux/savedItems/savedItemsSlice";
+import { basketsSliceSignOut } from "../../redux/baskets/basketsSlice";
 
 // components
 import PasswordRow from "../password-row/password-row.component";
@@ -46,9 +47,6 @@ import generalStyles from "../../style.module.scss";
 
 // constants and utils
 import { Colors } from "../../utils/constants";
-import { savedItemsSliceSignOut } from "../../redux/savedItems/savedItemsSlice";
-import { basketsSliceSignOut } from "../../redux/baskets/basketsSlice";
-import { basketOrderSliceSignOut } from "../../redux/basketOrdersSlice/basketOrdersSlice";
 
 function DeleteMe() {
   const { t } = useTranslation();
@@ -92,7 +90,6 @@ function DeleteMe() {
         dispatch(statisticsSliceSignOut());
         dispatch(usersSliceSignOut());
         dispatch(warehouseSliceSignOut());
-        dispatch(warehouseItemsSliceSignOut());
         dispatch(orderSliceSignOut());
         dispatch(resetMedicines());
         dispatch(advertisementsSignOut());
@@ -108,7 +105,6 @@ function DeleteMe() {
         dispatch(usersNotificationsSignOut());
         dispatch(savedItemsSliceSignOut());
         dispatch(basketsSliceSignOut());
-        dispatch(basketOrderSliceSignOut());
         localStorage.removeItem("token");
       })
       .catch(() => {

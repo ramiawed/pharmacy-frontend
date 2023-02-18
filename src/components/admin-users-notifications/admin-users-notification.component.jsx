@@ -9,21 +9,28 @@ import {
   resetUserChangePasswordStatus,
   selectUsers,
 } from "../../redux/users/usersSlice";
+import {
+  selectUserData,
+  resetDeleteError,
+  resetDeleteStatus,
+} from "../../redux/auth/authSlice";
 
-// constants
+// constantss
 import { Colors } from "../../utils/constants";
 
 // components
 import Loader from "../action-loader/action-loader.component";
+import ResultModal from "../result-modal/result-modal.component";
 import Toast from "../toast/toast.component";
 
-function AdminUsersNotifications() {
+function AdminUsersNotifications({ refreshHandler }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   // selectors
   const { status, error, activationDeleteStatus, resetUserPasswordStatus } =
     useSelector(selectUsers);
+  const { deleteError, deleteStatus } = useSelector(selectUserData);
 
   return (
     <>
@@ -56,6 +63,17 @@ function AdminUsersNotifications() {
         />
       )}
 
+      {deleteError && (
+        <Toast
+          bgColor={Colors.FAILED_COLOR}
+          foreColor="#fff"
+          toastText={t(deleteError)}
+          actionAfterTimeout={() => {
+            dispatch(resetDeleteError());
+          }}
+        />
+      )}
+
       {/* show toast to display successfully or failed update password */}
       {resetUserPasswordStatus === "succeeded" && (
         <Toast
@@ -74,6 +92,17 @@ function AdminUsersNotifications() {
           foreColor="#fff"
           toastText={t("password-change-failed")}
           actionAfterTimeout={() => dispatch(resetUserChangePasswordStatus())}
+        />
+      )}
+
+      {deleteStatus === "succeeded" && (
+        <ResultModal
+          closeModal={() => {
+            dispatch(resetDeleteStatus());
+            refreshHandler();
+          }}
+          type="success"
+          msg="user deleted successfully"
         />
       )}
     </>

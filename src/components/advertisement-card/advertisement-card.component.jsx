@@ -14,7 +14,8 @@ import { Colors, SERVER_URL } from "../../utils/constants";
 import Modal from "../../modals/modal/modal.component";
 
 // styles
-import styles from "../new-advertisement/new-advertisement.module.scss";
+import styles from "./advertisment-card.module.scss";
+import Icon from "../icon/icon.component";
 
 function AdvertisementCard({ advertisement }) {
   const { t } = useTranslation();
@@ -31,49 +32,42 @@ function AdvertisementCard({ advertisement }) {
 
   return (
     <>
-      <div className={styles.new_advertisement_div}>
+      <div className={styles.container}>
         <div className={styles.content}>
-          <div className={styles.links}>
-            <div className={styles.links_container}>
-              {advertisement.company && (
-                <div className={styles.row}>
-                  <label>{t("company")}:</label>
-
-                  <p>{advertisement.company?.name}</p>
-                </div>
-              )}
-
-              {advertisement.warehouse && (
-                <div className={styles.row}>
-                  <label>{t("warehouse")}:</label>
-
-                  <p>{advertisement.warehouse?.name}</p>
-                </div>
-              )}
-
-              {advertisement.medicine && (
-                <div className={styles.row}>
-                  <label>{t("item-name")}:</label>
-
-                  <p>{advertisement.medicine?.name}</p>
-                </div>
-              )}
-
-              <div
-                className={styles.delete}
-                onClick={() => {
-                  setShowConfirmModal(true);
-                }}
-              >
-                <RiDeleteBin5Fill />
-              </div>
-            </div>
-          </div>
           <div className={styles.img}>
             <img
               src={`${SERVER_URL}/advertisements/${advertisement.logo_url}`}
               className={styles.image}
               alt="Thumb"
+            />
+          </div>
+          <div className={styles.links_container}>
+            {advertisement.company && (
+              <p className={styles.value}>{advertisement.company?.name}</p>
+            )}
+
+            {advertisement.warehouse && (
+              <p className={styles.value}>{advertisement.warehouse?.name}</p>
+            )}
+
+            {advertisement.medicine && (
+              <p className={styles.value}>{advertisement.medicine?.name}</p>
+            )}
+
+            {!advertisement.company &&
+              !advertisement.warehouse &&
+              !advertisement.medicine && (
+                <p className={styles.value}>{t("no-link")}</p>
+              )}
+
+            <Icon
+              icon={() => (
+                <RiDeleteBin5Fill color={Colors.FAILED_COLOR} size={24} />
+              )}
+              withBackground={true}
+              onclick={() => {
+                setShowConfirmModal(true);
+              }}
             />
           </div>
         </div>

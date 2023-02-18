@@ -9,6 +9,7 @@ import { selectUser } from "../../redux/auth/authSlice";
 import {
   resetPageState,
   setCompany,
+  setPageState,
   setRole,
   setWarehouse,
 } from "../../redux/items/itemsSlices";
@@ -38,9 +39,16 @@ function SideNavCompany({ selectedOption, onSelectedChange, collapsed }) {
         onClick={() => {
           onSelectedChange(SideNavLinks.ITEMS);
           dispatch(resetPageState());
-          dispatch(setCompany(user));
-          dispatch(setWarehouse(null));
-          dispatch(setRole(UserTypeConstants.COMPANY));
+          dispatch(
+            setPageState({
+              company: user,
+              warehouse: null,
+              role: UserTypeConstants.COMPANY,
+            })
+          );
+          // dispatch(setCompany(user));
+          // dispatch(setWarehouse(null));
+          // dispatch(setRole(UserTypeConstants.COMPANY));
           dispatch(setSearchWarehouseId(null));
           dispatch(setSearchCompanyId(null));
           // dispatch(setSelectedWarehouse(null));

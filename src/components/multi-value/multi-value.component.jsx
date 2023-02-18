@@ -1,6 +1,9 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
+// components
+import Icon from "../icon/icon.component";
+
 // react-icons
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdAddCircle } from "react-icons/md";
@@ -10,7 +13,7 @@ import generalStyles from "../../style.module.scss";
 import styles from "./multi-value.module.scss";
 
 // constants
-import { onKeyPressForNumberInput } from "../../utils/constants";
+import { Colors, onKeyPressForNumberInput } from "../../utils/constants";
 
 function MultiValue({
   addHandler,
@@ -30,23 +33,14 @@ function MultiValue({
     <>
       <div className={styles.header}>
         {allowEdit && (
-          <div
-            className={[
-              generalStyles.icon,
-              generalStyles.fc_green,
-              generalStyles.margin_h_auto,
-            ].join(" ")}
-          >
-            <MdAddCircle
-              size={36}
-              onClick={(e) => {
-                addHandler();
-                e.stopPropagation();
-              }}
+          <div className={[generalStyles.margin_h_auto].join(" ")}>
+            <Icon
+              icon={() => (
+                <MdAddCircle size={24} color={Colors.SUCCEEDED_COLOR} />
+              )}
+              onclick={addHandler}
+              tooltip={t("add-offer-tooltip")}
             />
-            <div className={generalStyles.tooltip}>
-              {t("add-offer-tooltip")}
-            </div>
           </div>
         )}
       </div>
@@ -64,14 +58,14 @@ function MultiValue({
                 placeholder={placeholder}
                 onKeyPress={onKeyPressForNumberInput}
                 disabled={!allowEdit}
+                type="number"
               />
-              {afterQuantityLabel && <label>{afterQuantityLabel}</label>}
+              {bonusLabel && <label>{bonusLabel}</label>}
+              {/* {afterQuantityLabel && <label>{afterQuantityLabel}</label>} */}
             </div>
 
             {/* bonus value */}
             <div className={styles.input_div} key={value.key}>
-              {bonusLabel && <label>{bonusLabel}</label>}
-
               <input
                 id={value.key}
                 title="bonus"
@@ -79,23 +73,19 @@ function MultiValue({
                 onChange={(e) => changeHandler(e)}
                 placeholder={placeholder}
                 disabled={!allowEdit}
+                type="number"
               />
-
               {afterBonusLabel && <label>{afterBonusLabel}</label>}
             </div>
 
             {allowEdit && (
-              <div
-                className={[generalStyles.icon, generalStyles.fc_red].join(" ")}
-              >
-                <RiDeleteBin5Fill
-                  size={24}
-                  onClick={() => deleteHandler(value.key)}
-                />
-                <div className={generalStyles.tooltip}>
-                  {t("remove-offer-tooltip")}
-                </div>
-              </div>
+              <Icon
+                icon={() => (
+                  <RiDeleteBin5Fill size={24} color={Colors.FAILED_COLOR} />
+                )}
+                onclick={() => deleteHandler(value.key)}
+                tooltip={t("remove-offer-tooltip")}
+              />
             )}
           </div>
         ))}

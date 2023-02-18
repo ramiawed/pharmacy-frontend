@@ -1,4 +1,4 @@
-@import '../../variables.scss';
+@import "../../variables.scss";
 
 .actions_div {
   display: flex;
@@ -10,7 +10,7 @@
 }
 
 .button {
-  background: #e3e3e3;
+  background: $light-grey-color;
   border-radius: 3px;
   margin-inline-end: 4px;
   margin-left: 4px;
@@ -28,7 +28,7 @@
 
 .highlight label {
   font-size: 14px;
-  color: $secondary-color;
+  color: $light-color;
   margin-inline: 4px;
   margin-left: 4px;
   margin-right: 4px;

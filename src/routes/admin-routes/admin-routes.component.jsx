@@ -78,9 +78,6 @@ const BackupRestorePage = lazy(() =>
 const OffersPage = lazy(() =>
   import("../../pages/offers-page/offers-page.component")
 );
-const BasketsOptionsPage = lazy(() =>
-  import("../../pages/baskets-options-page/baskets-options-page.component")
-);
 const BasketsPage = lazy(() =>
   import("../../pages/baskets-page/baskets-page.component")
 );
@@ -138,36 +135,7 @@ function AdminRoutes({ changeOptionHandler }) {
         </Route>
 
         <Route exact path="/baskets">
-          <BasketsOptionsPage
-            onSelectedChange={() => {
-              changeOptionHandler({
-                selectedTopNavOption: "",
-                collapsedSideNavOption: true,
-                selectedSideNavOption: SideNavLinks.BASKETS,
-                showTopNav: false,
-                showSearchBar: false,
-              });
-            }}
-          />
-        </Route>
-
-        <Route exact path="/all-baskets">
           <BasketsPage
-            onSelectedChange={() => {
-              changeOptionHandler({
-                selectedTopNavOption: "",
-                collapsedSideNavOption: true,
-                selectedSideNavOption: SideNavLinks.BASKETS,
-                showTopNav: false,
-                showSearchBar: false,
-              });
-            }}
-          />
-        </Route>
-
-        <Route exact path="/ordered-baskets">
-          <OrdersPage
-            type="basket"
             onSelectedChange={() => {
               changeOptionHandler({
                 selectedTopNavOption: "",

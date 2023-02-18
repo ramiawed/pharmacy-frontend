@@ -6,12 +6,15 @@ import { useHistory } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeDisplayType,
+  changeSearchCity,
+  changeSearchName,
   resetCompaniesPageState,
   selectCompaniesPageState,
 } from "../../redux/company/companySlice";
 
 // components
-import Icon from "../action-icon/action-icon.component";
+import Icon from "../icon/icon.component";
+import ActionBar from "../action-bar/action-bar.component";
 
 // react icons
 import { RiRefreshLine } from "react-icons/ri";
@@ -19,9 +22,6 @@ import { AiFillAppstore } from "react-icons/ai";
 import { FaListUl } from "react-icons/fa";
 import { VscClearAll } from "react-icons/vsc";
 import { IoMdArrowRoundBack } from "react-icons/io";
-
-// styles
-import generalStyles from "../../style.module.scss";
 
 // constants and utils
 import { CitiesName, Colors } from "../../utils/constants";
@@ -37,7 +37,7 @@ function CompaniesActions({ refreshHandler }) {
 
   return (
     <>
-      <div className={[generalStyles.actions].join(" ")}>
+      <ActionBar>
         {/* refresh */}
         <Icon
           withBackground={true}
@@ -57,8 +57,8 @@ function CompaniesActions({ refreshHandler }) {
             foreColor={Colors.MAIN_COLOR}
             tooltip={t("clear-filter-tooltip")}
             onclick={() => {
-              dispatch(resetCompaniesPageState());
-              refreshHandler();
+              dispatch(changeSearchName(""));
+              dispatch(changeSearchCity(CitiesName.ALL));
             }}
             icon={() => <VscClearAll />}
           />
@@ -99,7 +99,7 @@ function CompaniesActions({ refreshHandler }) {
           icon={() => <IoMdArrowRoundBack />}
           foreColor={Colors.MAIN_COLOR}
         />
-      </div>
+      </ActionBar>
     </>
   );
 }

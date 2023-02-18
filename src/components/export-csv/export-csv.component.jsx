@@ -3,7 +3,7 @@ import React from "react";
 import * as FileSaver from "file-saver";
 
 import * as XLSX from "xlsx";
-import Icon from "../action-icon/action-icon.component";
+import Icon from "../icon/icon.component";
 import { Colors, OfferTypes } from "../../utils/constants";
 import { RiSave3Fill } from "react-icons/ri";
 import { useTranslation } from "react-i18next";
@@ -33,15 +33,15 @@ export const ExportCSV = ({ csvData, fileName }) => {
   const exportToCSV = (csvData, fileName) => {
     let jsonData = csvData.map((d) => {
       return {
-        ["الاسم التحاري"]: d.item.name,
-        ["الشركة"]: d.item.company.name,
-        ["الشكل الصيدلاني"]: d.item.formula,
-        ["العيار"]: d.item.caliber,
-        ["التعبئة"]: d.item.packing,
-        ["السعر للصيدلاني"]: d.item.price,
-        ["السعر للعموم"]: d.item.customer_price,
-        ["الكمية"]: d.qty,
-        ["العرض"]: d.bonus
+        "الاسم التحاري": d.item.name,
+        الشركة: d.item.company.name,
+        "الشكل الصيدلاني": d.item.formula,
+        العيار: d.item.caliber,
+        التعبئة: d.item.packing,
+        "السعر للصيدلاني": d.item.price,
+        "السعر للعموم": d.item.customer_price,
+        الكمية: d.qty,
+        العرض: d.bonus
           ? d.bonus +
             (d.bonus
               ? d.bonusType === OfferTypes.PERCENTAGE
@@ -49,7 +49,7 @@ export const ExportCSV = ({ csvData, fileName }) => {
                 : t("after-quantity-label")
               : "")
           : "",
-        ["السعر الاجمالي"]:
+        "السعر الاجمالي":
           d.qty * d.item.price -
           (d.bonus && d.bonusType === OfferTypes.PERCENTAGE
             ? (d.qty * d.item.price * d.bonus) / 100
@@ -60,16 +60,16 @@ export const ExportCSV = ({ csvData, fileName }) => {
     jsonData = [
       ...jsonData,
       {
-        ["الاسم التحاري"]: "",
-        ["الشركة"]: "",
-        ["الشكل الصيدلاني"]: "",
-        ["العيار"]: "",
-        ["التعبئة"]: "",
-        ["السعر للصيدلاني"]: "",
-        ["السعر للعموم"]: "",
-        ["الكمية"]: "",
-        ["العرض"]: "",
-        ["السعر الاجمالي"]: computeTotalPrice(csvData),
+        "الاسم التحاري": "",
+        الشركة: "",
+        "الشكل الصيدلاني": "",
+        العيار: "",
+        التعبئة: "",
+        "السعر للصيدلاني": "",
+        "السعر للعموم": "",
+        الكمية: "",
+        العرض: "",
+        "السعر الاجمالي": computeTotalPrice(csvData),
       },
     ];
     const ws = XLSX.utils.json_to_sheet(jsonData);
@@ -86,11 +86,12 @@ export const ExportCSV = ({ csvData, fileName }) => {
   return (
     <Icon
       selected={false}
-      foreColor={Colors.GREY_COLOR}
+      foreColor={Colors.DARK_COLOR}
       tooltip={t("save-order")}
       icon={() => <RiSave3Fill />}
-      onclick={(e) => exportToCSV(csvData, fileName)}
+      onclick={() => exportToCSV(csvData, fileName)}
       withBackground={true}
+      text={t("save-order")}
     />
   );
 };

@@ -1,0 +1,40 @@
+@import "../../variables.scss";
+
+.outer_container {
+    width: 100%;
+    padding: 4px 4px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    border-bottom: 2px solid rgba($color: $light-grey-color, $alpha: 1);
+    color: $main-color;
+    position: relative;
+}
+
+.outer_container:hover {
+    background-color: rgba($color: $light-grey-color, $alpha: 1);
+}
+
+.even_container {
+    background-color: rgba($color: $light-grey-color, $alpha: 0.5);
+}
+
+.odd_container {
+    background-color: $white-color;
+}
+
+.header_container {
+    color: $green-color;
+    background-color: rgba($color: #fff, $alpha: 1) !important;
+    border-bottom: 2px solid $green-color;
+
+    label {
+        font-size: 12px !important;
+        font-weight: bold;
+    }
+}
+
+.offer_container {
+    color: $main-color;
+    background-color: rgba($color: $offer-color, $alpha: 0.5) !important;
+}

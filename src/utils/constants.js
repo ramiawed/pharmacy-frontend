@@ -32,24 +32,35 @@ export const GuestJob = {
   NONE: "user-job",
 };
 
-export const WarehouseOrderStatus = {
-  ALL: "all",
-  UNREAD: "unread",
-  RECEIVED: "received",
-  SENT: "sent",
-  WILL_DONT_SERVER: "dontServe",
-};
+// export const WarehouseOrderStatus = {
+//   ALL: "all",
+//   UNREAD: "unread",
+//   RECEIVED: "received",
+//   SENT: "sent",
+//   WILL_DONT_SERVER: "dontServe",
+// };
 
-export const PharmacyOrderStatus = {
-  ALL: "all",
-  RECEIVED: "received",
-  SENT: "sent",
-};
+// export const PharmacyOrderStatus = {
+//   ALL: "all",
+//   RECEIVED: "received",
+//   SENT: "sent",
+// };
 
-export const AdminOrderStatus = {
+// export const AdminOrderStatus = {
+//   ALL: "all",
+//   SEEN: "seen",
+//   NOT_SEEN: "not-seen",
+// };
+
+export const OrdersStatusOptions = {
+  WILL_DONT_SERVER: "dont-serve",
+  CONFIRM: "confirm",
+  DELIVERY: "delivery",
+  SHIPPING: "shipping",
+  EDITING_BY_WAREHOUSE: "editting-by-warehouse",
+  APPROVE_EDITING_BY_PHARMACY: "approve-editing-by-phamracy",
+  SENT_BY_PHARMACY: "sent-by-pharmacy",
   ALL: "all",
-  SEEN: "seen",
-  NOT_SEEN: "not-seen",
 };
 
 export const CitiesName = {
@@ -62,7 +73,7 @@ export const CitiesName = {
   HOMS: "homs",
   IDLIB: "idlib",
   LATAKIA: "latakia",
-  QUNEITRA: "guneitra",
+  QUNEITRA: "quneitra",
   RAQQA: "RAQQA",
   AL_SUWAYDA: "al_suwayda",
   TARTUS: "tartus",
@@ -72,9 +83,8 @@ export const CitiesName = {
 };
 
 export const Colors = {
-  // MAIN_COLOR: "#4267B2",
   MAIN_COLOR: "#566092",
-  SECONDARY_COLOR: "#acb3c3",
+  LIGHT_COLOR: "#858dc3",
   BACKUP_COLOR: "#99cf16",
   SUCCEEDED_COLOR: "#2aa70b",
   FAILED_COLOR: "#ff787e",
@@ -82,7 +92,8 @@ export const Colors = {
   OFFER_COLOR: "#81bbf5a4",
   WHITE_COLOR: "#fff",
   BLUE_COLOR: "#00A5CF",
-  GREY_COLOR: "#898F9C",
+  DARK_COLOR: "#293664",
+  LIGHT_GREY_COLOR: "#e3e3e3",
 };
 
 export const SideNavLinks = {
@@ -96,6 +107,7 @@ export const SideNavLinks = {
   STATISTICS: "statistics",
   BACKUP_RESTORE: "backup-restore",
   BASKETS: "baskets",
+  SAVEDITEMS: "saved-items",
 };
 
 export const TopNavLinks = {
@@ -108,14 +120,15 @@ export const TopNavLinks = {
   NOTIFICATIONS: "notifications",
   OFFERS: "offers",
   SIGNOUT: "signout",
-  SAVEDITEMS: "saved-items",
+  // SAVEDITEMS: "saved-items",
+  BASKETS: "baskets",
+  SPEACIAL_OFFERS: "nav-special-offers",
 };
 
 export const OrderOptions = {
   NAME: "name",
   DATE_CREATED: "createdAt",
   DATE_UPDATED: "updatedAt",
-  APPROVED: "isApproved",
   ACTIVE: "isActive",
   CITY: "city",
   DISTRICT: "district",
@@ -149,9 +162,9 @@ export const AdditionalColors = [
 ];
 
 export const toEnglishNumber = (strNum) => {
-  var ar = "٠١٢٣٤٥٦٧٨٩".split("");
-  var en = "0123456789".split("");
-  strNum = strNum.replace(/[٠١٢٣٤٥٦٧٨٩]/g, (x) => en[ar.indexOf(x)]);
+  var ar = "٠١٢٣٤٥٦٧٨٩،".split("");
+  var en = "0123456789,".split("");
+  strNum = strNum.replace(/[٠١٢٣٤٥٦٧٨٩،]/g, (x) => en[ar.indexOf(x)]);
   strNum = strNum.replace(/[^\d]/g, "");
   return strNum;
 };
@@ -163,12 +176,17 @@ export const onKeyPressForNumberInput = (event) => {
 export const checkItemExistsInWarehouse = (item, user) => {
   return (
     item.warehouses.filter(
-      (w) =>
-        w.warehouse.city === user.city &&
-        w.warehouse.isActive &&
-        w.warehouse.isApproved
+      (w) => w.warehouse.city === user.city && w.warehouse.isActive
     ).length > 0
   );
+};
+
+export const formatNumber = (number) => {
+  return new Intl.NumberFormat("en-US").format(number);
+};
+
+export const formatDate = (date) => {
+  return new Intl.DateTimeFormat("ar-SY").format(date);
 };
 
 // if logged user is
@@ -208,7 +226,11 @@ export const checkOffer = (item, user) => {
 
   if (user.type === UserTypeConstants.PHARMACY) {
     item.warehouses.forEach((w) => {
-      if (w.warehouse.city === user.city && w.offer.offers.length > 0) {
+      if (
+        w.warehouse.city === user.city &&
+        w.warehouse.isActive &&
+        w.offer.offers.length > 0
+      ) {
         result = true;
       }
     });
@@ -218,10 +240,13 @@ export const checkOffer = (item, user) => {
 };
 
 // export const BASEURL = "https://salty-brook-65681.herokuapp.com/api/v1";
+// export const BASEURL = "http://192.168.43.211:8000/api/v1";
 export const BASEURL = "http://localhost:8000/api/v1";
 // export const BASEURL = "http://67.205.165.65/api/v1";
 // export const BASEURL = "https://api.smartpharmasy.com/api/v1";
 // export const SERVER_URL = "https://salty-brook-65681.herokuapp.com";
+// export const SERVER_URL = "http://192.168.43.211:8000/";
 export const SERVER_URL = "http://localhost:8000/";
 // export const SERVER_URL = "https://api.smartpharmasy.com/";
 // export const SERVER_URL = "http://67.205.165.65/";
+export const VERSION = "2.0.0";

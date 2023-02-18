@@ -54,10 +54,11 @@
   flex-direction: column;
 
   p {
-    font-size: 0;
+    font-size: 24px;
+    transform: scale(0);
     animation-name: zoom-in-text;
     animation-duration: 0.2s;
-    animation-delay: 0.2s;
+    animation-delay: 0.5s;
     animation-fill-mode: forwards;
   }
 
@@ -102,7 +103,7 @@
 
     &:hover {
       background-color: $green-color;
-      color: $white-color
+      color: $white-color;
     }
   }
 
@@ -112,7 +113,7 @@
 
     &:hover {
       background-color: $third-color;
-      color: $white-color
+      color: $white-color;
     }
   }
 }
@@ -147,14 +148,14 @@
 
 @keyframes zoom-in-text {
   0% {
-    font-size: 0;
+    transform: scale(0);
   }
 
   90% {
-    font-size: 28px;
+    transform: scale(1.1);
   }
 
   100% {
-    font-size: 24px;
+    transform: scale(1);
   }
 }

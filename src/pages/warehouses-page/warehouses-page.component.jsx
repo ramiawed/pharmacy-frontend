@@ -1,17 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
-import ReactLoading from "react-loading";
 import { useHistory } from "react-router-dom";
 
 // components
-import PartnerRow from "../../components/partner-row/partner-row.component";
-import PartnerCard from "../../components/partner-card/partner-card.component";
-import Toast from "../../components/toast/toast.component";
-import NoContent from "../../components/no-content/no-content.component";
-import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
-import WarehousesActions from "../../components/warehouses-actions/warehouses-actions.component";
 import WarehousesSearchEngine from "../../components/warehouses-search-engine/warehouses-search-engine.component";
+import MainContentContainer from "../../components/main-content-container/main-content-container.component";
+import WarehousesActions from "../../components/warehouses-actions/warehouses-actions.component";
+import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
+import NoMoreResult from "../../components/no-more-result/no-more-result.component";
+import ResultsCount from "../../components/results-count/results-count.component";
+import PartnerCard from "../../components/partner-card/partner-card.component";
+import CylonLoader from "../../components/cylon-loader/cylon-loader.component";
+import PartnerRow from "../../components/partner-row/partner-row.component";
+import NoContent from "../../components/no-content/no-content.component";
+import ActionBar from "../../components/action-bar/action-bar.component";
+import Toast from "../../components/toast/toast.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -21,19 +25,14 @@ import {
   resetWarehouse,
   selectWarehouses,
   selectWarehousesPageState,
-  cancelOperation,
   changeSearchCity,
-  resetWarehousesArray,
 } from "../../redux/warehouse/warehousesSlice";
 import {
   getFavorites,
   resetFavorites,
   selectFavorites,
 } from "../../redux/favorites/favoritesSlice";
-import {
-  changeOnlineMsg,
-  selectOnlineStatus,
-} from "../../redux/online/onlineSlice";
+import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 
 // constants and utils
 import {
@@ -55,8 +54,6 @@ import {
   removePartnerFromFavoriteHandler,
 } from "../../utils/handlers";
 
-let timer;
-
 function WarehousePage({ onSelectedChange }) {
   const { t } = useTranslation();
   const history = useHistory();
@@ -66,8 +63,23 @@ function WarehousePage({ onSelectedChange }) {
   const isOnline = useSelector(selectOnlineStatus);
   const { token, user } = useSelector(selectUserData);
   const { warehouses, count, status } = useSelector(selectWarehouses);
-  const { searchName, searchCity } = useSelector(selectWarehousesPageState);
-  const { displayType } = useSelector(selectWarehousesPageState);
+  const { searchName, searchCity, displayType } = useSelector(
+    selectWarehousesPageState
+  );
+
+  let filteredWarehouses = warehouses.filter((warehouse) => {
+    if (searchName.trim().length > 0) {
+      return warehouse.name.includes(searchName.trim());
+    }
+    return true;
+  });
+
+  filteredWarehouses = filteredWarehouses.filter((warehouse) => {
+    if (searchCity !== CitiesName.ALL) {
+      return warehouse.city === searchCity;
+    }
+    return true;
+  });
 
   // select favorites from favoriteSlice
   const { error: favoriteError } = useSelector(selectFavorites);
@@ -75,7 +87,7 @@ function WarehousePage({ onSelectedChange }) {
   const [favoritesError, setFavoritesError] = useState(favoriteError);
 
   // handle search
-  const handleSearch = () => {
+  const searchHandler = () => {
     if (
       user.type === UserTypeConstants.PHARMACY ||
       user.type === UserTypeConstants.GUEST ||
@@ -91,67 +103,32 @@ function WarehousePage({ onSelectedChange }) {
     );
   };
 
-  const handleMoreResult = () => {
-    if (!isOnline) {
-      dispatch(changeOnlineMsg());
-      return;
-    }
-
-    handleSearch();
-  };
-
-  const handleEnterPress = () => {
-    dispatch(resetWarehousesArray());
-    handleSearch();
-  };
-
   const refreshHandler = () => {
     dispatch(resetFavorites());
     dispatch(getFavorites({ token }));
     dispatch(resetWarehouse());
-    handleSearch();
-  };
-
-  const keyUpHandler = (event) => {
-    if (event.keyCode === 13) return;
-    cancelOperation();
-
-    if (timer) {
-      clearTimeout(timer);
-    }
-
-    timer = setTimeout(() => {
-      handleEnterPress();
-    }, 200);
+    searchHandler();
   };
 
   useEffect(() => {
-    if (warehouses.length === 0) handleSearch(1);
-
     window.scrollTo(0, 0);
 
     onSelectedChange();
-
-    return () => {
-      cancelOperation();
-    };
   }, []);
 
   return user &&
     (user.type === UserTypeConstants.ADMIN ||
       user.type === UserTypeConstants.PHARMACY) ? (
     <>
-      <WarehousesSearchEngine
-        search={handleEnterPress}
-        keyUpHandler={keyUpHandler}
-      />
-      <div className={generalStyles.container_with_header}>
+      <WarehousesSearchEngine />
+      <MainContentContainer>
         <WarehousesActions refreshHandler={refreshHandler} />
-        {count > 0 && (
-          <div className={generalStyles.count}>
-            <span className={generalStyles.label}>{t("warehouses-count")}</span>
-            <span className={generalStyles.count}>{count}</span>
-          </div>
+
+        {filteredWarehouses.length > 0 && (
+          <ResultsCount
+            count={filteredWarehouses.length}
+            label={t("warehouses-count")}
+          />
         )}
 
         {/* display as list */}
@@ -162,7 +139,7 @@ function WarehousePage({ onSelectedChange }) {
               generalStyles.margin_top_10,
             ].join(" ")}
           >
-            {warehouses.map((warehouse) => (
+            {filteredWarehouses.map((warehouse) => (
               <PartnerRow
                 key={warehouse._id}
                 partner={warehouse}
@@ -205,8 +182,11 @@ function WarehousePage({ onSelectedChange }) {
               generalStyles.flex_container,
               generalStyles.margin_top_10,
             ].join(" ")}
+            style={{
+              alignItems: "stretch",
+            }}
           >
-            {warehouses.map((warehouse) => (
+            {filteredWarehouses.map((warehouse) => (
               <PartnerCard
                 key={warehouse._id}
                 partner={warehouse}
@@ -243,50 +223,38 @@ function WarehousePage({ onSelectedChange }) {
         )}
 
         {count > 0 && status !== "loading" && (
-          <div className={generalStyles.count}>
-            {warehouses.length} / {count}
-          </div>
+          <ResultsCount count={`${filteredWarehouses.length} / ${count}`} />
         )}
 
-        {warehouses.length === 0 &&
+        {filteredWarehouses.length === 0 &&
           status !== "loading" &&
           searchName.length === 0 &&
           searchCity === CitiesName.ALL && (
             <NoContent msg={t("no-warehouses")} />
           )}
 
-        {warehouses.length === 0 &&
+        {filteredWarehouses.length === 0 &&
           status !== "loading" &&
           (searchName.length !== 0 || searchCity !== CitiesName.ALL) && (
             <NoContent msg={t("no-result-found")} />
           )}
 
-        {status === "loading" && (
-          <div className={generalStyles.flex_container}>
-            <ReactLoading color={Colors.SECONDARY_COLOR} type="cylon" />
-          </div>
-        )}
+        {status === "loading" && <CylonLoader />}
 
-        {warehouses.length < count && (
-          <div className={generalStyles.flex_container}>
+        {filteredWarehouses.length < count && (
+          <ActionBar>
             <ButtonWithIcon
               text={t("more")}
-              action={handleMoreResult}
-              bgColor={Colors.SECONDARY_COLOR}
+              action={searchHandler}
+              bgColor={Colors.SUCCEEDED_COLOR}
               icon={() => <CgMoreVertical />}
             />
-          </div>
+          </ActionBar>
         )}
 
-        {warehouses.length === count && status !== "loading" && count !== 0 && (
-          <p
-            className={[generalStyles.center, generalStyles.fc_secondary].join(
-              " "
-            )}
-          >
-            {t("no-more")}
-          </p>
-        )}
+        {filteredWarehouses.length === count &&
+          status !== "loading" &&
+          count !== 0 && <NoMoreResult msg={t("no-more")} />}
 
         {favoritesError && (
           <Toast
@@ -299,7 +267,7 @@ function WarehousePage({ onSelectedChange }) {
             {t(favoriteError)}
           </Toast>
         )}
-      </div>
+      </MainContentContainer>
     </>
   ) : (
     <Redirect to="/" />

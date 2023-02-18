@@ -7,12 +7,13 @@
   align-items: center;
   justify-content: flex-start;
   padding-right: 40px;
+  padding-left: 20px;
   margin-bottom: 5px;
-  background-color: rgba($color: $secondary-color, $alpha: 1);
+  background-color: rgba($color: $light-color, $alpha: 1);
   z-index: 8;
 }
 
-.header h2 {
+.header p {
   flex: 1;
   font-weight: bold;
   margin: 10px 0;
@@ -22,13 +23,7 @@
   text-align: center;
 }
 
-.header h2 span {
+.header p span {
   padding-inline-start: 20px;
   padding-right: 20px;
-}
-
-.back {
-  position: absolute;
-  top: 10px;
-  left: 20px;
 }

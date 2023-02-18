@@ -316,7 +316,9 @@ const CreateAccountStageFour = ({
             >
               <form encType="multipart/form-data">
                 <>
-                  <label htmlFor="paperUrl">{t(userPaperUrlLabel)}</label>
+                  <label htmlFor="paperUrl" style={{ textAlign: "center" }}>
+                    {t(userPaperUrlLabel)}
+                  </label>
                   <input
                     type="file"
                     name="file"
@@ -327,6 +329,7 @@ const CreateAccountStageFour = ({
                   />
                 </>
               </form>
+              <label>اضغط هنا</label>
               <label>{obj.paperUrl?.name}</label>
               {error.paperUrl && (
                 <label className={styles.error_label}>
@@ -342,6 +345,7 @@ const CreateAccountStageFour = ({
           />
         </div>
       </StageContainer>
+
       {showChooseGuestJobModal && (
         <ChooseValue
           headerTitle="user-job"

@@ -33,6 +33,7 @@ import generalStyles from "../../style.module.scss";
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
 import Toast from "../../components/toast/toast.component";
+import MainContentContainer from "../../components/main-content-container/main-content-container.component";
 
 function AdminNotificationPage({ onSelectedChange }) {
   const { t } = useTranslation();
@@ -80,7 +81,7 @@ function AdminNotificationPage({ onSelectedChange }) {
   return user && user.type === UserTypeConstants.ADMIN ? (
     <>
       <AdminNotificationsHeader isNew={isNew} setIsNew={setIsNew} />
-      <div className={generalStyles.container_with_header}>
+      <MainContentContainer>
         {isNew ? (
           <NewNotification
             setIsNew={setIsNew}
@@ -147,7 +148,7 @@ function AdminNotificationPage({ onSelectedChange }) {
             actionAfterTimeout={() => setSuccessDeletingNotificationMsg("")}
           />
         )}
-      </div>
+      </MainContentContainer>
     </>
   ) : (
     <Redirect to="/" />

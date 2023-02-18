@@ -11,38 +11,37 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
-import ReactLoading from "react-loading";
 import { useHistory } from "react-router-dom";
 
 import { CgMoreVertical } from "react-icons/cg";
 
 // components
-import PartnerRow from "../../components/partner-row/partner-row.component";
-import PartnerCard from "../../components/partner-card/partner-card.component";
-import NoContent from "../../components/no-content/no-content.component";
-import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
-import CompaniesActions from "../../components/companies-actions/companies-actions.component";
 import CompaniesSearchEngine from "../../components/companies-search-engine/companies-search-engine.component";
+import MainContentContainer from "../../components/main-content-container/main-content-container.component";
+import CompaniesActions from "../../components/companies-actions/companies-actions.component";
+import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
+import NoMoreResult from "../../components/no-more-result/no-more-result.component";
+import ResultsCount from "../../components/results-count/results-count.component";
+import CylonLoader from "../../components/cylon-loader/cylon-loader.component";
+import PartnerCard from "../../components/partner-card/partner-card.component";
+import PartnerRow from "../../components/partner-row/partner-row.component";
+import NoContent from "../../components/no-content/no-content.component";
+import ActionBar from "../../components/action-bar/action-bar.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
-  cancelOperation,
   getCompanies,
   resetCompanies,
   selectCompanies,
   selectCompaniesPageState,
-  resetCompaniesArray,
 } from "../../redux/company/companySlice";
 import {
   getFavorites,
   resetFavorites,
 } from "../../redux/favorites/favoritesSlice";
-import {
-  changeOnlineMsg,
-  selectOnlineStatus,
-} from "../../redux/online/onlineSlice";
+import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 
 // styles
 import generalStyles from "../../style.module.scss";
@@ -59,8 +58,6 @@ import {
   removePartnerFromFavoriteHandler,
 } from "../../utils/handlers";
 
-let timer;
-
 function CompaniesPage({ onSelectedChange }) {
   const { t } = useTranslation();
   const history = useHistory();
@@ -70,11 +67,25 @@ function CompaniesPage({ onSelectedChange }) {
   // select from redux store
   // select logged user and it's token from authSlice
   const { token, user } = useSelector(selectUserData);
-  // select companies from companySlice
   const { companies, count, status } = useSelector(selectCompanies);
-  const { searchName, searchCity } = useSelector(selectCompaniesPageState);
-  const { displayType } = useSelector(selectCompaniesPageState);
+  const { searchName, searchCity, displayType } = useSelector(
+    selectCompaniesPageState
+  );
   const isOnline = useSelector(selectOnlineStatus);
+
+  let filteredCompanies = companies.filter((company) => {
+    if (searchName.trim().length > 0) {
+      return company.name.includes(searchName.trim());
+    }
+    return true;
+  });
+
+  filteredCompanies = filteredCompanies.filter((company) => {
+    if (searchCity !== CitiesName.ALL) {
+      return company.city === searchCity;
+    }
+    return true;
+  });
 
   // search handler
   // /users?type=company&page=page&limit=15
@@ -90,26 +101,6 @@ function CompaniesPage({ onSelectedChange }) {
     dispatch(getCompanies({ token }));
   };
 
-  // get the next 15 companies from DB
-  // and add one to page
-  const handleMoreResult = () => {
-    if (!isOnline) {
-      dispatch(changeOnlineMsg());
-      return;
-    }
-
-    searchHandler();
-  };
-
-  // when press enter in search input field
-  // 1- reset the companies in the companySlice redux
-  // 2- search based on the new search engines
-  // 3- reset the page to 1
-  const handleEnterPress = () => {
-    dispatch(resetCompaniesArray());
-    searchHandler();
-  };
-
   const refreshHandler = () => {
     dispatch(resetFavorites());
     dispatch(getFavorites({ token }));
@@ -117,44 +108,22 @@ function CompaniesPage({ onSelectedChange }) {
     searchHandler();
   };
 
-  const keyUpHandler = (event) => {
-    if (event.keyCode === 13) return;
-    cancelOperation();
-
-    if (timer) {
-      clearTimeout(timer);
-    }
-
-    timer = setTimeout(() => {
-      handleEnterPress();
-    }, 200);
-  };
-
   useEffect(() => {
-    if (companies.length === 0) searchHandler(1);
-
     window.scrollTo(0, 0);
 
     onSelectedChange();
-
-    return () => {
-      cancelOperation();
-    };
   }, []);
 
   return user ? (
     <>
-      <CompaniesSearchEngine
-        search={handleEnterPress}
-        keyUpHandler={keyUpHandler}
-      />
-      <div className={generalStyles.container_with_header}>
+      <CompaniesSearchEngine />
+      <MainContentContainer>
         <CompaniesActions refreshHandler={refreshHandler} />
-        {count > 0 && (
-          <div className={generalStyles.count}>
-            <span className={generalStyles.label}>{t("companies-count")}</span>
-            <span className={generalStyles.count}>{count}</span>
-          </div>
+        {filteredCompanies.length > 0 && (
+          <ResultsCount
+            label={t("companies-count")}
+            count={filteredCompanies.length}
+          />
         )}
 
         {/* display partner as list */}
@@ -165,7 +134,7 @@ function CompaniesPage({ onSelectedChange }) {
               generalStyles.margin_top_10,
             ].join(" ")}
           >
-            {companies.map((company) => (
+            {filteredCompanies.map((company) => (
               <PartnerRow
                 key={company._id}
                 partner={company}
@@ -224,8 +193,11 @@ function CompaniesPage({ onSelectedChange }) {
               generalStyles.flex_container,
               generalStyles.margin_top_10,
             ].join(" ")}
+            style={{
+              alignItems: "stretch",
+            }}
           >
-            {companies.map((company) => (
+            {filteredCompanies.map((company) => (
               <PartnerCard
                 key={company._id}
                 partner={company}
@@ -277,52 +249,40 @@ function CompaniesPage({ onSelectedChange }) {
           </div>
         )}
 
-        {count > 0 && status !== "loading" && (
-          <div className={generalStyles.count}>
-            {companies.length} / {count}
-          </div>
-        )}
+        {/* {count > 0 && status !== "loading" && (
+          <ResultsCount count={`${companies.length} / ${count}`} />
+        )} */}
 
-        {companies.length === 0 &&
+        {filteredCompanies.length === 0 &&
           status !== "loading" &&
           searchName.length === 0 &&
           searchCity === CitiesName.ALL && (
             <NoContent msg={t("no-companies")} />
           )}
 
-        {companies.length === 0 &&
+        {filteredCompanies.length === 0 &&
           status !== "loading" &&
           (searchName.length !== 0 || searchCity !== CitiesName.ALL) && (
             <NoContent msg={t("no-result-found")} />
           )}
 
-        {status === "loading" && (
-          <div className={generalStyles.flex_container}>
-            <ReactLoading color={Colors.SECONDARY_COLOR} type="cylon" />
-          </div>
-        )}
+        {status === "loading" && <CylonLoader />}
 
-        {companies.length < count && (
-          <div className={generalStyles.flex_container}>
+        {filteredCompanies.length < count && (
+          <ActionBar>
             <ButtonWithIcon
               text={t("more")}
-              action={handleMoreResult}
-              bgColor={Colors.SECONDARY_COLOR}
+              action={searchHandler}
+              bgColor={Colors.SUCCEEDED_COLOR}
               icon={() => <CgMoreVertical />}
             />
-          </div>
+          </ActionBar>
         )}
 
-        {companies.length === count && status !== "loading" && count !== 0 && (
-          <p
-            className={[generalStyles.center, generalStyles.fc_secondary].join(
-              " "
-            )}
-          >
-            {t("no-more")}
-          </p>
-        )}
-      </div>
+        {filteredCompanies.length === count &&
+          status !== "loading" &&
+          count !== 0 && <NoMoreResult msg={t("no-more")} />}
+      </MainContentContainer>
     </>
   ) : (
     <Redirect to="/signin" />

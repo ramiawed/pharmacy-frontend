@@ -9,7 +9,7 @@ import styles from "./item-excel-card.module.scss";
 
 // constants
 import { Colors, onKeyPressForNumberInput } from "../../utils/constants";
-import Icon from "../action-icon/action-icon.component";
+import Icon from "../icon/icon.component";
 
 function ItemExcelRow({
   item,

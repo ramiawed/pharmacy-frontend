@@ -13,7 +13,7 @@
     cursor: pointer;
 
     .label {
-        color: $grey-color;
+        color: $dark-color;
         min-width: 75px;
         font-size: 12px;
         cursor: pointer;
@@ -33,7 +33,58 @@
 
     .placeholder {
         font-size: 12px;
-        color: $secondary-color;
+        color: $light-color;
+    }
+}
+
+.for_search {
+    background: $white-color;
+    color: $light-color;
+    border-radius: 6px;
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    align-items: stretch;
+    margin-bottom: 5px;
+    border: 1px solid rgba($color: $light-grey-color, $alpha: 1);
+
+    .label {
+        font-size: 12px;
+        font-weight: bold;
+        width: 100px;
+        text-align: left;
+        color: $white-color;
+        background-color: $main-color;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-left: 10px;
+        border-top-right-radius: 6px;
+        border-bottom-right-radius: 6px;
+    }
+
+    .value {
+        margin-inline-end: 8px;
+        margin-left: 8px;
+        padding: 4px 0px;
+        outline: none;
+        border: none;
+        color: $main-color;
+        flex: 1;
+        text-align: right;
+    }
+}
+
+.without_border {
+    border: 0;
+}
+
+@media only screen and (min-width: $medium) {
+    .for_search {
+        .label {
+            font-size: 14px;
+            width: 125px;
+        }
     }
 }
 

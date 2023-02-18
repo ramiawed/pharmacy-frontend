@@ -230,10 +230,16 @@ export const itemsSectionThreeSlice = createSlice({
     [addItemToSectionThree.fulfilled]: (state, action) => {
       state.addItemToSectionThreeStatus = "succeeded";
       state.addItemToSectionThreeError = "";
-      state.itemsSectionThree = [
-        ...state.itemsSectionThree,
-        action.payload.data.item,
-      ];
+
+      const filteredItem = state.itemsSectionThree.filter(
+        (item) => item._id === action.payload.data.item._id
+      );
+
+      if (filteredItem.length === 0)
+        state.itemsSectionThree = [
+          ...state.itemsSectionThree,
+          action.payload.data.item,
+        ];
     },
     [addItemToSectionThree.rejected]: (state, { payload }) => {
       state.addItemToSectionThreeStatus = "failed";

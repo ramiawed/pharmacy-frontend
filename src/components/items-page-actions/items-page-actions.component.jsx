@@ -4,25 +4,31 @@ import { useHistory } from "react-router-dom";
 
 // components
 import { ExportCSVFromURL } from "../export-csv-from-url/export-csv-from-url.component";
-import Icon from "../action-icon/action-icon.component";
+import ActionBar from "../action-bar/action-bar.component";
+import Icon from "../icon/icon.component";
 
 // icons
 import { RiAddCircleFill, RiRefreshLine } from "react-icons/ri";
-import { SiMicrosoftexcel } from "react-icons/si";
 import { IoMdArrowRoundBack } from "react-icons/io";
+import { SiMicrosoftexcel } from "react-icons/si";
+import { VscClearAll } from "react-icons/vsc";
 
 // constants and utils
 import { BASEURL, Colors, UserTypeConstants } from "../../utils/constants";
 
-// styles
-import generalStyles from "../../style.module.scss";
-
-function ItemsPageActions({ user, company, search, warehouse }) {
+function ItemsPageActions({
+  user,
+  company,
+  search,
+  warehouse,
+  pageState,
+  filterAction,
+}) {
   const { t } = useTranslation();
   const history = useHistory();
 
   return (
-    <div className={generalStyles.actions}>
+    <ActionBar>
       <Icon
         foreColor={Colors.MAIN_COLOR}
         selected={false}
@@ -31,6 +37,24 @@ function ItemsPageActions({ user, company, search, warehouse }) {
         onclick={search}
         withBackground={true}
       />
+
+      {(pageState.searchName.trim().length > 0 ||
+        pageState.searchCompaniesIds.length > 0 ||
+        pageState.searchWarehousesIds.length > 0 ||
+        pageState.searchDeletedItems ||
+        pageState.searchActiveItems ||
+        pageState.searchInWarehouse ||
+        pageState.searchOutWarehouse) && (
+        <Icon
+          withBackground={true}
+          selected={false}
+          foreColor={Colors.MAIN_COLOR}
+          tooltip={t("clear-filter-tooltip")}
+          onclick={filterAction}
+          icon={() => <VscClearAll />}
+        />
+      )}
+
       {user.type === UserTypeConstants.COMPANY ||
       (user.type === UserTypeConstants.ADMIN &&
         company !== null &&
@@ -106,7 +130,7 @@ function ItemsPageActions({ user, company, search, warehouse }) {
         icon={() => <IoMdArrowRoundBack />}
         foreColor={Colors.MAIN_COLOR}
       />
-    </div>
+    </ActionBar>
   );
 }
 

@@ -8,7 +8,6 @@ import companiesSlice from "./redux/company/companySlice";
 import favoritesSlice from "./redux/favorites/favoritesSlice";
 import warehousesSlice from "./redux/warehouse/warehousesSlice";
 import itemsSlice from "./redux/items/itemsSlices";
-import warehouseItemsSlices from "./redux/warehouseItems/warehouseItemsSlices";
 import cartSlice from "./redux/cart/cartSlice";
 import statisticsSlice from "./redux/statistics/statisticsSlice";
 import onlineSlice from "./redux/online/onlineSlice";
@@ -28,7 +27,6 @@ import navigationSlice from "./redux/navs/navigationSlice";
 import offersSlice from "./redux/offers/offersSlices";
 import savedItemsSlice from "./redux/savedItems/savedItemsSlice";
 import basketsSlice from "./redux/baskets/basketsSlice";
-import basketOrdersSlice from "./redux/basketOrdersSlice/basketOrdersSlice";
 
 const reducers = combineReducers({
   auth: authSlice,
@@ -38,7 +36,6 @@ const reducers = combineReducers({
   favorites: favoritesSlice,
   items: itemsSlice,
   medicines: medicinesSlice,
-  warehouseItems: warehouseItemsSlices,
   cart: cartSlice,
   statistics: statisticsSlice,
   online: onlineSlice,
@@ -57,7 +54,6 @@ const reducers = combineReducers({
   offers: offersSlice,
   savedItems: savedItemsSlice,
   baskets: basketsSlice,
-  basketOrders: basketOrdersSlice,
 });
 
 const persistConfig = {

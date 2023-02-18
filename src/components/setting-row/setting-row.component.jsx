@@ -13,7 +13,7 @@ import {
 } from "../../redux/online/onlineSlice";
 
 // components
-import Icon from "../action-icon/action-icon.component";
+import Icon from "../icon/icon.component";
 
 // constants
 import { Colors } from "../../utils/constants";
@@ -21,6 +21,7 @@ import { Colors } from "../../utils/constants";
 // styles
 import generalStyles from "../../style.module.scss";
 import rowStyles from "../row.module.scss";
+import LabelValueRow from "../label-value-row/label-value-row.component";
 
 function SettingRow({ data, tooltip, action, type }) {
   const { t } = useTranslation();
@@ -62,18 +63,25 @@ function SettingRow({ data, tooltip, action, type }) {
           " "
         )}
       >
-        <label
-          style={{ flex: 3, textAlign: "start" }}
-          className={rowStyles.padding_start}
+        <div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "flex-start",
+            alignItems: "flex-start",
+          }}
         >
-          {data.name}
-        </label>
-        {type === "item" && (
-          <>
-            <label style={{ flex: 1 }}>{data.caliber}</label>
-            <label style={{ flex: 1 }}>{data.packing}</label>
-          </>
-        )}
+          {type === "item" ? (
+            <>
+              <LabelValueRow label="item-name" value={data.name} />
+              <LabelValueRow label="item-caliber" value={data.caliber} />
+              <LabelValueRow label="item-packing" value={data.packing} />
+            </>
+          ) : (
+            <label style={{ paddingRight: "10px" }}>{data.name}</label>
+          )}
+        </div>
+
         <div className={rowStyles.padding_end}>
           {loading ? (
             <Icon

@@ -25,7 +25,7 @@ import { getSavedItems } from "../../redux/savedItems/savedItemsSlice";
 import generalStyles from "../../style.module.scss";
 
 // constants
-import { UserTypeConstants } from "../../utils/constants";
+import { UserTypeConstants, VERSION } from "../../utils/constants";
 
 function SignInPage() {
   const dispatch = useDispatch();
@@ -43,7 +43,7 @@ function SignInPage() {
     const token = localStorage.getItem("token");
 
     if (token) {
-      dispatch(authSignWithToken({ token }))
+      dispatch(authSignWithToken({ token, version: VERSION }))
         .then(unwrapResult)
         .then((result) => {
           dispatch(
@@ -83,7 +83,7 @@ function SignInPage() {
     <>
       <div className={generalStyles.sign_container}>
         <SignIn />
-        <HeaderWithSlogn />
+        <HeaderWithSlogn bgColor="white" />
       </div>
       {status === "loading" && (
         <Loader allowCancel={true} onclick={cancelOperationHandler} />

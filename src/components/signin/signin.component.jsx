@@ -21,10 +21,7 @@ import {
   selectUserData,
   resetError,
 } from "../../redux/auth/authSlice";
-import {
-  changeOnlineMsg,
-  selectOnlineStatus,
-} from "../../redux/online/onlineSlice";
+import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 import { addStatistics } from "../../redux/statistics/statisticsSlice";
 import { getAllSettings } from "../../redux/settings/settingsSlice";
 import { getAllAdvertisements } from "../../redux/advertisements/advertisementsSlice";
@@ -33,7 +30,9 @@ import { getAllAdvertisements } from "../../redux/advertisements/advertisementsS
 import styles from "./signin.module.scss";
 
 // constants
-import { Colors } from "../../utils/constants";
+import { Colors, VERSION } from "../../utils/constants";
+import { getCompanies } from "../../redux/company/companySlice";
+import { getWarehouses } from "../../redux/warehouse/warehousesSlice";
 
 // Sign in component
 function SignIn() {
@@ -52,6 +51,7 @@ function SignIn() {
   const [userInfo, setUserInfo] = useState({
     username: "",
     password: "",
+    version: VERSION,
   });
   const [showForgetPasswordModal, setShowForgetPasswordModal] = useState(false);
   const [rememberMeOption, setRememberMeOption] = useState(false);
@@ -114,10 +114,10 @@ function SignIn() {
   // if true, dispatch signin from userSlice
   const signInHandler = () => {
     // check the internet connection
-    if (!isOnline) {
-      dispatch(changeOnlineMsg());
-      return;
-    }
+    // if (!isOnline) {
+    //   dispatch(changeOnlineMsg());
+    //   return;
+    // }
 
     // check if the username and password is not empty
     if (userInfo.username.length === 0 && userInfo.password.length === 0) {
@@ -166,6 +166,8 @@ function SignIn() {
         );
         dispatch(getAllSettings({ token: result.token }));
         dispatch(getAllAdvertisements({ token: result.token }));
+        dispatch(getCompanies({ token: result.token }));
+        dispatch(getWarehouses({ token: result.token }));
       })
       .catch(() => {});
   };

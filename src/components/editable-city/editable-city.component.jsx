@@ -112,7 +112,7 @@ function EditableCity({
               <Button
                 text="ok-label"
                 action={handleOkAction}
-                bgColor={Colors.SECONDARY_COLOR}
+                bgColor={Colors.LIGHT_COLOR}
                 loading={loading}
               />
               <div style={{ minWidth: "10px" }}></div>

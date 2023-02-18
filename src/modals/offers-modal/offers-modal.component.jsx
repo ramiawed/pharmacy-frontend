@@ -3,13 +3,13 @@ import { useTranslation } from "react-i18next";
 import { v4 as uuidv4 } from "uuid";
 
 // redux stuff
-import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch } from "react-redux";
-import { changeItemWarehouseOffer } from "../../redux/warehouseItems/warehouseItemsSlices";
+import { changeItemWarehouseOffer } from "../../redux/items/itemsSlices";
 
 // components
-import Modal from "../modal/modal.component";
+import CustomCheckbox from "../../components/custom-checkbox/custom-checkbox.component";
 import MultiValue from "../../components/multi-value/multi-value.component";
+import Modal from "../modal/modal.component";
 
 // react-icons
 import { MdErrorOutline } from "react-icons/md";
@@ -21,14 +21,7 @@ import generalStyles from "../../style.module.scss";
 // constants
 import { Colors, OfferTypes, toEnglishNumber } from "../../utils/constants";
 
-function OffersModal({
-  item,
-  warehouseId,
-  close,
-  token,
-  allowEdit,
-  afterUpdateOffer,
-}) {
+function OffersModal({ item, warehouseId, close, token, allowEdit }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -116,9 +109,7 @@ function OffersModal({
         },
         token,
       })
-    )
-      .then(unwrapResult)
-      .then(() => afterUpdateOffer && afterUpdateOffer());
+    );
 
     close();
   };
@@ -140,34 +131,28 @@ function OffersModal({
     >
       {allowEdit && values.length > 0 && (
         <div className={styles.checkboxes_div}>
-          <label>{t("offer-type")}:</label>
-
           <div className={styles.offer_type_checkbox}>
-            <input
-              type="checkbox"
+            <CustomCheckbox
+              label={t(OfferTypes.PIECES)}
               value={quantityOfferType}
-              checked={quantityOfferType}
-              onChange={() => {
+              changeHandler={() => {
                 setQuantityOfferType(!quantityOfferType);
                 setPercentageOfferType(false);
                 setOfferTypeError(false);
               }}
             />
-            <label>{t(OfferTypes.PIECES)}</label>
           </div>
 
           <div className={styles.offer_type_checkbox}>
-            <input
-              type="checkbox"
+            <CustomCheckbox
+              label={t(OfferTypes.PERCENTAGE)}
               value={percentageOfferType}
-              checked={percentageOfferType}
-              onChange={() => {
+              changeHandler={() => {
                 setPercentageOfferType(!percentageOfferType);
                 setQuantityOfferType(false);
                 setOfferTypeError(false);
               }}
             />
-            <label>{t(OfferTypes.PERCENTAGE)}</label>
           </div>
 
           {offerTypeError && (

@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
   changeItemActiveState,
-  changeItemOffer,
+  changeItemWarehouseMaxQty,
+  removeItemFromWarehouse,
 } from "../../redux/items/itemsSlices";
 import {
   changeOnlineMsg,
@@ -15,29 +16,33 @@ import {
 } from "../../redux/online/onlineSlice";
 
 // components
-import Modal from "../../modals/modal/modal.component";
-import OffersModal from "../../modals/offers-modal/offers-modal.component";
-import Icon from "../action-icon/action-icon.component";
+import ItemAdditionalInfo from "../item-additional-info/item-additional-info.component";
+import ChangeQuantityModal from "../../modals/change-quantity-modal/change-quantity-modal.component";
 import ButtonWithIcon from "../button-with-icon/button-with-icon.component";
+import FullWidthLabel from "../full-width-label/full-width-label.component";
+import OffersModal from "../../modals/offers-modal/offers-modal.component";
+import CustomCheckbox from "../custom-checkbox/custom-checkbox.component";
+import LabelValueRow from "../label-value-row/label-value-row.component";
+import RowContainer from "../row-container/row-container.component";
+import ItemPrices from "../item-prices/item-prices.component";
+import ItemNames from "../item-names/item-names.component";
+import Separator from "../separator/separator.component";
+import Modal from "../../modals/modal/modal.component";
 
 // react-icons
 import { AiFillEdit } from "react-icons/ai";
-import { MdLocalOffer, MdClose } from "react-icons/md";
+import { MdLocalOffer, MdExpandLess, MdExpandMore } from "react-icons/md";
 import { RiDeleteBin5Fill } from "react-icons/ri";
-import { BsCheck } from "react-icons/bs";
 
 // styles
-import generalStyles from "../../style.module.scss";
 import styles from "./admin-item-card.module.scss";
 
 // constants
 import {
   Colors,
-  onKeyPressForNumberInput,
   toEnglishNumber,
   UserTypeConstants,
 } from "../../utils/constants";
-import { VscLoading } from "react-icons/vsc";
 
 const checkOffer = (item, user) => {
   if (user.type === UserTypeConstants.COMPANY) {
@@ -67,14 +72,7 @@ const checkOffer = (item, user) => {
   return result;
 };
 
-function AdminItemCard({
-  item,
-  user,
-  warehouse,
-  role,
-  changeItemMaxQty,
-  deleteItemFromWarehouse,
-}) {
+function AdminItemCard({ item, user, warehouse, role, index }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -91,13 +89,13 @@ function AdminItemCard({
   const [showOfferModal, setShowOfferModal] = useState(false);
   const [showDeleteFromWarehouseModal, setShowDeleteFromWarehouseModal] =
     useState(false);
-  const [deleteLoading, setDeleteLoading] = useState(false);
   const [maxQty, setMaxQty] = useState(
     warehouse
       ? item.warehouses.find((w) => w.warehouse._id === warehouse._id)?.maxQty
       : 0
   );
   const [prevMaxQty, setPrevMaxQty] = useState(0);
+  const [expanded, setExpanded] = useState(false);
 
   const actionButtonPress = (action) => {
     if (action === "delete") {
@@ -141,11 +139,16 @@ function AdminItemCard({
       dispatch(changeOnlineMsg());
       return;
     }
-    deleteItemFromWarehouse({
-      itemId: item._id,
-      warehouseId: warehouse._id,
-      city: warehouse.city,
-    });
+
+    dispatch(
+      removeItemFromWarehouse({
+        obj: {
+          itemId: item._id,
+          warehouseId: warehouse._id,
+        },
+        token,
+      })
+    );
 
     setShowDeleteFromWarehouseModal(false);
   };
@@ -209,137 +212,106 @@ function AdminItemCard({
     setMaxQty(isNaN(value) ? "" : value);
   };
 
+  const rowClickHandler = () => {
+    history.push("/item", {
+      from: user.type,
+      type: "info",
+      allowAction:
+        user.type === UserTypeConstants.COMPANY ||
+        (user.type === UserTypeConstants.ADMIN && item.company.allowAdmin),
+      itemId: item._id,
+      companyId: item.company._id,
+      warehouseId: warehouse?._id,
+    });
+  };
+
+  const changeAvailability = () => {
+    if (item.isActive) {
+      deleteItemHandler();
+    } else {
+      undoDeleteItemHandler();
+    }
+  };
+
   return (
     <>
-      <div className={styles.container}>
-        {checkOffer(item, user) && (
-          <div className={[styles.ribbon_2].join(" ")}>
-            <span>{t("offer")}</span>
+      <RowContainer isEven={index % 2} isOffer={checkOffer(item, user)}>
+        <div className={styles.item_row}>
+          <div className={styles.first_row}>
+            <div
+              className={[styles.item_names_container].join(" ")}
+              // onClick={rowClickHandler}
+            >
+              <label
+                className={styles.icon}
+                onClick={(e) => {
+                  setExpanded(!expanded);
+                  e.stopPropagation();
+                }}
+              >
+                {expanded ? (
+                  <MdExpandLess size={24} />
+                ) : (
+                  <MdExpandMore size={24} />
+                )}
+              </label>
+              <ItemNames
+                // name={item.name}
+                // arName={item.nameAr}
+                on_click={rowClickHandler}
+                forAdmin={true}
+                item={item}
+              />
+            </div>
           </div>
-        )}
-        <div
-          className={[styles.nameContainer, styles.ellipsis].join(" ")}
-          onClick={() => {
-            history.push("/item", {
-              from: user.type,
-              type: "info",
-              allowAction:
-                user.type === UserTypeConstants.COMPANY ||
-                (user.type === UserTypeConstants.ADMIN &&
-                  item.company.allowAdmin),
-              itemId: item._id,
-              companyId: item.company._id,
-              warehouseId: warehouse?._id,
-            });
-          }}
-        >
-          <label className={styles.name}>{item.name}</label>
-          <label className={styles.name}>{item.nameAr}</label>
-        </div>
 
-        <div className={styles.details}>
+          <div className={styles.second_row}>
+            <FullWidthLabel
+              value={item.company.name}
+              color={Colors.SUCCEEDED_COLOR}
+            />
+
+            <ItemPrices
+              showCustomerPrice={true}
+              showPrice={user.type !== UserTypeConstants.GUEST}
+              price={item.price}
+              customerPrice={item.customer_price}
+            />
+          </div>
+
           {((user.type === UserTypeConstants.ADMIN &&
             role === UserTypeConstants.ADMIN) ||
             (user.type === UserTypeConstants.ADMIN &&
-              role === UserTypeConstants.WAREHOUSE) ||
-            user.type === UserTypeConstants.WAREHOUSE) && (
-            <div className={[styles.row].join(" ")}>
-              <div>
-                <label className={[styles.label, styles.first].join(" ")}>
-                  {t("item-company")}:
-                </label>
-                <label className={styles.value}>{item.company.name}</label>
-              </div>
+              role === UserTypeConstants.COMPANY) ||
+            user.type === UserTypeConstants.COMPANY) && (
+            <div className={styles.second_row}>
+              <CustomCheckbox
+                label={t("item-available")}
+                value={item.isActive}
+                changeHandler={changeAvailability}
+              />
             </div>
           )}
-
-          <div className={[styles.row].join(" ")}>
-            <div>
-              <label className={[styles.label, styles.first].join(" ")}>
-                {t("item-available")}:
-              </label>
-              <label className={[styles.value, styles.inline_block].join(" ")}>
-                {item.isActive ? (
-                  <Icon
-                    icon={() => <BsCheck />}
-                    foreColor={Colors.SUCCEEDED_COLOR}
-                    onclick={deleteItemHandler}
-                    tooltip={t("item-available")}
-                  />
-                ) : (
-                  <Icon
-                    icon={() => <MdClose color={Colors.FAILED_COLOR} />}
-                    foreColor={Colors.FAILED_COLOR}
-                    onclick={undoDeleteItemHandler}
-                    tooltip={t("item-not-available")}
-                  />
-                )}
-              </label>
-            </div>
-          </div>
-          <div className={styles.row}>
-            <div>
-              <label className={[styles.label, styles.first].join(" ")}>
-                {t("item-formula")}:
-              </label>
-              <label className={styles.value}>{item.formula}</label>
-            </div>
-            <div>
-              <label className={styles.label}>{t("item-caliber")}:</label>
-              <label className={styles.value}>{item.caliber}</label>
-            </div>
-          </div>
-          <div className={styles.row}>
-            <div>
-              <label className={[styles.label, styles.first].join(" ")}>
-                {t("item-packing")}:
-              </label>
-              <label className={styles.value}>{item.packing}</label>
-            </div>
-          </div>
-          <div className={styles.row}>
-            {user.type !== UserTypeConstants.GUEST && (
-              <div>
-                <label className={[styles.label, styles.first].join(" ")}>
-                  {t("item-price")}:
-                </label>
-                <label className={styles.value}>{item.price}</label>
-              </div>
-            )}
-            <div>
-              <label className={styles.label}>
-                {t("item-customer-price")}:
-              </label>
-              <label className={styles.value}>{item.customer_price}</label>
-            </div>
-          </div>
-          {((user.type === UserTypeConstants.ADMIN &&
-            role === UserTypeConstants.WAREHOUSE) ||
-            user.type === UserTypeConstants.WAREHOUSE) && (
-            <div className={styles.row}>
-              <div>
-                <label className={styles.label}>{t("item-max-qty")}:</label>
-                <label className={styles.value}>{maxQty}</label>
-              </div>
-            </div>
-          )}
-          <div className={[styles.row].join(" ")}>
-            <div>
-              <label
-                className={[styles.label, styles.first, styles.ellipsis].join(
-                  " "
-                )}
-              >
-                {t("item-composition")}:
-              </label>
-              <label className={styles.value}>{item.composition}</label>
-            </div>
-          </div>
 
           {((user.type === UserTypeConstants.ADMIN &&
             role === UserTypeConstants.WAREHOUSE) ||
             user.type === UserTypeConstants.WAREHOUSE) && (
-            <div className={styles.actions}>
+            <div className={styles.second_row}>
+              <LabelValueRow label="item-max-qty" value={maxQty} />
+            </div>
+          )}
+
+          {expanded && (
+            <>
+              <Separator />
+              <ItemAdditionalInfo item={item} />
+            </>
+          )}
+
+          {((user.type === UserTypeConstants.ADMIN &&
+            role === UserTypeConstants.WAREHOUSE) ||
+            user.type === UserTypeConstants.WAREHOUSE) && (
+            <div className={styles.actions_row}>
               <ButtonWithIcon
                 icon={() => <AiFillEdit />}
                 action={() => {
@@ -361,26 +333,17 @@ function AdminItemCard({
                 smallText={true}
               />
 
-              {deleteLoading ? (
-                <ButtonWithIcon
-                  icon={() => <VscLoading className={generalStyles.loading} />}
-                  action={() => {}}
-                  bgColor={Colors.FAILED_COLOR}
-                  text=""
-                />
-              ) : (
-                <ButtonWithIcon
-                  icon={() => <RiDeleteBin5Fill />}
-                  action={deleteFromWarehouseHandler}
-                  bgColor={Colors.FAILED_COLOR}
-                  text={t("remove-from-warehouse")}
-                  smallText={true}
-                />
-              )}
+              <ButtonWithIcon
+                icon={() => <RiDeleteBin5Fill />}
+                action={deleteFromWarehouseHandler}
+                bgColor={Colors.FAILED_COLOR}
+                text={t("remove-from-warehouse")}
+                smallText={true}
+              />
             </div>
           )}
         </div>
-      </div>
+      </RowContainer>
 
       {showModal && (
         <Modal
@@ -419,9 +382,6 @@ function AdminItemCard({
               role === UserTypeConstants.WAREHOUSE &&
               warehouse.allowAdmin)
           }
-          afterUpdateOffer={() =>
-            dispatch(changeItemOffer({ _id: item._id, token }))
-          }
         />
       )}
 
@@ -432,11 +392,9 @@ function AdminItemCard({
           okLabel={t("ok-label")}
           okModal={() => {
             handleDeleteItemFromWarehouse();
-            setDeleteLoading(true);
           }}
           closeModal={() => {
             setShowDeleteFromWarehouseModal(false);
-            setDeleteLoading(false);
           }}
           small={true}
         >
@@ -445,39 +403,31 @@ function AdminItemCard({
       )}
 
       {showChangeMaxQtyModal && (
-        <Modal
-          header={t("change-max-qty-header")}
-          cancelLabel={t("cancel-label")}
+        <ChangeQuantityModal
           closeModal={() => {
             setShowChangeMaxQtyModal(false);
             setMaxQty(prevMaxQty);
             setPrevMaxQty(0);
           }}
-          okLabel={t("ok-label")}
-          okModal={() => {
-            changeItemMaxQty({
-              itemId: item._id,
-              warehouseId: warehouse._id,
-              qty: (maxQty + "").length === 0 ? 0 : Number.parseInt(maxQty),
-            });
+          value={prevMaxQty}
+          min={0}
+          max={1000}
+          step={1}
+          okModal={(value) => {
+            dispatch(
+              changeItemWarehouseMaxQty({
+                obj: {
+                  itemId: item._id,
+                  warehouseId: warehouse._id,
+                  qty: (value + "").length === 0 ? 0 : Number.parseInt(value),
+                },
+                token,
+              })
+            );
 
             setShowChangeMaxQtyModal(false);
           }}
-          small={true}
-        >
-          <input
-            className={styles.input}
-            onKeyPress={onKeyPressForNumberInput}
-            value={maxQty}
-            onChange={maxQtyChangeHandler}
-            disabled={
-              (user.type === UserTypeConstants.ADMIN &&
-                role === UserTypeConstants.WAREHOUSE &&
-                !warehouse?.allowAdmin) ||
-              !isOnline
-            }
-          />
-        </Modal>
+        />
       )}
     </>
   );

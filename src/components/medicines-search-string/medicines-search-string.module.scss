@@ -1,11 +1,11 @@
-@import '../../variables.scss';
+@import "../../variables.scss";
 
 .div_search_str {
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 4px;
-  background-color: $secondary-color;
+  background-color: $light-color;
   position: relative;
   // top: 10px;
   right: -45px;

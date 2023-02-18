@@ -1,7 +1,10 @@
 import React from "react";
 import { Colors } from "../../utils/constants";
+
+// components
 import Button from "../button/button.component";
 
+// styles
 import styles from "./signup-stages-actions.module.scss";
 
 const SignupStagesActions = ({ stage, prevHandler, nextHandler }) => {

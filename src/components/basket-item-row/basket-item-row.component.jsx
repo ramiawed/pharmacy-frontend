@@ -2,7 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 // components
-import Icon from "../action-icon/action-icon.component";
+import Icon from "../icon/icon.component";
 
 // icons
 import { MdDelete, MdSearch } from "react-icons/md";
@@ -11,7 +11,7 @@ import { MdDelete, MdSearch } from "react-icons/md";
 import styles from "./basket-item-row.module.scss";
 
 // constants and utils
-import { Colors } from "../../utils/constants";
+import { Colors, formatNumber } from "../../utils/constants";
 
 const BasketItemRow = ({
   index,
@@ -47,17 +47,14 @@ const BasketItemRow = ({
           <label>{item.item?.name}</label>
         </div>
 
-        {/* <div className={styles.header_div}></div> */}
         <div className={styles.content_details}>
           <div className={styles.cell}>
-            <label className={styles.cell_header}>{t("item-price")}</label>
-            <label className={styles.value}>{item.item?.price}</label>
+            <label>{t("item-price-small")}</label>
+            <label>{formatNumber(item.item?.price)}</label>
           </div>
 
           <div className={styles.cell}>
-            <label className={styles.cell_header}>
-              {t("basket-free-item")}
-            </label>
+            <label>{t("basket-free-item")}</label>
             <input
               type="checkbox"
               value={item.isFree}
@@ -66,38 +63,52 @@ const BasketItemRow = ({
               style={{
                 position: "relative",
                 top: "6px",
+                width: "18px",
+                height: "18px",
               }}
               disabled={!allowEdit}
             />
           </div>
           <div className={styles.cell}>
-            <label className={styles.cell_header}>{t("quantity-label")}</label>
-            <input
-              value={item.qty}
-              type="number"
-              min={0}
-              max={100}
-              onChange={(e) => changeQty(e, index)}
-              disabled={!allowEdit}
-            />
+            <label>{t("quantity-label")}</label>
+            {allowEdit ? (
+              <input
+                value={item.qty}
+                type="number"
+                min={0}
+                max={100}
+                onChange={(e) => changeQty(e, index)}
+                disabled={!allowEdit}
+              />
+            ) : (
+              <label>{item.qty}</label>
+            )}
           </div>
 
           <div className={styles.cell}>
-            <label className={styles.cell_header}>{t("pieces")}</label>
-            <input
-              value={item.bonus}
-              type="number"
-              min={0}
-              max={100}
-              onChange={(e) => changeBonus(e, index)}
-              disabled={!allowEdit}
-            />
+            <label>{t("pieces")}</label>
+            {allowEdit ? (
+              <input
+                value={item.bonus}
+                type="number"
+                min={0}
+                max={100}
+                onChange={(e) => changeBonus(e, index)}
+                disabled={!allowEdit}
+              />
+            ) : (
+              <label>{item.bonus}</label>
+            )}
           </div>
 
           <div className={styles.cell}>
-            <label className={styles.cell_header}>{t("total-price")}</label>
-            <label className={styles.value}>
-              {item.item ? (item.isFree ? 0 : item.item.price * item.qty) : 0}
+            <label>{t("total-price-small")}</label>
+            <label>
+              {item.item
+                ? item.isFree
+                  ? 0
+                  : formatNumber(item.item.price * item.qty)
+                : 0}
             </label>
           </div>
         </div>

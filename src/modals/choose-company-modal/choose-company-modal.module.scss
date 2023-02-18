@@ -7,7 +7,7 @@
   margin-inline: auto;
   margin-left: auto;
   margin-right: auto;
-  border-bottom: 1px solid $secondary-color;
+  border-bottom: 1px solid $light-color;
 }
 
 .search_input {
@@ -24,7 +24,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid rgba($color: $secondary-color, $alpha: 0.3);
+  border-bottom: 1px solid rgba($color: $light-color, $alpha: 0.3);
 }
 
 .data_container {

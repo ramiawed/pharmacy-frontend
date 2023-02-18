@@ -4,7 +4,6 @@ import { useTranslation } from "react-i18next";
 
 // components
 import Header from "../../components/header/header.component";
-import Icon from "../../components/action-icon/action-icon.component";
 import MedicineRow from "../../components/medicine-row/medicine-row.component";
 import NoContent from "../../components/no-content/no-content.component";
 import ActionLoader from "../../components/action-loader/action-loader.component";
@@ -18,14 +17,11 @@ import {
   selectSavedItems,
 } from "../../redux/savedItems/savedItemsSlice";
 
-// icons
-import { RiRefreshLine } from "react-icons/ri";
-
-// styles
-import generalStyles from "../../style.module.scss";
+// components
+import MainContentContainer from "../../components/main-content-container/main-content-container.component";
 
 // constants
-import { Colors, UserTypeConstants } from "../../utils/constants";
+import { UserTypeConstants } from "../../utils/constants";
 
 function SavedItemsPage({ onSelectedChange }) {
   const { t } = useTranslation();
@@ -44,32 +40,19 @@ function SavedItemsPage({ onSelectedChange }) {
 
   return user && user.type === UserTypeConstants.PHARMACY ? (
     <>
-      <Header>
-        <h2>{t("saved-items")}</h2>
-        <div className={generalStyles.refresh_icon}>
-          <Icon
-            selected={false}
-            foreColor={Colors.WHITE_COLOR}
-            tooltip={t("refresh-tooltip")}
-            onclick={refreshHandler}
-            icon={() => <RiRefreshLine />}
-          />
-        </div>
-      </Header>
-      <div
-        className={generalStyles.container_with_header}
-        style={{ paddingTop: "10px" }}
-      >
+      <Header refreshHandler={refreshHandler} title="saved-items" />
+
+      <MainContentContainer>
         {savedItems.map((si) => (
           <MedicineRow key={si._id} item={si} />
         ))}
-      </div>
 
-      {savedItems.length === 0 && status !== "loading" && (
-        <NoContent msg={t("no-saved-items")} />
-      )}
+        {savedItems.length === 0 && status !== "loading" && (
+          <NoContent msg={t("no-saved-items")} />
+        )}
 
-      {status === "loading" && <ActionLoader allowCancel={false} />}
+        {status === "loading" && <ActionLoader allowCancel={false} />}
+      </MainContentContainer>
     </>
   ) : (
     <Redirect to="/signin" />

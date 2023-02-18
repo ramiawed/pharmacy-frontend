@@ -6,15 +6,16 @@ import axios from "axios";
 import Logo from "../../logo.png";
 
 // components
-import Header from "../../components/header/header.component";
-import CardInfo from "../../components/card-info/card-info.component";
-import InfoRow from "../../components/info-row/info-row.component";
-import ChangePassword from "../../components/change-password/change-password.component";
-import DeleteMe from "../../components/delete-me/delete-me.component";
-import Button from "../../components/button/button.component";
 import UserProfileNotifications from "../../components/user-profile-notifications/user-profile-notifications.component";
+import MainContentContainer from "../../components/main-content-container/main-content-container.component";
+import ChangePassword from "../../components/change-password/change-password.component";
 import EditableCity from "../../components/editable-city/editable-city.component";
 import Loader from "../../components/action-loader/action-loader.component";
+import CardInfo from "../../components/card-info/card-info.component";
+import DeleteMe from "../../components/delete-me/delete-me.component";
+import InfoRow from "../../components/info-row/info-row.component";
+import Header from "../../components/header/header.component";
+import Button from "../../components/button/button.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -135,11 +136,9 @@ function UserProfilePage({ onSelectedChange }) {
 
   return user ? (
     <>
-      <Header>
-        <h2>{t("nav-profile")}</h2>
-      </Header>
+      <Header title="nav-profile" />
 
-      <div className={generalStyles.container_with_header}>
+      <MainContentContainer>
         <div className={styles.content}>
           <div
             className={[
@@ -374,7 +373,7 @@ function UserProfilePage({ onSelectedChange }) {
         )}
 
         <UserProfileNotifications />
-      </div>
+      </MainContentContainer>
       {loading && <Loader />}
     </>
   ) : (

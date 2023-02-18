@@ -3,7 +3,7 @@
 .input {
   border: none;
   outline: none;
-  border-bottom: 1px solid $secondary-color;
+  border-bottom: 1px solid $light-color;
   flex: 1;
   padding: 4px 0;
   color: $main-color;
@@ -16,7 +16,7 @@
 .label {
   min-width: 75px;
   font-size: 0.8rem;
-  color: $grey-color;
+  color: $dark-color;
 }
 
 .value {

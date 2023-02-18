@@ -2,13 +2,13 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 // components
-import ChooseCompanyModal from "../../modals/choose-company-modal/choose-company-modal.component";
+import SelectPartnerModal from "../../modals/select-partner-modal/select-partner-modal.component";
+import SettingSectionHeader from "../setting-section-header/setting-section-header.component";
+import SettingRow from "../setting-row/setting-row.component";
 import CardInfo from "../card-info/card-info.component";
+import Loader from "../loader/loader.component";
 import Button from "../button/button.component";
 import Toast from "../toast/toast.component";
-import SettingRow from "../setting-row/setting-row.component";
-import SettingSectionHeader from "../setting-section-header/setting-section-header.component";
-import Loader from "../loader/loader.component";
 
 // redux stuff
 import { useSelector, useDispatch } from "react-redux";
@@ -24,12 +24,13 @@ import {
   removeCompanyFromSectionOne,
 } from "../../redux/advertisements/companiesSectionOneSlice";
 import { selectToken } from "../../redux/auth/authSlice.js";
+import { selectCompanies } from "../../redux/company/companySlice";
 
 // styles
 import generalStyles from "../../style.module.scss";
 
 // constants
-import { BASEURL, Colors } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 
 function CompaniesSectionOneSettings() {
   const { t } = useTranslation();
@@ -44,6 +45,7 @@ function CompaniesSectionOneSettings() {
     addCompanyToSectionOneError,
     removeCompanyFromSectionOneError,
   } = useSelector(selectCompaniesSectionOne);
+  const { companies } = useSelector(selectCompanies);
 
   const {
     settings: {
@@ -105,10 +107,14 @@ function CompaniesSectionOneSettings() {
       </CardInfo>
 
       {showChooseModal && (
-        <ChooseCompanyModal
+        <SelectPartnerModal
+          header={`${"choose-company"}`}
           close={() => setShowChooseModal(false)}
-          chooseAction={addCompanyToSectionOne}
-          url={`${BASEURL}/users?limit=15&isActive=true&type=company&inSectionOne=false`}
+          chooseAction={(data) => {
+            dispatch(addCompanyToSectionOne({ token, id: data._id }));
+          }}
+          placeholder={`${"enter-company-name"}`}
+          data={companies}
         />
       )}
 

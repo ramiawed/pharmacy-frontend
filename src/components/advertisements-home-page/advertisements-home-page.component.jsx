@@ -16,8 +16,13 @@ let timer = null;
 function AdvertisementsHomePage({ advertisements }) {
   const history = useHistory();
   const dispatch = useDispatch();
+
+  // selectors
   const { user } = useSelector(selectUserData);
+
+  // own state
   const [index, setIndex] = useState(0);
+
   const i = useRef(0);
 
   const startTimer = () => {
@@ -25,7 +30,7 @@ function AdvertisementsHomePage({ advertisements }) {
       i.current = i.current === advertisements.length - 1 ? 0 : i.current + 1;
 
       setIndex(i.current);
-    }, 7000);
+    }, 10000);
   };
 
   const onAdvertisementPressHandler = (adv) => {
@@ -53,7 +58,7 @@ function AdvertisementsHomePage({ advertisements }) {
         from: user.type,
         type: "info",
         allowAction: false,
-        itemId: adv.medicine,
+        itemId: adv.medicine._id,
         companyId: null,
         warehouseId: null,
       });
@@ -72,27 +77,25 @@ function AdvertisementsHomePage({ advertisements }) {
     <></>
   ) : (
     <div className={styles.container}>
-      <div className={styles.image}>
+      {advertisements.map((adv, i) => (
         <div
-          className={[styles.bottom_image].join(" ")}
-          style={{
-            backgroundImage: `url(${SERVER_URL}advertisements/${advertisements[index].logo_url})`,
-          }}
-        ></div>
-        <div
+          key={i}
           onMouseEnter={() => {
             clearInterval(timer);
           }}
           onMouseLeave={() => {
             startTimer();
           }}
-          onClick={() => onAdvertisementPressHandler(advertisements[index])}
-          className={styles.top_image}
-          style={{
-            backgroundImage: `url(${SERVER_URL}advertisements/${advertisements[index].logo_url})`,
-          }}
-        ></div>
-      </div>
+          onClick={() => onAdvertisementPressHandler(adv)}
+          className={[
+            styles.image,
+            index === i ? styles.show : styles.hide,
+          ].join(" ")}
+        >
+          <img src={`${SERVER_URL}advertisements/${adv.logo_url}`} alt="adv" />
+        </div>
+      ))}
+
       <div className={styles.dots}>
         {advertisements.map((b, index) => (
           <div

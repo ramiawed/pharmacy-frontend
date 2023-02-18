@@ -14,7 +14,7 @@ import {
 // components
 import Modal from "../modal/modal.component";
 import Button from "../../components/button/button.component";
-import Icon from "../../components/action-icon/action-icon.component";
+import Icon from "../../components/icon/icon.component";
 import NoContent from "../../components/no-content/no-content.component";
 import Loader from "../../components/loader/loader.component";
 
@@ -104,7 +104,7 @@ function ChooseCompanyModal({ close, chooseAction, url }) {
               generalStyles.flex_center_container,
             ].join(" ")}
           >
-            <IoIosSearch color={Colors.SECONDARY_COLOR} size={24} />
+            <IoIosSearch color={Colors.LIGHT_COLOR} size={24} />
             <input
               className={styles.search_input}
               placeholder={t("enter-company-name")}
@@ -190,7 +190,7 @@ const Row = ({ data, addAction }) => {
             <VscLoading className={generalStyles.loading} size={24} />
           )}
           onclick={() => {}}
-          foreColor={Colors.SECONDARY_COLOR}
+          foreColor={Colors.LIGHT_COLOR}
         />
       ) : (
         <Icon

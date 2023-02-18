@@ -82,7 +82,7 @@ function Footer() {
             setShowWhatsappModal(false);
           }}
           small={true}
-          color={Colors.SECONDARY_COLOR}
+          color={Colors.LIGHT_COLOR}
         >
           <p>
             {t("contact-us-through-whatsapp")}: {t("contact-phone-number")}

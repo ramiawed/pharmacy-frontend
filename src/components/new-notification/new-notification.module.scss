@@ -2,7 +2,7 @@
 
 .new_notification_div {
   border-radius: 6px;
-  background-color: rgba($color: $secondary-color, $alpha: 0.2);
+  background-color: rgba($color: $light-color, $alpha: 0.2);
   padding: 10px;
 
   position: relative;
@@ -82,20 +82,20 @@
 }
 
 .row.error {
-  border: 3px solid rgba($color: $third-color, $alpha: 1.0);
+  border: 3px solid rgba($color: $third-color, $alpha: 1);
 }
 
 .row label {
   width: 75px;
   font-size: 0.8rem;
-  color: $secondary-color;
+  color: $light-color;
 }
 
 .row input,
 .row textarea {
   padding: 6px;
   flex: 1;
-  color: $secondary-color;
+  color: $light-color;
   font-weight: bold;
 
   padding-inline-end: 10px;

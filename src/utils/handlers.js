@@ -12,8 +12,10 @@ import {
 import { changeOnlineMsg } from "../redux/online/onlineSlice";
 import { addStatistics } from "../redux/statistics/statisticsSlice";
 
+import axios from "axios";
+
 // constants
-import { UserTypeConstants } from "./constants";
+import { BASEURL, UserTypeConstants } from "./constants";
 
 export const addPartnerToFavoriteHandler = (
   partner,
@@ -148,6 +150,16 @@ export const partnerRowClickHandler = (
     history.push({
       pathname: "/medicines",
       state: { myCompanies: partner.ourCompanies },
+    });
+  }
+};
+
+export const deleteImage = async (obj, token) => {
+  if (obj) {
+    const response = await axios.post(`${BASEURL}/users/delete-image`, obj, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     });
   }
 };

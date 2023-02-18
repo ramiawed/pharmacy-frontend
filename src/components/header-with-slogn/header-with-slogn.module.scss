@@ -4,6 +4,14 @@
     text-align: center;
     margin-bottom: 15px;
     order: 1;
+    background-image: url("../../sign-in-out-image.jpg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    width: 225px;
+    height: 150px;
+    // background-color: rgba($color: $white-color, $alpha: 1);
+    background-blend-mode: multiply;
 
     h2 {
         font-size: 36px;
@@ -24,7 +32,8 @@
 @media only screen and (min-width: $medium) {
     .app_name {
         order: 2;
-
+        width: 400px;
+        height: 267px;
         h2 {
             font-size: 48px;
         }

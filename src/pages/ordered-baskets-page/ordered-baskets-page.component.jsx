@@ -33,7 +33,7 @@ import {
 } from "react-icons/md";
 
 // components
-import Icon from "../../components/action-icon/action-icon.component";
+import Icon from "../../components/icon/icon.component";
 import SearchContainer from "../../components/search-container/search-container.component";
 import SearchInput from "../../components/search-input/search-input.component";
 import OrderRow from "../../components/order-row/order-row.component";
@@ -231,7 +231,7 @@ const OrderedBasketsPage = () => {
         {basketOrders.length > 0 && (
           <div className={styles.action_highlight_container}>
             <div className={styles.highlight}>
-              <RiMailUnreadLine color={Colors.SECONDARY_COLOR} />
+              <RiMailUnreadLine color={Colors.LIGHT_COLOR} />
               <label>{t("unread")}</label>
               <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
               <label>{t("received")}</label>

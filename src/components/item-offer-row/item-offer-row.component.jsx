@@ -8,8 +8,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 
 // components
+import ItemNames from "../item-names/item-names.component";
+import FullWidthLabel from "../full-width-label/full-width-label.component";
+import ItemPrices from "../item-prices/item-prices.component";
+import Separator from "../separator/separator.component";
+import OfferDetailsRow from "../offer-details-row/offer-details-row.component";
+import RowContainer from "../row-container/row-container.component";
+
 import AddToCartOfferModal from "../../modals/add-to-cart-offer-modal/add-to-cart-offer-modal.component";
-import Icon from "../action-icon/action-icon.component";
+import Icon from "../icon/icon.component";
 import Toast from "../toast/toast.component";
 
 // react icons
@@ -20,14 +27,10 @@ import { MdExpandLess, MdExpandMore } from "react-icons/md";
 import styles from "./item-offer-row.module.scss";
 
 // constants and utils
-import { Colors, OfferTypes, UserTypeConstants } from "../../utils/constants";
-import ItemNames from "../item-names/item-names.component";
-import FullWidthLabel from "../full-width-label/full-width-label.component";
-import ItemPrices from "../item-prices/item-prices.component";
-import Separator from "../separator/separator.component";
-import OfferDetailsRow from "../offer-details-row/offer-details-row.component";
+import { Colors, UserTypeConstants } from "../../utils/constants";
+import ItemInfoModal from "../../modals/item-info-modal/item-info-modal.component";
 
-function ItemOfferRow({ item }) {
+function ItemOfferRow({ item, index }) {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -38,7 +41,7 @@ function ItemOfferRow({ item }) {
   // own state
   const [showModal, setShowModal] = useState(false);
   const [addItemToCart, setAddItemToCart] = useState("");
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(true);
 
   const rowClickHandler = () => {
     if (user.type === UserTypeConstants.PHARMACY) {
@@ -53,73 +56,55 @@ function ItemOfferRow({ item }) {
         })
       );
     }
-    history.push("/item", {
-      from: user.type,
-      type: "info",
-      allowAction: false,
-      itemId: item._id,
-      companyId: item.company._id,
-      warehouseId: user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
-    });
   };
 
   // render method
   return (
     <>
-      <div className={styles.item_row} onClick={rowClickHandler}>
-        <div className={styles.first_row}>
-          <label className={[styles.item_name].join(" ")}>
-            <label
-              className={styles.icon}
-              onClick={(e) => {
-                setExpanded(!expanded);
-                e.stopPropagation();
-              }}
-            >
-              {expanded ? (
-                <MdExpandLess size={24} />
-              ) : (
-                <MdExpandMore size={24} />
-              )}
+      <RowContainer isEven={index % 2}>
+        <div className={styles.item_row}>
+          <div className={styles.first_row}>
+            <label className={[styles.item_name].join(" ")}>
+              <ItemNames item={item} on_click={rowClickHandler} />
             </label>
-            <ItemNames name={item.name} arName={item.nameAr} />
-          </label>
 
-          {user.type === UserTypeConstants.PHARMACY && (
-            <Icon
-              text={t("add-to-cart")}
-              onclick={() => setShowModal(true)}
-              foreColor={Colors.SUCCEEDED_COLOR}
-              icon={() => <GiShoppingCart size={24} />}
+            {user.type === UserTypeConstants.PHARMACY && (
+              <Icon
+                tooltip={t("add-to-cart")}
+                onclick={() => setShowModal(true)}
+                foreColor={Colors.SUCCEEDED_COLOR}
+                icon={() => <GiShoppingCart size={24} />}
+              />
+            )}
+          </div>
+
+          <div className={styles.second_row}>
+            <FullWidthLabel
+              value={`${item.company[0].name} - ${item.warehouses.warehouse[0].name}`}
+              color={Colors.SUCCEEDED_COLOR}
             />
+            <ItemPrices
+              showCustomerPrice={true}
+              showPrice={user.type !== UserTypeConstants.GUEST}
+              price={item.price}
+              customerPrice={item.customer_price}
+            />
+          </div>
+
+          {expanded && (
+            <>
+              <Separator />
+              {item.warehouses.offer.offers.map((o, index) => (
+                <OfferDetailsRow
+                  offer={o}
+                  offerMode={item.warehouses.offer.mode}
+                  key={index}
+                />
+              ))}
+            </>
           )}
         </div>
-
-        <div className={styles.second_row}>
-          <FullWidthLabel
-            value={`${item.company[0].name} - ${item.warehouses.warehouse[0].name}`}
-            color={Colors.SUCCEEDED_COLOR}
-          />
-          <ItemPrices
-            showPrice={user.type !== UserTypeConstants.GUEST}
-            price={item.price}
-            customerPrice={item.customer_price}
-          />
-        </div>
-
-        {expanded && (
-          <>
-            <Separator />
-            {item.warehouses.offer.offers.map((o, index) => (
-              <OfferDetailsRow
-                offer={o}
-                offerMode={item.warehouses.offer.mode}
-                key={index}
-              />
-            ))}
-          </>
-        )}
-      </div>
+      </RowContainer>
 
       {showModal && (
         <AddToCartOfferModal

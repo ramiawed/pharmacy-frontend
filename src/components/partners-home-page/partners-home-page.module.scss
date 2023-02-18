@@ -1,4 +1,4 @@
-@import '../../variables.scss';
+@import "../../variables.scss";
 
 .container {
   width: 98%;
@@ -17,7 +17,7 @@
   overflow: hidden;
 
   h2 {
-    color: $grey-color;
+    color: $dark-color;
   }
 }
 
@@ -38,7 +38,6 @@
     height: 100%;
   }
 }
-
 
 @media only screen and (min-width: $small) {
   .container {

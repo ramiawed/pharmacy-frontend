@@ -3,10 +3,11 @@ import { useTranslation } from "react-i18next";
 
 import { SiMicrosoftexcel } from "react-icons/si";
 
-// styles
+// components
+import Icon from "../icon/icon.component";
+
+// constants
 import { Colors } from "../../utils/constants";
-import Icon from "../action-icon/action-icon.component";
-import styles from "./input-file.module.scss";
 
 function InputFile({ fileChangedHandler, small, label }) {
   const { t } = useTranslation();
@@ -33,28 +34,28 @@ function InputFile({ fileChangedHandler, small, label }) {
           withBackground={true}
         />
       ) : (
-        <div
-          className={styles.actions}
-          style={{
-            marginBlockEnd: "10px",
-          }}
-        >
-          <label
-            style={{
-              color: Colors.SECONDARY_COLOR,
-            }}
-          >
-            {t(label)}
-          </label>
-          <Icon
-            selected={false}
-            foreColor={Colors.SUCCEEDED_COLOR}
-            tooltip={t(label)}
-            onclick={handleClick}
-            icon={() => <SiMicrosoftexcel size={24} />}
-            withBackground={true}
-          />
-        </div>
+        <Icon
+          selected={false}
+          foreColor={Colors.SUCCEEDED_COLOR}
+          tooltip={t(label)}
+          onclick={handleClick}
+          icon={() => <SiMicrosoftexcel size={24} />}
+          withBackground={true}
+          text={t(label)}
+        />
+        // <div
+        //   className={styles.actions}
+        //   style={{
+        //     marginBlockEnd: "10px",
+        //   }}
+        // >
+        //   <label
+        //     style={{
+        //       color: Colors.MAIN_COLOR,
+        //     }}
+        //   ></label>
+
+        // </div>
       )}
 
       <input

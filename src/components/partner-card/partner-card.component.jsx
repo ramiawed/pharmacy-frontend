@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 import Logo from "../../logo.png";
+import FastDeliverLogo from "../../smal-logo.png";
 
 // components
 import Button from "../button/button.component";
@@ -63,7 +64,7 @@ function PartnerCard({
         {partner.name}
       </p>
 
-      <div className={styles.section}>
+      <div className={styles.section} style={{ flex: 1 }}>
         {partner.logo_url?.length > 0 ? (
           <img
             src={`${SERVER_URL}/profiles/${partner.logo_url}`}
@@ -78,6 +79,22 @@ function PartnerCard({
           />
         )}
       </div>
+
+      {partner.type === UserTypeConstants.WAREHOUSE &&
+        user.type === UserTypeConstants.PHARMACY &&
+        partner.fastDeliver && (
+          <div
+            className={styles.section}
+            style={{ display: "flex", alignItems: "center" }}
+          >
+            <img
+              src={FastDeliverLogo}
+              alt="tumb"
+              style={{ width: "32px", height: "32px" }}
+            />
+            <label>{t("fast-deliver")}</label>
+          </div>
+        )}
 
       <div className={styles.from_top}>
         {favoritesError === "" ? (

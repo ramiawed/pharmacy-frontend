@@ -24,7 +24,6 @@ function AdminUsersOrderModal({ close, okHandler }) {
     { value: OrderOptions.DATE_CREATED, label: t("user-created-at") },
     { value: OrderOptions.DATE_UPDATED, label: t("user-updated-at") },
     { value: OrderOptions.ACTIVE, label: t("deleted-account") },
-    { value: OrderOptions.APPROVED, label: t("approved-state") },
     { value: OrderOptions.CITY, label: t("user-city") },
   ];
 

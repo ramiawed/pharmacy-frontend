@@ -1,14 +1,12 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // components
-import PharmacyIntroduce from "../../components/pharmacy-introduce/pharmacy-introduce.component";
 import AdvertisementSideNav from "../../components/advertisement-side-nav/advertisement-side-nav.component";
 import AdvertisementsHomePage from "../../components/advertisements-home-page/advertisements-home-page.component";
-import WarehouseIntroduce from "../../components/warehouse-introduce/warehouse-introduce.component";
-import GuestIntroduce from "../../components/guest-introduce/guest-introduce.component";
 import IntroduceUs from "../../components/introduce-us/introduce-us.component";
+import SectionsIntroduce from "../../components/pharmacy-introduce/sections-introduce.component";
 
 // icons
 import { GiMedicinePills, GiMedicines } from "react-icons/gi";
@@ -50,7 +48,7 @@ import { selectAdvertisements } from "../../redux/advertisements/advertisementsS
 import styles from "./home-page.module.scss";
 
 // constants
-import { AdditionalColors, SERVER_URL } from "../../utils/constants";
+import { AdditionalColors } from "../../utils/constants";
 
 function HomePage({ onSelectedChange }) {
   const { t } = useTranslation();
@@ -93,11 +91,7 @@ function HomePage({ onSelectedChange }) {
   );
 
   const { advertisements } = useSelector(selectAdvertisements);
-  const [backgroundImages, setBackgroundImages] = useState(
-    advertisements?.map((a) => a.logo_url)[0]
-  );
   const { settings } = useSelector(selectSettings);
-  const currentImage = useRef(0);
 
   useEffect(() => {
     if (settings.companiesSectionOne.show && companiesOneRefresh)
@@ -118,23 +112,7 @@ function HomePage({ onSelectedChange }) {
     if (settings.itemsSectionThree.show && itemsThreeRefresh)
       dispatch(getItemsSectionThree({ token }));
 
-    const timer = setInterval(() => {
-      if (currentImage.current === advertisements.length - 1) {
-        currentImage.current = 0;
-      } else {
-        currentImage.current = currentImage.current + 1;
-      }
-
-      setBackgroundImages(
-        advertisements.map((a) => a.logo_url)[currentImage.current]
-      );
-    }, 10000);
-
     onSelectedChange();
-
-    return () => {
-      clearInterval(timer);
-    };
   }, [settings]);
 
   const showCompaniesSectionOneSideNavHandler = () => {
@@ -291,15 +269,17 @@ function HomePage({ onSelectedChange }) {
         )}
       </div>
 
-      <AdvertisementsHomePage advertisements={advertisements} />
-
-      <div className={styles.introduces}>
-        <IntroduceUs />
-        <hr className={styles.separator01} />
-        <WarehouseIntroduce />
-        <PharmacyIntroduce />
-        <GuestIntroduce />
+      <div className={styles.header_adv_div}>
+        {/* <div className={styles.header_with_slogn_container}>
+          <HeaderWithSlogn bgColor={Colors.LIGHT_GREY_COLOR} />
+        </div> */}
+        <AdvertisementsHomePage advertisements={advertisements} />
       </div>
+
+      <IntroduceUs />
+      <SectionsIntroduce />
+      {/* <WarehouseIntroduce /> */}
+      {/* <GuestIntroduce /> */}
 
       {showCompaniesSectionOneSideNav && (
         <AdvertisementSideNav

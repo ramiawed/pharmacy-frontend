@@ -1,16 +1,14 @@
-@import '../../variables.scss';
+@import "../../variables.scss";
 
 .container {
-  width: 100%;
-  background-color: $white-color;
+  background: $white-color;
   border-radius: 6px;
-
+  position: relative;
   display: flex;
   justify-content: flex-start;
-  align-items: center;
-
+  align-items: stretch;
   margin-bottom: 5px;
-  padding: 6px;
+  min-height: 33px;
 
   .partners_container {
     flex: 1;
@@ -18,6 +16,8 @@
     justify-content: flex-start;
     align-items: center;
     flex-wrap: wrap;
+    gap: 5px;
+    padding: 2px;
 
     .partner {
       border: 1px solid rgba($color: #000000, $alpha: 0.1);
@@ -31,6 +31,7 @@
         color: $main-color;
         border-left: 1px solid rgba($color: #000000, $alpha: 0.1);
         padding-left: 5px;
+        font-size: 12px;
       }
 
       .remove_icon {
@@ -40,14 +41,39 @@
         cursor: pointer;
       }
     }
+
+    .placeholder {
+      font-size: 10px;
+      color: $black-color;
+    }
   }
 
   .label {
-    color: $secondary-color;
-    min-width: 50px;
+    font-size: 12px;
+    font-weight: bold;
+    min-width: 100px;
+    text-align: left;
+    color: $white-color !important;
+    background-color: $main-color;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 10px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
   }
 
   .add_icon {
     cursor: pointer;
+    align-self: center;
+  }
+}
+
+@media only screen and (min-width: $medium) {
+  .container {
+    .label {
+      font-size: 14px;
+      min-width: 125px;
+    }
   }
 }

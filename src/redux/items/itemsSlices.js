@@ -20,22 +20,18 @@ const initialState = {
   changeLogoError: "",
   changeOfferStatus: "idle",
   changeOfferError: "",
+  removeFromWarehouseStatus: "idle",
   pageState: {
     role: null,
     company: null,
     warehouse: null,
     searchName: "",
-    searchCompanyName: "",
-    searchWarehouseName: "",
+    searchCompaniesIds: [],
+    searchWarehousesIds: [],
     searchDeletedItems: false,
     searchActiveItems: false,
     searchInWarehouse: false,
     searchOutWarehouse: false,
-    sortNameField: 0,
-    sortCaliberField: 0,
-    sortPriceField: 0,
-    sortCustomerPriceField: 0,
-    sortFields: "",
     page: 1,
   },
 };
@@ -54,15 +50,16 @@ const resetCancelAndSource = () => {
 export const getItems = createAsyncThunk(
   "items/getItems",
   async ({ token }, { rejectWithValue, getState }) => {
-    CancelToken = axios.CancelToken;
-    source = CancelToken.source();
-
-    const {
-      items: { pageState },
-    } = getState();
-
     try {
-      let buildUrl = `${BASEURL}/items?forAdmin=true&page=${pageState.page}&limit=15`;
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const {
+        items: { pageState },
+        warehouses: { warehouses },
+      } = getState();
+
+      let buildUrl = `${BASEURL}/items?page=${pageState.page}&limit=15`;
 
       if (pageState.company) {
         buildUrl = buildUrl + `&companyId=${pageState.company._id}`;
@@ -76,14 +73,6 @@ export const getItems = createAsyncThunk(
         buildUrl = buildUrl + `&itemName=${pageState.searchName.trim()}`;
       }
 
-      if (pageState.searchCompanyName.trim() !== "") {
-        buildUrl = buildUrl + `&companyName=${pageState.searchCompanyName}`;
-      }
-
-      if (pageState.searchWarehouseName.trim() !== "") {
-        buildUrl = buildUrl + `&warehouseName=${pageState.searchWarehouseName}`;
-      }
-
       if (pageState.searchActiveItems) {
         buildUrl = buildUrl + `&isActive=${true}`;
       }
@@ -92,19 +81,22 @@ export const getItems = createAsyncThunk(
         buildUrl = buildUrl + `&isActive=${false}`;
       }
 
-      if (pageState.searchInWarehouse) {
-        buildUrl = buildUrl + `&inWarehouse=true`;
-      }
-
-      if (pageState.searchOutWarehouse) {
-        buildUrl = buildUrl + `&outWarehouse=true`;
-      }
-
-      if (pageState.sortFields.length > 0) {
-        buildUrl = buildUrl + `&sort=${pageState.sortFields}`;
-      }
-
       const response = await axios.get(buildUrl, {
+        params: {
+          searchCompaniesIds: pageState.searchCompaniesIds.map(
+            (company) => company.value
+          ),
+          searchWarehousesIds: pageState.searchWarehousesIds.map(
+            (warehouse) => warehouse.value
+          ),
+          searchInWarehouses: pageState.searchInWarehouse
+            ? warehouses.map((w) => w._id)
+            : null,
+          searchOutWarehouses: pageState.searchOutWarehouse
+            ? warehouses.map((w) => w._id)
+            : null,
+          userWarehouses: warehouses ? warehouses.map((w) => w._id) : [],
+        },
         // timeout: 10000,
         cancelToken: source.token,
         headers: {
@@ -305,20 +297,24 @@ export const changeItemLogo = createAsyncThunk(
   }
 );
 
-export const changeItemOffer = createAsyncThunk(
-  "items/changeItemOffer",
-  async ({ _id, token }, { rejectWithValue }) => {
+export const removeItemFromWarehouse = createAsyncThunk(
+  "items/removeFromWarehouse",
+  async ({ obj, token }, { rejectWithValue }) => {
     try {
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      const response = await axios.get(`${BASEURL}/items/item/${_id}`, {
-        // timeout: 10000,
-        cancelToken: source.token,
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post(
+        `${BASEURL}/items/warehouse/remove-item/${obj.itemId}`,
+        { warehouseId: obj.warehouseId },
+        {
+          cancelToken: source.token,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
       return response.data;
     } catch (err) {
       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
@@ -327,9 +323,115 @@ export const changeItemOffer = createAsyncThunk(
       if (axios.isCancel(err)) {
         return rejectWithValue("cancel");
       }
+
       if (!err.response) {
         return rejectWithValue("network failed");
       }
+
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const changeItemWarehouseMaxQty = createAsyncThunk(
+  "items/changeItemsMaxQty",
+  async ({ obj, token }, { rejectWithValue }) => {
+    try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.post(
+        `${BASEURL}/items/warehouse/change-max-qty/${obj.itemId}`,
+        { warehouseId: obj.warehouseId, qty: obj.qty },
+        {
+          // timeout: 10000,
+          cancelToken: source.token,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+// export const changeItemOffer = createAsyncThunk(
+//   "items/changeItemOffer",
+//   async ({ _id, token }, { rejectWithValue }) => {
+//     try {
+//       CancelToken = axios.CancelToken;
+//       source = CancelToken.source();
+
+//       const response = await axios.get(`${BASEURL}/items/item/${_id}`, {
+//         // timeout: 10000,
+//         cancelToken: source.token,
+//         headers: {
+//           Authorization: `Bearer ${token}`,
+//         },
+//       });
+//       return response.data;
+//     } catch (err) {
+//       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+//         return rejectWithValue("timeout");
+//       }
+//       if (axios.isCancel(err)) {
+//         return rejectWithValue("cancel");
+//       }
+//       if (!err.response) {
+//         return rejectWithValue("network failed");
+//       }
+//       return rejectWithValue(err.response.data);
+//     }
+//   }
+// );
+
+export const changeItemWarehouseOffer = createAsyncThunk(
+  "items/changeItemsOffer",
+  async ({ obj, token }, { rejectWithValue }) => {
+    try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.post(
+        `${BASEURL}/items/warehouse/change-offer/${obj.itemId}`,
+        { warehouseId: obj.warehouseId, offer: obj.offer },
+        {
+          // timeout: 10000,
+          cancelToken: source.token,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
       return rejectWithValue(err.response.data);
     }
   }
@@ -381,6 +483,12 @@ export const itemsSlice = createSlice({
     resetChangeOfferError: (state) => {
       state.changeOfferError = "";
     },
+    setPageState: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        ...action.payload,
+      };
+    },
     warehouseAddBonusSocket: (state, action) => {
       state.items = state.items.map((m) => {
         if (m._id === action.payload.itemId) {
@@ -393,13 +501,26 @@ export const itemsSlice = createSlice({
       });
     },
 
+    clearFilter: (state) => {
+      state.pageState = {
+        ...state.pageState,
+        searchName: "",
+        searchCompaniesIds: [],
+        searchWarehousesIds: [],
+        searchDeletedItems: false,
+        searchActiveItems: false,
+        searchInWarehouse: false,
+        searchOutWarehouse: false,
+        page: 1,
+      };
+    },
+
     warehouseAddOrRemoveItemSocket: (state, action) => {
       state.items = state.items.map((m) => {
         if (m._id === action.payload.itemId) {
           return {
             ...m,
             warehouses: action.payload.warehouses,
-            // existing_place: action.payload.existing_place,
           };
         }
         return m;
@@ -419,90 +540,6 @@ export const itemsSlice = createSlice({
       state.updateError = "";
       state.changeLogoStatus = "idle";
       state.changeLogoError = "";
-    },
-
-    setSearchName: (state, action) => {
-      state.pageState = {
-        ...state.pageState,
-        searchName: action.payload,
-      };
-    },
-
-    setSearchCompanyName: (state, action) => {
-      state.pageState = {
-        ...state.pageState,
-        searchCompanyName: action.payload,
-      };
-    },
-
-    setSearchWarehouseName: (state, action) => {
-      state.pageState = {
-        ...state.pageState,
-        searchWarehouseName: action.payload,
-      };
-    },
-
-    setSearchDeletedItems: (state, action) => {
-      state.pageState = {
-        ...state.pageState,
-        searchDeletedItems: action.payload,
-      };
-    },
-
-    setSearchActiveItems: (state, action) => {
-      state.pageState = {
-        ...state.pageState,
-        searchActiveItems: action.payload,
-      };
-    },
-
-    setSearchInWarehouse: (state, action) => {
-      state.pageState = {
-        ...state.pageState,
-        searchInWarehouse: action.payload,
-      };
-    },
-
-    setSearchOutWarehouse: (state, action) => {
-      state.pageState = {
-        ...state.pageState,
-        searchOutWarehouse: action.payload,
-      };
-    },
-
-    setSortNameField: (state, action) => {
-      state.pageState = {
-        ...state.pageState,
-        sortNameField: action.payload,
-      };
-    },
-
-    setSortCaliberField: (state, action) => {
-      state.pageState = {
-        ...state.pageState,
-        sortCaliberField: action.payload,
-      };
-    },
-
-    setSortPriceField: (state, action) => {
-      state.pageState = {
-        ...state.pageState,
-        sortPriceField: action.payload,
-      };
-    },
-
-    setSortCustomerPriceField: (state, action) => {
-      state.pageState = {
-        ...state.pageState,
-        sortCustomerPriceField: action.payload,
-      };
-    },
-
-    setSortFields: (state, action) => {
-      state.pageState = {
-        ...state.pageState,
-        sortFields: action.payload,
-      };
     },
 
     setPage: (state, action) => {
@@ -533,26 +570,78 @@ export const itemsSlice = createSlice({
       };
     },
 
+    addIdToCompaniesIds: (state, action) => {
+      const { value } = action.payload;
+      if (
+        state.pageState.searchCompaniesIds.filter(
+          (company) => company.value === value
+        ).length === 0
+      ) {
+        state.pageState = {
+          ...state.pageState,
+          searchCompaniesIds: [
+            ...state.pageState.searchCompaniesIds,
+            action.payload,
+          ],
+        };
+      }
+    },
+
+    removeIdFromCompaniesId: (state, action) => {
+      const id = action.payload;
+      const filteredArray = state.pageState.searchCompaniesIds.filter(
+        (i) => i.value !== id
+      );
+      state.pageState = {
+        ...state.pageState,
+        searchCompaniesIds: [...filteredArray],
+      };
+    },
+
+    addIdToWarehousesIds: (state, action) => {
+      const { value } = action.payload;
+      if (
+        state.pageState.searchWarehousesIds.filter(
+          (warehouse) => warehouse.value === value
+        ).length === 0
+      ) {
+        state.pageState = {
+          ...state.pageState,
+          searchWarehousesIds: [
+            ...state.pageState.searchWarehousesIds,
+            action.payload,
+          ],
+        };
+      }
+    },
+
+    removeIdFromWarehousesId: (state, action) => {
+      const id = action.payload;
+      const filteredArray = state.pageState.searchWarehousesIds.filter(
+        (i) => i.value !== id
+      );
+      state.pageState = {
+        ...state.pageState,
+        searchWarehousesIds: [...filteredArray],
+      };
+    },
+
     resetPageState: (state) => {
       state.pageState = {
         role: null,
         company: null,
         warehouse: null,
         searchName: "",
-        searchCompanyName: "",
-        searchWarehouseName: "",
+        searchCompaniesIds: [],
+        searchWarehousesIds: [],
         searchDeletedItems: false,
         searchActiveItems: false,
         searchInWarehouse: false,
         searchOutWarehouse: false,
-        sortNameField: 0,
-        sortCaliberField: 0,
-        sortPriceField: 0,
-        sortCustomerPriceField: 0,
-        sortFields: "",
         page: 1,
       };
     },
+
     itemsSliceSignOut: (state) => {
       state.status = "idle";
       state.items = [];
@@ -571,21 +660,17 @@ export const itemsSlice = createSlice({
         company: null,
         warehouse: null,
         searchName: "",
-        searchCompanyName: "",
-        searchWarehouseName: "",
+        searchCompaniesIds: [],
+        searchWarehousesIds: [],
         searchDeletedItems: false,
         searchActiveItems: false,
         searchInWarehouse: false,
         searchOutWarehouse: false,
-        sortNameField: 0,
-        sortCaliberField: 0,
-        sortPriceField: 0,
-        sortCustomerPriceField: 0,
-        sortFields: "",
         page: 1,
       };
     },
   },
+
   extraReducers: {
     [getItems.pending]: (state) => {
       state.status = "loading";
@@ -595,10 +680,6 @@ export const itemsSlice = createSlice({
       state.items = action.payload.data.items;
       state.count = action.payload.count;
       state.error = "";
-      // state.pageState = {
-      //   ...state.pageState,
-      //   page: Math.ceil(state.items.length / 15) + 1,
-      // };
     },
     [getItems.rejected]: (state, { payload }) => {
       state.status = "failed";
@@ -712,20 +793,18 @@ export const itemsSlice = createSlice({
         state.changeLogoError = "network failed";
       } else state.changeLogoError = payload.message;
     },
-    [changeItemOffer.pending]: (state) => {
+    [changeItemWarehouseOffer.pending]: (state, action) => {
       state.changeOfferStatus = "loading";
     },
-    [changeItemOffer.fulfilled]: (state, action) => {
+    [changeItemWarehouseOffer.fulfilled]: (state, action) => {
       state.changeOfferStatus = "succeeded";
-      const newItems = state.items.map((item) => {
+      state.items = state.items.map((item) => {
         if (item._id === action.payload.data.item._id) {
           return action.payload.data.item;
         } else return item;
       });
-
-      state.items = newItems;
     },
-    [changeItemOffer.rejected]: (state, { payload }) => {
+    [changeItemWarehouseOffer.rejected]: (state, { payload }) => {
       state.changeOfferStatus = "failed";
 
       if (payload === "timeout") {
@@ -735,6 +814,42 @@ export const itemsSlice = createSlice({
       } else if (payload === "network failed") {
         state.changeOfferError = "network failed";
       } else state.changeOfferError = payload.message;
+    },
+    [removeItemFromWarehouse.pending]: (state) => {
+      state.removeFromWarehouseStatus = "loading";
+    },
+    [removeItemFromWarehouse.fulfilled]: (state, action) => {
+      state.removeFromWarehouseStatus = "succeeded";
+      state.items = state.items.filter(
+        (item) => item._id !== action.payload.data.item._id
+      );
+    },
+    [removeItemFromWarehouse.rejected]: (state, action) => {
+      state.removeFromWarehouseStatus = "failed";
+      if (action.payload === "timeout") {
+        state.removeFromWarehouseError = "timeout-msg";
+      } else if (action.payload === "cancel") {
+        state.removeFromWarehouseError = "cancel-operation-msg";
+      } else if (action.payload === "network failed") {
+        state.removeFromWarehouseError = "network failed";
+      } else state.removeFromWarehouseError = action.payload.message;
+    },
+    [changeItemWarehouseMaxQty.pending]: (state) => {
+      state.updateStatus = "loading";
+    },
+    [changeItemWarehouseMaxQty.fulfilled]: (state, action) => {
+      state.updateStatus = "succeeded";
+    },
+    [changeItemWarehouseMaxQty.rejected]: (state, { payload }) => {
+      state.updateStatus = "failed";
+
+      if (payload === "timeout") {
+        state.changeMaxQtyError = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.changeMaxQtyError = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.changeMaxQtyError = "network failed";
+      } else state.changeMaxQtyError = payload.message;
     },
   },
 });
@@ -755,24 +870,15 @@ export const {
   resetChangeOffersError,
   itemsSliceSignOut,
   resetPageState,
-  setSearchName,
-  setSearchCompanyName,
-  setSearchWarehouseName,
-  setSearchDeletedItems,
-  setSearchActiveItems,
-  setSearchInWarehouse,
-  setSearchOutWarehouse,
-  setSortNameField,
-  setSortCaliberField,
-  setSortPriceField,
-  setSortCustomerPriceField,
-  setSortFields,
   setPage,
-  setRole,
-  setCompany,
-  setWarehouse,
+  clearFilter,
+  addIdToCompaniesIds,
+  removeIdFromCompaniesId,
+  addIdToWarehousesIds,
+  removeIdFromWarehousesId,
   warehouseAddBonusSocket,
   warehouseAddOrRemoveItemSocket,
+  setPageState,
 } = itemsSlice.actions;
 
 export const selectItems = (state) => state.items;

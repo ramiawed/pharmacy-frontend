@@ -1,17 +1,20 @@
 import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
-import ReactLoading from "react-loading";
 import { useHistory, useLocation } from "react-router-dom";
 
 // components
-import NoContent from "../../components/no-content/no-content.component";
-import Icon from "../../components/action-icon/action-icon.component";
-import MedicinesSearchString from "../../components/medicines-search-string/medicines-search-string.component";
-import MedicineRow from "../../components/medicine-row/medicine-row.component";
-import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
-import MedicineCard from "../../components/medicine-card/medicine-card.component";
+import MainContentContainer from "../../components/main-content-container/main-content-container.component";
 import MedicineSearchEngine from "../../components/medicine-search-engine/medicine-search-engine.component";
+import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
+import NoMoreResult from "../../components/no-more-result/no-more-result.component";
+import MedicineCard from "../../components/medicine-card/medicine-card.component";
+import ResultsCount from "../../components/results-count/results-count.component";
+import CylonLoader from "../../components/cylon-loader/cylon-loader.component";
+import MedicineRow from "../../components/medicine-row/medicine-row.component";
+import ActionBar from "../../components/action-bar/action-bar.component";
+import NoContent from "../../components/no-content/no-content.component";
+import Icon from "../../components/icon/icon.component";
 
 // react-icons
 import { FaListUl } from "react-icons/fa";
@@ -28,7 +31,6 @@ import {
   getMedicines,
   selectMedicines,
   cancelOperation,
-  setCity,
   setDisplayType,
   resetMedicinesArray,
   resetMedicinesPageState,
@@ -38,7 +40,7 @@ import {
 import generalStyles from "../../style.module.scss";
 
 // constants
-import { Colors, UserTypeConstants } from "../../utils/constants";
+import { Colors } from "../../utils/constants";
 
 let timer = null;
 
@@ -54,11 +56,11 @@ function MedicinesPage({ onSelectedChange }) {
 
   // handle search
   const handleSearch = () => {
-    if (user.type === UserTypeConstants.PHARMACY) {
-      dispatch(setCity(user.city));
-    } else {
-      dispatch(setCity(""));
-    }
+    // if (user.type === UserTypeConstants.PHARMACY) {
+    //   dispatch(setCity(user.city));
+    // } else {
+    //   dispatch(setCity(""));
+    // }
 
     dispatch(getMedicines({ token }));
   };
@@ -89,8 +91,8 @@ function MedicinesPage({ onSelectedChange }) {
   useEffect(() => {
     if (medicines.length === 0) {
       handleSearch();
-      window.scrollTo(0, 0);
     }
+    window.scrollTo(0, 0);
 
     onSelectedChange();
   }, []);
@@ -102,10 +104,10 @@ function MedicinesPage({ onSelectedChange }) {
         keyUpHandler={keyUpHandler}
         location={location}
       />
-      <div className={generalStyles.container_with_header}>
+      <MainContentContainer>
         {/* <MedicinesSearchString pageState={pageState} user={user} /> */}
 
-        <div className={generalStyles.actions}>
+        <ActionBar>
           <Icon
             withBackground={true}
             icon={() => <RiRefreshLine />}
@@ -117,7 +119,8 @@ function MedicinesPage({ onSelectedChange }) {
             pageState.searchCompanyName.length > 0 ||
             pageState.searchWarehouseName.length > 0 ||
             pageState.searchInWarehouse ||
-            pageState.searchOutWarehouse) && (
+            pageState.searchOutWarehouse ||
+            pageState.searchHaveOffer) && (
             <Icon
               withBackground={true}
               selected={false}
@@ -164,18 +167,13 @@ function MedicinesPage({ onSelectedChange }) {
             icon={() => <IoMdArrowRoundBack />}
             foreColor={Colors.MAIN_COLOR}
           />
-        </div>
+        </ActionBar>
 
-        {count > 0 && (
-          <div className={generalStyles.count}>
-            <span className={generalStyles.label}>{t("items-count")}</span>
-            <span className={generalStyles.count}>{count}</span>
-          </div>
-        )}
+        {count > 0 && <ResultsCount label={t("items-count")} count={count} />}
 
         {pageState.displayType === "list" &&
-          medicines.map((medicine) => (
-            <MedicineRow key={medicine._id} item={medicine} />
+          medicines.map((medicine, index) => (
+            <MedicineRow key={medicine._id} item={medicine} index={index} />
           ))}
 
         {pageState.displayType === "card" && (
@@ -192,9 +190,7 @@ function MedicinesPage({ onSelectedChange }) {
         )}
 
         {count > 0 && status !== "loading" && (
-          <div className={generalStyles.count}>
-            {medicines.length} / {count}
-          </div>
+          <ResultsCount count={`${medicines.length} / ${count}`} />
         )}
 
         {medicines.length === 0 &&
@@ -215,33 +211,23 @@ function MedicinesPage({ onSelectedChange }) {
             <NoContent msg={t("no-result-found")} />
           )}
 
-        {status === "loading" && (
-          <div className={generalStyles.flex_container}>
-            <ReactLoading color={Colors.SECONDARY_COLOR} type="cylon" />
-          </div>
-        )}
+        {status === "loading" && <CylonLoader />}
 
         {medicines.length < count && status !== "loading" && (
-          <div className={generalStyles.flex_container}>
+          <ActionBar>
             <ButtonWithIcon
               text={t("more")}
               action={handleMoreResult}
-              bgColor={Colors.SECONDARY_COLOR}
+              bgColor={Colors.SUCCEEDED_COLOR}
               icon={() => <CgMoreVertical />}
             />
-          </div>
+          </ActionBar>
         )}
 
         {medicines.length === count && status !== "loading" && count !== 0 && (
-          <p
-            className={[generalStyles.center, generalStyles.fc_secondary].join(
-              " "
-            )}
-          >
-            {t("no-more")}
-          </p>
+          <NoMoreResult msg={t("no-more")} />
         )}
-      </div>
+      </MainContentContainer>
     </>
   ) : (
     <Redirect to="/signin" />

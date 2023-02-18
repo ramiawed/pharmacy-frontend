@@ -4,74 +4,51 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router-dom";
 
 // components
-import ReactPaginate from "react-paginate";
-import OrderRow from "../../components/order-row/order-row.component";
-import NoContent from "../../components/no-content/no-content.component";
-import Loader from "../../components/action-loader/action-loader.component";
-import Toast from "../../components/toast/toast.component";
-import Icon from "../../components/action-icon/action-icon.component";
-import ResultModal from "../../components/result-modal/result-modal.component";
+import MainContentContainer from "../../components/main-content-container/main-content-container.component";
 import OrdersSearchEngine from "../../components/orders-search-engine/orders-search-engine.component";
+import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
+import NoMoreResult from "../../components/no-more-result/no-more-result.component";
+import ResultsCount from "../../components/results-count/results-count.component";
+import CylonLoader from "../../components/cylon-loader/cylon-loader.component";
+import ResultModal from "../../components/result-modal/result-modal.component";
+import NoContent from "../../components/no-content/no-content.component";
+import ActionBar from "../../components/action-bar/action-bar.component";
+import OrderRow from "../../components/order-row/order-row.component";
+import Toast from "../../components/toast/toast.component";
+import Icon from "../../components/icon/icon.component";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
-  changeAllOrdersSelection,
   deleteOrder,
+  deleteBasketOrder,
+  getBasketsOrders,
   getOrders,
-  getUnreadOrders,
+  resetBasketOrders,
+  resetOrders,
   resetStatus,
   selectOrders,
-  setPage,
-  updateOrders,
+  setOrderType,
+  clearFilter,
 } from "../../redux/orders/ordersSlice";
-import {
-  changeAllOrdersSelection as basketChangeAllOrdersSelection,
-  deleteOrder as basketDeleteOrder,
-  getOrders as basketGetOrders,
-  getUnreadOrders as basketGetUnreadOrders,
-  resetStatus as basketResetStatus,
-  selectBasketOrders as basketSelectOrders,
-  setPage as basketSetPage,
-  updateOrders as basketUpdateOrders,
-} from "../../redux/basketOrdersSlice/basketOrdersSlice";
-import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 
 // react icons
-import { BsCheckAll } from "react-icons/bs";
-import {
-  MdOutlineCheckBox,
-  MdOutlineCheckBoxOutlineBlank,
-  MdOutlineIndeterminateCheckBox,
-  MdOutlineLocalShipping,
-  MdRemoveDone,
-} from "react-icons/md";
-import {
-  RiMailUnreadLine,
-  RiRefreshLine,
-  RiSendPlaneFill,
-} from "react-icons/ri";
+import { RiRefreshLine } from "react-icons/ri";
+import { IoMdArrowRoundBack } from "react-icons/io";
+import { CgMoreVertical } from "react-icons/cg";
 
 // styles
 import styles from "./orders-page.module.scss";
-import paginationStyles from "../../components/pagination.module.scss";
-import generalStyles from "../../style.module.scss";
 
 // constants and utils
-import { Colors, UserTypeConstants } from "../../utils/constants";
-
-import { IoMdArrowRoundBack } from "react-icons/io";
-
-// return the count of selected orders
-const calculateSelectedOrdersCount = (orders) => {
-  let count = 0;
-  orders.forEach((o) => {
-    count += o.selected ? 1 : 0;
-  });
-  return count;
-};
+import {
+  Colors,
+  OrdersStatusOptions,
+  UserTypeConstants,
+} from "../../utils/constants";
+import { VscClearAll } from "react-icons/vsc";
 
 function OrdersPage({ onSelectedChange, type }) {
   const { t } = useTranslation();
@@ -80,97 +57,42 @@ function OrdersPage({ onSelectedChange, type }) {
 
   // selectors
   const { token, user } = useSelector(selectUserData);
-  const { status, error, count, orders, refresh, pageState, forceRefresh } =
-    useSelector(type === "order" ? selectOrders : basketSelectOrders);
-  const isOnline = useSelector(selectOnlineStatus);
-
-  const selectedOrdersCount = calculateSelectedOrdersCount(orders);
+  const {
+    status,
+    error,
+    count,
+    orders,
+    basketOrdersCount,
+    basketOrders,
+    pageState,
+  } = useSelector(selectOrders);
 
   const [showResultModal, setShowResultModal] = useState(false);
   const [resultModalParams, setResultModalParams] = useState({});
 
-  // handle to change the status of the order
-  const markOrdersAs = (verb) => {
-    const ids = orders
-      .filter(
-        (o) =>
-          o.selected &&
-          ((user.type === UserTypeConstants.PHARMACY &&
-            o.pharmacyStatus !== verb) ||
-            (user.type === UserTypeConstants.WAREHOUSE &&
-              o.warehouseStatus !== verb))
-      )
-      .map((o) => o._id);
+  // search handler
+  const handleSearch = (type) => {
+    if (type === "normal") {
+      dispatch(getOrders({ token }));
+    }
 
-    if (ids.length > 0) {
-      let body = {};
-      if (user.type === UserTypeConstants.PHARMACY) {
-        body = {
-          pharmacyStatus: verb,
-        };
-      }
-      if (user.type === UserTypeConstants.WAREHOUSE) {
-        body = {
-          warehouseStatus: verb,
-        };
-      }
-      dispatch(
-        type === "order"
-          ? updateOrders({
-              obj: {
-                ids,
-                body,
-              },
-              token,
-            })
-          : basketUpdateOrders({
-              obj: {
-                ids,
-                body,
-              },
-              token,
-            })
-      )
-        .then(unwrapResult)
-        .then(() => {
-          dispatch(
-            type === "order"
-              ? getUnreadOrders({ token })
-              : basketGetUnreadOrders({ token })
-          );
-        });
+    if (type === "special") {
+      dispatch(getBasketsOrders({ token }));
     }
   };
 
-  // search handler
-  const handleSearch = (page) => {
-    dispatch(type === "order" ? setPage(page) : basketSetPage(page));
-
-    dispatch(
-      type === "order"
-        ? getOrders({
-            obj: {
-              page,
-            },
-            token,
-          })
-        : basketGetOrders({
-            obj: {
-              page,
-            },
-            token,
-          })
-    );
+  const handleMoreResult = () => {
+    handleSearch(pageState.type);
   };
 
   const deleteOrderHandler = (orderId) => {
     dispatch(
-      type === "order"
+      pageState.type === "normal"
         ? deleteOrder({
             token,
             orderId,
           })
-        : basketDeleteOrder({
+        : deleteBasketOrder({
             token,
             orderId,
           })
@@ -187,7 +109,7 @@ function OrdersPage({ onSelectedChange, type }) {
         });
         setShowResultModal(true);
       })
-      .catch((err) => {
+      .catch(() => {
         setResultModalParams({
           msg: "order-deleted-failed-msg",
           type: "failed",
@@ -200,37 +122,36 @@ function OrdersPage({ onSelectedChange, type }) {
       });
   };
 
-  const handlePageClick = (e) => {
-    const { selected } = e;
-
-    handleSearch(selected + 1);
-
-    window.scrollTo(0, 0);
-  };
-
   const handleEnterPress = () => {
-    handleSearch(1);
+    if (pageState.type === "normal") dispatch(resetOrders());
+    if (pageState.type === "special") dispatch(resetBasketOrders());
+    handleSearch(pageState.type);
   };
 
-  const changeOrdersSelection = () => {
-    dispatch(
-      selectedOrdersCount === orders.length
-        ? type === "order"
-          ? changeAllOrdersSelection(false)
-          : basketChangeAllOrdersSelection(false)
-        : type === "order"
-        ? changeAllOrdersSelection(true)
-        : basketChangeAllOrdersSelection(true)
-    );
+  const clearFilterHandler = () => {
+    dispatch(clearFilter());
+    handleEnterPress();
+  };
+
+  const changeOrderTypeHandler = (type) => {
+    dispatch(setOrderType(type));
+    if (type === "normal" && orders.length === 0) handleSearch(type);
+    if (type === "special" && basketOrders.length === 0) handleSearch(type);
   };
 
   useEffect(() => {
-    if (refresh || forceRefresh) {
-      handleSearch(1);
+    if (pageState.type === "normal" && orders.length === 0) {
+      handleSearch("normal");
+    }
+
+    if (pageState.type === "special" && basketOrders.length === 0) {
+      handleSearch("special");
     }
 
     onSelectedChange();
-  }, [forceRefresh]);
+
+    window.scrollTo(0, 0);
+  }, []);
 
   return user &&
     (user.type === UserTypeConstants.ADMIN ||
@@ -242,8 +163,42 @@ function OrdersPage({ onSelectedChange, type }) {
         search={handleEnterPress}
         type={type}
       />
-      <div className={generalStyles.container_with_header}>
-        <div className={generalStyles.actions}>
+      <MainContentContainer>
+        <ActionBar>
+          <button
+            className={[
+              styles.btn,
+              pageState.type === "normal" ? styles.selected : "",
+            ].join(" ")}
+            onClick={() => changeOrderTypeHandler("normal")}
+          >
+            {t("normal-order")}
+          </button>
+
+          <button
+            className={[
+              styles.btn,
+              pageState.type === "special" ? styles.selected : "",
+            ].join(" ")}
+            onClick={() => changeOrderTypeHandler("special")}
+          >
+            {t("special-order")}
+          </button>
+
+          {(pageState.searchPharmacyName.trim().length > 0 ||
+            pageState.searchWarehouseName.trim().length > 0 ||
+            pageState.orderStatus !== OrdersStatusOptions.ALL ||
+            (pageState.dateOption !== "" && pageState.date !== "")) && (
+            <Icon
+              withBackground={true}
+              selected={false}
+              foreColor={Colors.MAIN_COLOR}
+              tooltip={t("clear-filter-tooltip")}
+              onclick={clearFilterHandler}
+              icon={() => <VscClearAll />}
+            />
+          )}
+
           <Icon
             foreColor={Colors.MAIN_COLOR}
             selected={false}
@@ -261,165 +216,108 @@ function OrdersPage({ onSelectedChange, type }) {
             foreColor={Colors.MAIN_COLOR}
             withBackground={true}
           />
-        </div>
+        </ActionBar>
+
+        {pageState.type === "normal" && count > 0 && (
+          <ResultsCount label={t("normal-orders-count")} count={count} />
+        )}
+
+        {pageState.type === "special" && basketOrdersCount > 0 && (
+          <ResultsCount
+            label={t("special-orders-count")}
+            count={basketOrdersCount}
+          />
+        )}
+
         <div>
-          {orders.length > 0 && (
-            <div className={styles.action_highlight_container}>
-              <div className={styles.highlight}>
-                <RiMailUnreadLine color={Colors.SECONDARY_COLOR} />
-                <label>{t("unread")}</label>
-                <BsCheckAll color={Colors.SUCCEEDED_COLOR} />
-                <label>{t("received")}</label>
-                <MdOutlineLocalShipping color={Colors.SUCCEEDED_COLOR} />
-                <label>{t("shipped")}</label>
-                <RiSendPlaneFill color={Colors.SUCCEEDED_COLOR} />
-                <label>{t("sent")}</label>
-                <MdRemoveDone color={Colors.FAILED_COLOR} />
-                <label>{t("will-dont-serve")}</label>
-              </div>
-              <div className={styles.actions_div}>
-                {user.type === UserTypeConstants.PHARMACY &&
-                  selectedOrdersCount > 0 && (
-                    <Icon
-                      selected={false}
-                      foreColor={Colors.SUCCEEDED_COLOR}
-                      tooltip={t("mark-as-received")}
-                      icon={() => <BsCheckAll />}
-                      onclick={() => markOrdersAs("received")}
-                      withBackground={true}
-                    />
-                  )}
-
-                {user.type === UserTypeConstants.PHARMACY &&
-                  selectedOrdersCount > 0 && (
-                    <Icon
-                      selected={false}
-                      foreColor={Colors.SUCCEEDED_COLOR}
-                      tooltip={t("mark-as-sent")}
-                      icon={() => <RiSendPlaneFill />}
-                      onclick={() => markOrdersAs("sent")}
-                      withBackground={true}
-                    />
-                  )}
-
-                {user.type === UserTypeConstants.WAREHOUSE &&
-                  selectedOrdersCount > 0 && (
-                    <>
-                      <Icon
-                        selected={false}
-                        foreColor={Colors.SUCCEEDED_COLOR}
-                        tooltip={t("mark-as-shipped")}
-                        icon={() => <MdOutlineLocalShipping />}
-                        onclick={() => markOrdersAs("sent")}
-                        withBackground={true}
-                      />
-
-                      <Icon
-                        selected={false}
-                        foreColor={Colors.SUCCEEDED_COLOR}
-                        tooltip={t("mark-as-received")}
-                        icon={() => <BsCheckAll />}
-                        onclick={() => markOrdersAs("received")}
-                        withBackground={true}
-                      />
-
-                      <Icon
-                        selected={false}
-                        foreColor={Colors.FAILED_COLOR}
-                        tooltip={t("mark-as-will-dont-server")}
-                        icon={() => <MdRemoveDone />}
-                        onclick={() => markOrdersAs("dontServe")}
-                        withBackground={true}
-                      />
-                    </>
-                  )}
-              </div>
-            </div>
-          )}
-
-          {orders.length > 0 && (
-            <div>
-              {user.type !== UserTypeConstants.ADMIN && (
-                <div
-                  onClick={changeOrdersSelection}
-                  className={styles.selection}
-                >
-                  {selectedOrdersCount === orders.length && (
-                    <MdOutlineCheckBox size={24} color={Colors.MAIN_COLOR} />
-                  )}
-                  {selectedOrdersCount === 0 && (
-                    <MdOutlineCheckBoxOutlineBlank
-                      size={24}
-                      color={Colors.MAIN_COLOR}
-                    />
-                  )}
-                  {selectedOrdersCount < orders.length &&
-                    selectedOrdersCount !== 0 && (
-                      <MdOutlineIndeterminateCheckBox
-                        size={24}
-                        color={Colors.MAIN_COLOR}
-                      />
-                    )}
-                  <label
-                    style={{
-                      marginRight: "5px",
-                      fontSize: "16px",
-                      color: Colors.MAIN_COLOR,
-                    }}
-                  >
-                    {t("selection")}
-                  </label>
-                </div>
-              )}
-            </div>
-          )}
-
-          {orders?.map((order) => (
-            <OrderRow
-              order={order}
-              key={order._id}
-              deleteAction={deleteOrderHandler}
-              type={type}
-            />
-          ))}
-
-          {orders.length > 0 && isOnline && (
-            <ReactPaginate
-              previousLabel={t("previous")}
-              nextLabel={t("next")}
-              pageCount={Math.ceil(count / 15)}
-              forcePage={pageState.page - 1}
-              onPageChange={handlePageClick}
-              containerClassName={paginationStyles.pagination}
-              previousLinkClassName={paginationStyles.pagination_link}
-              nextLinkClassName={paginationStyles.pagination_link}
-              disabledClassName={paginationStyles.pagination_link_disabled}
-              activeClassName={paginationStyles.pagination_link_active}
-            />
-          )}
-
-          {count === 0 && status !== "loading" && (
-            <>
-              <NoContent
-                msg={t(
-                  type === "order"
-                    ? "no-orders-found"
-                    : "no-basket-orders-found"
-                )}
+          {pageState.type === "normal" &&
+            orders?.map((order, index) => (
+              <OrderRow
+                order={order}
+                key={order._id}
+                deleteAction={deleteOrderHandler}
+                type="normal"
+                index={index}
               />
-            </>
+            ))}
+
+          {pageState.type === "special" &&
+            basketOrders?.map((order, index) => (
+              <OrderRow
+                order={order}
+                key={order._id}
+                deleteAction={deleteOrderHandler}
+                type="special"
+                index={index}
+              />
+            ))}
+
+          {pageState.type === "normal" && count > 0 && status !== "loading" && (
+            <ResultsCount count={`${orders.length} / ${count}`} />
           )}
 
-          {status === "loading" && <Loader allowCancel={false} />}
+          {pageState.type === "special" &&
+            basketOrdersCount > 0 &&
+            status !== "loading" && (
+              <ResultsCount
+                count={`${basketOrders.length} / ${basketOrdersCount}`}
+              />
+            )}
+
+          {pageState.type === "normal" &&
+            count === 0 &&
+            status !== "loading" && <NoContent msg={t("no-orders-found")} />}
+
+          {pageState.type === "special" &&
+            basketOrdersCount === 0 &&
+            status !== "loading" && (
+              <NoContent msg={t("no-basket-orders-found")} />
+            )}
+
+          {status === "loading" && <CylonLoader />}
+
+          {pageState.type === "normal" &&
+            orders.length < count &&
+            status !== "loading" && (
+              <ActionBar>
+                <ButtonWithIcon
+                  text={t("more")}
+                  action={handleMoreResult}
+                  bgColor={Colors.SUCCEEDED_COLOR}
+                  icon={() => <CgMoreVertical />}
+                />
+              </ActionBar>
+            )}
+
+          {pageState.type === "normal" &&
+            orders.length === count &&
+            status !== "loading" &&
+            count !== 0 && <NoMoreResult msg={t("no-more")} />}
+
+          {pageState.type === "special" &&
+            basketOrders.length < basketOrdersCount &&
+            status !== "loading" && (
+              <ActionBar>
+                <ButtonWithIcon
+                  text={t("more")}
+                  action={handleMoreResult}
+                  bgColor={Colors.SUCCEEDED_COLOR}
+                  icon={() => <CgMoreVertical />}
+                />
+              </ActionBar>
+            )}
+
+          {pageState.type === "special" &&
+            basketOrders.length === basketOrdersCount &&
+            status !== "loading" &&
+            basketOrdersCount !== 0 && <NoMoreResult msg={t("no-more")} />}
 
           {error && (
             <Toast
               bgColor={Colors.FAILED_COLOR}
               foreColor="#fff"
               toastText={t(error)}
-              actionAfterTimeout={() =>
-                dispatch(type === "order" ? resetStatus() : basketResetStatus())
-              }
+              actionAfterTimeout={() => dispatch(resetStatus())}
             />
           )}
         </div>
@@ -430,7 +328,7 @@ function OrdersPage({ onSelectedChange, type }) {
             type={resultModalParams.type}
           />
         )}
-      </div>
+      </MainContentContainer>
     </>
   ) : (
     <Redirect to="/" />

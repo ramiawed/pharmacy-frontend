@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { BASEURL } from "../../utils/constants";
+import { BASEURL, UserTypeConstants } from "../../utils/constants";
 
 let CancelToken;
 let source;
@@ -21,11 +21,12 @@ const initialState = {
     searchCompanyName: "",
     searchCompaniesIds: [],
     searchWarehousesIds: [],
+    searchWarehouseCompanyId: null,
     searchWarehouseName: "",
     searchInWarehouse: false,
     searchOutWarehouse: false,
     searchHaveOffer: false,
-    city: "",
+    // city: "",
     displayType: "list",
     page: 1,
   },
@@ -48,11 +49,14 @@ export const getMedicines = createAsyncThunk(
     try {
       const {
         medicines: { pageState },
+        warehouses: { warehouses },
+        auth: { user },
       } = getState();
+
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      let buildUrl = `${BASEURL}/items?forAdmin=false&isActive=true&page=${pageState.page}&limit=15`;
+      let buildUrl = `${BASEURL}/items?isActive=true&page=${pageState.page}&limit=15`;
 
       if (pageState.searchName.trim() !== "") {
         buildUrl = buildUrl + `&itemName=${pageState.searchName}`;
@@ -66,32 +70,17 @@ export const getMedicines = createAsyncThunk(
         buildUrl = buildUrl + `&warehouseId=${pageState.searchWarehouseId}`;
       }
 
-      if (pageState.searchCompanyName.trim() !== "") {
-        buildUrl = buildUrl + `&companyName=${pageState.searchCompanyName}`;
-      }
-
-      if (pageState.searchWarehouseName.trim() !== "") {
-        buildUrl = buildUrl + `&warehouseName=${pageState.searchWarehouseName}`;
-      }
-
-      if (pageState.searchInWarehouse) {
-        buildUrl = buildUrl + `&inWarehouse=true`;
-      }
-
-      if (pageState.searchOutWarehouse) {
-        buildUrl = buildUrl + `&outWarehouse=true`;
+      if (pageState.searchWarehouseCompanyId !== null) {
+        buildUrl =
+          buildUrl +
+          `&searchWarehouseCompanyId=${pageState.searchWarehouseCompanyId}`;
       }
 
       if (pageState.searchHaveOffer) {
         buildUrl = buildUrl + `&haveOffer=true`;
       }
 
-      if (pageState.city) {
-        buildUrl = buildUrl + `&city=${pageState.city}`;
-      }
-
       const response = await axios.get(buildUrl, {
-        // timeout: 10000,
         params: {
           searchCompaniesIds: pageState.searchCompaniesIds.map(
             (company) => company.value
@@ -99,6 +88,26 @@ export const getMedicines = createAsyncThunk(
           searchWarehousesIds: pageState.searchWarehousesIds.map(
             (warehouse) => warehouse.value
           ),
+          searchInWarehouses: pageState.searchInWarehouse
+            ? user.type === UserTypeConstants.WAREHOUSE
+              ? user._id
+              : pageState.searchInWarehouse
+              ? warehouses.map((w) => w._id)
+              : null
+            : null,
+          searchOutWarehouses: pageState.searchOutWarehouse
+            ? user.type === UserTypeConstants.WAREHOUSE
+              ? user._id
+              : pageState.searchOutWarehouse
+              ? warehouses.map((w) => w._id)
+              : null
+            : null,
+          userWarehouses:
+            user.type === UserTypeConstants.WAREHOUSE
+              ? user._id
+              : warehouses
+              ? warehouses.map((w) => w._id)
+              : [],
         },
         cancelToken: source.token,
         headers: {
@@ -136,7 +145,7 @@ export const addItemToWarehouse = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        `${BASEURL}/items/warehouse/add-item/${obj.itemId}/${obj.city}`,
+        `${BASEURL}/items/warehouse/add-item/${obj.itemId}`,
         { warehouseId: obj.warehouseId },
         {
           // timeout: 10000,
@@ -177,7 +186,7 @@ export const removeItemFromWarehouse = createAsyncThunk(
       source = CancelToken.source();
 
       const response = await axios.post(
-        `${BASEURL}/items/warehouse/remove-item/${obj.itemId}/${obj.city}`,
+        `${BASEURL}/items/warehouse/remove-item/${obj.itemId}`,
         { warehouseId: obj.warehouseId },
         {
           // timeout: 10000,
@@ -269,6 +278,13 @@ export const medicinesSlice = createSlice({
       };
     },
 
+    setSearchWarehouseCompanyId: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchWarehouseCompanyId: action.payload,
+      };
+    },
+
     setSearchWarehouseName: (state, action) => {
       state.pageState = {
         ...state.pageState,
@@ -304,12 +320,12 @@ export const medicinesSlice = createSlice({
       };
     },
 
-    setCity: (state, action) => {
-      state.pageState = {
-        ...state.pageState,
-        city: action.payload,
-      };
-    },
+    // setCity: (state, action) => {
+    //   state.pageState = {
+    //     ...state.pageState,
+    //     city: action.payload,
+    //   };
+    // },
 
     setDisplayType: (state, action) => {
       state.pageState = {
@@ -415,12 +431,13 @@ export const medicinesSlice = createSlice({
         searchWarehouseName: "",
         searchWarehouseId: null,
         searchCompanyId: null,
+        searchWarehouseCompanyId: null,
         searchInWarehouse: false,
         searchOutWarehouse: false,
         searchHaveOffer: false,
         searchCompaniesIds: [],
         searchWarehousesIds: [],
-        city: "",
+        // city: "",
         displayType: "list",
         page: 1,
       };
@@ -441,12 +458,13 @@ export const medicinesSlice = createSlice({
         searchWarehouseName: "",
         searchWarehouseId: null,
         searchCompanyId: null,
+        searchWarehouseCompanyId: null,
         searchInWarehouse: false,
         searchOutWarehouse: false,
         searchHaveOffer: false,
         searchCompaniesIds: [],
         searchWarehousesIds: [],
-        city: "",
+        // city: "",
         displayType: "list",
         page: 1,
       };
@@ -467,12 +485,13 @@ export const medicinesSlice = createSlice({
         searchWarehouseName: "",
         searchWarehouseId: null,
         searchCompanyId: null,
+        searchWarehouseCompanyId: null,
         searchInWarehouse: false,
         searchOutWarehouse: false,
         searchHaveOffer: false,
         searchCompaniesIds: [],
         searchWarehousesIds: [],
-        city: "",
+        // city: "",
         displayType: "list",
         page: 1,
       };
@@ -573,7 +592,7 @@ export const {
   setSearchOutWarehouse,
   setSearchHaveOffer,
   setPage,
-  setCity,
+  // setCity,
   setDisplayType,
   resetMedicinesArray,
   resetMedicinesPageState,
@@ -583,6 +602,7 @@ export const {
   removeIdFromCompaniesId,
   addIdToWarehousesIds,
   removeIdFromWarehousesId,
+  setSearchWarehouseCompanyId,
 } = medicinesSlice.actions;
 
 export const selectMedicines = (state) => state.medicines;

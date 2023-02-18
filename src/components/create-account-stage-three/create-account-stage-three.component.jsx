@@ -33,7 +33,7 @@ const CreateAccountStageThree = ({
     { value: CitiesName.HOMS, label: t("homs") },
     { value: CitiesName.IDLIB, label: t("idlib") },
     { value: CitiesName.LATAKIA, label: t("latakia") },
-    { value: CitiesName.QUNEITRA, label: t("guneitra") },
+    { value: CitiesName.QUNEITRA, label: t("quneitra") },
     { value: CitiesName.RAQQA, label: t("raqqa") },
     { value: CitiesName.AL_SUWAYDA, label: t("al_suwayda") },
     { value: CitiesName.TARTUS, label: t("tartus") },

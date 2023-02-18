@@ -15,7 +15,7 @@ import {
 // components
 import Modal from "../modal/modal.component";
 import Button from "../../components/button/button.component";
-import Icon from "../../components/action-icon/action-icon.component";
+import Icon from "../../components/icon/icon.component";
 import NoContent from "../../components/no-content/no-content.component";
 
 // icons
@@ -28,12 +28,11 @@ import styles from "./choose-item-modal.module.scss";
 import generalStyles from "../../style.module.scss";
 
 // constants
-import { Colors } from "../../utils/constants";
+import { BASEURL, Colors } from "../../utils/constants";
 
 function ChooseItemModal({
   close,
   chooseAction,
-  url,
   setBaskItems,
   index,
   basketItems,
@@ -65,11 +64,14 @@ function ChooseItemModal({
         nameCondition = `&itemName=${searchName.trim()}`;
       }
 
-      const response = await axios.get(`${url}&page=${p}${nameCondition}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(
+        `${BASEURL}/items?limit=15&isActive=true&page=${p}${nameCondition}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       if (p === 1) {
         setData(response.data.data.items);
       } else {
@@ -123,7 +125,7 @@ function ChooseItemModal({
             generalStyles.flex_center_container,
           ].join(" ")}
         >
-          <IoIosSearch color={Colors.SECONDARY_COLOR} size={24} />
+          <IoIosSearch color={Colors.LIGHT_COLOR} size={24} />
           <input
             className={styles.search_input}
             placeholder={t("enter-item-trade-name")}
@@ -160,7 +162,7 @@ function ChooseItemModal({
 
         {loading ? (
           <div className={generalStyles.flex_container}>
-            <ReactLoading color={Colors.SECONDARY_COLOR} type="cylon" />
+            <ReactLoading color={Colors.LIGHT_COLOR} type="cylon" />
           </div>
         ) : (
           data.length < count && (

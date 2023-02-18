@@ -3,13 +3,15 @@ import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
 
 // components
-import UserRow from "../../components/user-row/user-row.component";
-import NoContent from "../../components/no-content/no-content.component";
-import AdminUsersHeader from "../../components/admin-users-header/admin-users-header.component";
-import AdminUserTableHeader from "../../components/admin-users-table-header/admin-users-table-header.component";
 import AdminUsersNotifications from "../../components/admin-users-notifications/admin-users-notification.component";
+import AdminUserTableHeader from "../../components/admin-users-table-header/admin-users-table-header.component";
+import MainContentContainer from "../../components/main-content-container/main-content-container.component";
+import AdminUsersActions from "../../components/admin-users-actions/admin-users-actions.component";
 import AdminUsersSearchModal from "../../modals/admin-search-modal/admin-search-modal.component";
 import AdminUsersOrderModal from "../../modals/admin-order-modal/admin-order-modal.component";
+import NoContent from "../../components/no-content/no-content.component";
+import UserRow from "../../components/user-row/user-row.component";
+import Header from "../../components/header/header.component";
 
 // 3-party library (loading, paginate)
 import ReactPaginate from "react-paginate";
@@ -25,7 +27,6 @@ import {
 
 // styles
 import paginationStyles from "../../components/pagination.module.scss";
-import generalStyles from "../../style.module.scss";
 
 // constants
 import { UserTypeConstants } from "../../utils/constants";
@@ -41,7 +42,7 @@ function AdminUsersPage({ onSelectedChange }) {
   const { token, user } = useSelector(selectUserData);
 
   // modal state
-  const [showModal, setShowModal] = useState(false);
+  const [showSearchModal, setShowSearchModal] = useState(false);
   const [showOrderModal, setShowOrderModel] = useState(false);
 
   // handle search
@@ -74,11 +75,21 @@ function AdminUsersPage({ onSelectedChange }) {
     }
 
     handleSearch(1);
-    setShowModal(false);
+    setShowSearchModal(false);
+  };
+
+  const refreshHandler = () => {
+    if (!isOnline) {
+      dispatch(changeOnlineMsg());
+      return;
+    }
+
+    handleSearch(pageState.page);
+    setShowSearchModal(false);
   };
 
   const searchModalOkHandler = () => {
-    setShowModal(false);
+    setShowSearchModal(false);
     handleSearch(1);
   };
 
@@ -88,19 +99,23 @@ function AdminUsersPage({ onSelectedChange }) {
       handleSearch(1);
     }
 
+    window.scrollTo(0, 0);
+
     onSelectedChange();
   }, [refresh]);
 
   return user && user.type === UserTypeConstants.ADMIN ? (
     <>
-      <AdminUsersHeader
-        count={count}
-        pageState={pageState}
-        showSearchModalHandler={() => setShowModal(true)}
-        showOrderModalHandler={() => setShowOrderModel(true)}
-      />
+      <Header title="partners" count={count} />
 
-      <div className={generalStyles.container_with_header}>
+      <MainContentContainer>
+        <AdminUsersActions
+          refreshHandler={refreshHandler}
+          pageState={pageState}
+          showSearchModalHandler={() => setShowSearchModal(true)}
+          showOrderModalHandler={() => setShowOrderModel(true)}
+        />
+
         {count > 0 && <AdminUserTableHeader />}
 
         {/* Results */}
@@ -127,18 +142,16 @@ function AdminUsersPage({ onSelectedChange }) {
 
         {/* show no content div when no user found */}
         {count === 0 && status !== "loading" && (
-          <>
-            <NoContent msg={t("no-partners-found-message")} />
-          </>
+          <NoContent msg={t("no-partners-found-message")} />
         )}
 
         {/* loading and notifications */}
-        <AdminUsersNotifications />
+        <AdminUsersNotifications refreshHandler={refreshHandler} />
 
         {/* search modal */}
-        {showModal && (
+        {showSearchModal && (
           <AdminUsersSearchModal
-            close={() => setShowModal(false)}
+            close={() => setShowSearchModal(false)}
             search={searchModalOkHandler}
             enterPress={enterPress}
           />
@@ -154,7 +167,7 @@ function AdminUsersPage({ onSelectedChange }) {
             }}
           />
         )}
-      </div>
+      </MainContentContainer>
     </>
   ) : (
     <Redirect to="/" />

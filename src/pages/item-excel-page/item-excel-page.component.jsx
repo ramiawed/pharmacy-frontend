@@ -4,14 +4,18 @@ import { Redirect, useLocation } from "react-router-dom";
 import * as XLSX from "xlsx";
 
 // components
-import InputFile from "../../components/input-file/input-file.component";
-import Modal from "../../modals/modal/modal.component";
-import Toast from "../../components/toast/toast.component";
-import Header from "../../components/header/header.component";
-import Icon from "../../components/action-icon/action-icon.component";
-import Loader from "../../components/action-loader/action-loader.component";
+import MainContentContainer from "../../components/main-content-container/main-content-container.component";
 import ExcelFileCriteria from "../../components/excel-file-criteria/excel-file-criteria.component";
 import ItemExcelCard from "../../components/item-excel-card/item-excel-card.component";
+import LabelValueRow from "../../components/label-value-row/label-value-row.component";
+import Loader from "../../components/action-loader/action-loader.component";
+import ActionBar from "../../components/action-bar/action-bar.component";
+import InputFile from "../../components/input-file/input-file.component";
+import Separator from "../../components/separator/separator.component";
+import Header from "../../components/header/header.component";
+import Toast from "../../components/toast/toast.component";
+import Modal from "../../modals/modal/modal.component";
+import Icon from "../../components/icon/icon.component";
 
 // icons
 import {
@@ -37,10 +41,6 @@ import {
   changeOnlineMsg,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
-
-// styles
-import styles from "./item-excel-page.module.scss";
-import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors, toEnglishNumber } from "../../utils/constants";
@@ -374,104 +374,106 @@ function ItemExcelPage() {
 
   return user && companyId !== 0 ? (
     <>
-      <Header>
-        <h2>
-          {items.length === 0
+      <Header
+        title={
+          items.length === 0
             ? t("add-or-update-items")
             : withUpdate
             ? t("update-items")
-            : t("add-items")}{" "}
-        </h2>
-      </Header>
-      <div className={generalStyles.container_with_header}>
-        <div className={styles.actions}>
-          {items.length > 0 ? (
-            <>
-              <div className={styles.basic_details_container}>
-                <div className={styles.row}>
-                  <label className={styles.label}>{t("file-name")}: </label>
-                  <label className={styles.name}>{fileName}</label>
-                </div>
+            : t("add-items")
+        }
+      />
 
-                <div className={styles.row}>
-                  <label className={styles.label}>{t("items-count")}:</label>
-                  <label className={styles.name}>{items.length}</label>
-                </div>
-
-                <div className={styles.row}>
-                  <label className={styles.label}>
-                    {t("correct-items-count")}:
-                  </label>
-                  <label className={styles.name}>{correctItemsCount}</label>
-                </div>
-
-                <div className={styles.row}>
-                  <label className={styles.label}>
-                    {t("wrong-items-count")}:
-                  </label>
-                  <label className={styles.name}>{wrongItemsCount}</label>
-                </div>
-
-                <div className={styles.row}>
-                  <label className={styles.label}>
-                    {t("selected-items-count")}:
-                  </label>
-                  <label className={styles.name}>{selectedItemsCount}</label>
-                </div>
-
-                <div className={styles.actions}>
-                  <div
-                    className={styles.checkbox_div}
-                    onClick={itemsSelectionChangeHandler}
-                  >
-                    {itemsSelectValue === "all" && (
+      <MainContentContainer>
+        {items.length > 0 ? (
+          <>
+            <ActionBar>
+              <Icon
+                selected={false}
+                foreColor={Colors.MAIN_COLOR}
+                tooltip={t("")}
+                onclick={itemsSelectionChangeHandler}
+                icon={() => {
+                  if (itemsSelectValue === "all")
+                    return (
                       <MdOutlineCheckBox size={24} color={Colors.MAIN_COLOR} />
-                    )}
-                    {itemsSelectValue === "none" && (
-                      <MdOutlineCheckBoxOutlineBlank size={24} />
-                    )}
-                    {itemsSelectValue === "some" && (
-                      <MdOutlineIndeterminateCheckBox size={24} />
-                    )}
-                  </div>
-                  {withUpdate ? (
-                    <Icon
-                      selected={false}
-                      foreColor={Colors.MAIN_COLOR}
-                      tooltip={t("update-items")}
-                      onclick={() => {
-                        setShowConfirmModal(true);
-                      }}
-                      icon={() => <MdEditNote />}
-                      withBackground={true}
-                    />
-                  ) : (
-                    <Icon
-                      selected={false}
-                      foreColor={Colors.MAIN_COLOR}
-                      tooltip={t("add-items")}
-                      onclick={() => {
-                        setShowConfirmModal(true);
-                      }}
-                      icon={() => <RiPlayListAddFill />}
-                      withBackground={true}
-                    />
-                  )}
+                    );
+                  if (itemsSelectValue === "none")
+                    return <MdOutlineCheckBoxOutlineBlank size={24} />;
+                  if (itemsSelectValue === "some")
+                    return <MdOutlineIndeterminateCheckBox size={24} />;
+                }}
+                withBackground={true}
+              />
 
-                  <InputFile small={true} fileChangedHandler={fileChanged} />
-                  <Icon
-                    selected={false}
-                    foreColor={Colors.FAILED_COLOR}
-                    tooltip={t("delete-all-rows")}
-                    onclick={() => setItems([])}
-                    icon={() => <AiFillDelete />}
-                    withBackground={true}
-                  />
-                </div>
-              </div>
-            </>
-          ) : null}
-        </div>
+              {withUpdate ? (
+                <Icon
+                  selected={false}
+                  foreColor={Colors.MAIN_COLOR}
+                  tooltip={t("update-items")}
+                  onclick={() => {
+                    setShowConfirmModal(true);
+                  }}
+                  icon={() => <MdEditNote />}
+                  withBackground={true}
+                />
+              ) : (
+                <Icon
+                  selected={false}
+                  foreColor={Colors.MAIN_COLOR}
+                  tooltip={t("add-items")}
+                  onclick={() => {
+                    setShowConfirmModal(true);
+                  }}
+                  icon={() => <RiPlayListAddFill />}
+                  withBackground={true}
+                />
+              )}
+
+              <InputFile small={true} fileChangedHandler={fileChanged} />
+              <Icon
+                selected={false}
+                foreColor={Colors.FAILED_COLOR}
+                tooltip={t("delete-all-rows")}
+                onclick={() => setItems([])}
+                icon={() => <AiFillDelete size={24} />}
+                withBackground={true}
+              />
+            </ActionBar>
+            <div>
+              <LabelValueRow
+                label="file-name"
+                value={fileName}
+                withLargeLabel={true}
+              />
+
+              <LabelValueRow
+                label="items-count"
+                value={items.length}
+                withLargeLabel={true}
+              />
+
+              <LabelValueRow
+                label="correct-items-count"
+                value={correctItemsCount}
+                withLargeLabel={true}
+              />
+
+              <LabelValueRow
+                label="wrong-items-count"
+                value={wrongItemsCount}
+                withLargeLabel={true}
+              />
+
+              <LabelValueRow
+                label="selected-items-count"
+                value={selectedItemsCount}
+                withLargeLabel={true}
+              />
+            </div>
+          </>
+        ) : null}
+        {/* </div> */}
 
         {loading && <Loader allowCancel={false} />}
 
@@ -488,7 +490,7 @@ function ItemExcelPage() {
 
             <ExcelFileCriteria action="add" />
 
-            <div className={styles.separator}></div>
+            <Separator />
 
             <InputFile
               fileChangedHandler={(file) => {
@@ -501,14 +503,6 @@ function ItemExcelPage() {
             <ExcelFileCriteria action="update" />
           </>
         )}
-
-        {/* {items.length > 0 ? (
-          <ExcelTableHeader
-            deleteAllItem={() => setItems([])}
-            selectValue={itemsSelectValue}
-            itemsSelectionChange={itemsSelectionChangeHandler}
-          />
-        ) : null} */}
 
         {items.length > 0 &&
           items.map((item, index) => (
@@ -566,7 +560,7 @@ function ItemExcelPage() {
             }}
           />
         )}
-      </div>
+      </MainContentContainer>
     </>
   ) : (
     <Redirect to="/signin" />

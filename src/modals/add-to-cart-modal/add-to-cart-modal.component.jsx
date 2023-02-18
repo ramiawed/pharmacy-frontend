@@ -12,7 +12,6 @@ import { useTranslation } from "react-i18next";
 
 // components
 import Modal from "../modal/modal.component";
-import SelectCustom from "../../components/select/select.component";
 
 // redux stuff
 import { addItemToCart } from "../../redux/cart/cartSlice";
@@ -24,18 +23,14 @@ import { selectMedicines } from "../../redux/medicines/medicinesSlices";
 import { removeSavedItem } from "../../redux/savedItems/savedItemsSlice";
 
 // constants and utils
-import {
-  Colors,
-  OfferTypes,
-  onKeyPressForNumberInput,
-  toEnglishNumber,
-} from "../../utils/constants";
+import { OfferTypes, toEnglishNumber } from "../../utils/constants";
 
 // styles
 import styles from "./add-to-cart-modal.module.scss";
-import LabelValueRow from "../../components/label-value-row/label-value-row.component";
-import Separator from "../../components/separator/separator.component";
 import OfferDetailsRow from "../../components/offer-details-row/offer-details-row.component";
+import ChooserContainer from "../../components/chooser-container/chooser-container.component";
+import ChooseValue from "../../components/choose-value/choose-value.component";
+import SearchInput from "../../components/search-input/search-input.component";
 
 // check if there is an offer for entered quantity in a specific warehouse
 const checkOfferQty = (selectedWarehouse, qty) => {
@@ -83,12 +78,7 @@ function AddToCartModal({ item, close, setAddItemToCartMsg, fromSavedItems }) {
   // get all the warehouse that contains this item
   // put asterisk after warehouse name if the warehouse has an offer
   const itemWarehousesOption = item.warehouses
-    .filter(
-      (w) =>
-        w.warehouse.city === user.city &&
-        w.warehouse.isActive &&
-        w.warehouse.isApproved
-    )
+    .filter((w) => w.warehouse.city === user.city && w.warehouse.isActive)
     .map((w) => {
       const asterisk = w.offer.offers.length > 0 ? "*" : "";
 
@@ -102,7 +92,7 @@ function AddToCartModal({ item, close, setAddItemToCartMsg, fromSavedItems }) {
   const [selectedWarehouse, setSelectedWarehouse] = useState(
     sWarehouse !== null
       ? item.warehouses
-          .filter((w) => w.warehouse.city === user.city)
+          .filter((w) => w.warehouse.city === user.city && w.warehouse.isActive)
           .find((w) => w.warehouse._id === sWarehouse)
       : item.warehouses.filter((w) => w.warehouse.city === user.city)[0]
   );
@@ -122,6 +112,8 @@ function AddToCartModal({ item, close, setAddItemToCartMsg, fromSavedItems }) {
   // false: the entered quantity is not acceptable because it is zero, or greater that
   // maximum allowed value in that warehouse
   const [qtyError, setQtyError] = useState(false);
+
+  const [showWarehousesOptions, setShowWarehousesOptions] = useState(false);
 
   const warehouseChangeHandler = (val) => {
     setSelectedWarehouse(item.warehouses.find((w) => w.warehouse._id == val));
@@ -206,42 +198,34 @@ function AddToCartModal({ item, close, setAddItemToCartMsg, fromSavedItems }) {
         small={true}
       >
         <div>
-          <div className={styles.select_warehouse}>
-            <label className={styles.label}>{t("item-warehouse")}</label>
-            <SelectCustom
-              bgColor={Colors.SECONDARY_COLOR}
-              foreColor="#fff"
-              options={itemWarehousesOption}
-              onchange={warehouseChangeHandler}
-              defaultOption={{
-                label: selectedWarehouse.warehouse.name,
-                value: selectedWarehouse.warehouse._id,
-              }}
-            />
-          </div>
-
-          <Separator />
-
-          <LabelValueRow
-            label="item-max-qty"
-            value={
-              selectedWarehouse.maxQty === 0 ? "-" : selectedWarehouse.maxQty
-            }
+          <ChooserContainer
+            onclick={() => setShowWarehousesOptions(true)}
+            selectedValue={selectedWarehouse.warehouse.name}
+            label="item-warehouse"
+            styleForSearch={true}
+            // withoutBorder={true}
           />
 
-          <Separator />
-
-          <div className={styles.selected_qty}>
-            <label className={styles.label}>{t("selected-qty")}</label>
-            <input
-              className={[styles.input, qtyError ? styles.error : ""].join(" ")}
-              value={qty}
-              onKeyPress={onKeyPressForNumberInput}
-              onChange={quantityChangeHandler}
-            />
+          <div className={styles.max_qty_div}>
+            <label>{t("item-max-qty")}</label>
+            <label>
+              {selectedWarehouse.maxQty === 0 ? "-" : selectedWarehouse.maxQty}
+            </label>
           </div>
 
-          <Separator />
+          <SearchInput
+            label="selected-qty"
+            id="selected-qty"
+            type="text"
+            value={qty}
+            onchange={(e) => {
+              quantityChangeHandler(e);
+            }}
+            withBorder={true}
+            hasFocus={true}
+          />
+
+          {qtyError && <label className={styles.error}>{t("enter-qty")}</label>}
 
           {offer?.offers.length > 0 &&
             offer.offers.map((o, index) => (
@@ -249,6 +233,18 @@ function AddToCartModal({ item, close, setAddItemToCartMsg, fromSavedItems }) {
             ))}
         </div>
       </Modal>
+
+      {showWarehousesOptions && (
+        <ChooseValue
+          headerTitle="warehouses"
+          close={() => {
+            setShowWarehousesOptions(false);
+          }}
+          values={itemWarehousesOption}
+          defaultValue={selectedWarehouse.warehouse._id}
+          chooseHandler={warehouseChangeHandler}
+        />
+      )}
     </>
   );
 }

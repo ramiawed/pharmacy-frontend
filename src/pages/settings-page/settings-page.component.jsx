@@ -18,21 +18,15 @@ import {
 
 // components
 import Header from "../../components/header/header.component";
-import Icon from "../../components/action-icon/action-icon.component";
+import WarehousesSectionOneSettings from "../../components/warehouses-section-one-settings/warehouses-section-one-settings.component";
 import CompaniesSectionOneSettings from "../../components/companies-section-one-settings/companies-section-one-settings.component";
 import CompaniesSectionTwoSettings from "../../components/companies-section-two-settings/companies-section-two-settings.component";
 import ItemsSectionThreeSettings from "../../components/items-section-three-settings/items-section-three-settings.component";
 import ItemsSectionOneSettings from "../../components/items-section-one-settings/items-section-one-settings.component";
 import ItemsSectionTwoSettings from "../../components/items-section-two-settings/items-section-two-settings.component";
-import WarehousesSectionOneSettings from "../../components/warehouses-section-one-settings/warehouses-section-one-settings.component";
-import SettingCheckbox from "../../components/setting-checkbox/setting-checkbox.component";
+import MainContentContainer from "../../components/main-content-container/main-content-container.component";
 import { default as ActionLoader } from "../../components/action-loader/action-loader.component";
-
-// icons
-import { RiRefreshLine } from "react-icons/ri";
-
-// styles
-import generalStyles from "../../style.module.scss";
+import SettingCheckbox from "../../components/setting-checkbox/setting-checkbox.component";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
@@ -93,19 +87,9 @@ function SettingsPage({ onSelectedChange }) {
 
   return user && user.type === UserTypeConstants.ADMIN ? (
     <>
-      <Header>
-        <h2>{t("nav-settings")}</h2>
-        <div className={generalStyles.refresh_icon}>
-          <Icon
-            selected={false}
-            foreColor={Colors.WHITE_COLOR}
-            tooltip={t("refresh-tooltip")}
-            onclick={refreshHandler}
-            icon={() => <RiRefreshLine />}
-          />
-        </div>
-      </Header>
-      <div className={generalStyles.container_with_header}>
+      <Header title="nav-settings" refreshHandler={refreshHandler} />
+
+      <MainContentContainer>
         <CompaniesSectionOneSettings />
         <CompaniesSectionTwoSettings />
         <WarehousesSectionOneSettings />
@@ -132,7 +116,7 @@ function SettingsPage({ onSelectedChange }) {
           value={saveOrders}
           action={changeSaveOrdersSettingHandler}
         />
-      </div>
+      </MainContentContainer>
       {status === "loading" && <ActionLoader />}
     </>
   ) : (

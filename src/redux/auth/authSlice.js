@@ -33,7 +33,7 @@ const resetCancelAndSource = () => {
 
 export const authSign = createAsyncThunk(
   "auth/signin",
-  async ({ username, password }, { rejectWithValue }) => {
+  async ({ username, password, version }, { rejectWithValue }) => {
     try {
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
@@ -41,8 +41,9 @@ export const authSign = createAsyncThunk(
       const response = await axios.post(
         `${BASEURL}/users/signin`,
         {
-          username,
+          username: username.trim(),
           password,
+          version,
         },
         {
           cancelToken: source.token,
@@ -72,7 +73,7 @@ export const authSign = createAsyncThunk(
 
 export const authSignWithToken = createAsyncThunk(
   "auth/authSignWithToken",
-  async ({ token }, { rejectWithValue }) => {
+  async ({ token, version }, { rejectWithValue }) => {
     try {
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
@@ -81,6 +82,7 @@ export const authSignWithToken = createAsyncThunk(
         `${BASEURL}/users/signinwithtoken`,
         {
           token,
+          version,
         },
         {
           cancelToken: source.token,
@@ -215,6 +217,42 @@ export const deleteMe = createAsyncThunk(
   }
 );
 
+export const deleteUserForever = createAsyncThunk(
+  "auth/deleteUserForever",
+  async ({ id, token }, { rejectWithValue }) => {
+    try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.post(
+        `${BASEURL}/users/delete-user/${id}`,
+        {},
+        {
+          cancelToken: source.token,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      resetCancelAndSource();
+      return response.data;
+    } catch (err) {
+      resetCancelAndSource();
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const changeLogo = createAsyncThunk(
   "auth/changeLogo",
   async ({ data, token }, { rejectWithValue }) => {
@@ -330,17 +368,6 @@ export const authSlice = createSlice({
       state.status = "idle";
       state.error = "";
     },
-    signOut: (state) => {
-      state.status = "idle";
-      state.updateStatus = "idle";
-      state.user = null;
-      state.token = "";
-      state.error = "";
-      state.passwordError = "";
-      state.deleteError = "";
-      state.changeLogoStatus = "idle";
-      state.changeLogoError = "";
-    },
 
     resetUpdateStatus: (state) => {
       state.updateStatus = "idle";
@@ -395,8 +422,7 @@ export const authSlice = createSlice({
     },
   },
   extraReducers: {
-    // use sign in lifecycle
-    [authSign.pending]: (state, action) => {
+    [authSign.pending]: (state) => {
       state.status = "loading";
       state.error = "";
     },
@@ -406,7 +432,7 @@ export const authSlice = createSlice({
       state.user = action.payload.data.user;
       state.error = "";
     },
-    [authSign.rejected]: (state, { error, meta, payload }) => {
+    [authSign.rejected]: (state, { payload }) => {
       state.status = "failed";
       state.token = "";
       state.user = null;
@@ -424,7 +450,7 @@ export const authSlice = createSlice({
       }
     },
 
-    [authSignWithToken.pending]: (state, action) => {
+    [authSignWithToken.pending]: (state) => {
       state.status = "loading";
       state.error = "";
     },
@@ -434,7 +460,7 @@ export const authSlice = createSlice({
       state.user = action.payload.data.user;
       state.error = "";
     },
-    [authSignWithToken.rejected]: (state, { error, meta, payload }) => {
+    [authSignWithToken.rejected]: (state, { payload }) => {
       state.status = "failed";
       state.token = "";
       state.user = null;
@@ -481,11 +507,10 @@ export const authSlice = createSlice({
       state.changePasswordStatus = "loading";
       state.passwordError = "";
     },
-    [changeMyPassword.fulfilled]: (state, action) => {
+    [changeMyPassword.fulfilled]: (state) => {
       state.changePasswordStatus = "succeeded";
-      // state.user = action.payload.data.user;
     },
-    [changeMyPassword.rejected]: (state, { error, meta, payload }) => {
+    [changeMyPassword.rejected]: (state, { payload }) => {
       state.changePasswordStatus = "failed";
 
       try {
@@ -525,7 +550,29 @@ export const authSlice = createSlice({
         state.error = "general-error";
       }
     },
-    [addCompanyToOurCompanies.pending]: (state, action) => {
+    [deleteUserForever.pending]: (state) => {
+      state.deleteStatus = "loading";
+      state.deleteError = "";
+    },
+    [deleteUserForever.fulfilled]: (state) => {
+      state.deleteStatus = "succeeded";
+    },
+    [deleteUserForever.rejected]: (state, { payload }) => {
+      state.deleteStatus = "failed";
+
+      try {
+        if (payload === "timeout") {
+          state.deleteError = "general-error";
+        } else if (payload === "cancel") {
+          state.deleteError = "general-error";
+        } else if (payload === "network failed") {
+          state.deleteError = "general-error";
+        } else state.deleteError = payload.message;
+      } catch (err) {
+        state.deleteError = "general-error";
+      }
+    },
+    [addCompanyToOurCompanies.pending]: (state) => {
       state.status = "loading";
       state.error = "";
     },
@@ -540,7 +587,7 @@ export const authSlice = createSlice({
       };
       state.error = "";
     },
-    [addCompanyToOurCompanies.rejected]: (state, { error, meta, payload }) => {
+    [addCompanyToOurCompanies.rejected]: (state, { payload }) => {
       state.status = "failed";
       try {
         if (payload === "timeout") {
@@ -555,7 +602,7 @@ export const authSlice = createSlice({
       }
     },
 
-    [removeCompanyFromOurCompanies.pending]: (state, action) => {
+    [removeCompanyFromOurCompanies.pending]: (state) => {
       state.status = "loading";
       state.error = "";
     },
@@ -569,10 +616,7 @@ export const authSlice = createSlice({
       };
       state.error = "";
     },
-    [removeCompanyFromOurCompanies.rejected]: (
-      state,
-      { error, meta, payload }
-    ) => {
+    [removeCompanyFromOurCompanies.rejected]: (state, { payload }) => {
       state.status = "failed";
       try {
         if (payload === "timeout") {
@@ -586,37 +630,12 @@ export const authSlice = createSlice({
         state.error = "general-error";
       }
     },
-
-    // // change the logo of a user lifecycle
-    // [changeLogo.pending]: (state) => {
-    //   state.changeLogoStatus = "loading";
-    // },
-    // [changeLogo.fulfilled]: (state, action) => {
-    //   state.changeLogoStatus = "succeeded";
-    //   state.user = action.payload.data.user;
-    // },
-    // [changeLogo.rejected]: (state, { payload }) => {
-    //   state.changeLogoStatus = "failed";
-
-    //   try {
-    //     if (payload === "timeout") {
-    //       state.error = "general-error";
-    //     } else if (payload === "cancel") {
-    //       state.error = "general-error";
-    //     } else if (payload === "network failed") {
-    //       state.error = "general-error";
-    //     } else state.error = payload.message;
-    //   } catch (err) {
-    //     state.error = "general-error";
-    //   }
-    // },
   },
 });
 
 export const {
   resetError,
   resetStatus,
-  signOut,
   resetPasswordStatus,
   resetPasswordError,
   resetDeleteStatus,

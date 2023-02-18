@@ -1,4 +1,4 @@
-@import '../../variables.scss';
+@import "../../variables.scss";
 
 .container {
   background-color: $white-color;
@@ -28,7 +28,6 @@
     }
   }
 
-
   .close_icon {
     position: absolute;
     top: 10px;
@@ -48,7 +47,7 @@
 
   h3 {
     text-align: center;
-    color: $grey-color;
+    color: $dark-color;
     font-family: $font-ar-01;
     font-size: 0.8rem;
   }

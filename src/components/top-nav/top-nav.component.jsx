@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
 
+// components
+import FilterItemsModal from "../../modals/filter-items-modal/filter-items-modal.component";
+
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/auth/authSlice";
@@ -18,33 +21,21 @@ import {
   setSearchCompanyId,
   setSearchWarehouseId,
 } from "../../redux/medicines/medicinesSlices";
-import { selectSavedItems } from "../../redux/savedItems/savedItemsSlice";
 
 // components
-import IconWithNumber from "../icon-with-number/icon-with-number.component";
-import SearchInTopNav from "../search-in-top-nav/search-in-top-nav.component";
-import Icon from "../action-icon/action-icon.component";
+import Icon from "../icon/icon.component";
 
 // icons
 import { GiHamburgerMenu, GiShoppingCart } from "react-icons/gi";
-import { AiFillStar, AiOutlineStar } from "react-icons/ai";
-import {
-  IoMdArrowRoundBack,
-  IoMdNotifications,
-  IoMdNotificationsOutline,
-} from "react-icons/io";
+import { AiFillStar } from "react-icons/ai";
+import { IoMdNotifications } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
-import { BsFillBookmarksFill } from "react-icons/bs";
 
 // style
 import styles from "./top-nav.module.scss";
 
 // constants
-import {
-  Colors,
-  TopNavLinks,
-  UserTypeConstants,
-} from "../../utils/constants.js";
+import { TopNavLinks, UserTypeConstants } from "../../utils/constants.js";
 
 function TopNav({ onSelectedChange }) {
   const history = useHistory();
@@ -59,7 +50,6 @@ function TopNav({ onSelectedChange }) {
   const allFavorites = useSelector(selectFavorites);
   const user = useSelector(selectUser);
   const total = useSelector(selectCartItemCount);
-  const { count: savedItemsCount } = useSelector(selectSavedItems);
 
   const changeNavigationSettingHandler = (obj) => {
     dispatch(changeNavSettings(obj));
@@ -99,13 +89,15 @@ function TopNav({ onSelectedChange }) {
               dispatch(setSearchCompanyId(null));
             }}
           >
-            <IconWithNumber
-              value={
+            <Icon
+              icon={() => <AiFillStar size={24} />}
+              tooltip={t("favorites")}
+              withAlertIcon={
                 allFavorites.favorites_partners.length +
-                allFavorites.favorites_items.length
+                  allFavorites.favorites_items.length >
+                0
               }
-              fillIcon={<AiFillStar size={24} />}
-              noFillIcon={<AiOutlineStar size={24} />}
+              closeToIcon={true}
             />
           </Link>
 
@@ -124,10 +116,11 @@ function TopNav({ onSelectedChange }) {
                 dispatch(setSearchCompanyId(null));
               }}
             >
-              <IconWithNumber
-                value={unReadNotificationCount}
-                fillIcon={<IoMdNotifications size={24} />}
-                noFillIcon={<IoMdNotificationsOutline size={24} />}
+              <Icon
+                icon={() => <IoMdNotifications size={24} />}
+                tooltip={t("nav-notifications")}
+                withAlertIcon={unReadNotificationCount > 0}
+                closeToIcon={true}
               />
             </Link>
           )}
@@ -145,10 +138,11 @@ function TopNav({ onSelectedChange }) {
                 dispatch(setSearchCompanyId(null));
               }}
             >
-              <IconWithNumber
-                value={total}
-                fillIcon={<GiShoppingCart size={24} />}
-                noFillIcon={<GiShoppingCart size={24} />}
+              <Icon
+                icon={() => <GiShoppingCart size={24} />}
+                tooltip={t("cart")}
+                withAlertIcon={total > 0}
+                closeToIcon={true}
               />
             </Link>
           )}
@@ -270,121 +264,30 @@ function TopNav({ onSelectedChange }) {
               {t("nav-offers")}
             </Link>
           )}
+
+          {user.type === UserTypeConstants.PHARMACY && (
+            <Link
+              to="/special-offers"
+              className={[
+                styles.link,
+                history.location.pathname === "/special-offers"
+                  ? styles.selected
+                  : null,
+              ].join(" ")}
+              onClick={() => {
+                onSelectedChange(TopNavLinks.SPEACIAL_OFFERS);
+                dispatch(setSearchWarehouseId(null));
+                dispatch(setSearchCompanyId(null));
+              }}
+            >
+              {t("nav-special-offers")}
+            </Link>
+          )}
         </div>
       </div>
 
-      {/* <div className={styles.float_div}>
-        <FiSearch
-          className={styles.search_icon}
-          size={24}
-          onClick={() => {
-            setShowTopSearchBar(true);
-          }}
-        />
-
-        <Link
-          to="/favorites"
-          className={[
-            styles.link,
-            history.location.pathname === "/favorites" ? styles.selected : null,
-          ].join(" ")}
-          onClick={() => {
-            onSelectedChange(TopNavLinks.FAVORITES);
-            dispatch(setSearchWarehouseId(null));
-            dispatch(setSearchCompanyId(null));
-          }}
-        >
-          <IconWithNumber
-            value={
-              allFavorites.favorites_partners.length +
-              allFavorites.favorites_items.length
-            }
-            fillIcon={<AiFillStar size={24} />}
-            noFillIcon={<AiOutlineStar size={24} />}
-          />
-        </Link>
-
-        {user.type !== UserTypeConstants.ADMIN && (
-          <Link
-            to="/notifications"
-            className={[
-              styles.link,
-              history.location.pathname === "/notifications"
-                ? styles.selected
-                : null,
-            ].join(" ")}
-            onClick={() => {
-              onSelectedChange(TopNavLinks.NOTIFICATIONS);
-              dispatch(setSearchWarehouseId(null));
-              dispatch(setSearchCompanyId(null));
-            }}
-          >
-            <IconWithNumber
-              value={unReadNotificationCount}
-              fillIcon={<IoMdNotifications size={24} />}
-              noFillIcon={<IoMdNotificationsOutline size={24} />}
-            />
-          </Link>
-        )}
-
-        {user.type === UserTypeConstants.PHARMACY && (
-          <Link
-            to="/saved-items"
-            className={[
-              styles.link,
-              history.location.pathname === "/saved-items"
-                ? styles.selected
-                : null,
-            ].join(" ")}
-            onClick={() => {
-              onSelectedChange(TopNavLinks.SAVEDITEMS);
-              dispatch(setSearchWarehouseId(null));
-              dispatch(setSearchCompanyId(null));
-            }}
-          >
-            <IconWithNumber
-              value={savedItemsCount}
-              fillIcon={<BsFillBookmarksFill size={24} />}
-              noFillIcon={<BsFillBookmarksFill size={24} />}
-            />
-          </Link>
-        )}
-
-        {user.type === UserTypeConstants.PHARMACY && (
-          <Link
-            to="/cart"
-            className={[
-              styles.link,
-              history.location.pathname === "/cart" ? styles.selected : null,
-            ].join(" ")}
-            onClick={() => {
-              onSelectedChange(TopNavLinks.CART);
-              dispatch(setSearchWarehouseId(null));
-              dispatch(setSearchCompanyId(null));
-            }}
-          >
-            <IconWithNumber
-              value={total}
-              fillIcon={<GiShoppingCart size={24} />}
-              noFillIcon={<GiShoppingCart size={24} />}
-            />
-          </Link>
-        )}
-      </div> */}
-
       {showTopSearchBar && (
-        <div className={styles.search_container_fixed}>
-          <SearchInTopNav />
-          <div className={styles.back}>
-            <Icon
-              onclick={() => {
-                setShowTopSearchBar(false);
-              }}
-              icon={() => <IoMdArrowRoundBack />}
-              foreColor={Colors.WHITE_COLOR}
-            />
-          </div>
-        </div>
+        <FilterItemsModal close={() => setShowTopSearchBar(false)} />
       )}
     </>
   );

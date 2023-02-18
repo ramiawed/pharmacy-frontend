@@ -1,22 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import {
-  CitiesName,
-  Colors,
-  GuestJob,
-  ShowWarehouseItems,
-  UserActiveState,
-  UserApprovedState,
-  UserTypeConstants,
-} from "../../utils/constants";
 
 // components
+import ChooserContainer from "../../components/chooser-container/chooser-container.component";
+import SearchInput from "../../components/search-input/search-input.component";
+import ChooseValue from "../../components/choose-value/choose-value.component";
 import Modal from "../modal/modal.component";
-import Input from "../../components/input/input.component";
-import RowWith2Children from "../../components/row-with-two-children/row-with-two-children.component";
-import SelectCustom from "../../components/select/select.component";
 
 // redux stuff
+import { useDispatch, useSelector } from "react-redux";
 import {
   selectUsers,
   setSearchCertificateName,
@@ -29,17 +21,17 @@ import {
   setSearchAddressDetails,
   setShowItems,
   setUserActive,
-  setUserApproved,
   setUserType,
   setSearchMobile,
 } from "../../redux/users/usersSlice";
-import { useDispatch, useSelector } from "react-redux";
 
-import styles from "./admin-search-modal.module.scss";
-
-const Separator = () => {
-  return <div className={styles.separator}></div>;
-};
+import {
+  CitiesName,
+  GuestJob,
+  ShowWarehouseItems,
+  UserActiveState,
+  UserTypeConstants,
+} from "../../utils/constants";
 
 function AdminUsersSearchModal({ close, search, enterPress }) {
   const { t } = useTranslation();
@@ -47,6 +39,13 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
   const { pageState } = useSelector(selectUsers);
 
   const dispatch = useDispatch();
+  const [chooseObj, setChooseObj] = useState({
+    show: false,
+    action: null,
+    defaultValue: null,
+    options: null,
+    header: "",
+  });
 
   const guestJobOptions = [
     { value: GuestJob.NONE, label: t("user-job") },
@@ -103,17 +102,6 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
       dispatch(setSearchEmployeeName(""));
       dispatch(setSearchCertificateName(""));
     }
-  };
-
-  // options for the SelectCustom (Approved state)
-  const approvedState = [
-    { value: UserApprovedState.APPROVED, label: t("approved-account") },
-    { value: UserApprovedState.NOT_APPROVED, label: t("not-approved-account") },
-    { value: UserApprovedState.ALL, label: t("all") },
-  ];
-
-  const handleApproveChange = (val) => {
-    dispatch(setUserApproved(val));
   };
 
   const showWarehouseItems = [
@@ -175,255 +163,205 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
       small={true}
       okModal={search}
     >
-      <RowWith2Children>
-        <div>
-          <Input
-            label="user-name"
-            id="search-name"
-            type="text"
-            value={pageState.searchName}
-            onchange={(e) => {
-              dispatch(setSearchName(e.target.value));
-            }}
-            bordered={true}
-            placeholder="search-by-name"
-            onEnterPress={enterPress}
-            resetField={() => dispatch(setSearchName(""))}
-            smallFont={true}
-          />
-        </div>
-        <div className={styles.selectDiv}>
-          <label>{t("user-city")}</label>
-          <SelectCustom
-            bgColor={Colors.SECONDARY_COLOR}
-            foreColor="#fff"
-            options={citiesOptions}
-            onchange={citiesNameChangeHandler}
-            defaultOption={{
-              value: pageState.searchCity,
-              label: t(pageState.searchCity.toLowerCase()),
-            }}
-            // caption="user-city"
-          />
-        </div>
-      </RowWith2Children>
+      <SearchInput
+        label="user-name"
+        id="user-name"
+        type="text"
+        value={pageState.searchName}
+        onchange={(e) => dispatch(setSearchName(e.target.value))}
+        placeholder="search-by-name"
+        onEnterPress={enterPress}
+        resetField={() => dispatch(setSearchName(""))}
+        withBorder={true}
+      />
 
-      <Separator />
-      <RowWith2Children>
-        <div className={styles.selectDiv}>
-          <label>{t("user-type")}</label>
-          <SelectCustom
-            bgColor={Colors.SECONDARY_COLOR}
-            foreColor="#fff"
-            options={userTypeOptions}
-            onchange={handleSearchTypeChange}
-            defaultOption={{
-              value: pageState.userType,
-              label: t(pageState.userType.toLowerCase()),
-            }}
-            // caption="user-type"
-          />
-        </div>
+      <ChooserContainer
+        onclick={() =>
+          setChooseObj({
+            show: true,
+            defaultValue: pageState.searchCity,
+            options: citiesOptions,
+            action: citiesNameChangeHandler,
+            header: "city-name",
+          })
+        }
+        selectedValue={pageState.searchCity}
+        label="city-name"
+        styleForSearch={true}
+      />
 
-        {pageState.userType === UserTypeConstants.GUEST ? (
-          <div className={styles.selectDiv}>
-            <label>{t("user-job")}</label>
-            <SelectCustom
-              bgColor={Colors.SECONDARY_COLOR}
-              foreColor="#fff"
-              options={guestJobOptions}
-              onchange={handleGuestJobChange}
-              defaultOption={{
-                value: pageState.searchJob,
-                label: t(pageState.searchJob.toLowerCase()),
-              }}
-              // caption="user-job"
-            />
-          </div>
-        ) : (
-          <div></div>
-        )}
-      </RowWith2Children>
+      <ChooserContainer
+        onclick={() =>
+          setChooseObj({
+            show: true,
+            defaultValue: pageState.userType,
+            options: userTypeOptions,
+            action: handleSearchTypeChange,
+            header: "user-type",
+          })
+        }
+        selectedValue={pageState.userType}
+        label="user-type"
+        styleForSearch={true}
+      />
 
-      <Separator />
-      <RowWith2Children>
-        <div className={styles.selectDiv}>
-          <Input
-            label="user-mobile"
-            id="search-mobile"
-            type="text"
-            value={pageState.searchMobile}
-            onchange={(e) => {
-              dispatch(setSearchMobile(e.target.value));
-            }}
-            bordered={true}
-            placeholder="search-by-mobile"
-            onEnterPress={enterPress}
-            resetField={() => dispatch(setSearchMobile(""))}
-            smallFont={true}
-          />
-        </div>
+      <ChooserContainer
+        onclick={() =>
+          setChooseObj({
+            show: true,
+            defaultValue: pageState.active,
+            options: deletedState,
+            action: handleActiveChange,
+            header: "approved-state",
+          })
+        }
+        selectedValue={pageState.active}
+        label="approved-state"
+        styleForSearch={true}
+      />
 
-        <div></div>
-      </RowWith2Children>
-
-      <Separator />
-
-      {pageState.userType === UserTypeConstants.WAREHOUSE && (
-        <>
-          <RowWith2Children>
-            <div className={styles.selectDiv}>
-              <label>{t("show-warehouse-items")}</label>
-              <SelectCustom
-                bgColor={Colors.SECONDARY_COLOR}
-                foreColor="#fff"
-                options={showWarehouseItems}
-                onchange={handleShowItems}
-                defaultOption={{
-                  value: pageState.showItems,
-                  label: t(pageState.showItems.toLowerCase()),
-                }}
-                // caption="show-warehouse-items"
-              />
-            </div>
-
-            <div></div>
-          </RowWith2Children>
-          <Separator />
-        </>
+      {pageState.userType === UserTypeConstants.GUEST && (
+        <ChooserContainer
+          onclick={() =>
+            setChooseObj({
+              show: true,
+              defaultValue: pageState.searchJob,
+              options: guestJobOptions,
+              action: handleGuestJobChange,
+              header: "user-job",
+            })
+          }
+          selectedValue={pageState.searchJob}
+          label="user-job"
+          styleForSearch={true}
+        />
       )}
 
-      <RowWith2Children>
-        <div className={styles.selectDiv}>
-          <label>{t("approved-state")}</label>
-          <SelectCustom
-            bgColor={Colors.SECONDARY_COLOR}
-            foreColor="#fff"
-            options={approvedState}
-            onchange={handleApproveChange}
-            defaultOption={{
-              value: pageState.approved,
-              label: t(pageState.approved.toLowerCase()),
-            }}
-            // caption="approved-state"
-          />
-        </div>
-        <div className={styles.selectDiv}>
-          <label>{t("approved-state")}</label>
-          <SelectCustom
-            bgColor={Colors.SECONDARY_COLOR}
-            foreColor="#fff"
-            options={deletedState}
-            onchange={handleActiveChange}
-            defaultOption={{
-              value: pageState.active,
-              label: t(pageState.active.toLowerCase()),
-            }}
-            // caption="approved-state"
-          />
-        </div>
-      </RowWith2Children>
+      <SearchInput
+        label="user-mobile"
+        id="search-mobile"
+        type="text"
+        value={pageState.searchMobile}
+        onchange={(e) => {
+          dispatch(setSearchMobile(e.target.value));
+        }}
+        placeholder="search-by-mobile"
+        onEnterPress={enterPress}
+        resetField={() => dispatch(setSearchMobile(""))}
+        withBorder={true}
+        // onkeyup={keyUpHandler}
+      />
 
-      <Separator />
+      {pageState.userType === UserTypeConstants.WAREHOUSE && (
+        <ChooserContainer
+          onclick={() =>
+            setChooseObj({
+              show: true,
+              defaultValue: pageState.showItems,
+              options: showWarehouseItems,
+              action: handleShowItems,
+              header: "show-warehouse-items",
+            })
+          }
+          selectedValue={pageState.showItems}
+          label="show-warehouse-items"
+          styleForSearch={true}
+        />
+      )}
 
       {(pageState.userType === UserTypeConstants.WAREHOUSE ||
         pageState.userType === UserTypeConstants.PHARMACY) && (
-        <RowWith2Children>
-          <div>
-            <Input
-              label="user-employee-name"
-              id="search-employee-name"
-              type="text"
-              value={pageState.searchEmployeeName}
-              onchange={(e) => {
-                dispatch(setSearchEmployeeName(e.target.value));
-              }}
-              bordered={true}
-              placeholder="search-by-employee-name"
-              onEnterPress={enterPress}
-              resetField={() => dispatch(setSearchEmployeeName(""))}
-              smallFont={true}
-            />
-          </div>
-          <div>
-            <Input
-              label="user-certificate-name"
-              id="search-certificate-name"
-              type="text"
-              value={pageState.searchCertificateName}
-              onchange={(e) => {
-                dispatch(setSearchCertificateName(e.target.value));
-              }}
-              bordered={true}
-              placeholder="search-by-certificate"
-              onEnterPress={enterPress}
-              resetField={() => dispatch(setSearchCertificateName(""))}
-              smallFont={true}
-            />
-          </div>
-        </RowWith2Children>
+        <>
+          <SearchInput
+            label="user-employee-name"
+            id="search-employee-name"
+            type="text"
+            value={pageState.searchEmployeeName}
+            onchange={(e) => {
+              dispatch(setSearchEmployeeName(e.target.value));
+            }}
+            withBorder={true}
+            placeholder="search-by-employee-name"
+            resetField={() => dispatch(setSearchEmployeeName(""))}
+          />
+          <SearchInput
+            label="user-certificate-name"
+            id="search-certificate-name"
+            type="text"
+            value={pageState.searchCertificateName}
+            onchange={(e) => {
+              dispatch(setSearchCertificateName(e.target.value));
+            }}
+            withBorder={true}
+            placeholder="search-by-certificate"
+            resetField={() => dispatch(setSearchCertificateName(""))}
+          />
+        </>
       )}
 
       {pageState.searchJob === GuestJob.EMPLOYEE && (
         <>
-          <RowWith2Children>
-            <div>
-              <Input
-                label="user-company-name"
-                id="search-company-name"
-                type="text"
-                value={pageState.searchCompanyName}
-                onchange={(e) => {
-                  dispatch(setSearchCompanyName(e.target.value));
-                }}
-                bordered={true}
-                placeholder="search-by-company-name"
-                onEnterPress={enterPress}
-                resetField={() => dispatch(setSearchCompanyName(""))}
-                smallFont={true}
-              />
-            </div>
-            <div>
-              <Input
-                label="user-job-title"
-                id="search-job-title"
-                type="text"
-                value={pageState.searchJobTitle}
-                onchange={(e) => {
-                  dispatch(setSearchJobTitle(e.target.value));
-                }}
-                bordered={true}
-                placeholder="search-by-job-title"
-                onEnterPress={enterPress}
-                resetField={() => dispatch(setSearchJobTitle(""))}
-                smallFont={true}
-              />
-            </div>
-          </RowWith2Children>
-          <Separator />
+          <SearchInput
+            label="user-company-name"
+            id="search-company-name"
+            type="text"
+            value={pageState.searchCompanyName}
+            onchange={(e) => {
+              dispatch(setSearchCompanyName(e.target.value));
+            }}
+            withBorder={true}
+            placeholder="search-by-company-name"
+            resetField={() => dispatch(setSearchCompanyName(""))}
+          />
+
+          <SearchInput
+            label="user-job-title"
+            id="search-job-title"
+            type="text"
+            value={pageState.searchJobTitle}
+            onchange={(e) => {
+              dispatch(setSearchJobTitle(e.target.value));
+            }}
+            withBorder={true}
+            placeholder="search-by-job-title"
+            resetField={() => dispatch(setSearchJobTitle(""))}
+          />
         </>
       )}
 
-      <>
-        <div>
-          <Input
-            label="user-address-details"
-            id="search-address-details"
-            type="text"
-            value={pageState.searchAddressDetails}
-            onchange={(e) => {
-              dispatch(setSearchAddressDetails(e.target.value));
-            }}
-            bordered={true}
-            placeholder="search-by-address-details"
-            onEnterPress={enterPress}
-            resetField={(e) => {
-              dispatch(setSearchAddressDetails(""));
-            }}
-            smallFont={true}
-          />
-        </div>
-      </>
+      <SearchInput
+        label="user-address-details"
+        id="search-address-details"
+        type="text"
+        value={pageState.searchAddressDetails}
+        onchange={(e) => {
+          dispatch(setSearchAddressDetails(e.target.value));
+        }}
+        withBorder={true}
+        placeholder="search-by-address-details"
+        resetField={(e) => {
+          dispatch(setSearchAddressDetails(""));
+        }}
+      />
+
+      {chooseObj.show && (
+        <ChooseValue
+          headerTitle={chooseObj.header}
+          close={() => {
+            setChooseObj({
+              show: false,
+              action: null,
+              defaultValue: null,
+              options: null,
+            });
+          }}
+          values={chooseObj.options}
+          defaultValue={chooseObj.defaultValue}
+          chooseHandler={(value) => {
+            chooseObj.action(value);
+          }}
+        />
+      )}
     </Modal>
   );
 }

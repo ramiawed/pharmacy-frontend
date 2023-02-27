@@ -35,7 +35,7 @@
 
   & .link:hover,
   & .link.selected {
-    color: $third-color;
+    color: $red-color;
   }
 
   & .hamburger_menu_icon {
@@ -51,7 +51,7 @@
   font-size: bold;
 
   &:hover {
-    color: $third-color;
+    color: $red-color;
   }
 }
 
@@ -76,7 +76,7 @@ div .link {
 
 div.center .link:hover,
 div.center .link.selected {
-  color: $third-color;
+  color: $red-color;
 }
 
 .hide {
@@ -146,7 +146,7 @@ div.center .link.selected {
 
     & .link:hover,
     & .link.selected {
-      background-color: $third-color;
+      background-color: $red-color;
       color: $white-color;
       border-radius: 6px;
     }
@@ -165,7 +165,7 @@ div.center .link.selected {
 
     & .link:hover,
     & .link.selected {
-      color: $third-color;
+      color: $red-color;
     }
   }
 

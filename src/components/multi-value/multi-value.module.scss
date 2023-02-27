@@ -50,12 +50,13 @@
 
 .input_div input {
   font-size: 16px;
-  width: 60px;
-  padding: 4px 12px;
+  min-width: 60px;
+  max-width: 100px;
+  margin: 0 4px;
   text-align: center;
   color: $green-color;
-
-  border: none;
+  border: 1px solid $light-grey-color;
+  border-radius: 6px;
   outline: none;
 }
 
@@ -66,7 +67,7 @@
 }
 
 .delete_icon {
-  color: $third-color;
+  color: $red-color;
   cursor: pointer;
 }
 

@@ -26,7 +26,7 @@ const initialState = {
     searchInWarehouse: false,
     searchOutWarehouse: false,
     searchHaveOffer: false,
-    // city: "",
+    searchHavePoint: false,
     displayType: "list",
     page: 1,
   },
@@ -78,6 +78,10 @@ export const getMedicines = createAsyncThunk(
 
       if (pageState.searchHaveOffer) {
         buildUrl = buildUrl + `&haveOffer=true`;
+      }
+
+      if (pageState.searchHavePoint) {
+        buildUrl = buildUrl + `&havePoint=true`;
       }
 
       const response = await axios.get(buildUrl, {
@@ -313,19 +317,19 @@ export const medicinesSlice = createSlice({
       };
     },
 
+    setSearchHavepoint: (state, action) => {
+      state.pageState = {
+        ...state.pageState,
+        searchHavePoint: action.payload,
+      };
+    },
+
     setPage: (state, action) => {
       state.pageState = {
         ...state.pageState,
         page: action.payload,
       };
     },
-
-    // setCity: (state, action) => {
-    //   state.pageState = {
-    //     ...state.pageState,
-    //     city: action.payload,
-    //   };
-    // },
 
     setDisplayType: (state, action) => {
       state.pageState = {
@@ -435,9 +439,9 @@ export const medicinesSlice = createSlice({
         searchInWarehouse: false,
         searchOutWarehouse: false,
         searchHaveOffer: false,
+        searchHavePoint: false,
         searchCompaniesIds: [],
         searchWarehousesIds: [],
-        // city: "",
         displayType: "list",
         page: 1,
       };
@@ -462,9 +466,9 @@ export const medicinesSlice = createSlice({
         searchInWarehouse: false,
         searchOutWarehouse: false,
         searchHaveOffer: false,
+        searchHavePoint: false,
         searchCompaniesIds: [],
         searchWarehousesIds: [],
-        // city: "",
         displayType: "list",
         page: 1,
       };
@@ -489,9 +493,9 @@ export const medicinesSlice = createSlice({
         searchInWarehouse: false,
         searchOutWarehouse: false,
         searchHaveOffer: false,
+        searchHavePoint: false,
         searchCompaniesIds: [],
         searchWarehousesIds: [],
-        // city: "",
         displayType: "list",
         page: 1,
       };
@@ -591,8 +595,8 @@ export const {
   setSearchInWarehouse,
   setSearchOutWarehouse,
   setSearchHaveOffer,
+  setSearchHavepoint,
   setPage,
-  // setCity,
   setDisplayType,
   resetMedicinesArray,
   resetMedicinesPageState,

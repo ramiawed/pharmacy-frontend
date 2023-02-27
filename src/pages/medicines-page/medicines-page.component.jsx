@@ -56,12 +56,6 @@ function MedicinesPage({ onSelectedChange }) {
 
   // handle search
   const handleSearch = () => {
-    // if (user.type === UserTypeConstants.PHARMACY) {
-    //   dispatch(setCity(user.city));
-    // } else {
-    //   dispatch(setCity(""));
-    // }
-
     dispatch(getMedicines({ token }));
   };
 
@@ -173,7 +167,13 @@ function MedicinesPage({ onSelectedChange }) {
 
         {pageState.displayType === "list" &&
           medicines.map((medicine, index) => (
-            <MedicineRow key={medicine._id} item={medicine} index={index} />
+            <MedicineRow
+              key={medicine._id}
+              item={medicine}
+              index={index}
+              searchString={pageState.searchName}
+              showComposition={true}
+            />
           ))}
 
         {pageState.displayType === "card" && (
@@ -184,7 +184,11 @@ function MedicinesPage({ onSelectedChange }) {
             ].join(" ")}
           >
             {medicines.map((medicine) => (
-              <MedicineCard key={medicine._id} companyItem={medicine} />
+              <MedicineCard
+                key={medicine._id}
+                item={medicine}
+                searchString={pageState.searchName}
+              />
             ))}
           </div>
         )}

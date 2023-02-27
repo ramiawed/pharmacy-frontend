@@ -54,6 +54,13 @@ const BasketOrderDetailsPage = lazy(() =>
 const SpecialOffersPage = lazy(() =>
   import("../../pages/special-offers-page/special-offers-page.component")
 );
+const MyPointPage = lazy(() =>
+  import("../../pages/my-point-page/my-point-page.component")
+);
+
+const ItemsWithPointsPage = lazy(() =>
+  import("../../pages/items-with-points-page/items-with-points-page.component")
+);
 
 function PharmacyRoutes({ changeOptionHandler }) {
   return (
@@ -88,20 +95,6 @@ function PharmacyRoutes({ changeOptionHandler }) {
             />
           </Route>
 
-          {/* <Route exact path="/baskets">
-            <BasketsOptionsPage
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: "",
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: SideNavLinks.BASKETS,
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route> */}
-
           <Route excat path="/special-offers">
             <SpecialOffersPage
               onSelectedChange={() => {
@@ -115,20 +108,6 @@ function PharmacyRoutes({ changeOptionHandler }) {
               }}
             />
           </Route>
-
-          {/* <Route exact path="/all-baskets">
-            <BasketsPage
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: "",
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: SideNavLinks.BASKETS,
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route> */}
 
           <Route exact path="/ordered-baskets">
             <OrdersPage
@@ -173,6 +152,20 @@ function PharmacyRoutes({ changeOptionHandler }) {
             />
           </Route>
 
+          <Route exact path="/items-with-points">
+            <ItemsWithPointsPage
+              onSelectedChange={() => {
+                changeOptionHandler({
+                  selectedTopNavOption: TopNavLinks.ITEMS_WITH_POINTS,
+                  collapsedSideNavOption: true,
+                  selectedSideNavOption: "",
+                  showTopNav: false,
+                  showSearchBar: false,
+                });
+              }}
+            />
+          </Route>
+
           <Route exact path="/warehouses">
             <WarehousesPage
               onSelectedChange={() => {
@@ -180,6 +173,20 @@ function PharmacyRoutes({ changeOptionHandler }) {
                   selectedTopNavOption: TopNavLinks.WAREHOUSES,
                   collapsedSideNavOption: true,
                   selectedSideNavOption: "",
+                  showTopNav: false,
+                  showSearchBar: false,
+                });
+              }}
+            />
+          </Route>
+
+          <Route exact path="/my-points">
+            <MyPointPage
+              onSelectedChange={() => {
+                changeOptionHandler({
+                  selectedTopNavOption: "",
+                  collapsedSideNavOption: true,
+                  selectedSideNavOption: SideNavLinks.MY_POINTS,
                   showTopNav: false,
                   showSearchBar: false,
                 });

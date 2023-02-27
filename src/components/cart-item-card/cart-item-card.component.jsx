@@ -1,6 +1,10 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
+// components
+import ItemNames from "../item-names/item-names.component";
+import Icon from "../icon/icon.component";
+
 // react icons
 import {
   RiArrowDropLeftFill,
@@ -20,17 +24,9 @@ import {
 import styles from "./cart-item-card.module.scss";
 
 // constants
-import { Colors, OfferTypes } from "../../utils/constants";
-import Icon from "../icon/icon.component";
-import ItemNames from "../item-names/item-names.component";
+import { Colors, formatNumber, OfferTypes } from "../../utils/constants";
 
-function CartItemCard({
-  cartItem,
-  inOrderDetails,
-  withoutMaxQty,
-  index,
-  iconColor,
-}) {
+function CartItemCard({ cartItem, inOrderDetails, index, iconColor }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -57,12 +53,13 @@ function CartItemCard({
           index % 2 === 0 ? styles.grey_bg : "",
         ].join(" ")}
       >
-        <div className={styles.first_row}>
-          <label className={styles.small_label}>{index + 1}</label>
-          <ItemNames flexDirection="column" item={cartItem.item} />
+        <div className={styles.row}>
+          <div style={{ flex: 1 }}>
+            <ItemNames flexDirection="column" item={cartItem.item} />
+          </div>
 
           <div className={styles.additional_container}>
-            {!cartItem.bonus && !inOrderDetails ? (
+            {!inOrderDetails ? (
               <Icon
                 onclick={decreaseHandler}
                 icon={() => (
@@ -78,7 +75,7 @@ function CartItemCard({
 
             <label className={styles.label}>{cartItem.qty}</label>
 
-            {!cartItem.bonus && !inOrderDetails ? (
+            {!inOrderDetails ? (
               <Icon
                 onclick={increaseHandler}
                 icon={() => (
@@ -98,20 +95,29 @@ function CartItemCard({
                 ? cartItem.bonusType === OfferTypes.PERCENTAGE
                   ? t("after-bonus-percentage-label")
                   : t("after-quantity-label")
-                : "-"}
+                : ""}
             </label>
 
-            <label className={styles.label}>{cartItem.item.price}</label>
+            <label className={styles.label}>{cartItem.point}</label>
 
             <label className={styles.label}>
-              {cartItem.qty *
-                (inOrderDetails ? cartItem.price : cartItem.item.price) -
-                (cartItem.bonus && cartItem.bonusType === OfferTypes.PERCENTAGE
-                  ? (cartItem.qty *
-                      (inOrderDetails ? cartItem.price : cartItem.item.price) *
-                      cartItem.bonus) /
-                    100
-                  : 0)}
+              {formatNumber(cartItem.item.price)}
+            </label>
+
+            <label className={styles.label}>
+              {formatNumber(
+                cartItem.qty *
+                  (inOrderDetails ? cartItem.price : cartItem.item.price) -
+                  (cartItem.bonus &&
+                  cartItem.bonusType === OfferTypes.PERCENTAGE
+                    ? (cartItem.qty *
+                        (inOrderDetails
+                          ? cartItem.price
+                          : cartItem.item.price) *
+                        cartItem.bonus) /
+                      100
+                    : 0)
+              )}
             </label>
           </div>
         </div>

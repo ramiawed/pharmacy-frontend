@@ -43,6 +43,7 @@ import generalStyles from "../../style.module.scss";
 import { SERVER_URL, UserTypeConstants } from "../../utils/constants";
 import { savedItemsSliceSignOut } from "../../redux/savedItems/savedItemsSlice";
 import { basketsSliceSignOut } from "../../redux/baskets/basketsSlice";
+import { itemsWithPointsSliceSignOut } from "../../redux/itemsWithPoints/itemsWithPointsSlices";
 
 const SideNavAdmin = lazy(() =>
   import("../side-nav-admin/side-nav-admin.component")
@@ -96,6 +97,7 @@ function SideNav({
     dispatch(usersNotificationsSignOut());
     dispatch(savedItemsSliceSignOut());
     dispatch(basketsSliceSignOut());
+    dispatch(itemsWithPointsSliceSignOut());
     localStorage.removeItem("token");
   };
 

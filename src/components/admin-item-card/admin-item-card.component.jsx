@@ -33,6 +33,7 @@ import Modal from "../../modals/modal/modal.component";
 import { AiFillEdit } from "react-icons/ai";
 import { MdLocalOffer, MdExpandLess, MdExpandMore } from "react-icons/md";
 import { RiDeleteBin5Fill } from "react-icons/ri";
+import { VscActivateBreakpoints } from "react-icons/vsc";
 
 // styles
 import styles from "./admin-item-card.module.scss";
@@ -43,6 +44,7 @@ import {
   toEnglishNumber,
   UserTypeConstants,
 } from "../../utils/constants";
+import PointsModal from "../../modals/points-modal/points-modal.component";
 
 const checkOffer = (item, user) => {
   if (user.type === UserTypeConstants.COMPANY) {
@@ -72,7 +74,7 @@ const checkOffer = (item, user) => {
   return result;
 };
 
-function AdminItemCard({ item, user, warehouse, role, index }) {
+function AdminItemCard({ item, user, warehouse, role, index, searchString }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -87,6 +89,7 @@ function AdminItemCard({ item, user, warehouse, role, index }) {
   const [showWarningModal, setShowWarningModal] = useState(false);
   const [showChangeMaxQtyModal, setShowChangeMaxQtyModal] = useState(false);
   const [showOfferModal, setShowOfferModal] = useState(false);
+  const [showPointsModal, setShowPointsModal] = useState(false);
   const [showDeleteFromWarehouseModal, setShowDeleteFromWarehouseModal] =
     useState(false);
   const [maxQty, setMaxQty] = useState(
@@ -203,15 +206,6 @@ function AdminItemCard({ item, user, warehouse, role, index }) {
     }
   };
 
-  // const onKeyPress = (event) => {
-  //   return event.charCode >= 48 && event.charCode <= 57;
-  // };
-
-  const maxQtyChangeHandler = (event) => {
-    const value = Number.parseInt(toEnglishNumber(event.target.value));
-    setMaxQty(isNaN(value) ? "" : value);
-  };
-
   const rowClickHandler = () => {
     history.push("/item", {
       from: user.type,
@@ -238,10 +232,7 @@ function AdminItemCard({ item, user, warehouse, role, index }) {
       <RowContainer isEven={index % 2} isOffer={checkOffer(item, user)}>
         <div className={styles.item_row}>
           <div className={styles.first_row}>
-            <div
-              className={[styles.item_names_container].join(" ")}
-              // onClick={rowClickHandler}
-            >
+            <div className={[styles.item_names_container].join(" ")}>
               <label
                 className={styles.icon}
                 onClick={(e) => {
@@ -256,11 +247,10 @@ function AdminItemCard({ item, user, warehouse, role, index }) {
                 )}
               </label>
               <ItemNames
-                // name={item.name}
-                // arName={item.nameAr}
                 on_click={rowClickHandler}
                 forAdmin={true}
                 item={item}
+                searchString={searchString}
               />
             </div>
           </div>
@@ -304,7 +294,7 @@ function AdminItemCard({ item, user, warehouse, role, index }) {
           {expanded && (
             <>
               <Separator />
-              <ItemAdditionalInfo item={item} />
+              <ItemAdditionalInfo item={item} searchString={searchString} />
             </>
           )}
 
@@ -333,6 +323,15 @@ function AdminItemCard({ item, user, warehouse, role, index }) {
                 smallText={true}
               />
 
+              <ButtonWithIcon
+                icon={() => <VscActivateBreakpoints />}
+                text={t("points")}
+                action={() => {
+                  setShowPointsModal(true);
+                }}
+                bgColor={Colors.SUCCEEDED_COLOR}
+                smallText={true}
+              />
               <ButtonWithIcon
                 icon={() => <RiDeleteBin5Fill />}
                 action={deleteFromWarehouseHandler}
@@ -376,6 +375,21 @@ function AdminItemCard({ item, user, warehouse, role, index }) {
           item={item}
           warehouseId={warehouse._id}
           close={() => setShowOfferModal(false)}
+          allowEdit={
+            user.type === UserTypeConstants.WAREHOUSE ||
+            (user.type === UserTypeConstants.ADMIN &&
+              role === UserTypeConstants.WAREHOUSE &&
+              warehouse.allowAdmin)
+          }
+        />
+      )}
+
+      {showPointsModal && (
+        <PointsModal
+          token={token}
+          item={item}
+          warehouseId={warehouse._id}
+          close={() => setShowPointsModal(false)}
           allowEdit={
             user.type === UserTypeConstants.WAREHOUSE ||
             (user.type === UserTypeConstants.ADMIN &&

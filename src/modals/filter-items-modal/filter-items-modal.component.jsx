@@ -58,7 +58,7 @@ function FilterItemsModal({ close, selectedAction }) {
     let buildUrl = `${BASEURL}`;
     buildUrl =
       buildUrl +
-      `/items?page=${currentPage}&limit=15&isActive=true&itemName=${searchName}`;
+      `/items/filter?page=${currentPage}&limit=15&isActive=true&itemName=${searchName}`;
 
     try {
       const response = await axios.get(buildUrl, {
@@ -156,6 +156,7 @@ function FilterItemsModal({ close, selectedAction }) {
                 index={index}
                 showComposition={true}
                 selectedAction={selectedAction}
+                searchString={searchName}
               />
             ))}
             {loading && <CylonLoader />}

@@ -99,7 +99,6 @@ const BackupRestoreSection = ({ title, backupFromUrl, restoreToUrl }) => {
             };
           });
 
-        console.log(response);
         setData(response);
         setLoading(false);
       };

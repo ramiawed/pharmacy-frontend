@@ -370,36 +370,6 @@ export const changeItemWarehouseMaxQty = createAsyncThunk(
   }
 );
 
-// export const changeItemOffer = createAsyncThunk(
-//   "items/changeItemOffer",
-//   async ({ _id, token }, { rejectWithValue }) => {
-//     try {
-//       CancelToken = axios.CancelToken;
-//       source = CancelToken.source();
-
-//       const response = await axios.get(`${BASEURL}/items/item/${_id}`, {
-//         // timeout: 10000,
-//         cancelToken: source.token,
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       });
-//       return response.data;
-//     } catch (err) {
-//       if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
-//         return rejectWithValue("timeout");
-//       }
-//       if (axios.isCancel(err)) {
-//         return rejectWithValue("cancel");
-//       }
-//       if (!err.response) {
-//         return rejectWithValue("network failed");
-//       }
-//       return rejectWithValue(err.response.data);
-//     }
-//   }
-// );
-
 export const changeItemWarehouseOffer = createAsyncThunk(
   "items/changeItemsOffer",
   async ({ obj, token }, { rejectWithValue }) => {
@@ -410,6 +380,43 @@ export const changeItemWarehouseOffer = createAsyncThunk(
       const response = await axios.post(
         `${BASEURL}/items/warehouse/change-offer/${obj.itemId}`,
         { warehouseId: obj.warehouseId, offer: obj.offer },
+        {
+          // timeout: 10000,
+          cancelToken: source.token,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      return response.data;
+    } catch (err) {
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const changeItemWarehousePoints = createAsyncThunk(
+  "items/changeItemsPoints",
+  async ({ obj, token }, { rejectWithValue }) => {
+    try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.post(
+        `${BASEURL}/items/warehouse/change-points/${obj.itemId}`,
+        { warehouseId: obj.warehouseId, points: obj.points },
         {
           // timeout: 10000,
           cancelToken: source.token,
@@ -805,6 +812,28 @@ export const itemsSlice = createSlice({
       });
     },
     [changeItemWarehouseOffer.rejected]: (state, { payload }) => {
+      state.changeOfferStatus = "failed";
+
+      if (payload === "timeout") {
+        state.changeOfferError = "timeout-msg";
+      } else if (payload === "cancel") {
+        state.changeOfferError = "cancel-operation-msg";
+      } else if (payload === "network failed") {
+        state.changeOfferError = "network failed";
+      } else state.changeOfferError = payload.message;
+    },
+    [changeItemWarehousePoints.pending]: (state, action) => {
+      state.changeOfferStatus = "loading";
+    },
+    [changeItemWarehousePoints.fulfilled]: (state, action) => {
+      state.changeOfferStatus = "succeeded";
+      state.items = state.items.map((item) => {
+        if (item._id === action.payload.data.item._id) {
+          return action.payload.data.item;
+        } else return item;
+      });
+    },
+    [changeItemWarehousePoints.rejected]: (state, { payload }) => {
       state.changeOfferStatus = "failed";
 
       if (payload === "timeout") {

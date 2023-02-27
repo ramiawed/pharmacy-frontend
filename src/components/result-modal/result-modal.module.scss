@@ -67,7 +67,7 @@
   }
 
   .failed_msg {
-    color: $third-color;
+    color: $red-color;
   }
 
   .icon {
@@ -109,10 +109,10 @@
 
   .failed_button {
     background-color: $white-color;
-    color: $third-color;
+    color: $red-color;
 
     &:hover {
-      background-color: $third-color;
+      background-color: $red-color;
       color: $white-color;
     }
   }

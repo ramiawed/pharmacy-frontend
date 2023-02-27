@@ -108,6 +108,7 @@ export const SideNavLinks = {
   BACKUP_RESTORE: "backup-restore",
   BASKETS: "baskets",
   SAVEDITEMS: "saved-items",
+  MY_POINTS: "my-points",
 };
 
 export const TopNavLinks = {
@@ -120,9 +121,9 @@ export const TopNavLinks = {
   NOTIFICATIONS: "notifications",
   OFFERS: "offers",
   SIGNOUT: "signout",
-  // SAVEDITEMS: "saved-items",
   BASKETS: "baskets",
   SPEACIAL_OFFERS: "nav-special-offers",
+  ITEMS_WITH_POINTS: "items-with-points",
 };
 
 export const OrderOptions = {
@@ -230,6 +231,49 @@ export const checkOffer = (item, user) => {
         w.warehouse.city === user.city &&
         w.warehouse.isActive &&
         w.offer.offers.length > 0
+      ) {
+        result = true;
+      }
+    });
+  }
+
+  return result;
+};
+
+export const checkPoints = (item, user) => {
+  if (
+    user.type === UserTypeConstants.GUEST ||
+    user.type === UserTypeConstants.COMPANY
+  ) {
+    return false;
+  }
+
+  let result = false;
+
+  if (user.type === UserTypeConstants.ADMIN) {
+    item.warehouses.forEach((w) => {
+      if (w.points.length > 0) {
+        result = true;
+      }
+    });
+  }
+
+  if (user.type === UserTypeConstants.WAREHOUSE) {
+    item.warehouses
+      .filter((w) => w.warehouse._id === user._id)
+      .forEach((w) => {
+        if (w.points.length > 0) {
+          result = true;
+        }
+      });
+  }
+
+  if (user.type === UserTypeConstants.PHARMACY) {
+    item.warehouses.forEach((w) => {
+      if (
+        w.warehouse.city === user.city &&
+        w.warehouse.isActive &&
+        w.points.length > 0
       ) {
         result = true;
       }

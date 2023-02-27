@@ -6,27 +6,27 @@
 
 // coloring
 .fc_green {
-  color: $green-color;
+  color: $green-color !important;
 }
 
 .fc_red {
-  color: $third-color;
+  color: $red-color !important;
 }
 
 .fc_yellow {
-  color: $yellow-color;
+  color: $yellow-color !important;
 }
 
 .fc_secondary {
-  color: $light-color;
+  color: $light-color !important;
 }
 
 .fc_main {
-  color: $main-color;
+  color: $main-color !important;
 }
 
 .fc_backup {
-  color: $backup-color;
+  color: $backup-color !important;
 }
 
 .fc_white {
@@ -37,12 +37,16 @@
   color: $dark-color !important;
 }
 
+.fc_dark {
+  color: $dark-color !important;
+}
+
 .bg_green {
   background-color: $green-color !important;
 }
 
 .bg_red {
-  background-color: $third-color !important;
+  background-color: $red-color !important;
 }
 
 .bg_yellow {
@@ -55,6 +59,10 @@
 
 .bg_main {
   background-color: $main-color !important;
+}
+
+.bg_dark {
+  background-color: $dark-color !important;
 }
 
 .bg_backup {
@@ -133,10 +141,6 @@
 // end button style
 
 // padding style
-.padding_v_10 {
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
-}
 
 .padding_v_6 {
   padding-top: 6px !important;
@@ -148,39 +152,15 @@
   padding-bottom: 4px !important;
 }
 
-.padding_h_4 {
-  padding-left: 4px !important;
-  padding-right: 4px !important;
-}
-
 .padding_h_6 {
   padding-left: 6px !important;
   padding-right: 6px !important;
-}
-
-.padding_h_8 {
-  padding-left: 8px !important;
-  padding-right: 8px !important;
-}
-
-.padding_h_10 {
-  padding-left: 10px !important;
-  padding-right: 10px !important;
 }
 
 .padding_h_12 {
   padding-left: 12px !important;
   padding-right: 12px !important;
 }
-
-.margin_h_4 {
-  margin: 0 4px;
-}
-
-.margin_v_4 {
-  margin: 4px 0;
-}
-
 // end padding style
 
 .block {
@@ -195,7 +175,6 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: space-around;
-  align-items: center;
 }
 
 .flex_center_container {
@@ -242,5 +221,81 @@
   .sign_container {
     flex-direction: row;
     justify-content: space-around;
+  }
+}
+
+.offer_container {
+  background-color: $offer-color !important;
+}
+
+.points_container {
+  background-color: #a4bfb4b9 !important;
+}
+
+.offer_points_container {
+  background: rgb(170, 227, 255) !important;
+  background: linear-gradient(118deg, rgba(170, 227, 255, 1) 0%, #a4bfb4 70%) !important;
+}
+
+.name {
+  font-weight: bold;
+  font-size: 1rem;
+  text-transform: uppercase;
+}
+
+.strong {
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+.price_label {
+  display: inline-block;
+  width: 65px;
+  text-align: center;
+}
+
+.rounded_right {
+  border-radius: 4px 0 0 4px;
+}
+
+.rounded_left {
+  border-radius: 0 4px 4px 0;
+}
+
+.sub_name {
+  font-size: 16px;
+}
+
+.filter_highlight {
+  background-color: yellow;
+  color: red !important;
+  border-radius: 4px;
+}
+
+.row_col_flex {
+  display: flex;
+  flex-direction: column;
+}
+
+.highlight_underline:hover {
+  text-decoration: underline;
+  cursor: pointer;
+
+  label {
+    cursor: inherit;
+  }
+}
+
+@media only screen and (min-width: $small) {
+  .row_col_flex {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media only screen and (min-width: $medium) {
+  .row_col_flex {
+    display: flex;
+    flex-direction: row;
   }
 }

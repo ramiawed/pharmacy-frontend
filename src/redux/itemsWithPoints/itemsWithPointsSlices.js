@@ -29,17 +29,17 @@ const resetCancelAndSource = () => {
   source = null;
 };
 
-export const getOffers = createAsyncThunk(
-  "offers/getOfferMedicines",
+export const getItemsWithPoints = createAsyncThunk(
+  "itemsWithPoints/getItemsWithPoints",
   async ({ token }, { rejectWithValue, getState }) => {
     try {
       const {
-        offers: { pageState },
+        itemsWithPoints: { pageState },
       } = getState();
       CancelToken = axios.CancelToken;
       source = CancelToken.source();
 
-      let buildUrl = `${BASEURL}/items/items-with-offer?page=${pageState.page}&limit=15`;
+      let buildUrl = `${BASEURL}/items/items-with-points?page=${pageState.page}&limit=15`;
 
       if (pageState.searchName.trim() !== "") {
         buildUrl = buildUrl + `&itemName=${pageState.searchName}`;
@@ -82,8 +82,8 @@ export const getOffers = createAsyncThunk(
   }
 );
 
-export const offersSlice = createSlice({
-  name: "offersSlice",
+export const itemsWithPointsSlice = createSlice({
+  name: "itemsWithPointsSlice",
   initialState,
   reducers: {
     resetStatus: (state) => {
@@ -165,7 +165,7 @@ export const offersSlice = createSlice({
       };
     },
 
-    resetOfferItemsArray: (state) => {
+    resetItemsWithPointsArray: (state) => {
       state.medicines = [];
       state.count = 0;
       state.pageState = {
@@ -174,7 +174,7 @@ export const offersSlice = createSlice({
       };
     },
 
-    resetOfferItemsPageState: (state) => {
+    resetItemsWithPointsPageState: (state) => {
       state.pageState = {
         searchName: "",
         searchCompaniesIds: [],
@@ -183,7 +183,7 @@ export const offersSlice = createSlice({
       };
     },
 
-    offersSliceSignOut: (state) => {
+    itemsWithPointsSliceSignOut: (state) => {
       state.status = "idle";
       state.medicines = [];
       state.count = 0;
@@ -197,10 +197,10 @@ export const offersSlice = createSlice({
     },
   },
   extraReducers: {
-    [getOffers.pending]: (state) => {
+    [getItemsWithPoints.pending]: (state) => {
       state.status = "loading";
     },
-    [getOffers.fulfilled]: (state, action) => {
+    [getItemsWithPoints.fulfilled]: (state, action) => {
       state.status = "succeeded";
       state.medicines = [...state.medicines, ...action.payload.data.data];
       state.count = action.payload.count;
@@ -210,7 +210,7 @@ export const offersSlice = createSlice({
         page: Math.ceil(state.medicines.length / 15) + 1,
       };
     },
-    [getOffers.rejected]: (state, { error, meta, payload }) => {
+    [getItemsWithPoints.rejected]: (state, { error, meta, payload }) => {
       state.status = "failed";
 
       if (payload === "timeout") {
@@ -228,17 +228,17 @@ export const {
   resetStatus,
   resetError,
   resetMedicines,
-  offersSliceSignOut,
+  itemsWithPointsSliceSignOut,
   setSearchName,
   setPage,
-  resetOfferItemsArray,
-  resetOfferItemsPageState,
+  resetItemsWithPointsArray,
+  resetItemsWithPointsPageState,
   addIdToCompaniesIds,
   addIdToWarehousesIds,
   removeIdFromCompaniesId,
   removeIdFromWarehousesId,
-} = offersSlice.actions;
+} = itemsWithPointsSlice.actions;
 
-export const selectOfferMedicines = (state) => state.offers;
+export const selectItemsWithPointsMedicines = (state) => state.itemsWithPoints;
 
-export default offersSlice.reducer;
+export default itemsWithPointsSlice.reducer;

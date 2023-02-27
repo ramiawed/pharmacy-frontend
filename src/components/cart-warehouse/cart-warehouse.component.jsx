@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import axios from "axios";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -26,7 +27,13 @@ import { MdExpandMore, MdExpandLess } from "react-icons/md";
 import styles from "./cart-warehouse.module.scss";
 
 // constants
-import { Colors, OfferTypes, OrdersStatusOptions } from "../../utils/constants";
+import {
+  BASEURL,
+  Colors,
+  formatNumber,
+  OfferTypes,
+  OrdersStatusOptions,
+} from "../../utils/constants";
 
 function CartWarehouse({ warehouse, wIndex }) {
   const { t } = useTranslation();
@@ -87,10 +94,10 @@ function CartWarehouse({ warehouse, wIndex }) {
     let obj = {
       pharmacy: user._id,
       warehouse: cartItems.filter(
-        (item) => item.warehouse.warehouse.name === warehouse.name
+        (cartItem) => cartItem.warehouse.warehouse.name === warehouse.name
       )[0].warehouse.warehouse._id,
       items: cartItems
-        .filter((item) => item.warehouse.warehouse.name === warehouse.name)
+        .filter((item) => item.warehouse.name === warehouse.name)
         .map((e) => {
           return {
             item: e.item._id,
@@ -106,7 +113,7 @@ function CartWarehouse({ warehouse, wIndex }) {
 
     dispatch(saveOrder({ obj, token }))
       .then(unwrapResult)
-      .then(() => {
+      .then(async () => {
         dispatch(
           addStatistics({
             obj: {
@@ -117,6 +124,21 @@ function CartWarehouse({ warehouse, wIndex }) {
             token,
           })
         );
+        if (numbersOfPoint > 0) {
+          await axios.post(
+            `${BASEURL}/users/update-points`,
+            {
+              id: user._id,
+              amount: numbersOfPoint,
+            },
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+        }
+
         setShowLoadingModal(false);
         setShowSuccessModal(true);
       })
@@ -126,6 +148,14 @@ function CartWarehouse({ warehouse, wIndex }) {
       });
     dispatch(setRefresh(true));
   };
+
+  const numbersOfPoint =
+    warehouse.includeInPointSystem &&
+    warehouse.pointForAmount &&
+    warehouse.amountToGetPoint
+      ? Math.floor(computeTotalPrice() / warehouse.amountToGetPoint) *
+        warehouse.pointForAmount
+      : 0;
 
   return (
     <div
@@ -148,7 +178,6 @@ function CartWarehouse({ warehouse, wIndex }) {
             action={checkOrderHandler}
           />
         </label>
-        {/* <label className={styles.total_price}>{computeTotalPrice()}</label> */}
       </div>
 
       {expanded && (
@@ -171,8 +200,15 @@ function CartWarehouse({ warehouse, wIndex }) {
 
       <div className={styles.additional_warehouse_info_div}>
         <label>
-          {t("total-invoice-price")}: {computeTotalPrice()}
+          {t("total-invoice-price")}: {formatNumber(computeTotalPrice())}
         </label>
+
+        {numbersOfPoint > 0 && (
+          <label>
+            {t("number of points that you get")} {numbersOfPoint}
+          </label>
+        )}
+
         {warehouse.costOfDeliver > 0 && (
           <label>
             {t("deliver-cost")}: {warehouse.costOfDeliver} %
@@ -181,17 +217,20 @@ function CartWarehouse({ warehouse, wIndex }) {
 
         {warehouse.invoiceMinTotal > 0 && (
           <label>
-            {t("minimum-invoice-cost")}: {warehouse.invoiceMinTotal}
+            {t("minimum-invoice-cost")}:{" "}
+            {formatNumber(warehouse.invoiceMinTotal)}
           </label>
         )}
 
         {warehouse.fastDeliver && <label>{t("fast-deliver")}</label>}
-        <label
-          className={styles.pay_label}
-          style={{ color: Colors.FAILED_COLOR }}
-        >
-          {t("dear-partner-pay-when-deliver")}
-        </label>
+        {warehouse.payAtDeliver && (
+          <label
+            className={styles.pay_label}
+            style={{ color: Colors.FAILED_COLOR }}
+          >
+            {t("dear-partner-pay-when-deliver")}
+          </label>
+        )}
       </div>
 
       {showLoadingModal && <Loader allowCancel={false} />}

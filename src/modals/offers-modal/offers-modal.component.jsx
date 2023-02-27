@@ -55,14 +55,14 @@ function OffersModal({ item, warehouseId, close, token, allowEdit }) {
     setValues(updatedValues);
   };
 
-  const changeHandler = (e) => {
+  const changeHandler = (prop, val, id) => {
     const updatedValues = values.map((value) => {
-      if (value.key === e.target.id) {
+      if (value.key === id) {
         return {
           ...value,
           value: {
             ...value.value,
-            [e.target.title]: toEnglishNumber(e.target.value) * 1,
+            [prop === "bonus" ? "bonus" : "qty"]: toEnglishNumber(val) * 1,
           },
         };
       } else {

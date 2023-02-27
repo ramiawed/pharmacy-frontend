@@ -11,9 +11,6 @@ const OfferDetailsRow = ({ offer, offerMode }) => {
       <p>
         <label>{t("quantity-label")}</label>
         <label className={[styles.value].join(" ")}>{offer.qty}</label>
-        {/* <label className={styles.left_padding}>
-          {t("after-quantity-label")}
-        </label> */}
       </p>
       <p>
         <label>

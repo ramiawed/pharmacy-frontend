@@ -30,7 +30,7 @@ const resetCancelAndSource = () => {
 
 export const getWarehouses = createAsyncThunk(
   "warehouses/getWarehouses",
-  async ({ token }, { rejectWithValue, getState }) => {
+  async ({ token }, { rejectWithValue }) => {
     try {
       CancelToken = axios.CancelToken;
       source = CancelToken.source();

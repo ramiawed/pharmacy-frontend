@@ -31,37 +31,8 @@ import OfferDetailsRow from "../../components/offer-details-row/offer-details-ro
 import ChooserContainer from "../../components/chooser-container/chooser-container.component";
 import ChooseValue from "../../components/choose-value/choose-value.component";
 import SearchInput from "../../components/search-input/search-input.component";
-
-// check if there is an offer for entered quantity in a specific warehouse
-const checkOfferQty = (selectedWarehouse, qty) => {
-  // check if the specified warehouse has an offer
-  if (selectedWarehouse?.offer.offers.length > 0) {
-    // through all the offers, check if the entered quantity has an offer
-    for (let i = 0; i < selectedWarehouse.offer.offers.length; i++) {
-      // check if the entered quantity has an offer
-      if (qty >= selectedWarehouse.offer.offers[i].qty) {
-        // if it has return:
-        // 1- mode of the offer (pieces, percentage)
-        // 2- bonus
-        // 2-1: if the mode is pieces return the bonus * (entered qty / bonus qty)
-        // 2-2: if the mode is percentage return the bonus
-        if (selectedWarehouse.offer.mode === OfferTypes.PERCENTAGE) {
-          return selectedWarehouse.offer.offers[i].bonus;
-        } else {
-          return (
-            selectedWarehouse.offer.offers[i].bonus +
-            checkOfferQty(
-              selectedWarehouse,
-              qty - selectedWarehouse.offer.offers[i].qty
-            )
-          );
-        }
-      }
-    }
-  }
-
-  return 0;
-};
+import PointDetailsRow from "../../components/point-details-row/point-details-row.component";
+import Separator from "../../components/separator/separator.component";
 
 function AddToCartModal({ item, close, setAddItemToCartMsg, fromSavedItems }) {
   const { t } = useTranslation();
@@ -105,6 +76,14 @@ function AddToCartModal({ item, close, setAddItemToCartMsg, fromSavedItems }) {
       : item.warehouses.filter((w) => w.warehouse.city === user.city)[0].offer
   );
 
+  const [points, setPoints] = useState(
+    sWarehouse !== null
+      ? item.warehouses
+          .filter((w) => w.warehouse.city === user.city)
+          .find((w) => w.warehouse._id === sWarehouse).points
+      : item.warehouses.filter((w) => w.warehouse.city === user.city)[0].points
+  );
+
   // choosen quantity must be great than zero and less than the max size in that warehouse
   const [qty, setQty] = useState("");
 
@@ -118,6 +97,7 @@ function AddToCartModal({ item, close, setAddItemToCartMsg, fromSavedItems }) {
   const warehouseChangeHandler = (val) => {
     setSelectedWarehouse(item.warehouses.find((w) => w.warehouse._id == val));
     setOffer(item.warehouses.find((w) => w.warehouse._id == val).offer);
+    setPoints(item.warehouses.find((w) => w.warehouse._id == val).points);
   };
 
   const quantityChangeHandler = (e) => {
@@ -147,17 +127,12 @@ function AddToCartModal({ item, close, setAddItemToCartMsg, fromSavedItems }) {
       return;
     }
 
-    // check if there is a bouns
-    const bonusQty = checkOfferQty(selectedWarehouse, qty);
-
     // add item to cart
     dispatch(
       addItemToCart({
         item: item,
         warehouse: selectedWarehouse,
         qty: qty,
-        bonus: bonusQty > 0 ? bonusQty : null,
-        bonusType: bonusQty > 0 ? selectedWarehouse.offer.mode : null,
       })
     );
 
@@ -231,6 +206,11 @@ function AddToCartModal({ item, close, setAddItemToCartMsg, fromSavedItems }) {
             offer.offers.map((o, index) => (
               <OfferDetailsRow key={index} offer={o} offerMode={offer.mode} />
             ))}
+
+          {points?.length > 0 && <Separator />}
+
+          {points?.length > 0 &&
+            points.map((o, index) => <PointDetailsRow key={index} point={o} />)}
         </div>
       </Modal>
 

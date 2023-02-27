@@ -11,6 +11,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectSettings } from "../../redux/settings/settingsSlice";
 import { CgProfile } from "react-icons/cg";
 import { BsFillBookmarkPlusFill, BsFillEnvelopeFill } from "react-icons/bs";
+import { GiMoneyStack } from "react-icons/gi";
+
+// redux stuff
 import {
   setSearchCompanyId,
   setSearchWarehouseId,
@@ -77,6 +80,31 @@ function SideNavPharmacy({ selectedOption, onSelectedChange, collapsed }) {
           </div>
           {!collapsed && (
             <div className={styles.nav_label}>{t("saved-items")} </div>
+          )}
+        </div>
+      </Link>
+
+      <Link
+        className={[
+          styles.link,
+          selectedOption === SideNavLinks.MY_POINTS ? `${styles.selected}` : "",
+        ].join(" ")}
+        onClick={() => {
+          onSelectedChange(SideNavLinks.MY_POINTS);
+          dispatch(setSearchWarehouseId(null));
+          dispatch(setSearchCompanyId(null));
+        }}
+        to="/my-points"
+      >
+        <div className={styles.nav}>
+          <div className={styles.nav_icon}>
+            <GiMoneyStack size={24} />
+            {collapsed && (
+              <label className={styles.tooltip}>{t("my points")}</label>
+            )}
+          </div>
+          {!collapsed && (
+            <div className={styles.nav_label}>{t("my points")}</div>
           )}
         </div>
       </Link>

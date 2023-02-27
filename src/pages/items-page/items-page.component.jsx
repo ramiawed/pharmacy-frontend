@@ -85,23 +85,7 @@ function ItemsPage({ onSelectedChange }) {
     dispatch(getItems({ token }));
   };
 
-  // const deleteItemFromWarehouse = (obj) => {
-  //   dispatch(removeItemFromWarehouse({ obj, token }))
-  //     .then(unwrapResult)
-  //     .then(() => {
-  //       handleSearch(pageState.page);
-  //     })
-  //     .catch(() => {});
-  // };
-
-  const changeItemMaxQty = (obj) => {
-    // dispatch(changeItemWarehouseMaxQty({ obj, token }))
-    //   .then(unwrapResult)
-    //   .then(() => {
-    //     handleEnterPress();
-    //   })
-    //   .catch(() => {});
-  };
+  const changeItemMaxQty = (obj) => {};
 
   const keyUpHandler = () => {
     cancelOperation();
@@ -157,6 +141,7 @@ function ItemsPage({ onSelectedChange }) {
             // deleteItemFromWarehouse={deleteItemFromWarehouse}
             changeItemMaxQty={changeItemMaxQty}
             index={index}
+            searchString={pageState.searchName}
           />
         ))}
 

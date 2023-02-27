@@ -1,0 +1,14 @@
+@import "../../variables.scss";
+
+.my_points {
+    background-color: $green-color;
+    color: $white-color;
+    text-align: center;
+    max-width: 150px;
+    padding: 25px;
+    font-size: 22px;
+    font-weight: bold;
+    border-radius: 6px;
+    box-shadow: 0 0 3px 3px rgba($color: #000, $alpha: 0.5);
+    margin: 10px auto;
+}

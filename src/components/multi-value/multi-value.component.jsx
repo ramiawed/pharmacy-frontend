@@ -54,7 +54,9 @@ function MultiValue({
                 id={value.key}
                 title="qty"
                 value={value.value.qty}
-                onChange={(e) => changeHandler(e)}
+                onChange={(e) =>
+                  changeHandler("qty", e.target.value, e.target.id)
+                }
                 placeholder={placeholder}
                 onKeyPress={onKeyPressForNumberInput}
                 disabled={!allowEdit}
@@ -70,7 +72,9 @@ function MultiValue({
                 id={value.key}
                 title="bonus"
                 value={value.value.bonus}
-                onChange={(e) => changeHandler(e)}
+                onChange={(e) =>
+                  changeHandler("bonus", e.target.value, e.target.id)
+                }
                 placeholder={placeholder}
                 disabled={!allowEdit}
                 type="number"

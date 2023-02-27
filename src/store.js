@@ -24,9 +24,10 @@ import advertisementsSlice from "./redux/advertisements/advertisementsSlice";
 import NotificationsSlice from "./redux/notifications/notificationsSlice";
 import UserNotificationsSlice from "./redux/userNotifications/userNotificationsSlice";
 import navigationSlice from "./redux/navs/navigationSlice";
-import offersSlice from "./redux/offers/offersSlices";
+import itemsWithOffersSlice from "./redux/itemsWithOffer/itemsWithOffersSlices";
 import savedItemsSlice from "./redux/savedItems/savedItemsSlice";
 import basketsSlice from "./redux/baskets/basketsSlice";
+import itemsWithPointsSlice from "./redux/itemsWithPoints/itemsWithPointsSlices";
 
 const reducers = combineReducers({
   auth: authSlice,
@@ -51,9 +52,10 @@ const reducers = combineReducers({
   notifications: NotificationsSlice,
   userNotifications: UserNotificationsSlice,
   navigationSlice: navigationSlice,
-  offers: offersSlice,
+  itemsWithOffers: itemsWithOffersSlice,
   savedItems: savedItemsSlice,
   baskets: basketsSlice,
+  itemsWithPoints: itemsWithPointsSlice,
 });
 
 const persistConfig = {

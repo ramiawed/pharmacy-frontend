@@ -12,13 +12,15 @@ const UserOptionsMenu = ({
   changePasswordHandler,
   moreInfoHandler,
   deleteAccountForeverHandler,
+  increasePointsHandler,
+  decreasePointsHandler,
 }) => {
   const { t } = useTranslation();
   return (
     <div
       className={[
         styles.menu,
-        index < 8 ? styles.fromTop : styles.fromBottom,
+        index < 7 ? styles.fromTop : styles.fromBottom,
       ].join(" ")}
     >
       <div
@@ -39,6 +41,28 @@ const UserOptionsMenu = ({
       >
         {t("delete user forever")}
       </div>
+      {user.type === UserTypeConstants.PHARMACY && (
+        <>
+          <div
+            className={styles.option}
+            onClick={() => {
+              increasePointsHandler(true);
+              closeHandler();
+            }}
+          >
+            {t("increase points")}
+          </div>
+          <div
+            className={styles.option}
+            onClick={() => {
+              decreasePointsHandler(true);
+              closeHandler();
+            }}
+          >
+            {t("decrease points")}
+          </div>
+        </>
+      )}
       {user.type === UserTypeConstants.WAREHOUSE && (
         <div
           className={styles.option}

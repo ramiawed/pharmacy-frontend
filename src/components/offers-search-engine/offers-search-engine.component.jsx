@@ -10,7 +10,7 @@ import {
   removeIdFromWarehousesId,
   selectOfferMedicines,
   setSearchName,
-} from "../../redux/offers/offersSlices";
+} from "../../redux/itemsWithOffer/itemsWithOffersSlices";
 
 // components
 import SearchPartnerContainer from "../search-partner-container/search-partner-container.component";

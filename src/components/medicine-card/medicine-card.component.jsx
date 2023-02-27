@@ -53,7 +53,7 @@ import {
   UserTypeConstants,
 } from "../../utils/constants.js";
 
-function MedicineCard({ companyItem }) {
+function MedicineCard({ item, searchString }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -78,16 +78,14 @@ function MedicineCard({ companyItem }) {
 
     setChangeFavoriteLoading(true);
 
-    dispatch(
-      addFavoriteItem({ obj: { favoriteItemId: companyItem._id }, token })
-    )
+    dispatch(addFavoriteItem({ obj: { favoriteItemId: item._id }, token }))
       .then(unwrapResult)
       .then(() => {
         dispatch(
           addStatistics({
             obj: {
               sourceUser: user._id,
-              targetItem: companyItem._id,
+              targetItem: item._id,
               action: "item-added-to-favorite",
             },
           })
@@ -109,9 +107,7 @@ function MedicineCard({ companyItem }) {
 
     setChangeFavoriteLoading(true);
 
-    dispatch(
-      removeFavoriteItem({ obj: { favoriteItemId: companyItem._id }, token })
-    )
+    dispatch(removeFavoriteItem({ obj: { favoriteItemId: item._id }, token }))
       .then(unwrapResult)
       .then(() => {
         setChangeFavoriteLoading(false);
@@ -134,7 +130,7 @@ function MedicineCard({ companyItem }) {
     dispatch(
       addItemToWarehouse({
         obj: {
-          itemId: companyItem._id,
+          itemId: item._id,
           warehouseId: user._id,
         },
         token,
@@ -162,7 +158,7 @@ function MedicineCard({ companyItem }) {
     dispatch(
       removeItemFromWarehouse({
         obj: {
-          itemId: companyItem._id,
+          itemId: item._id,
           warehouseId: user._id,
         },
         token,
@@ -189,7 +185,7 @@ function MedicineCard({ companyItem }) {
 
     setChangeSaveItemLoading(true);
 
-    dispatch(addSavedItem({ obj: { savedItemId: companyItem._id }, token }))
+    dispatch(addSavedItem({ obj: { savedItemId: item._id }, token }))
       .then(unwrapResult)
       .then(() => {
         setChangeSaveItemLoading(false);
@@ -208,7 +204,7 @@ function MedicineCard({ companyItem }) {
 
     setChangeSaveItemLoading(true);
 
-    dispatch(removeSavedItem({ obj: { savedItemId: companyItem._id }, token }))
+    dispatch(removeSavedItem({ obj: { savedItemId: item._id }, token }))
       .then(unwrapResult)
       .then(() => {
         setChangeSaveItemLoading(false);
@@ -227,7 +223,7 @@ function MedicineCard({ companyItem }) {
         addStatistics({
           obj: {
             sourceUser: user._id,
-            targetItem: companyItem._id,
+            targetItem: item._id,
             action: "choose-item",
           },
           token,
@@ -238,7 +234,7 @@ function MedicineCard({ companyItem }) {
 
   return (
     <div className={[styles.partner_container].join(" ")}>
-      {checkOffer(companyItem, user) && (
+      {checkOffer(item, user) && (
         <div className={[styles.ribbon_2].join(" ")}>
           <span>{t("offer")}</span>
         </div>
@@ -246,10 +242,10 @@ function MedicineCard({ companyItem }) {
       <div
         className={styles.company_name}
         style={{
-          fontSize: companyItem.company.name.length > 30 ? "13px" : "16px",
+          fontSize: item.company.name.length > 30 ? "13px" : "16px",
         }}
       >
-        {companyItem.company.name}
+        {item.company.name}
       </div>
       <div
         style={{
@@ -260,7 +256,7 @@ function MedicineCard({ companyItem }) {
           {user.type === UserTypeConstants.WAREHOUSE && (
             <ThreeStateIcon
               loading={changeAddToWarehouseLoading}
-              array={companyItem.warehouses.map((w) => w.warehouse._id)}
+              array={item.warehouses.map((w) => w.warehouse._id)}
               id={user._id}
               removeHandler={removeItemFromWarehouseHandler}
               addHandler={addItemToWarehouseHandler}
@@ -276,7 +272,7 @@ function MedicineCard({ companyItem }) {
           )}
 
           {user.type === UserTypeConstants.PHARMACY ? (
-            checkItemExistsInWarehouse(companyItem, user) ? (
+            checkItemExistsInWarehouse(item, user) ? (
               <Icon
                 tooltip={t("add-to-cart")}
                 onclick={() => setShowModal(true)}
@@ -287,7 +283,7 @@ function MedicineCard({ companyItem }) {
               <ThreeStateIcon
                 loading={changeSaveItemLoading}
                 array={savedItems.map((si) => si._id)}
-                id={companyItem._id}
+                id={item._id}
                 removeHandler={removeItemFromSavedItemsHandler}
                 addHandler={addItemToSavedItemsHandler}
                 removeTooltip="remove-item-from-saved-items-tooltip"
@@ -313,7 +309,7 @@ function MedicineCard({ companyItem }) {
           <ThreeStateIcon
             loading={changeFavoriteLoading}
             array={favorites.map((favorite) => favorite._id)}
-            id={companyItem._id}
+            id={item._id}
             removeHandler={removeItemFromFavoritesItems}
             addHandler={addItemToFavoriteItems}
             removeTooltip="remove-from-favorite-tooltip"
@@ -328,9 +324,9 @@ function MedicineCard({ companyItem }) {
         </div>
 
         <div className={styles.logo_div}>
-          {companyItem.logo_url && companyItem.logo_url !== "" ? (
+          {item.logo_url && item.logo_url !== "" ? (
             <img
-              src={`${SERVER_URL}/items/${companyItem.logo_url}`}
+              src={`${SERVER_URL}/items/${item.logo_url}`}
               className={styles.logo}
               alt="thumb"
             />
@@ -347,7 +343,8 @@ function MedicineCard({ companyItem }) {
                   dispatchStatisticsHandler();
                 }}
                 flexDirection="column"
-                item={companyItem}
+                item={item}
+                searchString={searchString}
               />
               <div
                 style={{
@@ -357,8 +354,8 @@ function MedicineCard({ companyItem }) {
                 <ItemPrices
                   showCustomerPrice={true}
                   showPrice={user.type !== UserTypeConstants.GUEST}
-                  price={companyItem.price}
-                  customerPrice={companyItem.customer_price}
+                  price={item.price}
+                  customerPrice={item.customer_price}
                 />
               </div>
             </div>
@@ -367,7 +364,7 @@ function MedicineCard({ companyItem }) {
       </div>
 
       {showModal && (
-        <AddToCartModal item={companyItem} close={() => setShowModal(false)} />
+        <AddToCartModal item={item} close={() => setShowModal(false)} />
       )}
     </div>
   );

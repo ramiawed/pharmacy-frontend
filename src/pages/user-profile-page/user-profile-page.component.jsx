@@ -333,10 +333,7 @@ function UserProfilePage({ onSelectedChange }) {
                     checked={userObj.allowAdmin}
                   />
                   <label
-                    className={[
-                      generalStyles.right,
-                      generalStyles.padding_h_8,
-                    ].join(" ")}
+                    className={[generalStyles.right].join(" ")}
                     style={{ flex: "1" }}
                   >
                     {t("admin-permission-label")}

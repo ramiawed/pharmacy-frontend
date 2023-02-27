@@ -28,7 +28,6 @@ import {
 
 // components
 import AddToCartModal from "../../modals/add-to-cart-modal/add-to-cart-modal.component";
-import ItemInfoModal from "../../modals/item-info-modal/item-info-modal.component";
 import FullWidthLabel from "../full-width-label/full-width-label.component";
 import ThreeStateIcon from "../three-state-icon/three-state-icon.component";
 import LabelValueRow from "../label-value-row/label-value-row.component";
@@ -52,11 +51,18 @@ import styles from "./medicine-row.module.scss";
 import {
   checkItemExistsInWarehouse,
   checkOffer,
+  checkPoints,
   Colors,
   UserTypeConstants,
 } from "../../utils/constants";
 
-function MedicineRow({ item, index, showComposition, selectedAction }) {
+function MedicineRow({
+  item,
+  index,
+  showComposition,
+  selectedAction,
+  searchString,
+}) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -221,35 +227,6 @@ function MedicineRow({ item, index, showComposition, selectedAction }) {
       });
   };
 
-  // const rowClickHandler = () => {
-  //   if (
-  //     user.type === UserTypeConstants.PHARMACY ||
-  //     user.type === UserTypeConstants.GUEST
-  //   ) {
-  //     dispatch(
-  //       addStatistics({
-  //         obj: {
-  //           sourceUser: user._id,
-  //           targetItem: item._id,
-  //           action: "choose-item",
-  //         },
-  //         token,
-  //       })
-  //     );
-  //   }
-  //   history.push("/item", {
-  //     from: user.type,
-  //     type: "info",
-  //     allowAction: false,
-  //     itemId: item._id,
-  //     companyId: item.company._id,
-  //     warehouseId: user.type === UserTypeConstants.WAREHOUSE ? user._id : null,
-  //   });
-  //   if (onSelectAction) {
-  //     onSelectAction();
-  //   }
-  // };
-
   const dispatchStatisticsHandler = () => {
     if (
       user.type === UserTypeConstants.PHARMACY ||
@@ -271,7 +248,11 @@ function MedicineRow({ item, index, showComposition, selectedAction }) {
   // render method
   return (
     <>
-      <RowContainer isEven={index % 2} isOffer={checkOffer(item, user)}>
+      <RowContainer
+        isEven={index % 2}
+        isOffer={checkOffer(item, user)}
+        isPoints={checkPoints(item, user)}
+      >
         <div className={styles.item_row}>
           <div className={styles.first_row}>
             <div className={[styles.item_names_container].join(" ")}>
@@ -280,6 +261,7 @@ function MedicineRow({ item, index, showComposition, selectedAction }) {
                   dispatchStatisticsHandler();
                 }}
                 item={item}
+                searchString={searchString}
               />
             </div>
 
@@ -384,6 +366,7 @@ function MedicineRow({ item, index, showComposition, selectedAction }) {
               <LabelValueRow
                 label="item-composition"
                 value={item.composition}
+                searchString={searchString}
               />
             </div>
           )}

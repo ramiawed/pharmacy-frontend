@@ -51,13 +51,17 @@ function PartnerRow({
   const favoritesError = useSelector(selectFavoritesError);
   const { user, token } = useSelector(selectUserData);
 
+  // own state
   const [showChangeDeliverCostModal, setShowChangeDeliverCostModal] =
     useState(false);
-
   const [
     showChangeMinimumInvoiceValueModal,
     setShowChangeMinimumInvoiceValueModal,
   ] = useState(false);
+  const [showChangePointForAmountModal, setShowChangePointForAmountModal] =
+    useState(false);
+  const [showChangeAmountToGetPointModal, setShowChangeAmountToGetPointModal] =
+    useState(false);
 
   // determine if the partner can see the medicines in specific warehouse
   const allowShowingWarehouseMedicines =
@@ -110,6 +114,42 @@ function PartnerRow({
     setShowChangeMinimumInvoiceValueModal(false);
   };
 
+  const changeAmountToGetPointValueHandler = (value) => {
+    if (value < 0) {
+      return;
+    }
+
+    dispatch(
+      updateUser({
+        body: {
+          amountToGetPoint: value,
+        },
+        userId: partner._id,
+        token,
+      })
+    );
+
+    setShowChangeAmountToGetPointModal(false);
+  };
+
+  const changePointForAmountValueHandler = (value) => {
+    if (value < 0) {
+      return;
+    }
+
+    dispatch(
+      updateUser({
+        body: {
+          pointForAmount: value,
+        },
+        userId: partner._id,
+        token,
+      })
+    );
+
+    setShowChangePointForAmountModal(false);
+  };
+
   const changeFastDeliverHanlder = () => {
     dispatch(
       updateUser({
@@ -122,14 +162,46 @@ function PartnerRow({
     );
   };
 
+  const changePayAtDeliverHanlder = () => {
+    dispatch(
+      updateUser({
+        body: {
+          payAtDeliver: !partner.payAtDeliver,
+        },
+        userId: partner._id,
+        token,
+      })
+    );
+  };
+
+  const changeIncludeInPointSystemHanlder = () => {
+    let body = { includeInPointSystem: !partner.includeInPointSystem };
+    if (partner.includeInPointSystem) {
+      body = {
+        ...body,
+        pointForAmount: 0,
+        amountToGetPoint: 0,
+      };
+    }
+
+    dispatch(
+      updateUser({
+        body,
+        userId: partner._id,
+        token,
+      })
+    );
+  };
+
   return (
     <>
       <div
         className={[
-          fullWidth ? styles.full_width_container : styles.container,
+          fullWidth || user.type === UserTypeConstants.ADMIN
+            ? styles.full_width_container
+            : styles.container,
           withoutBoxShadow ? styles.without_box_shadow : "",
         ].join(" ")}
-        // onClick={() => clickHandler(user.type !== UserTypeConstants.ADMIN)}
       >
         <div className={styles.content}>
           <label className={styles.name} onClick={() => clickHandler(true)}>
@@ -149,10 +221,12 @@ function PartnerRow({
                     onClick={() => setShowChangeDeliverCostModal(true)}
                     className={styles.btn}
                   >
-                    {partner.costOfDeliver}
+                    {partner.costOfDeliver} %
                   </button>
                 </div>
+
                 <Separator />
+
                 <div className={styles.label_with_input_div}>
                   <label className={styles.small_label}>
                     {t("minimum-invoice-cost")}
@@ -164,6 +238,38 @@ function PartnerRow({
                     {partner.invoiceMinTotal}
                   </button>
                 </div>
+
+                <Separator />
+
+                <div className={styles.label_with_input_div}>
+                  <CustomCheckbox
+                    label={t("points admin")}
+                    value={partner.includeInPointSystem}
+                    changeHandler={() => changeIncludeInPointSystemHanlder()}
+                  />
+
+                  {partner.includeInPointSystem && (
+                    <>
+                      <button
+                        className={styles.btn}
+                        style={{ margin: "0 10px 0 0" }}
+                        onClick={() => setShowChangeAmountToGetPointModal(true)}
+                      >
+                        {t("every")} {partner.amountToGetPoint}
+                      </button>
+                      <label className={styles.center_label}>
+                        {t("get points")}
+                      </label>
+                      <button
+                        className={styles.btn}
+                        onClick={() => setShowChangePointForAmountModal(true)}
+                      >
+                        {partner.pointForAmount} {t("point")}
+                      </button>
+                    </>
+                  )}
+                </div>
+
                 <Separator />
 
                 <CustomCheckbox
@@ -171,7 +277,27 @@ function PartnerRow({
                   value={partner.fastDeliver}
                   changeHandler={() => changeFastDeliverHanlder()}
                 />
+                <Separator />
+                <CustomCheckbox
+                  label={t("dear-partner-pay-when-deliver-admin")}
+                  value={partner.payAtDeliver}
+                  changeHandler={() => changePayAtDeliverHanlder()}
+                />
               </>
+            )}
+
+          {partner.type === UserTypeConstants.WAREHOUSE &&
+            user.type === UserTypeConstants.PHARMACY &&
+            partner.includeInPointSystem &&
+            partner.pointForAmount &&
+            partner.amountToGetPoint && (
+              <div className={styles.point_sys_label}>
+                <label>
+                  {t("number of points that you get when buy from warehouse")}{" "}
+                  {t("every")} {partner.amountToGetPoint} {t("get points")}{" "}
+                  {partner.pointForAmount} {t("point")}
+                </label>
+              </div>
             )}
 
           {partner.type === UserTypeConstants.WAREHOUSE &&
@@ -259,6 +385,28 @@ function PartnerRow({
           max={1000000}
           step={1000}
           okModal={(value) => changeMinimumInvoiceValueHandler(value)}
+        />
+      )}
+
+      {showChangeAmountToGetPointModal && (
+        <ChangeQuantityModal
+          closeModal={() => setShowChangeAmountToGetPointModal(false)}
+          value={partner.amountToGetPoint}
+          min={0}
+          max={1000000}
+          step={1000}
+          okModal={(value) => changeAmountToGetPointValueHandler(value)}
+        />
+      )}
+
+      {showChangePointForAmountModal && (
+        <ChangeQuantityModal
+          closeModal={() => setShowChangePointForAmountModal(false)}
+          value={partner.pointForAmount}
+          min={0}
+          max={1000000}
+          step={1000}
+          okModal={(value) => changePointForAmountValueHandler(value)}
         />
       )}
     </>

@@ -85,6 +85,7 @@ import socketIoClient from "socket.io-client";
 import { savedItemsSliceSignOut } from "../../redux/savedItems/savedItemsSlice";
 import { basketsSliceSignOut } from "../../redux/baskets/basketsSlice";
 import { useLocation } from "react-router-dom";
+import { itemsWithPointsSliceSignOut } from "../../redux/itemsWithPoints/itemsWithPointsSlices";
 
 const socket = socketIoClient(`${SERVER_URL}`, { autoConnect: false });
 
@@ -127,6 +128,7 @@ function SocketObserver() {
     dispatch(usersNotificationsSignOut());
     dispatch(savedItemsSliceSignOut());
     dispatch(basketsSliceSignOut());
+    dispatch(itemsWithPointsSliceSignOut());
     localStorage.removeItem("token");
   };
 

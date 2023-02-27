@@ -23,6 +23,12 @@
     }
 }
 
+.filter_result {
+    background-color: yellow;
+    color: red !important;
+    border-radius: 4px;
+}
+
 @media only screen and (min-width: $small) {
     .details_row {
         .label {

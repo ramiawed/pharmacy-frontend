@@ -27,7 +27,9 @@ function AdminUserTableHeader() {
       <FixedSizeDiv size="medium">
         <label>{t("show-medicines")}</label>
       </FixedSizeDiv>
-
+      <FixedSizeDiv size="medium">
+        <label>{t("points")}</label>
+      </FixedSizeDiv>
       <FixedSizeDiv size="small"></FixedSizeDiv>
     </RowContainer>
   );

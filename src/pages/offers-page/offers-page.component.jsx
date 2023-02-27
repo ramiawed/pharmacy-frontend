@@ -26,11 +26,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 import {
   getOffers,
-  selectOfferMedicines,
   cancelOperation,
   resetOfferItemsArray,
   resetOfferItemsPageState,
-} from "../../redux/offers/offersSlices";
+  selectOfferMedicines,
+} from "../../redux/itemsWithOffer/itemsWithOffersSlices";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
@@ -132,7 +132,13 @@ function OffersPage({ onSelectedChange }) {
         {count > 0 && <ResultsCount label={t("offers-count")} count={count} />}
 
         {medicines.map((medicine, index) => (
-          <ItemOfferRow key={index} item={medicine} index={index} />
+          <ItemOfferRow
+            key={index}
+            item={medicine}
+            index={index}
+            searchString={pageState.searchName}
+            type="offer"
+          />
         ))}
 
         {count > 0 && status !== "loading" && (

@@ -18,7 +18,6 @@ import { setPageState } from "../../redux/items/itemsSlices";
 import { BsFillPersonCheckFill, BsFillPersonDashFill } from "react-icons/bs";
 import { IoMdMore } from "react-icons/io";
 import { BiShow, BiHide } from "react-icons/bi";
-import { AiFillUnlock, AiFillLock } from "react-icons/ai";
 
 // components
 import AdminResetUserPasswordModal from "../../modals/admin-reset-user-password-modal/admin-reset-user-password-modal";
@@ -35,6 +34,7 @@ import rowStyles from "../row.module.scss";
 import styles from "./user-row.module.scss";
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
+import ChangeQuantityModal from "../../modals/change-quantity-modal/change-quantity-modal.component";
 
 // UserRow component
 function UserRow({ user, index }) {
@@ -67,6 +67,10 @@ function UserRow({ user, index }) {
     newPassword: "",
     newPasswordConfirm: "",
   });
+  const [showChangeIncreasePointsValue, setShowChangeIncreasePointsValue] =
+    useState(false);
+  const [showChangeDecreasePointsValue, setShowChangeDecreasePointsValue] =
+    useState(false);
 
   // method to handle the change in the input in password and confirm password
   // for change password
@@ -298,6 +302,41 @@ function UserRow({ user, index }) {
     );
   };
 
+  const increasePointsHandler = (value) => {
+    const oldPoints = user.points * 1;
+    const newPoints = oldPoints + value * 1;
+
+    dispatch(
+      updateUser({
+        body: {
+          points: newPoints,
+        },
+        userId: user._id,
+        token,
+      })
+    );
+
+    setShowChangeIncreasePointsValue(false);
+  };
+
+  const decreasePointsHandler = (value) => {
+    const oldPoints = user.points * 1;
+    const newPoints = oldPoints - value * 1;
+    if (newPoints >= 0) {
+      dispatch(
+        updateUser({
+          body: {
+            points: newPoints,
+          },
+          userId: user._id,
+          token,
+        })
+      );
+    }
+
+    setShowChangeDecreasePointsValue(false);
+  };
+
   return (
     <>
       <RowContainer isEsven={index % 2}>
@@ -365,6 +404,10 @@ function UserRow({ user, index }) {
           )}
         </FixedSizeDiv>
 
+        <FixedSizeDiv size="medium">
+          {user.type === UserTypeConstants.PHARMACY ? user.points : "-"}
+        </FixedSizeDiv>
+
         <FixedSizeDiv size="small">
           <Icon
             tooltip={t("user-more-info-title")}
@@ -383,6 +426,8 @@ function UserRow({ user, index }) {
             changePasswordHandler={setShowResetUserPasswordModal}
             moreInfoHandler={setShowMoreInfo}
             deleteAccountForeverHandler={setShowDeleteConfirmModel}
+            increasePointsHandler={setShowChangeIncreasePointsValue}
+            decreasePointsHandler={setShowChangeDecreasePointsValue}
           />
         )}
       </RowContainer>
@@ -432,6 +477,28 @@ function UserRow({ user, index }) {
 
       {showMoreInfo && (
         <UserMoreInfoModal user={user} close={() => setShowMoreInfo(false)} />
+      )}
+
+      {showChangeIncreasePointsValue && (
+        <ChangeQuantityModal
+          closeModal={() => setShowChangeIncreasePointsValue(false)}
+          value={1}
+          min={0}
+          max={1000000}
+          step={1000}
+          okModal={(value) => increasePointsHandler(value)}
+        />
+      )}
+
+      {showChangeDecreasePointsValue && (
+        <ChangeQuantityModal
+          closeModal={() => setShowChangeDecreasePointsValue(false)}
+          value={1}
+          min={0}
+          max={1000000}
+          step={1000}
+          okModal={(value) => decreasePointsHandler(value)}
+        />
       )}
     </>
   );

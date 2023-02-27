@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { useHistory } from "react-router-dom";
 
 // react-redux stuff
 import { addStatistics } from "../../redux/statistics/statisticsSlice";
@@ -8,31 +7,28 @@ import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 
 // components
-import ItemNames from "../item-names/item-names.component";
-import FullWidthLabel from "../full-width-label/full-width-label.component";
-import ItemPrices from "../item-prices/item-prices.component";
-import Separator from "../separator/separator.component";
-import OfferDetailsRow from "../offer-details-row/offer-details-row.component";
-import RowContainer from "../row-container/row-container.component";
-
 import AddToCartOfferModal from "../../modals/add-to-cart-offer-modal/add-to-cart-offer-modal.component";
-import Icon from "../icon/icon.component";
+import OfferDetailsRow from "../offer-details-row/offer-details-row.component";
+import PointDetailsRow from "../point-details-row/point-details-row.component";
+import FullWidthLabel from "../full-width-label/full-width-label.component";
+import RowContainer from "../row-container/row-container.component";
+import ItemPrices from "../item-prices/item-prices.component";
+import ItemNames from "../item-names/item-names.component";
 import Toast from "../toast/toast.component";
+import Icon from "../icon/icon.component";
 
 // react icons
 import { GiShoppingCart } from "react-icons/gi";
-import { MdExpandLess, MdExpandMore } from "react-icons/md";
 
 // styles
 import styles from "./item-offer-row.module.scss";
 
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import ItemInfoModal from "../../modals/item-info-modal/item-info-modal.component";
+import LabelValueRow from "../label-value-row/label-value-row.component";
 
-function ItemOfferRow({ item, index }) {
+function ItemOfferRow({ item, index, searchString, type }) {
   const { t } = useTranslation();
-  const history = useHistory();
   const dispatch = useDispatch();
 
   // selectors
@@ -41,7 +37,6 @@ function ItemOfferRow({ item, index }) {
   // own state
   const [showModal, setShowModal] = useState(false);
   const [addItemToCart, setAddItemToCart] = useState("");
-  const [expanded, setExpanded] = useState(true);
 
   const rowClickHandler = () => {
     if (user.type === UserTypeConstants.PHARMACY) {
@@ -65,7 +60,11 @@ function ItemOfferRow({ item, index }) {
         <div className={styles.item_row}>
           <div className={styles.first_row}>
             <label className={[styles.item_name].join(" ")}>
-              <ItemNames item={item} on_click={rowClickHandler} />
+              <ItemNames
+                item={item}
+                on_click={rowClickHandler}
+                searchString={searchString}
+              />
             </label>
 
             {user.type === UserTypeConstants.PHARMACY && (
@@ -91,17 +90,32 @@ function ItemOfferRow({ item, index }) {
             />
           </div>
 
-          {expanded && (
-            <>
-              <Separator />
-              {item.warehouses.offer.offers.map((o, index) => (
-                <OfferDetailsRow
-                  offer={o}
-                  offerMode={item.warehouses.offer.mode}
-                  key={index}
-                />
-              ))}
-            </>
+          <div className={styles.second_row}>
+            <LabelValueRow
+              searchString={searchString}
+              value={item.composition}
+              label="item-composition"
+            />
+          </div>
+
+          {type === "offer" ? (
+            item.warehouses.offer.offers.map((o, index) => (
+              <OfferDetailsRow
+                offer={o}
+                offerMode={item.warehouses.offer.mode}
+                key={index}
+              />
+            ))
+          ) : (
+            <></>
+          )}
+
+          {type === "points" ? (
+            item.warehouses.points.map((o, index) => (
+              <PointDetailsRow point={o} key={index} />
+            ))
+          ) : (
+            <></>
           )}
         </div>
       </RowContainer>

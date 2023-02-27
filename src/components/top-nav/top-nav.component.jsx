@@ -247,22 +247,41 @@ function TopNav({ onSelectedChange }) {
 
           {(user.type === UserTypeConstants.ADMIN ||
             user.type === UserTypeConstants.PHARMACY) && (
-            <Link
-              to="/offers"
-              className={[
-                styles.link,
-                history.location.pathname === "/offers"
-                  ? styles.selected
-                  : null,
-              ].join(" ")}
-              onClick={() => {
-                onSelectedChange(TopNavLinks.OFFERS);
-                dispatch(setSearchWarehouseId(null));
-                dispatch(setSearchCompanyId(null));
-              }}
-            >
-              {t("nav-offers")}
-            </Link>
+            <>
+              <Link
+                to="/offers"
+                className={[
+                  styles.link,
+                  history.location.pathname === "/offers"
+                    ? styles.selected
+                    : null,
+                ].join(" ")}
+                onClick={() => {
+                  onSelectedChange(TopNavLinks.OFFERS);
+                  dispatch(setSearchWarehouseId(null));
+                  dispatch(setSearchCompanyId(null));
+                }}
+              >
+                {t("nav-offers")}
+              </Link>
+
+              <Link
+                to="/items-with-points"
+                className={[
+                  styles.link,
+                  history.location.pathname === "/items-with-points"
+                    ? styles.selected
+                    : null,
+                ].join(" ")}
+                onClick={() => {
+                  onSelectedChange(TopNavLinks.ITEMS_WITH_POINTS);
+                  dispatch(setSearchWarehouseId(null));
+                  dispatch(setSearchCompanyId(null));
+                }}
+              >
+                {t("items-with-points")}
+              </Link>
+            </>
           )}
 
           {user.type === UserTypeConstants.PHARMACY && (

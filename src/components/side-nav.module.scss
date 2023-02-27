@@ -15,7 +15,7 @@
 .link.selected,
 .link:hover,
 .link.selected:hover {
-  background: $third-color;
+  background: $red-color;
   color: $white-color;
   border-radius: 6px;
 }
@@ -23,7 +23,7 @@
 .badge {
   display: inline-block;
   background: $white-color;
-  color: $third-color;
+  color: $red-color;
   padding-inline: 12px;
   padding-left: 12px;
   padding-right: 12px;

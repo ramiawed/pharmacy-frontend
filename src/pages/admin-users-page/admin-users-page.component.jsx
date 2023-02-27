@@ -47,10 +47,10 @@ function AdminUsersPage({ onSelectedChange }) {
 
   // handle search
   const handleSearch = (page) => {
-    if (!isOnline) {
-      dispatch(changeOnlineMsg());
-      return;
-    }
+    // if (!isOnline) {
+    //   dispatch(changeOnlineMsg());
+    //   return;
+    // }
 
     dispatch(setPage(page));
     dispatch(getUsers({ token }));
@@ -69,20 +69,20 @@ function AdminUsersPage({ onSelectedChange }) {
   // fire when the enter key press
   // start search
   const enterPress = () => {
-    if (!isOnline) {
-      dispatch(changeOnlineMsg());
-      return;
-    }
+    // if (!isOnline) {
+    //   dispatch(changeOnlineMsg());
+    //   return;
+    // }
 
     handleSearch(1);
     setShowSearchModal(false);
   };
 
   const refreshHandler = () => {
-    if (!isOnline) {
-      dispatch(changeOnlineMsg());
-      return;
-    }
+    // if (!isOnline) {
+    //   dispatch(changeOnlineMsg());
+    //   return;
+    // }
 
     handleSearch(pageState.page);
     setShowSearchModal(false);
@@ -125,7 +125,7 @@ function AdminUsersPage({ onSelectedChange }) {
             <UserRow key={user._id} user={user} index={index} />
           ))}
 
-        {count > 0 && isOnline && (
+        {count > 0 && (
           <ReactPaginate
             previousLabel={t("previous")}
             nextLabel={t("next")}

@@ -19,6 +19,7 @@ import {
   removeIdFromWarehousesId,
   selectMedicines,
   setSearchHaveOffer,
+  setSearchHavepoint,
   setSearchInWarehouse,
   setSearchName,
   setSearchOutWarehouse,
@@ -182,16 +183,29 @@ const MedicineSearchEngine = ({ handleEnterPress, keyUpHandler, location }) => {
 
         {user.type !== UserTypeConstants.GUEST &&
           user.type !== UserTypeConstants.COMPANY && (
-            <div className={searchContainerStyles.checkbox_div}>
-              <CustomCheckbox
-                label={t("medicies-have-offer-label")}
-                value={pageState.searchHaveOffer}
-                changeHandler={() => {
-                  dispatch(setSearchHaveOffer(!pageState.searchHaveOffer));
-                  keyUpHandler();
-                }}
-              />
-            </div>
+            <>
+              <div className={searchContainerStyles.checkbox_div}>
+                <CustomCheckbox
+                  label={t("medicies-have-offer-label")}
+                  value={pageState.searchHaveOffer}
+                  changeHandler={() => {
+                    dispatch(setSearchHaveOffer(!pageState.searchHaveOffer));
+                    keyUpHandler();
+                  }}
+                />
+              </div>
+
+              <div className={searchContainerStyles.checkbox_div}>
+                <CustomCheckbox
+                  label={t("medicies-have-point-label")}
+                  value={pageState.searchHavePoint}
+                  changeHandler={() => {
+                    dispatch(setSearchHavepoint(!pageState.searchHavePoint));
+                    keyUpHandler();
+                  }}
+                />
+              </div>
+            </>
           )}
       </SearchContainer>
 

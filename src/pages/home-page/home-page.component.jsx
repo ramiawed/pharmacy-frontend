@@ -49,6 +49,7 @@ import styles from "./home-page.module.scss";
 
 // constants
 import { AdditionalColors } from "../../utils/constants";
+import SliderImages from "../../components/slider-images/slider-images.component";
 
 function HomePage({ onSelectedChange }) {
   const { t } = useTranslation();
@@ -177,7 +178,7 @@ function HomePage({ onSelectedChange }) {
         position: "relative",
       }}
     >
-      <div className={styles.favorite_nav}>
+      {/* <div className={styles.favorite_nav}>
         {settings.companiesSectionOne.show && (
           <div
             className={styles.favorite_nav_icon}
@@ -267,12 +268,20 @@ function HomePage({ onSelectedChange }) {
             </p>
           </div>
         )}
-      </div>
+      </div> */}
+
+      {/* <div
+        style={{
+          minHeight: "calc(100vh - 60px)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <SliderImages />
+      </div> */}
 
       <div className={styles.header_adv_div}>
-        {/* <div className={styles.header_with_slogn_container}>
-          <HeaderWithSlogn bgColor={Colors.LIGHT_GREY_COLOR} />
-        </div> */}
         <AdvertisementsHomePage advertisements={advertisements} />
       </div>
 

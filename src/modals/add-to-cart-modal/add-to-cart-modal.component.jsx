@@ -9,6 +9,7 @@
 
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { v4 as uuidv4 } from "uuid";
 
 // components
 import Modal from "../modal/modal.component";
@@ -23,7 +24,7 @@ import { selectMedicines } from "../../redux/medicines/medicinesSlices";
 import { removeSavedItem } from "../../redux/savedItems/savedItemsSlice";
 
 // constants and utils
-import { OfferTypes, toEnglishNumber } from "../../utils/constants";
+import { toEnglishNumber } from "../../utils/constants";
 
 // styles
 import styles from "./add-to-cart-modal.module.scss";
@@ -127,11 +128,26 @@ function AddToCartModal({ item, close, setAddItemToCartMsg, fromSavedItems }) {
       return;
     }
 
+    const { addedAt, warehouses, ...itemRest } = item;
+
+    const w = {
+      maxQty: selectedWarehouse.maxQty,
+      offerMode: selectedWarehouse.offer?.mode
+        ? selectedWarehouse.offer?.mode
+        : "",
+      offers: selectedWarehouse.offer?.offers
+        ? selectedWarehouse.offer?.offers
+        : [],
+      points: selectedWarehouse.points,
+      ...selectedWarehouse.warehouse,
+    };
+
     // add item to cart
     dispatch(
       addItemToCart({
-        item: item,
-        warehouse: selectedWarehouse,
+        key: uuidv4(),
+        item: itemRest,
+        warehouse: w,
         qty: qty,
       })
     );

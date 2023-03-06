@@ -4,10 +4,12 @@ import { useTranslation } from "react-i18next";
 // components
 import LabelValueRow from "../../components/label-value-row/label-value-row.component";
 import Separator from "../../components/separator/separator.component";
-import { formatDate, formatNumber } from "../../utils/constants";
 import Modal from "../modal/modal.component";
 
-const OrderDetailsInfoModal = ({ orderDetails, computeTotalPrice, close }) => {
+// utils
+import { formatDate, formatNumber } from "../../utils/constants";
+
+const OrderDetailsInfoModal = ({ orderDetails, close }) => {
   const { t } = useTranslation();
   return (
     <Modal
@@ -39,12 +41,23 @@ const OrderDetailsInfoModal = ({ orderDetails, computeTotalPrice, close }) => {
         label="date-label"
         value={formatDate(new Date(orderDetails.createdAt))}
       />
-      {computeTotalPrice && (
+
+      {orderDetails.totalInvoicePrice && (
         <>
           <Separator />
           <LabelValueRow
             label="total-invoice-price"
-            value={formatNumber(computeTotalPrice())}
+            value={formatNumber(orderDetails.totalInvoicePrice)}
+          />
+        </>
+      )}
+
+      {orderDetails.totalInvoicePoints && (
+        <>
+          <Separator />
+          <LabelValueRow
+            label="points"
+            value={formatNumber(orderDetails.totalInvoicePoints)}
           />
         </>
       )}

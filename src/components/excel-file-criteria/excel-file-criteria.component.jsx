@@ -31,6 +31,7 @@ function ExcelFileCriteria({ action }) {
         <label style={{ flex: 1 }}>price</label>
         <label style={{ flex: 1 }}>customer_price</label>
         <label style={{ flex: 1 }}>barcode</label>
+        <label style={{ flex: 1 }}>barcodeTwo</label>
         <label style={{ flex: 1 }}>indication</label>
         <label style={{ flex: 1 }}>composition</label>
       </RowContainer>

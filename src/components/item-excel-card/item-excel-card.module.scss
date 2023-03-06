@@ -2,18 +2,10 @@
 
 .card_container {
   width: 100%;
-
-  padding: 4px 0;
+  padding: 4px;
   margin: 6px 0;
-
   display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
   flex-direction: column;
-
-  color: $dark-color;
-  background-color: $white-color;
-
   box-shadow: 0 0 3px rgba($color: #000000, $alpha: 0.3);
   border-radius: 6px;
 }
@@ -23,46 +15,86 @@
   border: 1px solid $red-color;
 }
 
-.actions {
+.row_column {
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
+  flex-direction: column;
+}
 
-  input {
-    margin-inline: 8px;
-    margin-left: 8px;
-    margin-right: 8px;
+@media only screen and (min-width: $medium) {
+  .row_column {
+    flex-direction: row;
   }
 }
 
 .row {
   width: 100%;
   display: flex;
+  flex-direction: row;
   align-items: center;
   padding: 4px;
 
   label {
-    min-width: 50px;
-    font-size: 0.5rem;
+    width: 85px;
+    font-weight: bold;
+    font-size: 10px;
     text-align: end;
     padding-inline-end: 6px;
     padding-left: 6px;
+    color: $light-color;
   }
 
   input,
   textarea {
     flex: 1;
-    font-size: 1rem;
+    font-size: 16px;
     padding-inline-start: 6px;
     padding-right: 6px;
     color: $main-color;
-    border: 1px solid rgba($color: $light-color, $alpha: 1);
     border-radius: 4px;
+    border: none;
+    outline: none;
+    color: $dark-color;
 
     &:focus {
-      border: 2px solid rgba($color: $dark-color, $alpha: 1);
-      border-radius: 4px;
-      outline: none;
+      background-color: $dark-color;
+      color: $white-color;
     }
   }
+}
+
+.namesActionsDiv {
+  display: flex;
+}
+
+.namesDiv {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  justify-content: center;
+  gap: 5px;
+
+  input {
+    font-size: 16px;
+    padding-inline-start: 6px;
+    padding-right: 6px;
+    color: $main-color;
+    border-radius: 4px;
+    border: none;
+    outline: none;
+    color: $dark-color;
+
+    &:focus {
+      background-color: $dark-color;
+      color: $white-color;
+    }
+  }
+}
+
+.centerDiv {
+  margin-left: 5px;
+  padding-left: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-left: 1px solid $light-grey-color;
 }

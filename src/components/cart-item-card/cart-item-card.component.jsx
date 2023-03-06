@@ -35,14 +35,14 @@ function CartItemCard({ cartItem, inOrderDetails, index, iconColor }) {
       cartItem.warehouse.maxQty !== 0 &&
       cartItem.qty < cartItem.warehouse.maxQty
     )
-      dispatch(increaseItemQty(cartItem));
+      dispatch(increaseItemQty(cartItem.key));
     else if (cartItem.warehouse.maxQty === 0) {
-      dispatch(increaseItemQty(cartItem));
+      dispatch(increaseItemQty(cartItem.key));
     }
   };
 
   const decreaseHandler = () => {
-    if (cartItem.qty > 1) dispatch(decreaseItemQty(cartItem));
+    if (cartItem.qty > 1) dispatch(decreaseItemQty(cartItem.key));
   };
 
   return (
@@ -98,7 +98,9 @@ function CartItemCard({ cartItem, inOrderDetails, index, iconColor }) {
                 : ""}
             </label>
 
-            <label className={styles.label}>{cartItem.point}</label>
+            <label className={styles.label}>
+              {cartItem.point} {t("point")}
+            </label>
 
             <label className={styles.label}>
               {formatNumber(cartItem.item.price)}

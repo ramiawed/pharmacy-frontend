@@ -11,7 +11,7 @@ import styles from "./item-excel-card.module.scss";
 import { Colors, onKeyPressForNumberInput } from "../../utils/constants";
 import Icon from "../icon/icon.component";
 
-function ItemExcelRow({
+function ItemExcelCard({
   item,
   index,
   onchange,
@@ -31,7 +31,123 @@ function ItemExcelRow({
     <div
       className={[styles.card_container, error ? styles.error : ""].join(" ")}
     >
-      <div className={styles.actions}>
+      <div className={styles.namesActionsDiv}>
+        <div className={styles.centerDiv}>
+          <input
+            type="checkbox"
+            value={item.selected}
+            checked={item.selected}
+            onChange={() => onSelectedChanged(index)}
+          />
+        </div>
+
+        <div className={styles.namesDiv}>
+          <input
+            id="name"
+            type="text"
+            value={item.name}
+            onChange={(e) => onchange(e, index)}
+          />
+          <input
+            id="nameAr"
+            type="text"
+            value={item.nameAr}
+            onChange={(e) => onchange(e, index)}
+          />
+        </div>
+
+        <Icon
+          selected={false}
+          foreColor={Colors.FAILED_COLOR}
+          tooltip={t("delete-row")}
+          onclick={onDelete}
+          icon={() => <AiFillDelete size={24} />}
+        />
+      </div>
+      <div className={styles.row_column}>
+        <div className={styles.row}>
+          <label>{t("item-formula")}:</label>
+          <input
+            id="formula"
+            type="text"
+            value={item.formula}
+            onChange={(e) => onchange(e, index)}
+          />
+        </div>
+
+        <div className={styles.row}>
+          <label>{t("item-caliber")}:</label>
+          <input
+            id="caliber"
+            type="text"
+            value={item.caliber}
+            onChange={(e) => onchange(e, index)}
+          />
+        </div>
+      </div>
+
+      <div className={styles.row_column}>
+        <div className={styles.row}>
+          <label>{t("item-price")}:</label>
+          <input
+            id="price"
+            onKeyPress={onKeyPressForNumberInput}
+            value={item.price}
+            onChange={(e) => onchange(e, index)}
+          />
+        </div>
+        <div className={styles.row}>
+          <label>{t("item-customer-price")}:</label>
+          <input
+            id="customer_price"
+            onKeyPress={onKeyPressForNumberInput}
+            value={item.customer_price}
+            onChange={(e) => onchange(e, index)}
+          />
+        </div>
+      </div>
+
+      <div className={styles.row_column}>
+        <div className={styles.row}>
+          <label>{t("item-barcode")}:</label>
+          <input
+            id="barcode"
+            type="text"
+            value={item.barcode}
+            onChange={(e) => onchange(e, index)}
+          />
+        </div>
+        <div className={styles.row}>
+          <label>{t("item-barcode")} 2:</label>
+          <input
+            id="barcodeTwo"
+            type="text"
+            value={item.barcodeTwo}
+            onChange={(e) => onchange(e, index)}
+          />
+        </div>
+      </div>
+
+      <div className={styles.row}>
+        <label>{t("item-indication")}:</label>
+        <textarea
+          id="indication"
+          value={item.indication}
+          onChange={(e) => onchange(e, index)}
+          rows={1}
+        />
+      </div>
+
+      <div className={styles.row}>
+        <label>{t("item-composition")}:</label>
+        <textarea
+          id="composition"
+          value={item.composition}
+          onChange={(e) => onchange(e, index)}
+          rows={1}
+        />
+      </div>
+      {/* <div className={styles.actions}>
         <input
           type="checkbox"
           value={item.selected}
@@ -43,7 +159,7 @@ function ItemExcelRow({
           foreColor={Colors.FAILED_COLOR}
           tooltip={t("delete-row")}
           onclick={onDelete}
-          icon={() => <AiFillDelete size={16} />}
+          icon={() => <AiFillDelete size={24} />}
         />
       </div>
 
@@ -67,69 +183,19 @@ function ItemExcelRow({
         />
       </div>
 
-      <div className={styles.row}>
-        <label>{t("item-formula")}:</label>
-        <input
-          id="formula"
-          type="text"
-          value={item.formula}
-          onChange={(e) => onchange(e, index)}
-        />
-        <label>{t("item-caliber")}:</label>
-        <input
-          id="caliber"
-          type="text"
-          value={item.caliber}
-          onChange={(e) => onchange(e, index)}
-        />
-      </div>
+      
+
+      
+
+      
 
       <div className={styles.row}>
-        <label>{t("item-price")}:</label>
-        <input
-          id="price"
-          onKeyPress={onKeyPressForNumberInput}
-          value={item.price}
-          onChange={(e) => onchange(e, index)}
-        />
-        <label>{t("item-customer-price")}:</label>
-        <input
-          id="customer_price"
-          onKeyPress={onKeyPressForNumberInput}
-          value={item.customer_price}
-          onChange={(e) => onchange(e, index)}
-        />
+      
       </div>
 
-      <div className={styles.row}>
-        <label>{t("item-barcode")}:</label>
-        <input
-          id="barcode"
-          type="text"
-          value={item.barcode}
-          onChange={(e) => onchange(e, index)}
-        />
-      </div>
-
-      <div className={styles.row}>
-        <label>{t("item-indication")}:</label>
-        <textarea
-          id="indication"
-          value={item.indication}
-          onChange={(e) => onchange(e, index)}
-        />
-      </div>
-
-      <div className={styles.row}>
-        <label>{t("item-composition")}:</label>
-        <textarea
-          id="composition"
-          value={item.composition}
-          onChange={(e) => onchange(e, index)}
-        />
-      </div>
+       */}
     </div>
   );
 }
 
-export default ItemExcelRow;
+export default ItemExcelCard;

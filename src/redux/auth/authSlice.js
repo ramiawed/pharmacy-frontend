@@ -356,6 +356,70 @@ export const removeCompanyFromOurCompanies = createAsyncThunk(
   }
 );
 
+export const changeMyPoints = createAsyncThunk(
+  "auth/changeMyPoints",
+  async ({ token, obj }, { rejectWithValue }) => {
+    try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.post(`${BASEURL}/users/update-points`, obj, {
+        cancelToken: source.token,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      resetCancelAndSource();
+
+      return response.data;
+    } catch (err) {
+      resetCancelAndSource();
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
+export const getMyPoints = createAsyncThunk(
+  "auth/getMyPoints",
+  async ({ token }, { rejectWithValue }) => {
+    try {
+      CancelToken = axios.CancelToken;
+      source = CancelToken.source();
+
+      const response = await axios.get(`${BASEURL}/users/my-points`, {
+        cancelToken: source.token,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      resetCancelAndSource();
+
+      return response.data;
+    } catch (err) {
+      resetCancelAndSource();
+      if (err.code === "ECONNABORTED" && err.message.startsWith("timeout")) {
+        return rejectWithValue("timeout");
+      }
+      if (axios.isCancel(err)) {
+        return rejectWithValue("cancel");
+      }
+      if (!err.response) {
+        return rejectWithValue("network failed");
+      }
+      return rejectWithValue(err.response.data);
+    }
+  }
+);
+
 export const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -572,6 +636,32 @@ export const authSlice = createSlice({
         state.deleteError = "general-error";
       }
     },
+    [changeMyPoints.pending]: (state) => {
+      state.status = "loading";
+      state.error = "";
+    },
+    [changeMyPoints.fulfilled]: (state, action) => {
+      state.status = "succeeded";
+      state.error = "";
+      state.user = {
+        ...state.user,
+        points: state.user.points + action.payload.amount,
+      };
+    },
+    [changeMyPoints.rejected]: (state, { payload }) => {
+      state.status = "failed";
+      try {
+        if (payload === "timeout") {
+          state.error = "general-error";
+        } else if (payload === "cancel") {
+          state.error = "general-error";
+        } else if (payload === "network failed") {
+          state.error = "general-error";
+        } else state.error = payload.message;
+      } catch (err) {
+        state.error = "general-error";
+      }
+    },
     [addCompanyToOurCompanies.pending]: (state) => {
       state.status = "loading";
       state.error = "";
@@ -588,6 +678,33 @@ export const authSlice = createSlice({
       state.error = "";
     },
     [addCompanyToOurCompanies.rejected]: (state, { payload }) => {
+      state.status = "failed";
+      try {
+        if (payload === "timeout") {
+          state.error = "general-error";
+        } else if (payload === "cancel") {
+          state.error = "general-error";
+        } else if (payload === "network failed") {
+          state.error = "general-error";
+        } else state.error = payload.message;
+      } catch (err) {
+        state.error = "general-error";
+      }
+    },
+
+    [getMyPoints.pending]: (state) => {
+      state.status = "loading";
+      state.error = "";
+    },
+    [getMyPoints.fulfilled]: (state, action) => {
+      state.status = "succeeded";
+      state.error = "";
+      state.user = {
+        ...state.user,
+        points: action.payload.points,
+      };
+    },
+    [getMyPoints.rejected]: (state, { payload }) => {
       state.status = "failed";
       try {
         if (payload === "timeout") {

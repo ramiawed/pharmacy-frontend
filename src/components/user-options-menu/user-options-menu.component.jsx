@@ -20,7 +20,7 @@ const UserOptionsMenu = ({
     <div
       className={[
         styles.menu,
-        index < 7 ? styles.fromTop : styles.fromBottom,
+        index < 5 ? styles.fromTop : styles.fromBottom,
       ].join(" ")}
     >
       <div

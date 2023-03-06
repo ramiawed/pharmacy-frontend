@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
-import { useTranslation } from "react-i18next";
 
 // components
 import AdvertisementSideNav from "../../components/advertisement-side-nav/advertisement-side-nav.component";
@@ -48,11 +47,8 @@ import { selectAdvertisements } from "../../redux/advertisements/advertisementsS
 import styles from "./home-page.module.scss";
 
 // constants
-import { AdditionalColors } from "../../utils/constants";
-import SliderImages from "../../components/slider-images/slider-images.component";
 
 function HomePage({ onSelectedChange }) {
-  const { t } = useTranslation();
   const dispatch = useDispatch();
   const [showCompaniesSectionOneSideNav, setShowCompaniesSectionOneSideNav] =
     useState(false);

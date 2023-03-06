@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import axios from "axios";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -10,7 +9,7 @@ import {
   changeOnlineMsg,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
-import { selectUserData } from "../../redux/auth/authSlice";
+import { changeMyPoints, selectUserData } from "../../redux/auth/authSlice";
 import { addStatistics } from "../../redux/statistics/statisticsSlice";
 import { saveOrder, setRefresh } from "../../redux/orders/ordersSlice";
 
@@ -28,7 +27,6 @@ import styles from "./cart-warehouse.module.scss";
 
 // constants
 import {
-  BASEURL,
   Colors,
   formatNumber,
   OfferTypes,
@@ -52,27 +50,39 @@ function CartWarehouse({ warehouse, wIndex }) {
   const [showWarningMsg, setShowWarningMsg] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
-  const computeTotalPrice = () => {
-    let total = 0;
+  const computeTotalPrice = (() => {
+    let invoiceTotal = 0;
+    let itemsPoints = 0;
 
     cartItems
-      .filter((item) => item.warehouse.warehouse.name === warehouse.name)
-      .forEach((item) => {
-        total =
-          total +
-          item.qty * item.item.price -
-          (item.bonus && item.bonusType === OfferTypes.PERCENTAGE
-            ? (item.qty * item.item.price * item.bonus) / 100
+      .filter((ci) => ci.warehouse.name === warehouse.name)
+      .forEach((ci) => {
+        invoiceTotal =
+          invoiceTotal +
+          ci.qty * ci.item.price -
+          (ci.bonus && ci.bonusType === OfferTypes.PERCENTAGE
+            ? (ci.qty * ci.item.price * ci.bonus) / 100
             : 0);
+
+        itemsPoints = itemsPoints + ci.point;
       });
 
-    return total;
-  };
+    return { invoiceTotal, itemsPoints };
+  })();
+
+  const numbersOfPoint =
+    warehouse.includeInPointSystem &&
+    warehouse.pointForAmount &&
+    warehouse.amountToGetPoint
+      ? Math.floor(
+          computeTotalPrice.invoiceTotal / warehouse.amountToGetPoint
+        ) * warehouse.pointForAmount
+      : 0;
 
   const checkOrderHandler = () => {
     if (
       warehouse.invoiceMinTotal > 0 &&
-      computeTotalPrice() < warehouse.invoiceMinTotal
+      computeTotalPrice.invoiceTotal < warehouse.invoiceMinTotal
     ) {
       setShowWarningMsg(true);
       return;
@@ -93,21 +103,20 @@ function CartWarehouse({ warehouse, wIndex }) {
 
     let obj = {
       pharmacy: user._id,
-      warehouse: cartItems.filter(
-        (cartItem) => cartItem.warehouse.warehouse.name === warehouse.name
-      )[0].warehouse.warehouse._id,
+      warehouse: warehouse._id,
       items: cartItems
-        .filter((item) => item.warehouse.name === warehouse.name)
-        .map((e) => {
+        .filter((ci) => ci.warehouse.name === warehouse.name)
+        .map((ci) => {
           return {
-            item: e.item._id,
-            qty: e.qty,
-            bonus: e.bonus,
-            bonusType: e.bonusType,
-            price: e.item.price,
-            customer_price: e.item.customer_price,
+            item: ci.item._id,
+            qty: ci.qty,
+            bonus: ci.bonus,
+            bonusType: ci.bonusType,
+            price: ci.item.price,
           };
         }),
+      totalInvoicePrice: computeTotalPrice.invoiceTotal,
+      totalInvoicePoints: numbersOfPoint + computeTotalPrice.itemsPoints,
       status: OrdersStatusOptions.SENT_BY_PHARMACY,
     };
 
@@ -124,19 +133,19 @@ function CartWarehouse({ warehouse, wIndex }) {
             token,
           })
         );
-        if (numbersOfPoint > 0) {
-          await axios.post(
-            `${BASEURL}/users/update-points`,
-            {
-              id: user._id,
-              amount: numbersOfPoint,
-            },
-            {
-              headers: {
-                Authorization: `Bearer ${token}`,
-              },
-            }
-          );
+
+        if (numbersOfPoint + computeTotalPrice.itemsPoints > 0) {
+          try {
+            dispatch(
+              changeMyPoints({
+                token,
+                obj: {
+                  id: user._id,
+                  amount: numbersOfPoint + computeTotalPrice.itemsPoints,
+                },
+              })
+            );
+          } catch (err) {}
         }
 
         setShowLoadingModal(false);
@@ -148,14 +157,6 @@ function CartWarehouse({ warehouse, wIndex }) {
       });
     dispatch(setRefresh(true));
   };
-
-  const numbersOfPoint =
-    warehouse.includeInPointSystem &&
-    warehouse.pointForAmount &&
-    warehouse.amountToGetPoint
-      ? Math.floor(computeTotalPrice() / warehouse.amountToGetPoint) *
-        warehouse.pointForAmount
-      : 0;
 
   return (
     <div
@@ -183,11 +184,11 @@ function CartWarehouse({ warehouse, wIndex }) {
       {expanded && (
         <>
           {cartItems
-            .filter((item) => item.warehouse.warehouse.name === warehouse.name)
-            .map((item, index) => (
+            .filter((ci) => ci.warehouse.name === warehouse.name)
+            .map((ci, index) => (
               <CartItemCard
                 key={index}
-                cartItem={item}
+                cartItem={ci}
                 inOrderDetails={false}
                 index={index}
                 iconColor={
@@ -200,12 +201,14 @@ function CartWarehouse({ warehouse, wIndex }) {
 
       <div className={styles.additional_warehouse_info_div}>
         <label>
-          {t("total-invoice-price")}: {formatNumber(computeTotalPrice())}
+          {t("total-invoice-price")}:{" "}
+          {formatNumber(computeTotalPrice.invoiceTotal)}
         </label>
 
         {numbersOfPoint > 0 && (
           <label>
-            {t("number of points that you get")} {numbersOfPoint}
+            {t("number of points that you get")}:{" "}
+            {numbersOfPoint + computeTotalPrice.itemsPoints}
           </label>
         )}
 
@@ -224,10 +227,7 @@ function CartWarehouse({ warehouse, wIndex }) {
 
         {warehouse.fastDeliver && <label>{t("fast-deliver")}</label>}
         {warehouse.payAtDeliver && (
-          <label
-            className={styles.pay_label}
-            style={{ color: Colors.FAILED_COLOR }}
-          >
+          <label className={styles.pay_label}>
             {t("dear-partner-pay-when-deliver")}
           </label>
         )}

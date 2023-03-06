@@ -43,19 +43,6 @@ function InputFile({ fileChangedHandler, small, label }) {
           withBackground={true}
           text={t(label)}
         />
-        // <div
-        //   className={styles.actions}
-        //   style={{
-        //     marginBlockEnd: "10px",
-        //   }}
-        // >
-        //   <label
-        //     style={{
-        //       color: Colors.MAIN_COLOR,
-        //     }}
-        //   ></label>
-
-        // </div>
       )}
 
       <input

@@ -98,14 +98,6 @@ const OrderDetailsActions = ({
             tooltip={t("shipped-order-label")}
             text={t("shipped-order-label")}
           />
-          {/* <Icon
-            icon={() => <AiTwotoneEdit color={Colors.MAIN_COLOR} />}
-            onclick={() => {}}
-            foreColor={Colors.LIGHT_COLOR}
-            withBackground={true}
-            tooltip={t("edit-order-label")}
-            text={t("edit-order-label")}
-          /> */}
         </>
       )}
 
@@ -125,7 +117,6 @@ const OrderDetailsActions = ({
       {showOrderDetails && (
         <OrderDetailsInfoModal
           orderDetails={orderDetails}
-          computeTotalPrice={computeTotalPrice}
           close={() => setShowOrderDetails(false)}
         />
       )}

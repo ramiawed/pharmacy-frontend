@@ -8,24 +8,24 @@ const initialState = {
 
 const calculateOfferQty = (selectedWarehouse, qty) => {
   // check if the specified warehouse has an offer
-  if (selectedWarehouse?.offer.offers.length > 0) {
+  if (selectedWarehouse.offers.length > 0) {
     // through all the offers, check if the entered quantity has an offer
-    for (let i = 0; i < selectedWarehouse.offer.offers.length; i++) {
+    for (let i = 0; i < selectedWarehouse.offers.length; i++) {
       // check if the entered quantity has an offer
-      if (qty >= selectedWarehouse.offer.offers[i].qty) {
+      if (qty >= selectedWarehouse.offers[i].qty) {
         // if it has return:
         // 1- mode of the offer (pieces, percentage)
         // 2- bonus
         // 2-1: if the mode is pieces return the bonus * (entered qty / bonus qty)
         // 2-2: if the mode is percentage return the bonus
-        if (selectedWarehouse.offer.mode === OfferTypes.PERCENTAGE) {
-          return selectedWarehouse.offer.offers[i].bonus;
+        if (selectedWarehouse.offerMode === OfferTypes.PERCENTAGE) {
+          return selectedWarehouse.offers[i].bonus;
         } else {
           return (
-            selectedWarehouse.offer.offers[i].bonus +
+            selectedWarehouse.offers[i].bonus +
             calculateOfferQty(
               selectedWarehouse,
-              qty - selectedWarehouse.offer.offers[i].qty
+              qty - selectedWarehouse.offers[i].qty
             )
           );
         }
@@ -69,118 +69,79 @@ export const cartSlice = createSlice({
       const addedItem = {
         ...action.payload,
         bonus: bonusQty,
-        bonusType: bonusQty > 0 ? warehouse.offer.mode : null,
+        bonusType: bonusQty > 0 ? warehouse.offerMode : null,
         point: calculatePoints(warehouse, qty),
       };
 
       // check if you order anything from this warehouse
       // if not add it to the cartWarehouse
-      if (
-        !state.cartWarehouse
-          .map((w) => w.name)
-          .includes(action.payload.warehouse.warehouse.name)
-      ) {
-        state.cartWarehouse = [...state.cartWarehouse, warehouse.warehouse];
+      if (!state.cartWarehouse.map((w) => w.name).includes(warehouse.name)) {
+        const { maxQty, offerMode, offers, points, isActive, city, ...rest } =
+          warehouse;
+        state.cartWarehouse = [...state.cartWarehouse, rest];
       }
 
-      // check if the item is already in the cart
-      const findItem = state.cartItems.find(
-        (i) =>
-          i.item._id === item._id &&
-          i.warehouse.warehouse._id === warehouse.warehouse._id
+      const filteredArray = state.cartItems.filter(
+        (i) => !(i.item._id === item._id && i.warehouse._id === warehouse._id)
       );
-
-      // if the item is already in the cart, replace the item
-      if (findItem) {
-        const filteredArray = state.cartItems.filter(
-          (i) =>
-            !(
-              i.item._id === item._id &&
-              i.warehouse.warehouse._id === warehouse.warehouse._id
-            )
-        );
-
-        state.cartItems = [...filteredArray, addedItem];
-      } else {
-        // if the item is not in the cart, add it to cart
-        state.cartItems = [...state.cartItems, addedItem];
-      }
+      state.cartItems = [...filteredArray, addedItem];
     },
 
     increaseItemQty: (state, action) => {
       // destructing fields from action.payload
-      const { item, warehouse } = action.payload;
-
+      const key = action.payload;
       // if the item is in the cart, add one to its quantity
-      state.cartItems = state.cartItems.map((i) => {
-        if (
-          i.item._id === item._id &&
-          i.warehouse.warehouse._id === warehouse.warehouse._id
-        ) {
-          const bonusQty = calculateOfferQty(warehouse, i.qty + 1);
+      state.cartItems = state.cartItems.map((ci) => {
+        if (ci.key === key) {
+          const bonusQty = calculateOfferQty(ci.warehouse, ci.qty + 1);
 
           return {
-            ...i,
-            qty: i.qty * 1 + 1,
+            ...ci,
+            qty: ci.qty * 1 + 1,
             bonus: bonusQty,
-            bonusType: bonusQty > 0 ? warehouse.offer.mode : null,
-            point: calculatePoints(warehouse, i.qty + 1),
+            bonusType: bonusQty > 0 ? ci.warehouse.offerMode : null,
+            point: calculatePoints(ci.warehouse, ci.qty + 1),
           };
         } else {
-          return i;
+          return ci;
         }
       });
     },
 
     decreaseItemQty: (state, action) => {
       // destructing fields from action.payload
-      const { item, warehouse } = action.payload;
-
+      const key = action.payload;
       // if the item is in the cart, add one to its quantity
-      state.cartItems = state.cartItems.map((i) => {
-        if (
-          i.item._id === item._id &&
-          i.warehouse.warehouse._id === warehouse.warehouse._id
-        ) {
-          const bonusQty = calculateOfferQty(warehouse, i.qty - 1);
+      state.cartItems = state.cartItems.map((ci) => {
+        if (ci.key === key) {
+          const bonusQty = calculateOfferQty(ci.warehouse, ci.qty - 1);
 
           return {
-            ...i,
-            qty: i.qty * 1 - 1,
+            ...ci,
+            qty: ci.qty * 1 - 1,
             bonus: bonusQty,
-            bonusType: bonusQty > 0 ? warehouse.offer.mode : null,
-            point: calculatePoints(warehouse, i.qty - 1),
+            bonusType: bonusQty > 0 ? ci.warehouse.offerMode : null,
+            point: calculatePoints(ci.warehouse, ci.qty - 1),
           };
         } else {
-          return i;
+          return ci;
         }
       });
     },
 
     removeItemFromCart: (state, action) => {
       // destructing fields from action.payload
-      const {
-        item: { _id: itemId },
-        warehouse: {
-          warehouse: { _id: warehouseId, name: warehouseName },
-        },
-      } = action.payload;
+      const { key, warehouse } = action.payload;
 
-      state.cartItems = state.cartItems.filter(
-        (item) =>
-          !(
-            item.item._id === itemId &&
-            item.warehouse.warehouse._id === warehouseId
-          )
-      );
+      state.cartItems = state.cartItems.filter((ci) => !(ci.key === key));
 
       const findItemByWarehouse = state.cartItems.find(
-        (item) => item.warehouse.warehouse._id === warehouseId
+        (ci) => ci.warehouse._id === warehouse._id
       );
 
       if (!findItemByWarehouse) {
         state.cartWarehouse = state.cartWarehouse.filter(
-          (w) => w.name !== warehouseName
+          (w) => w.name !== warehouse.name
         );
       }
     },
@@ -190,9 +151,10 @@ export const cartSlice = createSlice({
         (w) => w.name !== action.payload.name
       );
       state.cartItems = state.cartItems.filter(
-        (item) => item.warehouse.warehouse.name !== action.payload.name
+        (ci) => ci.warehouse.name !== action.payload.name
       );
     },
+
     cartSliceSignOut: (state) => {
       state.cartItems = [];
       state.cartWarehouse = [];

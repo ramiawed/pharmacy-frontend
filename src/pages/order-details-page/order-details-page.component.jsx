@@ -74,21 +74,6 @@ function OrderDetailsPage({ location, onSelectedChange }) {
     getOrderDetails();
   };
 
-  const computeTotalPrice = () => {
-    let total = 0;
-
-    orderDetails.items.forEach((item) => {
-      total =
-        total +
-        item.qty * item.price -
-        (item.bonus && item.bonusType === OfferTypes.PERCENTAGE
-          ? (item.qty * item.price * item.bonus) / 100
-          : 0);
-    });
-
-    return total;
-  };
-
   const warehouseDontServeHanlder = () => {
     dispatch(
       updateOrder({
@@ -204,7 +189,6 @@ function OrderDetailsPage({ location, onSelectedChange }) {
               {orderDetails && (
                 <OrderDetailsActions
                   orderDetails={orderDetails}
-                  computeTotalPrice={computeTotalPrice}
                   warehouseDontServeHanlder={warehouseDontServeHanlder}
                   devlierHandler={devlierHandler}
                   confirmOrderHanlder={confirmOrderHanlder}

@@ -101,6 +101,7 @@ function ItemPage() {
     formula: "",
     indication: "",
     barcode: "",
+    barcodeTwo: "",
     composition: "",
     packing: "",
     warehouses: [],
@@ -478,6 +479,17 @@ function ItemPage() {
                     id="barcode"
                     type="text"
                     value={item.barcode}
+                    bordered={false}
+                    // icon={getIcon("medicine")}
+                    onchange={handleInputChange}
+                    readOnly={!allowAction}
+                  />
+                  <div className={styles.horizontal_div}></div>
+                  <Input
+                    label="item-barcode"
+                    id="barcodeTwo"
+                    type="text"
+                    value={item.barcodeTwo}
                     bordered={false}
                     // icon={getIcon("medicine")}
                     onchange={handleInputChange}

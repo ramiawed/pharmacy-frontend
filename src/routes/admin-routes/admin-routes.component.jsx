@@ -86,6 +86,9 @@ const BasketOrderDetailsPage = lazy(() =>
     "../../pages/basket-order-details-page/basket-order-details-page.component"
   )
 );
+const ItemsWithPointsPage = lazy(() =>
+  import("../../pages/items-with-points-page/items-with-points-page.component")
+);
 
 function AdminRoutes({ changeOptionHandler }) {
   return (
@@ -153,6 +156,20 @@ function AdminRoutes({ changeOptionHandler }) {
             onSelectedChange={() => {
               changeOptionHandler({
                 selectedTopNavOption: TopNavLinks.OFFERS,
+                collapsedSideNavOption: true,
+                selectedSideNavOption: "",
+                showTopNav: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+        </Route>
+
+        <Route exact path="/items-with-points">
+          <ItemsWithPointsPage
+            onSelectedChange={() => {
+              changeOptionHandler({
+                selectedTopNavOption: TopNavLinks.ITEMS_WITH_POINTS,
                 collapsedSideNavOption: true,
                 selectedSideNavOption: "",
                 showTopNav: false,

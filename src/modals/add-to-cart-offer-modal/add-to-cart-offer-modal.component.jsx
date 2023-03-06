@@ -7,6 +7,7 @@
 // setAddItemToCartMsg: method to set the add item to cart message
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+import { v4 as uuidv4 } from "uuid";
 
 // components
 import Modal from "../modal/modal.component";
@@ -51,6 +52,7 @@ function AddToCartOfferModal({ item, close, setAddItemToCartMsg }) {
     ],
   };
 
+
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -83,11 +85,22 @@ function AddToCartOfferModal({ item, close, setAddItemToCartMsg }) {
       return;
     }
 
+    const { warehouses, ...item } = addToCartItem;
+
+    const w = {
+      maxQty: warehouses[0].maxQty,
+      offerMode: warehouses[0].offer?.mode ? warehouses[0].offer?.mode : "",
+      offers: warehouses[0].offer?.offers ? warehouses[0].offer?.offers : [],
+      points: warehouses[0].points,
+      ...warehouses[0].warehouse,
+    };
+
     // add item to cart
     dispatch(
       addItemToCart({
-        item: addToCartItem,
-        warehouse: addToCartItem.warehouses[0],
+        key: uuidv4(),
+        item,
+        warehouse: w,
         qty: qty,
       })
     );

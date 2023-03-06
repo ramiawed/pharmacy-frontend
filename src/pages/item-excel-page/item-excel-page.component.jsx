@@ -191,6 +191,13 @@ function ItemExcelPage() {
           };
         }
 
+        if (!d.barcodeTwo) {
+          obj = {
+            ...obj,
+            barcodeTwo: "",
+          };
+        }
+
         if (!d.indication) {
           obj = {
             ...obj,

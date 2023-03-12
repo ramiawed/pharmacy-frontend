@@ -9,7 +9,6 @@ import Icon from "../icon/icon.component";
 import Modal from "../../modals/modal/modal.component";
 
 // icons
-import { AiTwotoneEdit } from "react-icons/ai";
 import { BsCheck, BsStopCircle } from "react-icons/bs";
 import { GiConfirmed } from "react-icons/gi";
 import { GrMoreVertical } from "react-icons/gr";

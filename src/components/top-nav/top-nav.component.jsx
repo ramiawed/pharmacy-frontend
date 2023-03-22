@@ -118,7 +118,7 @@ function TopNav({ onSelectedChange }) {
             >
               <Icon
                 icon={() => <IoMdNotifications size={24} />}
-                tooltip={t("nav-notifications")}
+                tooltip={t("nav notifications")}
                 withAlertIcon={unReadNotificationCount > 0}
                 closeToIcon={true}
               />
@@ -178,7 +178,7 @@ function TopNav({ onSelectedChange }) {
               dispatch(setSearchCompanyId(null));
             }}
           >
-            {t("nav-main-page")}
+            {t("nav main page")}
           </Link>
 
           <Link
@@ -195,7 +195,7 @@ function TopNav({ onSelectedChange }) {
               dispatch(setSearchCompanyId(null));
             }}
           >
-            {t("nav-company")}
+            {t("nav company")}
           </Link>
 
           {(user.type === UserTypeConstants.ADMIN ||
@@ -214,7 +214,7 @@ function TopNav({ onSelectedChange }) {
                 dispatch(setSearchCompanyId(null));
               }}
             >
-              {t("nav-warehouse")}
+              {t("nav warehouse")}
             </Link>
           )}
 
@@ -242,7 +242,7 @@ function TopNav({ onSelectedChange }) {
               }
             }}
           >
-            {t("nav-medicines")}
+            {t("nav medicines")}
           </Link>
 
           {(user.type === UserTypeConstants.ADMIN ||

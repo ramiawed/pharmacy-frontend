@@ -1,0 +1,51 @@
+@import "../../variables.scss";
+
+.container {
+    overflow: auto;
+    padding-inline: 12px;
+    padding-left: 12px;
+    padding-right: 12px;
+
+    h3 {
+        font-size: 16px;
+        color: $dark-color;
+        text-decoration: underline;
+    }
+
+    strong {
+        font-size: 16px;
+        font-weight: bold;
+        color: $green-color;
+    }
+
+    ul.first {
+        list-style-type: square;
+        list-style-position: inside;
+        list-style-image: none;
+    }
+
+    ul.second {
+        list-style-type: circle;
+        list-style-position: inside;
+        list-style-image: none;
+
+        &:lang(ar) {
+            margin-right: 25px;
+        }
+
+        &:lang(en) {
+            margin-left: 25px;
+        }
+    }
+
+    p,
+    li {
+        text-align: justify;
+    }
+
+    p.strong {
+        font-weight: bold;
+        color: $dark-color;
+        text-decoration: underline;
+    }
+}

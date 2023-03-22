@@ -19,8 +19,8 @@ import {
 import { Colors } from "../../utils/constants";
 
 // components
-import Loader from "../action-loader/action-loader.component";
 import ResultModal from "../result-modal/result-modal.component";
+import Loader from "../action-loader/action-loader.component";
 import Toast from "../toast/toast.component";
 
 function AdminUsersNotifications({ refreshHandler }) {
@@ -79,7 +79,7 @@ function AdminUsersNotifications({ refreshHandler }) {
         <Toast
           bgColor={Colors.SUCCEEDED_COLOR}
           foreColor="#fff"
-          toastText={t("password-change-succeeded")}
+          toastText={t("password change succeeded")}
           actionAfterTimeout={() => {
             dispatch(resetUserChangePasswordStatus());
           }}
@@ -90,7 +90,7 @@ function AdminUsersNotifications({ refreshHandler }) {
         <Toast
           bgColor={Colors.FAILED_COLOR}
           foreColor="#fff"
-          toastText={t("password-change-failed")}
+          toastText={t("password change failed")}
           actionAfterTimeout={() => dispatch(resetUserChangePasswordStatus())}
         />
       )}

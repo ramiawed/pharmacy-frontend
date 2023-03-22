@@ -6,15 +6,11 @@ import { unwrapResult } from "@reduxjs/toolkit";
 import { cancelOperation } from "../../redux/auth/authSlice";
 
 // components
-import Button from "../button/button.component";
 import CitiesDropDown from "../cities-dropdown/cities-dropdown.component";
+import Button from "../button/button.component";
 
 // styles
 import styles from "./editable-city.module.scss";
-import generalStyles from "../../style.module.scss";
-
-// constants
-import { Colors } from "../../utils/constants";
 
 // use this promise to abort the operation by click on the cancel button
 let promise;
@@ -112,27 +108,18 @@ function EditableCity({
               <Button
                 text="ok-label"
                 action={handleOkAction}
-                bgColor={Colors.LIGHT_COLOR}
+                classStyle="bg_light"
                 loading={loading}
               />
               <div style={{ minWidth: "10px" }}></div>
               <Button
-                text="cancel-label"
+                text="cancel"
                 action={cancelHandler}
-                bgColor={Colors.FAILED_COLOR}
+                classStyle="bg_red"
               />
             </div>
           ) : (
-            <div className={generalStyles.flex_center_container}>
-              {/* <Button
-                text="edit-label"
-                action={() => {
-                  setIsEditable(true);
-                  setPreviousValue(value);
-                }}
-                bgColor={Colors.SUCCEEDED_COLOR}
-              /> */}
-            </div>
+            <></>
           )
         ) : null}
       </div>

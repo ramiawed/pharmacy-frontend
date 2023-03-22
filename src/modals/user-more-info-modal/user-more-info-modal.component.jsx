@@ -43,25 +43,22 @@ function UserMoreInfoModal({ user, close }) {
 
   return (
     <Modal
-      header="user-more-info-title"
+      header="user more info title"
       cancelLabel="close-label"
       closeModal={close}
       small={true}
     >
       <div className={[styles.header].join(" ")}>{t("personal-info")}</div>
-      <LabelValueRow label="user-username" value={user.username} />
+      <LabelValueRow label="user username" value={user.username} />
       <Separator />
 
       <LabelValueRow
-        label="user-type"
+        label="user type"
         value={t(`${user.type.toLowerCase()}`)}
       />
       <Separator />
 
-      <LabelValueRow
-        label="user-created-at"
-        value={user.createdAt.split("T")[0]}
-      />
+      <LabelValueRow label="created at" value={user.createdAt.split("T")[0]} />
       <Separator />
 
       {(user.type === UserTypeConstants.PHARMACY ||
@@ -124,20 +121,20 @@ function UserMoreInfoModal({ user, close }) {
 
       <div className={[styles.header].join(" ")}>{t("communication-info")}</div>
 
-      <LabelValueRow label="user-email" value={user.email} />
+      <LabelValueRow label="user email" value={user.email} />
       <Separator />
 
-      <LabelValueRow label="user-phone" value={user.phone} />
+      <LabelValueRow label="user phone" value={user.phone} />
       <Separator />
 
-      <LabelValueRow label="user-mobile" value={user.mobile} />
+      <LabelValueRow label="user mobile" value={user.mobile} />
       <Separator />
 
       <div className={[styles.header].join(" ")}>{t("address-info")}</div>
       <LabelValueRow label="user-city" value={t(user.city)} />
       <Separator />
 
-      <LabelValueRow label="user-address-details" value={user.addressDetails} />
+      <LabelValueRow label="user address details" value={user.addressDetails} />
       <Separator />
 
       {/* if the user type is pharmacy or warehouse display employee name and certificate name */}
@@ -148,11 +145,11 @@ function UserMoreInfoModal({ user, close }) {
             {t("additional-info")}
           </div>
 
-          <LabelValueRow label="user-employee-name" value={user.employeeName} />
+          <LabelValueRow label="user employee name" value={user.employeeName} />
           <Separator />
 
           <LabelValueRow
-            label="user-certificate-name"
+            label="user certificate name"
             value={user.certificateName}
           />
           <Separator />
@@ -165,7 +162,7 @@ function UserMoreInfoModal({ user, close }) {
             {t("additional-info")}
           </div>
           <LabelValueRow
-            label="user-job"
+            label="user job"
             value={t(`${user.guestDetails.job.toLowerCase()}`)}
           />
           <Separator />
@@ -179,7 +176,7 @@ function UserMoreInfoModal({ user, close }) {
               <Separator />
 
               <LabelValueRow
-                label="user-job-title"
+                label="user job title"
                 value={user.guestDetails.jobTitle}
               />
               <Separator />

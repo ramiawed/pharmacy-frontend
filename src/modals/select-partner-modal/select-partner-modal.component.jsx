@@ -50,16 +50,15 @@ function SelectPartnerModal({
   return (
     <Modal
       header={t(header)}
-      cancelLabel="cancel-label"
+      cancelLabel="cancel"
       closeModal={close}
       small={true}
     >
       <>
         <div
-          className={[
-            styles.search_container,
-            generalStyles.flex_center_container,
-          ].join(" ")}
+          className={[styles.search_container, "flex_center_container"].join(
+            " "
+          )}
         >
           <IoIosSearch color={Colors.LIGHT_COLOR} size={24} />
           <input

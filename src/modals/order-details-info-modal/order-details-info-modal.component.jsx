@@ -15,22 +15,22 @@ const OrderDetailsInfoModal = ({ orderDetails, close }) => {
     <Modal
       header={t("order-details")}
       closeModal={close}
-      cancelLabel="cancel-label"
+      cancelLabel="cancel"
       small={true}
     >
       <LabelValueRow label="pharmacy-name" value={orderDetails.pharmacy.name} />
       <Separator />
       <LabelValueRow
-        label="user-certificate-name"
+        label="user certificate name"
         value={orderDetails.pharmacy.certificateName}
       />
       <Separator />
       <LabelValueRow
-        label="user-address-details"
+        label="user address details"
         value={orderDetails.pharmacy.addressDetails}
       />
       <Separator />
-      <LabelValueRow label="user-mobile" value={orderDetails.pharmacy.mobile} />
+      <LabelValueRow label="user mobile" value={orderDetails.pharmacy.mobile} />
       <Separator />
       <LabelValueRow
         label="warehouse-name"

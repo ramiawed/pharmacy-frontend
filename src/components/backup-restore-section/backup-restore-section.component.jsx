@@ -3,17 +3,23 @@ import { useTranslation } from "react-i18next";
 import axios from "axios";
 import * as FileSaver from "file-saver";
 
+// components
+import Loader from "../action-loader/action-loader.component";
+import Modal from "../../modals/modal/modal.component";
+import Toast from "../toast/toast.component";
+import Icon from "../icon/icon.component";
+
 // redux stuff
 import { useSelector } from "react-redux";
 import { selectToken } from "../../redux/auth/authSlice";
 
+// styles
 import styles from "./backup-restore-section.module.scss";
-import Loader from "../action-loader/action-loader.component";
-import Toast from "../toast/toast.component";
 
+// constants
 import { Colors } from "../../utils/constants";
-import Modal from "../../modals/modal/modal.component";
-import Icon from "../icon/icon.component";
+
+// icons
 import { RiDeleteBin5Fill } from "react-icons/ri";
 
 const BackupRestoreSection = ({ title, backupFromUrl, restoreToUrl }) => {
@@ -121,10 +127,10 @@ const BackupRestoreSection = ({ title, backupFromUrl, restoreToUrl }) => {
             setShowConfirmModal(true);
           }}
         >
-          {t("backup-button")}
+          {t("backup button")}
         </button>
         <button className={styles.restore_button} onClick={() => handleClick()}>
-          {t("restore-button")}
+          {t("restore button")}
         </button>
         {data.length > 0 ? (
           stage < numberOfStage ? (

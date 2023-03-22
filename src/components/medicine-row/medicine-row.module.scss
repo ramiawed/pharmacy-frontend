@@ -17,8 +17,15 @@
       display: inline-block;
       display: flex;
       border-radius: 50%;
-      margin-left: 10px;
       cursor: pointer;
+
+      &:lang(ar) {
+        margin-left: 10px;
+      }
+
+      &:lang(en) {
+        margin-right: 10px;
+      }
     }
 
     .item_names_container {

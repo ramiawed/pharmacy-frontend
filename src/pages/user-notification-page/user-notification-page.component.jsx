@@ -3,6 +3,7 @@ import ReactLoading from "react-loading";
 
 // components
 import MainContentContainer from "../../components/main-content-container/main-content-container.component";
+import CenterContainer from "../../components/center-container/center-container.component";
 import NotificationRow from "../../components/notification-row/notification-row.component";
 import NoContent from "../../components/no-content/no-content.component";
 import Button from "../../components/button/button.component";
@@ -24,11 +25,6 @@ import {
   setPage,
   setRefresh,
 } from "../../redux/userNotifications/userNotificationsSlice";
-
-// icons
-
-// styles
-import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
@@ -81,7 +77,7 @@ function UserNotificationPage({ onSelectedChange }) {
 
   return (
     <>
-      <Header title="nav-notifications" refreshHandler={refreshHandler} />
+      <Header title="nav notifications" refreshHandler={refreshHandler} />
 
       <MainContentContainer>
         {userNotifications.map((note, index) => (
@@ -93,30 +89,23 @@ function UserNotificationPage({ onSelectedChange }) {
         )}
 
         {status === "loading" && (
-          <div className={generalStyles.flex_container}>
+          <CenterContainer>
             <ReactLoading color={Colors.LIGHT_COLOR} type="cylon" />
-          </div>
+          </CenterContainer>
         )}
 
         {userNotifications.length < count && (
           <Button
             text={t("more")}
             action={handleMoreResult}
-            bgColor={Colors.LIGHT_COLOR}
+            classStyle="bg_light"
           />
         )}
 
         {userNotifications.length === count &&
           status !== "loading" &&
           count !== 0 && (
-            <p
-              className={[
-                generalStyles.center,
-                generalStyles.fc_secondary,
-              ].join(" ")}
-            >
-              {t("no-more")}
-            </p>
+            <p className={["center", "fc_light"].join(" ")}>{t("no-more")}</p>
           )}
       </MainContentContainer>
     </>

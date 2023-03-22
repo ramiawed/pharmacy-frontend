@@ -40,7 +40,14 @@
   justify-content: flex-end;
   position: relative;
   top: 10px;
-  left: 10px;
+
+  &:lang(ar) {
+    left: 10px;
+  }
+
+  &:lang(en) {
+    right: 10px;
+  }
 }
 
 .offer_icon {
@@ -87,7 +94,6 @@
 
 .content {
   position: relative;
-  // color: $white-color;
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -95,11 +101,18 @@
 }
 
 .showed_content {
-  border-top-left-radius: 30px;
   padding: 4px;
   background: $white-color;
   z-index: 5;
   transition: all 1s;
+
+  &:lang(ar) {
+    border-top-left-radius: 30px;
+  }
+
+  &:lang(ar) {
+    border-top-right-radius: 30px;
+  }
 
   .main_details {
     border-top: 1px solid $light-color;

@@ -6,6 +6,10 @@
   font-weight: bold;
 }
 
-.ul {
+.ul:lang(ar) {
   margin-right: 30px;
+}
+
+.ul:lang(en) {
+  margin-left: 30px;
 }

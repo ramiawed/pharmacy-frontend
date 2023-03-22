@@ -13,7 +13,14 @@
   background: $light-grey-color;
   border-radius: 3px;
   margin-inline-end: 4px;
-  margin-left: 4px;
+
+  &:lang(ar) {
+    margin-left: 4px;
+  }
+
+  &:lang(en) {
+    margin-right: 4px;
+  }
 }
 
 .highlight {

@@ -1,12 +1,14 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+
+// constants
 import { UserTypeConstants } from "../../utils/constants";
 
+// styles
 import styles from "./user-options-menu.module.scss";
 
 const UserOptionsMenu = ({
   user,
-  index,
   closeHandler,
   changeStatusHandler,
   changePasswordHandler,
@@ -14,13 +16,17 @@ const UserOptionsMenu = ({
   deleteAccountForeverHandler,
   increasePointsHandler,
   decreasePointsHandler,
+  position,
 }) => {
   const { t } = useTranslation();
+
   return (
     <div
       className={[
         styles.menu,
-        index < 5 ? styles.fromTop : styles.fromBottom,
+        window.innerHeight * 1 - position > 400
+          ? styles.fromTop
+          : styles.fromBottom,
       ].join(" ")}
     >
       <div
@@ -98,7 +104,7 @@ const UserOptionsMenu = ({
           closeHandler();
         }}
       >
-        {t("user-more-info-title")}
+        {t("user more info title")}
       </div>
     </div>
   );

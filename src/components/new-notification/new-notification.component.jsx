@@ -1,6 +1,5 @@
 import React, { useState, useRef } from "react";
 import { useTranslation } from "react-i18next";
-import axios from "axios";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -179,13 +178,9 @@ function NewNotification({ setIsNew, setSuccessAddingMsg }) {
         <Button
           action={addHandler}
           text={t("add-label")}
-          bgColor={Colors.SUCCEEDED_COLOR}
+          classStyle="bg_green"
         />
-        <Button
-          action={resetState}
-          text={t("cancel-label")}
-          bgColor={Colors.FAILED_COLOR}
-        />
+        <Button action={resetState} text={t("cancel")} classStyle="bg_red" />
       </div>
     </div>
   );

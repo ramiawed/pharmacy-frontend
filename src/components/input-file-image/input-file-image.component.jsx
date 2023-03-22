@@ -1,12 +1,11 @@
 import { unwrapResult } from "@reduxjs/toolkit";
 import React from "react";
 import { useTranslation } from "react-i18next";
+
+// redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import { changeLogo, selectUserData } from "../../redux/auth/authSlice";
 import { changeItemLogo } from "../../redux/items/itemsSlices";
-
-// styles
-import generalStyles from "../../style.module.scss";
 
 function InputFileImage({ type, item, readOnly, onchange }) {
   const { t } = useTranslation();
@@ -65,13 +64,10 @@ function InputFileImage({ type, item, readOnly, onchange }) {
     <>
       <div>
         <button
-          className={[
-            generalStyles.button,
-            generalStyles.bg_secondary,
-            generalStyles.fc_white,
-            generalStyles.padding_h_12,
-            generalStyles.padding_v_6,
-          ].join(" ")}
+          className={["button", "bg_light", "fc_white"].join(" ")}
+          style={{
+            padding: "6px 12px",
+          }}
           onClick={handleClick}
           disabled={readOnly}
         >

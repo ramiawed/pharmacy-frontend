@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Redirect, useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
 import axios from "axios";
-import Logo from "../../smal-logo.png";
+import Logo from "../../assets/small_logo.png";
 
 // components
 import CreateAccountStageThree from "../create-account-stage-three/create-account-stage-three.component";
@@ -238,7 +238,7 @@ function SignUp() {
       {/* top left */}
       <div className={styles.container}>
         <div className={styles.header}>
-          <h3>{t("sign-up")}</h3>
+          <h3>{t("sign up")}</h3>
           <img src={Logo} alt="thumb" className={styles.img} />
         </div>
 
@@ -301,7 +301,7 @@ function SignUp() {
                 onClick={createAccountHandler}
                 className={styles.create_account_btn}
               >
-                {t("sign-up-press-label")}
+                {t("sign up press label")}
               </button>
               <div
                 style={{
@@ -314,7 +314,7 @@ function SignUp() {
                   setStage(stage - 1);
                 }}
                 text={t("previous")}
-                bgColor={Colors.SUCCEEDED_COLOR}
+                classStyle="bg_green"
               />
             </div>
           )}
@@ -327,10 +327,10 @@ function SignUp() {
       >
         <div className={styles.signup}>
           <label style={{ cursor: "pointer", fontSize: "14px" }}>
-            {t("sign-in-sentence")}
+            {t("sign in sentence")}
           </label>
           <br />
-          <label className={styles.signup_button}>{t("sign-in")}</label>
+          <label className={styles.signup_button}>{t("sign in")}</label>
         </div>
       </div>
 

@@ -12,6 +12,8 @@ import { Colors } from "../../utils/constants";
 
 // react icons
 import { RiSave3Fill } from "react-icons/ri";
+
+// redux stuff
 import { useSelector } from "react-redux";
 import { selectToken } from "../../redux/auth/authSlice";
 import { selectCompanies } from "../../redux/company/companySlice";

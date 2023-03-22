@@ -13,6 +13,7 @@ import { resetPageState } from "../../redux/users/usersSlice";
 import { BiSortAZ } from "react-icons/bi";
 import { RiRefreshLine } from "react-icons/ri";
 import { VscClearAll } from "react-icons/vsc";
+import { FiFilter } from "react-icons/fi";
 
 // constants
 import {
@@ -23,7 +24,6 @@ import {
   UserActiveState,
   UserTypeConstants,
 } from "../../utils/constants";
-import { FiFilter } from "react-icons/fi";
 
 const AdminUsersActions = ({
   refreshHandler,

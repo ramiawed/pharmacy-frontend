@@ -71,12 +71,12 @@
     align-items: center;
 
     .btn {
-      min-width: 200px;
+      // min-width: 200px;
       background-color: $offer-color;
       color: $main-color;
       border: none;
       outline: none;
-      padding: 4px 0;
+      padding: 4px;
       font-size: 14px;
       font-weight: bold;
       border-radius: 6px;
@@ -90,11 +90,6 @@
     .small_label {
       font-size: 14px;
       color: $main-color;
-      min-width: 200px;
-    }
-
-    .margin_start {
-      margin-right: 10px;
     }
   }
 
@@ -103,12 +98,6 @@
     padding: 0 10px;
     font-size: 14px;
     color: $main-color;
-  }
-}
-
-@media only screen and (min-width: $small) {
-  .container {
-    width: 45%;
   }
 }
 

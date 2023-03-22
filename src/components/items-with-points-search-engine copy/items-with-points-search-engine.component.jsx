@@ -39,7 +39,7 @@ const ItemsWithPointsSearchEngine = ({ handleEnterPress, keyUpHandler }) => {
       searchEngineAlert={isThereSearch}
     >
       <SearchInput
-        label="user-name"
+        label="user name"
         id="search-name"
         type="text"
         value={pageState.searchName}
@@ -47,7 +47,7 @@ const ItemsWithPointsSearchEngine = ({ handleEnterPress, keyUpHandler }) => {
           dispatch(setSearchName(e.target.value));
         }}
         icon={<FaSearch />}
-        placeholder="search-by-name-composition-barcode"
+        placeholder="search by name-composition-barcode"
         onEnterPress={handleEnterPress}
         resetField={() => {
           dispatch(setSearchName(""));

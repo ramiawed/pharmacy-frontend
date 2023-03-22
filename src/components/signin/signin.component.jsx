@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { useHistory } from "react-router";
 import { useTranslation } from "react-i18next";
-import Logo from "../../smal-logo.png";
+import Logo from "../../assets/small_logo.png";
 
 // react-icons
 import { HiUser } from "react-icons/hi";
@@ -10,8 +10,8 @@ import { RiLockPasswordLine } from "react-icons/ri";
 
 // component
 import InputSignIn from "../input-sign-in/input-sign-in.component";
-import Button from "../button/button.component";
 import Modal from "../../modals/modal/modal.component";
+import Button from "../button/button.component";
 
 // redux
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -21,18 +21,17 @@ import {
   selectUserData,
   resetError,
 } from "../../redux/auth/authSlice";
-import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 import { addStatistics } from "../../redux/statistics/statisticsSlice";
 import { getAllSettings } from "../../redux/settings/settingsSlice";
 import { getAllAdvertisements } from "../../redux/advertisements/advertisementsSlice";
+import { getCompanies } from "../../redux/company/companySlice";
+import { getWarehouses } from "../../redux/warehouse/warehousesSlice";
 
 // styles
 import styles from "./signin.module.scss";
 
 // constants
-import { Colors, VERSION } from "../../utils/constants";
-import { getCompanies } from "../../redux/company/companySlice";
-import { getWarehouses } from "../../redux/warehouse/warehousesSlice";
+import { VERSION } from "../../utils/constants";
 
 // Sign in component
 function SignIn() {
@@ -41,8 +40,6 @@ function SignIn() {
   const history = useHistory();
 
   // selectors
-  // state that indicates if there is a internet connection or not
-  const isOnline = useSelector(selectOnlineStatus);
   // state from user state redux
   const { error } = useSelector(selectUserData);
 
@@ -123,8 +120,8 @@ function SignIn() {
     if (userInfo.username.length === 0 && userInfo.password.length === 0) {
       setPreSignError({
         ...preSignError,
-        username: "enter-username",
-        password: "enter-password",
+        username: "enter username",
+        password: "enter password",
       });
       return;
     }
@@ -133,7 +130,7 @@ function SignIn() {
     if (userInfo.username.length === 0) {
       setPreSignError({
         ...preSignError,
-        username: "enter-password",
+        username: "enter password",
       });
       return;
     }
@@ -142,7 +139,7 @@ function SignIn() {
     if (userInfo.password.length === 0) {
       setPreSignError({
         ...preSignError,
-        password: "enter-password",
+        password: "enter password",
       });
       return;
     }
@@ -159,7 +156,7 @@ function SignIn() {
           addStatistics({
             obj: {
               targetUser: result.data.user._id,
-              action: "user-sign-in",
+              action: "user-sign in",
             },
             token: result.token,
           })
@@ -181,7 +178,7 @@ function SignIn() {
     <div className={styles.outer_container}>
       <div className={[styles.container].join(" ")}>
         <div className={styles.header}>
-          <h3>{t("sign-in")}</h3>
+          <h3>{t("sign in")}</h3>
           <img src={Logo} alt="thumb" className={styles.img} />
         </div>
 
@@ -189,7 +186,7 @@ function SignIn() {
         <InputSignIn
           icon={<HiUser className={styles.icons} />}
           type="text"
-          placeholder="user-username"
+          placeholder="user username"
           id="username"
           value={userInfo.username}
           onchange={inputChangeHandler}
@@ -202,7 +199,7 @@ function SignIn() {
         <InputSignIn
           icon={<RiLockPasswordLine className={styles.icon} />}
           type="password"
-          placeholder="user-password"
+          placeholder="user password"
           id="password"
           value={userInfo.password}
           onchange={inputChangeHandler}
@@ -219,7 +216,7 @@ function SignIn() {
         >
           <div>
             <input id="remember" type="checkbox" />
-            <label htmlFor="remember">{t("remember-me")}</label>
+            <label htmlFor="remember">{t("remember me")}</label>
           </div>
 
           <p
@@ -254,9 +251,9 @@ function SignIn() {
           }}
         >
           <Button
-            text={t("sign-in")}
+            text={t("sign in")}
             action={signInHandler}
-            bgColor={Colors.FAILED_COLOR}
+            classStyle="bg_red"
           />
         </div>
       </div>
@@ -267,10 +264,10 @@ function SignIn() {
       >
         <div className={styles.signup}>
           <label style={{ cursor: "pointer", fontSize: "14px" }}>
-            {t("sign-up-sentence")}
+            {t("sign up sentence")}
           </label>
           <br />
-          <label className={styles.signup_button}>{t("sign-up")}</label>
+          <label className={styles.signup_button}>{t("sign up")}</label>
         </div>
       </div>
 

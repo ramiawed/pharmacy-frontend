@@ -162,13 +162,7 @@ function OffersModal({ item, warehouseId, close, token, allowEdit }) {
       )}
 
       {values.length === 0 && (
-        <p
-          className={[generalStyles.center, generalStyles.fc_secondary].join(
-            " "
-          )}
-        >
-          {t("no-offers")}
-        </p>
+        <p className={["center", "fc_light"].join(" ")}>{t("no-offers")}</p>
       )}
 
       <MultiValue

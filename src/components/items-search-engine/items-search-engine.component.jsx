@@ -17,8 +17,6 @@ import {
   setPageState,
 } from "../../redux/items/itemsSlices";
 
-// icons
-
 // constants and utils
 import { UserTypeConstants } from "../../utils/constants";
 
@@ -46,7 +44,7 @@ function ItemsSearchEngine({ user, pageState, search, keyUpHandler }) {
         type="text"
         value={pageState.searchName}
         onchange={(e) => dispatch(setPageState({ searchName: e.target.value }))}
-        placeholder="search-by-name-composition-barcode"
+        placeholder="search by name-composition-barcode"
         onEnterPress={search}
         resetField={() => {
           dispatch(setPageState({ searchName: "" }));

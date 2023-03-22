@@ -1,5 +1,5 @@
 // libraries
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
@@ -21,6 +21,7 @@ import { BiShow, BiHide } from "react-icons/bi";
 
 // components
 import AdminResetUserPasswordModal from "../../modals/admin-reset-user-password-modal/admin-reset-user-password-modal";
+import ChangeQuantityModal from "../../modals/change-quantity-modal/change-quantity-modal.component";
 import UserMoreInfoModal from "../../modals/user-more-info-modal/user-more-info-modal.component";
 import ChildFlexOneDiv from "../child-flex-one-div/child-flex-one-div.component";
 import UserOptionsMenu from "../user-options-menu/user-options-menu.component";
@@ -32,14 +33,15 @@ import Icon from "../icon/icon.component";
 // styles
 import rowStyles from "../row.module.scss";
 import styles from "./user-row.module.scss";
+
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import ChangeQuantityModal from "../../modals/change-quantity-modal/change-quantity-modal.component";
 
 // UserRow component
 function UserRow({ user, index }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
+  const mouseYPosition = useRef(0);
 
   // selectors
   const isOnline = useSelector(selectOnlineStatus);
@@ -49,7 +51,7 @@ function UserRow({ user, index }) {
   const [modalInfo, setModalInfo] = useState({
     header: "",
     body: "",
-    cancelLabel: "cancel-label",
+    cancelLabel: "cancel",
     okLabel: "ok-label",
   });
   const [showModal, setShowModal] = useState(false);
@@ -91,35 +93,35 @@ function UserRow({ user, index }) {
     if (passwordObj.newPassword.length < 5) {
       errorObj = {
         ...errorObj,
-        newPassword: "password-length",
+        newPassword: "password length",
       };
     }
 
     if (passwordObj.newPassword.length === 0) {
       errorObj = {
         ...errorObj,
-        newPassword: "enter-password",
+        newPassword: "enter password",
       };
     }
 
     if (passwordObj.newPassword !== passwordObj.newPasswordConfirm) {
       errorObj = {
         ...errorObj,
-        newPasswordConfirm: "unequal-passwords",
+        newPasswordConfirm: "unequal passwords",
       };
     }
 
     if (passwordObj.newPasswordConfirm.length < 5) {
       errorObj = {
         ...errorObj,
-        newPasswordConfirm: "confirm-password-length",
+        newPasswordConfirm: "confirm password length",
       };
     }
 
     if (passwordObj.newPasswordConfirm.length === 0) {
       errorObj = {
         ...errorObj,
-        newPasswordConfirm: "enter-password-confirm",
+        newPasswordConfirm: "enter password confirm",
       };
     }
 
@@ -337,20 +339,25 @@ function UserRow({ user, index }) {
     setShowChangeDecreasePointsValue(false);
   };
 
+  const showUserOptionsMenu = (e) => {
+    mouseYPosition.current = e.clientY;
+    setShowMenu(true);
+  };
+
   return (
     <>
       <RowContainer isEsven={index % 2}>
         <ChildFlexOneDiv>
           {user.isActive ? (
             <Icon
-              tooltip={t("tooltip-undo-delete")}
+              tooltip={t("tooltip undo delete")}
               onclick={() => userStatusChangeConfirmHandler("disapprove")}
               icon={() => <BsFillPersonCheckFill />}
               foreColor={Colors.SUCCEEDED_COLOR}
             />
           ) : (
             <Icon
-              tooltip={t("tooltip-delete")}
+              tooltip={t("tooltip delete")}
               onclick={() => userStatusChangeConfirmHandler("approve")}
               icon={() => <BsFillPersonDashFill />}
               foreColor={Colors.FAILED_COLOR}
@@ -409,18 +416,12 @@ function UserRow({ user, index }) {
         </FixedSizeDiv>
 
         <FixedSizeDiv size="small">
-          <Icon
-            tooltip={t("user-more-info-title")}
-            onclick={() => setShowMenu(true)}
-            icon={() => <IoMdMore />}
-            foreColor={Colors.MAIN_COLOR}
-          />
+          <IoMdMore onClick={(e) => showUserOptionsMenu(e)} />
         </FixedSizeDiv>
 
         {showMenu && (
           <UserOptionsMenu
             user={user}
-            index={index}
             closeHandler={() => setShowMenu(false)}
             changeStatusHandler={userStatusChangeConfirmHandler}
             changePasswordHandler={setShowResetUserPasswordModal}
@@ -428,6 +429,7 @@ function UserRow({ user, index }) {
             deleteAccountForeverHandler={setShowDeleteConfirmModel}
             increasePointsHandler={setShowChangeIncreasePointsValue}
             decreasePointsHandler={setShowChangeDecreasePointsValue}
+            position={mouseYPosition.current}
           />
         )}
       </RowContainer>
@@ -458,7 +460,7 @@ function UserRow({ user, index }) {
       {showDeleteConfirmModel && (
         <Modal
           header="delete-user-header"
-          cancelLabel="cancel-label"
+          cancelLabel="cancel"
           okLabel="ok-label"
           okModal={deleteUserForeverHandler}
           closeModal={() => setShowDeleteConfirmModel(false)}

@@ -24,7 +24,6 @@
   display: inline-block;
   background: $white-color;
   color: $red-color;
-  padding-inline: 12px;
   padding-left: 12px;
   padding-right: 12px;
   border-radius: 50%;
@@ -44,21 +43,33 @@
   margin-top: auto;
   margin-bottom: auto;
   margin-inline-end: 10px;
-  margin-left: 10px;
   position: relative;
+}
+
+.nav_icon:lang(ar) {
+  margin-left: 10px;
+}
+
+.nav_icon:land(en) {
+  margin-right: 10px;
 }
 
 .tooltip {
   display: none;
   position: absolute;
-  right: 25px;
   top: 5px;
   background: black;
-  padding-inline: 4px;
   padding-left: 4px;
   padding-right: 4px;
   border-radius: 4px;
   font-size: 0.7rem;
+}
+
+.tooltip:lang(ar) {
+  right: 25px;
+}
+.tooltip:lang(en) {
+  left: 25px;
 }
 
 .nav_icon:hover .tooltip {

@@ -15,7 +15,6 @@
 
 .toTop {
   position: fixed;
-  left: 10px;
   bottom: 10px;
   color: $blue-color;
   opacity: 0.8;
@@ -24,6 +23,14 @@
   z-index: 100;
   background-color: $white-color;
   border-radius: 50%;
+
+  &:lang(ar) {
+    left: 10px;
+  }
+
+  &:lang(en) {
+    right: 10px;
+  }
 }
 
 .toTop:hover {

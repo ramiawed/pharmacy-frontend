@@ -1,8 +1,14 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import { VscLoading } from "react-icons/vsc";
-import { Colors } from "../../utils/constants";
+
+// components
 import Icon from "../icon/icon.component";
+
+// icons
+import { VscLoading } from "react-icons/vsc";
+
+// constants
+import { Colors } from "../../utils/constants";
 
 const ThreeStateIcon = ({
   loading,
@@ -30,16 +36,10 @@ const ThreeStateIcon = ({
         <Icon
           tooltip={t(removeTooltip)}
           onclick={removeHandler}
-          //   foreColor={Colors.FAILED_COLOR}
           icon={removeIcon}
         />
       ) : (
-        <Icon
-          tooltip={t(addTooltip)}
-          onclick={addHandler}
-          //   foreColor={Colors.SUCCEEDED_COLOR}
-          icon={addIcon}
-        />
+        <Icon tooltip={t(addTooltip)} onclick={addHandler} icon={addIcon} />
       )}
     </>
   );

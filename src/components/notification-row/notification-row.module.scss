@@ -20,7 +20,6 @@
   padding: 5px;
   border-radius: 6px;
   border: 1px solid rgba($color: $light-color, $alpha: 0.6);
-  // box-shadow: 2px 2px 3px rgba($color: #000000, $alpha: 0.6);
   cursor: pointer;
 }
 
@@ -30,13 +29,17 @@
   background-color: $main-color;
   border-radius: 6px;
   box-shadow: 2px 2px 3px rgba($color: #000000, $alpha: 0.6);
-
-  margin-inline-end: 10px;
-  margin-left: 10px;
-
   display: flex;
   align-items: center;
   justify-content: center;
+
+  &:lang(ar) {
+    margin-left: 10px;
+  }
+
+  &:lang(en) {
+    margin-right: 10px;
+  }
 }
 
 .image {
@@ -47,25 +50,26 @@
 
 .actions {
   width: 120px;
-  margin-right: auto;
   margin-top: 20px;
-
   display: flex;
   flex-direction: row;
+
+  &:lang(ar) {
+    margin-right: auto;
+  }
+
+  &:lang(en) {
+    margin-left: auto;
+  }
 }
 
 .delete {
   width: 48px;
   height: 48px;
-
   margin: auto 10px;
-  margin-inline-end: 0;
-  margin-left: 0;
-
   display: flex;
   justify-content: center;
   align-items: center;
-
   background: $white-color;
   color: $red-color;
   box-shadow: 2px 2px 5px rgba($color: #000000, $alpha: 0.6);
@@ -74,6 +78,14 @@
   cursor: pointer;
 
   transition: all 0.3s ease;
+
+  &:lang(ar) {
+    margin-left: 0;
+  }
+
+  &:lang(en) {
+    margin-right: 0;
+  }
 }
 
 .delete:hover {
@@ -129,6 +141,13 @@
 .unread_icon {
   color: $main-color;
   position: absolute;
-  left: 20px;
   top: 0;
+
+  &:lang(ar) {
+    left: 20px;
+  }
+
+  &:lang(en) {
+    right: 20px;
+  }
 }

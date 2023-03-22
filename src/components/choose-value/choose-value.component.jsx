@@ -16,7 +16,7 @@ const ChooseValue = ({
   return (
     <Modal
       header={headerTitle}
-      cancelLabel="cancel-label"
+      cancelLabel="cancel"
       closeModal={close}
       okLabel="ok-label"
       okModal={() => {

@@ -7,13 +7,12 @@ import { getAllAdvertisements } from "../../redux/advertisements/advertisementsS
 import { selectToken } from "../../redux/auth/authSlice";
 
 // icons
-import { RiRefreshLine } from "react-icons/ri";
 import { MdAddCircle } from "react-icons/md";
 
 // components
 import ActionBar from "../action-bar/action-bar.component";
-import Icon from "../icon/icon.component";
 import Header from "../header/header.component";
+import Icon from "../icon/icon.component";
 
 // constants
 import { Colors } from "../../utils/constants";
@@ -30,7 +29,7 @@ function AdvertisementPageHeader({ setIsNew }) {
 
   return (
     <>
-      <Header title="nav-advertise" refreshHandler={refreshHandler} />
+      <Header title="nav advertise" refreshHandler={refreshHandler} />
 
       <ActionBar>
         <Icon

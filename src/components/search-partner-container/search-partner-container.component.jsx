@@ -1,16 +1,23 @@
 import React, { useState } from "react";
-
-import { IoMdAddCircle, IoMdClose } from "react-icons/io";
-import { useDispatch } from "react-redux";
-
-import { Colors, UserTypeConstants } from "../../utils/constants";
-import SelectPartnerModal from "../../modals/select-partner-modal/select-partner-modal.component";
-
-import styles from "./search-partner-container.module.scss";
 import { useTranslation } from "react-i18next";
+
+// redux stuff
+import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { selectCompanies } from "../../redux/company/companySlice";
 import { selectWarehouses } from "../../redux/warehouse/warehousesSlice";
+
+// components
+import SelectPartnerModal from "../../modals/select-partner-modal/select-partner-modal.component";
+
+// icons
+import { IoMdAddCircle, IoMdClose } from "react-icons/io";
+
+// constants
+import { Colors, UserTypeConstants } from "../../utils/constants";
+
+// styles
+import styles from "./search-partner-container.module.scss";
 
 const SearchPartnerContainer = ({
   label,
@@ -55,8 +62,8 @@ const SearchPartnerContainer = ({
           ) : (
             <label className={styles.placeholder}>
               {partnerType === UserTypeConstants.WAREHOUSE
-                ? t("enter-warehouse-name")
-                : t("enter-company-name")}
+                ? t("enter warehouse name")
+                : t("enter company name")}
             </label>
           )}
         </div>
@@ -84,8 +91,8 @@ const SearchPartnerContainer = ({
           }}
           placeholder={`${
             partnerType === UserTypeConstants.WAREHOUSE
-              ? "enter-warehouse-name"
-              : "enter-company-name"
+              ? "enter warehouse name"
+              : "enter company name"
           }`}
           data={
             partnerType === UserTypeConstants.WAREHOUSE ? warehouses : companies

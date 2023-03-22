@@ -16,14 +16,20 @@
 .input_div input {
   width: 75px;
   font-size: 14px;
-  margin-inline-start: 8px;
-  margin-right: 8px;
   padding: 4px 0px;
   outline: none;
   border: none;
   color: $main-color;
   background-color: $white-color;
   flex: 1;
+
+  &:lang(ar) {
+    margin-right: 8px;
+  }
+
+  &:lang(en) {
+    margin-left: 8px;
+  }
 }
 
 .input_div input:disabled {
@@ -42,7 +48,14 @@
 
 .input_div label {
   font-size: 12px;
-  text-align: left;
+
+  &:lang(ar) {
+    text-align: left;
+  }
+
+  &:lang(en) {
+    text-align: right;
+  }
 }
 
 .input_div .icon_error {

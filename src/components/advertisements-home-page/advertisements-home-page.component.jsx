@@ -1,4 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
+
+// redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { selectUserData } from "../../redux/auth/authSlice";
@@ -7,8 +9,11 @@ import {
   setSearchCompanyId,
   setSearchWarehouseId,
 } from "../../redux/medicines/medicinesSlices";
+
+// constants
 import { SERVER_URL } from "../../utils/constants";
 
+// styles
 import styles from "./advertisements-home-page.module.scss";
 
 let timer = null;

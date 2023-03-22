@@ -21,9 +21,6 @@ import { getFavorites } from "../../redux/favorites/favoritesSlice";
 import { getAllAdvertisements } from "../../redux/advertisements/advertisementsSlice";
 import { getSavedItems } from "../../redux/savedItems/savedItemsSlice";
 
-// styles
-import generalStyles from "../../style.module.scss";
-
 // constants
 import { UserTypeConstants, VERSION } from "../../utils/constants";
 
@@ -50,7 +47,7 @@ function SignInPage() {
             addStatistics({
               obj: {
                 targetUser: result.data.user._id,
-                action: "user-sign-in",
+                action: "user-sign in",
               },
               token: result.token,
             })
@@ -81,7 +78,7 @@ function SignInPage() {
     <Redirect to="/" />
   ) : (
     <>
-      <div className={generalStyles.sign_container}>
+      <div className="sign_container">
         <SignIn />
         <HeaderWithSlogn bgColor="white" />
       </div>

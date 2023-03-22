@@ -98,7 +98,7 @@ function OrdersSearchEngine({ pageState, search, type }) {
             type="text"
             value={pageState.searchPharmacyName}
             onchange={(e) => dispatch(setSearchPharmacyName(e.target.value))}
-            placeholder="enter-pharmacy-name-placeholder"
+            placeholder="enter pharmacy name-placeholder"
             onEnterPress={search}
             resetField={() => {
               dispatch(setSearchPharmacyName(""));
@@ -113,7 +113,7 @@ function OrdersSearchEngine({ pageState, search, type }) {
             type="text"
             value={pageState.searchWarehouseName}
             onchange={(e) => dispatch(setSearchWarehouseName(e.target.value))}
-            placeholder="enter-warehouse-name-placeholder"
+            placeholder="enter warehouse name-placeholder"
             onEnterPress={search}
             resetField={() => {
               dispatch(setSearchWarehouseName(""));

@@ -8,7 +8,7 @@ function HomePageLoader() {
 
   return (
     <div className={styles.container}>
-      <h1>{t("app-name")}</h1>
+      <h1>{t("app name")}</h1>
     </div>
   );
 }

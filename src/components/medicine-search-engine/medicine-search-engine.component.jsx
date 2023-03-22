@@ -83,7 +83,7 @@ const MedicineSearchEngine = ({ handleEnterPress, keyUpHandler, location }) => {
       >
         {/* search by medicine name, barcode */}
         <SearchInput
-          label="user-name"
+          label="user name"
           id="search-name"
           type="text"
           value={pageState.searchName}
@@ -91,7 +91,7 @@ const MedicineSearchEngine = ({ handleEnterPress, keyUpHandler, location }) => {
             dispatch(setSearchName(e.target.value));
           }}
           icon={<FaSearch />}
-          placeholder="search-by-name-composition-barcode"
+          placeholder="search by name-composition-barcode"
           onEnterPress={handleEnterPress}
           resetField={() => {
             dispatch(setSearchName(""));

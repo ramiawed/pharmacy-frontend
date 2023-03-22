@@ -2,20 +2,28 @@
 
 .toast-container {
   padding: 10px 20px;
-  
+
   position: fixed;
   top: 80px;
-  
+
   border-radius: 15px;
   box-shadow: 2px 2px 5px rgb(84, 83, 83);
-  
-  animation-name: toastMove;
-  animation-duration: 0.1s;
-  animation-fill-mode: forwards;
-  
+
   z-index: 40;
 
-  @keyframes toastMove {
+  &:lang(ar) {
+    animation-name: toastMoveLeft;
+    animation-duration: 0.1s;
+    animation-fill-mode: forwards;
+  }
+
+  &:lang(en) {
+    animation-name: toastMoveRight;
+    animation-duration: 0.1s;
+    animation-fill-mode: forwards;
+  }
+
+  @keyframes toastMoveLeft {
     0% {
       left: -100px;
     }
@@ -26,6 +34,20 @@
 
     100% {
       left: 30px;
+    }
+  }
+
+  @keyframes toastMoveRight {
+    0% {
+      right: -100px;
+    }
+
+    90% {
+      right: 40px;
+    }
+
+    100% {
+      right: 30px;
     }
   }
 }

@@ -19,14 +19,20 @@
   }
 
   .input {
-    margin-inline-start: 8px;
-    margin-right: 8px;
     padding: 4px 0px;
     font-size: 16px;
     outline: none;
     border: none;
     color: $main-color;
     width: 100%;
+
+    &:lang(ar) {
+      margin-right: 8px;
+    }
+
+    &:lang(en) {
+      margin-left: 8px;
+    }
 
     &:disabled {
       background-color: transparent;

@@ -15,15 +15,25 @@
   font-size: 12px;
   font-weight: bold;
   min-width: 100px;
-  text-align: left;
   color: $white-color !important;
   background-color: $main-color;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-left: 10px;
-  border-top-right-radius: 6px;
-  border-bottom-right-radius: 6px;
+
+  &:lang(ar) {
+    text-align: left;
+    margin-left: 10px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+  }
+
+  &:lang(ar) {
+    text-align: right;
+    margin-right: 10px;
+    border-top-left-radius: 6px;
+    border-bottom-left-radius: 6px;
+  }
 }
 
 .max_qty_div label:nth-child(2) {

@@ -1,6 +1,6 @@
 import React from "react";
 import { useHistory } from "react-router-dom";
-import DefaultLogo from "../../logo.png";
+import DefaultLogo from "../../assets/transparent_logo.png";
 
 // redux-stuff
 import { useDispatch, useSelector } from "react-redux";

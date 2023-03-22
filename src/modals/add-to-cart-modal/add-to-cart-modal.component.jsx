@@ -182,7 +182,7 @@ function AddToCartModal({ item, close, setAddItemToCartMsg, fromSavedItems }) {
     <>
       <Modal
         header="add-to-cart"
-        cancelLabel="cancel-label"
+        cancelLabel="cancel"
         okLabel="add-label"
         closeModal={close}
         okModal={addItemToCartHandler}

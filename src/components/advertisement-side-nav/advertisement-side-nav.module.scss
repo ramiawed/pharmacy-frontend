@@ -10,13 +10,19 @@
   top: 60px;
   left: -50vw;
   overflow: scroll;
-  padding-inline-end: 40px;
-  padding-left: 40px;
 
   animation-name: move_advertisement_side_nav;
   animation-duration: 0.1s;
   animation-timing-function: linear;
   animation-fill-mode: forwards;
+
+  &:lang(ar) {
+    padding-left: 40px;
+  }
+
+  &:lang(ar) {
+    padding-right: 40px;
+  }
 
   @keyframes move_advertisement_side_nav {
     0% {

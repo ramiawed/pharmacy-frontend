@@ -61,8 +61,12 @@
   padding-right: 12px;
 }
 
-.padding_end {
+.padding_end:lang(ar) {
   padding-left: 12px;
+}
+
+.padding_end:lang(en) {
+  padding-right: 12px;
 }
 
 .padding_all {
@@ -78,8 +82,13 @@
   transition: all 0.5s;
   cursor: pointer;
 
-  margin-inline-end: 10px;
-  margin-left: 10px;
+  &:lang(ar) {
+    margin-left: 10px;
+  }
+
+  &:lang(ar) {
+    margin-right: 10px;
+  }
 }
 
 .icon {

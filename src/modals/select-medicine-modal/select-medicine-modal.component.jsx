@@ -102,16 +102,15 @@ function SelectMedicineModal({ close, chooseAction, url }) {
   return (
     <Modal
       header="choose-item"
-      cancelLabel="cancel-label"
+      cancelLabel="cancel"
       closeModal={close}
       small={true}
     >
       <>
         <div
-          className={[
-            styles.search_container,
-            generalStyles.flex_center_container,
-          ].join(" ")}
+          className={[styles.search_container, "flex_center_container"].join(
+            " "
+          )}
         >
           <IoIosSearch color={Colors.LIGHT_COLOR} size={24} />
           <input
@@ -123,13 +122,6 @@ function SelectMedicineModal({ close, chooseAction, url }) {
             onKeyUp={keyUpHandler}
             ref={searchInputRef}
           />
-          {/* <Button
-              text="search"
-              action={() => {
-                getItems(1);
-              }}
-              bgColor={Colors.LIGHT_COLOR}
-            /> */}
         </div>
 
         <div

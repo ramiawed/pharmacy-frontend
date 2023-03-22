@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
+// styles
 import styles from "./label-value-row.module.scss";
 
 const LabelValueRow = ({ label, value, withLargeLabel, searchString }) => {

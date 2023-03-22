@@ -61,8 +61,14 @@
   flex: 1;
   color: $main-color;
   font-weight: bold;
-  padding-inline-end: 10px;
+}
+
+.row:lang(ar) p {
   padding-left: 10px;
+}
+
+.row:lang(en) p {
+  padding-right: 10px;
 }
 
 @media only screen and (min-width: $medium) {

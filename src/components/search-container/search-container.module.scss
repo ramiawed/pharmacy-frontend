@@ -10,12 +10,20 @@
   position: sticky;
   padding: 8px;
   top: 60px;
-  margin-right: 35px;
+
   z-index: 8;
   overflow: hidden;
   label {
     color: $light-color;
   }
+}
+
+.search_container:lang(ar) {
+  margin-right: 35px;
+}
+
+.search_container:lang(en) {
+  margin-left: 35px;
 }
 
 .options_container {
@@ -52,16 +60,29 @@
 .checkbox_div {
   display: flex;
   align-items: center;
-  margin-inline-start: 20px;
-  margin-right: 20px;
   padding: 4px 0;
+}
+
+.checkbox_div:lang(ar) {
+  margin-right: 20px;
+}
+
+.checkbox_div:lang(en) {
+  margin-left: 20px;
 }
 
 .checkbox_div label {
   font-size: 16px;
-  padding-inline-start: 10px;
-  padding-right: 10px;
+
   color: $white-color;
+}
+
+.checkbox_div:lang(ar) label {
+  padding-right: 10px;
+}
+
+.checkbox_div:lang(en) label {
+  padding-left: 10px;
 }
 
 .icon_container {

@@ -23,7 +23,7 @@ const ChooseDateModal = ({ closeModal, header, msg, handler, withTime }) => {
     <Modal
       header={t(header)}
       closeModal={closeModal}
-      cancelLabel={t("cancel-label")}
+      cancelLabel={t("cancel")}
       okLabel={t("ok-label")}
       small={true}
       okModal={okHandler}

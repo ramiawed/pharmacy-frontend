@@ -11,6 +11,7 @@ import AddToCartOfferModal from "../../modals/add-to-cart-offer-modal/add-to-car
 import OfferDetailsRow from "../offer-details-row/offer-details-row.component";
 import PointDetailsRow from "../point-details-row/point-details-row.component";
 import FullWidthLabel from "../full-width-label/full-width-label.component";
+import LabelValueRow from "../label-value-row/label-value-row.component";
 import RowContainer from "../row-container/row-container.component";
 import ItemPrices from "../item-prices/item-prices.component";
 import ItemNames from "../item-names/item-names.component";
@@ -25,7 +26,6 @@ import styles from "./item-offer-row.module.scss";
 
 // constants and utils
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import LabelValueRow from "../label-value-row/label-value-row.component";
 
 function ItemOfferRow({ item, index, searchString, type }) {
   const { t } = useTranslation();

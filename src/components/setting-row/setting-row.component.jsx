@@ -13,15 +13,14 @@ import {
 } from "../../redux/online/onlineSlice";
 
 // components
+import LabelValueRow from "../label-value-row/label-value-row.component";
 import Icon from "../icon/icon.component";
 
 // constants
 import { Colors } from "../../utils/constants";
 
 // styles
-import generalStyles from "../../style.module.scss";
 import rowStyles from "../row.module.scss";
-import LabelValueRow from "../label-value-row/label-value-row.component";
 
 function SettingRow({ data, tooltip, action, type }) {
   const { t } = useTranslation();
@@ -85,9 +84,7 @@ function SettingRow({ data, tooltip, action, type }) {
         <div className={rowStyles.padding_end}>
           {loading ? (
             <Icon
-              icon={() => (
-                <VscLoading className={generalStyles.loading} size={24} />
-              )}
+              icon={() => <VscLoading className="loading" size={24} />}
               onclick={() => {}}
               foreColor={Colors.FAILED_COLOR}
             />

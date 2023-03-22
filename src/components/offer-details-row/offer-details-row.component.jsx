@@ -1,7 +1,10 @@
 import { useTranslation } from "react-i18next";
 import React from "react";
+
+// constants
 import { OfferTypes } from "../../utils/constants";
 
+// styles
 import styles from "./offer-details-row.module.scss";
 
 const OfferDetailsRow = ({ offer, offerMode }) => {

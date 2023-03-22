@@ -6,19 +6,12 @@ import { useTranslation } from "react-i18next";
 import { SideNavLinks, UserTypeConstants } from "../../utils/constants.js";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/auth/authSlice";
-import {
-  resetPageState,
-  setCompany,
-  setPageState,
-  setRole,
-  setWarehouse,
-} from "../../redux/items/itemsSlices";
+import { resetPageState, setPageState } from "../../redux/items/itemsSlices";
 
 // styles
 import styles from "../side-nav.module.scss";
 import { GiMedicines } from "react-icons/gi";
 import { CgProfile } from "react-icons/cg";
-import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice.js";
 import {
   setSearchCompanyId,
   setSearchWarehouseId,
@@ -46,12 +39,9 @@ function SideNavCompany({ selectedOption, onSelectedChange, collapsed }) {
               role: UserTypeConstants.COMPANY,
             })
           );
-          // dispatch(setCompany(user));
-          // dispatch(setWarehouse(null));
-          // dispatch(setRole(UserTypeConstants.COMPANY));
+
           dispatch(setSearchWarehouseId(null));
           dispatch(setSearchCompanyId(null));
-          // dispatch(setSelectedWarehouse(null));
         }}
         to={{
           pathname: "/items",
@@ -61,11 +51,11 @@ function SideNavCompany({ selectedOption, onSelectedChange, collapsed }) {
           <div className={styles.nav_icon}>
             <GiMedicines size={24} />
             {collapsed && (
-              <label className={styles.tooltip}>{t("nav-items")}</label>
+              <label className={styles.tooltip}>{t("nav items")}</label>
             )}
           </div>
           {!collapsed && (
-            <div className={styles.nav_label}>{t("nav-items")}</div>
+            <div className={styles.nav_label}>{t("nav items")}</div>
           )}
         </div>
       </Link>
@@ -87,11 +77,11 @@ function SideNavCompany({ selectedOption, onSelectedChange, collapsed }) {
           <div className={styles.nav_icon}>
             <CgProfile size={24} />
             {collapsed && (
-              <label className={styles.tooltip}>{t("nav-profile")}</label>
+              <label className={styles.tooltip}>{t("nav profile")}</label>
             )}
           </div>
           {!collapsed && (
-            <div className={styles.nav_label}>{t("nav-profile")}</div>
+            <div className={styles.nav_label}>{t("nav profile")}</div>
           )}
         </div>
       </Link>

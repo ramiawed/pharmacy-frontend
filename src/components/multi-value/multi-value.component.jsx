@@ -9,7 +9,6 @@ import { RiDeleteBin5Fill } from "react-icons/ri";
 import { MdAddCircle } from "react-icons/md";
 
 // styles
-import generalStyles from "../../style.module.scss";
 import styles from "./multi-value.module.scss";
 
 // constants
@@ -23,7 +22,6 @@ function MultiValue({
   placeholder,
   quantityLabel,
   bonusLabel,
-  afterQuantityLabel,
   afterBonusLabel,
   allowEdit,
 }) {
@@ -33,7 +31,11 @@ function MultiValue({
     <>
       <div className={styles.header}>
         {allowEdit && (
-          <div className={[generalStyles.margin_h_auto].join(" ")}>
+          <div
+            style={{
+              margin: "0 auto",
+            }}
+          >
             <Icon
               icon={() => (
                 <MdAddCircle size={24} color={Colors.SUCCEEDED_COLOR} />
@@ -63,7 +65,6 @@ function MultiValue({
                 type="number"
               />
               {bonusLabel && <label>{bonusLabel}</label>}
-              {/* {afterQuantityLabel && <label>{afterQuantityLabel}</label>} */}
             </div>
 
             {/* bonus value */}

@@ -34,7 +34,7 @@ function AdminNotificationsHeader({ isNew, setIsNew }) {
 
   return (
     <>
-      <Header title="nav-notifications" />
+      <Header title="nav notifications" />
       <ActionBar>
         {!isNew && (
           <>

@@ -1,5 +1,7 @@
 import React, { useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
+
+// icons
 import { AiFillCloseCircle } from "react-icons/ai";
 
 // components

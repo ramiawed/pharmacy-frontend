@@ -24,9 +24,6 @@ import Button from "../button/button.component";
 // style
 import styles from "./action-loader.module.scss";
 
-// constants
-import { Colors } from "../../utils/constants";
-
 function Loader({ onclick, allowCancel, msg1, msg2 }) {
   const { t } = useTranslation();
   const [showButton, setShowButton] = useState(false);
@@ -50,7 +47,7 @@ function Loader({ onclick, allowCancel, msg1, msg2 }) {
             if (onclick) onclick();
           }}
           text={t("cancel-operation-label")}
-          bgColor={Colors.LIGHT_COLOR}
+          classStyle="bg_light"
         />
       )}
       {msg1 && <p className={styles.msg}>{t(msg1)}</p>}

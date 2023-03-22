@@ -8,9 +8,17 @@
     border-radius: 6px;
     box-shadow: 0 0 5px 3px rgba($color: #000000, $alpha: 0.2);
     position: absolute;
-    left: 10px;
+
     z-index: 5;
     overflow: hidden;
+
+    &:lang(ar) {
+        left: 10px;
+    }
+
+    &:lang(en) {
+        right: 10px;
+    }
 }
 
 .fromTop {

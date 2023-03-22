@@ -32,10 +32,6 @@ function Input({
     if (event.code !== "Escape") event.stopPropagation();
   };
 
-  // const onKeyPress = (event) => {
-  //   return event.charCode >= 48 && event.charCode <= 57;
-  // };
-
   return (
     <div className={styles.container}>
       <div

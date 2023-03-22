@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import Logo from "../../logo.png";
+import Logo from "../../assets/transparent_logo.png";
 
 // components
 import AddToCartModal from "../../modals/add-to-cart-modal/add-to-cart-modal.component";
-import ItemInfoModal from "../../modals/item-info-modal/item-info-modal.component";
 import ThreeStateIcon from "../three-state-icon/three-state-icon.component";
 import ItemPrices from "../item-prices/item-prices.component";
 import ItemNames from "../item-names/item-names.component";

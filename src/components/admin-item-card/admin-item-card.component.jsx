@@ -16,10 +16,11 @@ import {
 } from "../../redux/online/onlineSlice";
 
 // components
-import ItemAdditionalInfo from "../item-additional-info/item-additional-info.component";
 import ChangeQuantityModal from "../../modals/change-quantity-modal/change-quantity-modal.component";
+import ItemAdditionalInfo from "../item-additional-info/item-additional-info.component";
 import ButtonWithIcon from "../button-with-icon/button-with-icon.component";
 import FullWidthLabel from "../full-width-label/full-width-label.component";
+import PointsModal from "../../modals/points-modal/points-modal.component";
 import OffersModal from "../../modals/offers-modal/offers-modal.component";
 import CustomCheckbox from "../custom-checkbox/custom-checkbox.component";
 import LabelValueRow from "../label-value-row/label-value-row.component";
@@ -39,12 +40,7 @@ import { VscActivateBreakpoints } from "react-icons/vsc";
 import styles from "./admin-item-card.module.scss";
 
 // constants
-import {
-  Colors,
-  toEnglishNumber,
-  UserTypeConstants,
-} from "../../utils/constants";
-import PointsModal from "../../modals/points-modal/points-modal.component";
+import { Colors, UserTypeConstants } from "../../utils/constants";
 
 const checkOffer = (item, user) => {
   if (user.type === UserTypeConstants.COMPANY) {
@@ -347,7 +343,7 @@ function AdminItemCard({ item, user, warehouse, role, index, searchString }) {
       {showModal && (
         <Modal
           header={t(modalObj.header)}
-          cancelLabel={t("cancel-label")}
+          cancelLabel={t("cancel")}
           okLabel={t("ok-label")}
           okModal={() => handlePressOkOnModal()}
           closeModal={() => setShowModal(false)}
@@ -360,7 +356,7 @@ function AdminItemCard({ item, user, warehouse, role, index, searchString }) {
       {showWarningModal && (
         <Modal
           header={t("warning")}
-          cancelLabel={t("cancel-label")}
+          cancelLabel={t("cancel")}
           closeModal={() => setShowWarningModal(false)}
           small={true}
           warning={true}
@@ -402,7 +398,7 @@ function AdminItemCard({ item, user, warehouse, role, index, searchString }) {
       {showDeleteFromWarehouseModal && (
         <Modal
           header={t("item-delete-header")}
-          cancelLabel={t("cancel-label")}
+          cancelLabel={t("cancel")}
           okLabel={t("ok-label")}
           okModal={() => {
             handleDeleteItemFromWarehouse();

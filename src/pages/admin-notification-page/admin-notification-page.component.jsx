@@ -21,19 +21,18 @@ import {
 
 // components
 import AdminNotificationsHeader from "../../components/admin-notifications-header/admin-notifications-header.component";
+import MainContentContainer from "../../components/main-content-container/main-content-container.component";
 import NewNotification from "../../components/new-notification/new-notification.component";
-import Loader from "../../components/action-loader/action-loader.component";
 import NotificationRow from "../../components/notification-row/notification-row.component";
+import Loader from "../../components/action-loader/action-loader.component";
 import NoContent from "../../components/no-content/no-content.component";
+import Toast from "../../components/toast/toast.component";
 
 // styles
 import paginationStyles from "../../components/pagination.module.scss";
-import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import Toast from "../../components/toast/toast.component";
-import MainContentContainer from "../../components/main-content-container/main-content-container.component";
 
 function AdminNotificationPage({ onSelectedChange }) {
   const { t } = useTranslation();

@@ -38,17 +38,21 @@
     font-weight: bold;
     font-size: 10px;
     text-align: end;
-    padding-inline-end: 6px;
-    padding-left: 6px;
     color: $light-color;
+
+    &:lang(ar) {
+      padding-left: 6px;
+    }
+
+    &:lang(en) {
+      padding-right: 6px;
+    }
   }
 
   input,
   textarea {
     flex: 1;
     font-size: 16px;
-    padding-inline-start: 6px;
-    padding-right: 6px;
     color: $main-color;
     border-radius: 4px;
     border: none;
@@ -58,6 +62,14 @@
     &:focus {
       background-color: $dark-color;
       color: $white-color;
+    }
+
+    &:lang(ar) {
+      padding-right: 6px;
+    }
+
+    &:lang(en) {
+      padding-left: 6px;
     }
   }
 }
@@ -75,8 +87,6 @@
 
   input {
     font-size: 16px;
-    padding-inline-start: 6px;
-    padding-right: 6px;
     color: $main-color;
     border-radius: 4px;
     border: none;
@@ -87,14 +97,31 @@
       background-color: $dark-color;
       color: $white-color;
     }
+
+    &:lang(ar) {
+      padding-right: 6px;
+    }
+
+    &:lang(ar) {
+      padding-left: 6px;
+    }
   }
 }
 
 .centerDiv {
-  margin-left: 5px;
-  padding-left: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.centerDiv:lang(ar) {
+  margin-left: 5px;
+  padding-left: 5px;
   border-left: 1px solid $light-grey-color;
+}
+
+.centerDiv:lang(en) {
+  margin-right: 5px;
+  padding-right: 5px;
+  border-right: 1px solid $light-grey-color;
 }

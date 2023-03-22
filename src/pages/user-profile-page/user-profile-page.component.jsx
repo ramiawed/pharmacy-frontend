@@ -3,11 +3,12 @@ import React, { useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
-import Logo from "../../logo.png";
+import Logo from "../../assets/transparent_logo.png";
 
 // components
 import UserProfileNotifications from "../../components/user-profile-notifications/user-profile-notifications.component";
 import MainContentContainer from "../../components/main-content-container/main-content-container.component";
+import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 import ChangePassword from "../../components/change-password/change-password.component";
 import EditableCity from "../../components/editable-city/editable-city.component";
 import Loader from "../../components/action-loader/action-loader.component";
@@ -41,7 +42,6 @@ import {
   SERVER_URL,
   BASEURL,
 } from "../../utils/constants";
-import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 import { BsImageAlt } from "react-icons/bs";
 import Toast from "../../components/toast/toast.component";
 
@@ -136,17 +136,16 @@ function UserProfilePage({ onSelectedChange }) {
 
   return user ? (
     <>
-      <Header title="nav-profile" />
+      <Header title="nav profile" />
 
       <MainContentContainer>
         <div className={styles.content}>
           <div
             className={[
-              generalStyles.flex_center_container,
+              "flex_center_container",
               generalStyles.flex_column,
-              generalStyles.padding_v_6,
-              generalStyles.padding_h_12,
             ].join(" ")}
+            style={{ padding: "6px 12px" }}
           >
             <div className={styles.logo}>
               <img
@@ -189,7 +188,7 @@ function UserProfilePage({ onSelectedChange }) {
               <InfoRow
                 editable={true}
                 field="name"
-                labelText={t("user-name")}
+                labelText={t("user name")}
                 value={userObj.name}
                 onInputChange={handleInputChange}
                 action={() => updateFieldHandler("name")}
@@ -197,14 +196,14 @@ function UserProfilePage({ onSelectedChange }) {
               <InfoRow
                 editable={true}
                 field="username"
-                labelText={t("user-username")}
+                labelText={t("user username")}
                 value={userObj.username}
                 onInputChange={handleInputChange}
                 action={() => updateFieldHandler("username")}
               />
               <InfoRow
                 editable={false}
-                labelText={t("user-type")}
+                labelText={t("user type")}
                 value={t(userObj.type)}
                 onInputChange={handleInputChange}
               />
@@ -214,7 +213,7 @@ function UserProfilePage({ onSelectedChange }) {
               <InfoRow
                 editable={true}
                 field="phone"
-                labelText={t("user-phone")}
+                labelText={t("user phone")}
                 value={userObj.phone}
                 onInputChange={handleInputChange}
                 action={() => updateFieldHandler("phone")}
@@ -222,7 +221,7 @@ function UserProfilePage({ onSelectedChange }) {
               <InfoRow
                 editable={true}
                 field="mobile"
-                labelText={t("user-mobile")}
+                labelText={t("user mobile")}
                 value={userObj.mobile}
                 onInputChange={handleInputChange}
                 action={() => updateFieldHandler("mobile")}
@@ -230,7 +229,7 @@ function UserProfilePage({ onSelectedChange }) {
               <InfoRow
                 editable={true}
                 field="email"
-                labelText={t("user-email")}
+                labelText={t("user email")}
                 value={userObj.email}
                 onInputChange={handleInputChange}
                 action={() => updateFieldHandler("email")}
@@ -253,7 +252,7 @@ function UserProfilePage({ onSelectedChange }) {
               <InfoRow
                 editable={true}
                 field="addressDetails"
-                labelText={t("user-address-details")}
+                labelText={t("user address details")}
                 value={userObj.addressDetails}
                 onInputChange={handleInputChange}
                 action={() => updateFieldHandler("addressDetails")}
@@ -266,7 +265,7 @@ function UserProfilePage({ onSelectedChange }) {
                 <InfoRow
                   editable={true}
                   field="employeeName"
-                  labelText={t("user-employee-name")}
+                  labelText={t("user employee name")}
                   value={userObj.employeeName}
                   onInputChange={handleInputChange}
                   action={() => updateFieldHandler("employeeName")}
@@ -274,7 +273,7 @@ function UserProfilePage({ onSelectedChange }) {
                 <InfoRow
                   editable={true}
                   field="certificateName"
-                  labelText={t("user-certificate-name")}
+                  labelText={t("user certificate name")}
                   value={userObj.certificateName}
                   onInputChange={handleInputChange}
                   action={() => updateFieldHandler("certificateName")}
@@ -289,7 +288,7 @@ function UserProfilePage({ onSelectedChange }) {
                 <InfoRow
                   editable={true}
                   field="guestDetails.job"
-                  labelText={t("user-job")}
+                  labelText={t("user job")}
                   value={t(userObj.guestDetails?.job)}
                   onInputChange={handleInputChange}
                   action={() => updateFieldHandler("guestDetails.job")}
@@ -321,8 +320,10 @@ function UserProfilePage({ onSelectedChange }) {
                   className={[
                     rowStyles.container,
                     rowStyles.without_box_shadow,
-                    generalStyles.padding_h_12,
                   ].join(" ")}
+                  style={{
+                    padding: "0 12px",
+                  }}
                 >
                   <input
                     type="checkbox"
@@ -332,16 +333,13 @@ function UserProfilePage({ onSelectedChange }) {
                     }
                     checked={userObj.allowAdmin}
                   />
-                  <label
-                    className={[generalStyles.right].join(" ")}
-                    style={{ flex: "1" }}
-                  >
+                  <label className="right" style={{ flex: "1" }}>
                     {t("admin-permission-label")}
                   </label>
                   <Button
                     text="update-label"
                     action={() => updateFieldHandler("allowAdmin")}
-                    bgColor={Colors.SUCCEEDED_COLOR}
+                    classStyle="bg_green"
                   />
                 </div>
               </CardInfo>

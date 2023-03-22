@@ -57,14 +57,14 @@ function WarehousesSearchEngine({ onSearch, keyUpHandler }) {
     <>
       <SearchContainer searchEngineAlert={isThereSearch}>
         <SearchInput
-          label="user-name"
+          label="user name"
           id="search-name"
           type="text"
           value={searchName}
           onchange={(e) => {
             dispatch(changeSearchName(e.target.value));
           }}
-          placeholder="search-by-warehouse-name"
+          placeholder="search by warehouse name"
           resetField={() => dispatch(changeSearchName(""))}
         />
 

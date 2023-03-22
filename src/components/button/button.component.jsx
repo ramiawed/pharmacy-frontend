@@ -14,36 +14,22 @@ import { useTranslation } from "react-i18next";
 // react icons
 import { VscLoading } from "react-icons/vsc";
 
-// styles
-import generalStyles from "../../style.module.scss";
-
-// constants
-import { Colors } from "../../utils/constants";
-
-function Button({ action, text, bgColor, tooltip, loading, icon }) {
+function Button({ action, text, tooltip, loading, icon, classStyle }) {
   const { t } = useTranslation();
 
   return (
     <button
-      className={[
-        generalStyles.button,
-        bgColor === Colors.LIGHT_COLOR ? generalStyles.bg_secondary : "",
-        bgColor === Colors.FAILED_COLOR ? generalStyles.bg_red : "",
-        bgColor === Colors.SUCCEEDED_COLOR ? generalStyles.bg_green : "",
-        bgColor === Colors.MAIN_COLOR ? generalStyles.bg_main : "",
-        bgColor === Colors.OFFER_COLOR ? generalStyles.bg_offer : "",
-        generalStyles.fc_white,
-        generalStyles.block,
-        generalStyles.padding_v_6,
-        generalStyles.padding_h_12,
-      ].join(" ")}
+      className={["button", `${classStyle}`, "fc_white", "block"].join(" ")}
+      style={{
+        padding: "6px 12px",
+      }}
       onClick={action}
     >
       {icon && icon()}
       {text ? t(text) : null}
       {tooltip && <div>{t(tooltip)}</div>}
 
-      {loading && <VscLoading className={generalStyles.loading} />}
+      {loading && <VscLoading className="loading" />}
     </button>
   );
 }

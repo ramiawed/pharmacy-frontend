@@ -1,10 +1,14 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import ItemInfoModal from "../../modals/item-info-modal/item-info-modal.component";
-import { selectUserData } from "../../redux/auth/authSlice";
-import { UserTypeConstants } from "../../utils/constants";
 
-import gs from "../../style.module.scss";
+// components
+import ItemInfoModal from "../../modals/item-info-modal/item-info-modal.component";
+
+// redux stuff
+import { selectUserData } from "../../redux/auth/authSlice";
+import { useSelector } from "react-redux";
+
+// constants
+import { UserTypeConstants } from "../../utils/constants";
 
 const ItemNames = ({
   on_click,
@@ -31,7 +35,7 @@ const ItemNames = ({
   return (
     <>
       <div
-        className={[gs.row_col_flex, gs.highlight_underline].join(" ")}
+        className={["row_col_flex", "highlight_underline"].join(" ")}
         style={{ flexDirection: flexDirection }}
         onClick={() => {
           if (!forAdmin) setShowItemDetails(true);
@@ -39,27 +43,29 @@ const ItemNames = ({
         }}
       >
         {itemNameArraySplit.length > 0 ? (
-          <label className={[gs.name, gs.fc_dark].join(" ")}>
-            {itemNameArraySplit[0]}
-            <strong className={gs.filter_highlight}>{searchString}</strong>
-            {itemNameArraySplit[1]}
+          <label className={["bold", "big", "fc_dark"].join(" ")}>
+            {itemNameArraySplit[0].toUpperCase()}
+            <strong className="filter_highlight">
+              {searchString.toUpperCase()}
+            </strong>
+            {itemNameArraySplit[1].toUpperCase}
           </label>
         ) : (
-          <label className={[gs.name, gs.fc_dark].join(" ")}>{item.name}</label>
+          <label className={["bold", "big", "fc_dark"].join(" ")}>
+            {item.name.toUpperCase()}
+          </label>
         )}
 
         <div style={{ width: "10px" }}></div>
 
         {item.nameAr && itemNameArArraySplit.length > 0 ? (
-          <label className={[gs.sub_name, gs.fc_main].join(" ")}>
+          <label className={["big", "fc_main"].join(" ")}>
             {itemNameArArraySplit[0]}
-            <strong className={gs.filter_highlight}>{searchString}</strong>
+            <strong className="filter_highlight">{searchString}</strong>
             {itemNameArArraySplit[1]}
           </label>
         ) : (
-          <label className={[gs.sub_name, gs.fc_main].join(" ")}>
-            {item.nameAr}
-          </label>
+          <label className={["big", "fc_main"].join(" ")}>{item.nameAr}</label>
         )}
       </div>
 

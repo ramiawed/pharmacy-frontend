@@ -11,16 +11,22 @@
 .info_row .label {
   width: 75px;
   min-width: 75px;
-  padding-inline-end: 6px;
-  padding-left: 6px;
+
   color: #9d9d9d;
   font-size: 0.8rem;
+}
+
+.info_row:lang(ar) .label {
+  padding-left: 6px;
+}
+
+.info_row:lang(en) .label {
+  padding-right: 6px;
 }
 
 .info_row .value {
   flex: 1;
   color: $main-color;
-
   font-size: 0.8rem;
 }
 

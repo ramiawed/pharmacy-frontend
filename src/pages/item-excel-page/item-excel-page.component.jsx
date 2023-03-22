@@ -541,7 +541,7 @@ function ItemExcelPage() {
         {showConfirmModal && (
           <Modal
             header="add-items"
-            cancelLabel="cancel-label"
+            cancelLabel="cancel"
             okLabel="ok-label"
             okModal={() => addOrUpdateHandler()}
             closeModal={() => setShowConfirmModal(false)}

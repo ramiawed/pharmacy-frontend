@@ -14,7 +14,6 @@ import { AiFillCloseCircle, AiFillEdit } from "react-icons/ai";
 import { IoCheckmarkDoneCircle } from "react-icons/io5";
 
 // styles
-import generalStyles from "../../style.module.scss";
 import styles from "./setting-section-header.module.scss";
 
 // constants and utils
@@ -102,7 +101,7 @@ function SettingSectionHeader({
   return (
     <>
       <div
-        className={[generalStyles.flex_center_container]}
+        className={["flex_center_container"]}
         style={{ justifyContent: "flex-start" }}
       >
         <h3 style={{ color: Colors.FAILED_COLOR, paddingInlineEnd: "12px" }}>
@@ -134,13 +133,10 @@ function SettingSectionHeader({
       </div>
 
       <div
-        className={[
-          generalStyles.flex_center_container,
-          generalStyles.fc_secondary,
-          generalStyles.padding_v_4,
-        ].join(" ")}
+        className={["flex_center_container", "fc_light"].join(" ")}
         style={{
           justifyContent: "flex-start",
+          padding: "4px 0",
         }}
       >
         <label className={styles.label}>{t("section-title")}</label>
@@ -157,13 +153,10 @@ function SettingSectionHeader({
       </div>
 
       <div
-        className={[
-          generalStyles.flex_center_container,
-          generalStyles.fc_secondary,
-          generalStyles.padding_v_4,
-        ].join(" ")}
+        className={["flex_center_container", "fc_light"].join(" ")}
         style={{
           justifyContent: "flex-start",
+          padding: "4px 0",
         }}
       >
         <label className={styles.label}>{t("section-description")}</label>
@@ -180,13 +173,10 @@ function SettingSectionHeader({
       </div>
 
       <div
-        className={[
-          generalStyles.flex_center_container,
-          generalStyles.fc_secondary,
-          generalStyles.padding_v_4,
-        ].join(" ")}
+        className={["flex_center_container", "fc_light"].join(" ")}
         style={{
           justifyContent: "flex-start",
+          padding: "4px 0",
         }}
       >
         <label className={styles.label}>{t("section-order")}</label>
@@ -208,10 +198,7 @@ function SettingSectionHeader({
       </div>
 
       <div
-        className={[
-          generalStyles.flex_center_container,
-          generalStyles.fc_secondary,
-        ].join(" ")}
+        className={["flex_center_container", "fc_light"].join(" ")}
         style={{
           justifyContent: "flex-start",
         }}

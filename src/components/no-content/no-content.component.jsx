@@ -1,6 +1,10 @@
 import React from "react";
-import NoContentImage from "../../no-content.jpeg";
+import NoContentImage from "../../assets/no_content.jpeg";
+
+// styles
 import styles from "./no-content.module.scss";
+
+// constants
 import { Colors } from "../../utils/constants";
 
 function NoContent({ msg }) {

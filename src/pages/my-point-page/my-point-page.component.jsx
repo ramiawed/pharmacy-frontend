@@ -13,9 +13,13 @@ import { getMyPoints, selectUserData } from "../../redux/auth/authSlice";
 // styles
 import styles from "./my-point-page.module.scss";
 import { UserTypeConstants } from "../../utils/constants";
+import MyPointsDescriptionAr from "../../components/my-points-description-ar/my-points-description-ar.component";
+import MyPointsDescriptionEn from "../../components/my-points-description-en/my-points-description-en.component";
+import i18next from "i18next";
 
 function MyPointPage({ onSelectedChange }) {
   const dispatch = useDispatch();
+  const currentLanguage = i18next.language;
 
   const { user, token, status } = useSelector(selectUserData);
 
@@ -33,6 +37,11 @@ function MyPointPage({ onSelectedChange }) {
 
       <MainContentContainer>
         <p className={styles.my_points}>{user.points}</p>
+        {currentLanguage === "ar" ? (
+          <MyPointsDescriptionAr />
+        ) : (
+          <MyPointsDescriptionEn />
+        )}
       </MainContentContainer>
       {status === "loading" && <Loader />}
     </>

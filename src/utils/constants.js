@@ -29,7 +29,7 @@ export const GuestJob = {
   STUDENT: "student",
   PHARMACIST: "pharmacist",
   EMPLOYEE: "employee",
-  NONE: "user-job",
+  NONE: "user job",
 };
 
 // export const WarehouseOrderStatus = {
@@ -105,7 +105,7 @@ export const SideNavLinks = {
   PROFILE: "profile",
   SETTINGS: "settings",
   STATISTICS: "statistics",
-  BACKUP_RESTORE: "backup-restore",
+  BACKUP_RESTORE: "backup restore",
   BASKETS: "baskets",
   SAVEDITEMS: "saved-items",
   MY_POINTS: "my-points",

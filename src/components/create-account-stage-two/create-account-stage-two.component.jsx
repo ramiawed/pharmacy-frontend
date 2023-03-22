@@ -10,10 +10,10 @@ import { BASEURL, Colors, UserTypeConstants } from "../../utils/constants";
 import Input from "../input/input.component";
 import SignupStagesActions from "../signup-stages-actions/signup-stages-actions.component";
 import StageContainer from "../stage-container/stage-container.component";
+import CenterContainer from "../center-container/center-container.component";
 
 // styles
 import styles from "./create-account-stage-two.module.scss";
-import generalStyles from "../../style.module.scss";
 
 const CreateAccountStageTwo = ({
   next,
@@ -26,12 +26,12 @@ const CreateAccountStageTwo = ({
   const { t } = useTranslation();
   const placeholder =
     type === UserTypeConstants.COMPANY
-      ? "enter-company-name"
+      ? "enter company name"
       : type === UserTypeConstants.WAREHOUSE
-      ? "enter-warehouse-name"
+      ? "enter warehouse name"
       : type === UserTypeConstants.PHARMACY
-      ? "enter-pharmacy-name"
-      : "enter-guest-name";
+      ? "enter pharmacy name"
+      : "enter guest name";
 
   const [checking, setChecking] = useState(false);
 
@@ -67,7 +67,7 @@ const CreateAccountStageTwo = ({
       hasError = true;
       errorObj = {
         ...errorObj,
-        name: "enter-name",
+        name: "enter name",
       };
     }
 
@@ -76,7 +76,7 @@ const CreateAccountStageTwo = ({
 
       errorObj = {
         ...errorObj,
-        username: "enter-username",
+        username: "enter username",
       };
     }
 
@@ -85,7 +85,7 @@ const CreateAccountStageTwo = ({
 
       errorObj = {
         ...errorObj,
-        password: "enter-password",
+        password: "enter password",
       };
     } else if (obj.password.length < 5) {
       // password must be greater than or equals to 5 characters
@@ -93,7 +93,7 @@ const CreateAccountStageTwo = ({
 
       errorObj = {
         ...errorObj,
-        password: "password-length",
+        password: "password length",
       };
     }
 
@@ -102,7 +102,7 @@ const CreateAccountStageTwo = ({
 
       errorObj = {
         ...errorObj,
-        passwordConfirm: "enter-password-confirm",
+        passwordConfirm: "enter password confirm",
       };
     } else if (obj.passwordConfirm.length < 5) {
       // password confirm must be greater than or equals to 5 characters
@@ -110,7 +110,7 @@ const CreateAccountStageTwo = ({
 
       errorObj = {
         ...errorObj,
-        passwordConfirm: "confirm-password-length",
+        passwordConfirm: "confirm password length",
       };
     }
 
@@ -124,8 +124,8 @@ const CreateAccountStageTwo = ({
 
       errorObj = {
         ...errorObj,
-        password: "unequal-passwords",
-        passwordConfirm: "unequal-passwords",
+        password: "unequal passwords",
+        passwordConfirm: "unequal passwords",
       };
     }
 
@@ -163,7 +163,7 @@ const CreateAccountStageTwo = ({
       <div className={styles.container}>
         <Input
           type="text"
-          label="user-name"
+          label="user name"
           id="name"
           value={obj.name}
           onchange={(e) => inputChangeHandler("name", e.target.value)}
@@ -175,7 +175,7 @@ const CreateAccountStageTwo = ({
 
         <Input
           type="text"
-          label="user-username"
+          label="user username"
           id="username"
           value={obj.username}
           onchange={(e) => inputChangeHandler("username", e.target.value)}
@@ -187,7 +187,7 @@ const CreateAccountStageTwo = ({
 
         <Input
           type="password"
-          label="user-password"
+          label="user password"
           id="password"
           value={obj.password}
           onchange={(e) => inputChangeHandler("password", e.target.value)}
@@ -199,7 +199,7 @@ const CreateAccountStageTwo = ({
 
         <Input
           type="password"
-          label="user-password-confirm"
+          label="user password confirm"
           id="passwordConfirm"
           value={obj.passwordConfirm}
           onchange={(e) =>
@@ -212,9 +212,9 @@ const CreateAccountStageTwo = ({
         />
 
         {checking ? (
-          <div className={generalStyles.flex_container}>
+          <CenterContainer>
             <ReactLoading color={Colors.LIGHT_COLOR} type="cylon" />
-          </div>
+          </CenterContainer>
         ) : (
           <SignupStagesActions
             stage={2}

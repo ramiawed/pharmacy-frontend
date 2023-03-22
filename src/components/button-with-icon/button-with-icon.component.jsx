@@ -9,12 +9,12 @@
 // icon
 
 import React, { useState } from "react";
+
+// constants
 import { Colors } from "../../utils/constants";
 
 // styles
 import styles from "./button-with-icon.module.scss";
-
-// constants
 
 function ButtonWithIcon({ action, text, bgColor, icon, smallText }) {
   const [hover, setHover] = useState(false);

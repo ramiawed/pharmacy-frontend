@@ -3,10 +3,10 @@ import { useTranslation } from "react-i18next";
 import { Route, Switch } from "react-router-dom";
 
 // components
-import MainPage from "./pages/main-page/main-page.component";
 import ApprovePage from "./pages/approve-page/approve-page.component";
 import SignInPage from "./pages/sign-in-page/sign-in-page.component";
 import SignUpPage from "./pages/sign-up-page/sign-up-page.component";
+import MainPage from "./pages/main-page/main-page.component";
 import Toast from "./components/toast/toast.component";
 
 // redux stuff
@@ -19,12 +19,6 @@ import {
 
 // constants
 import { Colors } from "./utils/constants";
-
-// styles
-import styles from "./app.module.scss";
-
-// slicker
-import "./slicker.scss";
 
 function App() {
   const { i18n, t } = useTranslation();
@@ -51,7 +45,7 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div className={styles.main_div}>
+    <div>
       <Switch>
         <Route path="/signin" exact component={SignInPage} />
         <Route path="/signup" exact component={SignUpPage} />

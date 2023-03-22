@@ -87,7 +87,7 @@ function SettingsPage({ onSelectedChange }) {
 
   return user && user.type === UserTypeConstants.ADMIN ? (
     <>
-      <Header title="nav-settings" refreshHandler={refreshHandler} />
+      <Header title="nav settings" refreshHandler={refreshHandler} />
 
       <MainContentContainer>
         <CompaniesSectionOneSettings />

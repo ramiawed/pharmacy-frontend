@@ -48,7 +48,7 @@ function NotificationPage({ onSelectedChange }) {
     <>
       {notification ? (
         <>
-          <Header title="notification-label" refreshHandler={getNotification} />
+          <Header title="notification label" refreshHandler={getNotification} />
 
           <MainContentContainer>
             <div className={styles.content_div}>

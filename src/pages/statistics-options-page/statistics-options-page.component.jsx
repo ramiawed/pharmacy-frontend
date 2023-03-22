@@ -27,8 +27,8 @@ function StatisticsOptionsPage({ onSelectedChange }) {
         style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}
       >
         <StatisticsCard
-          title={t("statistics-sign-in")}
-          actionType="user-sign-in"
+          title={t("statistics-sign in")}
+          actionType="user-sign in"
           backgroundColor={AdditionalColors[0]}
         />
         <StatisticsCard

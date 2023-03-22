@@ -78,15 +78,29 @@
 
   p {
     flex: 1;
-    padding-left: 30px;
     color: $main-color;
+
+    &:lang(ar) {
+      padding-left: 30px;
+    }
+
+    &:lang(en) {
+      padding-right: 30px;
+    }
   }
 }
 
 .actions {
-  margin-right: auto;
   margin-top: 20px;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
+
+  &:lang(ar) {
+    margin-right: auto;
+  }
+
+  &:lang(en) {
+    margin-left: auto;
+  }
 }

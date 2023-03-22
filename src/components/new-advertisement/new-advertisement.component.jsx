@@ -104,7 +104,7 @@ function NewAdvertisement({ closeHandler, header }) {
   return (
     <Modal
       header={header}
-      cancelLabel="cancel-label"
+      cancelLabel="cancel"
       closeModal={() => closeHandler(false)}
       okLabel="ok-label"
       okModal={addAdvertisementHandler}
@@ -212,7 +212,7 @@ function NewAdvertisement({ closeHandler, header }) {
           close={() => setShowSelectCompanyModal(false)}
           chooseAction={(data) => selectCompanyHandler(data)}
           data={companies}
-          placeholder="enter-company-name"
+          placeholder="enter company name"
         />
       )}
       {showSelectWarehouseModal && (
@@ -221,7 +221,7 @@ function NewAdvertisement({ closeHandler, header }) {
           close={() => setShowSelectWarehouseModal(false)}
           chooseAction={(data) => selectWarehouseHandler(data)}
           data={warehouses}
-          placeholder="enter-warehouse-name"
+          placeholder="enter warehouse name"
         />
       )}
       {showSelectMedicineModal && (

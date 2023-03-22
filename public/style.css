@@ -1,0 +1,250 @@
+:root {
+    --main-color: #566092;
+    --dark-color: #293664;
+    --light-color: #858dc3;
+    --backup-color: #99cf16;
+    --red-color: #ff787e;
+    --white-color: #ffffffff;
+    --green-color: #2aa70b;
+    --blue-color: #366feb;
+    --yellow-color: #e9b93f;
+    --offer-color: #aae3ff;
+    --light-grey-color: #e3e3e3;
+    --font-ar-04: "Cairo", sans-serif;
+    --font-en-01: 'Source Serif Pro', serif;
+    --font-en-02: 'Nanum Myeongjo', serif;
+    --font-en-03: 'M PLUS 1p', sans-serif;
+    --font-en-04: 'Taviraj', serif;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--white-color);
+}
+
+*:lang(ar) {
+    font-family: var(--font-en-04);
+}
+
+*:lang(en) {
+    font-family: var(--font-en-04);
+}
+
+/* background color classes */
+.bg_main {
+    background-color: var(--main-color) !important;
+}
+
+.bg_offer {
+    background-color: var(--offer-color) !important;
+    color: var(--main-color) !important;
+}
+
+.bg_green {
+    background-color: var(--green-color) !important;
+}
+
+.bg_red {
+    background-color: var(--red-color) !important;
+}
+
+.bg_light {
+    background-color: var(--light-color) !important;
+}
+
+.bg_dark {
+    background-color: var(--dark-color) !important;
+}
+
+.bg_light_grey {
+    background-color: var(--light-grey-color) !important;
+}
+
+/* font color classes */
+.fc_main {
+    color: var(--main-color) !important;
+}
+
+.fc_light {
+    color: var(--light-color) !important;
+}
+
+.fc_dark {
+    color: var(--dark-color) !important;
+}
+
+.fc_green {
+    color: var(--green-color) !important;
+}
+
+.fc_red {
+    color: var(--red-color) !important;
+}
+
+.fc_yellow {
+    color: var(--yellow-color) !important;
+}
+
+.fc_backup {
+    color: var(--backup-color) !important;
+}
+
+.fc_white {
+    color: var(--white-color) !important;
+}
+
+/* end coloring section */
+.filter_highlight {
+    background-color: yellow;
+    color: red !important;
+    border-radius: 4px;
+}
+
+.offer_container {
+    background-color: var(--offer-color) !important;
+}
+
+.points_container {
+    background-color: #a4bfb4b9 !important;
+}
+
+.offer_points_container {
+    background: rgb(170, 227, 255) !important;
+    background: linear-gradient(118deg, rgba(170, 227, 255, 1) 0%, #a4bfb4 70%) !important;
+}
+
+/* text alignment */
+.center {
+    text-align: center !important;
+}
+
+.left {
+    text-align: left !important;
+}
+
+.right {
+    text-align: right !important;
+}
+
+/* end text alignment */
+
+/* font style */
+.bold {
+    font-weight: bold;
+}
+
+.big {
+    font-size: 16px;
+}
+
+.medium {
+    font-size: 14px;
+}
+
+.small {
+    font-size: 12px;
+}
+
+.block {
+    display: block;
+}
+
+.inline_block {
+    display: inline-block;
+}
+
+/* end font style */
+
+/* button style */
+.button {
+    outline: none;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.button:hover {
+    transform: scale(1.1);
+    text-shadow: 0 0 8px rgb(255, 255, 255);
+    box-shadow: 0 0 8px rgb(255, 255, 255);
+}
+
+/* containers */
+.sign_container {
+    position: relative;
+    width: 100vw;
+    min-width: 400px;
+    min-height: 100vh;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    flex-direction: column;
+}
+
+.row_col_flex {
+    display: flex;
+    flex-direction: column;
+}
+
+@media only screen and (min-width: 481px) {
+    .row_col_flex {
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+@media only screen and (min-width: 769px) {
+    .sign_container {
+        flex-direction: row;
+        justify-content: space-around;
+    }
+
+    .row_col_flex {
+        display: flex;
+        flex-direction: row;
+    }
+}
+
+.flex_center_container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.highlight_underline:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.highlight_underline:hover label {
+    cursor: inherit;
+}
+
+
+.flex_column {
+    flex-direction: column;
+}
+
+/* loading icon */
+.loading {
+    animation-name: loading-move;
+    animation-duration: 1s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes loading-move {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

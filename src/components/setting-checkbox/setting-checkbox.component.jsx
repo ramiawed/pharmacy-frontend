@@ -1,14 +1,9 @@
 import React from "react";
 
-import generalStyles from "../../style.module.scss";
-
 function SettingCheckbox({ value, action, label }) {
   return (
     <div
-      className={[
-        generalStyles.flex_center_container,
-        generalStyles.fc_secondary,
-      ].join(" ")}
+      className={["flex_center_container", "fc_light"].join(" ")}
       style={{
         justifyContent: "start",
       }}

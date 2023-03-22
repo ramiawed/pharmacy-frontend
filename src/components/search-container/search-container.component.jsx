@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 
 // react-icons
 import { FaFilter, FaSearch } from "react-icons/fa";
+
+// constants
 import { Colors } from "../../utils/constants";
 
 // components

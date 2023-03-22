@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
-import FastDeliverLogo from "../../smal-logo.png";
+import FastDeliverLogo from "../../assets/small_logo.png";
 
 // react icons
 import { AiFillStar, AiOutlineStar } from "react-icons/ai";
@@ -197,9 +197,7 @@ function PartnerRow({
     <>
       <div
         className={[
-          fullWidth || user.type === UserTypeConstants.ADMIN
-            ? styles.full_width_container
-            : styles.container,
+          fullWidth ? styles.full_width_container : styles.container,
           withoutBoxShadow ? styles.without_box_shadow : "",
         ].join(" ")}
       >

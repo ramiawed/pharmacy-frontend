@@ -1,6 +1,10 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
+
+// icons
 import { AiOutlineExclamationCircle, AiFillCloseCircle } from "react-icons/ai";
+
+// constants
 import { onKeyPressForNumberInput } from "../../utils/constants";
 
 import styles from "./input-sign-in.module.scss";

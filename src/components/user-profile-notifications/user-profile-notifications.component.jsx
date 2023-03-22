@@ -48,7 +48,7 @@ function UserProfileNotifications() {
             dispatch(resetPasswordStatus());
           }}
         >
-          <p>{t("password-change-succeeded")}</p>
+          <p>{t("password change succeeded")}</p>
         </Toast>
       )}
 

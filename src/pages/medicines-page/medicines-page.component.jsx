@@ -6,6 +6,7 @@ import { useHistory, useLocation } from "react-router-dom";
 // components
 import MainContentContainer from "../../components/main-content-container/main-content-container.component";
 import MedicineSearchEngine from "../../components/medicine-search-engine/medicine-search-engine.component";
+import CenterContainer from "../../components/center-container/center-container.component";
 import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 import NoMoreResult from "../../components/no-more-result/no-more-result.component";
 import MedicineCard from "../../components/medicine-card/medicine-card.component";
@@ -35,9 +36,6 @@ import {
   resetMedicinesArray,
   resetMedicinesPageState,
 } from "../../redux/medicines/medicinesSlices";
-
-// styles
-import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
@@ -99,8 +97,6 @@ function MedicinesPage({ onSelectedChange }) {
         location={location}
       />
       <MainContentContainer>
-        {/* <MedicinesSearchString pageState={pageState} user={user} /> */}
-
         <ActionBar>
           <Icon
             withBackground={true}
@@ -177,12 +173,7 @@ function MedicinesPage({ onSelectedChange }) {
           ))}
 
         {pageState.displayType === "card" && (
-          <div
-            className={[
-              generalStyles.flex_container,
-              generalStyles.margin_top_10,
-            ].join(" ")}
-          >
+          <CenterContainer>
             {medicines.map((medicine) => (
               <MedicineCard
                 key={medicine._id}
@@ -190,7 +181,7 @@ function MedicinesPage({ onSelectedChange }) {
                 searchString={pageState.searchName}
               />
             ))}
-          </div>
+          </CenterContainer>
         )}
 
         {count > 0 && status !== "loading" && (

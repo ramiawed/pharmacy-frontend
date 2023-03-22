@@ -13,15 +13,15 @@ function AdminUserTableHeader() {
   return (
     <RowContainer isHeader={true}>
       <ChildFlexOneDiv>
-        <label>{t("user-name")}</label>
+        <label>{t("user name")}</label>
       </ChildFlexOneDiv>
 
       <FixedSizeDiv size="large">
-        <label>{t("user-type")}</label>
+        <label>{t("user type")}</label>
       </FixedSizeDiv>
 
       <FixedSizeDiv size="large">
-        <label>{t("user-mobile")}</label>
+        <label>{t("user mobile")}</label>
       </FixedSizeDiv>
 
       <FixedSizeDiv size="medium">

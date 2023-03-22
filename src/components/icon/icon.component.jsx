@@ -10,7 +10,6 @@
 import React from "react";
 
 // styles
-import generalStyles from "../../style.module.scss";
 import styles from "./icon.module.scss";
 
 // constants
@@ -25,7 +24,6 @@ function Icon({
   text,
   withAlertIcon,
   closeToIcon,
-  selected,
 }) {
   return (
     <div
@@ -38,14 +36,14 @@ function Icon({
       }}
       className={[
         styles.icon,
-        foreColor === Colors.SUCCEEDED_COLOR ? generalStyles.fc_green : "",
-        foreColor === Colors.FAILED_COLOR ? generalStyles.fc_red : "",
-        foreColor === Colors.LIGHT_COLOR ? generalStyles.fc_secondary : "",
-        foreColor === Colors.YELLOW_COLOR ? generalStyles.fc_yellow : "",
-        foreColor === Colors.BACKUP_COLOR ? generalStyles.fc_backup : "",
-        foreColor === Colors.MAIN_COLOR ? generalStyles.fc_main : "",
-        foreColor === Colors.WHITE_COLOR ? generalStyles.fc_white : "",
-        foreColor === Colors.DARK_COLOR ? generalStyles.fc_grey : "",
+        foreColor === Colors.SUCCEEDED_COLOR ? "fc_green" : "",
+        foreColor === Colors.FAILED_COLOR ? "fc_red" : "",
+        foreColor === Colors.LIGHT_COLOR ? "fc_light" : "",
+        foreColor === Colors.YELLOW_COLOR ? "fc_yellow" : "",
+        foreColor === Colors.BACKUP_COLOR ? "fc_backup" : "",
+        foreColor === Colors.MAIN_COLOR ? "fc_main" : "",
+        foreColor === Colors.WHITE_COLOR ? "fc_white" : "",
+        foreColor === Colors.DARK_COLOR ? "fc_dark" : "",
       ].join(" ")}
       onClick={(e) => {
         // if (withAlertIcon) return;

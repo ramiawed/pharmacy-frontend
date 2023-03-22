@@ -9,7 +9,6 @@ import styles from "../side-nav.module.scss";
 import { SideNavLinks } from "../../utils/constants.js";
 import { CgProfile } from "react-icons/cg";
 import { useDispatch } from "react-redux";
-import { setSelectedWarehouse } from "../../redux/warehouse/warehousesSlice";
 import {
   setSearchCompanyId,
   setSearchWarehouseId,
@@ -30,7 +29,6 @@ function SideNavGuest({ selectedOption, onSelectedChange, collapsed }) {
           onSelectedChange(SideNavLinks.PROFILE);
           dispatch(setSearchWarehouseId(null));
           dispatch(setSearchCompanyId(null));
-          // dispatch(setSelectedWarehouse(null));
         }}
         to="/profile"
       >
@@ -38,11 +36,11 @@ function SideNavGuest({ selectedOption, onSelectedChange, collapsed }) {
           <div className={styles.nav_icon}>
             <CgProfile size={24} />
             {collapsed && (
-              <label className={styles.tooltip}>{t("nav-profile")}</label>
+              <label className={styles.tooltip}>{t("nav profile")}</label>
             )}
           </div>
           {!collapsed && (
-            <div className={styles.nav_label}>{t("nav-profile")}</div>
+            <div className={styles.nav_label}>{t("nav profile")}</div>
           )}
         </div>
       </Link>

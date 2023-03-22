@@ -13,27 +13,46 @@
         font-size: 12px;
         font-weight: bold;
         min-width: 100px;
-        text-align: left;
         color: $white-color !important;
         background-color: $main-color;
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+    label:lang(ar) {
         margin-left: 10px;
         border-top-right-radius: 6px;
         border-bottom-right-radius: 6px;
+        text-align: left;
+    }
+
+    label:lang(en) {
+        margin-right: 10px;
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+        text-align: right;
     }
 
     input[type="text"],
     input[type="date"] {
-        margin-inline-end: 8px;
-        margin-left: 8px;
         padding: 4px 0px;
         outline: none;
         border: none;
         color: $main-color;
         width: 100%;
+    }
+
+    input[type="text"]:lang(ar),
+    input[type="date"]:lang(ar) {
+        margin-left: 8px;
         text-align: right;
+    }
+
+    input[type="text"]:lang(en),
+    input[type="date"]:lang(en) {
+        margin-right: 8px;
+        text-align: left;
     }
 
     input[type="text"]::placeholder {
@@ -43,12 +62,19 @@
 
     span {
         position: absolute;
-        left: 10px;
         color: $light-color;
         align-self: center;
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+    span:lang(ar) {
+        left: 10px;
+    }
+
+    span:lang(en) {
+        right: 10px;
     }
 }
 

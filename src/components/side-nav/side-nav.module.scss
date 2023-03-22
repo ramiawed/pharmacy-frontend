@@ -4,13 +4,21 @@
   position: fixed;
   top: 60px;
   bottom: 0;
-  right: 0 !important;
+  // right: 0 !important;
   transition: width 0.5s;
   display: flex;
   flex-direction: column;
   align-items: center;
   z-index: 9;
   overflow: scroll;
+}
+
+.side_nav_container:lang(ar) {
+  right: 0 !important;
+}
+
+.side_nav_container:lang(en) {
+  left: 0 !important;
 }
 
 .profile_img {

@@ -48,7 +48,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
   });
 
   const guestJobOptions = [
-    { value: GuestJob.NONE, label: t("user-job") },
+    { value: GuestJob.NONE, label: t("user job") },
     { value: GuestJob.STUDENT, label: t("student") },
     { value: GuestJob.PHARMACIST, label: t("pharmacist") },
     { value: GuestJob.EMPLOYEE, label: t("employee") },
@@ -156,7 +156,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
 
   return (
     <Modal
-      header="search-engines"
+      header="search engines"
       cancelLabel="close-label"
       okLabel="search"
       closeModal={close}
@@ -164,12 +164,12 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
       okModal={search}
     >
       <SearchInput
-        label="user-name"
-        id="user-name"
+        label="user name"
+        id="user name"
         type="text"
         value={pageState.searchName}
         onchange={(e) => dispatch(setSearchName(e.target.value))}
-        placeholder="search-by-name"
+        placeholder="search by name"
         onEnterPress={enterPress}
         resetField={() => dispatch(setSearchName(""))}
         withBorder={true}
@@ -197,11 +197,11 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
             defaultValue: pageState.userType,
             options: userTypeOptions,
             action: handleSearchTypeChange,
-            header: "user-type",
+            header: "user type",
           })
         }
         selectedValue={pageState.userType}
-        label="user-type"
+        label="user type"
         styleForSearch={true}
       />
 
@@ -228,24 +228,24 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
               defaultValue: pageState.searchJob,
               options: guestJobOptions,
               action: handleGuestJobChange,
-              header: "user-job",
+              header: "user job",
             })
           }
           selectedValue={pageState.searchJob}
-          label="user-job"
+          label="user job"
           styleForSearch={true}
         />
       )}
 
       <SearchInput
-        label="user-mobile"
+        label="user mobile"
         id="search-mobile"
         type="text"
         value={pageState.searchMobile}
         onchange={(e) => {
           dispatch(setSearchMobile(e.target.value));
         }}
-        placeholder="search-by-mobile"
+        placeholder="search by mobile"
         onEnterPress={enterPress}
         resetField={() => dispatch(setSearchMobile(""))}
         withBorder={true}
@@ -273,7 +273,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
         pageState.userType === UserTypeConstants.PHARMACY) && (
         <>
           <SearchInput
-            label="user-employee-name"
+            label="user employee name"
             id="search-employee-name"
             type="text"
             value={pageState.searchEmployeeName}
@@ -281,11 +281,11 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
               dispatch(setSearchEmployeeName(e.target.value));
             }}
             withBorder={true}
-            placeholder="search-by-employee-name"
+            placeholder="search by employee name"
             resetField={() => dispatch(setSearchEmployeeName(""))}
           />
           <SearchInput
-            label="user-certificate-name"
+            label="user certificate name"
             id="search-certificate-name"
             type="text"
             value={pageState.searchCertificateName}
@@ -293,7 +293,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
               dispatch(setSearchCertificateName(e.target.value));
             }}
             withBorder={true}
-            placeholder="search-by-certificate"
+            placeholder="search by certificate"
             resetField={() => dispatch(setSearchCertificateName(""))}
           />
         </>
@@ -310,12 +310,12 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
               dispatch(setSearchCompanyName(e.target.value));
             }}
             withBorder={true}
-            placeholder="search-by-company-name"
+            placeholder="search by company name"
             resetField={() => dispatch(setSearchCompanyName(""))}
           />
 
           <SearchInput
-            label="user-job-title"
+            label="user job title"
             id="search-job-title"
             type="text"
             value={pageState.searchJobTitle}
@@ -323,14 +323,14 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
               dispatch(setSearchJobTitle(e.target.value));
             }}
             withBorder={true}
-            placeholder="search-by-job-title"
+            placeholder="search by job title"
             resetField={() => dispatch(setSearchJobTitle(""))}
           />
         </>
       )}
 
       <SearchInput
-        label="user-address-details"
+        label="user address details"
         id="search-address-details"
         type="text"
         value={pageState.searchAddressDetails}
@@ -338,7 +338,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
           dispatch(setSearchAddressDetails(e.target.value));
         }}
         withBorder={true}
-        placeholder="search-by-address-details"
+        placeholder="search by address details"
         resetField={(e) => {
           dispatch(setSearchAddressDetails(""));
         }}

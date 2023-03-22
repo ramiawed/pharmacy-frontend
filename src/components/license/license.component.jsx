@@ -1,11 +1,12 @@
 import React from "react";
 
+// styles
 import styles from "./license.module.scss";
 
 function License({ action }) {
   return (
     <div className={styles.container}>
-      <h1>تعهد الخصوصية لشركة سمارت فارما الطبية</h1>
+      <h3>تعهد الخصوصية لشركة سمارت فارما الطبية</h3>
       <p>
         شركة سمارت فارما التضامنية ملتزمة بحماية خصوصية بيانات كل مستخدمي موقعنا
         على الانترنت أو تطبيق الهاتف المحمول الخاص بنا. يرجى قراءة سياسة

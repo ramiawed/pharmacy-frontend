@@ -2,23 +2,27 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
-// styles
-import styles from "../side-nav.module.scss";
-
-// constants
-import { SideNavLinks, UserTypeConstants } from "../../utils/constants.js";
+// redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import { selectUser } from "../../redux/auth/authSlice";
 import { selectSettings } from "../../redux/settings/settingsSlice";
 import { resetPageState, setPageState } from "../../redux/items/itemsSlices";
-import { BsBasket2Fill, BsFillEnvelopeFill } from "react-icons/bs";
-import { CgProfile } from "react-icons/cg";
-import { GiMedicines } from "react-icons/gi";
 import {
   setSearchCompanyId,
   setSearchWarehouseId,
 } from "../../redux/medicines/medicinesSlices";
 import { orderSliceSignOut } from "../../redux/orders/ordersSlice";
+
+// styles
+import styles from "../side-nav.module.scss";
+
+// constants
+import { SideNavLinks, UserTypeConstants } from "../../utils/constants.js";
+
+// icons
+import { BsBasket2Fill, BsFillEnvelopeFill } from "react-icons/bs";
+import { CgProfile } from "react-icons/cg";
+import { GiMedicines } from "react-icons/gi";
 
 function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
   const { t } = useTranslation();
@@ -58,11 +62,11 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
           <div className={styles.nav_icon}>
             <GiMedicines size={24} />
             {collapsed && (
-              <label className={styles.tooltip}>{t("nav-items")}</label>
+              <label className={styles.tooltip}>{t("nav items")}</label>
             )}
           </div>
           {!collapsed && (
-            <div className={styles.nav_label}>{t("nav-items")}</div>
+            <div className={styles.nav_label}>{t("nav items")}</div>
           )}
         </div>
       </Link>
@@ -85,11 +89,11 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
             <div className={styles.nav_icon}>
               <BsFillEnvelopeFill size={24} />
               {collapsed && (
-                <label className={styles.tooltip}>{t("nav-orders")}</label>
+                <label className={styles.tooltip}>{t("nav orders")}</label>
               )}
             </div>
             {!collapsed && (
-              <div className={styles.nav_label}>{t("nav-orders")} </div>
+              <div className={styles.nav_label}>{t("nav orders")} </div>
             )}
           </div>
         </Link>
@@ -110,12 +114,12 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
         <div className={styles.nav}>
           <div className={styles.nav_icon}>
             {collapsed && (
-              <label className={styles.tooltip}>{t("nav-baskets")}</label>
+              <label className={styles.tooltip}>{t("nav baskets")}</label>
             )}
             <BsBasket2Fill size={24} />
           </div>
           {!collapsed && (
-            <div className={styles.nav_label}>{t("nav-baskets")}</div>
+            <div className={styles.nav_label}>{t("nav baskets")}</div>
           )}
         </div>
       </Link>
@@ -136,11 +140,11 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
           <div className={styles.nav_icon}>
             <CgProfile size={24} />
             {collapsed && (
-              <label className={styles.tooltip}>{t("nav-profile")}</label>
+              <label className={styles.tooltip}>{t("nav profile")}</label>
             )}
           </div>
           {!collapsed && (
-            <div className={styles.nav_label}>{t("nav-profile")}</div>
+            <div className={styles.nav_label}>{t("nav profile")}</div>
           )}
         </div>
       </Link>

@@ -13,9 +13,9 @@ import {
 import { MdAddCircle } from "react-icons/md";
 
 // components
+import ActionBar from "../action-bar/action-bar.component";
 import Header from "../header/header.component";
 import Icon from "../icon/icon.component";
-import ActionBar from "../action-bar/action-bar.component";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
@@ -33,7 +33,7 @@ function BasketPageHeader({ isNew, setIsNew }) {
 
   return (
     <>
-      <Header title="nav-baskets" refreshHandler={refreshHandler} />
+      <Header title="nav baskets" refreshHandler={refreshHandler} />
 
       <ActionBar>
         {!isNew && (

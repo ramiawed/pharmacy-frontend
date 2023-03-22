@@ -8,7 +8,6 @@ import {
   changeDisplayType,
   changeSearchCity,
   changeSearchName,
-  resetCompaniesPageState,
   selectCompaniesPageState,
 } from "../../redux/company/companySlice";
 

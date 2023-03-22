@@ -1,6 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
+// styles
 import styles from "./order-details-table-header.module.scss";
 
 const OrderDetailsTableHeader = () => {

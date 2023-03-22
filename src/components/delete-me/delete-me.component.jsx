@@ -37,17 +37,12 @@ import { settingsSignOut } from "../../redux/settings/settingsSlice";
 import { usersNotificationsSignOut } from "../../redux/userNotifications/userNotificationsSlice";
 import { savedItemsSliceSignOut } from "../../redux/savedItems/savedItemsSlice";
 import { basketsSliceSignOut } from "../../redux/baskets/basketsSlice";
+import { itemsWithPointsSliceSignOut } from "../../redux/itemsWithPoints/itemsWithPointsSlices";
 
 // components
+import CenterContainer from "../center-container/center-container.component";
 import PasswordRow from "../password-row/password-row.component";
 import Button from "../button/button.component";
-
-// styles
-import generalStyles from "../../style.module.scss";
-
-// constants and utils
-import { Colors } from "../../utils/constants";
-import { itemsWithPointsSliceSignOut } from "../../redux/itemsWithPoints/itemsWithPointsSlices";
 
 function DeleteMe() {
   const { t } = useTranslation();
@@ -68,7 +63,7 @@ function DeleteMe() {
   const handleDeleteMe = () => {
     // the password length must be greater than 0
     if (passwordForDelete.length === 0) {
-      setPasswordForDeleteError("enter-password");
+      setPasswordForDeleteError("enter password");
       return;
     }
 
@@ -118,24 +113,19 @@ function DeleteMe() {
   return (
     <>
       <PasswordRow
-        labelText={t("user-password")}
+        labelText={t("user password")}
         field="deletePassword"
         value={passwordForDelete}
         onInputChange={handlePasswordForDeleteChange}
         error={t(passwordForDeleteError)}
       />
-      <div
-        className={[
-          generalStyles.flex_center_container,
-          generalStyles.padding_v_6,
-        ].join(" ")}
-      >
+      <CenterContainer>
         <Button
           text="delete-account"
           action={handleDeleteMe}
-          bgColor={Colors.FAILED_COLOR}
+          classStyle="bg_red"
         />
-      </div>
+      </CenterContainer>
     </>
   );
 }

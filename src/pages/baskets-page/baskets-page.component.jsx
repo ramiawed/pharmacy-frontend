@@ -18,6 +18,7 @@ import {
 // components
 import MainContentContainer from "../../components/main-content-container/main-content-container.component";
 import BasketPageHeader from "../../components/baskets-page-header/baskets-page-header.component";
+import CenterContainer from "../../components/center-container/center-container.component";
 import CylonLoader from "../../components/cylon-loader/cylon-loader.component";
 import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 import NoMoreResult from "../../components/no-more-result/no-more-result.component";
@@ -27,9 +28,6 @@ import Basket from "../../components/basket/basket.component";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
-
-// styles
-import generalStyles from "../../style.module.scss";
 
 // icons
 import { CgMoreVertical } from "react-icons/cg";
@@ -103,14 +101,14 @@ const BasketsPage = ({ onSelectedChange }) => {
       {status === "loading" && <CylonLoader />}
 
       {baskets.length < count && (
-        <div className={generalStyles.flex_container}>
+        <CenterContainer>
           <ButtonWithIcon
             text={t("more")}
             action={handleMoreResult}
             bgColor={Colors.LIGHT_COLOR}
             icon={() => <CgMoreVertical />}
           />
-        </div>
+        </CenterContainer>
       )}
 
       {baskets.length === count &&

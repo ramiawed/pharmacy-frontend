@@ -53,6 +53,7 @@ import {
   partnerRowClickHandler,
   removePartnerFromFavoriteHandler,
 } from "../../utils/handlers";
+import CenterContainer from "../../components/center-container/center-container.component";
 
 function WarehousePage({ onSelectedChange }) {
   const { t } = useTranslation();
@@ -133,12 +134,7 @@ function WarehousePage({ onSelectedChange }) {
 
         {/* display as list */}
         {displayType === "list" && (
-          <div
-            className={[
-              generalStyles.flex_container,
-              generalStyles.margin_top_10,
-            ].join(" ")}
-          >
+          <CenterContainer>
             {filteredWarehouses.map((warehouse) => (
               <PartnerRow
                 key={warehouse._id}
@@ -172,16 +168,12 @@ function WarehousePage({ onSelectedChange }) {
                 }
               />
             ))}
-          </div>
+          </CenterContainer>
         )}
 
         {/* display as card */}
         {displayType === "card" && (
-          <div
-            className={[
-              generalStyles.flex_container,
-              generalStyles.margin_top_10,
-            ].join(" ")}
+          <CenterContainer
             style={{
               alignItems: "stretch",
             }}
@@ -219,7 +211,7 @@ function WarehousePage({ onSelectedChange }) {
                 }
               />
             ))}
-          </div>
+          </CenterContainer>
         )}
 
         {count > 0 && status !== "loading" && (

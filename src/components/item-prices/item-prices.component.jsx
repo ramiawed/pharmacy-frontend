@@ -1,20 +1,24 @@
 import React from "react";
+
+// constants
 import { formatNumber } from "../../utils/constants";
 
-import gs from "../../style.module.scss";
+import styles from "./item-prices.module.scss";
 
 const ItemPrices = ({ showPrice, price, customerPrice, showCustomerPrice }) => {
   return (
-    <div>
+    <div className={styles.container}>
       {showPrice && (
         <label
           className={[
-            gs.strong,
-            gs.padding_h_6,
-            gs.bg_green,
-            gs.fc_white,
-            gs.price_label,
-            gs.rounded_left,
+            "bold",
+            "medium",
+            "inline_block",
+            "center",
+            "bg_green",
+            "fc_white",
+            styles.price,
+            styles.label,
           ].join(" ")}
         >
           {formatNumber(price)}
@@ -23,12 +27,14 @@ const ItemPrices = ({ showPrice, price, customerPrice, showCustomerPrice }) => {
       {showCustomerPrice && (
         <label
           className={[
-            gs.strong,
-            gs.padding_h_6,
-            gs.bg_red,
-            gs.fc_white,
-            gs.price_label,
-            gs.rounded_right,
+            "bold",
+            "medium",
+            "inline_block",
+            "center",
+            "bg_red",
+            "fc_white",
+            styles.custom_price,
+            styles.label,
           ].join(" ")}
         >
           {formatNumber(customerPrice)}

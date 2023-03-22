@@ -1,9 +1,16 @@
 import React from "react";
-import { AiFillCloseCircle } from "react-icons/ai";
-import { Colors } from "../../utils/constants";
-import AdvertisementItem from "../advertisement-item/advertisement-item.component";
-import AdvertisementPartner from "../advertisement-partner/advertisement-partner.component";
 
+// icons
+import { AiFillCloseCircle } from "react-icons/ai";
+
+// constants
+import { Colors } from "../../utils/constants";
+
+// components
+import AdvertisementPartner from "../advertisement-partner/advertisement-partner.component";
+import AdvertisementItem from "../advertisement-item/advertisement-item.component";
+
+// styles
 import styles from "./advertisement-side-nav.module.scss";
 
 function AdvertisementSideNav({

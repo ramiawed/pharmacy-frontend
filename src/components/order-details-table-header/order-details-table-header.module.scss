@@ -6,11 +6,19 @@
     align-items: center;
     background-color: $white-color;
     padding: 5px;
-    margin-right: 45px;
-    margin-left: 10px;
     position: sticky;
     top: 111px;
     z-index: 5;
+
+    &:lang(ar) {
+        margin-right: 45px;
+        margin-left: 10px;
+    }
+
+    &:lang(en) {
+        margin-left: 45px;
+        margin-right: 10px;
+    }
 
     .first_row {
         flex: 1;

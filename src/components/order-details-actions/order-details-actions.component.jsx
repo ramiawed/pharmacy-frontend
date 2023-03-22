@@ -5,8 +5,9 @@ import { useTranslation } from "react-i18next";
 import OrderDetailsInfoModal from "../../modals/order-details-info-modal/order-details-info-modal.component";
 import ChooseDateModal from "../../modals/choose-date-modal/choose-date-modal.component";
 import { ExportCSV } from "../export-csv/export-csv.component";
-import Icon from "../icon/icon.component";
+import ActionBar from "../action-bar/action-bar.component";
 import Modal from "../../modals/modal/modal.component";
+import Icon from "../icon/icon.component";
 
 // icons
 import { BsCheck, BsStopCircle } from "react-icons/bs";
@@ -20,11 +21,9 @@ import { Colors, UserTypeConstants } from "../../utils/constants";
 // redux stuff
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/auth/authSlice";
-import ActionBar from "../action-bar/action-bar.component";
 
 const OrderDetailsActions = ({
   orderDetails,
-  computeTotalPrice,
   warehouseDontServeHanlder,
   devlierHandler,
   confirmOrderHanlder,
@@ -154,7 +153,7 @@ const OrderDetailsActions = ({
           header={t("will-dont-serve-label")}
           closeModal={() => setShowConfirmDontServeModal(false)}
           small={true}
-          cancelLabel="cancel-label"
+          cancelLabel="cancel"
           okLabel="ok-label"
           okModal={() => {
             warehouseDontServeHanlder();

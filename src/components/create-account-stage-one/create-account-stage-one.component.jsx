@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 
 // components
+import SignupStagesActions from "../signup-stages-actions/signup-stages-actions.component";
 import StageContainer from "../stage-container/stage-container.component";
 
 // styles
@@ -9,7 +10,6 @@ import styles from "./create-account-stage-one.module.scss";
 
 // constants
 import { UserTypeConstants } from "../../utils/constants";
-import SignupStagesActions from "../signup-stages-actions/signup-stages-actions.component";
 
 const CreateAccountStageOne = ({
   next,
@@ -34,7 +34,7 @@ const CreateAccountStageOne = ({
   return (
     <StageContainer next={next}>
       <div className={styles.container}>
-        <p>{t("choose-user-type")}</p>
+        <p>{t("choose user type")}</p>
         <label
           className={type === UserTypeConstants.COMPANY ? styles.selected : ""}
           onClick={() => changeUserTypeHanlder(UserTypeConstants.COMPANY)}

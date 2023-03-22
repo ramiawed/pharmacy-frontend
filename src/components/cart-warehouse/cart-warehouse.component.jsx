@@ -113,6 +113,7 @@ function CartWarehouse({ warehouse, wIndex }) {
             bonus: ci.bonus,
             bonusType: ci.bonusType,
             price: ci.item.price,
+            points: ci.point,
           };
         }),
       totalInvoicePrice: computeTotalPrice.invoiceTotal,
@@ -269,7 +270,7 @@ function CartWarehouse({ warehouse, wIndex }) {
             setShowConfirmSaveOrder(false);
           }}
           header={t("send-order")}
-          cancelLabel={t("cancel-label")}
+          cancelLabel={t("cancel")}
           okLabel={t("send-order")}
           okModal={sendOrderHandler}
           small={true}
@@ -284,7 +285,7 @@ function CartWarehouse({ warehouse, wIndex }) {
             setShowWarningMsg(false);
           }}
           header={t("minimum-invoice-cost")}
-          cancelLabel={t("cancel-label")}
+          cancelLabel={t("cancel")}
           small={true}
         >
           {t("minimum-invoice-cost-error")}

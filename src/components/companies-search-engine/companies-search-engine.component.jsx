@@ -55,14 +55,14 @@ function CompaniesSearchEngine({ search }) {
     <>
       <SearchContainer searchAction={search} searchEngineAlert={isThereSearch}>
         <SearchInput
-          label="user-name"
+          label="user name"
           id="search-name"
           type="text"
           value={searchName}
           onchange={(e) => {
             dispatch(changeSearchName(e.target.value));
           }}
-          placeholder="search-by-company-name"
+          placeholder="search by company name"
           resetField={() => dispatch(changeSearchName(""))}
         />
 

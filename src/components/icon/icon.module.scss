@@ -53,10 +53,22 @@
     border-radius: 50%;
     position: absolute;
     top: -5px;
-    left: -5px;
+
+    &:lang(ar) {
+        left: -5px;
+    }
+
+    &:lang(en) {
+        right: -5px;
+    }
 }
 
-.close_to_icon {
+.close_to_icon:lang(ar) {
     top: 0;
     left: 0;
+}
+
+.close_to_icon:lang(en) {
+    top: 0;
+    right: 0;
 }

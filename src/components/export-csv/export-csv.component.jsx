@@ -1,10 +1,14 @@
 import React from "react";
-
 import * as FileSaver from "file-saver";
-
 import * as XLSX from "xlsx";
+
+// components
 import Icon from "../icon/icon.component";
+
+// constants
 import { Colors, OfferTypes } from "../../utils/constants";
+
+// icons
 import { RiSave3Fill } from "react-icons/ri";
 import { useTranslation } from "react-i18next";
 

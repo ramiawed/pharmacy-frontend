@@ -210,7 +210,7 @@ function StatisticsPage({ onSelectedChange }) {
                   className={[
                     rowStyles.container,
                     rowStyles.without_box_shadow,
-                    generalStyles.center,
+                    "center",
                   ].join(" ")}
                   key={date}
                 >

@@ -1,13 +1,12 @@
-import { useTranslation } from "react-i18next";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import styles from "./point-details-row.module.scss";
-import gs from "../../style.module.scss";
 
 const PointDetailsRow = ({ point }) => {
   const { t } = useTranslation();
   return (
-    <div className={[styles.offer, gs.points_container].join(" ")}>
+    <div className={[styles.offer, "points_container"].join(" ")}>
       <p>
         <label>{t("quantity-label")}</label>
         <label className={[styles.value].join(" ")}>{point.qty}</label>

@@ -5,12 +5,17 @@
     margin-top: 10px;
     margin-block-end: 10px;
     margin-bottom: 10px;
-    padding-inline-start: 45px;
-    padding-right: 45px;
-    padding-inline-end: 10px;
-    padding-left: 10px;
     padding-block-end: 10px;
     padding-bottom: 10px;
-    overflow: hidden;
     position: relative;
+}
+
+.main_content_container:lang(ar) {
+    padding-right: 45px;
+    padding-left: 10px;
+}
+
+.main_content_container:lang(en) {
+    padding-left: 45px;
+    padding-right: 10px;
 }

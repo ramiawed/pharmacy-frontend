@@ -1,0 +1,24 @@
+.container {
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.label {
+    width: 65px;
+}
+
+.price:lang(ar) {
+    border-radius: 0 4px 4px 0;
+}
+
+.price:lang(en) {
+    border-radius: 4px 0 0 4px;
+}
+
+.custom_price:lang(ar) {
+    border-radius: 4px 0 0 4px;
+}
+
+.custom_price:lang(en) {
+    border-radius: 0 4px 4px 0;
+}

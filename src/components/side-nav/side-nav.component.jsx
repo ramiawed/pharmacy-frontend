@@ -33,17 +33,16 @@ import {
   resetMedicines,
 } from "../../redux/medicines/medicinesSlices";
 import { changeNavSettings } from "../../redux/navs/navigationSlice";
+import { savedItemsSliceSignOut } from "../../redux/savedItems/savedItemsSlice";
+import { basketsSliceSignOut } from "../../redux/baskets/basketsSlice";
+import { itemsWithPointsSliceSignOut } from "../../redux/itemsWithPoints/itemsWithPointsSlices";
 
 // styles
 import styles from "./side-nav.module.scss";
 import linkStyles from "../side-nav.module.scss";
-import generalStyles from "../../style.module.scss";
 
 // constants
 import { SERVER_URL, UserTypeConstants } from "../../utils/constants";
-import { savedItemsSliceSignOut } from "../../redux/savedItems/savedItemsSlice";
-import { basketsSliceSignOut } from "../../redux/baskets/basketsSlice";
-import { itemsWithPointsSliceSignOut } from "../../redux/itemsWithPoints/itemsWithPointsSlices";
 
 const SideNavAdmin = lazy(() =>
   import("../side-nav-admin/side-nav-admin.component")
@@ -117,10 +116,7 @@ function SideNav({
 
         {!collapsed ? (
           <div
-            className={[
-              styles.profile_img,
-              generalStyles.flex_center_container,
-            ].join(" ")}
+            className={[styles.profile_img, "flex_center_container"].join(" ")}
             style={{
               flexDirection: "column",
             }}
@@ -197,15 +193,17 @@ function SideNav({
             }}
             onClick={handleSignOut}
           >
-            <div className={styles.nav}>
-              <div className={styles.nav_icon}>
+            <div className={linkStyles.nav}>
+              <div className={linkStyles.nav_icon}>
                 <GoSignOut size={24} />
                 {collapsed && (
-                  <label className={styles.tooltip}>{t("nav-sign-out")}</label>
+                  <label className={linkStyles.tooltip}>
+                    {t("nav sign out")}
+                  </label>
                 )}
               </div>
               {!collapsed && (
-                <div className={styles.nav_label}>{t("nav-sign-out")}</div>
+                <div className={linkStyles.nav_label}>{t("nav sign out")}</div>
               )}
             </div>
           </Link>

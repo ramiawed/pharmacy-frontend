@@ -16,7 +16,6 @@ import { saveBasketOrder } from "../../redux/orders/ordersSlice";
 
 // components
 import SelectPartnerModal from "../../modals/select-partner-modal/select-partner-modal.component";
-import FilterItemsModal from "../../modals/filter-items-modal/filter-items-modal.component";
 import ChooseItemModal from "../../modals/choose-item-modal/choose-item-modal.component";
 import BasketItemRow from "../basket-item-row/basket-item-row.component";
 import ResultModal from "../result-modal/result-modal.component";
@@ -552,7 +551,8 @@ function Basket({ setIsNew, basket, editable, forRead }) {
                 <Button
                   action={checkBasketAction}
                   text={t("check-basket-label")}
-                  bgColor={Colors.MAIN_COLOR}
+                  // bgColor={Colors.MAIN_COLOR}
+                  classStyle="bg_main"
                 />
               </div>
             )}
@@ -563,14 +563,16 @@ function Basket({ setIsNew, basket, editable, forRead }) {
                   action={addOrUpdateBasketAction}
                   text={setIsNew ? t("add-label") : t("update-label")}
                   bgColor={Colors.SUCCEEDED_COLOR}
+                  classStyle="bg_green"
                 />
               </div>
             )}
             {allowEdit ? (
               <Button
                 action={resetState}
-                text={t("cancel-label")}
-                bgColor={Colors.FAILED_COLOR}
+                text={t("cancel")}
+                // bgColor={Colors.FAILED_COLOR}
+                classStyle="bg_red"
               />
             ) : (
               <>
@@ -579,13 +581,15 @@ function Basket({ setIsNew, basket, editable, forRead }) {
                     setAllowEdit(true);
                   }}
                   text={t("edit-basket-label")}
-                  bgColor={Colors.MAIN_COLOR}
+                  // bgColor={Colors.MAIN_COLOR}
+                  classStyle="bg_main"
                 />
                 <div style={{ width: "10px" }}></div>
                 <Button
                   action={removeBasketAction}
                   text={t("remove-basket-label")}
-                  bgColor={Colors.FAILED_COLOR}
+                  // bgColor={Colors.FAILED_COLOR}
+                  classStyle="bg_red"
                 />
               </>
             )}
@@ -597,7 +601,7 @@ function Basket({ setIsNew, basket, editable, forRead }) {
             <Button
               action={orderBasketAction}
               text={t("order-basket-label")}
-              bgColor={Colors.SUCCEEDED_COLOR}
+              classStyle="bg_green"
             />
           </div>
         )}
@@ -632,7 +636,7 @@ function Basket({ setIsNew, basket, editable, forRead }) {
           close={() => setShowSelectWarehouseModal(false)}
           chooseAction={(data) => selectWarehouseHandler(data)}
           data={warehouses}
-          placeholder="enter-warehouse-name"
+          placeholder="enter warehouse name"
         />
       )}
 

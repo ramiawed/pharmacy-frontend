@@ -1,7 +1,7 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import Logo from "../../logo.png";
-import FastDeliverLogo from "../../smal-logo.png";
+import Logo from "../../assets/transparent_logo.png";
+import FastDeliverLogo from "../../assets/small_logo.png";
 
 // components
 import Button from "../button/button.component";
@@ -18,11 +18,9 @@ import {
   selectFavoritesError,
 } from "../../redux/favorites/favoritesSlice";
 import { selectUserData } from "../../redux/auth/authSlice";
-
 import { selectSettings } from "../../redux/settings/settingsSlice";
 
 // styles
-import generalStyles from "../../style.module.scss";
 import styles from "./partner-card.module.scss";
 
 // constants and utils
@@ -98,9 +96,7 @@ function PartnerCard({
 
       <div className={styles.from_top}>
         {favoritesError === "" ? (
-          <div
-            className={[generalStyles.icon, generalStyles.fc_yellow].join(" ")}
-          >
+          <div className={["fc_yellow"].join(" ")}>
             {favorites &&
             favorites.map((favorite) => favorite._id).includes(partner._id) ? (
               <AiFillStar
@@ -145,7 +141,7 @@ function PartnerCard({
                 partnerRowClickHandler(allowShowingWarehouseMedicines)
               }
               text={t("medicines")}
-              bgColor={Colors.FAILED_COLOR}
+              classStyle="bg_red"
             />
           </div>
         )}

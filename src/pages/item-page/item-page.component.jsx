@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect, useLocation, useHistory } from "react-router-dom";
 import axios from "axios";
-import Logo from "../../logo.png";
+import Logo from "../../assets/transparent_logo.png";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -36,6 +36,7 @@ import CardInfo from "../../components/card-info/card-info.component";
 import Header from "../../components/header/header.component";
 import Input from "../../components/input/input.component";
 import Toast from "../../components/toast/toast.component";
+import Icon from "../../components/icon/icon.component";
 import Modal from "../../modals/modal/modal.component";
 
 // constants and utils
@@ -56,10 +57,8 @@ import { BsImageAlt } from "react-icons/bs";
 import { AiFillEdit } from "react-icons/ai";
 
 // styles
-import generalStyles from "../../style.module.scss";
-import styles from "./item-page.module.scss";
 import rowStyles from "../../components/row.module.scss";
-import Icon from "../../components/icon/icon.component";
+import styles from "./item-page.module.scss";
 
 function ItemPage() {
   const { t } = useTranslation();
@@ -310,12 +309,10 @@ function ItemPage() {
       <MainContentContainer>
         <div className={styles.content}>
           <div
-            className={[
-              generalStyles.flex_center_container,
-              generalStyles.flex_column,
-              generalStyles.padding_v_6,
-              generalStyles.padding_h_12,
-            ].join(" ")}
+            className={["flex_center_container", "flex_column"].join(" ")}
+            style={{
+              padding: "6px 12px",
+            }}
           >
             {changeLogoStatus === "succeeded" || changeLogoStatus === "idle" ? (
               <div className={styles.logo}>
@@ -359,7 +356,7 @@ function ItemPage() {
             {allowAction &&
               (from === UserTypeConstants.COMPANY ||
                 from === UserTypeConstants.ADMIN) && (
-                <div className={generalStyles.margin_v_4}>
+                <div style={{ margin: "4px 0" }}>
                   <ButtonWithIcon
                     text={type === "info" ? t("update-item") : t("add-item")}
                     action={() => setShowUpdateConfirmModal(true)}
@@ -373,7 +370,7 @@ function ItemPage() {
             {user.type === UserTypeConstants.PHARMACY &&
               item !== null &&
               checkItemExistsInWarehouse(item, user) && (
-                <div className={generalStyles.margin_v_4}>
+                <div style={{ margin: "4px 0" }}>
                   <ButtonWithIcon
                     text={t("add-to-cart")}
                     action={() => setShowAddToCartModal(true)}
@@ -387,7 +384,7 @@ function ItemPage() {
               (item.warehouses
                 ?.map((w) => w.warehouse._id)
                 .includes(user._id) ? (
-                <div className={generalStyles.margin_v_4}>
+                <div style={{ margin: "4px 0" }}>
                   <ButtonWithIcon
                     text={t("remove-from-warehouse")}
                     action={removeItemFromWarehouseHandler}
@@ -396,7 +393,7 @@ function ItemPage() {
                   />
                 </div>
               ) : (
-                <div className={generalStyles.margin_v_4}>
+                <div style={{ margin: "4px 0" }}>
                   <ButtonWithIcon
                     text={t("add-to-warehouse")}
                     action={addItemToWarehouseHandler}
@@ -574,11 +571,13 @@ function ItemPage() {
                       className={[
                         rowStyles.container,
                         rowStyles.without_box_shadow,
-                        generalStyles.padding_h_6,
                       ].join(" ")}
+                      style={{
+                        padding: "0 6px",
+                      }}
                       key={index}
                     >
-                      <label className={generalStyles.padding_v_6}>
+                      <label style={{ padding: "6px 0" }}>
                         {w.warehouse.name}
                       </label>
 
@@ -618,11 +617,13 @@ function ItemPage() {
                         className={[
                           rowStyles.container,
                           rowStyles.without_box_shadow,
-                          generalStyles.padding_h_6,
                         ].join(" ")}
+                        style={{
+                          padding: "0 6px",
+                        }}
                         key={index}
                       >
-                        <label className={generalStyles.padding_v_6}>
+                        <label style={{ padding: "6px 0" }}>
                           {w.warehouse.name}
                         </label>
 
@@ -728,7 +729,7 @@ function ItemPage() {
       {showUpdateConfirmModal && (
         <Modal
           header={type === "info" ? "update-item" : "add-item"}
-          cancelLabel="cancel-label"
+          cancelLabel="cancel"
           okLabel="ok-label"
           closeModal={() => {
             setShowUpdateConfirmModal(false);

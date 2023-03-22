@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
+
+// constants
 import { SERVER_URL } from "../../utils/constants";
 
 // style

@@ -14,7 +14,7 @@ import { BASEURL } from "../../utils/constants";
 function BackupRestorePage() {
   return (
     <>
-      <Header title="backup-restore" />
+      <Header title="backup restore" />
 
       <MainContentContainer>
         <ul className={styles.ul}>

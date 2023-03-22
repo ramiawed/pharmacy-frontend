@@ -17,6 +17,7 @@ import Modal from "../modal/modal.component";
 import Button from "../../components/button/button.component";
 import Icon from "../../components/icon/icon.component";
 import NoContent from "../../components/no-content/no-content.component";
+import CenterContainer from "../../components/center-container/center-container.component";
 
 // icons
 import { IoIosSearch } from "react-icons/io";
@@ -114,16 +115,15 @@ function ChooseItemModal({
   return (
     <Modal
       header="choose-item"
-      cancelLabel="cancel-label"
+      cancelLabel="cancel"
       closeModal={close}
       small={true}
     >
       <>
         <div
-          className={[
-            styles.search_container,
-            generalStyles.flex_center_container,
-          ].join(" ")}
+          className={[styles.search_container, "flex_center_container"].join(
+            " "
+          )}
         >
           <IoIosSearch color={Colors.LIGHT_COLOR} size={24} />
           <input
@@ -138,7 +138,7 @@ function ChooseItemModal({
             action={() => {
               getItems(1);
             }}
-            bgColor={Colors.SUCCEEDED_COLOR}
+            classStyle="bg_green"
           />
         </div>
 
@@ -161,9 +161,9 @@ function ChooseItemModal({
         </div>
 
         {loading ? (
-          <div className={generalStyles.flex_container}>
+          <CenterContainer>
             <ReactLoading color={Colors.LIGHT_COLOR} type="cylon" />
-          </div>
+          </CenterContainer>
         ) : (
           data.length < count && (
             <div className={styles.actions_div}>
@@ -172,7 +172,7 @@ function ChooseItemModal({
                 action={() => {
                   getItems(page);
                 }}
-                bgColor={Colors.SUCCEEDED_COLOR}
+                classStyle="bg_green"
               />
             </div>
           )
@@ -231,7 +231,7 @@ const Row = ({ data, addAction }) => {
         <Icon
           icon={() => (
             <VscLoading
-              className={generalStyles.loading}
+              className="loading"
               size={24}
               color={Colors.SUCCEEDED_COLOR}
             />

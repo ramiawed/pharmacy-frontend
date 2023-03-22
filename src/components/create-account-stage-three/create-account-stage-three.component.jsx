@@ -82,7 +82,7 @@ const CreateAccountStageThree = ({
       hasError = true;
       errorObj = {
         ...errorObj,
-        addressDetails: "enter-address-details",
+        addressDetails: "enter address details",
       };
     }
 
@@ -121,7 +121,7 @@ const CreateAccountStageThree = ({
 
           <Input
             type="email"
-            label="user-email"
+            label="user email"
             id="email"
             value={obj.email}
             onchange={(e) => inputChangeHandler("email", e.target.value)}
@@ -131,7 +131,7 @@ const CreateAccountStageThree = ({
 
           <Input
             type="text"
-            label="user-phone"
+            label="user phone"
             id="phone"
             value={obj.phone}
             onchange={(e) => inputChangeHandler("phone", e.target.value)}
@@ -141,7 +141,7 @@ const CreateAccountStageThree = ({
 
           <Input
             type="text"
-            label="user-mobile"
+            label="user mobile"
             id="mobile"
             value={obj.mobile}
             onchange={(e) => inputChangeHandler("mobile", e.target.value)}
@@ -153,7 +153,7 @@ const CreateAccountStageThree = ({
 
           <Input
             type="text"
-            label="user-address-details"
+            label="user address details"
             id="addressDetails"
             value={obj.addressDetails}
             onchange={(e) =>

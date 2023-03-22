@@ -52,7 +52,6 @@ function AddToCartOfferModal({ item, close, setAddItemToCartMsg }) {
     ],
   };
 
-
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -130,7 +129,7 @@ function AddToCartOfferModal({ item, close, setAddItemToCartMsg }) {
     <>
       <Modal
         header="add-to-cart"
-        cancelLabel="cancel-label"
+        cancelLabel="cancel"
         okLabel="add-label"
         closeModal={close}
         okModal={addItemToCartHandler}

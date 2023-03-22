@@ -1,28 +1,25 @@
 import React, { useEffect, useState } from "react";
-import axios from "axios";
 import { useTranslation } from "react-i18next";
 import { useLocation } from "react-router-dom";
+import axios from "axios";
 
 // components
-import Toast from "../../components/toast/toast.component";
 import OrderDetailsActions from "../../components/order-details-actions/order-details-actions.component";
 import MainContentContainer from "../../components/main-content-container/main-content-container.component";
 import Loader from "../../components/action-loader/action-loader.component";
 import NoContent from "../../components/no-content/no-content.component";
 import Header from "../../components/header/header.component";
 import Basket from "../../components/basket/basket.component";
+import Toast from "../../components/toast/toast.component";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
-// import { selectBasketOrders } from "../../redux/basketOrdersSlice/basketOrdersSlice";
 import { updateBasketOrder } from "../../redux/orders/ordersSlice";
 
 // constants and utils
 import { BASEURL, Colors, OrdersStatusOptions } from "../../utils/constants";
-
-//styles
 
 const BasketOrderDetailsPage = ({ onSelectedChange }) => {
   const { t } = useTranslation();

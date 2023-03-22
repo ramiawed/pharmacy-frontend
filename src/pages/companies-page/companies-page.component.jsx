@@ -13,11 +13,10 @@ import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
 import { useHistory } from "react-router-dom";
 
-import { CgMoreVertical } from "react-icons/cg";
-
 // components
 import CompaniesSearchEngine from "../../components/companies-search-engine/companies-search-engine.component";
 import MainContentContainer from "../../components/main-content-container/main-content-container.component";
+import CenterContainer from "../../components/center-container/center-container.component";
 import CompaniesActions from "../../components/companies-actions/companies-actions.component";
 import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 import NoMoreResult from "../../components/no-more-result/no-more-result.component";
@@ -43,8 +42,8 @@ import {
 } from "../../redux/favorites/favoritesSlice";
 import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 
-// styles
-import generalStyles from "../../style.module.scss";
+// icons
+import { CgMoreVertical } from "react-icons/cg";
 
 // constants and utils
 import { CitiesName, Colors } from "../../utils/constants";
@@ -128,12 +127,7 @@ function CompaniesPage({ onSelectedChange }) {
 
         {/* display partner as list */}
         {displayType === "list" && (
-          <div
-            className={[
-              generalStyles.flex_container,
-              generalStyles.margin_top_10,
-            ].join(" ")}
-          >
+          <CenterContainer>
             {filteredCompanies.map((company) => (
               <PartnerRow
                 key={company._id}
@@ -183,16 +177,12 @@ function CompaniesPage({ onSelectedChange }) {
                 }
               />
             ))}
-          </div>
+          </CenterContainer>
         )}
 
         {/* display partner as a card */}
         {displayType === "card" && (
-          <div
-            className={[
-              generalStyles.flex_container,
-              generalStyles.margin_top_10,
-            ].join(" ")}
+          <CenterContainer
             style={{
               alignItems: "stretch",
             }}
@@ -246,7 +236,7 @@ function CompaniesPage({ onSelectedChange }) {
                 }
               />
             ))}
-          </div>
+          </CenterContainer>
         )}
 
         {/* {count > 0 && status !== "loading" && (

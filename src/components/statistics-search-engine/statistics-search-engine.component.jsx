@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
+
+// redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectStatistics,
@@ -7,7 +9,6 @@ import {
   setSearchDate,
   setSearchName,
 } from "../../redux/statistics/statisticsSlice";
-import { DateOptions } from "../../utils/constants";
 
 // components
 import ChooseValue from "../choose-value/choose-value.component";
@@ -15,6 +16,9 @@ import ChooserContainer from "../chooser-container/chooser-container.component";
 import SearchContainer from "../search-container/search-container.component";
 import SearchInput from "../search-input/search-input.component";
 import SearchRowContainer from "../search-row-container/search-row-container.component";
+
+// constants
+import { DateOptions } from "../../utils/constants";
 
 const StatisticsSearchEngine = ({ handleEnterPress }) => {
   const { t } = useTranslation();

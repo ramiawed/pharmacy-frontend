@@ -9,10 +9,8 @@ import Button from "../button/button.component";
 
 // styles
 import styles from "./info-row.module.scss";
-import generalStyles from "../../style.module.scss";
 
 // constants
-import { Colors } from "../../utils/constants";
 import { cancelOperation } from "../../redux/auth/authSlice";
 
 // use this promise to abort the operation by click on the cancel button
@@ -149,25 +147,25 @@ function InfoRow({ labelText, value, onInputChange, action, field, editable }) {
               <Button
                 text="ok-label"
                 action={handleOkAction}
-                bgColor={Colors.LIGHT_COLOR}
+                classStyle="bg_light"
                 loading={loading}
               />
               <div style={{ minWidth: "10px" }}></div>
               <Button
-                text="cancel-label"
+                text="cancel"
                 action={cancelHandler}
-                bgColor={Colors.FAILED_COLOR}
+                classStyle="bg_red"
               />
             </div>
           ) : (
-            <div className={generalStyles.flex_center_container}>
+            <div className={"flex_center_container"}>
               <Button
                 text="edit-label"
                 action={() => {
                   setIsEditable(true);
                   setPreviousValue(value);
                 }}
-                bgColor={Colors.SUCCEEDED_COLOR}
+                classStyle="bg_green"
               />
             </div>
           )

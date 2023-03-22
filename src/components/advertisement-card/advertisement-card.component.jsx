@@ -12,10 +12,10 @@ import { Colors, SERVER_URL } from "../../utils/constants";
 
 // components
 import Modal from "../../modals/modal/modal.component";
+import Icon from "../icon/icon.component";
 
 // styles
 import styles from "./advertisment-card.module.scss";
-import Icon from "../icon/icon.component";
 
 function AdvertisementCard({ advertisement }) {
   const { t } = useTranslation();

@@ -90,7 +90,7 @@ function ChooseCompanyModal({ close, chooseAction, url }) {
   return (
     <Modal
       header="choose-company"
-      cancelLabel="cancel-label"
+      cancelLabel="cancel"
       closeModal={close}
       small={true}
     >
@@ -99,15 +99,14 @@ function ChooseCompanyModal({ close, chooseAction, url }) {
       ) : (
         <>
           <div
-            className={[
-              styles.search_container,
-              generalStyles.flex_center_container,
-            ].join(" ")}
+            className={[styles.search_container, "flex_center_container"].join(
+              " "
+            )}
           >
             <IoIosSearch color={Colors.LIGHT_COLOR} size={24} />
             <input
               className={styles.search_input}
-              placeholder={t("enter-company-name")}
+              placeholder={t("enter company name")}
               value={searchName}
               onChange={(e) => setSearchName(e.target.value)}
               onKeyDown={keyDownHandler}
@@ -117,7 +116,7 @@ function ChooseCompanyModal({ close, chooseAction, url }) {
               action={() => {
                 getCompanies(1);
               }}
-              bgColor={Colors.SUCCEEDED_COLOR}
+              classStyle="bg_green"
             />
           </div>
 
@@ -143,7 +142,7 @@ function ChooseCompanyModal({ close, chooseAction, url }) {
                 action={() => {
                   getCompanies(page);
                 }}
-                bgColor={Colors.SUCCEEDED_COLOR}
+                classStyle="bg_green"
               />
             </div>
           )}
@@ -186,9 +185,7 @@ const Row = ({ data, addAction }) => {
       <p className={styles.company_name}>{data.name}</p>
       {loading ? (
         <Icon
-          icon={() => (
-            <VscLoading className={generalStyles.loading} size={24} />
-          )}
+          icon={() => <VscLoading className="loading" size={24} />}
           onclick={() => {}}
           foreColor={Colors.LIGHT_COLOR}
         />

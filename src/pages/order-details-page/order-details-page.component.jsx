@@ -7,6 +7,7 @@ import axios from "axios";
 import MainContentContainer from "../../components/main-content-container/main-content-container.component";
 import OrderDetailsActions from "../../components/order-details-actions/order-details-actions.component";
 import Loader from "../../components/action-loader/action-loader.component";
+import ItemNames from "../../components/item-names/item-names.component";
 import NoContent from "../../components/no-content/no-content.component";
 import Header from "../../components/header/header.component";
 import Toast from "../../components/toast/toast.component";
@@ -24,10 +25,10 @@ import {
   formatNumber,
   OfferTypes,
   OrdersStatusOptions,
+  UserTypeConstants,
 } from "../../utils/constants";
 
 import styles from "./order-details-page.module.scss";
-import ItemNames from "../../components/item-names/item-names.component";
 
 function OrderDetailsPage({ location, onSelectedChange }) {
   const { t } = useTranslation();
@@ -36,7 +37,7 @@ function OrderDetailsPage({ location, onSelectedChange }) {
   const orderId = location?.search.slice(1);
 
   // selectors
-  const { token } = useSelector(selectUserData);
+  const { token, user } = useSelector(selectUserData);
   const { status } = useSelector(selectOrders);
 
   // own states
@@ -251,12 +252,20 @@ function OrderDetailsPage({ location, onSelectedChange }) {
                       <div className={[styles.cell].join(" ")}>
                         {t("offer-label")}
                       </div>
-                      <div className={[styles.cell].join(" ")}>
-                        {t("price")}
-                      </div>
-                      <div className={[styles.cell].join(" ")}>
-                        {t("total-price-small")}
-                      </div>
+                      {(user.type === UserTypeConstants.PHARMACY ||
+                        user.type === UserTypeConstants.ADMIN) && (
+                        <>
+                          <div className={[styles.cell].join(" ")}>
+                            {t("points")}
+                          </div>
+                          <div className={[styles.cell].join(" ")}>
+                            {t("price")}
+                          </div>
+                          <div className={[styles.cell].join(" ")}>
+                            {t("total-price-small")}
+                          </div>
+                        </>
+                      )}
                     </div>
 
                     {orderDetails.items.map((item, index) => (
@@ -282,19 +291,29 @@ function OrderDetailsPage({ location, onSelectedChange }) {
                         <div className={[styles.cell].join(" ")}>
                           {formatNumber(item.bonus)}
                         </div>
-                        <div className={[styles.cell].join(" ")}>
-                          {formatNumber(item.item.price)}
-                        </div>
-                        <div className={[styles.cell].join(" ")}>
-                          {formatNumber(
-                            item.qty * item.item.price -
-                              (item.bonus &&
-                              item.bonusType === OfferTypes.PERCENTAGE
-                                ? (item.qty * item.item.price * item.bonus) /
-                                  100
-                                : 0)
-                          )}
-                        </div>
+                        {(user.type === UserTypeConstants.PHARMACY ||
+                          user.type === UserTypeConstants.ADMIN) && (
+                          <>
+                            <div className={[styles.cell].join(" ")}>
+                              {formatNumber(item.points)}
+                            </div>
+                            <div className={[styles.cell].join(" ")}>
+                              {formatNumber(item.price)}
+                            </div>
+                            <div className={[styles.cell].join(" ")}>
+                              {formatNumber(
+                                item.qty * item.item.price -
+                                  (item.bonus &&
+                                  item.bonusType === OfferTypes.PERCENTAGE
+                                    ? (item.qty *
+                                        item.item.price *
+                                        item.bonus) /
+                                      100
+                                    : 0)
+                              )}
+                            </div>
+                          </>
+                        )}
                       </div>
                     ))}
                   </div>

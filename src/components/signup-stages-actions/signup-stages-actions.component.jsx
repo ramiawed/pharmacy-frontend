@@ -1,5 +1,4 @@
 import React from "react";
-import { Colors } from "../../utils/constants";
 
 // components
 import Button from "../button/button.component";
@@ -11,19 +10,11 @@ const SignupStagesActions = ({ stage, prevHandler, nextHandler }) => {
   return (
     <div className={styles.container}>
       {stage > 1 && (
-        <Button
-          text="السابق"
-          action={prevHandler}
-          bgColor={Colors.SUCCEEDED_COLOR}
-        />
+        <Button text="السابق" action={prevHandler} classStyle="bg_green" />
       )}
       <div style={{ width: "10px" }}></div>
       {stage <= 4 && (
-        <Button
-          text="التالي"
-          action={nextHandler}
-          bgColor={Colors.SUCCEEDED_COLOR}
-        />
+        <Button text="التالي" action={nextHandler} classStyle="bg_green" />
       )}
     </div>
   );

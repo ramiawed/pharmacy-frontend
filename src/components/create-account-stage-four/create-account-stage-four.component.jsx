@@ -5,14 +5,14 @@ import { useTranslation } from "react-i18next";
 import { GuestJob, UserTypeConstants } from "../../utils/constants";
 
 // components
+import SignupStagesActions from "../signup-stages-actions/signup-stages-actions.component";
+import ChooserContainer from "../chooser-container/chooser-container.component";
 import StageContainer from "../stage-container/stage-container.component";
+import ChooseValue from "../choose-value/choose-value.component";
 import Input from "../input/input.component";
 
 // styles
 import styles from "./create-account-stage-four.module.scss";
-import ChooserContainer from "../chooser-container/chooser-container.component";
-import ChooseValue from "../choose-value/choose-value.component";
-import SignupStagesActions from "../signup-stages-actions/signup-stages-actions.component";
 
 const CreateAccountStageFour = ({
   next,
@@ -100,7 +100,7 @@ const CreateAccountStageFour = ({
         hasError = true;
         errorObj = {
           ...errorObj,
-          employeeName: "enter-employee-name",
+          employeeName: "enter employee name",
         };
       }
 
@@ -108,7 +108,7 @@ const CreateAccountStageFour = ({
         hasError = true;
         errorObj = {
           ...errorObj,
-          certificateName: "enter-certificate-name",
+          certificateName: "enter certificate name",
         };
       }
     }
@@ -121,7 +121,7 @@ const CreateAccountStageFour = ({
             ...errorObj,
             guestDetails: {
               ...errorObj.guestDetails,
-              jobTitle: "enter-job-title",
+              jobTitle: "enter job title",
             },
           };
         }
@@ -132,7 +132,7 @@ const CreateAccountStageFour = ({
             ...errorObj,
             guestDetails: {
               ...errorObj.guestDetails,
-              companyName: "enter-company-name",
+              companyName: "enter company name",
             },
           };
         }
@@ -145,7 +145,7 @@ const CreateAccountStageFour = ({
           ...errorObj,
           guestDetails: {
             ...errorObj.guestDetails,
-            job: "choose-job",
+            job: "choose job",
           },
         };
       }
@@ -221,7 +221,7 @@ const CreateAccountStageFour = ({
             <>
               <Input
                 type="text"
-                label="user-employee-name"
+                label="user employee name"
                 id="employeeName"
                 value={obj.employeeName}
                 onchange={(e) =>
@@ -234,7 +234,7 @@ const CreateAccountStageFour = ({
               />
               <Input
                 type="text"
-                label="user-certificate-name"
+                label="user certificate name"
                 id="certificateName"
                 value={obj.certificateName}
                 onchange={(e) =>
@@ -255,7 +255,7 @@ const CreateAccountStageFour = ({
               <ChooserContainer
                 onclick={() => setShowChooseGuestJobModal(true)}
                 selectedValue={obj.guestDetails.job}
-                label="user-job"
+                label="user job"
                 error={error.guestDetails.job}
               />
 
@@ -283,7 +283,7 @@ const CreateAccountStageFour = ({
                   <div className={styles.input_div}>
                     <Input
                       type="text"
-                      label="user-job-title"
+                      label="user job title"
                       id="jobTitle"
                       value={obj.guestDetails.jobTitle}
                       onchange={(e) =>
@@ -348,7 +348,7 @@ const CreateAccountStageFour = ({
 
       {showChooseGuestJobModal && (
         <ChooseValue
-          headerTitle="user-job"
+          headerTitle="user job"
           close={() => {
             setShowChooseGuestJobModal(false);
           }}

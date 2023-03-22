@@ -4,9 +4,7 @@
   border-radius: 6px;
   background-color: rgba($color: $light-color, $alpha: 0.2);
   padding: 10px;
-
   position: relative;
-
   animation-name: animateOpacity;
   animation-duration: 0.3s;
   animation-fill-mode: forwards;
@@ -20,15 +18,19 @@
 .img {
   flex: 1;
   padding: 20px;
-  margin-inline-start: 15px;
-  margin-right: 15px;
   background-color: $white-color;
   border-radius: 6px;
   box-shadow: 2px 2px 15px rgba($color: #000000, $alpha: 0.6);
-
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.img:lang(ar) {
+  margin-right: 15px;
+}
+.img:lang(en) {
+  margin-left: 15px;
 }
 
 .image {
@@ -38,11 +40,18 @@
 
 .actions {
   width: 120px;
-  margin-right: auto;
-  margin-top: 20px;
 
+  margin-top: 20px;
   display: flex;
   flex-direction: row;
+}
+
+.action:lang(ar) {
+  margin-right: auto;
+}
+
+.action:lang(en) {
+  margin-left: auto;
 }
 
 .delete {
@@ -51,14 +60,11 @@
   display: flex;
   justify-content: center;
   align-items: center;
-
   background: $white-color;
   color: $red-color;
   box-shadow: 2px 2px 5px rgba($color: #000000, $alpha: 0.6);
   border-radius: 12px;
-
   cursor: pointer;
-
   transition: all 0.3s ease;
 }
 
@@ -72,10 +78,8 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-
   padding: 12px;
   margin: 10px;
-
   background: rgba($color: $white-color, $alpha: 1);
   box-shadow: 2px 2px 5px rgba($color: #000000, $alpha: 0.6);
   border-radius: 12px;
@@ -97,12 +101,18 @@
   flex: 1;
   color: $light-color;
   font-weight: bold;
-
-  padding-inline-end: 10px;
-  padding-left: 10px;
-
   border: none;
   outline: none;
+}
+
+.row:lang(ar) input,
+.row:lang(ar) textarea {
+  padding-left: 10px;
+}
+
+.row:lang(en) input,
+.row:lang(en) textarea {
+  padding-right: 10px;
 }
 
 @keyframes animateOpacity {

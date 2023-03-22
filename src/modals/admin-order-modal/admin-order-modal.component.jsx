@@ -20,8 +20,8 @@ function AdminUsersOrderModal({ close, okHandler }) {
   const dispatch = useDispatch();
 
   const orderOptions = [
-    { value: OrderOptions.NAME, label: t("user-name") },
-    { value: OrderOptions.DATE_CREATED, label: t("user-created-at") },
+    { value: OrderOptions.NAME, label: t("user name") },
+    { value: OrderOptions.DATE_CREATED, label: t("created at") },
     { value: OrderOptions.DATE_UPDATED, label: t("user-updated-at") },
     { value: OrderOptions.ACTIVE, label: t("deleted-account") },
     { value: OrderOptions.CITY, label: t("user-city") },

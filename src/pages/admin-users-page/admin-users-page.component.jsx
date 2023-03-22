@@ -20,10 +20,6 @@ import ReactPaginate from "react-paginate";
 import { useSelector, useDispatch } from "react-redux";
 import { getUsers, selectUsers, setPage } from "../../redux/users/usersSlice";
 import { selectUserData } from "../../redux/auth/authSlice";
-import {
-  selectOnlineStatus,
-  changeOnlineMsg,
-} from "../../redux/online/onlineSlice";
 
 // styles
 import paginationStyles from "../../components/pagination.module.scss";
@@ -37,7 +33,6 @@ function AdminUsersPage({ onSelectedChange }) {
   const dispatch = useDispatch();
 
   // selectors
-  const isOnline = useSelector(selectOnlineStatus);
   const { users, status, count, pageState, refresh } = useSelector(selectUsers);
   const { token, user } = useSelector(selectUserData);
 

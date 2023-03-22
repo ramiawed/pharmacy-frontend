@@ -1,14 +1,10 @@
 import React from "react";
-import { Colors } from "../../utils/constants";
 
+// styles
 import styles from "./no-more-result.module.scss";
 
 const NoMoreResult = ({ msg }) => {
-  return (
-    <p className={styles.text} style={{ color: Colors.MAIN_COLOR }}>
-      {msg}
-    </p>
-  );
+  return <p className={[styles.text, "fc_main"].join(" ")}>{msg}</p>;
 };
 
 export default NoMoreResult;

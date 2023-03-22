@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 // components
 import SettingSectionHeader from "../setting-section-header/setting-section-header.component";
 import FilterItemsModal from "../../modals/filter-items-modal/filter-items-modal.component";
+import CenterContainer from "../center-container/center-container.component";
 import SettingRow from "../setting-row/setting-row.component";
 import CardInfo from "../card-info/card-info.component";
 import Loader from "../loader/loader.component";
@@ -24,9 +25,6 @@ import {
   removeItemFromSectionTwo,
 } from "../../redux/advertisements/itemsSectionTwoSlice";
 import { selectToken } from "../../redux/auth/authSlice.js";
-
-// styles
-import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
@@ -81,26 +79,20 @@ function ItemsSectionTwoSettings() {
                 <SettingRow
                   data={item}
                   key={item._id}
-                  // tooltip="remove-company-from-favorites-advertisement"
                   action={removeFromSectionTwo}
                   type="item"
                 />
               ))}
 
-              <div
-                className={[
-                  generalStyles.padding_v_6,
-                  generalStyles.flex_container,
-                ].join(" ")}
-              >
+              <CenterContainer>
                 <Button
                   text="add-label"
                   action={() => {
                     setShowChooseModal(true);
                   }}
-                  bgColor={Colors.SUCCEEDED_COLOR}
+                  classStyle="bg_green"
                 />
-              </div>
+              </CenterContainer>
             </div>
           </>
         )}

@@ -179,7 +179,7 @@ const OrderedBasketsPage = () => {
             setSearchValue(e.target.value);
           }}
           icon={<FaSearch />}
-          placeholder="enter-pharmacy-name-placeholder"
+          placeholder="enter pharmacy name-placeholder"
           onEnterPress={handleEnterPress}
           resetField={() => {
             setSearchValue("");
@@ -195,7 +195,7 @@ const OrderedBasketsPage = () => {
             setSearchValue1(e.target.value);
           }}
           icon={<FaSearch />}
-          placeholder="enter-warehouse-name-placeholder"
+          placeholder="enter warehouse name-placeholder"
           onEnterPress={handleEnterPress}
           resetField={() => {
             setSearchValue1("");

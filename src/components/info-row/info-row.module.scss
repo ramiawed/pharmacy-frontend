@@ -12,10 +12,16 @@
   width: 75px;
   min-width: 75px;
   text-align: start;
-  padding-inline-end: 6px;
-  padding-left: 6px;
   color: $dark-color;
   font-size: 14px;
+}
+
+.info_row:lang(ar) .label {
+  padding-left: 6px;
+}
+
+.info_row:lang(ar) .label {
+  padding-right: 6px;
 }
 
 .info_row .value {

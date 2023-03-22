@@ -1,6 +1,8 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-import Logo from "../../smal-logo.png";
+import Logo from "../../assets/small_logo.png";
+
+// styles
 import styles from "./introduce-us.module.scss";
 
 function IntroduceUs() {
@@ -9,7 +11,7 @@ function IntroduceUs() {
     <div className={styles.container}>
       <div className={styles.content_container}>
         <h2>
-          {t("app-name-in-arabic")}
+          {t("app name in arabic")}
           <img className={styles.img} src={Logo} alt="smart logo" />
         </h2>
         <p>

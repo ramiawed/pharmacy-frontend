@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 // components
 import SelectPartnerModal from "../../modals/select-partner-modal/select-partner-modal.component";
 import SettingSectionHeader from "../setting-section-header/setting-section-header.component";
+import CenterContainer from "../center-container/center-container.component";
 import SettingRow from "../setting-row/setting-row.component";
 import CardInfo from "../card-info/card-info.component";
 import Loader from "../loader/loader.component";
@@ -25,9 +26,6 @@ import {
 } from "../../redux/advertisements/warehousesSectionOneSlice";
 import { selectToken } from "../../redux/auth/authSlice.js";
 import { selectWarehouses } from "../../redux/warehouse/warehousesSlice";
-
-// styles
-import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
@@ -89,20 +87,15 @@ function WarehousesSectionOneSettings() {
                 />
               ))}
 
-              <div
-                className={[
-                  generalStyles.padding_v_6,
-                  generalStyles.flex_container,
-                ].join(" ")}
-              >
+              <CenterContainer>
                 <Button
                   text="add-label"
                   action={() => {
                     setShowChooseModal(true);
                   }}
-                  bgColor={Colors.SUCCEEDED_COLOR}
+                  classStyle="bg_green"
                 />
-              </div>
+              </CenterContainer>
             </div>
           </>
         )}
@@ -115,7 +108,7 @@ function WarehousesSectionOneSettings() {
           chooseAction={(data) => {
             dispatch(addWarehouseToSectionOne({ token, id: data._id }));
           }}
-          placeholder={`${"enter-warehouse-name"}`}
+          placeholder={`${"enter warehouse name"}`}
           data={warehouses}
         />
       )}

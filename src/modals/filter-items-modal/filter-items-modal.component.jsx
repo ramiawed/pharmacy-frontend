@@ -132,7 +132,7 @@ function FilterItemsModal({ close, selectedAction }) {
             onChange={(e) => {
               setSearchName(e.target.value);
             }}
-            placeholder={t("search-home-placeholder")}
+            placeholder={t("search home placeholder")}
             onKeyDown={keyDownHandler}
             onKeyUp={keyUpHandler}
             ref={searchInputRef}

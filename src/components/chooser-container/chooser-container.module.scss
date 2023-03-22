@@ -21,7 +21,6 @@
 
     .value {
         margin-inline-start: 8px;
-        margin-right: 8px;
         padding: 4px 0px;
         font-size: 16px;
         outline: none;
@@ -29,6 +28,14 @@
         color: $main-color;
         width: 100%;
         cursor: pointer;
+
+        &:lang(ar) {
+            margin-right: 8px;
+        }
+
+        &:lang(ar) {
+            margin-left: 8px;
+        }
     }
 
     .placeholder {
@@ -52,26 +59,43 @@
         font-size: 12px;
         font-weight: bold;
         width: 100px;
-        text-align: left;
         color: $white-color;
         background-color: $main-color;
         display: flex;
         align-items: center;
         justify-content: center;
+    }
+
+    .label:lang(ar) {
         margin-left: 10px;
         border-top-right-radius: 6px;
         border-bottom-right-radius: 6px;
+        text-align: left;
+    }
+
+    .label:lang(en) {
+        margin-right: 10px;
+        border-top-left-radius: 6px;
+        border-bottom-left-radius: 6px;
+        text-align: right;
     }
 
     .value {
-        margin-inline-end: 8px;
-        margin-left: 8px;
         padding: 4px 0px;
         outline: none;
         border: none;
         color: $main-color;
         flex: 1;
+    }
+
+    .value:lang(ar) {
         text-align: right;
+        margin-left: 8px;
+    }
+
+    .value:lang(en) {
+        text-align: left;
+        margin-right: 8px;
     }
 }
 

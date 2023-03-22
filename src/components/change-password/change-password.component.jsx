@@ -4,23 +4,17 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 // redux stuff
+import { unwrapResult } from "@reduxjs/toolkit";
+import {
+  changeOnlineMsg,
+  selectOnlineStatus,
+} from "../../redux/online/onlineSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { changeMyPassword, selectUserData } from "../../redux/auth/authSlice";
 
 // components
 import PasswordRow from "../password-row/password-row.component";
 import Button from "../button/button.component";
-
-// constants and utils
-import { Colors } from "../../utils/constants";
-
-// styles
-import generalStyles from "../../style.module.scss";
-import {
-  changeOnlineMsg,
-  selectOnlineStatus,
-} from "../../redux/online/onlineSlice";
-import { unwrapResult } from "@reduxjs/toolkit";
 
 function ChangePassword() {
   const { t } = useTranslation();
@@ -62,42 +56,42 @@ function ChangePassword() {
     if (passwordObj.oldPassword.length === 0) {
       errorObj = {
         ...errorObj,
-        oldPassword: "enter-old-password",
+        oldPassword: "enter old password",
       };
     }
 
     if (passwordObj.newPassword.length < 5) {
       errorObj = {
         ...errorObj,
-        newPassword: "password-length",
+        newPassword: "password length",
       };
     }
 
     if (passwordObj.newPassword.length === 0) {
       errorObj = {
         ...errorObj,
-        newPassword: "enter-password",
+        newPassword: "enter password",
       };
     }
 
     if (passwordObj.newPassword !== passwordObj.newPasswordConfirm) {
       errorObj = {
         ...errorObj,
-        newPasswordConfirm: "unequal-passwords",
+        newPasswordConfirm: "unequal passwords",
       };
     }
 
     if (passwordObj.newPasswordConfirm.length < 5) {
       errorObj = {
         ...errorObj,
-        newPasswordConfirm: "confirm-password-length",
+        newPasswordConfirm: "confirm password length",
       };
     }
 
     if (passwordObj.newPasswordConfirm.length === 0) {
       errorObj = {
         ...errorObj,
-        newPasswordConfirm: "enter-password-confirm",
+        newPasswordConfirm: "enter password confirm",
       };
     }
 
@@ -150,15 +144,13 @@ function ChangePassword() {
         error={t(passwordObjError.newPasswordConfirm)}
       />
       <div
-        className={[
-          generalStyles.flex_center_container,
-          generalStyles.padding_v_6,
-        ].join(" ")}
+        className={["flex_center_container"].join(" ")}
+        style={{ padding: "6px 0" }}
       >
         <Button
           text="change-password"
           action={changePasswordHandler}
-          bgColor={Colors.SUCCEEDED_COLOR}
+          classStyle="bg_green"
         />
       </div>
     </>

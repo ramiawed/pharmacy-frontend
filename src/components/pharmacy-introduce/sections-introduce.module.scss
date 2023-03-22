@@ -45,13 +45,18 @@
     list-style-type: disc;
 
     li {
-      margin-inline-start: 20px;
-      margin-right: 20px;
       color: $main-color;
       text-align: justify;
       font-size: 1rem;
       font-weight: bold;
-      font-family: $font-ar-01;
+
+      &:lang(ar) {
+        margin-right: 20px;
+      }
+
+      &:lang(ar) {
+        margin-left: 20px;
+      }
     }
   }
 }

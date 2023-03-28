@@ -59,7 +59,7 @@ const ResultModal = ({ closeModal, msg, type }) => {
               e.stopPropagation();
             }}
           >
-            {t("close-label")}
+            {t("close")}
           </button>
         </footer>
       </div>

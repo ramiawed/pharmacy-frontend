@@ -32,11 +32,11 @@ const UserOptionsMenu = ({
       <div
         className={styles.option}
         onClick={() => {
-          changeStatusHandler(user.isActive ? "disapprove" : "approve");
+          changeStatusHandler(user.isActive ? "inactive" : "active");
           closeHandler();
         }}
       >
-        {t(user.isActive ? "deactivate account" : "activate account")}
+        {t(user.isActive ? "inactive account action" : "active account action")}
       </div>
       <div
         className={styles.option}
@@ -45,7 +45,7 @@ const UserOptionsMenu = ({
           closeHandler();
         }}
       >
-        {t("delete user forever")}
+        {t("permanently delete the account")}
       </div>
       {user.type === UserTypeConstants.PHARMACY && (
         <>
@@ -79,11 +79,7 @@ const UserOptionsMenu = ({
             closeHandler();
           }}
         >
-          {t(
-            user.allowShowingMedicines
-              ? "tooltip-undo-show-medicines"
-              : "tooltip-show-medicines"
-          )}
+          {t(user.allowShowingMedicines ? "dont show items" : "show items")}
         </div>
       )}
 
@@ -94,7 +90,7 @@ const UserOptionsMenu = ({
           closeHandler();
         }}
       >
-        {t("change-password")}
+        {t("change password")}
       </div>
 
       <div
@@ -104,7 +100,7 @@ const UserOptionsMenu = ({
           closeHandler();
         }}
       >
-        {t("user more info title")}
+        {t("more info")}
       </div>
     </div>
   );

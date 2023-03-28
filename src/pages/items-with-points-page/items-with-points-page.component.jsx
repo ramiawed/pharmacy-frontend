@@ -4,6 +4,7 @@ import { Redirect } from "react-router";
 import { useHistory } from "react-router-dom";
 
 // components
+import ItemsWithPointsSearchEngine from "../../components/items-with-points-search-engine copy/items-with-points-search-engine.component";
 import MainContentContainer from "../../components/main-content-container/main-content-container.component";
 import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 import NoMoreResult from "../../components/no-more-result/no-more-result.component";
@@ -33,7 +34,6 @@ import {
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import ItemsWithPointsSearchEngine from "../../components/items-with-points-search-engine copy/items-with-points-search-engine.component";
 
 let timer = null;
 
@@ -100,7 +100,7 @@ function ItemsWithPointsPage({ onSelectedChange }) {
             withBackground={true}
             icon={() => <RiRefreshLine />}
             foreColor={Colors.MAIN_COLOR}
-            tooltip={t("refresh-tooltip")}
+            tooltip={t("refresh")}
             onclick={handleEnterPress}
           />
           {(pageState.searchName.length > 0 ||
@@ -110,7 +110,7 @@ function ItemsWithPointsPage({ onSelectedChange }) {
               withBackground={true}
               selected={false}
               foreColor={Colors.MAIN_COLOR}
-              tooltip={t("clear-filter-tooltip")}
+              tooltip={t("clear filter")}
               onclick={() => {
                 dispatch(resetItemsWithPointsPageState());
                 handleEnterPress();
@@ -121,7 +121,7 @@ function ItemsWithPointsPage({ onSelectedChange }) {
 
           <Icon
             withBackground={true}
-            tooltip={t("go-back")}
+            tooltip={t("back")}
             onclick={() => {
               history.goBack();
             }}
@@ -130,7 +130,7 @@ function ItemsWithPointsPage({ onSelectedChange }) {
           />
         </ActionBar>
 
-        {count > 0 && <ResultsCount label={t("offers-count")} count={count} />}
+        {count > 0 && <ResultsCount label={t("offers count")} count={count} />}
 
         {medicines.map((medicine, index) => (
           <ItemOfferRow
@@ -149,13 +149,13 @@ function ItemsWithPointsPage({ onSelectedChange }) {
         {medicines.length === 0 &&
           status !== "loading" &&
           pageState.searchName.length === 0 && (
-            <NoContent msg={t("no-offers-at-all")} />
+            <NoContent msg={t("no offers")} />
           )}
 
         {medicines.length === 0 &&
           status !== "loading" &&
           pageState.searchName.length !== 0 && (
-            <NoContent msg={t("no-result-found")} />
+            <NoContent msg={t("no result found")} />
           )}
 
         {status === "loading" && <CylonLoader />}
@@ -172,7 +172,7 @@ function ItemsWithPointsPage({ onSelectedChange }) {
         )}
 
         {medicines.length === count && status !== "loading" && count !== 0 && (
-          <NoMoreResult msg={t("no-more")} />
+          <NoMoreResult msg={t("no more")} />
         )}
       </MainContentContainer>
     </>

@@ -18,7 +18,7 @@ const ChooseValue = ({
       header={headerTitle}
       cancelLabel="cancel"
       closeModal={close}
-      okLabel="ok-label"
+      okLabel="ok"
       okModal={() => {
         chooseHandler(selectedValue);
         close();

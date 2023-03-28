@@ -63,7 +63,7 @@ function DeleteMe() {
   const handleDeleteMe = () => {
     // the password length must be greater than 0
     if (passwordForDelete.length === 0) {
-      setPasswordForDeleteError("enter password");
+      setPasswordForDeleteError("enter password error");
       return;
     }
 
@@ -113,7 +113,7 @@ function DeleteMe() {
   return (
     <>
       <PasswordRow
-        labelText={t("user password")}
+        labelText={t("password")}
         field="deletePassword"
         value={passwordForDelete}
         onInputChange={handlePasswordForDeleteChange}
@@ -121,7 +121,7 @@ function DeleteMe() {
       />
       <CenterContainer>
         <Button
-          text="delete-account"
+          text="delete user"
           action={handleDeleteMe}
           classStyle="bg_red"
         />

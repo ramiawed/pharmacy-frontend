@@ -20,11 +20,11 @@ function AdminUsersOrderModal({ close, okHandler }) {
   const dispatch = useDispatch();
 
   const orderOptions = [
-    { value: OrderOptions.NAME, label: t("user name") },
+    { value: OrderOptions.NAME, label: t("name") },
     { value: OrderOptions.DATE_CREATED, label: t("created at") },
-    { value: OrderOptions.DATE_UPDATED, label: t("user-updated-at") },
-    { value: OrderOptions.ACTIVE, label: t("deleted-account") },
-    { value: OrderOptions.CITY, label: t("user-city") },
+    { value: OrderOptions.DATE_UPDATED, label: t("updated at") },
+    { value: OrderOptions.ACTIVE, label: t("user status") },
+    { value: OrderOptions.CITY, label: t("city") },
   ];
 
   // add/remove field from orderBy object
@@ -55,9 +55,9 @@ function AdminUsersOrderModal({ close, okHandler }) {
 
   return (
     <Modal
-      header="order-results"
-      cancelLabel="close-label"
-      okLabel="ok-label"
+      header="sort results"
+      cancelLabel="close"
+      okLabel="ok"
       closeModal={close}
       small={true}
       okModal={okHandler}

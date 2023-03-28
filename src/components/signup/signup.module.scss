@@ -6,9 +6,8 @@
   flex-direction: column;
   align-items: center;
   padding: 20px;
-  box-shadow: 0 0 5px 3px rgba($color: $main-color, $alpha: 0.4);
+  box-shadow: 0 0 5px 3px rgba($color: #000, $alpha: 0.4);
   border-radius: 12px;
-  background-color: #606ba0;
 
   .header {
     width: 100%;
@@ -19,14 +18,9 @@
   }
 
   .signup {
-    color: $white-color;
-    text-align: center;
     cursor: pointer;
 
-    .signup_button {
-      display: inline-block;
-      color: $red-color;
-      font-weight: bold;
+    label {
       cursor: pointer;
     }
   }
@@ -101,8 +95,8 @@
     font-weight: bold;
     color: $main-color;
     flex: 1;
-    box-shadow: 0 0 8px 3px rgba($color: $offer-color, $alpha: 0.5);
-    text-shadow: 3px 3px 3px rgba($color: $main-color, $alpha: 0.6);
+    box-shadow: 0 0 px 3px rgba($color: $offer-color, $alpha: 0.5);
+    text-shadow: 1px 1px 3px rgba($color: $main-color, $alpha: 0.6);
 
     &:hover {
       box-shadow: 0 0 3px 3px rgba($color: $offer-color, $alpha: 1);

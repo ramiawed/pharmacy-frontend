@@ -28,7 +28,7 @@ function InputFile({ fileChangedHandler, small, label }) {
         <Icon
           selected={false}
           foreColor={Colors.SUCCEEDED_COLOR}
-          tooltip={t("items-from-excel")}
+          tooltip={t("items from excel")}
           onclick={handleClick}
           icon={() => <SiMicrosoftexcel size={24} />}
           withBackground={true}

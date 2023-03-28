@@ -28,9 +28,19 @@
   }
 }
 
+.point_sys_label {
+  label {
+    color: $light-color;
+    font-size: 12px;
+    text-align: center;
+    display: inline-block;
+    font-weight: bold;
+    cursor: pointer;
+  }
+}
+
 .section {
   padding: 10px;
-  margin: 10px;
   border-radius: 6px;
   background-color: $white-color;
   display: flex;
@@ -65,7 +75,7 @@
 
 .from_top {
   position: absolute;
-  top: -420px;
+  top: -450px;
   left: 0;
   height: 100%;
   width: 100%;

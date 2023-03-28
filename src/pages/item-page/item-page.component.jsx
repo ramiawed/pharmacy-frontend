@@ -134,17 +134,17 @@ function ItemPage() {
 
     // item trade name must be not empty
     if (item.name.length === 0) {
-      errorObj["name"] = "enter-item-trade-name";
+      errorObj["name"] = "enter item trade name";
     }
 
     // item price must be not empty
     if (item.price === 0 || !item.price) {
-      errorObj["price"] = "enter-price";
+      errorObj["price"] = "enter price";
     }
 
     // item customer price must be not empty
     if (item.customer_price === 0 || !item.customer_price) {
-      errorObj["customer_price"] = "enter-customer-price";
+      errorObj["customer_price"] = "enter customer price";
     }
 
     if (Object.entries(errorObj).length === 0) {
@@ -298,7 +298,7 @@ function ItemPage() {
   return user ? (
     <>
       <Header
-        title={item?.name.length !== 0 ? item.name : "اسم المنتج"}
+        title={item?.name.length !== 0 ? item.name : t("item name")}
         refreshHandler={() => {
           if (type === "info" && itemId) {
             getItemFromDB();
@@ -345,7 +345,7 @@ function ItemPage() {
 
                 <div>
                   <ButtonWithIcon
-                    text={t("change-logo")}
+                    text={t("change logo")}
                     action={handleClick}
                     bgColor={Colors.MAIN_COLOR}
                     icon={() => <BsImageAlt />}
@@ -358,7 +358,7 @@ function ItemPage() {
                 from === UserTypeConstants.ADMIN) && (
                 <div style={{ margin: "4px 0" }}>
                   <ButtonWithIcon
-                    text={type === "info" ? t("update-item") : t("add-item")}
+                    text={type === "info" ? t("update item") : t("add item")}
                     action={() => setShowUpdateConfirmModal(true)}
                     bgColor={Colors.SUCCEEDED_COLOR}
                     icon={() => <AiFillEdit />}
@@ -372,7 +372,7 @@ function ItemPage() {
               checkItemExistsInWarehouse(item, user) && (
                 <div style={{ margin: "4px 0" }}>
                   <ButtonWithIcon
-                    text={t("add-to-cart")}
+                    text={t("add to cart")}
                     action={() => setShowAddToCartModal(true)}
                     bgColor={Colors.SUCCEEDED_COLOR}
                     icon={() => <GiShoppingCart />}
@@ -386,7 +386,7 @@ function ItemPage() {
                 .includes(user._id) ? (
                 <div style={{ margin: "4px 0" }}>
                   <ButtonWithIcon
-                    text={t("remove-from-warehouse")}
+                    text={t("remove item from warehouse")}
                     action={removeItemFromWarehouseHandler}
                     bgColor={Colors.FAILED_COLOR}
                     icon={() => <RiDeleteBin5Fill />}
@@ -395,7 +395,7 @@ function ItemPage() {
               ) : (
                 <div style={{ margin: "4px 0" }}>
                   <ButtonWithIcon
-                    text={t("add-to-warehouse")}
+                    text={t("add item to warehouse")}
                     action={addItemToWarehouseHandler}
                     bgColor={Colors.SUCCEEDED_COLOR}
                     icon={() => <MdAddCircle />}
@@ -404,9 +404,9 @@ function ItemPage() {
               ))}
           </div>
           <div className={styles.info}>
-            <CardInfo headerTitle={t("item-main-info")}>
+            <CardInfo headerTitle={t("main info")}>
               <Input
-                label="item-trade-name"
+                label="item name"
                 id="name"
                 type="text"
                 value={item.name}
@@ -415,11 +415,10 @@ function ItemPage() {
                 error={itemError.name?.length > 0}
                 readOnly={!allowAction}
               />
-              {/* <div className={styles.horizontal_div}></div> */}
               <Separator />
 
               <Input
-                label="item-trade-name-ar"
+                label="item name ar"
                 id="nameAr"
                 type="text"
                 value={item.nameAr}
@@ -432,7 +431,7 @@ function ItemPage() {
               <div className={styles.horizontal_div}></div>
 
               <Input
-                label="item-formula"
+                label="formula"
                 id="formula"
                 type="text"
                 value={item.formula}
@@ -445,7 +444,7 @@ function ItemPage() {
               <div className={styles.horizontal_div}></div>
 
               <Input
-                label="item-caliber"
+                label="caliber"
                 id="caliber"
                 type="text"
                 value={item.caliber}
@@ -458,7 +457,7 @@ function ItemPage() {
               <div className={styles.horizontal_div}></div>
 
               <Input
-                label="item-packing"
+                label="packing"
                 id="packing"
                 type="text"
                 value={item.packing}
@@ -472,23 +471,21 @@ function ItemPage() {
                 <>
                   <div className={styles.horizontal_div}></div>
                   <Input
-                    label="item-barcode"
+                    label="barcode"
                     id="barcode"
                     type="text"
                     value={item.barcode}
                     bordered={false}
-                    // icon={getIcon("medicine")}
                     onchange={handleInputChange}
                     readOnly={!allowAction}
                   />
                   <div className={styles.horizontal_div}></div>
                   <Input
-                    label="item-barcode"
+                    label="barcode"
                     id="barcodeTwo"
                     type="text"
                     value={item.barcodeTwo}
                     bordered={false}
-                    // icon={getIcon("medicine")}
                     onchange={handleInputChange}
                     readOnly={!allowAction}
                   />
@@ -496,7 +493,7 @@ function ItemPage() {
               )}
             </CardInfo>
 
-            <CardInfo headerTitle={t("item-price")}>
+            <CardInfo headerTitle={t("price")}>
               {user.type !== UserTypeConstants.GUEST && (
                 <div
                   style={{
@@ -504,7 +501,7 @@ function ItemPage() {
                   }}
                 >
                   <Input
-                    label="item-price"
+                    label="price"
                     id="price"
                     type="number"
                     value={item.price}
@@ -523,7 +520,7 @@ function ItemPage() {
                 }}
               >
                 <Input
-                  label="item-customer-price"
+                  label="customer price"
                   id="customer_price"
                   type="number"
                   value={item.customer_price}
@@ -535,11 +532,11 @@ function ItemPage() {
               </div>
             </CardInfo>
 
-            <CardInfo headerTitle={t("item-composition")}>
+            <CardInfo headerTitle={t("composition")}>
               {/* <div> */}
               <textarea
                 className={styles.textarea}
-                placeholder={t("enter-composition")}
+                placeholder={t("enter composition")}
                 id="composition"
                 value={item.composition}
                 onChange={handleInputChange}
@@ -548,11 +545,11 @@ function ItemPage() {
               {/* </div> */}
             </CardInfo>
 
-            <CardInfo headerTitle={t("item-indication")}>
+            <CardInfo headerTitle={t("indication")}>
               {/* <div> */}
               <textarea
                 className={styles.textarea}
-                placeholder={t("enter-indication")}
+                placeholder={t("enter indication")}
                 id="indication"
                 value={item.indication}
                 onChange={handleInputChange}
@@ -593,7 +590,7 @@ function ItemPage() {
                           );
                           setShowOfferModal(true);
                         }}
-                        tooltip={t("nav-offers")}
+                        tooltip={t("offers")}
                       />
                     </div>
                   ))}
@@ -639,7 +636,7 @@ function ItemPage() {
                             );
                             setShowOfferModal(true);
                           }}
-                          tooltip={t("nav-offers")}
+                          tooltip={t("offers")}
                         />
                       </div>
                     ))}
@@ -676,7 +673,7 @@ function ItemPage() {
             dispatch(resetAddStatus());
           }}
         >
-          <p>{t("add-item-succeeded")}</p>
+          <p>{t("add item succeeded")}</p>
         </Toast>
       )}
 
@@ -688,7 +685,7 @@ function ItemPage() {
             dispatch(resetUpdateStatus());
           }}
         >
-          <p>{t("update-item-succeeded")}</p>
+          <p>{t("update item succeeded")}</p>
         </Toast>
       )}
 
@@ -700,7 +697,7 @@ function ItemPage() {
             setImageSizeWarningMsg("");
           }}
         >
-          <p>{t("image-size-must-be-less-than")}</p>
+          <p>{t("image size must be less than")}</p>
         </Toast>
       )}
 
@@ -728,9 +725,9 @@ function ItemPage() {
 
       {showUpdateConfirmModal && (
         <Modal
-          header={type === "info" ? "update-item" : "add-item"}
+          header={type === "info" ? "update item" : "add item"}
           cancelLabel="cancel"
-          okLabel="ok-label"
+          okLabel="ok"
           closeModal={() => {
             setShowUpdateConfirmModal(false);
           }}
@@ -738,9 +735,9 @@ function ItemPage() {
           okModal={handleAddUpdateItem}
         >
           {type === "info" ? (
-            <p>{t("update-item-confirm-msg")}</p>
+            <p>{t("update item confirm msg")}</p>
           ) : (
-            <p>{t("add-item-confirm-msg")}</p>
+            <p>{t("add item confirm msg")}</p>
           )}
         </Modal>
       )}

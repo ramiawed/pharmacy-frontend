@@ -282,8 +282,8 @@ function MedicineRow({
                     id={user._id}
                     removeHandler={removeItemFromWarehouseHandler}
                     addHandler={addItemToWarehouseHandler}
-                    removeTooltip="remove-from-warehouse-tooltip"
-                    addTooltip="add-to-warehouse-tooltip"
+                    removeTooltip="remove item from warehouse"
+                    addTooltip="add item to warehouse"
                     removeIcon={() => (
                       <RiDeleteBin5Fill color={Colors.FAILED_COLOR} size={24} />
                     )}
@@ -296,7 +296,7 @@ function MedicineRow({
                 {user.type === UserTypeConstants.PHARMACY ? (
                   checkItemExistsInWarehouse(item, user) ? (
                     <Icon
-                      tooltip={t("add-to-cart")}
+                      tooltip={t("add to cart")}
                       onclick={() => setShowModal(true)}
                       foreColor={Colors.SUCCEEDED_COLOR}
                       icon={() => <GiShoppingCart size={24} />}
@@ -308,8 +308,8 @@ function MedicineRow({
                       id={item._id}
                       removeHandler={removeItemFromSavedItemsHandler}
                       addHandler={addItemToSavedItemsHandler}
-                      removeTooltip="remove-item-from-saved-items-tooltip"
-                      addTooltip="add-item-to-saved-items-tooltip"
+                      removeTooltip="remove item from saved items"
+                      addTooltip="add item to saved items"
                       removeIcon={() => (
                         <BsFillBookmarkDashFill
                           color={Colors.FAILED_COLOR}
@@ -334,8 +334,8 @@ function MedicineRow({
                   id={item._id}
                   removeHandler={removeItemFromFavoritesItemsHandler}
                   addHandler={addItemToFavoriteItemsHandler}
-                  removeTooltip="remove-from-favorite-tooltip"
-                  addTooltip="add-to-favorite-tooltip"
+                  removeTooltip="remove from favorites"
+                  addTooltip="add to favorites"
                   removeIcon={() => (
                     <AiFillStar size={24} color={Colors.YELLOW_COLOR} />
                   )}
@@ -363,7 +363,7 @@ function MedicineRow({
           {showComposition && (
             <div className={styles.second_row}>
               <LabelValueRow
-                label="item-composition"
+                label="composition"
                 value={item.composition}
                 searchString={searchString}
               />

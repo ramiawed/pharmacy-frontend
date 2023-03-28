@@ -28,15 +28,15 @@ const StatisticsSearchEngine = ({ handleEnterPress }) => {
   const [showChooseDatesOption, setShowChooseDatesOption] = useState(false);
 
   const dateOptions = [
-    { value: "", label: t("choose-date") },
-    { value: DateOptions.ONE_DAY, label: t("one-day") },
-    { value: DateOptions.THREE_DAY, label: t("three-days") },
-    { value: DateOptions.ONE_WEEK, label: t("one-week") },
-    { value: DateOptions.TWO_WEEK, label: t("two-weeks") },
-    { value: DateOptions.ONE_MONTH, label: t("one-month") },
-    { value: DateOptions.TWO_MONTH, label: t("two-months") },
-    { value: DateOptions.SIX_MONTH, label: t("six-months") },
-    { value: DateOptions.ONE_YEAR, label: t("one-year") },
+    { value: "", label: t("choose date") },
+    { value: DateOptions.ONE_DAY, label: t("one day") },
+    { value: DateOptions.THREE_DAY, label: t("three days") },
+    { value: DateOptions.ONE_WEEK, label: t("one week") },
+    { value: DateOptions.TWO_WEEK, label: t("two weeks") },
+    { value: DateOptions.ONE_MONTH, label: t("one month") },
+    { value: DateOptions.TWO_MONTH, label: t("two months") },
+    { value: DateOptions.SIX_MONTH, label: t("six months") },
+    { value: DateOptions.ONE_YEAR, label: t("one year") },
   ];
 
   const handleDateOptions = (val) => {
@@ -48,7 +48,7 @@ const StatisticsSearchEngine = ({ handleEnterPress }) => {
       {" "}
       <SearchContainer searchAction={handleEnterPress}>
         <SearchInput
-          label="statistics-name"
+          label="name"
           id="item-name"
           type="text"
           value={pageState.searchName}
@@ -67,13 +67,13 @@ const StatisticsSearchEngine = ({ handleEnterPress }) => {
           selectedValue={
             dateOptions.filter((d) => d.value === pageState.dateOption)[0].label
           }
-          label="dates-within"
+          label="dates within"
           styleForSearch={true}
           withoutBorder={true}
         />
 
         <SearchRowContainer>
-          <label>{t("date-label")}</label>
+          <label>{t("date")}</label>
           <input
             type="date"
             value={pageState.date}
@@ -85,7 +85,7 @@ const StatisticsSearchEngine = ({ handleEnterPress }) => {
       </SearchContainer>
       {showChooseDatesOption && (
         <ChooseValue
-          headerTitle="dates-within"
+          headerTitle="dates within"
           close={() => {
             setShowChooseDatesOption(false);
           }}

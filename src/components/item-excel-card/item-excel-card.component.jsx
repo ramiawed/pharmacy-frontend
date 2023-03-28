@@ -61,14 +61,14 @@ function ItemExcelCard({
         <Icon
           selected={false}
           foreColor={Colors.FAILED_COLOR}
-          tooltip={t("delete-row")}
+          tooltip={t("delete")}
           onclick={onDelete}
           icon={() => <AiFillDelete size={24} />}
         />
       </div>
       <div className={styles.row_column}>
         <div className={styles.row}>
-          <label>{t("item-formula")}:</label>
+          <label>{t("formula")}:</label>
           <input
             id="formula"
             type="text"
@@ -78,7 +78,7 @@ function ItemExcelCard({
         </div>
 
         <div className={styles.row}>
-          <label>{t("item-caliber")}:</label>
+          <label>{t("caliber")}:</label>
           <input
             id="caliber"
             type="text"
@@ -90,7 +90,7 @@ function ItemExcelCard({
 
       <div className={styles.row_column}>
         <div className={styles.row}>
-          <label>{t("item-price")}:</label>
+          <label>{t("price")}:</label>
           <input
             id="price"
             onKeyPress={onKeyPressForNumberInput}
@@ -99,7 +99,7 @@ function ItemExcelCard({
           />
         </div>
         <div className={styles.row}>
-          <label>{t("item-customer-price")}:</label>
+          <label>{t("customer price")}:</label>
           <input
             id="customer_price"
             onKeyPress={onKeyPressForNumberInput}
@@ -111,7 +111,7 @@ function ItemExcelCard({
 
       <div className={styles.row_column}>
         <div className={styles.row}>
-          <label>{t("item-barcode")}:</label>
+          <label>{t("barcode")}:</label>
           <input
             id="barcode"
             type="text"
@@ -120,7 +120,7 @@ function ItemExcelCard({
           />
         </div>
         <div className={styles.row}>
-          <label>{t("item-barcode")} 2:</label>
+          <label>{t("barcode")} 2:</label>
           <input
             id="barcodeTwo"
             type="text"
@@ -131,7 +131,7 @@ function ItemExcelCard({
       </div>
 
       <div className={styles.row}>
-        <label>{t("item-indication")}:</label>
+        <label>{t("indication")}:</label>
         <textarea
           id="indication"
           value={item.indication}
@@ -141,7 +141,7 @@ function ItemExcelCard({
       </div>
 
       <div className={styles.row}>
-        <label>{t("item-composition")}:</label>
+        <label>{t("composition")}:</label>
         <textarea
           id="composition"
           value={item.composition}
@@ -149,53 +149,6 @@ function ItemExcelCard({
           rows={1}
         />
       </div>
-      {/* <div className={styles.actions}>
-        <input
-          type="checkbox"
-          value={item.selected}
-          checked={item.selected}
-          onChange={() => onSelectedChanged(index)}
-        />
-        <Icon
-          selected={false}
-          foreColor={Colors.FAILED_COLOR}
-          tooltip={t("delete-row")}
-          onclick={onDelete}
-          icon={() => <AiFillDelete size={24} />}
-        />
-      </div>
-
-      <div className={styles.row}>
-        <label>{t("item-name")}:</label>
-        <input
-          id="name"
-          type="text"
-          value={item.name}
-          onChange={(e) => onchange(e, index)}
-        />
-      </div>
-
-      <div className={styles.row}>
-        <label>{t("item-name-ar")}:</label>
-        <input
-          id="nameAr"
-          type="text"
-          value={item.nameAr}
-          onChange={(e) => onchange(e, index)}
-        />
-      </div>
-
-      
-
-      
-
-      
-
-      <div className={styles.row}>
-      
-      </div>
-
-       */}
     </div>
   );
 }

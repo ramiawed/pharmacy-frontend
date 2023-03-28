@@ -59,7 +59,6 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           onSelectedChange(SideNavLinks.PARTNERS);
           dispatch(setSearchWarehouseId(null));
           dispatch(setSearchCompanyId(null));
-          // dispatch(setSelectedWarehouse(null));
         }}
         to="/admin/partners"
       >
@@ -104,12 +103,10 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           <div className={styles.nav_icon}>
             <GiMedicines size={24} />
             {collapsed && (
-              <label className={styles.tooltip}>{t("nav items")}</label>
+              <label className={styles.tooltip}>{t("items")}</label>
             )}
           </div>
-          {!collapsed && (
-            <div className={styles.nav_label}>{t("nav items")}</div>
-          )}
+          {!collapsed && <div className={styles.nav_label}>{t("items")}</div>}
         </div>
       </Link>
 
@@ -132,11 +129,11 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
             <div className={styles.nav_icon}>
               <BsFillEnvelopeFill size={24} />
               {collapsed && (
-                <label className={styles.tooltip}>{t("nav orders")}</label>
+                <label className={styles.tooltip}>{t("orders")}</label>
               )}
             </div>
             {!collapsed && (
-              <div className={styles.nav_label}>{t("nav orders")} </div>
+              <div className={styles.nav_label}>{t("orders")} </div>
             )}
           </div>
         </Link>
@@ -157,13 +154,11 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
         <div className={styles.nav}>
           <div className={styles.nav_icon}>
             {collapsed && (
-              <label className={styles.tooltip}>{t("nav baskets")}</label>
+              <label className={styles.tooltip}>{t("baskets")}</label>
             )}
             <BsBasket2Fill size={24} />
           </div>
-          {!collapsed && (
-            <div className={styles.nav_label}>{t("nav baskets")}</div>
-          )}
+          {!collapsed && <div className={styles.nav_label}>{t("baskets")}</div>}
         </div>
       </Link>
 
@@ -186,11 +181,11 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           <div className={styles.nav_icon}>
             <BsFillBarChartLineFill size={24} />
             {collapsed && (
-              <label className={styles.tooltip}>{t("nav statistics")}</label>
+              <label className={styles.tooltip}>{t("statistics")}</label>
             )}
           </div>
           {!collapsed && (
-            <div className={styles.nav_label}>{t("nav statistics")}</div>
+            <div className={styles.nav_label}>{t("statistics")}</div>
           )}
         </div>
       </Link>
@@ -213,12 +208,12 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
         <div className={styles.nav}>
           <div className={styles.nav_icon}>
             {collapsed && (
-              <label className={styles.tooltip}>{t("nav advertise")}</label>
+              <label className={styles.tooltip}>{t("advertisements")}</label>
             )}
             <RiAdvertisementFill size={24} />
           </div>
           {!collapsed && (
-            <div className={styles.nav_label}>{t("nav advertise")}</div>
+            <div className={styles.nav_label}>{t("advertisements")}</div>
           )}
         </div>
       </Link>
@@ -242,11 +237,11 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           <div className={styles.nav_icon}>
             <MdNotificationsActive size={24} />
             {collapsed && (
-              <label className={styles.tooltip}>{t("nav notifications")}</label>
+              <label className={styles.tooltip}>{t("notifications")}</label>
             )}
           </div>
           {!collapsed && (
-            <div className={styles.nav_label}>{t("nav notifications")}</div>
+            <div className={styles.nav_label}>{t("notifications")}</div>
           )}
         </div>
       </Link>
@@ -267,11 +262,11 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           <div className={styles.nav_icon}>
             <MdOutlineSettings size={24} />
             {collapsed && (
-              <label className={styles.tooltip}>{t("nav settings")}</label>
+              <label className={styles.tooltip}>{t("settings")}</label>
             )}
           </div>
           {!collapsed && (
-            <div className={styles.nav_label}>{t("nav settings")}</div>
+            <div className={styles.nav_label}>{t("settings")}</div>
           )}
         </div>
       </Link>
@@ -289,19 +284,19 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           dispatch(setSearchCompanyId(null));
           // dispatch(setSelectedWarehouse(null));
         }}
-        to="/admin/backup restore"
+        to="/admin/backup-restore"
       >
         <div className={styles.nav}>
           <div className={styles.nav_icon}>
             <MdBackup size={24} />
             {collapsed && (
               <label className={styles.tooltip}>
-                {t("nav backup restore")}
+                {t("backup and restore")}
               </label>
             )}
           </div>
           {!collapsed && (
-            <div className={styles.nav_label}>{t("nav backup restore")}</div>
+            <div className={styles.nav_label}>{t("backup and restore")}</div>
           )}
         </div>
       </Link>
@@ -323,12 +318,10 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
           <div className={styles.nav_icon}>
             <CgProfile size={24} />
             {collapsed && (
-              <label className={styles.tooltip}>{t("nav profile")}</label>
+              <label className={styles.tooltip}>{t("profile")}</label>
             )}
           </div>
-          {!collapsed && (
-            <div className={styles.nav_label}>{t("nav profile")}</div>
-          )}
+          {!collapsed && <div className={styles.nav_label}>{t("profile")}</div>}
         </div>
       </Link>
     </>

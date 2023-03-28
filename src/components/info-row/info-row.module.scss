@@ -12,7 +12,7 @@
   width: 75px;
   min-width: 75px;
   text-align: start;
-  color: $dark-color;
+  // color: $dark-color;
   font-size: 14px;
 }
 
@@ -26,12 +26,10 @@
 
 .info_row .value {
   flex: 1;
-  color: $main-color;
 }
 
 .value input {
   width: 100%;
-  color: $main-color;
   padding: 4px;
   border: none;
   outline: none;
@@ -48,6 +46,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 10px;
 }
 
 @media only screen and (min-width: $small) {

@@ -64,13 +64,13 @@ function CompaniesSectionTwoSettings() {
         title={title}
         description={description}
         order={order}
-        header="القسم الثاني / شركات /"
-        checkboxLabel="show-section-two-companies-in-home-page"
+        header={t("section two companies")}
+        checkboxLabel="show section in home page"
         updateAction={updateSettings}
         field="companiesSectionTwo"
       />
 
-      <CardInfo headerTitle={t("section-two-companies")}>
+      <CardInfo headerTitle={t("section two companies")}>
         {companiesSectionTwoStatus === "loading" ? (
           <Loader />
         ) : (
@@ -80,14 +80,13 @@ function CompaniesSectionTwoSettings() {
                 <SettingRow
                   data={company}
                   key={company._id}
-                  // tooltip="remove-company"
                   action={removeFromSectionTwo}
                 />
               ))}
 
               <CenterContainer>
                 <Button
-                  text="add-label"
+                  text="add"
                   action={() => {
                     setShowChooseModal(true);
                   }}
@@ -101,7 +100,7 @@ function CompaniesSectionTwoSettings() {
 
       {showChooseModal && (
         <SelectPartnerModal
-          header={`${"choose-company"}`}
+          header={`${"choose company"}`}
           close={() => setShowChooseModal(false)}
           chooseAction={(data) => {
             dispatch(addCompanyToSectionTwo({ token, id: data._id }));
@@ -115,7 +114,7 @@ function CompaniesSectionTwoSettings() {
         <Toast
           bgColor={Colors.SUCCEEDED_COLOR}
           foreColor="#fff"
-          toastText={t("company-added")}
+          toastText={t("company added")}
           actionAfterTimeout={() =>
             dispatch(resetAddCompanyToSectionTwoStatus())
           }
@@ -137,7 +136,7 @@ function CompaniesSectionTwoSettings() {
         <Toast
           bgColor={Colors.SUCCEEDED_COLOR}
           foreColor="#fff"
-          toastText={t("company-removed")}
+          toastText={t("company removed")}
           actionAfterTimeout={() =>
             dispatch(resetRemoveCompanyFromSectionTwoStatus())
           }

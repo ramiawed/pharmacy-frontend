@@ -78,7 +78,7 @@ function NewNotification({ setIsNew, setSuccessAddingMsg }) {
         setBody("");
         setHeader("");
         setSelectedImage(null);
-        setSuccessAddingMsg("add-notification-msg");
+        setSuccessAddingMsg("add notification msg");
       })
       .catch((err) => {});
   };
@@ -91,7 +91,7 @@ function NewNotification({ setIsNew, setSuccessAddingMsg }) {
           headerError === "error" ? styles.error : "",
         ].join(" ")}
       >
-        <label>{t("header")}</label>
+        <label>{t("title")}</label>
         <input
           type="text"
           value={header}
@@ -117,7 +117,7 @@ function NewNotification({ setIsNew, setSuccessAddingMsg }) {
       </div>
 
       <div className={styles.row}>
-        <label>{t("image-label")}:</label>
+        <label>{t("image")}:</label>
         {selectedImage === null ? (
           <>
             <Icon
@@ -175,11 +175,7 @@ function NewNotification({ setIsNew, setSuccessAddingMsg }) {
       </div>
 
       <div className={styles.actions}>
-        <Button
-          action={addHandler}
-          text={t("add-label")}
-          classStyle="bg_green"
-        />
+        <Button action={addHandler} text={t("ok")} classStyle="bg_green" />
         <Button action={resetState} text={t("cancel")} classStyle="bg_red" />
       </div>
     </div>

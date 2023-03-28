@@ -28,7 +28,7 @@
     border-bottom-right-radius: 6px;
   }
 
-  &:lang(ar) {
+  &:lang(en) {
     text-align: right;
     margin-right: 10px;
     border-top-left-radius: 6px;
@@ -38,6 +38,14 @@
 
 .max_qty_div label:nth-child(2) {
   color: $main-color;
+
+  &:lang(ar) {
+    margin-right: 10px;
+  }
+
+  &:lang(en) {
+    margin-left: 10px;
+  }
 }
 
 @media only screen and (min-width: $medium) {

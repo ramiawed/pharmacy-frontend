@@ -50,8 +50,8 @@ const OrderDetailsActions = ({
         }}
         foreColor={Colors.LIGHT_COLOR}
         withBackground={true}
-        tooltip={t("order-details")}
-        text={t("order-details")}
+        tooltip={t("order details")}
+        text={t("details")}
       />
       {(user.type === UserTypeConstants.ADMIN ||
         user.type === UserTypeConstants.WAREHOUSE) && (
@@ -63,8 +63,8 @@ const OrderDetailsActions = ({
             }}
             foreColor={Colors.LIGHT_COLOR}
             withBackground={true}
-            tooltip={t("will-dont-serve-label")}
-            text={t("will-dont-serve-label")}
+            tooltip={t("will dont serve label")}
+            text={t("will dont serve label")}
           />
           <Icon
             icon={() => <GiConfirmed color={Colors.MAIN_COLOR} />}
@@ -73,8 +73,8 @@ const OrderDetailsActions = ({
             }}
             foreColor={Colors.LIGHT_COLOR}
             withBackground={true}
-            tooltip={t("confirm-order-label")}
-            text={t("confirm-order-label")}
+            tooltip={t("confirm order label")}
+            text={t("confirm order label")}
           />
           <Icon
             icon={() => <BsCheck color={Colors.MAIN_COLOR} />}
@@ -83,8 +83,8 @@ const OrderDetailsActions = ({
             }}
             foreColor={Colors.LIGHT_COLOR}
             withBackground={true}
-            tooltip={t("deliver-order-label")}
-            text={t("deliver-order-label")}
+            tooltip={t("deliver order label")}
+            text={t("deliver order label")}
           />
           <Icon
             icon={() => <MdDeliveryDining color={Colors.MAIN_COLOR} />}
@@ -93,8 +93,8 @@ const OrderDetailsActions = ({
             }}
             foreColor={Colors.LIGHT_COLOR}
             withBackground={true}
-            tooltip={t("shipped-order-label")}
-            text={t("shipped-order-label")}
+            tooltip={t("shipped order label")}
+            text={t("shipped order label")}
           />
         </>
       )}
@@ -121,8 +121,8 @@ const OrderDetailsActions = ({
 
       {showDevliverDateModal && (
         <ChooseDateModal
-          header="deliver-order-label"
-          msg="deliver-confirm-msg"
+          header="deliver order label"
+          msg="deliver confirm msg"
           closeModal={() => setShowDeliverDateModal(false)}
           handler={devlierHandler}
           withTime={true}
@@ -131,8 +131,8 @@ const OrderDetailsActions = ({
 
       {showShippedDateModal && (
         <ChooseDateModal
-          header="shipped-order-label"
-          msg="shipped-confirm-msg"
+          header="shipped order label"
+          msg="shipped confirm msg"
           closeModal={() => setShowShippedDateModal(false)}
           handler={shippedHandler}
           withTime={true}
@@ -141,8 +141,8 @@ const OrderDetailsActions = ({
 
       {showConfirmDateModal && (
         <ChooseDateModal
-          header="confirm-order-label"
-          msg="confirm-order-confirm-msg"
+          header="confirm order label"
+          msg="confirm order confirm msg"
           closeModal={() => setShowConfirmDateModal(false)}
           handler={confirmOrderHanlder}
         />
@@ -150,17 +150,17 @@ const OrderDetailsActions = ({
 
       {showConfirmDontServerModal && (
         <Modal
-          header={t("will-dont-serve-label")}
+          header={t("will dont serve label")}
           closeModal={() => setShowConfirmDontServeModal(false)}
           small={true}
           cancelLabel="cancel"
-          okLabel="ok-label"
+          okLabel="ok"
           okModal={() => {
             warehouseDontServeHanlder();
             setShowConfirmDontServeModal(false);
           }}
         >
-          <p>{t("dont-serve-confirm-msg")}</p>
+          <p>{t("dont serve confirm msg")}</p>
         </Modal>
       )}
     </ActionBar>

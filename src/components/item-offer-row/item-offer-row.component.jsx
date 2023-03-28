@@ -69,7 +69,7 @@ function ItemOfferRow({ item, index, searchString, type }) {
 
             {user.type === UserTypeConstants.PHARMACY && (
               <Icon
-                tooltip={t("add-to-cart")}
+                tooltip={t("add to cart")}
                 onclick={() => setShowModal(true)}
                 foreColor={Colors.SUCCEEDED_COLOR}
                 icon={() => <GiShoppingCart size={24} />}
@@ -94,7 +94,7 @@ function ItemOfferRow({ item, index, searchString, type }) {
             <LabelValueRow
               searchString={searchString}
               value={item.composition}
-              label="item-composition"
+              label="composition"
             />
           </div>
 

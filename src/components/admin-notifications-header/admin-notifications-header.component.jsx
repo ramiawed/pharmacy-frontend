@@ -34,14 +34,14 @@ function AdminNotificationsHeader({ isNew, setIsNew }) {
 
   return (
     <>
-      <Header title="nav notifications" />
+      <Header title="notifications" />
       <ActionBar>
         {!isNew && (
           <>
             <Icon
               selected={false}
               foreColor={Colors.MAIN_COLOR}
-              tooltip={t("new-advertisement")}
+              tooltip={t("new")}
               onclick={() => {
                 setIsNew(true);
               }}
@@ -52,7 +52,7 @@ function AdminNotificationsHeader({ isNew, setIsNew }) {
             <Icon
               selected={false}
               foreColor={Colors.MAIN_COLOR}
-              tooltip={t("refresh-tooltip")}
+              tooltip={t("refresh")}
               onclick={() => {
                 refreshHandler();
               }}

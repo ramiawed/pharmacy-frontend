@@ -65,13 +65,13 @@ function CompaniesSectionOneSettings() {
         description={description}
         order={order}
         titleRight={titleRight}
-        header="القسم الاول / شركات /"
-        checkboxLabel="show-section-one-companies-in-home-page"
+        header={t("section one companies")}
+        checkboxLabel="show section in home page"
         updateAction={updateSettings}
         field="companiesSectionOne"
       />
 
-      <CardInfo headerTitle={t("section-one-companies")}>
+      <CardInfo headerTitle={t("section one companies")}>
         {companiesSectionOneStatus === "loading" ? (
           <Loader />
         ) : (
@@ -87,7 +87,7 @@ function CompaniesSectionOneSettings() {
 
               <CenterContainer>
                 <Button
-                  text="add-label"
+                  text="add"
                   action={() => {
                     setShowChooseModal(true);
                   }}
@@ -101,7 +101,7 @@ function CompaniesSectionOneSettings() {
 
       {showChooseModal && (
         <SelectPartnerModal
-          header={`${"choose-company"}`}
+          header={`${"choose company"}`}
           close={() => setShowChooseModal(false)}
           chooseAction={(data) => {
             dispatch(addCompanyToSectionOne({ token, id: data._id }));
@@ -115,7 +115,7 @@ function CompaniesSectionOneSettings() {
         <Toast
           bgColor={Colors.SUCCEEDED_COLOR}
           foreColor="#fff"
-          toastText={t("company-added")}
+          toastText={t("company added")}
           actionAfterTimeout={() =>
             dispatch(resetAddCompanyToSectionOneStatus())
           }
@@ -137,7 +137,7 @@ function CompaniesSectionOneSettings() {
         <Toast
           bgColor={Colors.SUCCEEDED_COLOR}
           foreColor="#fff"
-          toastText={t("company-removed")}
+          toastText={t("company removed")}
           actionAfterTimeout={() =>
             dispatch(resetRemoveCompanyFromSectionOneStatus())
           }

@@ -100,7 +100,7 @@ function OrdersPage({ onSelectedChange, type }) {
       .then(unwrapResult)
       .then(() => {
         setResultModalParams({
-          msg: "order-deleted-successfully-msg",
+          msg: "order deleted successfully msg",
           type: "success",
           closeModal: () => {
             setResultModalParams(null);
@@ -111,7 +111,7 @@ function OrdersPage({ onSelectedChange, type }) {
       })
       .catch(() => {
         setResultModalParams({
-          msg: "order-deleted-failed-msg",
+          msg: "order deleted failed msg",
           type: "failed",
           closeModal: () => {
             setResultModalParams(null);
@@ -172,7 +172,7 @@ function OrdersPage({ onSelectedChange, type }) {
             ].join(" ")}
             onClick={() => changeOrderTypeHandler("normal")}
           >
-            {t("normal-order")}
+            {t("normal orders")}
           </button>
 
           <button
@@ -182,7 +182,7 @@ function OrdersPage({ onSelectedChange, type }) {
             ].join(" ")}
             onClick={() => changeOrderTypeHandler("special")}
           >
-            {t("special-order")}
+            {t("special orders")}
           </button>
 
           {(pageState.searchPharmacyName.trim().length > 0 ||
@@ -193,7 +193,7 @@ function OrdersPage({ onSelectedChange, type }) {
               withBackground={true}
               selected={false}
               foreColor={Colors.MAIN_COLOR}
-              tooltip={t("clear-filter-tooltip")}
+              tooltip={t("clear filter")}
               onclick={clearFilterHandler}
               icon={() => <VscClearAll />}
             />
@@ -203,7 +203,7 @@ function OrdersPage({ onSelectedChange, type }) {
             foreColor={Colors.MAIN_COLOR}
             selected={false}
             icon={() => <RiRefreshLine />}
-            tooltip={t("refresh-tooltip")}
+            tooltip={t("refresh")}
             onclick={handleEnterPress}
             withBackground={true}
           />
@@ -219,12 +219,12 @@ function OrdersPage({ onSelectedChange, type }) {
         </ActionBar>
 
         {pageState.type === "normal" && count > 0 && (
-          <ResultsCount label={t("normal-orders-count")} count={count} />
+          <ResultsCount label={t("normal orders count")} count={count} />
         )}
 
         {pageState.type === "special" && basketOrdersCount > 0 && (
           <ResultsCount
-            label={t("special-orders-count")}
+            label={t("special orders count")}
             count={basketOrdersCount}
           />
         )}
@@ -266,12 +266,12 @@ function OrdersPage({ onSelectedChange, type }) {
 
           {pageState.type === "normal" &&
             count === 0 &&
-            status !== "loading" && <NoContent msg={t("no-orders-found")} />}
+            status !== "loading" && <NoContent msg={t("no orders found")} />}
 
           {pageState.type === "special" &&
             basketOrdersCount === 0 &&
             status !== "loading" && (
-              <NoContent msg={t("no-basket-orders-found")} />
+              <NoContent msg={t("no special orders found")} />
             )}
 
           {status === "loading" && <CylonLoader />}
@@ -292,7 +292,7 @@ function OrdersPage({ onSelectedChange, type }) {
           {pageState.type === "normal" &&
             orders.length === count &&
             status !== "loading" &&
-            count !== 0 && <NoMoreResult msg={t("no-more")} />}
+            count !== 0 && <NoMoreResult msg={t("no more")} />}
 
           {pageState.type === "special" &&
             basketOrders.length < basketOrdersCount &&
@@ -310,7 +310,7 @@ function OrdersPage({ onSelectedChange, type }) {
           {pageState.type === "special" &&
             basketOrders.length === basketOrdersCount &&
             status !== "loading" &&
-            basketOrdersCount !== 0 && <NoMoreResult msg={t("no-more")} />}
+            basketOrdersCount !== 0 && <NoMoreResult msg={t("no more")} />}
 
           {error && (
             <Toast

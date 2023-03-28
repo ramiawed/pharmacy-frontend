@@ -26,7 +26,6 @@ import { VscLoading } from "react-icons/vsc";
 
 // styles
 import styles from "./choose-item-modal.module.scss";
-import generalStyles from "../../style.module.scss";
 
 // constants
 import { BASEURL, Colors } from "../../utils/constants";
@@ -114,7 +113,7 @@ function ChooseItemModal({
 
   return (
     <Modal
-      header="choose-item"
+      header="choose item"
       cancelLabel="cancel"
       closeModal={close}
       small={true}
@@ -128,7 +127,7 @@ function ChooseItemModal({
           <IoIosSearch color={Colors.LIGHT_COLOR} size={24} />
           <input
             className={styles.search_input}
-            placeholder={t("enter-item-trade-name")}
+            placeholder={t("search by name composition barcode")}
             value={searchName}
             onChange={(e) => setSearchName(e.target.value)}
             onKeyDown={keyDownHandler}
@@ -152,11 +151,11 @@ function ChooseItemModal({
             data.map((d) => <Row key={d._id} data={d} addAction={addAction} />)}
 
           {data.length === 0 && searchName.length === 0 && (
-            <NoContent msg={t("search-for-item")} />
+            <NoContent msg={t("search for item")} />
           )}
 
           {data.length === 0 && searchName.length !== 0 && (
-            <NoContent msg={t("search-empty")} />
+            <NoContent msg={t("no results found")} />
           )}
         </div>
 
@@ -214,15 +213,15 @@ const Row = ({ data, addAction }) => {
     <div className={styles.item_row}>
       <div className={styles.item_details}>
         <div className={styles.row}>
-          <label>{t("item-name")}</label>
+          <label>{t("item name")}</label>
           <p>{data.name}</p>
         </div>
         <div className={styles.row}>
-          <label>{t("item-caliber")}</label>
+          <label>{t("caliber")}</label>
           <p>{data.caliber}</p>
         </div>
         <div className={styles.row}>
-          <label>{t("item-packing")}</label>
+          <label>{t("packing")}</label>
           <p>{data.packing}</p>
         </div>
       </div>

@@ -175,7 +175,7 @@ function CartWarehouse({ warehouse, wIndex }) {
         </div>
         <label>
           <ButtonWithIcon
-            text={t("send-order")}
+            text={t("send order")}
             bgColor={Colors.MAIN_COLOR}
             action={checkOrderHandler}
           />
@@ -202,7 +202,7 @@ function CartWarehouse({ warehouse, wIndex }) {
 
       <div className={styles.additional_warehouse_info_div}>
         <label>
-          {t("total-invoice-price")}:{" "}
+          {t("total invoice price")}:{" "}
           {formatNumber(computeTotalPrice.invoiceTotal)}
         </label>
 
@@ -215,21 +215,21 @@ function CartWarehouse({ warehouse, wIndex }) {
 
         {warehouse.costOfDeliver > 0 && (
           <label>
-            {t("deliver-cost")}: {warehouse.costOfDeliver} %
+            {t("deliver cost")}: {warehouse.costOfDeliver} %
           </label>
         )}
 
         {warehouse.invoiceMinTotal > 0 && (
           <label>
-            {t("minimum-invoice-cost")}:{" "}
+            {t("minimum invoice cost")}:{" "}
             {formatNumber(warehouse.invoiceMinTotal)}
           </label>
         )}
 
-        {warehouse.fastDeliver && <label>{t("fast-deliver")}</label>}
+        {warehouse.fastDeliver && <label>{t("fast deliver")}</label>}
         {warehouse.payAtDeliver && (
           <label className={styles.pay_label}>
-            {t("dear-partner-pay-when-deliver")}
+            {t("dear partner pay when deliver")}
           </label>
         )}
       </div>
@@ -242,12 +242,12 @@ function CartWarehouse({ warehouse, wIndex }) {
             setShowSuccessModal(false);
             dispatch(resetCartItems(warehouse));
           }}
-          header={t("send-order")}
-          cancelLabel={t("close-label")}
+          header={t("send order")}
+          cancelLabel={t("close")}
           small={true}
           green={true}
         >
-          {t("send-order-succeeded")}
+          {t("send order succeeded")}
         </Modal>
       )}
 
@@ -256,11 +256,11 @@ function CartWarehouse({ warehouse, wIndex }) {
           closeModal={() => {
             setShowFailedModal(false);
           }}
-          header={t("send-order")}
-          cancelLabel={t("close-label")}
+          header={t("send order")}
+          cancelLabel={t("close")}
           small={true}
         >
-          {t("send-order-failed")}
+          {t("send order failed")}
         </Modal>
       )}
 
@@ -269,13 +269,13 @@ function CartWarehouse({ warehouse, wIndex }) {
           closeModal={() => {
             setShowConfirmSaveOrder(false);
           }}
-          header={t("send-order")}
+          header={t("send order")}
           cancelLabel={t("cancel")}
-          okLabel={t("send-order")}
+          okLabel={t("send order")}
           okModal={sendOrderHandler}
           small={true}
         >
-          {t("confirm-save-order")}
+          {t("confirm save order")}
         </Modal>
       )}
 
@@ -284,11 +284,11 @@ function CartWarehouse({ warehouse, wIndex }) {
           closeModal={() => {
             setShowWarningMsg(false);
           }}
-          header={t("minimum-invoice-cost")}
+          header={t("minimum invoice cost")}
           cancelLabel={t("cancel")}
           small={true}
         >
-          {t("minimum-invoice-cost-error")}
+          {t("minimum invoice cost error")}
         </Modal>
       )}
     </div>

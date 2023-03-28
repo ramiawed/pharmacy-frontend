@@ -120,7 +120,7 @@ function CompaniesPage({ onSelectedChange }) {
         <CompaniesActions refreshHandler={refreshHandler} />
         {filteredCompanies.length > 0 && (
           <ResultsCount
-            label={t("companies-count")}
+            label={t("companies count")}
             count={filteredCompanies.length}
           />
         )}
@@ -247,13 +247,13 @@ function CompaniesPage({ onSelectedChange }) {
           status !== "loading" &&
           searchName.length === 0 &&
           searchCity === CitiesName.ALL && (
-            <NoContent msg={t("no-companies")} />
+            <NoContent msg={t("no companies")} />
           )}
 
         {filteredCompanies.length === 0 &&
           status !== "loading" &&
           (searchName.length !== 0 || searchCity !== CitiesName.ALL) && (
-            <NoContent msg={t("no-result-found")} />
+            <NoContent msg={t("no result found")} />
           )}
 
         {status === "loading" && <CylonLoader />}
@@ -271,7 +271,7 @@ function CompaniesPage({ onSelectedChange }) {
 
         {filteredCompanies.length === count &&
           status !== "loading" &&
-          count !== 0 && <NoMoreResult msg={t("no-more")} />}
+          count !== 0 && <NoMoreResult msg={t("no more")} />}
       </MainContentContainer>
     </>
   ) : (

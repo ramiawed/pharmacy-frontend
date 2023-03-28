@@ -42,7 +42,7 @@ function CompaniesActions({ refreshHandler }) {
           withBackground={true}
           selected={false}
           foreColor={Colors.MAIN_COLOR}
-          tooltip={t("refresh-tooltip")}
+          tooltip={t("refresh")}
           onclick={() => {
             refreshHandler();
           }}
@@ -54,7 +54,7 @@ function CompaniesActions({ refreshHandler }) {
             withBackground={true}
             selected={false}
             foreColor={Colors.MAIN_COLOR}
-            tooltip={t("clear-filter-tooltip")}
+            tooltip={t("clear filter")}
             onclick={() => {
               dispatch(changeSearchName(""));
               dispatch(changeSearchCity(CitiesName.ALL));
@@ -69,7 +69,7 @@ function CompaniesActions({ refreshHandler }) {
           foreColor={
             displayType === "card" ? Colors.SUCCEEDED_COLOR : Colors.MAIN_COLOR
           }
-          tooltip={t("show-item-as-card-tooltip")}
+          tooltip={t("show as card")}
           onclick={() => {
             dispatch(changeDisplayType("card"));
           }}
@@ -82,7 +82,7 @@ function CompaniesActions({ refreshHandler }) {
           foreColor={
             displayType === "list" ? Colors.SUCCEEDED_COLOR : Colors.MAIN_COLOR
           }
-          tooltip={t("show-item-as-row-tooltip")}
+          tooltip={t("show as list")}
           onclick={() => {
             dispatch(changeDisplayType("list"));
           }}
@@ -91,7 +91,7 @@ function CompaniesActions({ refreshHandler }) {
 
         <Icon
           withBackground={true}
-          tooltip={t("go-back")}
+          tooltip={t("back")}
           onclick={() => {
             history.goBack();
           }}

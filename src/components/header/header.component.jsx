@@ -29,7 +29,7 @@ function Header({ refreshHandler, title, count }) {
         <Icon
           selected={false}
           foreColor={Colors.WHITE_COLOR}
-          tooltip={t("refresh-tooltip")}
+          tooltip={t("refresh")}
           onclick={refreshHandler}
           icon={() => <RiRefreshLine />}
         />

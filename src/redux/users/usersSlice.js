@@ -8,7 +8,6 @@ import {
   GuestJob,
   ShowWarehouseItems,
   UserActiveState,
-  UserApprovedState,
   UserTypeConstants,
 } from "../../utils/constants";
 
@@ -30,7 +29,6 @@ const initialState = {
     searchCompanyName: "",
     searchJobTitle: "",
     searchMobile: "",
-    // approved: UserApprovedState.ALL,
     active: UserActiveState.ALL,
     userType: UserTypeConstants.ALL,
     searchJob: GuestJob.NONE,
@@ -412,7 +410,6 @@ export const usersSlice = createSlice({
         searchCompanyName: "",
         searchJobTitle: "",
         searchMobile: "",
-        // approved: UserApprovedState.ALL,
         active: UserActiveState.ALL,
         userType: UserTypeConstants.ALL,
         searchJob: GuestJob.NONE,
@@ -442,7 +439,6 @@ export const usersSlice = createSlice({
         searchCompanyName: "",
         searchJobTitle: "",
         searchMobile: "",
-        // approved: UserApprovedState.ALL,
         active: UserActiveState.ALL,
         userType: UserTypeConstants.ALL,
         searchJob: GuestJob.NONE,

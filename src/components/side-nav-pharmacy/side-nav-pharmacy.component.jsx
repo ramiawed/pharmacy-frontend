@@ -47,11 +47,11 @@ function SideNavPharmacy({ selectedOption, onSelectedChange, collapsed }) {
             <div className={styles.nav_icon}>
               <BsFillEnvelopeFill size={24} />
               {collapsed && (
-                <label className={styles.tooltip}>{t("nav orders")}</label>
+                <label className={styles.tooltip}>{t("my orders")}</label>
               )}
             </div>
             {!collapsed && (
-              <div className={styles.nav_label}>{t("nav orders")} </div>
+              <div className={styles.nav_label}>{t("my Íorders")} </div>
             )}
           </div>
         </Link>
@@ -75,11 +75,11 @@ function SideNavPharmacy({ selectedOption, onSelectedChange, collapsed }) {
           <div className={styles.nav_icon}>
             <BsFillBookmarkPlusFill size={24} />
             {collapsed && (
-              <label className={styles.tooltip}>{t("saved-items")}</label>
+              <label className={styles.tooltip}>{t("saved items")}</label>
             )}
           </div>
           {!collapsed && (
-            <div className={styles.nav_label}>{t("saved-items")} </div>
+            <div className={styles.nav_label}>{t("saved items")} </div>
           )}
         </div>
       </Link>
@@ -125,12 +125,10 @@ function SideNavPharmacy({ selectedOption, onSelectedChange, collapsed }) {
           <div className={styles.nav_icon}>
             <CgProfile size={24} />
             {collapsed && (
-              <label className={styles.tooltip}>{t("nav profile")}</label>
+              <label className={styles.tooltip}>{t("profile")}</label>
             )}
           </div>
-          {!collapsed && (
-            <div className={styles.nav_label}>{t("nav profile")}</div>
-          )}
+          {!collapsed && <div className={styles.nav_label}>{t("profile")}</div>}
         </div>
       </Link>
     </>

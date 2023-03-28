@@ -72,7 +72,7 @@ function UserProfileNotifications() {
             dispatch(resetUpdateStatus());
           }}
         >
-          <p>{t("update-succeeded")}</p>
+          <p>{t("update succeeded")}</p>
         </Toast>
       )}
 

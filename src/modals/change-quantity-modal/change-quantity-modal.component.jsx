@@ -44,10 +44,10 @@ const ChangeQuantityModal = ({
 
   return (
     <Modal
-      header={t("enter-value")}
+      header={t("enter value")}
       closeModal={closeModal}
       cancelLabel={t("cancel")}
-      okLabel={t("ok-label")}
+      okLabel={t("ok")}
       small={true}
       okModal={confirmValueHandler}
     >

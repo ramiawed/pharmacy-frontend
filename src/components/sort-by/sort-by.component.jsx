@@ -23,7 +23,7 @@ function SortBy({ arr, orderBy, orderChange, valueChanged }) {
                 checked={orderBy[a.value] === -1}
                 onChange={() => valueChanged(a.value, -1)}
               />
-              <label>{t("order-descending")}</label>
+              <label>{t("descending")}</label>
             </div>
             <div>
               <input
@@ -31,7 +31,7 @@ function SortBy({ arr, orderBy, orderChange, valueChanged }) {
                 checked={orderBy[a.value] === 1}
                 onChange={() => valueChanged(a.value, 1)}
               />
-              <label>{t("order-ascending")}</label>
+              <label>{t("ascending")}</label>
             </div>
           </div>
         </div>

@@ -122,26 +122,26 @@ function AddToCartOfferModal({ item, close, setAddItemToCartMsg }) {
     close();
 
     // inform the user that the item is added to cart
-    setAddItemToCartMsg("add-item-to-cart");
+    setAddItemToCartMsg("add item to cart");
   };
 
   return (
     <>
       <Modal
-        header="add-to-cart"
+        header="add to cart"
         cancelLabel="cancel"
-        okLabel="add-label"
+        okLabel="add"
         closeModal={close}
         okModal={addItemToCartHandler}
         small={true}
       >
         <div className={styles.container}>
-          <label>{t("item-warehouse")}</label>
+          <label>{t("warehouse")}</label>
           <label>{addToCartItem.warehouses[0].warehouse.name}</label>
         </div>
 
         <div className={styles.container}>
-          <label>{t("item-max-qty")}</label>
+          <label>{t("max quantity")}</label>
           <label>
             {addToCartItem.warehouses[0].maxQty === 0
               ? "-"
@@ -150,7 +150,7 @@ function AddToCartOfferModal({ item, close, setAddItemToCartMsg }) {
         </div>
 
         <SearchInput
-          label="selected-qty"
+          label="quantity"
           id="selected-qty"
           type="text"
           value={qty}
@@ -161,7 +161,9 @@ function AddToCartOfferModal({ item, close, setAddItemToCartMsg }) {
           hasFocus={true}
         />
 
-        {qtyError && <label className={styles.error}>{t("enter-qty")}</label>}
+        {qtyError && (
+          <label className={styles.error}>{t("enter qty error")}</label>
+        )}
 
         {addToCartItem.warehouses[0].offer.offers.map((o, index) => (
           <OfferDetailsRow

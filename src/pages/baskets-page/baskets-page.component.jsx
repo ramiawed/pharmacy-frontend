@@ -77,7 +77,7 @@ const BasketsPage = ({ onSelectedChange }) => {
 
       <MainContentContainer>
         {count > 0 && !isNew && (
-          <ResultsCount label={t("baskets-count")} count={count} />
+          <ResultsCount label={t("baskets count")} count={count} />
         )}
         <div>
           {isNew ? (
@@ -95,7 +95,7 @@ const BasketsPage = ({ onSelectedChange }) => {
       </MainContentContainer>
 
       {count === 0 && status !== "loading" && !isNew && (
-        <NoContent msg={t("no-basket-to-order")} />
+        <NoContent msg={t("no basket to order")} />
       )}
 
       {status === "loading" && <CylonLoader />}
@@ -114,7 +114,7 @@ const BasketsPage = ({ onSelectedChange }) => {
       {baskets.length === count &&
         status !== "loading" &&
         count !== 0 &&
-        !isNew && <NoMoreResult msg={t("no-more")} />}
+        !isNew && <NoMoreResult msg={t("no more")} />}
     </>
   ) : (
     <Redirect to="/" />

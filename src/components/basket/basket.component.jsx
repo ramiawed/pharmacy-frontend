@@ -250,7 +250,7 @@ function Basket({ setIsNew, basket, editable, forRead }) {
         .then(unwrapResult)
         .then(() => {
           setResultModalParams({
-            msg: "basket-added-successfully-msg",
+            msg: "basket added successfully msg",
             type: "success",
             closeModal: () => {
               setResultModalParams(null);
@@ -263,7 +263,7 @@ function Basket({ setIsNew, basket, editable, forRead }) {
         })
         .catch(() => {
           setResultModalParams({
-            msg: "basket-added-failed-msg",
+            msg: "basket added failed msg",
             type: "failed",
             closeModal: () => {
               setResultModalParams(null);
@@ -287,7 +287,7 @@ function Basket({ setIsNew, basket, editable, forRead }) {
         .then(unwrapResult)
         .then(() => {
           setResultModalParams({
-            msg: "basket-updated-successfully-msg",
+            msg: "basket updated successfully msg",
             type: "success",
             closeModal: () => {
               setResultModalParams(null);
@@ -306,7 +306,7 @@ function Basket({ setIsNew, basket, editable, forRead }) {
       .then(unwrapResult)
       .then(() => {
         setResultModalParams({
-          msg: "basket-removed-successfully-msg",
+          msg: "basket removed successfully msg",
           type: "success",
           closeModal: () => {
             setResultModalParams(null);
@@ -319,7 +319,7 @@ function Basket({ setIsNew, basket, editable, forRead }) {
       })
       .catch(() => {
         setResultModalParams({
-          msg: "basket-removed-failed-msg",
+          msg: "basket removed failed msg",
           type: "failed",
           closeModal: () => {
             setResultModalParams(null);
@@ -336,12 +336,12 @@ function Basket({ setIsNew, basket, editable, forRead }) {
       closeModal: () => {
         setShowModal(false);
       },
-      header: "check-basket-header",
-      cancelLabel: "close-label",
-      okLabel: "ok-label",
+      header: "check basket ",
+      cancelLabel: "close",
+      okLabel: "ok",
       okModal: checkBasketHandler,
       small: true,
-      msg: "check-basket-msg",
+      msg: "check basket msg",
     });
     setShowModal(true);
   };
@@ -351,12 +351,12 @@ function Basket({ setIsNew, basket, editable, forRead }) {
       closeModal: () => {
         setShowModal(false);
       },
-      header: "order-basket-header",
-      cancelLabel: "close-label",
-      okLabel: "ok-label",
+      header: "order basket",
+      cancelLabel: "close",
+      okLabel: "ok",
       okModal: orderBasketHandler,
       small: true,
-      msg: "order-basket-confirm-msg",
+      msg: "order basket confirm msg",
     });
     setShowModal(true);
   };
@@ -366,12 +366,12 @@ function Basket({ setIsNew, basket, editable, forRead }) {
       closeModal: () => {
         setShowModal(false);
       },
-      header: "add-basket-header",
-      cancelLabel: "close-label",
-      okLabel: "ok-label",
+      header: "add",
+      cancelLabel: "close",
+      okLabel: "ok",
       okModal: addBasketHandler,
       small: true,
-      msg: setIsNew ? "add-basket-msg" : "update-basket-msg",
+      msg: setIsNew ? "add basket msg" : "update basket msg",
     });
     setShowModal(true);
   };
@@ -381,12 +381,12 @@ function Basket({ setIsNew, basket, editable, forRead }) {
       closeModal: () => {
         setShowModal(false);
       },
-      header: "remove-basket-header",
-      cancelLabel: "close-label",
-      okLabel: "ok-label",
+      header: "remove basket",
+      cancelLabel: "close",
+      okLabel: "ok",
       okModal: removeBasketHandler,
       small: true,
-      msg: "remove-basket-confirm-msg",
+      msg: "remove basket confirm msg",
     });
     setShowModal(true);
   };
@@ -444,7 +444,7 @@ function Basket({ setIsNew, basket, editable, forRead }) {
               <Icon
                 selected={false}
                 foreColor={Colors.SUCCEEDED_COLOR}
-                tooltip={t("new-item")}
+                tooltip={t("new item")}
                 onclick={addItem}
                 icon={() => <MdAddCircle size={24} />}
                 withBackground={true}
@@ -453,7 +453,7 @@ function Basket({ setIsNew, basket, editable, forRead }) {
           )}
 
           <div className={styles.details_row}>
-            <label>{t("basket-total-items")}</label>
+            <label>{t("basket total items")}</label>
             <label>{basketItems.length}</label>
             <div
               className={styles.expanded_div}
@@ -486,11 +486,11 @@ function Basket({ setIsNew, basket, editable, forRead }) {
 
           <div className={styles.content}>
             <div className={styles.details_row}>
-              <label>{t("basket-total-price")}</label>
+              <label>{t("total price")}</label>
               <label>{formatNumber(calculateBasketTotalPrice())}</label>
             </div>
             <div className={styles.details_row}>
-              <label>{t("basket-total-discount")}</label>
+              <label>{t("discount")}</label>
 
               {editable && allowEdit ? (
                 <input
@@ -506,7 +506,7 @@ function Basket({ setIsNew, basket, editable, forRead }) {
             </div>
 
             <div className={styles.details_row}>
-              <label>{t("basket-total-price-after-discount")}</label>
+              <label>{t("total price after discount")}</label>
               <label>
                 {totalDiscount !== 0
                   ? formatNumber(
@@ -518,7 +518,7 @@ function Basket({ setIsNew, basket, editable, forRead }) {
             </div>
 
             <div className={styles.details_row}>
-              <label>{t("basket-gift-label")}</label>
+              <label>{t("gift")}</label>
               {editable && allowEdit ? (
                 <textarea
                   rows="2"
@@ -530,7 +530,7 @@ function Basket({ setIsNew, basket, editable, forRead }) {
               )}
             </div>
             <div className={styles.details_row}>
-              <label>{t("basket-note-label")}</label>
+              <label>{t("note")}</label>
               {editable && allowEdit ? (
                 <textarea
                   rows="2"
@@ -550,8 +550,7 @@ function Basket({ setIsNew, basket, editable, forRead }) {
               <div style={{ margin: "0 5px" }}>
                 <Button
                   action={checkBasketAction}
-                  text={t("check-basket-label")}
-                  // bgColor={Colors.MAIN_COLOR}
+                  text={t("check basket")}
                   classStyle="bg_main"
                 />
               </div>
@@ -561,7 +560,7 @@ function Basket({ setIsNew, basket, editable, forRead }) {
               <div style={{ margin: "0 5px" }}>
                 <Button
                   action={addOrUpdateBasketAction}
-                  text={setIsNew ? t("add-label") : t("update-label")}
+                  text={t("ok")}
                   bgColor={Colors.SUCCEEDED_COLOR}
                   classStyle="bg_green"
                 />
@@ -571,7 +570,6 @@ function Basket({ setIsNew, basket, editable, forRead }) {
               <Button
                 action={resetState}
                 text={t("cancel")}
-                // bgColor={Colors.FAILED_COLOR}
                 classStyle="bg_red"
               />
             ) : (
@@ -580,15 +578,13 @@ function Basket({ setIsNew, basket, editable, forRead }) {
                   action={() => {
                     setAllowEdit(true);
                   }}
-                  text={t("edit-basket-label")}
-                  // bgColor={Colors.MAIN_COLOR}
+                  text={t("edit basket")}
                   classStyle="bg_main"
                 />
                 <div style={{ width: "10px" }}></div>
                 <Button
                   action={removeBasketAction}
-                  text={t("remove-basket-label")}
-                  // bgColor={Colors.FAILED_COLOR}
+                  text={t("remove basket")}
                   classStyle="bg_red"
                 />
               </>
@@ -600,7 +596,7 @@ function Basket({ setIsNew, basket, editable, forRead }) {
           <div className={styles.actions}>
             <Button
               action={orderBasketAction}
-              text={t("order-basket-label")}
+              text={t("order basket")}
               classStyle="bg_green"
             />
           </div>
@@ -609,7 +605,6 @@ function Basket({ setIsNew, basket, editable, forRead }) {
 
       {showChooseModal && (
         <>
-          {/* <FilterItemsModal close={() => setShowChooseModal(false)} /> */}
           <ChooseItemModal
             close={() => {
               setShowChooseModal(false);
@@ -632,7 +627,7 @@ function Basket({ setIsNew, basket, editable, forRead }) {
 
       {showSelectWarehouseModal && (
         <SelectPartnerModal
-          header="choose-warehouse"
+          header="choose warehouse"
           close={() => setShowSelectWarehouseModal(false)}
           chooseAction={(data) => selectWarehouseHandler(data)}
           data={warehouses}

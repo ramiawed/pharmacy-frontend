@@ -2,35 +2,19 @@
 
 .container {
     width: 100%;
-    // min-height: 100%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;
     padding: 10px;
 
     label {
-        text-align: center;
         padding: 5px;
-        background-color: rgba($color: $main-color, $alpha: 0.8);
         border-radius: 6px;
-        color: $white-color;
         cursor: pointer;
         margin-bottom: 10px;
-
-        &.selected {
-            background-color: rgba($color: $offer-color, $alpha: 1);
-            box-shadow: 0 0 2px 2px rgba($color: $offer-color, $alpha: 0.5);
-            color: $main-color;
-        }
     }
 
     p {
-        text-align: center;
-        color: $white-color;
-        width: 200px;
-        text-shadow: 2px 2px 5px#000;
         margin-bottom: 10px;
-        font-size: 16px;
-        align-self: center;
     }
 }

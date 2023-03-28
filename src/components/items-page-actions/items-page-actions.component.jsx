@@ -33,7 +33,7 @@ function ItemsPageActions({
         foreColor={Colors.MAIN_COLOR}
         selected={false}
         icon={() => <RiRefreshLine />}
-        tooltip={t("refresh-tooltip")}
+        tooltip={t("refresh")}
         onclick={search}
         withBackground={true}
       />
@@ -49,7 +49,7 @@ function ItemsPageActions({
           withBackground={true}
           selected={false}
           foreColor={Colors.MAIN_COLOR}
-          tooltip={t("clear-filter-tooltip")}
+          tooltip={t("clear filter")}
           onclick={filterAction}
           icon={() => <VscClearAll />}
         />
@@ -64,7 +64,7 @@ function ItemsPageActions({
             foreColor={Colors.MAIN_COLOR}
             selected={false}
             icon={() => <RiAddCircleFill />}
-            tooltip={t("add-item")}
+            tooltip={t("add item")}
             onclick={() => {
               history.push("/item", {
                 from: user.type,
@@ -85,7 +85,7 @@ function ItemsPageActions({
             foreColor={Colors.MAIN_COLOR}
             selected={false}
             icon={() => <SiMicrosoftexcel />}
-            tooltip={t("items-from-excel")}
+            tooltip={t("items from excel")}
             onclick={() => {
               history.push("/items-from-excel", {
                 companyId:
@@ -123,7 +123,7 @@ function ItemsPageActions({
 
       <Icon
         withBackground={true}
-        tooltip={t("go-back")}
+        tooltip={t("back")}
         onclick={() => {
           history.goBack();
         }}

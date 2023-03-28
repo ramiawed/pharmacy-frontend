@@ -87,7 +87,7 @@ function SettingsPage({ onSelectedChange }) {
 
   return user && user.type === UserTypeConstants.ADMIN ? (
     <>
-      <Header title="nav settings" refreshHandler={refreshHandler} />
+      <Header title="settings" refreshHandler={refreshHandler} />
 
       <MainContentContainer>
         <CompaniesSectionOneSettings />
@@ -98,21 +98,21 @@ function SettingsPage({ onSelectedChange }) {
         <ItemsSectionThreeSettings />
         <div>
           <h3 style={{ color: Colors.FAILED_COLOR }}>
-            {t("general-settings")}
+            {t("general settings")}
           </h3>
         </div>
         <SettingCheckbox
-          label={t("show-warehouse-items-permission")}
+          label={t("show warehouse items permission")}
           value={showWarehouseItem}
           action={changeShowWarehouseItemSettingHandler}
         />
         <SettingCheckbox
-          label={t("show-advertisement-on-home-page")}
+          label={t("show advertisement on home page")}
           value={showAdvertisements}
           action={changeShowAdvertisementSettingHandler}
         />
         <SettingCheckbox
-          label={t("save-orders-in-database-permission")}
+          label={t("save orders in database permission")}
           value={saveOrders}
           action={changeSaveOrdersSettingHandler}
         />

@@ -63,13 +63,13 @@ function ItemsSectionTwoSettings() {
         description={description}
         order={order}
         titleRight={titleRight}
-        header="القسم الثاني / أدوية /"
-        checkboxLabel="show-section-two-items-in-home-page"
+        header={t("section two items")}
+        checkboxLabel="show section in home page"
         updateAction={updateSettings}
         field="itemsSectionTwo"
       />
 
-      <CardInfo headerTitle={t("section-two-items")}>
+      <CardInfo headerTitle={t("section two items")}>
         {itemsSectionTwoStatus === "loading" ? (
           <Loader />
         ) : (
@@ -86,7 +86,7 @@ function ItemsSectionTwoSettings() {
 
               <CenterContainer>
                 <Button
-                  text="add-label"
+                  text="add"
                   action={() => {
                     setShowChooseModal(true);
                   }}
@@ -112,7 +112,7 @@ function ItemsSectionTwoSettings() {
         <Toast
           bgColor={Colors.SUCCEEDED_COLOR}
           foreColor="#fff"
-          toastText={t("item-added")}
+          toastText={t("item added")}
           actionAfterTimeout={() => dispatch(resetAddItemToSectionTwoStatus())}
         />
       )}
@@ -130,7 +130,7 @@ function ItemsSectionTwoSettings() {
         <Toast
           bgColor={Colors.SUCCEEDED_COLOR}
           foreColor="#fff"
-          toastText={t("item-removed")}
+          toastText={t("item removed")}
           actionAfterTimeout={() =>
             dispatch(resetRemoveItemFromSectionTwoStatus())
           }

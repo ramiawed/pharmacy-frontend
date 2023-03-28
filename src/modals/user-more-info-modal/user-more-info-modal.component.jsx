@@ -43,13 +43,13 @@ function UserMoreInfoModal({ user, close }) {
 
   return (
     <Modal
-      header="user more info title"
-      cancelLabel="close-label"
+      header="more info"
+      cancelLabel="close"
       closeModal={close}
       small={true}
     >
-      <div className={[styles.header].join(" ")}>{t("personal-info")}</div>
-      <LabelValueRow label="user username" value={user.username} />
+      <div className={[styles.header].join(" ")}>{t("personal info")}</div>
+      <LabelValueRow label="username" value={user.username} />
       <Separator />
 
       <LabelValueRow
@@ -67,8 +67,8 @@ function UserMoreInfoModal({ user, close }) {
           <div className={styles.row}>
             <label className={styles.label}>
               {user.type === UserTypeConstants.PHARMACY
-                ? t("pharmacy-document")
-                : t("guest-document-small")}
+                ? t("pharmacy liscense")
+                : t("guest card")}
               :
             </label>
             <label className={styles.value}>{user.paper_url}</label>
@@ -78,63 +78,47 @@ function UserMoreInfoModal({ user, close }) {
             <Icon
               selected={false}
               foreColor={Colors.LIGHT_COLOR}
-              tooltip={
-                user.type === UserTypeConstants.PHARMACY
-                  ? t("show-paper-url-pharmacy")
-                  : t("show-paper-url-guest")
-              }
+              tooltip={t("show liscense or card")}
               onclick={() => {
                 setShowUserDocument(true);
               }}
               icon={() => <FiImage size={24} color={Colors.MAIN_COLOR} />}
-              text={
-                user.type === UserTypeConstants.PHARMACY
-                  ? t("show-paper-url-pharmacy")
-                  : t("show-paper-url-guest")
-              }
+              text={t("show liscense or card")}
               withBackground={true}
             />
             <Icon
               selected={false}
               foreColor={Colors.LIGHT_COLOR}
-              tooltip={
-                user.type === UserTypeConstants.PHARMACY
-                  ? t("delete-paper-url-pharmacy")
-                  : t("delete-paper-url-guest")
-              }
+              tooltip={t("delete liscense or card")}
               onclick={() => {
                 setShowDeleteLicenseModal(true);
               }}
               icon={() => (
                 <RiDeleteBin5Line size={24} color={Colors.MAIN_COLOR} />
               )}
-              text={
-                user.type === UserTypeConstants.PHARMACY
-                  ? t("delete-paper-url-pharmacy")
-                  : t("delete-paper-url-guest")
-              }
+              text={t("delete liscense or card")}
               withBackground={true}
             />
           </ActionBar>
         </>
       )}
 
-      <div className={[styles.header].join(" ")}>{t("communication-info")}</div>
+      <div className={[styles.header].join(" ")}>{t("communication info")}</div>
 
-      <LabelValueRow label="user email" value={user.email} />
+      <LabelValueRow label="email" value={user.email} />
       <Separator />
 
-      <LabelValueRow label="user phone" value={user.phone} />
+      <LabelValueRow label="phone" value={user.phone} />
       <Separator />
 
-      <LabelValueRow label="user mobile" value={user.mobile} />
+      <LabelValueRow label="mobile" value={user.mobile} />
       <Separator />
 
-      <div className={[styles.header].join(" ")}>{t("address-info")}</div>
-      <LabelValueRow label="user-city" value={t(user.city)} />
+      <div className={[styles.header].join(" ")}>{t("address")}</div>
+      <LabelValueRow label="city" value={t(user.city)} />
       <Separator />
 
-      <LabelValueRow label="user address details" value={user.addressDetails} />
+      <LabelValueRow label="address" value={user.addressDetails} />
       <Separator />
 
       {/* if the user type is pharmacy or warehouse display employee name and certificate name */}
@@ -142,14 +126,14 @@ function UserMoreInfoModal({ user, close }) {
       user.type === UserTypeConstants.WAREHOUSE ? (
         <>
           <div className={[styles.header].join(" ")}>
-            {t("additional-info")}
+            {t("additional info")}
           </div>
 
-          <LabelValueRow label="user employee name" value={user.employeeName} />
+          <LabelValueRow label="employee name" value={user.employeeName} />
           <Separator />
 
           <LabelValueRow
-            label="user certificate name"
+            label="certificate name"
             value={user.certificateName}
           />
           <Separator />
@@ -159,10 +143,10 @@ function UserMoreInfoModal({ user, close }) {
       {user.type === UserTypeConstants.GUEST ? (
         <>
           <div className={[styles.header].join(" ")}>
-            {t("additional-info")}
+            {t("additional info")}
           </div>
           <LabelValueRow
-            label="user job"
+            label="job"
             value={t(`${user.guestDetails.job.toLowerCase()}`)}
           />
           <Separator />
@@ -170,13 +154,13 @@ function UserMoreInfoModal({ user, close }) {
           {user.guestDetails.job === GuestJob.EMPLOYEE ? (
             <>
               <LabelValueRow
-                label="user-company-name"
+                label="company"
                 value={user.guestDetails.companyName}
               />
               <Separator />
 
               <LabelValueRow
-                label="user job title"
+                label="job title"
                 value={user.guestDetails.jobTitle}
               />
               <Separator />
@@ -187,8 +171,8 @@ function UserMoreInfoModal({ user, close }) {
 
       {showUserDocument && (
         <Modal
-          header="user-document"
-          cancelLabel="close-label"
+          header="show liscense or card"
+          cancelLabel="close"
           closeModal={() => {
             setShowUserDocument(false);
           }}
@@ -211,24 +195,16 @@ function UserMoreInfoModal({ user, close }) {
 
       {showDeleteLicenseModal && (
         <Modal
-          header={
-            user.type === UserTypeConstants.PHARMACY
-              ? "delete-paper-url-pharmacy"
-              : "delete-paper-url-guest"
-          }
-          cancelLabel="close-label"
+          header="delete liscense or card"
+          cancelLabel="close"
           closeModal={() => {
             setShowDeleteLicenseModal(false);
           }}
-          okLabel="ok-label"
+          okLabel="ok"
           okModal={deleteHandler}
           small={true}
         >
-          <p>
-            {user.type === UserTypeConstants.PHARMACY
-              ? t("delete-pharmacy-license-confirm-msg")
-              : t("delete-guest-license-confirm-msg")}
-          </p>
+          <p>{t("delete pharmacy license or card confirm msg")}</p>
         </Modal>
       )}
     </Modal>

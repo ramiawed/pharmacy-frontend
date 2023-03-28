@@ -74,7 +74,7 @@ const CreateAccountStageThree = ({
       hasError = true;
       errorObj = {
         ...errorObj,
-        mobile: "enter-mobile",
+        mobile: "enter mobile number error",
       };
     }
 
@@ -82,7 +82,7 @@ const CreateAccountStageThree = ({
       hasError = true;
       errorObj = {
         ...errorObj,
-        addressDetails: "enter address details",
+        addressDetails: "enter address details error",
       };
     }
 
@@ -90,7 +90,7 @@ const CreateAccountStageThree = ({
       hasError = true;
       errorObj = {
         ...errorObj,
-        city: "enter-city",
+        city: "enter city error",
       };
     }
 
@@ -115,45 +115,45 @@ const CreateAccountStageThree = ({
           <ChooserContainer
             onclick={() => setShowChooseCityModal(true)}
             selectedValue={obj.city}
-            label="city-name"
+            label="city"
             error={error.city}
           />
 
           <Input
             type="email"
-            label="user email"
+            label="email"
             id="email"
             value={obj.email}
             onchange={(e) => inputChangeHandler("email", e.target.value)}
-            placeholder="optional-placeholder"
+            placeholder="optional placeholder"
             onEnterPress={nextStageHandler}
           />
 
           <Input
             type="text"
-            label="user phone"
+            label="phone"
             id="phone"
             value={obj.phone}
             onchange={(e) => inputChangeHandler("phone", e.target.value)}
-            placeholder="optional-placeholder"
+            placeholder="optional placeholder"
             onEnterPress={nextStageHandler}
           />
 
           <Input
             type="text"
-            label="user mobile"
+            label="mobile"
             id="mobile"
             value={obj.mobile}
             onchange={(e) => inputChangeHandler("mobile", e.target.value)}
             error={error.mobile?.length > 0}
             errorMsg={t(error.mobile)}
-            placeholder="mandatory-placeholder"
+            placeholder="mandatory placeholder"
             onEnterPress={nextStageHandler}
           />
 
           <Input
             type="text"
-            label="user address details"
+            label="address"
             id="addressDetails"
             value={obj.addressDetails}
             onchange={(e) =>
@@ -161,7 +161,7 @@ const CreateAccountStageThree = ({
             }
             error={error.addressDetails.length > 0}
             errorMsg={t(error.addressDetails)}
-            placeholder="mandatory-placeholder"
+            placeholder="mandatory placeholder"
             onEnterPress={nextStageHandler}
           />
 
@@ -174,7 +174,7 @@ const CreateAccountStageThree = ({
       </StageContainer>
       {showChooseCityModal && (
         <ChooseValue
-          headerTitle="city-name"
+          headerTitle="choose city"
           close={() => {
             setShowChooseCityModal(false);
           }}

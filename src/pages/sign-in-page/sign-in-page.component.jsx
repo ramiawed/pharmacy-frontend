@@ -47,7 +47,7 @@ function SignInPage() {
             addStatistics({
               obj: {
                 targetUser: result.data.user._id,
-                action: "user-sign in",
+                action: "user-sign-in",
               },
               token: result.token,
             })

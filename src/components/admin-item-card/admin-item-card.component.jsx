@@ -272,7 +272,7 @@ function AdminItemCard({ item, user, warehouse, role, index, searchString }) {
             user.type === UserTypeConstants.COMPANY) && (
             <div className={styles.second_row}>
               <CustomCheckbox
-                label={t("item-available")}
+                label={t("item available in company")}
                 value={item.isActive}
                 changeHandler={changeAvailability}
               />
@@ -283,7 +283,7 @@ function AdminItemCard({ item, user, warehouse, role, index, searchString }) {
             role === UserTypeConstants.WAREHOUSE) ||
             user.type === UserTypeConstants.WAREHOUSE) && (
             <div className={styles.second_row}>
-              <LabelValueRow label="item-max-qty" value={maxQty} />
+              <LabelValueRow label="max quantity" value={maxQty} />
             </div>
           )}
 
@@ -304,14 +304,14 @@ function AdminItemCard({ item, user, warehouse, role, index, searchString }) {
                   setShowChangeMaxQtyModal(true);
                   setPrevMaxQty(maxQty);
                 }}
-                text={t("change-max-qty-header")}
+                text={t("change max qty")}
                 bgColor={Colors.MAIN_COLOR}
                 smallText={true}
               />
 
               <ButtonWithIcon
                 icon={() => <MdLocalOffer />}
-                text={t("nav-offers")}
+                text={t("offers")}
                 action={() => {
                   setShowOfferModal(true);
                 }}
@@ -332,7 +332,7 @@ function AdminItemCard({ item, user, warehouse, role, index, searchString }) {
                 icon={() => <RiDeleteBin5Fill />}
                 action={deleteFromWarehouseHandler}
                 bgColor={Colors.FAILED_COLOR}
-                text={t("remove-from-warehouse")}
+                text={t("remove item from warehouse")}
                 smallText={true}
               />
             </div>
@@ -344,7 +344,7 @@ function AdminItemCard({ item, user, warehouse, role, index, searchString }) {
         <Modal
           header={t(modalObj.header)}
           cancelLabel={t("cancel")}
-          okLabel={t("ok-label")}
+          okLabel={t("ok")}
           okModal={() => handlePressOkOnModal()}
           closeModal={() => setShowModal(false)}
           small={true}
@@ -361,7 +361,7 @@ function AdminItemCard({ item, user, warehouse, role, index, searchString }) {
           small={true}
           warning={true}
         >
-          {<p>{t("dont-have-permission")}</p>}
+          {<p>{t("dont have permission")}</p>}
         </Modal>
       )}
 
@@ -397,9 +397,9 @@ function AdminItemCard({ item, user, warehouse, role, index, searchString }) {
 
       {showDeleteFromWarehouseModal && (
         <Modal
-          header={t("item-delete-header")}
+          header={t("delete item")}
           cancelLabel={t("cancel")}
-          okLabel={t("ok-label")}
+          okLabel={t("ok")}
           okModal={() => {
             handleDeleteItemFromWarehouse();
           }}
@@ -408,7 +408,7 @@ function AdminItemCard({ item, user, warehouse, role, index, searchString }) {
           }}
           small={true}
         >
-          {<p>{t("item-delete-from-warehouse")}</p>}
+          {<p>{t("delete item from warehouse")}</p>}
         </Modal>
       )}
 

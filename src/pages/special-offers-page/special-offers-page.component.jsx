@@ -28,12 +28,12 @@ import Basket from "../../components/basket/basket.component";
 import Icon from "../../components/icon/icon.component";
 
 // icons
+import { IoMdArrowRoundBack } from "react-icons/io";
 import { CgMoreVertical } from "react-icons/cg";
 import { RiRefreshLine } from "react-icons/ri";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
-import { IoMdArrowRoundBack } from "react-icons/io";
 
 const SpecialOffersPage = ({ onSelectedChange }) => {
   const { t } = useTranslation();
@@ -77,7 +77,7 @@ const SpecialOffersPage = ({ onSelectedChange }) => {
     <>
       <SearchContainer>
         <SearchPartnerContainer
-          label={t("item-warehouse")}
+          label={t("warehouse")}
           partners={pageState?.searchWarehousesIds}
           addId={addIdToWarehousesIds}
           removeId={removeIdFromWarehousesId}
@@ -90,12 +90,12 @@ const SpecialOffersPage = ({ onSelectedChange }) => {
           withBackground={true}
           icon={() => <RiRefreshLine />}
           foreColor={Colors.MAIN_COLOR}
-          tooltip={t("refresh-tooltip")}
+          tooltip={t("refresh")}
           onclick={handleEnterPress}
         />
         <Icon
           withBackground={true}
-          tooltip={t("go-back")}
+          tooltip={t("back")}
           onclick={() => {
             history.goBack();
           }}
@@ -104,13 +104,13 @@ const SpecialOffersPage = ({ onSelectedChange }) => {
         />
       </ActionBar>
       <MainContentContainer>
-        {count > 0 && <ResultsCount label={t("baskets-count")} count={count} />}
+        {count > 0 && <ResultsCount label={t("baskets count")} count={count} />}
         {baskets?.map((basket) => (
           <Basket basket={basket} key={basket._id} editable={false} />
         ))}
 
         {count === 0 && status !== "loading" && (
-          <NoContent msg={t("no-basket-to-order")} />
+          <NoContent msg={t("no basket to order")} />
         )}
         {status === "loading" && <CylonLoader />}
         {count > 0 && status !== "loading" && (
@@ -127,7 +127,7 @@ const SpecialOffersPage = ({ onSelectedChange }) => {
           </ActionBar>
         )}
         {baskets.length === count && status !== "loading" && count !== 0 && (
-          <NoMoreResult msg={t("no-more")} />
+          <NoMoreResult msg={t("no more")} />
         )}
       </MainContentContainer>
     </>

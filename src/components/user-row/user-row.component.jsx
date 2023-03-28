@@ -52,7 +52,7 @@ function UserRow({ user, index }) {
     header: "",
     body: "",
     cancelLabel: "cancel",
-    okLabel: "ok-label",
+    okLabel: "ok",
   });
   const [showModal, setShowModal] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
@@ -93,35 +93,35 @@ function UserRow({ user, index }) {
     if (passwordObj.newPassword.length < 5) {
       errorObj = {
         ...errorObj,
-        newPassword: "password length",
+        newPassword: "password length error",
       };
     }
 
     if (passwordObj.newPassword.length === 0) {
       errorObj = {
         ...errorObj,
-        newPassword: "enter password",
+        newPassword: "enter password error",
       };
     }
 
     if (passwordObj.newPassword !== passwordObj.newPasswordConfirm) {
       errorObj = {
         ...errorObj,
-        newPasswordConfirm: "unequal passwords",
+        newPasswordConfirm: "unequal passwords error",
       };
     }
 
     if (passwordObj.newPasswordConfirm.length < 5) {
       errorObj = {
         ...errorObj,
-        newPasswordConfirm: "confirm password length",
+        newPasswordConfirm: "confirm password length error",
       };
     }
 
     if (passwordObj.newPasswordConfirm.length === 0) {
       errorObj = {
         ...errorObj,
-        newPasswordConfirm: "enter password confirm",
+        newPasswordConfirm: "enter password confirm error",
       };
     }
 
@@ -162,24 +162,25 @@ function UserRow({ user, index }) {
   const userStatusChangeConfirmHandler = (type) => {
     // the icon represent that the user is approve by the admin
     // when click on this icon show warning message
-    if (type === "approve") {
-      setActionType("disapprove");
+    console.log(type);
+    if (type === "active") {
+      setActionType("inactive");
       setModalInfo({
         ...modalInfo,
-        header: "approve-account",
+        header: "active account action",
         body: () => {
-          return <p>{t("approve-account-question")}</p>;
+          return <p>{t("active account question")}</p>;
         },
       });
     }
 
-    if (type === "disapprove") {
-      setActionType("approve");
+    if (type === "inactive") {
+      setActionType("active");
       setModalInfo({
         ...modalInfo,
-        header: "disapprove-account",
+        header: "inactive account action",
         body: () => {
-          return <p>{t("disapprove-account-question")}</p>;
+          return <p>{t("inactive account question")}</p>;
         },
       });
     }
@@ -188,9 +189,9 @@ function UserRow({ user, index }) {
       setActionType("showMedicines");
       setModalInfo({
         ...modalInfo,
-        header: "show-medicines",
+        header: "show items",
         body: () => {
-          return <p>{t("show-warehouse-medicines")}</p>;
+          return <p>{t("show warehouse items")}</p>;
         },
       });
     }
@@ -199,9 +200,9 @@ function UserRow({ user, index }) {
       setActionType("undoShowMedicines");
       setModalInfo({
         ...modalInfo,
-        header: "show-medicines",
+        header: "show items",
         body: () => {
-          return <p>{t("undo-show-warehouse-medicines")}</p>;
+          return <p>{t("undo show warehouse items")}</p>;
         },
       });
     }
@@ -212,13 +213,13 @@ function UserRow({ user, index }) {
   // handle press ok in the modal
   // this handler based on the actionType state
   const okActionForConfirmModal = () => {
-    if (!isOnline) {
-      dispatch(changeOnlineMsg());
-      return;
-    }
+    // if (!isOnline) {
+    //   dispatch(changeOnlineMsg());
+    //   return;
+    // }
 
     // dispatch disapprove action from usersSlice
-    if (actionType === "approve") {
+    if (actionType === "active") {
       dispatch(
         updateUser({
           body: {
@@ -231,7 +232,7 @@ function UserRow({ user, index }) {
     }
 
     // dispatch approve action from usesSlice
-    if (actionType === "disapprove") {
+    if (actionType === "inactive") {
       dispatch(
         updateUser({
           body: {
@@ -350,15 +351,15 @@ function UserRow({ user, index }) {
         <ChildFlexOneDiv>
           {user.isActive ? (
             <Icon
-              tooltip={t("tooltip undo delete")}
-              onclick={() => userStatusChangeConfirmHandler("disapprove")}
+              tooltip={t("active account")}
+              onclick={() => userStatusChangeConfirmHandler("inactive")}
               icon={() => <BsFillPersonCheckFill />}
               foreColor={Colors.SUCCEEDED_COLOR}
             />
           ) : (
             <Icon
-              tooltip={t("tooltip delete")}
-              onclick={() => userStatusChangeConfirmHandler("approve")}
+              tooltip={t("inactive account")}
+              onclick={() => userStatusChangeConfirmHandler("active")}
               icon={() => <BsFillPersonDashFill />}
               foreColor={Colors.FAILED_COLOR}
             />
@@ -391,7 +392,7 @@ function UserRow({ user, index }) {
           {user.type === UserTypeConstants.WAREHOUSE ? (
             user.allowShowingMedicines ? (
               <Icon
-                tooltip={t("tooltip-show-medicines")}
+                tooltip={t("show items")}
                 onclick={() =>
                   userStatusChangeConfirmHandler("undoShowMedicines")
                 }
@@ -400,7 +401,7 @@ function UserRow({ user, index }) {
               />
             ) : (
               <Icon
-                tooltip={t("tooltip-undo-show-medicines")}
+                tooltip={t("dont show items")}
                 onclick={() => userStatusChangeConfirmHandler("showMedicines")}
                 icon={() => <BiHide />}
                 foreColor={Colors.FAILED_COLOR}
@@ -459,14 +460,14 @@ function UserRow({ user, index }) {
 
       {showDeleteConfirmModel && (
         <Modal
-          header="delete-user-header"
+          header="delete user"
           cancelLabel="cancel"
-          okLabel="ok-label"
+          okLabel="ok"
           okModal={deleteUserForeverHandler}
           closeModal={() => setShowDeleteConfirmModel(false)}
           small={true}
         >
-          <p>{t("do you want to delete user forever")}</p>
+          <p>{t("do you want to delete user permanently")}</p>
         </Modal>
       )}
 

@@ -48,7 +48,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
   });
 
   const guestJobOptions = [
-    { value: GuestJob.NONE, label: t("user job") },
+    { value: GuestJob.NONE, label: t("all jobs") },
     { value: GuestJob.STUDENT, label: t("student") },
     { value: GuestJob.PHARMACIST, label: t("pharmacist") },
     { value: GuestJob.EMPLOYEE, label: t("employee") },
@@ -68,9 +68,9 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
     { value: UserTypeConstants.COMPANY, label: t("company") },
     { value: UserTypeConstants.WAREHOUSE, label: t("warehouse") },
     { value: UserTypeConstants.PHARMACY, label: t("pharmacy") },
-    { value: UserTypeConstants.GUEST, label: t("normal") },
+    { value: UserTypeConstants.GUEST, label: t("guest") },
     { value: UserTypeConstants.ADMIN, label: t("admin") },
-    { value: UserTypeConstants.ALL, label: t("all") },
+    { value: UserTypeConstants.ALL, label: t("all partners") },
   ];
 
   // handle the change of the User type state
@@ -105,8 +105,8 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
   };
 
   const showWarehouseItems = [
-    { value: ShowWarehouseItems.SHOW, label: t("show-items") },
-    { value: ShowWarehouseItems.DONT_SHOW, label: t("dont-show-items") },
+    { value: ShowWarehouseItems.SHOW, label: t("show items") },
+    { value: ShowWarehouseItems.DONT_SHOW, label: t("dont show items") },
     { value: ShowWarehouseItems.ALL, label: t("all") },
   ];
 
@@ -116,7 +116,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
 
   // guest options and its change handler
   const citiesOptions = [
-    { value: CitiesName.ALL, label: t("all-cities") },
+    { value: CitiesName.ALL, label: t("all cities") },
     { value: CitiesName.ALEPPO, label: t("aleppo") },
     { value: CitiesName.DAMASCUS, label: t("damascus") },
     { value: CitiesName.DARAA, label: t("daraa") },
@@ -144,10 +144,10 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
   };
 
   // options for the SelectCustom (Delete state)
-  const deletedState = [
-    { value: UserActiveState.INACTIVE, label: t("deleted-account") },
-    { value: UserActiveState.ACTIVE, label: t("not-deleted-account") },
-    { value: UserActiveState.ALL, label: t("all") },
+  const activeState = [
+    { value: UserActiveState.INACTIVE, label: t("inactive accounts") },
+    { value: UserActiveState.ACTIVE, label: t("active accounts") },
+    { value: UserActiveState.ALL, label: t("all accounts") },
   ];
 
   const handleActiveChange = (val) => {
@@ -157,19 +157,19 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
   return (
     <Modal
       header="search engines"
-      cancelLabel="close-label"
+      cancelLabel="close"
       okLabel="search"
       closeModal={close}
       small={true}
       okModal={search}
     >
       <SearchInput
-        label="user name"
+        label="name"
         id="user name"
         type="text"
         value={pageState.searchName}
         onchange={(e) => dispatch(setSearchName(e.target.value))}
-        placeholder="search by name"
+        placeholder="search by user name"
         onEnterPress={enterPress}
         resetField={() => dispatch(setSearchName(""))}
         withBorder={true}
@@ -182,11 +182,11 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
             defaultValue: pageState.searchCity,
             options: citiesOptions,
             action: citiesNameChangeHandler,
-            header: "city-name",
+            header: "city",
           })
         }
         selectedValue={pageState.searchCity}
-        label="city-name"
+        label="city"
         styleForSearch={true}
       />
 
@@ -210,13 +210,13 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
           setChooseObj({
             show: true,
             defaultValue: pageState.active,
-            options: deletedState,
+            options: activeState,
             action: handleActiveChange,
-            header: "approved-state",
+            header: "user status",
           })
         }
         selectedValue={pageState.active}
-        label="approved-state"
+        label="user status"
         styleForSearch={true}
       />
 
@@ -228,17 +228,17 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
               defaultValue: pageState.searchJob,
               options: guestJobOptions,
               action: handleGuestJobChange,
-              header: "user job",
+              header: "job",
             })
           }
           selectedValue={pageState.searchJob}
-          label="user job"
+          label="job"
           styleForSearch={true}
         />
       )}
 
       <SearchInput
-        label="user mobile"
+        label="mobile"
         id="search-mobile"
         type="text"
         value={pageState.searchMobile}
@@ -260,11 +260,11 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
               defaultValue: pageState.showItems,
               options: showWarehouseItems,
               action: handleShowItems,
-              header: "show-warehouse-items",
+              header: "show items",
             })
           }
           selectedValue={pageState.showItems}
-          label="show-warehouse-items"
+          label="show items"
           styleForSearch={true}
         />
       )}
@@ -273,7 +273,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
         pageState.userType === UserTypeConstants.PHARMACY) && (
         <>
           <SearchInput
-            label="user employee name"
+            label="employee name"
             id="search-employee-name"
             type="text"
             value={pageState.searchEmployeeName}
@@ -285,7 +285,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
             resetField={() => dispatch(setSearchEmployeeName(""))}
           />
           <SearchInput
-            label="user certificate name"
+            label="certificate name"
             id="search-certificate-name"
             type="text"
             value={pageState.searchCertificateName}
@@ -302,7 +302,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
       {pageState.searchJob === GuestJob.EMPLOYEE && (
         <>
           <SearchInput
-            label="user-company-name"
+            label="company"
             id="search-company-name"
             type="text"
             value={pageState.searchCompanyName}
@@ -315,7 +315,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
           />
 
           <SearchInput
-            label="user job title"
+            label="job title"
             id="search-job-title"
             type="text"
             value={pageState.searchJobTitle}
@@ -330,7 +330,7 @@ function AdminUsersSearchModal({ close, search, enterPress }) {
       )}
 
       <SearchInput
-        label="user address details"
+        label="address"
         id="search-address-details"
         type="text"
         value={pageState.searchAddressDetails}

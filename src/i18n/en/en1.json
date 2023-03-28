@@ -631,5 +631,6 @@
     "my points": "My points",
     "no-points-offers": "No loyalty points",
     "items-with-points": "Loyalty points",
-    "my-points": "My points"
+    "my-points": "My points",
+    "error occured during restore some data": "An error occurred while restoring the data, please try again."
 }

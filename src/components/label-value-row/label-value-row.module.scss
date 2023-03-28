@@ -20,6 +20,14 @@
         font-size: 14px;
         color: $main-color;
         flex: 1;
+
+        &:lang(ar) {
+            margin-right: 10px;
+        }
+
+        &:lang(en) {
+            margin-left: 10px;
+        }
     }
 }
 

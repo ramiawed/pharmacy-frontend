@@ -4,53 +4,27 @@ export const UserTypeConstants = {
   ADMIN: "admin",
   GUEST: "normal",
   PHARMACY: "pharmacy",
-  ALL: "all",
-};
-
-export const UserApprovedState = {
-  APPROVED: "approved-account",
-  NOT_APPROVED: "not-approved-account",
-  ALL: "all",
+  ALL: "all partners",
 };
 
 export const ShowWarehouseItems = {
-  SHOW: "show-items",
-  DONT_SHOW: "dont-show-items",
+  SHOW: "show items",
+  DONT_SHOW: "dont show items",
   ALL: "all",
 };
 
 export const UserActiveState = {
-  ACTIVE: "not-deleted-account",
-  INACTIVE: "deleted-account",
-  ALL: "all",
+  ACTIVE: "active accounts",
+  INACTIVE: "inactive accounts",
+  ALL: "all accounts",
 };
 
 export const GuestJob = {
   STUDENT: "student",
   PHARMACIST: "pharmacist",
   EMPLOYEE: "employee",
-  NONE: "user job",
+  NONE: "all jobs",
 };
-
-// export const WarehouseOrderStatus = {
-//   ALL: "all",
-//   UNREAD: "unread",
-//   RECEIVED: "received",
-//   SENT: "sent",
-//   WILL_DONT_SERVER: "dontServe",
-// };
-
-// export const PharmacyOrderStatus = {
-//   ALL: "all",
-//   RECEIVED: "received",
-//   SENT: "sent",
-// };
-
-// export const AdminOrderStatus = {
-//   ALL: "all",
-//   SEEN: "seen",
-//   NOT_SEEN: "not-seen",
-// };
 
 export const OrdersStatusOptions = {
   WILL_DONT_SERVER: "dont-serve",
@@ -60,7 +34,7 @@ export const OrdersStatusOptions = {
   EDITING_BY_WAREHOUSE: "editting-by-warehouse",
   APPROVE_EDITING_BY_PHARMACY: "approve-editing-by-phamracy",
   SENT_BY_PHARMACY: "sent-by-pharmacy",
-  ALL: "all",
+  ALL: "all orders",
 };
 
 export const CitiesName = {
@@ -78,8 +52,8 @@ export const CitiesName = {
   AL_SUWAYDA: "al_suwayda",
   TARTUS: "tartus",
   DAMASCUS_COUNTRYSIDE: "damascus_countryside",
-  NONE: "city-name",
-  ALL: "all-cities",
+  NONE: "choose city",
+  ALL: "all cities",
 };
 
 export const Colors = {
@@ -107,8 +81,8 @@ export const SideNavLinks = {
   STATISTICS: "statistics",
   BACKUP_RESTORE: "backup restore",
   BASKETS: "baskets",
-  SAVEDITEMS: "saved-items",
-  MY_POINTS: "my-points",
+  SAVEDITEMS: "saved items",
+  MY_POINTS: "my points",
 };
 
 export const TopNavLinks = {
@@ -122,8 +96,8 @@ export const TopNavLinks = {
   OFFERS: "offers",
   SIGNOUT: "signout",
   BASKETS: "baskets",
-  SPEACIAL_OFFERS: "nav-special-offers",
-  ITEMS_WITH_POINTS: "items-with-points",
+  SPEACIAL_OFFERS: "special offers",
+  ITEMS_WITH_POINTS: "items with points",
 };
 
 export const OrderOptions = {
@@ -139,7 +113,7 @@ export const OrderOptions = {
 export const OfferTypes = {
   PIECES: "pieces",
   PERCENTAGE: "percentage",
-  SELECT_OFFER_TYPE: "select-offer-type",
+  SELECT_OFFER_TYPE: "select offer type",
 };
 
 export const DateOptions = {

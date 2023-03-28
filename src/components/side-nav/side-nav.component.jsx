@@ -197,13 +197,11 @@ function SideNav({
               <div className={linkStyles.nav_icon}>
                 <GoSignOut size={24} />
                 {collapsed && (
-                  <label className={linkStyles.tooltip}>
-                    {t("nav sign out")}
-                  </label>
+                  <label className={linkStyles.tooltip}>{t("sign out")}</label>
                 )}
               </div>
               {!collapsed && (
-                <div className={linkStyles.nav_label}>{t("nav sign out")}</div>
+                <div className={linkStyles.nav_label}>{t("sign out")}</div>
               )}
             </div>
           </Link>

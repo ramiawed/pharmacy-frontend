@@ -28,7 +28,7 @@ function CompaniesSearchEngine({ search }) {
 
   // guest options and its change handler
   const citiesOptions = [
-    { value: CitiesName.ALL, label: t("all-cities") },
+    { value: CitiesName.ALL, label: t("all cities") },
     { value: CitiesName.ALEPPO, label: t("aleppo") },
     { value: CitiesName.DAMASCUS, label: t("damascus") },
     { value: CitiesName.DARAA, label: t("daraa") },
@@ -55,7 +55,7 @@ function CompaniesSearchEngine({ search }) {
     <>
       <SearchContainer searchAction={search} searchEngineAlert={isThereSearch}>
         <SearchInput
-          label="user name"
+          label="name"
           id="search-name"
           type="text"
           value={searchName}
@@ -69,7 +69,7 @@ function CompaniesSearchEngine({ search }) {
         <ChooserContainer
           onclick={() => setShowChooseCityModal(true)}
           selectedValue={searchCity}
-          label="city-name"
+          label="city"
           styleForSearch={true}
           withoutBorder={true}
         />
@@ -77,7 +77,7 @@ function CompaniesSearchEngine({ search }) {
 
       {showChooseCityModal && (
         <ChooseValue
-          headerTitle="city-name"
+          headerTitle="city"
           close={() => {
             setShowChooseCityModal(false);
           }}

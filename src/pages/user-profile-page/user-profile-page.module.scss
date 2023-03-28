@@ -9,6 +9,14 @@
   justify-content: center;
 }
 
+.image_container {
+  max-width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+}
+
 .info {
   flex: 1;
   height: calc(100vh - 160px);
@@ -42,5 +50,9 @@
     flex-direction: row;
     align-items: flex-start;
     justify-content: center;
+  }
+
+  .image_container {
+    align-self: flex-start;
   }
 }

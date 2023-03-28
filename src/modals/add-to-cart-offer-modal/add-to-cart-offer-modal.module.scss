@@ -38,6 +38,14 @@
 
 .container label:nth-child(2) {
   color: $main-color;
+
+  &:lang(ar) {
+    margin-right: 10px;
+  }
+
+  &:lang(en) {
+    margin-left: 10px;
+  }
 }
 
 @media only screen and (min-width: $medium) {

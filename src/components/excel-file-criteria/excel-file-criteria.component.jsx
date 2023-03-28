@@ -20,7 +20,7 @@ function ExcelFileCriteria({ action }) {
           color: Colors.FAILED_COLOR,
         }}
       >
-        {t("excel-file-should-contains-this-columns")}
+        {t("excel file should contains this columns")}
       </p>
       <RowContainer isHeader={true}>
         {action === "update" && <label style={{ flex: 1 }}>_id</label>}
@@ -35,24 +35,24 @@ function ExcelFileCriteria({ action }) {
         <label style={{ flex: 1 }}>indication</label>
         <label style={{ flex: 1 }}>composition</label>
       </RowContainer>
-      <p>{t("excel-file-warning")}</p>
+      <p>{t("excel file warning")}</p>
       <p
         style={{
           color: Colors.SUCCEEDED_COLOR,
           fontSize: "1.2rem",
         }}
       >
-        {t("required-criteria")}
+        {t("required criteria")}
       </p>
       <ul
         style={{
           marginInlineStart: "30px",
         }}
       >
-        {action === "update" && <li>{t("required-id-criteria")}</li>}
-        <li>{t("required-name-criteria")}</li>
-        <li>{t("required-price-criteria")}</li>
-        <li>{t("required-customer-price-criteria")}</li>
+        {action === "update" && <li>{t("required id criteria")}</li>}
+        <li>{t("required name criteria")}</li>
+        <li>{t("required price criteria")}</li>
+        <li>{t("required customer price criteria")}</li>
       </ul>
     </>
   );

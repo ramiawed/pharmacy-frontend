@@ -102,7 +102,7 @@ function MedicinesPage({ onSelectedChange }) {
             withBackground={true}
             icon={() => <RiRefreshLine />}
             foreColor={Colors.MAIN_COLOR}
-            tooltip={t("refresh-tooltip")}
+            tooltip={t("refresh")}
             onclick={handleEnterPress}
           />
           {(pageState.searchName.length > 0 ||
@@ -115,7 +115,7 @@ function MedicinesPage({ onSelectedChange }) {
               withBackground={true}
               selected={false}
               foreColor={Colors.MAIN_COLOR}
-              tooltip={t("clear-filter-tooltip")}
+              tooltip={t("clear filter")}
               onclick={() => {
                 dispatch(resetMedicinesPageState());
                 handleEnterPress();
@@ -132,7 +132,7 @@ function MedicinesPage({ onSelectedChange }) {
                 ? Colors.SUCCEEDED_COLOR
                 : Colors.MAIN_COLOR
             }
-            tooltip={t("show-item-as-card-tooltip")}
+            tooltip={t("show as card")}
             onclick={() => dispatch(setDisplayType("card"))}
           />
 
@@ -144,13 +144,13 @@ function MedicinesPage({ onSelectedChange }) {
                 ? Colors.SUCCEEDED_COLOR
                 : Colors.MAIN_COLOR
             }
-            tooltip={t("show-item-as-row-tooltip")}
+            tooltip={t("show as list")}
             onclick={() => dispatch(setDisplayType("list"))}
           />
 
           <Icon
             withBackground={true}
-            tooltip={t("go-back")}
+            tooltip={t("back")}
             onclick={() => {
               history.goBack();
             }}
@@ -159,7 +159,7 @@ function MedicinesPage({ onSelectedChange }) {
           />
         </ActionBar>
 
-        {count > 0 && <ResultsCount label={t("items-count")} count={count} />}
+        {count > 0 && <ResultsCount label={t("items count")} count={count} />}
 
         {pageState.displayType === "list" &&
           medicines.map((medicine, index) => (
@@ -194,7 +194,7 @@ function MedicinesPage({ onSelectedChange }) {
           pageState.searchCompanyName.length === 0 &&
           pageState.searchWarehouseName.length === 0 &&
           !pageState.searchInWarehouse &&
-          !pageState.searchOutWarehouse && <NoContent msg={t("no-items")} />}
+          !pageState.searchOutWarehouse && <NoContent msg={t("no items")} />}
 
         {medicines.length === 0 &&
           status !== "loading" &&
@@ -203,7 +203,7 @@ function MedicinesPage({ onSelectedChange }) {
             pageState.searchWarehouseName.length !== 0 ||
             pageState.searchInWarehouse ||
             pageState.searchOutWarehouse) && (
-            <NoContent msg={t("no-result-found")} />
+            <NoContent msg={t("no result found")} />
           )}
 
         {status === "loading" && <CylonLoader />}
@@ -220,7 +220,7 @@ function MedicinesPage({ onSelectedChange }) {
         )}
 
         {medicines.length === count && status !== "loading" && count !== 0 && (
-          <NoMoreResult msg={t("no-more")} />
+          <NoMoreResult msg={t("no more")} />
         )}
       </MainContentContainer>
     </>

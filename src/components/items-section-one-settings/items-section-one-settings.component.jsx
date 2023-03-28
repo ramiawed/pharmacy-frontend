@@ -63,13 +63,13 @@ function ItemsSectionOneSettings() {
         description={description}
         order={order}
         titleRight={titleRight}
-        header="القسم الاول / أدوية /"
-        checkboxLabel="show-section-one-items-in-home-page"
+        header={t("section one items")}
+        checkboxLabel="show section in home page"
         updateAction={updateSettings}
         field="itemsSectionOne"
       />
 
-      <CardInfo headerTitle={t("section-one-items")}>
+      <CardInfo headerTitle={t("section one items")}>
         {itemsSectionOneStatus === "loading" ? (
           <Loader />
         ) : (
@@ -86,7 +86,7 @@ function ItemsSectionOneSettings() {
 
               <CenterContainer>
                 <Button
-                  text="add-label"
+                  text="add"
                   action={() => {
                     setShowChooseModal(true);
                   }}
@@ -112,7 +112,7 @@ function ItemsSectionOneSettings() {
         <Toast
           bgColor={Colors.SUCCEEDED_COLOR}
           foreColor="#fff"
-          toastText={t("item-added")}
+          toastText={t("item added")}
           actionAfterTimeout={() => dispatch(resetAddItemToSectionOneStatus())}
         />
       )}
@@ -130,7 +130,7 @@ function ItemsSectionOneSettings() {
         <Toast
           bgColor={Colors.SUCCEEDED_COLOR}
           foreColor="#fff"
-          toastText={t("item-removed")}
+          toastText={t("item removed")}
           actionAfterTimeout={() =>
             dispatch(resetRemoveItemFromSectionOneStatus())
           }

@@ -48,7 +48,7 @@ const ItemNames = ({
             <strong className="filter_highlight">
               {searchString.toUpperCase()}
             </strong>
-            {itemNameArraySplit[1].toUpperCase}
+            {itemNameArraySplit[1].toUpperCase()}
           </label>
         ) : (
           <label className={["bold", "big", "fc_dark"].join(" ")}>

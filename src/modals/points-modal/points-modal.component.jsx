@@ -86,8 +86,8 @@ function PointsModal({ item, warehouseId, close, token, allowEdit }) {
   return (
     <Modal
       header="points"
-      cancelLabel="close-label"
-      okLabel="add-label"
+      cancelLabel="close"
+      okLabel="add"
       closeModal={close}
       okModal={
         allowEdit
@@ -98,7 +98,9 @@ function PointsModal({ item, warehouseId, close, token, allowEdit }) {
       }
       small={true}
     >
-      {values.length === 0 && <NoContent msg={t("no-points-offers")} />}
+      {values.length === 0 && (
+        <p className={["center", "fc_light"].join(" ")}>{t("no offers")}</p>
+      )}
 
       <MultiValue
         allowEdit={allowEdit}
@@ -106,9 +108,9 @@ function PointsModal({ item, warehouseId, close, token, allowEdit }) {
         addHandler={addHandler}
         deleteHandler={deleteHandler}
         changeHandler={changeHandler}
-        quantityLabel={t("quantity-label")}
-        bonusLabel={t("after-quantity-label")}
-        afterQuantityLabel={t("after-quantity-label")}
+        quantityLabel={t("quantity")}
+        bonusLabel={t("piece")}
+        // afterQuantityLabel={t("after-quantity-label")}
         afterBonusLabel={t("point")}
       />
     </Modal>

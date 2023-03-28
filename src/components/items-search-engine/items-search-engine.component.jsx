@@ -39,12 +39,12 @@ function ItemsSearchEngine({ user, pageState, search, keyUpHandler }) {
   return (
     <SearchContainer searchAction={search} searchEngineAlert={isThereSearch}>
       <SearchInput
-        label="item-name"
+        label="item name"
         id="item-name"
         type="text"
         value={pageState.searchName}
         onchange={(e) => dispatch(setPageState({ searchName: e.target.value }))}
-        placeholder="search by name-composition-barcode"
+        placeholder="search by name composition barcode"
         onEnterPress={search}
         resetField={() => {
           dispatch(setPageState({ searchName: "" }));
@@ -56,7 +56,7 @@ function ItemsSearchEngine({ user, pageState, search, keyUpHandler }) {
         (user.type === UserTypeConstants.ADMIN &&
           pageState.role !== UserTypeConstants.COMPANY)) && (
         <SearchPartnerContainer
-          label={t("item-company")}
+          label={t("company")}
           partners={pageState?.searchCompaniesIds}
           addId={addIdToCompaniesIds}
           removeId={removeIdFromCompaniesId}
@@ -68,7 +68,7 @@ function ItemsSearchEngine({ user, pageState, search, keyUpHandler }) {
       {user.type === UserTypeConstants.ADMIN &&
         pageState.role !== UserTypeConstants.WAREHOUSE && (
           <SearchPartnerContainer
-            label={t("item-warehouse")}
+            label={t("warehouse")}
             partners={pageState?.searchWarehousesIds}
             addId={addIdToWarehousesIds}
             removeId={removeIdFromWarehousesId}
@@ -79,7 +79,7 @@ function ItemsSearchEngine({ user, pageState, search, keyUpHandler }) {
 
       <div className={searchContainerStyles.checkbox_div}>
         <CustomCheckbox
-          label={t("deleted-items")}
+          label={t("items not in company")}
           value={pageState.searchDeletedItems}
           changeHandler={() => {
             dispatch(
@@ -95,7 +95,7 @@ function ItemsSearchEngine({ user, pageState, search, keyUpHandler }) {
 
       <div className={searchContainerStyles.checkbox_div}>
         <CustomCheckbox
-          label={t("active-items")}
+          label={t("items in company")}
           value={pageState.searchActiveItems}
           changeHandler={() => {
             dispatch(
@@ -115,7 +115,7 @@ function ItemsSearchEngine({ user, pageState, search, keyUpHandler }) {
           <>
             <div className={searchContainerStyles.checkbox_div}>
               <CustomCheckbox
-                label={t("warehouse-in-warehouse")}
+                label={t("in warehouse")}
                 value={pageState.searchInWarehouse}
                 changeHandler={() => {
                   dispatch(
@@ -131,7 +131,7 @@ function ItemsSearchEngine({ user, pageState, search, keyUpHandler }) {
 
             <div className={searchContainerStyles.checkbox_div}>
               <CustomCheckbox
-                label={t("warehouse-out-warehouse")}
+                label={t("not in warehouse")}
                 value={pageState.searchOutWarehouse}
                 changeHandler={() => {
                   dispatch(

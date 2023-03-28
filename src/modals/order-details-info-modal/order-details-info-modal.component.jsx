@@ -13,32 +13,29 @@ const OrderDetailsInfoModal = ({ orderDetails, close }) => {
   const { t } = useTranslation();
   return (
     <Modal
-      header={t("order-details")}
+      header={t("order details")}
       closeModal={close}
-      cancelLabel="cancel"
+      cancelLabel="close"
       small={true}
     >
-      <LabelValueRow label="pharmacy-name" value={orderDetails.pharmacy.name} />
+      <LabelValueRow label="pharmacy" value={orderDetails.pharmacy.name} />
       <Separator />
       <LabelValueRow
-        label="user certificate name"
+        label="certificate name"
         value={orderDetails.pharmacy.certificateName}
       />
       <Separator />
       <LabelValueRow
-        label="user address details"
+        label="address"
         value={orderDetails.pharmacy.addressDetails}
       />
       <Separator />
-      <LabelValueRow label="user mobile" value={orderDetails.pharmacy.mobile} />
+      <LabelValueRow label="mobile" value={orderDetails.pharmacy.mobile} />
+      <Separator />
+      <LabelValueRow label="warehouse" value={orderDetails.warehouse.name} />
       <Separator />
       <LabelValueRow
-        label="warehouse-name"
-        value={orderDetails.warehouse.name}
-      />
-      <Separator />
-      <LabelValueRow
-        label="date-label"
+        label="date"
         value={formatDate(new Date(orderDetails.createdAt))}
       />
 
@@ -46,13 +43,13 @@ const OrderDetailsInfoModal = ({ orderDetails, close }) => {
         <>
           <Separator />
           <LabelValueRow
-            label="total-invoice-price"
+            label="total price"
             value={formatNumber(orderDetails.totalInvoicePrice)}
           />
         </>
       )}
 
-      {orderDetails.totalInvoicePoints && (
+      {/* {orderDetails.totalInvoicePoints && (
         <>
           <Separator />
           <LabelValueRow
@@ -60,7 +57,7 @@ const OrderDetailsInfoModal = ({ orderDetails, close }) => {
             value={formatNumber(orderDetails.totalInvoicePoints)}
           />
         </>
-      )}
+      )} */}
     </Modal>
   );
 };

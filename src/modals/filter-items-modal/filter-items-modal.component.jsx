@@ -122,7 +122,7 @@ function FilterItemsModal({ close, selectedAction }) {
   });
 
   return (
-    <Modal closeModal={close} cancelLabel="close-label">
+    <Modal closeModal={close} cancelLabel="close">
       <div className={styles.search_container}>
         <div className={[styles.search_div].join(" ")}>
           <input
@@ -132,7 +132,7 @@ function FilterItemsModal({ close, selectedAction }) {
             onChange={(e) => {
               setSearchName(e.target.value);
             }}
-            placeholder={t("search home placeholder")}
+            placeholder={t("search by name composition barcode")}
             onKeyDown={keyDownHandler}
             onKeyUp={keyUpHandler}
             ref={searchInputRef}
@@ -177,15 +177,15 @@ function FilterItemsModal({ close, selectedAction }) {
             )}
 
             {items.length === count && !loading && count !== 0 && (
-              <NoMoreResult msg={t("no-more")} />
+              <NoMoreResult msg={t("no more")} />
             )}
 
             {searchName.trim().length >= 3 && items.length === 0 && (
-              <NoContent msg={t("no-data-found")} />
+              <NoContent msg={t("no data found")} />
             )}
           </div>
         ) : (
-          <p className={styles.msg}>{t("enter-at-least-3-characters")}</p>
+          <p className={styles.msg}>{t("enter at least 3 characters")}</p>
         )}
       </div>
     </Modal>

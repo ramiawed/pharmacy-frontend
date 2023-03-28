@@ -80,6 +80,20 @@ function PartnerCard({
 
       {partner.type === UserTypeConstants.WAREHOUSE &&
         user.type === UserTypeConstants.PHARMACY &&
+        partner.includeInPointSystem &&
+        partner.pointForAmount &&
+        partner.amountToGetPoint && (
+          <div className={styles.point_sys_label}>
+            <label>
+              {t("number of points that you get when buy from warehouse")}{" "}
+              {t("every")} {partner.amountToGetPoint} {t("get")}{" "}
+              {partner.pointForAmount} {t("point")}
+            </label>
+          </div>
+        )}
+
+      {partner.type === UserTypeConstants.WAREHOUSE &&
+        user.type === UserTypeConstants.PHARMACY &&
         partner.fastDeliver && (
           <div
             className={styles.section}
@@ -90,7 +104,7 @@ function PartnerCard({
               alt="tumb"
               style={{ width: "32px", height: "32px" }}
             />
-            <label>{t("fast-deliver")}</label>
+            <label>{t("fast deliver")}</label>
           </div>
         )}
 
@@ -114,14 +128,14 @@ function PartnerCard({
           <div>
             {user.ourCompanies.includes(partner._id) ? (
               <ButtonWithIcon
-                text={t("remove-company-from-warehouse-tooltip")}
+                text={t("remove company from warehouse")}
                 action={removeCompanyFromOurCompaniesHandler}
                 bgColor={Colors.FAILED_COLOR}
                 icon={() => <FaHandshakeSlash size={24} />}
               />
             ) : (
               <ButtonWithIcon
-                text={t("add-company-to-warehouse-tooltip")}
+                text={t("add company to warehouse")}
                 action={addCompanyToOurCompaniesHandler}
                 bgColor={Colors.SUCCEEDED_COLOR}
                 icon={() => <FaHandshake size={24} />}
@@ -140,7 +154,7 @@ function PartnerCard({
               action={() =>
                 partnerRowClickHandler(allowShowingWarehouseMedicines)
               }
-              text={t("medicines")}
+              text={t("items")}
               classStyle="bg_red"
             />
           </div>

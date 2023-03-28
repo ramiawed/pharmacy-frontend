@@ -24,7 +24,7 @@ const ChooseDateModal = ({ closeModal, header, msg, handler, withTime }) => {
       header={t(header)}
       closeModal={closeModal}
       cancelLabel={t("cancel")}
-      okLabel={t("ok-label")}
+      okLabel={t("ok")}
       small={true}
       okModal={okHandler}
     >
@@ -37,7 +37,7 @@ const ChooseDateModal = ({ closeModal, header, msg, handler, withTime }) => {
             onChange={() => setDisableDate(!disableDate)}
             id="date"
           />
-          <label htmlFor="date">{t("date-label")}</label>
+          <label htmlFor="date">{t("date")}</label>
           <input
             type="date"
             className={styles.input}
@@ -58,7 +58,7 @@ const ChooseDateModal = ({ closeModal, header, msg, handler, withTime }) => {
                 onChange={() => setDisableTime(!disableTime)}
                 id="time"
               />
-              <label htmlFor="time">{t("time-label")}</label>
+              <label htmlFor="time">{t("time")}</label>
               <input
                 type="time"
                 className={styles.input}

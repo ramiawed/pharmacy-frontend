@@ -12,20 +12,18 @@ const OfferDetailsRow = ({ offer, offerMode }) => {
   return (
     <div className={styles.offer}>
       <p>
-        <label>{t("quantity-label")}</label>
+        <label>{t("quantity")}</label>
         <label className={[styles.value].join(" ")}>{offer.qty}</label>
       </p>
       <p>
         <label>
           {offerMode === OfferTypes.PIECES
-            ? t("bonus-quantity-label")
-            : t("bonus-percentage-label")}
+            ? t("bonus quantity")
+            : t("bonus percentage")}
         </label>
         <label className={styles.value}>{offer.bonus}</label>
         <label>
-          {offerMode === OfferTypes.PIECES
-            ? t("after-bonus-quantity-label")
-            : t("after-bonus-percentage-label")}
+          {offerMode === OfferTypes.PIECES ? t("piece") : t("percentage")}
         </label>
       </p>
     </div>

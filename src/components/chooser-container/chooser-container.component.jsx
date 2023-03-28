@@ -34,7 +34,7 @@ const ChooserContainer = ({
             !selectedValue ? styles.placeholder : "",
           ].join(" ")}
         >
-          {selectedValue ? t(selectedValue) : t("mandatory-placeholder")}
+          {selectedValue ? t(selectedValue) : t("mandatory placeholder")}
         </label>
       </div>
       {error && <label className={styles.error_label}>{t(error)}</label>}

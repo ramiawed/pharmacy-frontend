@@ -62,11 +62,11 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
           <div className={styles.nav_icon}>
             <GiMedicines size={24} />
             {collapsed && (
-              <label className={styles.tooltip}>{t("nav items")}</label>
+              <label className={styles.tooltip}>{t("my items")}</label>
             )}
           </div>
           {!collapsed && (
-            <div className={styles.nav_label}>{t("nav items")}</div>
+            <div className={styles.nav_label}>{t("my items")}</div>
           )}
         </div>
       </Link>
@@ -89,11 +89,11 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
             <div className={styles.nav_icon}>
               <BsFillEnvelopeFill size={24} />
               {collapsed && (
-                <label className={styles.tooltip}>{t("nav orders")}</label>
+                <label className={styles.tooltip}>{t("my orders")}</label>
               )}
             </div>
             {!collapsed && (
-              <div className={styles.nav_label}>{t("nav orders")} </div>
+              <div className={styles.nav_label}>{t("my orders")} </div>
             )}
           </div>
         </Link>
@@ -114,12 +114,12 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
         <div className={styles.nav}>
           <div className={styles.nav_icon}>
             {collapsed && (
-              <label className={styles.tooltip}>{t("nav baskets")}</label>
+              <label className={styles.tooltip}>{t("my baskets")}</label>
             )}
             <BsBasket2Fill size={24} />
           </div>
           {!collapsed && (
-            <div className={styles.nav_label}>{t("nav baskets")}</div>
+            <div className={styles.nav_label}>{t("my baskets")}</div>
           )}
         </div>
       </Link>
@@ -140,12 +140,10 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
           <div className={styles.nav_icon}>
             <CgProfile size={24} />
             {collapsed && (
-              <label className={styles.tooltip}>{t("nav profile")}</label>
+              <label className={styles.tooltip}>{t("profile")}</label>
             )}
           </div>
-          {!collapsed && (
-            <div className={styles.nav_label}>{t("nav profile")}</div>
-          )}
+          {!collapsed && <div className={styles.nav_label}>{t("profile")}</div>}
         </div>
       </Link>
     </>

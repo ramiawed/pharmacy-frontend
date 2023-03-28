@@ -53,7 +53,7 @@ function WarehousesActions({ refreshHandler }) {
         {/* refresh */}
         <Icon
           foreColor={Colors.MAIN_COLOR}
-          tooltip={t("refresh-tooltip")}
+          tooltip={t("refresh")}
           onclick={refreshHandler}
           icon={() => <RiRefreshLine />}
           withBackground={true}
@@ -66,7 +66,7 @@ function WarehousesActions({ refreshHandler }) {
           <Icon
             selected={false}
             foreColor={Colors.MAIN_COLOR}
-            tooltip={t("clear-filter-tooltip")}
+            tooltip={t("clear filter")}
             onclick={() => {
               dispatch(changeSearchName(""));
               dispatch(changeSearchCity(CitiesName.ALL));
@@ -81,7 +81,7 @@ function WarehousesActions({ refreshHandler }) {
           foreColor={
             displayType === "card" ? Colors.SUCCEEDED_COLOR : Colors.MAIN_COLOR
           }
-          tooltip={t("show-item-as-card-tooltip")}
+          tooltip={t("show as card")}
           onclick={selectCardDisplayTypeHandler}
           icon={() => <AiFillAppstore />}
           withBackground={true}
@@ -92,7 +92,7 @@ function WarehousesActions({ refreshHandler }) {
           foreColor={
             displayType === "list" ? Colors.SUCCEEDED_COLOR : Colors.MAIN_COLOR
           }
-          tooltip={t("show-item-as-row-tooltip")}
+          tooltip={t("show as list")}
           onclick={selectListDisplayTypeHandler}
           icon={() => <FaListUl />}
           withBackground={true}
@@ -100,7 +100,7 @@ function WarehousesActions({ refreshHandler }) {
 
         <Icon
           withBackground={true}
-          tooltip={t("go-back")}
+          tooltip={t("back")}
           onclick={() => {
             history.goBack();
           }}

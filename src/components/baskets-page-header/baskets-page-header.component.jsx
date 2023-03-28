@@ -42,7 +42,7 @@ function BasketPageHeader({ isNew, setIsNew }) {
               <Icon
                 selected={false}
                 foreColor={Colors.MAIN_COLOR}
-                tooltip={t("new-basket")}
+                tooltip={t("new")}
                 onclick={() => {
                   setIsNew(true);
                 }}

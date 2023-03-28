@@ -208,7 +208,7 @@ const BasketOrderDetailsPage = ({ onSelectedChange }) => {
                   <label>
                     {orderDetails.deliverDate?.split("T")[0]}{" "}
                     {orderDetails.deliverTime
-                      ? `---${t("time-label")}: ${orderDetails.deliverTime}`
+                      ? `---${t("time")}: ${orderDetails.deliverTime}`
                       : ""}
                   </label>
                 )}
@@ -216,9 +216,9 @@ const BasketOrderDetailsPage = ({ onSelectedChange }) => {
                   <label>
                     {orderDetails.shippedDate
                       ? orderDetails.shippedDate.split("T")[0]
-                      : t("shipped-done")}
+                      : t("shipped done")}
                     {orderDetails.shippedTime
-                      ? `---${t("time-label")}: ${orderDetails.shippedTime}`
+                      ? `---${t("time")}: ${orderDetails.shippedTime}`
                       : ""}
                   </label>
                 )}

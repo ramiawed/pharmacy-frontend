@@ -39,11 +39,11 @@
 }
 
 .actions {
-  width: 120px;
-
   margin-top: 20px;
   display: flex;
   flex-direction: row;
+  justify-content: flex-end;
+  gap: 5px;
 }
 
 .action:lang(ar) {

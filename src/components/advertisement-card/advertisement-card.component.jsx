@@ -57,7 +57,9 @@ function AdvertisementCard({ advertisement }) {
             {!advertisement.company &&
               !advertisement.warehouse &&
               !advertisement.medicine && (
-                <p className={styles.value}>{t("no-link")}</p>
+                <p className={styles.value}>
+                  {t("no link to this advertisement")}
+                </p>
               )}
 
             <Icon
@@ -72,11 +74,12 @@ function AdvertisementCard({ advertisement }) {
           </div>
         </div>
       </div>
+
       {showConfirmModal && (
         <Modal
-          header="delete-advertisement"
-          cancelLabel="close-label"
-          okLabel="ok-label"
+          header="delete advertisement"
+          cancelLabel="close"
+          okLabel="ok"
           closeModal={() => {
             setShowConfirmModal(false);
           }}
@@ -84,7 +87,7 @@ function AdvertisementCard({ advertisement }) {
           okModal={deleteAdvertisementHandler}
           color={Colors.FAILED_COLOR}
         >
-          <p>{t("delete-advertisement-confirm-msg")}</p>
+          <p>{t("delete advertisement confirm msg")}</p>
         </Modal>
       )}
     </>

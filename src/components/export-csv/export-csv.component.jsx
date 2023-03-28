@@ -91,11 +91,11 @@ export const ExportCSV = ({ csvData, fileName }) => {
     <Icon
       selected={false}
       foreColor={Colors.DARK_COLOR}
-      tooltip={t("save-order")}
+      tooltip={t("save order")}
       icon={() => <RiSave3Fill />}
       onclick={() => exportToCSV(csvData, fileName)}
       withBackground={true}
-      text={t("save-order")}
+      text={t("save order")}
     />
   );
 };

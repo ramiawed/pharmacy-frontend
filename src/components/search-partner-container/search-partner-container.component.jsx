@@ -62,8 +62,8 @@ const SearchPartnerContainer = ({
           ) : (
             <label className={styles.placeholder}>
               {partnerType === UserTypeConstants.WAREHOUSE
-                ? t("enter warehouse name")
-                : t("enter company name")}
+                ? t("choose warehouse")
+                : t("choose company")}
             </label>
           )}
         </div>
@@ -81,8 +81,8 @@ const SearchPartnerContainer = ({
         <SelectPartnerModal
           header={`${
             partnerType === UserTypeConstants.WAREHOUSE
-              ? "choose-warehouse"
-              : "choose-company"
+              ? "choose warehouse"
+              : "choose company"
           }`}
           close={() => setShowChoosePartnerModal(false)}
           chooseAction={(data) => {

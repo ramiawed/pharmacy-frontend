@@ -213,7 +213,7 @@ function PartnerRow({
                 <Separator />
                 <div className={styles.label_with_input_div}>
                   <label className={styles.small_label}>
-                    {t("deliver-cost")}
+                    {t("deliver cost")}
                   </label>
                   <button
                     onClick={() => setShowChangeDeliverCostModal(true)}
@@ -227,7 +227,7 @@ function PartnerRow({
 
                 <div className={styles.label_with_input_div}>
                   <label className={styles.small_label}>
-                    {t("minimum-invoice-cost")}
+                    {t("minimum invoice cost")}
                   </label>
                   <button
                     className={styles.btn}
@@ -241,7 +241,7 @@ function PartnerRow({
 
                 <div className={styles.label_with_input_div}>
                   <CustomCheckbox
-                    label={t("points admin")}
+                    label={t("this warehouse supports the points system")}
                     value={partner.includeInPointSystem}
                     changeHandler={() => changeIncludeInPointSystemHanlder()}
                   />
@@ -250,14 +250,12 @@ function PartnerRow({
                     <>
                       <button
                         className={styles.btn}
-                        style={{ margin: "0 10px 0 0" }}
+                        style={{ margin: "0 6px" }}
                         onClick={() => setShowChangeAmountToGetPointModal(true)}
                       >
                         {t("every")} {partner.amountToGetPoint}
                       </button>
-                      <label className={styles.center_label}>
-                        {t("get points")}
-                      </label>
+                      <label className={styles.center_label}>{t("get")}</label>
                       <button
                         className={styles.btn}
                         onClick={() => setShowChangePointForAmountModal(true)}
@@ -271,13 +269,13 @@ function PartnerRow({
                 <Separator />
 
                 <CustomCheckbox
-                  label={t("fast-deliver")}
+                  label={t("fast deliver")}
                   value={partner.fastDeliver}
                   changeHandler={() => changeFastDeliverHanlder()}
                 />
                 <Separator />
                 <CustomCheckbox
-                  label={t("dear-partner-pay-when-deliver-admin")}
+                  label={t("show cash on receipt")}
                   value={partner.payAtDeliver}
                   changeHandler={() => changePayAtDeliverHanlder()}
                 />
@@ -292,7 +290,7 @@ function PartnerRow({
               <div className={styles.point_sys_label}>
                 <label>
                   {t("number of points that you get when buy from warehouse")}{" "}
-                  {t("every")} {partner.amountToGetPoint} {t("get points")}{" "}
+                  {t("every")} {partner.amountToGetPoint} {t("get")}{" "}
                   {partner.pointForAmount} {t("point")}
                 </label>
               </div>
@@ -310,7 +308,7 @@ function PartnerRow({
                   alt="tumb"
                   style={{ width: "32px", height: "32px" }}
                 />
-                <label>{t("fast-deliver")}</label>
+                <label>{t("fast deliver")}</label>
               </div>
             )}
         </div>
@@ -324,14 +322,14 @@ function PartnerRow({
                   icon={() => <FaHandshakeSlash size={24} />}
                   onclick={removeCompanyFromOurCompaniesHandler}
                   foreColor={Colors.FAILED_COLOR}
-                  tooltip={t("remove-company-from-warehouse-tooltip")}
+                  tooltip={t("remove company from warehouse")}
                 />
               ) : (
                 <Icon
                   icon={() => <FaHandshake size={24} />}
                   onclick={addCompanyToOurCompaniesHandler}
                   foreColor={Colors.SUCCEEDED_COLOR}
-                  tooltip={t("add-company-to-warehouse-tooltip")}
+                  tooltip={t("add company to warehouse")}
                 />
               )}
             </div>
@@ -349,14 +347,14 @@ function PartnerRow({
                   icon={() => <AiFillStar size={24} />}
                   onclick={removePartnerFromFavoriteHandler}
                   foreColor={Colors.YELLOW_COLOR}
-                  tooltip={t("remove-from-favorite-tooltip")}
+                  tooltip={t("remove from favorites")}
                 />
               ) : (
                 <Icon
                   icon={() => <AiOutlineStar size={24} />}
                   onclick={addPartnerToFavoriteHandler}
                   foreColor={Colors.YELLOW_COLOR}
-                  tooltip={t("add-to-favorite-tooltip")}
+                  tooltip={t("add to favorites")}
                 />
               )
             ) : null}

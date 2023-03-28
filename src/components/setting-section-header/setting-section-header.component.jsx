@@ -127,7 +127,7 @@ function SettingSectionHeader({
             onclick={() => {
               setEdit(true);
             }}
-            tooltip={t("update-label")}
+            tooltip={t("update")}
           />
         )}
       </div>
@@ -139,13 +139,13 @@ function SettingSectionHeader({
           padding: "4px 0",
         }}
       >
-        <label className={styles.label}>{t("section-title")}</label>
+        <label className={styles.label}>{t("title")}</label>
         {edit ? (
           <input
             className={[styles.input, titleError ? styles.error : ""].join(" ")}
             value={titleState}
             onChange={(e) => setTitleState(e.target.value)}
-            placeholder={t("section-title-placeholder")}
+            placeholder={t("title")}
           />
         ) : (
           <label className={styles.value}>{titleState}</label>
@@ -159,13 +159,13 @@ function SettingSectionHeader({
           padding: "4px 0",
         }}
       >
-        <label className={styles.label}>{t("section-description")}</label>
+        <label className={styles.label}>{t("section description")}</label>
         {edit ? (
           <input
             className={[styles.input].join(" ")}
             value={descriptionState}
             onChange={(e) => setDescriptionState(e.target.value)}
-            placeholder={t("section-description-placeholder")}
+            placeholder={t("section description")}
           />
         ) : (
           <label className={styles.value}>{descriptionState}</label>
@@ -179,7 +179,7 @@ function SettingSectionHeader({
           padding: "4px 0",
         }}
       >
-        <label className={styles.label}>{t("section-order")}</label>
+        <label className={styles.label}>{t("section order")}</label>
         {edit ? (
           <>
             <input
@@ -189,7 +189,7 @@ function SettingSectionHeader({
               className={[styles.input, orderError ? styles.error : ""].join(
                 " "
               )}
-              placeholder={t("section-order-placeholder")}
+              placeholder={t("section order")}
             />
           </>
         ) : (

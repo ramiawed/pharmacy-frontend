@@ -67,7 +67,7 @@ const AdminUsersActions = ({
       <Icon
         selected={false}
         foreColor={Colors.MAIN_COLOR}
-        tooltip={t("refresh-tooltip")}
+        tooltip={t("refresh")}
         icon={() => <RiRefreshLine />}
         onclick={refreshHandler}
         withBackground={true}
@@ -77,7 +77,7 @@ const AdminUsersActions = ({
         <Icon
           selected={false}
           foreColor={Colors.MAIN_COLOR}
-          tooltip={t("clear-filter-tooltip")}
+          tooltip={t("clear filter")}
           onclick={() => {
             dispatch(resetPageState());
             refreshHandler();
@@ -98,7 +98,7 @@ const AdminUsersActions = ({
       <Icon
         icon={() => <BiSortAZ size={18} color={Colors.MAIN_COLOR} />}
         onclick={showOrderModalHandler}
-        tooltip={t("sort-results")}
+        tooltip={t("sort")}
         withBackground={true}
         withAlertIcon={orderFilterCount > 0}
       />

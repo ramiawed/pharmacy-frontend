@@ -412,7 +412,7 @@ function AdminRoutes({ changeOptionHandler }) {
           />
         </Route>
 
-        <Route exact path="/admin/backup restore">
+        <Route exact path="/admin/backup-restore">
           <BackupRestorePage
             onSelectedChange={() => {
               changeOptionHandler({

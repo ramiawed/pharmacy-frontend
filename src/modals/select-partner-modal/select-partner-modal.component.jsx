@@ -12,7 +12,6 @@ import { MdAddCircle } from "react-icons/md";
 
 // styles
 import styles from "./select-partner-modal.module.scss";
-import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
@@ -66,8 +65,6 @@ function SelectPartnerModal({
             placeholder={t(placeholder)}
             value={searchName}
             onChange={(e) => setSearchName(e.target.value)}
-            // onKeyDown={keyDownHandler}
-            // onKeyUp={keyUpHandler}
             ref={searchInputRef}
           />
         </div>
@@ -84,11 +81,11 @@ function SelectPartnerModal({
             ))}
 
           {filteredData.length === 0 && searchName.length === 0 && (
-            <NoContent msg={t("search-for-company")} />
+            <NoContent msg={t("no result found")} />
           )}
 
           {filteredData.length === 0 && searchName.length !== 0 && (
-            <NoContent msg={t("search-empty")} />
+            <NoContent msg={t("no result found")} />
           )}
         </div>
       </>

@@ -67,7 +67,7 @@ const CreateAccountStageTwo = ({
       hasError = true;
       errorObj = {
         ...errorObj,
-        name: "enter name",
+        name: "enter name error",
       };
     }
 
@@ -76,7 +76,7 @@ const CreateAccountStageTwo = ({
 
       errorObj = {
         ...errorObj,
-        username: "enter username",
+        username: "enter username error",
       };
     }
 
@@ -85,7 +85,7 @@ const CreateAccountStageTwo = ({
 
       errorObj = {
         ...errorObj,
-        password: "enter password",
+        password: "enter password error",
       };
     } else if (obj.password.length < 5) {
       // password must be greater than or equals to 5 characters
@@ -93,7 +93,7 @@ const CreateAccountStageTwo = ({
 
       errorObj = {
         ...errorObj,
-        password: "password length",
+        password: "password length error",
       };
     }
 
@@ -102,7 +102,7 @@ const CreateAccountStageTwo = ({
 
       errorObj = {
         ...errorObj,
-        passwordConfirm: "enter password confirm",
+        passwordConfirm: "enter password confirm error",
       };
     } else if (obj.passwordConfirm.length < 5) {
       // password confirm must be greater than or equals to 5 characters
@@ -110,7 +110,7 @@ const CreateAccountStageTwo = ({
 
       errorObj = {
         ...errorObj,
-        passwordConfirm: "confirm password length",
+        passwordConfirm: "confirm password length error",
       };
     }
 
@@ -124,8 +124,8 @@ const CreateAccountStageTwo = ({
 
       errorObj = {
         ...errorObj,
-        password: "unequal passwords",
-        passwordConfirm: "unequal passwords",
+        password: "unequal passwords error",
+        passwordConfirm: "unequal passwords error",
       };
     }
 
@@ -138,7 +138,7 @@ const CreateAccountStageTwo = ({
         hasError = true;
         errorObj = {
           ...errorObj,
-          username: "provide unique name",
+          username: "provide unique name error",
         };
       }
     }
@@ -163,7 +163,7 @@ const CreateAccountStageTwo = ({
       <div className={styles.container}>
         <Input
           type="text"
-          label="user name"
+          label="name"
           id="name"
           value={obj.name}
           onchange={(e) => inputChangeHandler("name", e.target.value)}
@@ -175,31 +175,31 @@ const CreateAccountStageTwo = ({
 
         <Input
           type="text"
-          label="user username"
+          label="username"
           id="username"
           value={obj.username}
           onchange={(e) => inputChangeHandler("username", e.target.value)}
           error={error.username?.length > 0}
           errorMsg={t(error.username)}
-          placeholder="mandatory-placeholder"
+          placeholder="mandatory placeholder"
           onEnterPress={nextStageHandler}
         />
 
         <Input
           type="password"
-          label="user password"
+          label="password"
           id="password"
           value={obj.password}
           onchange={(e) => inputChangeHandler("password", e.target.value)}
           error={error.password?.length > 0}
           errorMsg={t(error.password)}
-          placeholder="mandatory-placeholder"
+          placeholder="mandatory placeholder"
           onEnterPress={nextStageHandler}
         />
 
         <Input
           type="password"
-          label="user password confirm"
+          label="password confirm"
           id="passwordConfirm"
           value={obj.passwordConfirm}
           onchange={(e) =>
@@ -207,7 +207,7 @@ const CreateAccountStageTwo = ({
           }
           error={error.passwordConfirm?.length > 0}
           errorMsg={t(error.passwordConfirm)}
-          placeholder="mandatory-placeholder"
+          placeholder="mandatory placeholder"
           onEnterPress={nextStageHandler}
         />
 

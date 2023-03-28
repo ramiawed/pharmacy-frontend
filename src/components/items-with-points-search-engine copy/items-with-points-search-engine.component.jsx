@@ -39,7 +39,7 @@ const ItemsWithPointsSearchEngine = ({ handleEnterPress, keyUpHandler }) => {
       searchEngineAlert={isThereSearch}
     >
       <SearchInput
-        label="user name"
+        label="item name"
         id="search-name"
         type="text"
         value={pageState.searchName}
@@ -47,7 +47,7 @@ const ItemsWithPointsSearchEngine = ({ handleEnterPress, keyUpHandler }) => {
           dispatch(setSearchName(e.target.value));
         }}
         icon={<FaSearch />}
-        placeholder="search by name-composition-barcode"
+        placeholder="search by name composition barcode"
         onEnterPress={handleEnterPress}
         resetField={() => {
           dispatch(setSearchName(""));
@@ -56,7 +56,7 @@ const ItemsWithPointsSearchEngine = ({ handleEnterPress, keyUpHandler }) => {
       />
 
       <SearchPartnerContainer
-        label={t("item-company")}
+        label={t("company")}
         partners={pageState?.searchCompaniesIds}
         addId={addIdToCompaniesIds}
         removeId={removeIdFromCompaniesId}
@@ -65,7 +65,7 @@ const ItemsWithPointsSearchEngine = ({ handleEnterPress, keyUpHandler }) => {
       />
 
       <SearchPartnerContainer
-        label={t("item-warehouse")}
+        label={t("warehouse")}
         partners={pageState?.searchWarehousesIds}
         addId={addIdToWarehousesIds}
         removeId={removeIdFromWarehousesId}

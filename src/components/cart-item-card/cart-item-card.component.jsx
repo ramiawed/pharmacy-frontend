@@ -93,8 +93,8 @@ function CartItemCard({ cartItem, inOrderDetails, index, iconColor }) {
               {cartItem.bonus && cartItem.bonus}{" "}
               {cartItem.bonus
                 ? cartItem.bonusType === OfferTypes.PERCENTAGE
-                  ? t("after-bonus-percentage-label")
-                  : t("after-quantity-label")
+                  ? t("percentage")
+                  : t("piece")
                 : ""}
             </label>
 

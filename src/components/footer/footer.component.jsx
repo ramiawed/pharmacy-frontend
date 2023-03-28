@@ -26,7 +26,7 @@ function Footer() {
   return (
     <>
       <div className={styles.footer_container}>
-        <p>{t("contact-us")}</p>
+        <p>{t("contact us")}</p>
         <div className={styles.communication_info}>
           <RiFacebookCircleFill
             size={24}
@@ -69,15 +69,15 @@ function Footer() {
             marginTop: "4px",
           }}
         >
-          {t("copy-right")}
+          {t("copy right")}
         </p>
-        <p>{t("developed-by")}</p>
+        <p>{t("developed by")}</p>
       </div>
 
       {showWhatsappModal && (
         <Modal
-          header="contact-us"
-          cancelLabel="close-label"
+          header="contact us"
+          cancelLabel="close"
           closeModal={() => {
             setShowWhatsappModal(false);
           }}
@@ -85,9 +85,8 @@ function Footer() {
           color={Colors.LIGHT_COLOR}
         >
           <p>
-            {t("contact-us-through-whatsapp")}: {t("contact-phone-number")}
+            {t("contact us via whatsapp")}: {t("our phone number")}
           </p>
-          <p></p>
         </Modal>
       )}
     </>

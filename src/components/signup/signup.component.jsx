@@ -236,7 +236,7 @@ function SignUp() {
   ) : (
     <div className={[styles.outer_container].join(" ")}>
       {/* top left */}
-      <div className={styles.container}>
+      <div className={[styles.container, "bg_main"].join(" ")}>
         <div className={styles.header}>
           <h3>{t("sign up")}</h3>
           <img src={Logo} alt="thumb" className={styles.img} />
@@ -301,7 +301,7 @@ function SignUp() {
                 onClick={createAccountHandler}
                 className={styles.create_account_btn}
               >
-                {t("sign up press label")}
+                {t("sign up press")}
               </button>
               <div
                 style={{
@@ -322,15 +322,26 @@ function SignUp() {
       </div>
 
       <div
-        className={[styles.container, styles.bottom_container].join(" ")}
+        className={[styles.container, styles.bottom_container, "bg_main"].join(
+          " "
+        )}
         onClick={signInHandler}
       >
-        <div className={styles.signup}>
+        <div className={[styles.signup, "fc_white", "center"].join(" ")}>
           <label style={{ cursor: "pointer", fontSize: "14px" }}>
             {t("sign in sentence")}
           </label>
           <br />
-          <label className={styles.signup_button}>{t("sign in")}</label>
+          <label
+            className={[
+              styles.signup_button,
+              "fc_red",
+              "bold",
+              "inline_block",
+            ].join(" ")}
+          >
+            {t("sign in")}
+          </label>
         </div>
       </div>
 
@@ -371,9 +382,9 @@ function SignUp() {
           closeModal={() => {
             setShowLicenseModal(false);
           }}
-          header={t("license-header")}
-          cancelLabel={t("close-label")}
-          okLabel={t("i-agree-liscene")}
+          header={t("license header")}
+          cancelLabel={t("close")}
+          okLabel={t("i agree liscene")}
           okModal={newAccountHandler}
         >
           <License />

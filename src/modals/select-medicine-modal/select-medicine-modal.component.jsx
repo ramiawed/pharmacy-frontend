@@ -19,7 +19,6 @@ import { MdAddCircle } from "react-icons/md";
 
 // styles
 import styles from "./select-medicine-modal.module.scss";
-import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors } from "../../utils/constants";
@@ -101,7 +100,7 @@ function SelectMedicineModal({ close, chooseAction, url }) {
 
   return (
     <Modal
-      header="choose-item"
+      header="choose item"
       cancelLabel="cancel"
       closeModal={close}
       small={true}
@@ -115,7 +114,7 @@ function SelectMedicineModal({ close, chooseAction, url }) {
           <IoIosSearch color={Colors.LIGHT_COLOR} size={24} />
           <input
             className={styles.search_input}
-            placeholder={t("enter-item-trade-name")}
+            placeholder={t("search by name composition barcode")}
             value={searchName}
             onChange={(e) => setSearchName(e.target.value)}
             onKeyDown={keyDownHandler}

@@ -99,7 +99,7 @@ function OffersPage({ onSelectedChange }) {
             withBackground={true}
             icon={() => <RiRefreshLine />}
             foreColor={Colors.MAIN_COLOR}
-            tooltip={t("refresh-tooltip")}
+            tooltip={t("refresh")}
             onclick={handleEnterPress}
           />
           {(pageState.searchName.length > 0 ||
@@ -109,7 +109,7 @@ function OffersPage({ onSelectedChange }) {
               withBackground={true}
               selected={false}
               foreColor={Colors.MAIN_COLOR}
-              tooltip={t("clear-filter-tooltip")}
+              tooltip={t("clear filter")}
               onclick={() => {
                 dispatch(resetOfferItemsPageState());
                 handleEnterPress();
@@ -129,7 +129,7 @@ function OffersPage({ onSelectedChange }) {
           />
         </ActionBar>
 
-        {count > 0 && <ResultsCount label={t("offers-count")} count={count} />}
+        {count > 0 && <ResultsCount label={t("offers count")} count={count} />}
 
         {medicines.map((medicine, index) => (
           <ItemOfferRow
@@ -148,13 +148,13 @@ function OffersPage({ onSelectedChange }) {
         {medicines.length === 0 &&
           status !== "loading" &&
           pageState.searchName.length === 0 && (
-            <NoContent msg={t("no-offers-at-all")} />
+            <NoContent msg={t("no offers")} />
           )}
 
         {medicines.length === 0 &&
           status !== "loading" &&
           pageState.searchName.length !== 0 && (
-            <NoContent msg={t("no-result-found")} />
+            <NoContent msg={t("no result found")} />
           )}
 
         {status === "loading" && <CylonLoader />}
@@ -171,7 +171,7 @@ function OffersPage({ onSelectedChange }) {
         )}
 
         {medicines.length === count && status !== "loading" && count !== 0 && (
-          <NoMoreResult msg={t("no-more")} />
+          <NoMoreResult msg={t("no more")} />
         )}
       </MainContentContainer>
     </>

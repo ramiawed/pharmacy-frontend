@@ -25,23 +25,23 @@ function AdminResetUserPasswordModal({
 
   return (
     <Modal
-      header="change password tooltip"
+      header="change password"
       cancelLabel="cancel"
       closeModal={close}
       small={true}
-      okLabel="ok-label"
+      okLabel="ok"
       okModal={changePasswordHandler}
     >
       <PasswordRow
         field="newPassword"
-        labelText={t("new-password")}
+        labelText={t("new password")}
         value={passwordObj.newPassword}
         onInputChange={handlePasswordFieldsChange}
         error={t(passwordObjError.newPassword)}
       />
       <PasswordRow
         field="newPasswordConfirm"
-        labelText={t("new-password-confirm")}
+        labelText={t("password confirm")}
         value={passwordObj.newPasswordConfirm}
         onInputChange={handlePasswordFieldsChange}
         error={t(passwordObjError.newPasswordConfirm)}

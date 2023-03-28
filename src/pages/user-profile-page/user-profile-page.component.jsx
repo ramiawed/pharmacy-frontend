@@ -33,7 +33,6 @@ import {
 // styles
 import styles from "./user-profile-page.module.scss";
 import rowStyles from "../../components/row.module.scss";
-import generalStyles from "../../style.module.scss";
 
 // constants, and utile
 import {
@@ -136,17 +135,11 @@ function UserProfilePage({ onSelectedChange }) {
 
   return user ? (
     <>
-      <Header title="nav profile" />
+      <Header title="profile" />
 
       <MainContentContainer>
         <div className={styles.content}>
-          <div
-            className={[
-              "flex_center_container",
-              generalStyles.flex_column,
-            ].join(" ")}
-            style={{ padding: "6px 12px" }}
-          >
+          <div className={styles.image_container}>
             <div className={styles.logo}>
               <img
                 src={
@@ -175,7 +168,7 @@ function UserProfilePage({ onSelectedChange }) {
 
             <div>
               <ButtonWithIcon
-                text={t("change-logo")}
+                text={t("change logo")}
                 action={handleClick}
                 bgColor={Colors.MAIN_COLOR}
                 icon={() => <BsImageAlt />}
@@ -184,11 +177,11 @@ function UserProfilePage({ onSelectedChange }) {
           </div>
 
           <div className={styles.info}>
-            <CardInfo headerTitle={t("personal-info")}>
+            <CardInfo headerTitle={t("personal info")}>
               <InfoRow
                 editable={true}
                 field="name"
-                labelText={t("user name")}
+                labelText={t("name")}
                 value={userObj.name}
                 onInputChange={handleInputChange}
                 action={() => updateFieldHandler("name")}
@@ -196,7 +189,7 @@ function UserProfilePage({ onSelectedChange }) {
               <InfoRow
                 editable={true}
                 field="username"
-                labelText={t("user username")}
+                labelText={t("username")}
                 value={userObj.username}
                 onInputChange={handleInputChange}
                 action={() => updateFieldHandler("username")}
@@ -209,11 +202,11 @@ function UserProfilePage({ onSelectedChange }) {
               />
             </CardInfo>
 
-            <CardInfo headerTitle={t("communication-info")}>
+            <CardInfo headerTitle={t("communication info")}>
               <InfoRow
                 editable={true}
                 field="phone"
-                labelText={t("user phone")}
+                labelText={t("phone")}
                 value={userObj.phone}
                 onInputChange={handleInputChange}
                 action={() => updateFieldHandler("phone")}
@@ -221,7 +214,7 @@ function UserProfilePage({ onSelectedChange }) {
               <InfoRow
                 editable={true}
                 field="mobile"
-                labelText={t("user mobile")}
+                labelText={t("mobile")}
                 value={userObj.mobile}
                 onInputChange={handleInputChange}
                 action={() => updateFieldHandler("mobile")}
@@ -229,18 +222,18 @@ function UserProfilePage({ onSelectedChange }) {
               <InfoRow
                 editable={true}
                 field="email"
-                labelText={t("user email")}
+                labelText={t("email")}
                 value={userObj.email}
                 onInputChange={handleInputChange}
                 action={() => updateFieldHandler("email")}
               />
             </CardInfo>
 
-            <CardInfo headerTitle={t("address-info")}>
+            <CardInfo headerTitle={t("address")}>
               <EditableCity
                 editable={true}
                 field="city"
-                labelText={t("user-city")}
+                labelText={t("city")}
                 value={{
                   value: userObj.city,
                   label: t(userObj.city),
@@ -252,7 +245,7 @@ function UserProfilePage({ onSelectedChange }) {
               <InfoRow
                 editable={true}
                 field="addressDetails"
-                labelText={t("user address details")}
+                labelText={t("address")}
                 value={userObj.addressDetails}
                 onInputChange={handleInputChange}
                 action={() => updateFieldHandler("addressDetails")}
@@ -261,11 +254,11 @@ function UserProfilePage({ onSelectedChange }) {
 
             {user.type === UserTypeConstants.PHARMACY ||
             user.type === UserTypeConstants.WAREHOUSE ? (
-              <CardInfo headerTitle={t("additional-info")}>
+              <CardInfo headerTitle={t("additional info")}>
                 <InfoRow
                   editable={true}
                   field="employeeName"
-                  labelText={t("user employee name")}
+                  labelText={t("employee name")}
                   value={userObj.employeeName}
                   onInputChange={handleInputChange}
                   action={() => updateFieldHandler("employeeName")}
@@ -273,7 +266,7 @@ function UserProfilePage({ onSelectedChange }) {
                 <InfoRow
                   editable={true}
                   field="certificateName"
-                  labelText={t("user certificate name")}
+                  labelText={t("certificate name")}
                   value={userObj.certificateName}
                   onInputChange={handleInputChange}
                   action={() => updateFieldHandler("certificateName")}
@@ -284,11 +277,11 @@ function UserProfilePage({ onSelectedChange }) {
             )}
 
             {user.type === UserTypeConstants.GUEST ? (
-              <CardInfo headerTitle={t("additional-info")}>
+              <CardInfo headerTitle={t("additional info")}>
                 <InfoRow
                   editable={true}
                   field="guestDetails.job"
-                  labelText={t("user job")}
+                  labelText={t("job")}
                   value={t(userObj.guestDetails?.job)}
                   onInputChange={handleInputChange}
                   action={() => updateFieldHandler("guestDetails.job")}
@@ -296,7 +289,7 @@ function UserProfilePage({ onSelectedChange }) {
                 <InfoRow
                   editable={true}
                   field="guestDetails.companyName"
-                  labelText={t("user-company-name")}
+                  labelText={t("company")}
                   value={userObj.guestDetails?.companyName}
                   onInputChange={handleInputChange}
                   action={() => updateFieldHandler("guestDetails.companyName")}
@@ -306,14 +299,14 @@ function UserProfilePage({ onSelectedChange }) {
               <></>
             )}
 
-            <CardInfo headerTitle={t("change-password")}>
+            <CardInfo headerTitle={t("change password")}>
               <ChangePassword />
             </CardInfo>
 
             {(user.type === UserTypeConstants.COMPANY ||
               user.type === UserTypeConstants.WAREHOUSE) && (
               <CardInfo
-                headerTitle={t("admin-permission")}
+                headerTitle={t("admin permission")}
                 bgColor={Colors.FAILED_COLOR}
               >
                 <div
@@ -337,7 +330,7 @@ function UserProfilePage({ onSelectedChange }) {
                     {t("admin-permission-label")}
                   </label>
                   <Button
-                    text="update-label"
+                    text="update"
                     action={() => updateFieldHandler("allowAdmin")}
                     classStyle="bg_green"
                   />
@@ -346,7 +339,7 @@ function UserProfilePage({ onSelectedChange }) {
             )}
 
             <CardInfo
-              headerTitle={t("delete-account")}
+              headerTitle={t("delete user")}
               bgColor={Colors.FAILED_COLOR}
               type="warning"
             >

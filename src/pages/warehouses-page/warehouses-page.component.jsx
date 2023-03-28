@@ -7,6 +7,7 @@ import { useHistory } from "react-router-dom";
 import WarehousesSearchEngine from "../../components/warehouses-search-engine/warehouses-search-engine.component";
 import MainContentContainer from "../../components/main-content-container/main-content-container.component";
 import WarehousesActions from "../../components/warehouses-actions/warehouses-actions.component";
+import CenterContainer from "../../components/center-container/center-container.component";
 import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 import NoMoreResult from "../../components/no-more-result/no-more-result.component";
 import ResultsCount from "../../components/results-count/results-count.component";
@@ -41,9 +42,6 @@ import {
   UserTypeConstants,
 } from "../../utils/constants.js";
 
-// styles
-import generalStyles from "../../style.module.scss";
-
 // icons
 import { CgMoreVertical } from "react-icons/cg";
 
@@ -53,7 +51,6 @@ import {
   partnerRowClickHandler,
   removePartnerFromFavoriteHandler,
 } from "../../utils/handlers";
-import CenterContainer from "../../components/center-container/center-container.component";
 
 function WarehousePage({ onSelectedChange }) {
   const { t } = useTranslation();
@@ -128,7 +125,7 @@ function WarehousePage({ onSelectedChange }) {
         {filteredWarehouses.length > 0 && (
           <ResultsCount
             count={filteredWarehouses.length}
-            label={t("warehouses-count")}
+            label={t("warehouses count")}
           />
         )}
 
@@ -222,13 +219,13 @@ function WarehousePage({ onSelectedChange }) {
           status !== "loading" &&
           searchName.length === 0 &&
           searchCity === CitiesName.ALL && (
-            <NoContent msg={t("no-warehouses")} />
+            <NoContent msg={t("no warehouses")} />
           )}
 
         {filteredWarehouses.length === 0 &&
           status !== "loading" &&
           (searchName.length !== 0 || searchCity !== CitiesName.ALL) && (
-            <NoContent msg={t("no-result-found")} />
+            <NoContent msg={t("no result found")} />
           )}
 
         {status === "loading" && <CylonLoader />}
@@ -246,7 +243,7 @@ function WarehousePage({ onSelectedChange }) {
 
         {filteredWarehouses.length === count &&
           status !== "loading" &&
-          count !== 0 && <NoMoreResult msg={t("no-more")} />}
+          count !== 0 && <NoMoreResult msg={t("no more")} />}
 
         {favoritesError && (
           <Toast

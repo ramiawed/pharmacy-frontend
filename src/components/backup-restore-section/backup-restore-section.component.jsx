@@ -44,14 +44,14 @@ const BackupRestoreSection = ({ title, backupFromUrl, restoreToUrl }) => {
   const restoreHandler = async () => {
     const startIndex = stage * 500;
     const endIndex = startIndex + 500;
-    const data = data.slice(startIndex, endIndex);
+    const partOfData = data.slice(startIndex, endIndex);
 
     setLoading(true);
 
     await axios
       .post(
         restoreToUrl,
-        { data, rest: stage === 0 },
+        { partOfData, rest: stage === 0 },
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -139,7 +139,7 @@ const BackupRestoreSection = ({ title, backupFromUrl, restoreToUrl }) => {
                 className={styles.restore_button}
                 onClick={restoreHandler}
               >
-                {stage + 1} من {numberOfStage}
+                {stage + 1} {t("from")} {numberOfStage}
               </button>
               <label>
                 {t("you have finish all the stage to restore all information")}
@@ -198,8 +198,8 @@ const BackupRestoreSection = ({ title, backupFromUrl, restoreToUrl }) => {
       {showConfirmModal && (
         <Modal
           header="backup header"
-          cancelLabel="close-label"
-          okLabel="ok-label"
+          cancelLabel="close"
+          okLabel="ok"
           closeModal={() => {
             setShowConfirmModal(false);
           }}
@@ -217,8 +217,8 @@ const BackupRestoreSection = ({ title, backupFromUrl, restoreToUrl }) => {
       {showConfirmCancelRestoreModel && (
         <Modal
           header="backup header"
-          cancelLabel="close-label"
-          okLabel="ok-label"
+          cancelLabel="close"
+          okLabel="ok"
           closeModal={() => {
             setShowConfirmCancelRestoreModel(false);
           }}

@@ -56,42 +56,42 @@ function ChangePassword() {
     if (passwordObj.oldPassword.length === 0) {
       errorObj = {
         ...errorObj,
-        oldPassword: "enter old password",
+        oldPassword: "enter old password error",
       };
     }
 
     if (passwordObj.newPassword.length < 5) {
       errorObj = {
         ...errorObj,
-        newPassword: "password length",
+        newPassword: "password length error",
       };
     }
 
     if (passwordObj.newPassword.length === 0) {
       errorObj = {
         ...errorObj,
-        newPassword: "enter password",
+        newPassword: "enter password error",
       };
     }
 
     if (passwordObj.newPassword !== passwordObj.newPasswordConfirm) {
       errorObj = {
         ...errorObj,
-        newPasswordConfirm: "unequal passwords",
+        newPasswordConfirm: "unequal passwords error",
       };
     }
 
     if (passwordObj.newPasswordConfirm.length < 5) {
       errorObj = {
         ...errorObj,
-        newPasswordConfirm: "confirm password length",
+        newPasswordConfirm: "confirm password length error",
       };
     }
 
     if (passwordObj.newPasswordConfirm.length === 0) {
       errorObj = {
         ...errorObj,
-        newPasswordConfirm: "enter password confirm",
+        newPasswordConfirm: "enter password confirm error",
       };
     }
 
@@ -124,21 +124,21 @@ function ChangePassword() {
     <>
       <PasswordRow
         field="oldPassword"
-        labelText={t("old-password")}
+        labelText={t("old password")}
         value={passwordObj.oldPassword}
         onInputChange={handlePasswordFieldsChange}
         error={t(passwordObjError.oldPassword)}
       />
       <PasswordRow
         field="newPassword"
-        labelText={t("new-password")}
+        labelText={t("new password")}
         value={passwordObj.newPassword}
         onInputChange={handlePasswordFieldsChange}
         error={t(passwordObjError.newPassword)}
       />
       <PasswordRow
         field="newPasswordConfirm"
-        labelText={t("new-password-confirm")}
+        labelText={t("password confirm")}
         value={passwordObj.newPasswordConfirm}
         onInputChange={handlePasswordFieldsChange}
         error={t(passwordObjError.newPasswordConfirm)}
@@ -148,7 +148,7 @@ function ChangePassword() {
         style={{ padding: "6px 0" }}
       >
         <Button
-          text="change-password"
+          text="change password"
           action={changePasswordHandler}
           classStyle="bg_green"
         />

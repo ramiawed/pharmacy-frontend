@@ -3,8 +3,8 @@ import { useTranslation } from "react-i18next";
 import { useHistory } from "react-router";
 
 // components
-import Icon from "../icon/icon.component";
 import Modal from "../../modals/modal/modal.component";
+import Icon from "../icon/icon.component";
 import Toast from "../toast/toast.component";
 
 // react-redux
@@ -51,7 +51,7 @@ function OrderRow({ order, deleteAction, type, index }) {
       setShowDeleteModal(false);
     } else {
       setShowDeleteModal(false);
-      setDeleteErrorMsg("cant-delete-order");
+      setDeleteErrorMsg("cant delete order");
     }
   };
 
@@ -109,7 +109,7 @@ function OrderRow({ order, deleteAction, type, index }) {
                 onclick={() => {
                   setShowDeleteModal(true);
                 }}
-                tooltip={t("delete-order-tooltip")}
+                tooltip={t("delete")}
                 foreColor={Colors.FAILED_COLOR}
               />
             </div>
@@ -135,7 +135,7 @@ function OrderRow({ order, deleteAction, type, index }) {
               <label>
                 {order.deliverDate?.split("T")[0]}{" "}
                 {order.deliverTime
-                  ? `---${t("time-label")}: ${order.deliverTime}`
+                  ? `---${t("time")}: ${order.deliverTime}`
                   : ""}
               </label>
             )}
@@ -143,9 +143,9 @@ function OrderRow({ order, deleteAction, type, index }) {
               <label>
                 {order.shippedDate
                   ? order.shippedDate.split("T")[0]
-                  : t("shipped-done")}
+                  : t("shipped done")}
                 {order.shippedTime
-                  ? `---${t("time-label")}: ${order.shippedTime}`
+                  ? `---${t("time")}: ${order.shippedTime}`
                   : ""}
               </label>
             )}
@@ -155,9 +155,9 @@ function OrderRow({ order, deleteAction, type, index }) {
 
       {showDeleteModal && (
         <Modal
-          header="delete-order-confirm-header"
-          cancelLabel="close-label"
-          okLabel="ok-label"
+          header="delete order"
+          cancelLabel="cancel"
+          okLabel="ok"
           closeModal={() => {
             setShowDeleteModal(false);
           }}
@@ -167,7 +167,7 @@ function OrderRow({ order, deleteAction, type, index }) {
           }}
           color={Colors.FAILED_COLOR}
         >
-          <p>{t("delete-order-confirm-msg")}</p>
+          <p>{t("delete order confirm msg")}</p>
         </Modal>
       )}
 

@@ -14,7 +14,7 @@ import { BASEURL } from "../../utils/constants";
 function BackupRestorePage() {
   return (
     <>
-      <Header title="backup restore" />
+      <Header title="backup and restore" />
 
       <MainContentContainer>
         <ul className={styles.ul}>
@@ -69,7 +69,7 @@ function BackupRestorePage() {
 
           {/* special orders */}
           <BackupRestoreSection
-            title="special-order"
+            title="special orders"
             backupFromUrl={`${BASEURL}/ordered-baskets/all`}
             restoreToUrl={`${BASEURL}/ordered-baskets/restore`}
           />
@@ -83,7 +83,7 @@ function BackupRestorePage() {
 
           {/* saved items */}
           <BackupRestoreSection
-            title="saved-items"
+            title="saved items"
             backupFromUrl={`${BASEURL}/savedItems/all`}
             restoreToUrl={`${BASEURL}/savedItems/restore`}
           />

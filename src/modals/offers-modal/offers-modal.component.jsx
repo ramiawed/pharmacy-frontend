@@ -16,7 +16,6 @@ import { MdErrorOutline } from "react-icons/md";
 
 // styles
 import styles from "./offers-modal.module.scss";
-import generalStyles from "../../style.module.scss";
 
 // constants
 import { Colors, OfferTypes, toEnglishNumber } from "../../utils/constants";
@@ -116,9 +115,9 @@ function OffersModal({ item, warehouseId, close, token, allowEdit }) {
 
   return (
     <Modal
-      header="nav-offers"
-      cancelLabel="close-label"
-      okLabel="add-label"
+      header="offers"
+      cancelLabel="close"
+      okLabel="add"
       closeModal={close}
       okModal={
         allowEdit
@@ -133,7 +132,7 @@ function OffersModal({ item, warehouseId, close, token, allowEdit }) {
         <div className={styles.checkboxes_div}>
           <div className={styles.offer_type_checkbox}>
             <CustomCheckbox
-              label={t(OfferTypes.PIECES)}
+              label={t("piece bouns")}
               value={quantityOfferType}
               changeHandler={() => {
                 setQuantityOfferType(!quantityOfferType);
@@ -145,7 +144,7 @@ function OffersModal({ item, warehouseId, close, token, allowEdit }) {
 
           <div className={styles.offer_type_checkbox}>
             <CustomCheckbox
-              label={t(OfferTypes.PERCENTAGE)}
+              label={t("percentage bouns")}
               value={percentageOfferType}
               changeHandler={() => {
                 setPercentageOfferType(!percentageOfferType);
@@ -162,7 +161,7 @@ function OffersModal({ item, warehouseId, close, token, allowEdit }) {
       )}
 
       {values.length === 0 && (
-        <p className={["center", "fc_light"].join(" ")}>{t("no-offers")}</p>
+        <p className={["center", "fc_light"].join(" ")}>{t("no offers")}</p>
       )}
 
       <MultiValue
@@ -171,20 +170,20 @@ function OffersModal({ item, warehouseId, close, token, allowEdit }) {
         addHandler={addHandler}
         deleteHandler={deleteHandler}
         changeHandler={changeHandler}
-        quantityLabel={t("quantity-label")}
+        quantityLabel={t("quantity")}
         bonusLabel={
           quantityOfferType
-            ? t("bonus-quantity-label")
+            ? t("piece bouns")
             : percentageOfferType
-            ? t("bonus-percentage-label")
+            ? t("percentage bouns")
             : null
         }
-        afterQuantityLabel={t("after-quantity-label")}
+        // afterQuantityLabel={t("quantity")}
         afterBonusLabel={
           quantityOfferType
-            ? t("after-bonus-quantity-label")
+            ? t("piece")
             : percentageOfferType
-            ? t("after-bonus-percentage-label")
+            ? t("percentage")
             : null
         }
       />

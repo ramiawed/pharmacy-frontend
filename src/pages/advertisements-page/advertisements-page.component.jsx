@@ -46,7 +46,7 @@ function AdvertisementsPage({ onSelectedChange }) {
       <AdvertisementPageHeader isNew={isNew} setIsNew={setIsNew} />
       <MainContentContainer>
         {advertisements.length === 0 && !isNew && (
-          <NoContent msg={t("no-advertisements")} />
+          <NoContent msg={t("no advertisements")} />
         )}
 
         {advertisements.map((adv) => (
@@ -70,7 +70,7 @@ function AdvertisementsPage({ onSelectedChange }) {
       {isNew && (
         <NewAdvertisement
           closeHandler={setIsNew}
-          header={"new-advertisement"}
+          header={"new advertisement"}
         />
       )}
     </>

@@ -36,7 +36,6 @@ import Modal from "../../modals/modal/modal.component";
 
 // styles
 import rowStyles from "../../components/row.module.scss";
-import generalStyles from "../../style.module.scss";
 import styles from "./statistics-page.module.scss";
 
 // constants and utils
@@ -99,7 +98,7 @@ function StatisticsPage({ onSelectedChange }) {
             withBackground={true}
             selected={false}
             foreColor={Colors.MAIN_COLOR}
-            tooltip={t("refresh-tooltip")}
+            tooltip={t("refresh")}
             onclick={() => {
               handleEnterPress();
             }}
@@ -108,7 +107,7 @@ function StatisticsPage({ onSelectedChange }) {
 
           <Icon
             withBackground={true}
-            tooltip={t("go-back")}
+            tooltip={t("back")}
             onclick={() => {
               history.goBack();
             }}
@@ -123,10 +122,10 @@ function StatisticsPage({ onSelectedChange }) {
           <>
             <TableHeader>
               <label className={[styles.header_label, styles.name].join(" ")}>
-                {t("statistics-name")}
+                {t("name")}
               </label>
               <label className={[styles.header_label, styles.count].join(" ")}>
-                {t("statistics-count")}
+                {t("count")}
               </label>
               <label
                 className={[styles.header_table, styles.action_div].join(" ")}
@@ -145,7 +144,7 @@ function StatisticsPage({ onSelectedChange }) {
                   <Icon
                     selected={false}
                     icon={() => <IoMdMore size={24} />}
-                    tooltip={t("statistics-dates")}
+                    tooltip={t("dates")}
                     onclick={() => {
                       setSelectedStatistics(stat);
                       setShowMoreInfo(true);
@@ -158,7 +157,7 @@ function StatisticsPage({ onSelectedChange }) {
         )}
 
         {statistics.length === 0 && status !== "loading" && (
-          <NoContent msg={t("no-statistics")} />
+          <NoContent msg={t("no statistics")} />
         )}
 
         {count > 0 && status !== "loading" && (
@@ -177,7 +176,7 @@ function StatisticsPage({ onSelectedChange }) {
         )}
 
         {statistics.length === count && status !== "loading" && count !== 0 && (
-          <NoMoreResult msg={t("no-more")} />
+          <NoMoreResult msg={t("no more")} />
         )}
 
         {status === "loading" && <CylonLoader />}
@@ -196,8 +195,8 @@ function StatisticsPage({ onSelectedChange }) {
 
         {showMoreInfo && (
           <Modal
-            header="statistics-dates"
-            cancelLabel="close-label"
+            header="dates"
+            cancelLabel="close"
             closeModal={() => {
               setShowMoreInfo(false);
               setSelectedStatistics(null);

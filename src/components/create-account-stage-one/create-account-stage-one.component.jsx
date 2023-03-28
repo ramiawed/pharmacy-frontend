@@ -34,32 +34,52 @@ const CreateAccountStageOne = ({
   return (
     <StageContainer next={next}>
       <div className={styles.container}>
-        <p>{t("choose user type")}</p>
+        <p className={["center", "fc_white", "big"].join(" ")}>
+          {t("choose user type")}
+        </p>
         <label
-          className={type === UserTypeConstants.COMPANY ? styles.selected : ""}
+          className={[
+            type === UserTypeConstants.COMPANY
+              ? "bg_offer fc_main"
+              : "bg_dark fc_white",
+            "center",
+          ].join(" ")}
           onClick={() => changeUserTypeHanlder(UserTypeConstants.COMPANY)}
         >
           {t("company")}
         </label>
         <label
-          className={
-            type === UserTypeConstants.WAREHOUSE ? styles.selected : ""
-          }
+          className={[
+            type === UserTypeConstants.WAREHOUSE
+              ? "bg_offer fc_main"
+              : "bg_dark fc_white",
+            "center",
+          ].join(" ")}
           onClick={() => changeUserTypeHanlder(UserTypeConstants.WAREHOUSE)}
         >
           {t("warehouse")}
         </label>
         <label
-          className={type === UserTypeConstants.PHARMACY ? styles.selected : ""}
+          className={[
+            type === UserTypeConstants.PHARMACY
+              ? "bg_offer fc_main"
+              : "bg_dark fc_white",
+            "center",
+          ].join(" ")}
           onClick={() => changeUserTypeHanlder(UserTypeConstants.PHARMACY)}
         >
           {t("pharmacy")}
         </label>
         <label
-          className={type === UserTypeConstants.GUEST ? styles.selected : ""}
+          className={[
+            type === UserTypeConstants.GUEST
+              ? "bg_offer fc_main"
+              : "bg_dark fc_white",
+            "center",
+          ].join(" ")}
           onClick={() => changeUserTypeHanlder(UserTypeConstants.GUEST)}
         >
-          {t("normal")}
+          {t("guest")}
         </label>
         <SignupStagesActions stage={1} nextHandler={nextStageHandler} />
       </div>

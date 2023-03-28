@@ -72,12 +72,12 @@ function SettingRow({ data, tooltip, action, type }) {
         >
           {type === "item" ? (
             <>
-              <LabelValueRow label="item-name" value={data.name} />
-              <LabelValueRow label="item-caliber" value={data.caliber} />
-              <LabelValueRow label="item-packing" value={data.packing} />
+              <LabelValueRow label="item name" value={data.name} />
+              <LabelValueRow label="caliber" value={data.caliber} />
+              <LabelValueRow label="packing" value={data.packing} />
             </>
           ) : (
-            <label style={{ paddingRight: "10px" }}>{data.name}</label>
+            <label style={{ padding: "0 10px" }}>{data.name}</label>
           )}
         </div>
 

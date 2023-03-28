@@ -120,8 +120,8 @@ function SignIn() {
     if (userInfo.username.length === 0 && userInfo.password.length === 0) {
       setPreSignError({
         ...preSignError,
-        username: "enter username",
-        password: "enter password",
+        username: "enter username error",
+        password: "enter password error",
       });
       return;
     }
@@ -130,7 +130,7 @@ function SignIn() {
     if (userInfo.username.length === 0) {
       setPreSignError({
         ...preSignError,
-        username: "enter password",
+        username: "enter password error",
       });
       return;
     }
@@ -139,7 +139,7 @@ function SignIn() {
     if (userInfo.password.length === 0) {
       setPreSignError({
         ...preSignError,
-        password: "enter password",
+        password: "enter password error",
       });
       return;
     }
@@ -156,7 +156,7 @@ function SignIn() {
           addStatistics({
             obj: {
               targetUser: result.data.user._id,
-              action: "user-sign in",
+              action: "user-sign-in",
             },
             token: result.token,
           })
@@ -186,7 +186,7 @@ function SignIn() {
         <InputSignIn
           icon={<HiUser className={styles.icons} />}
           type="text"
-          placeholder="user username"
+          placeholder="username"
           id="username"
           value={userInfo.username}
           onchange={inputChangeHandler}
@@ -199,7 +199,7 @@ function SignIn() {
         <InputSignIn
           icon={<RiLockPasswordLine className={styles.icon} />}
           type="password"
-          placeholder="user password"
+          placeholder="password"
           id="password"
           value={userInfo.password}
           onchange={inputChangeHandler}
@@ -225,7 +225,7 @@ function SignIn() {
               setShowForgetPasswordModal(true);
             }}
           >
-            {t("forget-password")}
+            {t("forget password")}
           </p>
         </div>
 
@@ -270,23 +270,22 @@ function SignIn() {
           <label className={styles.signup_button}>{t("sign up")}</label>
         </div>
       </div>
-
       {showForgetPasswordModal && (
         <Modal
           closeModal={() => {
             setShowForgetPasswordModal(false);
           }}
-          header={t("contact-us")}
-          cancelLabel={t("close-label")}
+          header={t("contact us")}
+          cancelLabel={t("close")}
           small={true}
           green={true}
         >
-          <p>{t("forget-password-msg")}</p>
+          <p>{t("forget password msg")}</p>
           <p style={{ color: "#25D366" }}>
-            {t("contact-us-via-whatsapp")} : {t("contact-phone-number")}
+            {t("contact us via whatsapp")} : {t("our phone number")}
           </p>
           <p style={{ color: "#229ED9" }}>
-            {t("contact-us-via-telegram")} : {t("contact-phone-number")}
+            {t("contact us via telegram")} : {t("our phone number")}
           </p>
         </Modal>
       )}

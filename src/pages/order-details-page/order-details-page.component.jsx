@@ -88,11 +88,11 @@ function OrderDetailsPage({ location, onSelectedChange }) {
     )
       .then(unwrapResult)
       .then(() => {
-        setChangeStatusSuccessMsg("change-order-status-success");
+        setChangeStatusSuccessMsg("change order status success");
         refreshHandler();
       })
       .catch(() => {
-        setChangeStatusFailedMsg("change-order-status-failed");
+        setChangeStatusFailedMsg("change order status failed");
       });
   };
 
@@ -111,11 +111,11 @@ function OrderDetailsPage({ location, onSelectedChange }) {
     )
       .then(unwrapResult)
       .then(() => {
-        setChangeStatusSuccessMsg("change-order-status-success");
+        setChangeStatusSuccessMsg("change order status success");
         refreshHandler();
       })
       .catch(() => {
-        setChangeStatusFailedMsg("change-order-status-failed");
+        setChangeStatusFailedMsg("change order status failed");
       });
   };
 
@@ -136,11 +136,11 @@ function OrderDetailsPage({ location, onSelectedChange }) {
     )
       .then(unwrapResult)
       .then(() => {
-        setChangeStatusSuccessMsg("change-order-status-success");
+        setChangeStatusSuccessMsg("change order status success");
         refreshHandler();
       })
       .catch(() => {
-        setChangeStatusFailedMsg("change-order-status-failed");
+        setChangeStatusFailedMsg("change order status failed");
       });
   };
 
@@ -161,11 +161,11 @@ function OrderDetailsPage({ location, onSelectedChange }) {
     )
       .then(unwrapResult)
       .then(() => {
-        setChangeStatusSuccessMsg("change-order-status-success");
+        setChangeStatusSuccessMsg("change order status success");
         refreshHandler();
       })
       .catch(() => {
-        setChangeStatusFailedMsg("change-order-status-failed");
+        setChangeStatusFailedMsg("change order status failed");
       });
   };
 
@@ -185,7 +185,7 @@ function OrderDetailsPage({ location, onSelectedChange }) {
         <>
           {orderDetails ? (
             <>
-              <Header title="order-details" refreshHandler={refreshHandler} />
+              <Header title="order details" refreshHandler={refreshHandler} />
 
               {orderDetails && (
                 <OrderDetailsActions
@@ -226,7 +226,7 @@ function OrderDetailsPage({ location, onSelectedChange }) {
                   <label>
                     {orderDetails.shippedDate
                       ? orderDetails.shippedDate.split("T")[0]
-                      : t("shipped-done")}
+                      : t("shipped done")}
                     {orderDetails.shippedTime
                       ? `---${t("time-label")}: ${orderDetails.shippedTime}`
                       : ""}
@@ -244,13 +244,13 @@ function OrderDetailsPage({ location, onSelectedChange }) {
                           " "
                         )}
                       >
-                        {t("item-name")}
+                        {t("item name")}
                       </div>
                       <div className={[styles.cell].join(" ")}>
-                        {t("quantity-label")}
+                        {t("quantity")}
                       </div>
                       <div className={[styles.cell].join(" ")}>
-                        {t("offer-label")}
+                        {t("offer")}
                       </div>
                       {(user.type === UserTypeConstants.PHARMACY ||
                         user.type === UserTypeConstants.ADMIN) && (
@@ -262,7 +262,7 @@ function OrderDetailsPage({ location, onSelectedChange }) {
                             {t("price")}
                           </div>
                           <div className={[styles.cell].join(" ")}>
-                            {t("total-price-small")}
+                            {t("total")}
                           </div>
                         </>
                       )}

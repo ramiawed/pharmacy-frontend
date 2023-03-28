@@ -54,7 +54,7 @@ function NotificationRow({ notification, index, setSuccessDeletingMsg }) {
     dispatch(deleteNotification({ id: notification._id, token }))
       .then(unwrapResult)
       .then(() => {
-        setSuccessDeletingMsg("delete-notification-msg");
+        setSuccessDeletingMsg("delete notification msg");
       });
   };
 
@@ -108,9 +108,9 @@ function NotificationRow({ notification, index, setSuccessDeletingMsg }) {
 
       {showDeleteModal && (
         <Modal
-          header="delete-notification"
-          cancelLabel="close-label"
-          okLabel="ok-label"
+          header="delete notification"
+          cancelLabel="close"
+          okLabel="ok"
           closeModal={() => {
             setShowDeleteModal(false);
           }}
@@ -118,7 +118,7 @@ function NotificationRow({ notification, index, setSuccessDeletingMsg }) {
           okModal={deleteNotificationHandler}
           color={Colors.FAILED_COLOR}
         >
-          <p>{t("delete-notification-confirm-msg")}</p>
+          <p>{t("delete notification confirm msg")}</p>
         </Modal>
       )}
     </div>

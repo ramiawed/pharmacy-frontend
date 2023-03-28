@@ -29,13 +29,13 @@ function AdvertisementPageHeader({ setIsNew }) {
 
   return (
     <>
-      <Header title="nav advertise" refreshHandler={refreshHandler} />
+      <Header title="advertisements" refreshHandler={refreshHandler} />
 
       <ActionBar>
         <Icon
           selected={false}
           foreColor={Colors.MAIN_COLOR}
-          tooltip={t("new-advertisement")}
+          tooltip={t("new")}
           onclick={() => {
             setIsNew(true);
           }}

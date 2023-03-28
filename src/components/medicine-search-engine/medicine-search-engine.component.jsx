@@ -45,7 +45,7 @@ const MedicineSearchEngine = ({ handleEnterPress, keyUpHandler, location }) => {
 
   const companiesOptions = location.state.myCompanies
     ? [
-        { value: "", label: t("all-companies") },
+        { value: "", label: t("all companies") },
         ...location.state.myCompanies?.map((c) => {
           return { value: c._id, label: c.name };
         }),
@@ -83,7 +83,7 @@ const MedicineSearchEngine = ({ handleEnterPress, keyUpHandler, location }) => {
       >
         {/* search by medicine name, barcode */}
         <SearchInput
-          label="user name"
+          label="item name"
           id="search-name"
           type="text"
           value={pageState.searchName}
@@ -91,7 +91,7 @@ const MedicineSearchEngine = ({ handleEnterPress, keyUpHandler, location }) => {
             dispatch(setSearchName(e.target.value));
           }}
           icon={<FaSearch />}
-          placeholder="search by name-composition-barcode"
+          placeholder="search by name composition barcode"
           onEnterPress={handleEnterPress}
           resetField={() => {
             dispatch(setSearchName(""));
@@ -103,7 +103,7 @@ const MedicineSearchEngine = ({ handleEnterPress, keyUpHandler, location }) => {
         {pageState.searchCompanyId === null &&
           pageState.searchWarehouseId === null && (
             <SearchPartnerContainer
-              label={t("item-company")}
+              label={t("company")}
               partners={pageState?.searchCompaniesIds}
               addId={addIdToCompaniesIds}
               removeId={removeIdFromCompaniesId}
@@ -117,7 +117,7 @@ const MedicineSearchEngine = ({ handleEnterPress, keyUpHandler, location }) => {
           <ChooserContainer
             onclick={() => setShowChooseCompanyModal(true)}
             selectedValue={
-              selectedCompany ? selectedCompany.label : t("all-companies")
+              selectedCompany ? selectedCompany.label : t("all companies")
             }
             label="companies"
             styleForSearch={true}
@@ -130,7 +130,7 @@ const MedicineSearchEngine = ({ handleEnterPress, keyUpHandler, location }) => {
           user.type !== UserTypeConstants.WAREHOUSE &&
           user.type !== UserTypeConstants.COMPANY && (
             <SearchPartnerContainer
-              label={t("item-warehouse")}
+              label={t("warehouse")}
               partners={pageState?.searchWarehousesIds}
               addId={addIdToWarehousesIds}
               removeId={removeIdFromWarehousesId}
@@ -146,8 +146,8 @@ const MedicineSearchEngine = ({ handleEnterPress, keyUpHandler, location }) => {
               <CustomCheckbox
                 label={
                   user.type === UserTypeConstants.WAREHOUSE
-                    ? t("warehouse-in-warehouse")
-                    : t("pharmacy-in-warehouse")
+                    ? t("in warehouse")
+                    : t("in warehouses")
                 }
                 value={pageState.searchInWarehouse}
                 changeHandler={() => {
@@ -166,8 +166,8 @@ const MedicineSearchEngine = ({ handleEnterPress, keyUpHandler, location }) => {
               <CustomCheckbox
                 label={
                   user.type === UserTypeConstants.WAREHOUSE
-                    ? t("warehouse-out-warehouse")
-                    : t("pharmacy-out-warehouse")
+                    ? t("not in warehouse")
+                    : t("not in warehouses")
                 }
                 value={pageState.searchOutWarehouse}
                 changeHandler={() => {
@@ -186,7 +186,7 @@ const MedicineSearchEngine = ({ handleEnterPress, keyUpHandler, location }) => {
             <>
               <div className={searchContainerStyles.checkbox_div}>
                 <CustomCheckbox
-                  label={t("medicies-have-offer-label")}
+                  label={t("have offers")}
                   value={pageState.searchHaveOffer}
                   changeHandler={() => {
                     dispatch(setSearchHaveOffer(!pageState.searchHaveOffer));
@@ -197,7 +197,7 @@ const MedicineSearchEngine = ({ handleEnterPress, keyUpHandler, location }) => {
 
               <div className={searchContainerStyles.checkbox_div}>
                 <CustomCheckbox
-                  label={t("medicies-have-point-label")}
+                  label={t("have points")}
                   value={pageState.searchHavePoint}
                   changeHandler={() => {
                     dispatch(setSearchHavepoint(!pageState.searchHavePoint));

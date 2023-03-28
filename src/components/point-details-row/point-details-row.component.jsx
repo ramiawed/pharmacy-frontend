@@ -8,11 +8,11 @@ const PointDetailsRow = ({ point }) => {
   return (
     <div className={[styles.offer, "points_container"].join(" ")}>
       <p>
-        <label>{t("quantity-label")}</label>
+        <label>{t("quantity")}</label>
         <label className={[styles.value].join(" ")}>{point.qty}</label>
       </p>
       <p>
-        <label>{t("after-quantity-label")}</label>
+        <label>{t("piece")}</label>
         <label className={styles.value}>{point.bonus}</label>
         <label>{t("point")}</label>
       </p>

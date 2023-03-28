@@ -45,7 +45,7 @@ function InfoRow({ labelText, value, onInputChange, action, field, editable }) {
       (field === "name" || field === "username" || field === "mobile") &&
       value === ""
     ) {
-      setError("enter-value");
+      setError("enter value");
       return;
     }
 
@@ -123,10 +123,13 @@ function InfoRow({ labelText, value, onInputChange, action, field, editable }) {
           }
         }}
       >
-        <label className={styles.label}>{labelText}</label>
+        <label className={[styles.label, "fc_light"].join(" ")}>
+          {labelText}
+        </label>
         {isEditable ? (
-          <div className={styles.value}>
+          <div className={[styles.value, "fc_dark"].join(" ")}>
             <input
+              className="fc_dark"
               value={value}
               onChange={(e) => {
                 onInputChange(field, e.target.value);
@@ -137,7 +140,7 @@ function InfoRow({ labelText, value, onInputChange, action, field, editable }) {
             />
           </div>
         ) : (
-          <div className={styles.value}>
+          <div className={[styles.value, "fc_dark"].join(" ")}>
             <label>{value}</label>
           </div>
         )}
@@ -145,12 +148,11 @@ function InfoRow({ labelText, value, onInputChange, action, field, editable }) {
           isEditable ? (
             <div className={styles.actions}>
               <Button
-                text="ok-label"
+                text="ok"
                 action={handleOkAction}
                 classStyle="bg_light"
                 loading={loading}
               />
-              <div style={{ minWidth: "10px" }}></div>
               <Button
                 text="cancel"
                 action={cancelHandler}
@@ -160,7 +162,7 @@ function InfoRow({ labelText, value, onInputChange, action, field, editable }) {
           ) : (
             <div className={"flex_center_container"}>
               <Button
-                text="edit-label"
+                text="update"
                 action={() => {
                   setIsEditable(true);
                   setPreviousValue(value);

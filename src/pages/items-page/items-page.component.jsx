@@ -128,7 +128,7 @@ function ItemsPage({ onSelectedChange }) {
           pageState={pageState}
           filterAction={clearFilterHandler}
         />
-        {count > 0 && <ResultsCount count={count} label={t("items-count")} />}
+        {count > 0 && <ResultsCount count={count} label={t("items count")} />}
 
         {/* display items */}
         {items?.map((item, index) => (
@@ -162,7 +162,7 @@ function ItemsPage({ onSelectedChange }) {
         )}
 
         {count === 0 && status !== "loading" && (
-          <NoContent msg={t("no-medicines")} />
+          <NoContent msg={t("no items")} />
         )}
 
         {status === "loading" && <Loader allowCancel={false} />}
@@ -176,7 +176,7 @@ function ItemsPage({ onSelectedChange }) {
           <Toast
             bgColor={Colors.SUCCEEDED_COLOR}
             foreColor="#fff"
-            toastText={t("update-succeeded")}
+            toastText={t("update succeeded")}
             actionAfterTimeout={() => dispatch(resetActiveStatus())}
           />
         )}
@@ -194,7 +194,7 @@ function ItemsPage({ onSelectedChange }) {
           <Toast
             bgColor={Colors.SUCCEEDED_COLOR}
             foreColor="#fff"
-            toastText={t("update-succeeded")}
+            toastText={t("update succeeded")}
             actionAfterTimeout={() => dispatch(resetChangeOfferStatus())}
           />
         )}

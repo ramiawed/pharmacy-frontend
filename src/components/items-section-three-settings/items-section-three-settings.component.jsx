@@ -63,13 +63,13 @@ function ItemsSectionThreeSettings() {
         description={description}
         order={order}
         titleRight={titleRight}
-        header="القسم الثالث / أدوية /"
-        checkboxLabel="show-section-three-items-in-home-page"
+        header={t("section three items")}
+        checkboxLabel="show section in home page"
         updateAction={updateSettings}
         field="itemsSectionThree"
       />
 
-      <CardInfo headerTitle={t("section-three-items")}>
+      <CardInfo headerTitle={t("section three items")}>
         {itemsSectionThreeStatus === "loading" ? (
           <Loader />
         ) : (
@@ -79,7 +79,6 @@ function ItemsSectionThreeSettings() {
                 <SettingRow
                   data={item}
                   key={item._id}
-                  // tooltip="remove-company-from-favorites-advertisement"
                   action={removeFromSectionThree}
                   type="item"
                 />
@@ -87,7 +86,7 @@ function ItemsSectionThreeSettings() {
 
               <CenterContainer>
                 <Button
-                  text="add-label"
+                  text="add"
                   action={() => {
                     setShowChooseModal(true);
                   }}
@@ -113,7 +112,7 @@ function ItemsSectionThreeSettings() {
         <Toast
           bgColor={Colors.SUCCEEDED_COLOR}
           foreColor="#fff"
-          toastText={t("item-added")}
+          toastText={t("item added")}
           actionAfterTimeout={() =>
             dispatch(resetAddItemToSectionThreeStatus())
           }
@@ -135,7 +134,7 @@ function ItemsSectionThreeSettings() {
         <Toast
           bgColor={Colors.SUCCEEDED_COLOR}
           foreColor="#fff"
-          toastText={t("item-removed")}
+          toastText={t("item removed")}
           actionAfterTimeout={() =>
             dispatch(resetRemoveItemFromSectionThreeStatus())
           }

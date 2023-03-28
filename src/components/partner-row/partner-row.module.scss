@@ -38,7 +38,7 @@
 .point_sys_label {
   label {
     color: $light-color;
-    font-size: 10px;
+    font-size: 12px;
     font-weight: bold;
     cursor: pointer;
   }
@@ -71,12 +71,12 @@
     align-items: center;
 
     .btn {
-      // min-width: 200px;
       background-color: $offer-color;
       color: $main-color;
       border: none;
       outline: none;
       padding: 4px;
+      margin: 0 6px;
       font-size: 14px;
       font-weight: bold;
       border-radius: 6px;

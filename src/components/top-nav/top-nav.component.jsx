@@ -118,7 +118,7 @@ function TopNav({ onSelectedChange }) {
             >
               <Icon
                 icon={() => <IoMdNotifications size={24} />}
-                tooltip={t("nav notifications")}
+                tooltip={t("notifications")}
                 withAlertIcon={unReadNotificationCount > 0}
                 closeToIcon={true}
               />
@@ -178,7 +178,7 @@ function TopNav({ onSelectedChange }) {
               dispatch(setSearchCompanyId(null));
             }}
           >
-            {t("nav main page")}
+            {t("home")}
           </Link>
 
           <Link
@@ -195,7 +195,7 @@ function TopNav({ onSelectedChange }) {
               dispatch(setSearchCompanyId(null));
             }}
           >
-            {t("nav company")}
+            {t("companies")}
           </Link>
 
           {(user.type === UserTypeConstants.ADMIN ||
@@ -214,7 +214,7 @@ function TopNav({ onSelectedChange }) {
                 dispatch(setSearchCompanyId(null));
               }}
             >
-              {t("nav warehouse")}
+              {t("warehouses")}
             </Link>
           )}
 
@@ -242,7 +242,7 @@ function TopNav({ onSelectedChange }) {
               }
             }}
           >
-            {t("nav medicines")}
+            {t("items")}
           </Link>
 
           {(user.type === UserTypeConstants.ADMIN ||
@@ -262,7 +262,7 @@ function TopNav({ onSelectedChange }) {
                   dispatch(setSearchCompanyId(null));
                 }}
               >
-                {t("nav-offers")}
+                {t("offers")}
               </Link>
 
               <Link
@@ -279,7 +279,7 @@ function TopNav({ onSelectedChange }) {
                   dispatch(setSearchCompanyId(null));
                 }}
               >
-                {t("items-with-points")}
+                {t("points offer")}
               </Link>
             </>
           )}
@@ -299,7 +299,7 @@ function TopNav({ onSelectedChange }) {
                 dispatch(setSearchCompanyId(null));
               }}
             >
-              {t("nav-special-offers")}
+              {t("baskets")}
             </Link>
           )}
         </div>

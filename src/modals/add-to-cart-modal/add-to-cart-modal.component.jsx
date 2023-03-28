@@ -26,14 +26,16 @@ import { removeSavedItem } from "../../redux/savedItems/savedItemsSlice";
 // constants and utils
 import { toEnglishNumber } from "../../utils/constants";
 
-// styles
-import styles from "./add-to-cart-modal.module.scss";
+// components
+import PointDetailsRow from "../../components/point-details-row/point-details-row.component";
 import OfferDetailsRow from "../../components/offer-details-row/offer-details-row.component";
 import ChooserContainer from "../../components/chooser-container/chooser-container.component";
 import ChooseValue from "../../components/choose-value/choose-value.component";
 import SearchInput from "../../components/search-input/search-input.component";
-import PointDetailsRow from "../../components/point-details-row/point-details-row.component";
 import Separator from "../../components/separator/separator.component";
+
+// styles
+import styles from "./add-to-cart-modal.module.scss";
 
 function AddToCartModal({ item, close, setAddItemToCartMsg, fromSavedItems }) {
   const { t } = useTranslation();
@@ -170,7 +172,7 @@ function AddToCartModal({ item, close, setAddItemToCartMsg, fromSavedItems }) {
     close();
 
     // infrom the user that the item is added to cart
-    setAddItemToCartMsg("add-item-to-cart");
+    setAddItemToCartMsg("add item to cart");
 
     // if the item saved in the savedItem, remove it
     if (fromSavedItems) {
@@ -181,9 +183,9 @@ function AddToCartModal({ item, close, setAddItemToCartMsg, fromSavedItems }) {
   return (
     <>
       <Modal
-        header="add-to-cart"
+        header="add to cart"
         cancelLabel="cancel"
-        okLabel="add-label"
+        okLabel="add"
         closeModal={close}
         okModal={addItemToCartHandler}
         small={true}
@@ -192,20 +194,20 @@ function AddToCartModal({ item, close, setAddItemToCartMsg, fromSavedItems }) {
           <ChooserContainer
             onclick={() => setShowWarehousesOptions(true)}
             selectedValue={selectedWarehouse.warehouse.name}
-            label="item-warehouse"
+            label="warehouses"
             styleForSearch={true}
             // withoutBorder={true}
           />
 
           <div className={styles.max_qty_div}>
-            <label>{t("item-max-qty")}</label>
+            <label>{t("max quantity")}</label>
             <label>
               {selectedWarehouse.maxQty === 0 ? "-" : selectedWarehouse.maxQty}
             </label>
           </div>
 
           <SearchInput
-            label="selected-qty"
+            label="quantity"
             id="selected-qty"
             type="text"
             value={qty}
@@ -216,7 +218,9 @@ function AddToCartModal({ item, close, setAddItemToCartMsg, fromSavedItems }) {
             hasFocus={true}
           />
 
-          {qtyError && <label className={styles.error}>{t("enter-qty")}</label>}
+          {qtyError && (
+            <label className={styles.error}>{t("enter qty error")}</label>
+          )}
 
           {offer?.offers.length > 0 &&
             offer.offers.map((o, index) => (

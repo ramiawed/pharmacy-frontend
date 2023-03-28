@@ -257,8 +257,8 @@ function ItemExcelPage() {
       )
         .then(unwrapResult)
         .then(() => {
-          setSuccessMsg(`${t("inserted-items")}: ${rightItem.length}`);
-          setFailedMsg(`${t("wrong-items")}: ${wrongItems.length}`);
+          setSuccessMsg(`${t("inserted items")}: ${rightItem.length}`);
+          setFailedMsg(`${t("wrong items")}: ${wrongItems.length}`);
           setShowModal(true);
           setItems([...wrongItems, ...unSelectedItems]);
           checkItemsSelectionStatus([...wrongItems, ...unSelectedItems]);
@@ -384,10 +384,10 @@ function ItemExcelPage() {
       <Header
         title={
           items.length === 0
-            ? t("add-or-update-items")
+            ? t("add or update items")
             : withUpdate
-            ? t("update-items")
-            : t("add-items")
+            ? t("update items")
+            : t("add items")
         }
       />
 
@@ -417,7 +417,7 @@ function ItemExcelPage() {
                 <Icon
                   selected={false}
                   foreColor={Colors.MAIN_COLOR}
-                  tooltip={t("update-items")}
+                  tooltip={t("update items")}
                   onclick={() => {
                     setShowConfirmModal(true);
                   }}
@@ -428,7 +428,7 @@ function ItemExcelPage() {
                 <Icon
                   selected={false}
                   foreColor={Colors.MAIN_COLOR}
-                  tooltip={t("add-items")}
+                  tooltip={t("add items")}
                   onclick={() => {
                     setShowConfirmModal(true);
                   }}
@@ -441,7 +441,7 @@ function ItemExcelPage() {
               <Icon
                 selected={false}
                 foreColor={Colors.FAILED_COLOR}
-                tooltip={t("delete-all-rows")}
+                tooltip={t("delete all rows")}
                 onclick={() => setItems([])}
                 icon={() => <AiFillDelete size={24} />}
                 withBackground={true}
@@ -449,31 +449,31 @@ function ItemExcelPage() {
             </ActionBar>
             <div>
               <LabelValueRow
-                label="file-name"
+                label="file name"
                 value={fileName}
                 withLargeLabel={true}
               />
 
               <LabelValueRow
-                label="items-count"
+                label="items count"
                 value={items.length}
                 withLargeLabel={true}
               />
 
               <LabelValueRow
-                label="correct-items-count"
+                label="correct items count"
                 value={correctItemsCount}
                 withLargeLabel={true}
               />
 
               <LabelValueRow
-                label="wrong-items-count"
+                label="wrong items count"
                 value={wrongItemsCount}
                 withLargeLabel={true}
               />
 
               <LabelValueRow
-                label="selected-items-count"
+                label="selected items count"
                 value={selectedItemsCount}
                 withLargeLabel={true}
               />
@@ -491,7 +491,7 @@ function ItemExcelPage() {
                 setWithUpdate(false);
                 fileChanged(file);
               }}
-              label="choose-file-to-add-items"
+              label="choose file to add items"
               action={false}
             />
 
@@ -504,7 +504,7 @@ function ItemExcelPage() {
                 setWithUpdate(true);
                 fileChanged(file);
               }}
-              label="choose-file-to-update-items"
+              label="choose file to update items"
               action={true}
             />
             <ExcelFileCriteria action="update" />
@@ -528,8 +528,8 @@ function ItemExcelPage() {
 
         {showModal && (
           <Modal
-            header="add-items"
-            cancelLabel="close-label"
+            header="add items"
+            cancelLabel="close"
             closeModal={() => setShowModal(false)}
             small={true}
           >
@@ -540,17 +540,17 @@ function ItemExcelPage() {
 
         {showConfirmModal && (
           <Modal
-            header="add-items"
+            header="add items"
             cancelLabel="cancel"
-            okLabel="ok-label"
+            okLabel="ok"
             okModal={() => addOrUpdateHandler()}
             closeModal={() => setShowConfirmModal(false)}
             small={true}
           >
             {withUpdate ? (
-              <p>{t("insert-update-items-msg")}</p>
+              <p>{t("insert update items msg")}</p>
             ) : (
-              <p>{t("insert-items-msg")}</p>
+              <p>{t("insert items msg")}</p>
             )}
           </Modal>
         )}

@@ -30,7 +30,7 @@ function WarehousesSearchEngine({ onSearch, keyUpHandler }) {
 
   // guest options and its change handler
   const citiesOptions = [
-    { value: CitiesName.ALL, label: t("all-cities") },
+    { value: CitiesName.ALL, label: t("all cities") },
     { value: CitiesName.ALEPPO, label: t("aleppo") },
     { value: CitiesName.DAMASCUS, label: t("damascus") },
     { value: CitiesName.DARAA, label: t("daraa") },
@@ -57,7 +57,7 @@ function WarehousesSearchEngine({ onSearch, keyUpHandler }) {
     <>
       <SearchContainer searchEngineAlert={isThereSearch}>
         <SearchInput
-          label="user name"
+          label="name"
           id="search-name"
           type="text"
           value={searchName}
@@ -72,7 +72,7 @@ function WarehousesSearchEngine({ onSearch, keyUpHandler }) {
           <ChooserContainer
             onclick={() => setShowChooseCityModal(true)}
             selectedValue={searchCity}
-            label="city-name"
+            label="city"
             styleForSearch={true}
             withoutBorder={true}
           />
@@ -81,7 +81,7 @@ function WarehousesSearchEngine({ onSearch, keyUpHandler }) {
 
       {showChooseCityModal && (
         <ChooseValue
-          headerTitle="city-name"
+          headerTitle="city"
           close={() => {
             setShowChooseCityModal(false);
           }}

@@ -114,8 +114,8 @@ body {
 }
 
 .offer_points_container {
-    background: rgb(170, 227, 255) !important;
-    background: linear-gradient(118deg, rgba(170, 227, 255, 1) 0%, #a4bfb4 70%) !important;
+    background: #F1C7B1 !important;
+    /* background: linear-gradient(118deg, rgba(170, 227, 255, 1) 0%, #a4bfb4 70%) !important; */
 }
 
 /* text alignment */

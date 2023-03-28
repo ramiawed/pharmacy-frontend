@@ -34,7 +34,7 @@ const BasketItemRow = ({
             <Icon
               selected={false}
               foreColor={Colors.SUCCEEDED_COLOR}
-              tooltip={t("add-item")}
+              tooltip={t("add")}
               onclick={() => {
                 setSelectedIndex(index);
                 setShowChooseModal(true);
@@ -49,12 +49,12 @@ const BasketItemRow = ({
 
         <div className={styles.content_details}>
           <div className={styles.cell}>
-            <label>{t("item-price-small")}</label>
+            <label>{t("price")}</label>
             <label>{formatNumber(item.item?.price)}</label>
           </div>
 
           <div className={styles.cell}>
-            <label>{t("basket-free-item")}</label>
+            <label>{t("free")}</label>
             <input
               type="checkbox"
               value={item.isFree}
@@ -70,7 +70,7 @@ const BasketItemRow = ({
             />
           </div>
           <div className={styles.cell}>
-            <label>{t("quantity-label")}</label>
+            <label>{t("quantity")}</label>
             {allowEdit ? (
               <input
                 value={item.qty}
@@ -86,7 +86,7 @@ const BasketItemRow = ({
           </div>
 
           <div className={styles.cell}>
-            <label>{t("pieces")}</label>
+            <label>{t("piece")}</label>
             {allowEdit ? (
               <input
                 value={item.bonus}
@@ -102,7 +102,7 @@ const BasketItemRow = ({
           </div>
 
           <div className={styles.cell}>
-            <label>{t("total-price-small")}</label>
+            <label>{t("total price")}</label>
             <label>
               {item.item
                 ? item.isFree
@@ -119,7 +119,7 @@ const BasketItemRow = ({
           <Icon
             selected={false}
             foreColor={Colors.FAILED_COLOR}
-            tooltip={t("delete-item")}
+            tooltip={t("delete")}
             onclick={() => {
               deleteItem(index);
             }}

@@ -41,7 +41,7 @@ function MultiValue({
                 <MdAddCircle size={24} color={Colors.SUCCEEDED_COLOR} />
               )}
               onclick={addHandler}
-              tooltip={t("add-offer-tooltip")}
+              tooltip={t("add")}
             />
           </div>
         )}
@@ -89,7 +89,7 @@ function MultiValue({
                   <RiDeleteBin5Fill size={24} color={Colors.FAILED_COLOR} />
                 )}
                 onclick={() => deleteHandler(value.key)}
-                tooltip={t("remove-offer-tooltip")}
+                tooltip={t("remove")}
               />
             )}
           </div>

@@ -78,7 +78,7 @@ function NewAdvertisement({ closeHandler, header }) {
 
   const addAdvertisementHandler = () => {
     if (!selectedImage) {
-      setImageErrorMsg("choose-image-msg");
+      setImageErrorMsg("choose image msg");
       return;
     }
 
@@ -106,7 +106,7 @@ function NewAdvertisement({ closeHandler, header }) {
       header={header}
       cancelLabel="cancel"
       closeModal={() => closeHandler(false)}
-      okLabel="ok-label"
+      okLabel="ok"
       okModal={addAdvertisementHandler}
     >
       <div className={styles.new_advertisement_div}>
@@ -129,13 +129,13 @@ function NewAdvertisement({ closeHandler, header }) {
             {/* item */}
             <ChoosePartnerOrItem
               selectedObj={selectedMedicine}
-              label={t("single-item")}
+              label={t("item")}
               deleteObj={setSelectedMedicine}
               showSelectedModal={setShowSelectMedicineModal}
             />
 
             <div className={styles.row}>
-              <label>{t("image-label")}:</label>
+              <label>{t("image")}:</label>
               {selectedImage === null ? (
                 <>
                   <Icon
@@ -208,7 +208,7 @@ function NewAdvertisement({ closeHandler, header }) {
       )}
       {showSelectCompanyModal && (
         <SelectPartnerModal
-          header="choose-company"
+          header="choose company"
           close={() => setShowSelectCompanyModal(false)}
           chooseAction={(data) => selectCompanyHandler(data)}
           data={companies}
@@ -217,7 +217,7 @@ function NewAdvertisement({ closeHandler, header }) {
       )}
       {showSelectWarehouseModal && (
         <SelectPartnerModal
-          header="choose-warehouse"
+          header="choose warehouse"
           close={() => setShowSelectWarehouseModal(false)}
           chooseAction={(data) => selectWarehouseHandler(data)}
           data={warehouses}

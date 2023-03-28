@@ -28,8 +28,8 @@ const CreateAccountStageFour = ({
 
   const userPaperUrlLabel =
     userType === UserTypeConstants.GUEST
-      ? "choose-paper-url-guest"
-      : "choose-paper-url-pharmacy";
+      ? "choose paper url guest"
+      : "choose paper url pharmacy";
 
   // guest options and its change handler
   const guestJobOptions = [
@@ -100,7 +100,7 @@ const CreateAccountStageFour = ({
         hasError = true;
         errorObj = {
           ...errorObj,
-          employeeName: "enter employee name",
+          employeeName: "enter employee name error",
         };
       }
 
@@ -108,7 +108,7 @@ const CreateAccountStageFour = ({
         hasError = true;
         errorObj = {
           ...errorObj,
-          certificateName: "enter certificate name",
+          certificateName: "enter certificate name error",
         };
       }
     }
@@ -121,7 +121,7 @@ const CreateAccountStageFour = ({
             ...errorObj,
             guestDetails: {
               ...errorObj.guestDetails,
-              jobTitle: "enter job title",
+              jobTitle: "enter job title error",
             },
           };
         }
@@ -132,7 +132,7 @@ const CreateAccountStageFour = ({
             ...errorObj,
             guestDetails: {
               ...errorObj.guestDetails,
-              companyName: "enter company name",
+              companyName: "enter company name error",
             },
           };
         }
@@ -145,7 +145,7 @@ const CreateAccountStageFour = ({
           ...errorObj,
           guestDetails: {
             ...errorObj.guestDetails,
-            job: "choose job",
+            job: "choose job error",
           },
         };
       }
@@ -163,7 +163,7 @@ const CreateAccountStageFour = ({
         hasError = true;
         errorObj = {
           ...errorObj,
-          paperUrl: "enter-paper-url",
+          paperUrl: "enter paper url error",
         };
       }
 
@@ -221,7 +221,7 @@ const CreateAccountStageFour = ({
             <>
               <Input
                 type="text"
-                label="user employee name"
+                label="employee name"
                 id="employeeName"
                 value={obj.employeeName}
                 onchange={(e) =>
@@ -229,12 +229,12 @@ const CreateAccountStageFour = ({
                 }
                 error={error.employeeName?.length > 0}
                 errorMsg={t(error.employeeName)}
-                placeholder="mandatory-placeholder"
+                placeholder="mandatory placeholder"
                 onEnterPress={nextStageHandler}
               />
               <Input
                 type="text"
-                label="user certificate name"
+                label="certificate name"
                 id="certificateName"
                 value={obj.certificateName}
                 onchange={(e) =>
@@ -242,7 +242,7 @@ const CreateAccountStageFour = ({
                 }
                 error={error.certificateName?.length > 0}
                 errorMsg={t(error.certificateName)}
-                placeholder="mandatory-placeholder"
+                placeholder="mandatory placeholder"
                 onEnterPress={nextStageHandler}
               />
             </>
@@ -255,7 +255,7 @@ const CreateAccountStageFour = ({
               <ChooserContainer
                 onclick={() => setShowChooseGuestJobModal(true)}
                 selectedValue={obj.guestDetails.job}
-                label="user job"
+                label="job"
                 error={error.guestDetails.job}
               />
 
@@ -264,7 +264,7 @@ const CreateAccountStageFour = ({
                   <div className={styles.input_div}>
                     <Input
                       type="text"
-                      label="user-company-name"
+                      label="company name"
                       id="companyName"
                       value={obj.guestDetails.companyName}
                       onchange={(e) =>
@@ -275,7 +275,7 @@ const CreateAccountStageFour = ({
                       }
                       error={error.guestDetails.companyName?.length > 0}
                       errorMsg={t(error.guestDetails.companyName)}
-                      placeholder="mandatory-placeholder"
+                      placeholder="mandatory placeholder"
                       onEnterPress={nextStageHandler}
                     />
                   </div>
@@ -283,7 +283,7 @@ const CreateAccountStageFour = ({
                   <div className={styles.input_div}>
                     <Input
                       type="text"
-                      label="user job title"
+                      label="job title"
                       id="jobTitle"
                       value={obj.guestDetails.jobTitle}
                       onchange={(e) =>
@@ -294,7 +294,7 @@ const CreateAccountStageFour = ({
                       }
                       error={error.guestDetails.jobTitle?.length > 0}
                       errorMsg={t(error.guestDetails.jobTitle)}
-                      placeholder="mandatory-placeholder"
+                      placeholder="mandatory placeholder"
                       onEnterPress={nextStageHandler}
                     />
                   </div>
@@ -316,7 +316,10 @@ const CreateAccountStageFour = ({
             >
               <form encType="multipart/form-data">
                 <>
-                  <label htmlFor="paperUrl" style={{ textAlign: "center" }}>
+                  <label
+                    htmlFor="paperUrl"
+                    style={{ textAlign: "center", display: "inline-block" }}
+                  >
                     {t(userPaperUrlLabel)}
                   </label>
                   <input
@@ -329,7 +332,7 @@ const CreateAccountStageFour = ({
                   />
                 </>
               </form>
-              <label>اضغط هنا</label>
+              <label>{t("press here")}</label>
               <label>{obj.paperUrl?.name}</label>
               {error.paperUrl && (
                 <label className={styles.error_label}>
@@ -348,7 +351,7 @@ const CreateAccountStageFour = ({
 
       {showChooseGuestJobModal && (
         <ChooseValue
-          headerTitle="user job"
+          headerTitle="job"
           close={() => {
             setShowChooseGuestJobModal(false);
           }}

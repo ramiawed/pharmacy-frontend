@@ -36,15 +36,15 @@ function OrdersSearchEngine({ pageState, search, type }) {
   const [showChooseDatesOption, setShowChooseDatesOption] = useState(false);
 
   const dateOptions = [
-    { value: "", label: t("choose-date") },
-    { value: DateOptions.ONE_DAY, label: t("one-day") },
-    { value: DateOptions.THREE_DAY, label: t("three-days") },
-    { value: DateOptions.ONE_WEEK, label: t("one-week") },
-    { value: DateOptions.TWO_WEEK, label: t("two-weeks") },
-    { value: DateOptions.ONE_MONTH, label: t("one-month") },
-    { value: DateOptions.TWO_MONTH, label: t("two-months") },
-    { value: DateOptions.SIX_MONTH, label: t("six-months") },
-    { value: DateOptions.ONE_YEAR, label: t("one-year") },
+    { value: "", label: t("choose date") },
+    { value: DateOptions.ONE_DAY, label: t("one day") },
+    { value: DateOptions.THREE_DAY, label: t("three days") },
+    { value: DateOptions.ONE_WEEK, label: t("one week") },
+    { value: DateOptions.TWO_WEEK, label: t("two weeks") },
+    { value: DateOptions.ONE_MONTH, label: t("one month") },
+    { value: DateOptions.TWO_MONTH, label: t("two months") },
+    { value: DateOptions.SIX_MONTH, label: t("six months") },
+    { value: DateOptions.ONE_YEAR, label: t("one year") },
   ];
 
   const handleDateOptions = (val) => {
@@ -54,27 +54,27 @@ function OrdersSearchEngine({ pageState, search, type }) {
   const orderStatusOptions = [
     {
       value: OrdersStatusOptions.ALL,
-      label: t("all"),
+      label: t("all orders"),
     },
     {
       value: OrdersStatusOptions.SENT_BY_PHARMACY,
-      label: t("sent-by-pharmacy-label"),
+      label: t("sent by pharmacy label"),
     },
     {
       value: OrdersStatusOptions.CONFIRM,
-      label: t("confirm-label"),
+      label: t("confirm label"),
     },
     {
       value: OrdersStatusOptions.DELIVERY,
-      label: t("delivery-label"),
+      label: t("delivery label"),
     },
     {
       value: OrdersStatusOptions.SHIPPING,
-      label: t("shipping-label"),
+      label: t("shipping label"),
     },
     {
       value: OrdersStatusOptions.WILL_DONT_SERVER,
-      label: t("dont-serve-label"),
+      label: t("dont serve label"),
     },
   ];
 
@@ -93,12 +93,12 @@ function OrdersSearchEngine({ pageState, search, type }) {
       <SearchContainer searchAction={search} searchEngineAlert={isThereSearch}>
         {user.type !== UserTypeConstants.PHARMACY && (
           <SearchInput
-            label="pharmacy-name"
+            label="pharmacy"
             id="pharmacy-name"
             type="text"
             value={pageState.searchPharmacyName}
             onchange={(e) => dispatch(setSearchPharmacyName(e.target.value))}
-            placeholder="enter pharmacy name-placeholder"
+            placeholder="search by pharmacy name"
             onEnterPress={search}
             resetField={() => {
               dispatch(setSearchPharmacyName(""));
@@ -108,12 +108,12 @@ function OrdersSearchEngine({ pageState, search, type }) {
 
         {user.type !== UserTypeConstants.WAREHOUSE && (
           <SearchInput
-            label="warehouse-name"
+            label="warehouse"
             id="warehouse-name"
             type="text"
             value={pageState.searchWarehouseName}
             onchange={(e) => dispatch(setSearchWarehouseName(e.target.value))}
-            placeholder="enter warehouse name-placeholder"
+            placeholder="enter warehouse name"
             onEnterPress={search}
             resetField={() => {
               dispatch(setSearchWarehouseName(""));
@@ -130,7 +130,7 @@ function OrdersSearchEngine({ pageState, search, type }) {
               (option) => option.value === pageState.orderStatus
             )[0].label
           }
-          label="order-status-label"
+          label="order status"
           styleForSearch={true}
           withoutBorder={true}
         />
@@ -142,13 +142,13 @@ function OrdersSearchEngine({ pageState, search, type }) {
           selectedValue={
             dateOptions.filter((d) => d.value === pageState.dateOption)[0].label
           }
-          label="dates-within"
+          label="dates within"
           styleForSearch={true}
           withoutBorder={true}
         />
 
         <SearchRowContainer>
-          <label>{t("date-label")}</label>
+          <label>{t("date")}</label>
           <input
             type="date"
             value={pageState.date}
@@ -161,7 +161,7 @@ function OrdersSearchEngine({ pageState, search, type }) {
 
       {showChooseOrderStatus && (
         <ChooseValue
-          headerTitle="order-status-label"
+          headerTitle="order status"
           close={() => {
             setShowChooseOrderStatus(false);
           }}
@@ -175,7 +175,7 @@ function OrdersSearchEngine({ pageState, search, type }) {
 
       {showChooseDatesOption && (
         <ChooseValue
-          headerTitle="dates-within"
+          headerTitle="dates within"
           close={() => {
             setShowChooseDatesOption(false);
           }}

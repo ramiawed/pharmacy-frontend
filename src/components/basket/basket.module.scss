@@ -51,8 +51,16 @@
   text-decoration: underline;
   color: $light-color;
   display: inline-block;
-  margin-left: 10px;
+
   min-width: 75px;
+
+  &:lang(ar) {
+    margin-left: 10px;
+  }
+
+  &:lang(en) {
+    margin-right: 10px;
+  }
 }
 
 .details_row label:nth-child(2) {

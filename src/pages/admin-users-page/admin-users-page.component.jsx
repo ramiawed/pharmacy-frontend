@@ -137,7 +137,7 @@ function AdminUsersPage({ onSelectedChange }) {
 
         {/* show no content div when no user found */}
         {count === 0 && status !== "loading" && (
-          <NoContent msg={t("no-partners-found-message")} />
+          <NoContent msg={t("no partners found")} />
         )}
 
         {/* loading and notifications */}

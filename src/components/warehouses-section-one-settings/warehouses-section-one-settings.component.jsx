@@ -67,13 +67,13 @@ function WarehousesSectionOneSettings() {
         description={description}
         order={order}
         titleRight={titleRight}
-        header={t("section-one-warehouses")}
-        checkboxLabel="show-section-one-warehouses-in-home-page"
+        header={t("section one warehouses")}
+        checkboxLabel="show section in home page"
         updateAction={updateSettings}
         field="warehousesSectionOne"
       />
 
-      <CardInfo headerTitle={t("section-one-warehouses")}>
+      <CardInfo headerTitle={t("section one warehouses")}>
         {warehousesSectionOneStatus === "loading" ? (
           <Loader />
         ) : (
@@ -89,7 +89,7 @@ function WarehousesSectionOneSettings() {
 
               <CenterContainer>
                 <Button
-                  text="add-label"
+                  text="add"
                   action={() => {
                     setShowChooseModal(true);
                   }}
@@ -103,7 +103,7 @@ function WarehousesSectionOneSettings() {
 
       {showChooseModal && (
         <SelectPartnerModal
-          header={`${"choose-warehouse"}`}
+          header={`${"choose warehouse"}`}
           close={() => setShowChooseModal(false)}
           chooseAction={(data) => {
             dispatch(addWarehouseToSectionOne({ token, id: data._id }));
@@ -117,7 +117,7 @@ function WarehousesSectionOneSettings() {
         <Toast
           bgColor={Colors.SUCCEEDED_COLOR}
           foreColor="#fff"
-          toastText={t("company-added")}
+          toastText={t("warehouse added")}
           actionAfterTimeout={() =>
             dispatch(resetAddWarehouseToSectionOneStatus())
           }
@@ -139,7 +139,7 @@ function WarehousesSectionOneSettings() {
         <Toast
           bgColor={Colors.SUCCEEDED_COLOR}
           foreColor="#fff"
-          toastText={t("company-removed")}
+          toastText={t("warehouse removed")}
           actionAfterTimeout={() =>
             dispatch(resetRemoveWarehouseFromSectionOneStatus())
           }

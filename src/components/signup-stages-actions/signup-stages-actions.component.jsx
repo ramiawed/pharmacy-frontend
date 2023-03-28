@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 // components
 import Button from "../button/button.component";
@@ -7,14 +8,20 @@ import Button from "../button/button.component";
 import styles from "./signup-stages-actions.module.scss";
 
 const SignupStagesActions = ({ stage, prevHandler, nextHandler }) => {
+  const { t } = useTranslation();
+
   return (
     <div className={styles.container}>
       {stage > 1 && (
-        <Button text="السابق" action={prevHandler} classStyle="bg_green" />
+        <Button
+          text={t("previous")}
+          action={prevHandler}
+          classStyle="bg_green"
+        />
       )}
       <div style={{ width: "10px" }}></div>
       {stage <= 4 && (
-        <Button text="التالي" action={nextHandler} classStyle="bg_green" />
+        <Button text={t("next")} action={nextHandler} classStyle="bg_green" />
       )}
     </div>
   );

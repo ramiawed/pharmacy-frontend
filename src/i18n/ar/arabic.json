@@ -450,5 +450,22 @@
     "enter customer price": "ادخل السعر للعموم",
     "you have": "لديك",
     "equals to": "ما يعادل",
-    "you can replace your points after sending the order by contact us": "يمكنك استبدال نقاطك بعد ارسال الطلب من خلال الاتصال مع خدمة العملاء لدى سمارت فارما"
+    "you can replace your points after sending the order by contact us": "يمكنك استبدال نقاطك بعد ارسال الطلب من خلال الاتصال مع خدمة العملاء لدى سمارت فارما",
+    "app name": "Smart Pharma",
+    "cancel operation label": "إلغاء العملية",
+    "cancel operation msg": "تم إلغاء العملية",
+    "timeout": "انتهاء المهلة الزمنية للعملية، تم إلغاء العملية",
+    "timeout msg": "انتهاء المهلة الزمنية للعملية، تم إلغاء العملية",
+    "network failed": "يوجد خطأ بالسيرفر، اعد المحاولة بعد دقائق",
+    "order inserted from socket": "طلبية جديدة",
+    "order updated from socket": "تم تعديل احدى الطلبيات",
+    "order deleted from socket": "تم حذف احدى الطلبيات",
+    "basket order inserted from socket": "طلبية خاصة جديدة",
+    "basket order updated from socket": "تم تعديل احدى الطلبيات الخاصة",
+    "basket order deleted from socket": "تم حذف احدى الطلبيات الخاصة",
+    "new user added": "شريك جديد قام بإنشاء حساب، يرجى تفعيل حسابه",
+    "believed partner": "شريكنا العزيز...",
+    "thank message": "شكراً لإنضمامك إلى عائلتنا، عائلة سمارت فارما ",
+    "approve message": "سوف يتم تفعيل حسابك خلال ٢٤ ساعة",
+    "hour serving": "موجودين لخدمتك ٧/٢٤"
 }

@@ -290,7 +290,7 @@ export const statisticsSlice = createSlice({
       if (payload === "timeout") {
         state.error = payload;
       } else if (payload === "cancel") {
-        state.error = "cancel-operation-msg";
+        state.error = "cancel operation msg";
       } else if (payload === "network failed") {
         state.error = "network failed";
       } else state.error = payload.message;

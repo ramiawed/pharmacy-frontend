@@ -77,7 +77,7 @@ function UserNotificationPage({ onSelectedChange }) {
 
   return (
     <>
-      <Header title="nav notifications" refreshHandler={refreshHandler} />
+      <Header title="notifications" refreshHandler={refreshHandler} />
 
       <MainContentContainer>
         {userNotifications.map((note, index) => (
@@ -85,7 +85,7 @@ function UserNotificationPage({ onSelectedChange }) {
         ))}
 
         {userNotifications.length === 0 && status !== "loading" && (
-          <NoContent msg={t("no-notifications")} />
+          <NoContent msg={t("no notifications")} />
         )}
 
         {status === "loading" && (
@@ -105,7 +105,7 @@ function UserNotificationPage({ onSelectedChange }) {
         {userNotifications.length === count &&
           status !== "loading" &&
           count !== 0 && (
-            <p className={["center", "fc_light"].join(" ")}>{t("no-more")}</p>
+            <p className={["center", "fc_light"].join(" ")}>{t("no more")}</p>
           )}
       </MainContentContainer>
     </>

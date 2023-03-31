@@ -192,9 +192,9 @@ export const UserNotificationsSlice = createSlice({
       state.status = "failed";
 
       if (payload === "timeout") {
-        state.error = "timeout-msg";
+        state.error = "timeout msg";
       } else if (payload === "cancel") {
-        state.error = "cancel-operation-msg";
+        state.error = "cancel operation msg";
       } else if (payload === "network failed") {
         state.error = "network failed";
       } else state.error = payload.message;
@@ -217,9 +217,9 @@ export const UserNotificationsSlice = createSlice({
       state.status = "failed";
 
       if (payload === "timeout") {
-        state.error = "timeout-msg";
+        state.error = "timeout msg";
       } else if (payload === "cancel") {
-        state.error = "cancel-operation-msg";
+        state.error = "cancel operation msg";
       } else if (payload === "network failed") {
         state.error = "network failed";
       } else state.error = payload.message;

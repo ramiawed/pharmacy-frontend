@@ -304,7 +304,7 @@ export const basketsSlice = createSlice({
       if (payload === "timeout") {
         state.error = "timeout";
       } else if (payload === "cancel") {
-        state.error = "cancel-operation-msg";
+        state.error = "cancel operation msg";
       } else if (payload === "network failed") {
         state.error = "network failed";
       } else state.error = payload.message;
@@ -325,7 +325,7 @@ export const basketsSlice = createSlice({
       if (payload === "timeout") {
         state.error = "timeout";
       } else if (payload === "cancel") {
-        state.error = "cancel-operation-msg";
+        state.error = "cancel operation msg";
       } else if (payload === "network failed") {
         state.error = "network failed";
       } else state.error = payload.message;
@@ -353,7 +353,7 @@ export const basketsSlice = createSlice({
       if (payload === "timeout") {
         state.error = "timeout";
       } else if (payload === "cancel") {
-        state.error = "cancel-operation-msg";
+        state.error = "cancel operation msg";
       } else if (payload === "network failed") {
         state.error = "network failed";
       } else state.error = payload.message;
@@ -373,7 +373,7 @@ export const basketsSlice = createSlice({
       if (payload === "timeout") {
         state.error = "timeout";
       } else if (payload === "cancel") {
-        state.error = "cancel-operation-msg";
+        state.error = "cancel operation msg";
       } else if (payload === "network failed") {
         state.error = "network failed";
       } else state.error = payload.message;

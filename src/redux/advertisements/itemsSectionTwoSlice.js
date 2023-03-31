@@ -216,9 +216,9 @@ export const itemsSectionTwoSlice = createSlice({
       state.itemsSectionTwoStatus = "failed";
 
       if (payload === "timeout") {
-        state.itemsSectionTwoError = "timeout-msg";
+        state.itemsSectionTwoError = "timeout msg";
       } else if (payload === "cancel") {
-        state.itemsSectionTwoError = "cancel-operation-msg";
+        state.itemsSectionTwoError = "cancel operation msg";
       } else if (payload === "network failed") {
         state.itemsSectionTwoError = "network failed";
       } else state.itemsSectionTwoError = payload.message;
@@ -244,9 +244,9 @@ export const itemsSectionTwoSlice = createSlice({
       state.addItemToSectionTwoStatus = "failed";
 
       if (payload === "timeout") {
-        state.addItemToSectionTwoError = "timeout-msg";
+        state.addItemToSectionTwoError = "timeout msg";
       } else if (payload === "cancel") {
-        state.addItemToSectionTwoError = "cancel-operation-msg";
+        state.addItemToSectionTwoError = "cancel operation msg";
       } else if (payload === "network failed") {
         state.addItemToSectionTwoError = "network failed";
       } else state.addItemToSectionTwoError = payload.message;
@@ -266,9 +266,9 @@ export const itemsSectionTwoSlice = createSlice({
       state.removeItemFromSectionTwoStatus = "failed";
 
       if (payload === "timeout") {
-        state.removeItemFromSectionTwoError = "timeout-msg";
+        state.removeItemFromSectionTwoError = "timeout msg";
       } else if (payload === "cancel") {
-        state.removeItemFromSectionTwoError = "cancel-operation-msg";
+        state.removeItemFromSectionTwoError = "cancel operation msg";
       } else if (payload === "network failed") {
         state.removeItemFromSectionTwoError = "network failed";
       } else state.removeItemFromSectionTwoError = payload.message;

@@ -46,7 +46,7 @@ function Loader({ onclick, allowCancel, msg1, msg2 }) {
           action={() => {
             if (onclick) onclick();
           }}
-          text={t("cancel-operation-label")}
+          text={t("cancel operation label")}
           classStyle="bg_light"
         />
       )}

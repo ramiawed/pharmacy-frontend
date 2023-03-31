@@ -219,9 +219,9 @@ export const warehousesSectionOneSlice = createSlice({
       state.warehousesSectionOneStatus = "failed";
 
       if (payload === "timeout") {
-        state.warehousesSectionOneError = "timeout-msg";
+        state.warehousesSectionOneError = "timeout msg";
       } else if (payload === "cancel") {
-        state.warehousesSectionOneError = "cancel-operation-msg";
+        state.warehousesSectionOneError = "cancel operation msg";
       } else if (payload === "network failed") {
         state.warehousesSectionOneError = "network failed";
       } else state.warehousesSectionOneError = payload.message;
@@ -242,9 +242,9 @@ export const warehousesSectionOneSlice = createSlice({
       state.addWarehouseToSectionOneStatus = "failed";
 
       if (payload === "timeout") {
-        state.addWarehouseToSectionOneError = "timeout-msg";
+        state.addWarehouseToSectionOneError = "timeout msg";
       } else if (payload === "cancel") {
-        state.addWarehouseToSectionOneError = "cancel-operation-msg";
+        state.addWarehouseToSectionOneError = "cancel operation msg";
       } else if (payload === "network failed") {
         state.addWarehouseToSectionOneError = "network failed";
       } else state.addWarehouseToSectionOneError = payload.message;
@@ -264,9 +264,9 @@ export const warehousesSectionOneSlice = createSlice({
       state.removeWarehouseFromSectionOneStatus = "failed";
 
       if (payload === "timeout") {
-        state.removeWarehouseFromSectionOneError = "timeout-msg";
+        state.removeWarehouseFromSectionOneError = "timeout msg";
       } else if (payload === "cancel") {
-        state.removeWarehouseFromSectionOneError = "cancel-operation-msg";
+        state.removeWarehouseFromSectionOneError = "cancel operation msg";
       } else if (payload === "network failed") {
         state.removeWarehouseFromSectionOneError = "network failed";
       } else state.removeWarehouseFromSectionOneError = payload.message;

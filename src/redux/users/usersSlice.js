@@ -463,9 +463,9 @@ export const usersSlice = createSlice({
       state.status = "failed";
 
       if (payload === "timeout") {
-        state.error = "timeout-msg";
+        state.error = "timeout msg";
       } else if (payload === "cancel") {
-        state.error = "cancel-operation-msg";
+        state.error = "cancel operation msg";
       } else if (payload === "network failed") {
         state.error = "network failed";
       } else state.error = payload.message;
@@ -489,9 +489,9 @@ export const usersSlice = createSlice({
       state.status = "failed";
 
       if (payload === "timeout") {
-        state.error = "timeout-msg";
+        state.error = "timeout msg";
       } else if (payload === "cancel") {
-        state.error = "cancel-operation-msg";
+        state.error = "cancel operation msg";
       } else if (payload === "network failed") {
         state.error = "network failed";
       } else state.error = payload.message;
@@ -508,9 +508,9 @@ export const usersSlice = createSlice({
       state.resetUserPasswordStatus = "failed";
 
       if (payload === "timeout") {
-        state.resetUserPasswordError = "timeout-msg";
+        state.resetUserPasswordError = "timeout msg";
       } else if (payload === "cancel") {
-        state.resetUserPasswordError = "cancel-operation-msg";
+        state.resetUserPasswordError = "cancel operation msg";
       } else if (payload === "network failed") {
         state.resetUserPasswordError = "network failed";
       } else state.resetUserPasswordError = payload.message;

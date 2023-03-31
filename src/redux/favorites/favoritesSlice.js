@@ -236,9 +236,9 @@ export const favoritesSlice = createSlice({
     [getFavorites.rejected]: (state, { payload }) => {
       state.status = "failed";
       if (payload === "timeout") {
-        state.error = "timeout-msg";
+        state.error = "timeout msg";
       } else if (payload === "cancel") {
-        state.error = "cancel-operation-msg";
+        state.error = "cancel operation msg";
       } else if (payload === "network failed") {
         state.error = "network failed";
       } else state.error = payload.message;
@@ -258,9 +258,9 @@ export const favoritesSlice = createSlice({
     [addFavorite.rejected]: (state, { payload }) => {
       state.status = "failed";
       if (payload === "timeout") {
-        state.error = "timeout-msg";
+        state.error = "timeout msg";
       } else if (payload === "cancel") {
-        state.error = "cancel-operation-msg";
+        state.error = "cancel operation msg";
       } else if (payload === "network failed") {
         state.error = "network failed";
       } else state.error = payload.message;
@@ -280,9 +280,9 @@ export const favoritesSlice = createSlice({
     [addFavorite.rejected]: (state, { payload }) => {
       state.status = "failed";
       if (payload === "timeout") {
-        state.error = "timeout-msg";
+        state.error = "timeout msg";
       } else if (payload === "cancel") {
-        state.error = "cancel-operation-msg";
+        state.error = "cancel operation msg";
       } else if (payload === "network failed") {
         state.error = "network failed";
       } else state.error = payload.message;
@@ -301,9 +301,9 @@ export const favoritesSlice = createSlice({
     [removeFavorite.rejected]: (state, { payload }) => {
       state.status = "failed";
       if (payload === "timeout") {
-        state.error = "timeout-msg";
+        state.error = "timeout msg";
       } else if (payload === "cancel") {
-        state.error = "cancel-operation-msg";
+        state.error = "cancel operation msg";
       } else if (payload === "network failed") {
         state.error = "network failed";
       } else state.error = payload.message;
@@ -322,9 +322,9 @@ export const favoritesSlice = createSlice({
     [removeFavoriteItem.rejected]: (state, { payload }) => {
       state.status = "failed";
       if (payload === "timeout") {
-        state.error = "timeout-msg";
+        state.error = "timeout msg";
       } else if (payload === "cancel") {
-        state.error = "cancel-operation-msg";
+        state.error = "cancel operation msg";
       } else if (payload === "network failed") {
         state.error = "network failed";
       } else state.error = payload.message;

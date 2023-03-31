@@ -692,9 +692,9 @@ export const itemsSlice = createSlice({
       state.status = "failed";
 
       if (payload === "timeout") {
-        state.error = "timeout-msg";
+        state.error = "timeout msg";
       } else if (payload === "cancel") {
-        state.error = "cancel-operation-msg";
+        state.error = "cancel operation msg";
       } else if (payload === "network failed") {
         state.error = "network failed";
       } else state.error = payload.message;
@@ -710,9 +710,9 @@ export const itemsSlice = createSlice({
       state.addStatus = "failed";
 
       if (payload === "timeout") {
-        state.addError = "timeout-msg";
+        state.addError = "timeout msg";
       } else if (payload === "cancel") {
-        state.addError = "cancel-operation-msg";
+        state.addError = "cancel operation msg";
       } else if (payload === "network failed") {
         state.addError = "network failed";
       } else state.addError = payload.message;
@@ -728,9 +728,9 @@ export const itemsSlice = createSlice({
       state.addStatus = "failed";
 
       if (payload === "timeout") {
-        state.addError = "timeout-msg";
+        state.addError = "timeout msg";
       } else if (payload === "cancel") {
-        state.addError = "cancel-operation-msg";
+        state.addError = "cancel operation msg";
       } else if (payload === "network failed") {
         state.addError = "network failed";
       } else state.addError = payload.message;
@@ -752,9 +752,9 @@ export const itemsSlice = createSlice({
       state.activeStatus = "failed";
 
       if (payload === "timeout") {
-        state.activeError = "timeout-msg";
+        state.activeError = "timeout msg";
       } else if (payload === "cancel") {
-        state.activeError = "cancel-operation-msg";
+        state.activeError = "cancel operation msg";
       } else if (payload === "network failed") {
         state.activeError = "network failed";
       } else state.activeError = payload.message;
@@ -776,9 +776,9 @@ export const itemsSlice = createSlice({
       state.updateStatus = "failed";
 
       if (payload === "timeout") {
-        state.updateError = "timeout-msg";
+        state.updateError = "timeout msg";
       } else if (payload === "cancel") {
-        state.updateError = "cancel-operation-msg";
+        state.updateError = "cancel operation msg";
       } else if (payload === "network failed") {
         state.updateError = "network failed";
       } else state.updateError = payload.message;
@@ -793,9 +793,9 @@ export const itemsSlice = createSlice({
       state.changeLogoStatus = "failed";
 
       if (payload === "timeout") {
-        state.changeLogoError = "timeout-msg";
+        state.changeLogoError = "timeout msg";
       } else if (payload === "cancel") {
-        state.changeLogoError = "cancel-operation-msg";
+        state.changeLogoError = "cancel operation msg";
       } else if (payload === "network failed") {
         state.changeLogoError = "network failed";
       } else state.changeLogoError = payload.message;
@@ -815,9 +815,9 @@ export const itemsSlice = createSlice({
       state.changeOfferStatus = "failed";
 
       if (payload === "timeout") {
-        state.changeOfferError = "timeout-msg";
+        state.changeOfferError = "timeout msg";
       } else if (payload === "cancel") {
-        state.changeOfferError = "cancel-operation-msg";
+        state.changeOfferError = "cancel operation msg";
       } else if (payload === "network failed") {
         state.changeOfferError = "network failed";
       } else state.changeOfferError = payload.message;
@@ -837,9 +837,9 @@ export const itemsSlice = createSlice({
       state.changeOfferStatus = "failed";
 
       if (payload === "timeout") {
-        state.changeOfferError = "timeout-msg";
+        state.changeOfferError = "timeout msg";
       } else if (payload === "cancel") {
-        state.changeOfferError = "cancel-operation-msg";
+        state.changeOfferError = "cancel operation msg";
       } else if (payload === "network failed") {
         state.changeOfferError = "network failed";
       } else state.changeOfferError = payload.message;
@@ -856,9 +856,9 @@ export const itemsSlice = createSlice({
     [removeItemFromWarehouse.rejected]: (state, action) => {
       state.removeFromWarehouseStatus = "failed";
       if (action.payload === "timeout") {
-        state.removeFromWarehouseError = "timeout-msg";
+        state.removeFromWarehouseError = "timeout msg";
       } else if (action.payload === "cancel") {
-        state.removeFromWarehouseError = "cancel-operation-msg";
+        state.removeFromWarehouseError = "cancel operation msg";
       } else if (action.payload === "network failed") {
         state.removeFromWarehouseError = "network failed";
       } else state.removeFromWarehouseError = action.payload.message;
@@ -873,9 +873,9 @@ export const itemsSlice = createSlice({
       state.updateStatus = "failed";
 
       if (payload === "timeout") {
-        state.changeMaxQtyError = "timeout-msg";
+        state.changeMaxQtyError = "timeout msg";
       } else if (payload === "cancel") {
-        state.changeMaxQtyError = "cancel-operation-msg";
+        state.changeMaxQtyError = "cancel operation msg";
       } else if (payload === "network failed") {
         state.changeMaxQtyError = "network failed";
       } else state.changeMaxQtyError = payload.message;

@@ -49,8 +49,6 @@ export const getMedicines = createAsyncThunk(
     try {
       const {
         medicines: { pageState },
-        warehouses: { warehouses },
-        auth: { user },
       } = getState();
 
       CancelToken = axios.CancelToken;
@@ -84,6 +82,14 @@ export const getMedicines = createAsyncThunk(
         buildUrl = buildUrl + `&havePoint=true`;
       }
 
+      if (pageState.searchInWarehouse) {
+        buildUrl = buildUrl + `&searchInWarehouses=true`;
+      }
+
+      if (pageState.searchOutWarehouse) {
+        buildUrl = buildUrl + `&searchOutWarehouses=true`;
+      }
+
       const response = await axios.get(buildUrl, {
         params: {
           searchCompaniesIds: pageState.searchCompaniesIds.map(
@@ -92,26 +98,26 @@ export const getMedicines = createAsyncThunk(
           searchWarehousesIds: pageState.searchWarehousesIds.map(
             (warehouse) => warehouse.value
           ),
-          searchInWarehouses: pageState.searchInWarehouse
-            ? user.type === UserTypeConstants.WAREHOUSE
-              ? user._id
-              : pageState.searchInWarehouse
-              ? warehouses.map((w) => w._id)
-              : null
-            : null,
-          searchOutWarehouses: pageState.searchOutWarehouse
-            ? user.type === UserTypeConstants.WAREHOUSE
-              ? user._id
-              : pageState.searchOutWarehouse
-              ? warehouses.map((w) => w._id)
-              : null
-            : null,
-          userWarehouses:
-            user.type === UserTypeConstants.WAREHOUSE
-              ? user._id
-              : warehouses
-              ? warehouses.map((w) => w._id)
-              : [],
+          // searchInWarehouses: pageState.searchInWarehouse,
+          //   ? user.type === UserTypeConstants.WAREHOUSE
+          //     ? user._id
+          //     : pageState.searchInWarehouse
+          //     ? warehouses.map((w) => w._id)
+          //     : null
+          //   : null,
+          // searchOutWarehouses: pageState.searchOutWarehouse,
+          //   ? user.type === UserTypeConstants.WAREHOUSE
+          //     ? user._id
+          //     : pageState.searchOutWarehouse
+          //     ? warehouses.map((w) => w._id)
+          //     : null
+          //   : null,
+          // userWarehouses:
+          //   user.type === UserTypeConstants.WAREHOUSE
+          //     ? user._id
+          //     : warehouses
+          //     ? warehouses.map((w) => w._id)
+          //     : [],
         },
         cancelToken: source.token,
         headers: {
@@ -521,7 +527,7 @@ export const medicinesSlice = createSlice({
       if (payload === "timeout") {
         state.error = payload;
       } else if (payload === "cancel") {
-        state.error = "cancel-operation-msg";
+        state.error = "cancel operation msg";
       } else if (payload === "network failed") {
         state.error = "network failed";
       } else state.error = payload.message;
@@ -546,7 +552,7 @@ export const medicinesSlice = createSlice({
       if (payload === "timeout") {
         state.addToWarehouseError = payload;
       } else if (payload === "cancel") {
-        state.addToWarehouseError = "cancel-operation-msg";
+        state.addToWarehouseError = "cancel operation msg";
       } else if (payload === "network failed") {
         state.addToWarehouseError = "network failed";
       } else state.addToWarehouseError = payload.message;
@@ -570,7 +576,7 @@ export const medicinesSlice = createSlice({
       if (payload === "timeout") {
         state.removeFromWarehouseError = payload;
       } else if (payload === "cancel") {
-        state.removeFromWarehouseError = "cancel-operation-msg";
+        state.removeFromWarehouseError = "cancel operation msg";
       } else if (payload === "network failed") {
         state.removeFromWarehouseError = "network failed";
       } else state.removeFromWarehouseError = payload.message;

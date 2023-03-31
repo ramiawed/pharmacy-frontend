@@ -107,7 +107,7 @@ function ItemsPage({ onSelectedChange }) {
     window.scrollTo(0, 0);
 
     return () => {
-      dispatch(resetItems());
+      // dispatch(resetItems());
     };
   }, [pageState.warehouse, pageState.role]);
 

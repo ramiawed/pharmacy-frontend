@@ -249,7 +249,7 @@ function SocketObserver() {
     // new user
     if (user.type === UserTypeConstants.ADMIN) {
       socket.on("user-added", (data) => {
-        setUserAddedMsg("new-user-added");
+        setUserAddedMsg("new user added");
         dispatch(setRefresh(true));
       });
     }

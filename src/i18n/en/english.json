@@ -447,5 +447,8 @@
     "add item confirm msg": "Do you want to add the item?",
     "enter item trade name": "Enter the trade name of the product",
     "enter price": "Enter the price for the pharmacist",
-    "enter customer price": "Enter the customer price"
+    "enter customer price": "Enter the customer price",
+    "you have": "You have",
+    "equals to": "equivalent",
+    "you can replace your points after sending the order by contact us": "you can redeem your points after submitting the order by contacting the customer service at Smart Pharma"
 }

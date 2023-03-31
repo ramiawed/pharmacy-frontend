@@ -447,5 +447,8 @@
     "add item confirm msg": "هل تريد إضافة الدواء؟",
     "enter item trade name": "ادخل الاسم التجاري للمادة",
     "enter price": "ادخل السعر للصيدلاني",
-    "enter customer price": "ادخل السعر للعموم"
+    "enter customer price": "ادخل السعر للعموم",
+    "you have": "لديك",
+    "equals to": "ما يعادل",
+    "you can replace your points after sending the order by contact us": "يمكنك استبدال نقاطك بعد ارسال الطلب من خلال الاتصال مع خدمة العملاء لدى سمارت فارما"
 }

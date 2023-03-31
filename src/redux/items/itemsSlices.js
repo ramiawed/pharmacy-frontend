@@ -81,6 +81,14 @@ export const getItems = createAsyncThunk(
         buildUrl = buildUrl + `&isActive=${false}`;
       }
 
+      if (pageState.searchInWarehouse) {
+        buildUrl = buildUrl + `&searchInWarehouses=true`;
+      }
+
+      if (pageState.searchOutWarehouse) {
+        buildUrl = buildUrl + `&searchOutWarehouses=true`;
+      }
+
       const response = await axios.get(buildUrl, {
         params: {
           searchCompaniesIds: pageState.searchCompaniesIds.map(
@@ -89,13 +97,13 @@ export const getItems = createAsyncThunk(
           searchWarehousesIds: pageState.searchWarehousesIds.map(
             (warehouse) => warehouse.value
           ),
-          searchInWarehouses: pageState.searchInWarehouse
-            ? warehouses.map((w) => w._id)
-            : null,
-          searchOutWarehouses: pageState.searchOutWarehouse
-            ? warehouses.map((w) => w._id)
-            : null,
-          userWarehouses: warehouses ? warehouses.map((w) => w._id) : [],
+          // searchInWarehouses: pageState.searchInWarehouse
+          //   ? warehouses.map((w) => w._id)
+          //   : null,
+          // searchOutWarehouses: pageState.searchOutWarehouse
+          //   ? warehouses.map((w) => w._id)
+          //   : null,
+          // userWarehouses: warehouses ? warehouses.map((w) => w._id) : [],
         },
         // timeout: 10000,
         cancelToken: source.token,

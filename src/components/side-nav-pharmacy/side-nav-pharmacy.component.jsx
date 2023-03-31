@@ -51,7 +51,7 @@ function SideNavPharmacy({ selectedOption, onSelectedChange, collapsed }) {
               )}
             </div>
             {!collapsed && (
-              <div className={styles.nav_label}>{t("my Íorders")} </div>
+              <div className={styles.nav_label}>{t("my orders")} </div>
             )}
           </div>
         </Link>

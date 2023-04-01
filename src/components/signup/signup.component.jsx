@@ -172,7 +172,7 @@ function SignUp() {
   const newAccountHandler = async () => {
     setShowLicenseModal(false);
     setSignupLoading(true);
-    setLoadingSignUpMsg("create-user-msg");
+    setLoadingSignUpMsg("create user msg");
 
     try {
       const userResponse = await axios.post(
@@ -185,8 +185,8 @@ function SignUp() {
         user.type === UserTypeConstants.PHARMACY ||
         user.type === UserTypeConstants.GUEST
       ) {
-        setLoadingSignUpMsg("create-user-succeeded-msg");
-        setLoadingPaperUrlMsg("paper-loading-msg");
+        setLoadingSignUpMsg("create user succeeded msg");
+        setLoadingPaperUrlMsg("paper loading msg");
         const data = new FormData();
         data.append("file", user.paperUrl);
         data.append("id", userResponse.data.data.id);

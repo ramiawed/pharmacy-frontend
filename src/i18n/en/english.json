@@ -467,5 +467,8 @@
     "believed partner": "Believed Partner...",
     "thank message": "Thank you to join us at our family, SMART PHARMA family",
     "approve message": "your account will be activated during 24 hours",
-    "hour serving": "We are there to serve you 24/7"
+    "hour serving": "We are there to serve you 24/7",
+    "create user msg": "A new account is being created, please wait a few seconds",
+    "create user succeeded msg": "Account created successfully",
+    "paper loading msg": "The image is being loaded, please wait a few seconds, the waiting time depends on the image size"
 }

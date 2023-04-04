@@ -267,4 +267,4 @@ export const checkPoints = (item, user) => {
 // export const SERVER_URL = "http://67.205.165.65/";
 export const BASEURL = "https://api.smartpharmasy.com/api/v1";
 export const SERVER_URL = "https://api.smartpharmasy.com/";
-export const VERSION = "2.0.0";
+export const VERSION = "2.0.1";

@@ -24,6 +24,7 @@ import {
   resetChangeOfferStatus,
   cancelOperation,
   clearFilter,
+  resetUpdateStatus,
 } from "../../redux/items/itemsSlices";
 
 import { selectToken, selectUser } from "../../redux/auth/authSlice";
@@ -55,8 +56,7 @@ function ItemsPage({ onSelectedChange }) {
     removeFromWarehouseStatus,
     updateStatus,
   } = useSelector(selectItems);
-  // const { changeOfferStatus: warehouseOfferStatus } =
-  //   useSelector(selectWarehouseItems);
+
   const token = useSelector(selectToken);
 
   // handle for page change in the paginate component
@@ -85,7 +85,10 @@ function ItemsPage({ onSelectedChange }) {
     dispatch(getItems({ token }));
   };
 
-  const changeItemMaxQty = (obj) => {};
+  const refershHandler = () => {
+    dispatch(resetItems());
+    handleSearch();
+  };
 
   const keyUpHandler = () => {
     cancelOperation();
@@ -124,7 +127,7 @@ function ItemsPage({ onSelectedChange }) {
           user={user}
           warehouse={pageState.warehouse}
           company={pageState.company}
-          search={handleEnterPress}
+          refreshHandler={refershHandler}
           pageState={pageState}
           filterAction={clearFilterHandler}
         />
@@ -138,10 +141,9 @@ function ItemsPage({ onSelectedChange }) {
             user={user}
             warehouse={pageState.warehouse}
             role={pageState.role}
-            // deleteItemFromWarehouse={deleteItemFromWarehouse}
-            changeItemMaxQty={changeItemMaxQty}
             index={index}
             searchString={pageState.searchName}
+            search={() => refershHandler()}
           />
         ))}
 
@@ -178,6 +180,24 @@ function ItemsPage({ onSelectedChange }) {
             foreColor="#fff"
             toastText={t("update succeeded")}
             actionAfterTimeout={() => dispatch(resetActiveStatus())}
+          />
+        )}
+
+        {updateStatus === "succeeded" && (
+          <Toast
+            bgColor={Colors.SUCCEEDED_COLOR}
+            foreColor="#fff"
+            toastText={t("update succeeded")}
+            actionAfterTimeout={() => dispatch(resetUpdateStatus())}
+          />
+        )}
+
+        {updateStatus === "failde" && (
+          <Toast
+            bgColor={Colors.FAILED_COLOR}
+            foreColor="#fff"
+            toastText={t("update failed")}
+            actionAfterTimeout={() => dispatch(resetUpdateStatus())}
           />
         )}
 

@@ -19,7 +19,7 @@ import { BASEURL, Colors, UserTypeConstants } from "../../utils/constants";
 function ItemsPageActions({
   user,
   company,
-  search,
+  refreshHandler,
   warehouse,
   pageState,
   filterAction,
@@ -34,7 +34,7 @@ function ItemsPageActions({
         selected={false}
         icon={() => <RiRefreshLine />}
         tooltip={t("refresh")}
-        onclick={search}
+        onclick={refreshHandler}
         withBackground={true}
       />
 

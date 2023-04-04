@@ -16,8 +16,10 @@ import { UserTypeConstants } from "../../utils/constants";
 import MyPointsDescriptionAr from "../../components/my-points-description-ar/my-points-description-ar.component";
 import MyPointsDescriptionEn from "../../components/my-points-description-en/my-points-description-en.component";
 import i18next from "i18next";
+import { useTranslation } from "react-i18next";
 
 function MyPointPage({ onSelectedChange }) {
+  const { t } = useTranslation();
   const dispatch = useDispatch();
   const currentLanguage = i18next.language;
 
@@ -36,7 +38,9 @@ function MyPointPage({ onSelectedChange }) {
       <Header title="my points" refreshHandler={refreshHandler} />
 
       <MainContentContainer>
-        <p className={styles.my_points}>{user.points}</p>
+        <p className={styles.my_points}>
+          {t("number of points in your account")} {user.points}
+        </p>
         {currentLanguage === "ar" ? (
           <MyPointsDescriptionAr />
         ) : (

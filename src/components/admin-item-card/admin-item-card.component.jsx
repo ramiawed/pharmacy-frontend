@@ -41,6 +41,7 @@ import styles from "./admin-item-card.module.scss";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
+import { unwrapResult } from "@reduxjs/toolkit";
 
 const checkOffer = (item, user) => {
   if (user.type === UserTypeConstants.COMPANY) {
@@ -70,7 +71,15 @@ const checkOffer = (item, user) => {
   return result;
 };
 
-function AdminItemCard({ item, user, warehouse, role, index, searchString }) {
+function AdminItemCard({
+  item,
+  user,
+  warehouse,
+  role,
+  index,
+  searchString,
+  search,
+}) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -99,14 +108,14 @@ function AdminItemCard({ item, user, warehouse, role, index, searchString }) {
   const actionButtonPress = (action) => {
     if (action === "delete") {
       setModalObj({
-        header: "item-delete-header",
-        body: "item-delete-confirm-message",
+        header: "item delete header",
+        body: "item delete confirm message",
         action: "delete",
       });
     } else {
       setModalObj({
-        header: "item-undo-delete-header",
-        body: "item-undo-delete-confirm-message",
+        header: "item undo delete header",
+        body: "item undo delete confirm message",
         action: "undo-delete",
       });
     }
@@ -221,6 +230,23 @@ function AdminItemCard({ item, user, warehouse, role, index, searchString }) {
     } else {
       undoDeleteItemHandler();
     }
+  };
+
+  const changeMaxQtyHanlder = (value) => {
+    dispatch(
+      changeItemWarehouseMaxQty({
+        obj: {
+          itemId: item._id,
+          warehouseId: warehouse._id,
+          qty: (value + "").length === 0 ? 0 : Number.parseInt(value),
+        },
+        token,
+      })
+    )
+      .then(unwrapResult)
+      .then(() => search());
+
+    setShowChangeMaxQtyModal(false);
   };
 
   return (
@@ -423,20 +449,7 @@ function AdminItemCard({ item, user, warehouse, role, index, searchString }) {
           min={0}
           max={1000}
           step={1}
-          okModal={(value) => {
-            dispatch(
-              changeItemWarehouseMaxQty({
-                obj: {
-                  itemId: item._id,
-                  warehouseId: warehouse._id,
-                  qty: (value + "").length === 0 ? 0 : Number.parseInt(value),
-                },
-                token,
-              })
-            );
-
-            setShowChangeMaxQtyModal(false);
-          }}
+          okModal={(value) => changeMaxQtyHanlder(value)}
         />
       )}
     </>

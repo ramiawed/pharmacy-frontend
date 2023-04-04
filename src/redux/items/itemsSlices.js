@@ -876,6 +876,35 @@ export const itemsSlice = createSlice({
     },
     [changeItemWarehouseMaxQty.fulfilled]: (state, action) => {
       state.updateStatus = "succeeded";
+      const { newItem, itemId } = action.payload.data;
+
+      // const newItems = state.items.map((item) => {
+      //   if (item._id === itemId) {
+      //     const findedWarehouses = item.warehouses.map((w) => {
+      //       if (w.warehouse._id === warehouseId) {
+      //         return {
+      //           ...w,
+      //           maxQty: qty,
+      //         };
+      //       } else {
+      //         return w;
+      //       }
+      //     });
+
+      //     return {
+      //       ...item,
+      //       warehouses: findedWarehouses,
+      //     };
+      //   } else {
+      //     return item;
+      //   }
+      // });
+
+      state.items = state.items.map((item) => {
+        if (item._id === itemId) {
+          return newItem;
+        } else return item;
+      });
     },
     [changeItemWarehouseMaxQty.rejected]: (state, { payload }) => {
       state.updateStatus = "failed";

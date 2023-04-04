@@ -266,6 +266,7 @@
     "items not in company": "Products not available within the company",
     "items in company": "Products available within the company",
     "update succeeded": "Modified successfully",
+    "update failed": "An error occurred while editing, please try again.",
     "item available in company": "Available from the company",
     "change max qty": "Change maximum quantity order",
     "dont have permission": "You do not have permission to perform this operation",
@@ -471,5 +472,10 @@
     "create user msg": "A new account is being created, please wait a few seconds",
     "create user succeeded msg": "Account created successfully",
     "paper loading msg": "The image is being loaded, please wait a few seconds, the waiting time depends on the image size",
-    "app name in arabic": "Smart Pharma"
+    "app name in arabic": "Smart Pharma",
+    "item delete header": "Delete an Product",
+    "item delete confirm message": "When the product is deleted, it will not be available for adding to any warehouse, do you want to continue the process?",
+    "item undo delete header": "Restore an Product",
+    "item undo delete confirm message": "When the product is restored, it will be available for adding to any repository. Do you want to continue the process?",
+    "number of points in your account": "Number of points in your account"
 }

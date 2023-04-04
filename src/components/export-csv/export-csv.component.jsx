@@ -38,6 +38,7 @@ export const ExportCSV = ({ csvData, fileName }) => {
     let jsonData = csvData.map((d) => {
       return {
         "الاسم التحاري": d.item.name,
+        "الاسم التجاري العربي": d.item.nameAr,
         الشركة: d.item.company.name,
         "الشكل الصيدلاني": d.item.formula,
         العيار: d.item.caliber,
@@ -47,10 +48,11 @@ export const ExportCSV = ({ csvData, fileName }) => {
         الكمية: d.qty,
         العرض: d.bonus
           ? d.bonus +
+            " " +
             (d.bonus
               ? d.bonusType === OfferTypes.PERCENTAGE
-                ? t("after-bonus-percentage-label")
-                : t("after-quantity-label")
+                ? t("percentage")
+                : t("piece")
               : "")
           : "",
         "السعر الاجمالي":

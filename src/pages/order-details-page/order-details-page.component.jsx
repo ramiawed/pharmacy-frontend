@@ -295,7 +295,7 @@ function OrderDetailsPage({ location, onSelectedChange }) {
                           user.type === UserTypeConstants.ADMIN) && (
                           <>
                             <div className={[styles.cell].join(" ")}>
-                              {formatNumber(item.points)}
+                              {item.points ? item.points : "-"}
                             </div>
                             <div className={[styles.cell].join(" ")}>
                               {formatNumber(item.price)}

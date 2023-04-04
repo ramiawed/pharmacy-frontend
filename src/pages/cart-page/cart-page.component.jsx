@@ -50,6 +50,17 @@ function CartPage({ onSelectedChange }) {
         {/* if cart contains an item or more */}
         {cartWarehouse.length > 0 && (
           <div>
+            <div>
+              {cartWarehouse?.length > 0 && (
+                <p className="point_note">
+                  {t("you have")} {user.points} {t("point")} {t("equals to")}{" "}
+                  {user.points * 100}{" "}
+                  {t(
+                    "you can replace your points after sending the order by contact us"
+                  )}
+                </p>
+              )}
+            </div>
             {cartWarehouse.map((w, index) => (
               <CartWarehouse warehouse={w} key={index} wIndex={index} />
             ))}

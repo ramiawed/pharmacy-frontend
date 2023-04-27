@@ -71,7 +71,7 @@ function FavoritesPage({ onSelectedChange }) {
       <Header refreshHandler={refreshFavoritesHandler} title="favorites" />
       <MainContentContainer>
         <div>
-          <CardInfo headerTitle={t("nav items")}>
+          <CardInfo headerTitle={t("items")}>
             {favoritesItems &&
               favoritesItems.map((item, index) => (
                 <MedicineRow

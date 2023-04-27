@@ -162,7 +162,6 @@ function UserRow({ user, index }) {
   const userStatusChangeConfirmHandler = (type) => {
     // the icon represent that the user is approve by the admin
     // when click on this icon show warning message
-    console.log(type);
     if (type === "active") {
       setActionType("inactive");
       setModalInfo({

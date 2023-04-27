@@ -3,6 +3,8 @@
 .container {
   padding: 20px 0;
   background-color: $white-color;
+  display: flex;
+  padding: 40px 0;
 }
 
 .content_container {
@@ -13,43 +15,78 @@
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
+}
 
-  h2 {
-    color: $offer-color;
-    text-shadow: 2px 2px 5px#000;
-    font-weight: bold;
-    font-size: 2rem;
-    line-height: 6rem;
-    text-align: center;
-    border-bottom: 2px solid $main-color;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
+.header {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  padding: 30px 0;
+}
 
-    .img {
-      width: 64px;
-      height: auto;
-      border-radius: 12px;
-      border-radius: 50%;
-      box-shadow: 0 0 3px 3px rgba($color: #000000, $alpha: 0.3);
-      background-color: $white-color;
-    }
+.header p {
+  font-size: 3rem;
+  color: $dark-color;
+  font-weight: bolder;
+  order: 2;
+}
+
+.header .img {
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  box-shadow: 0 0 3px 3px rgba($color: $dark-color, $alpha: 0.3);
+  background-color: $white-color;
+  order: 1;
+}
+
+.content p {
+  text-align: justify;
+  font-size: 1rem;
+  line-height: 2.5rem;
+  color: $main-color;
+}
+
+@media only screen and (min-width: $small) {
+  .container {
+    flex-direction: row;
   }
 
-  p {
-    font-size: 18px;
-    font-weight: bold;
-    font-style: italic;
-    font-family: $font-ar-01;
-    color: $main-color;
-    line-height: 40px;
-    text-align: justify;
+  .content_container {
+    justify-content: center;
+  }
+
+  .header {
+    flex-direction: row;
+  }
+
+  .header p {
+    font-size: 3rem;
+    order: 1;
+  }
+
+  .header .img {
+    order: 2;
   }
 }
 
 @media only screen and (min-width: $medium) {
   .container {
     flex-direction: row;
+  }
+
+  .header {
+    flex-direction: row;
+  }
+
+  .header p {
+    font-size: 5rem;
+    order: 1;
+  }
+
+  .header .img {
+    order: 2;
   }
 }

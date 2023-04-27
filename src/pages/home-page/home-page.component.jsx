@@ -7,12 +7,6 @@ import AdvertisementsHomePage from "../../components/advertisements-home-page/ad
 import IntroduceUs from "../../components/introduce-us/introduce-us.component";
 import SectionsIntroduce from "../../components/pharmacy-introduce/sections-introduce.component";
 
-// icons
-import { GiMedicinePills, GiMedicines } from "react-icons/gi";
-import { RiMedicineBottleFill } from "react-icons/ri";
-import { FaWarehouse } from "react-icons/fa";
-import { AiFillGolden, AiFillProfile } from "react-icons/ai";
-
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
@@ -42,11 +36,6 @@ import {
   selectItemsSectionThree,
 } from "../../redux/advertisements/itemsSectionThreeSlice";
 import { selectAdvertisements } from "../../redux/advertisements/advertisementsSlice";
-
-// styles
-import styles from "./home-page.module.scss";
-
-// constants
 
 function HomePage({ onSelectedChange }) {
   const dispatch = useDispatch();
@@ -174,117 +163,13 @@ function HomePage({ onSelectedChange }) {
         position: "relative",
       }}
     >
-      {/* <div className={styles.favorite_nav}>
-        {settings.companiesSectionOne.show && (
-          <div
-            className={styles.favorite_nav_icon}
-            style={{
-              backgroundColor: AdditionalColors[0],
-            }}
-            onClick={showCompaniesSectionOneSideNavHandler}
-          >
-            <AiFillGolden size={24} />
-            <p className={styles.favorite_nav_tooltip}>
-              {t(settings.companiesSectionOne?.title)}
-            </p>
-          </div>
-        )}
-
-        {settings.companiesSectionTwo.show && (
-          <div
-            className={styles.favorite_nav_icon}
-            style={{
-              backgroundColor: AdditionalColors[1],
-            }}
-            onClick={showCompaniesSectionTwoSideNavHandler}
-          >
-            <AiFillProfile size={24} />
-            <p className={styles.favorite_nav_tooltip}>
-              {t(settings.companiesSectionTwo?.title)}
-            </p>
-          </div>
-        )}
-
-        {settings.warehousesSectionOne.show && (
-          <div
-            className={styles.favorite_nav_icon}
-            style={{
-              backgroundColor: AdditionalColors[2],
-            }}
-            onClick={showWarehouseSectionOneSideNavHandler}
-          >
-            <FaWarehouse size={24} />
-            <p className={styles.favorite_nav_tooltip}>
-              {t(settings.warehousesSectionOne?.title)}
-            </p>
-          </div>
-        )}
-
-        {settings.itemsSectionOne.show && (
-          <div
-            className={styles.favorite_nav_icon}
-            style={{
-              backgroundColor: AdditionalColors[3],
-            }}
-            onClick={showItemsSectionOneSideNavHandler}
-          >
-            <GiMedicinePills size={24} />
-            <p className={styles.favorite_nav_tooltip}>
-              {t(settings.itemsSectionOne?.title)}
-            </p>
-          </div>
-        )}
-
-        {settings.itemsSectionTwo.show && (
-          <div
-            className={styles.favorite_nav_icon}
-            style={{
-              backgroundColor: AdditionalColors[4],
-            }}
-            onClick={showItemsSectionTwoSideNavHandler}
-          >
-            <GiMedicines size={24} />
-            <p className={styles.favorite_nav_tooltip}>
-              {t(settings.itemsSectionTwo?.title)}
-            </p>
-          </div>
-        )}
-
-        {settings.itemsSectionThree.show && (
-          <div
-            className={styles.favorite_nav_icon}
-            style={{
-              backgroundColor: AdditionalColors[5],
-            }}
-            onClick={showItemsSectionThreeSideNavHandler}
-          >
-            <RiMedicineBottleFill size={24} />
-            <p className={styles.favorite_nav_tooltip}>
-              {t(settings.itemsSectionThree?.title)}
-            </p>
-          </div>
-        )}
-      </div> */}
-
-      {/* <div
-        style={{
-          minHeight: "calc(100vh - 60px)",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <SliderImages />
-      </div> */}
-
-      <div className={styles.header_adv_div}>
+      {advertisements.length > 0 && (
         <AdvertisementsHomePage advertisements={advertisements} />
-      </div>
+      )}
 
       <IntroduceUs />
+
       <SectionsIntroduce />
-      {/* <WarehouseIntroduce /> */}
-      {/* <GuestIntroduce /> */}
 
       {showCompaniesSectionOneSideNav && (
         <AdvertisementSideNav

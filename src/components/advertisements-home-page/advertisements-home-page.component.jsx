@@ -38,35 +38,42 @@ function AdvertisementsHomePage({ advertisements }) {
     }, 10000);
   };
 
-  const onAdvertisementPressHandler = (adv) => {
-    if (adv.company !== null) {
-      dispatch(resetMedicines());
-      dispatch(setSearchCompanyId(adv.company._id));
-      history.push({
-        pathname: "/medicines",
-        state: { myCompanies: [] },
-      });
-    }
+  const onAdvertisementPressHandler = (adv, currentIndex) => {
+    if (index === currentIndex) {
+      if (adv.company !== null) {
+        dispatch(resetMedicines());
+        dispatch(setSearchCompanyId(adv.company._id));
+        history.push({
+          pathname: "/medicines",
+          state: { myCompanies: [] },
+        });
+      }
 
-    if (adv.warehouse !== null) {
-      dispatch(resetMedicines());
-      dispatch(setSearchWarehouseId(adv.warehouse._id));
-      history.push({
-        pathname: "/medicines",
-        state: { myCompanies: adv.warehouse.ourCompanies },
-      });
-    }
+      if (adv.warehouse !== null) {
+        dispatch(resetMedicines());
+        dispatch(setSearchWarehouseId(adv.warehouse._id));
+        history.push({
+          pathname: "/medicines",
+          state: { myCompanies: adv.warehouse.ourCompanies },
+        });
+      }
 
-    if (adv.medicine !== null) {
-      dispatch(resetMedicines());
-      history.push("/item", {
-        from: user.type,
-        type: "info",
-        allowAction: false,
-        itemId: adv.medicine._id,
-        companyId: null,
-        warehouseId: null,
-      });
+      if (adv.medicine !== null) {
+        dispatch(resetMedicines());
+        history.push("/item", {
+          from: user.type,
+          type: "info",
+          allowAction: false,
+          itemId: adv.medicine._id,
+          companyId: null,
+          warehouseId: null,
+        });
+      }
+    } else {
+      clearInterval(timer);
+      i.current = currentIndex;
+      setIndex(i.current);
+      startTimer();
     }
   };
 
@@ -85,16 +92,16 @@ function AdvertisementsHomePage({ advertisements }) {
       {advertisements.map((adv, i) => (
         <div
           key={i}
-          onMouseEnter={() => {
-            clearInterval(timer);
+          onClick={() => onAdvertisementPressHandler(adv, i)}
+          style={{
+            width:
+              index !== i
+                ? `calc((100vw - 600px)  / ${advertisements.length})`
+                : "400px",
           }}
-          onMouseLeave={() => {
-            startTimer();
-          }}
-          onClick={() => onAdvertisementPressHandler(adv)}
           className={[
             styles.image,
-            index === i ? styles.show : styles.hide,
+            index === i ? styles.expanded : styles.collapsed,
           ].join(" ")}
         >
           <img src={`${SERVER_URL}advertisements/${adv.logo_url}`} alt="adv" />

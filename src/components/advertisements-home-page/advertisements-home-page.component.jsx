@@ -16,9 +16,10 @@ import { SERVER_URL } from "../../utils/constants";
 // styles
 import styles from "./advertisements-home-page.module.scss";
 
-let timer = null;
+// let timer = null;
 
 function AdvertisementsHomePage({ advertisements }) {
+  const timer = useRef(null);
   const history = useHistory();
   const dispatch = useDispatch();
 
@@ -31,7 +32,7 @@ function AdvertisementsHomePage({ advertisements }) {
   const i = useRef(0);
 
   const startTimer = () => {
-    timer = setInterval(() => {
+    timer.current = setInterval(() => {
       i.current = i.current === advertisements.length - 1 ? 0 : i.current + 1;
 
       setIndex(i.current);
@@ -70,7 +71,7 @@ function AdvertisementsHomePage({ advertisements }) {
         });
       }
     } else {
-      clearInterval(timer);
+      clearInterval(timer.current);
       i.current = currentIndex;
       setIndex(i.current);
       startTimer();
@@ -81,7 +82,7 @@ function AdvertisementsHomePage({ advertisements }) {
     startTimer();
 
     return () => {
-      clearInterval(timer);
+      clearInterval(timer.current);
     };
   }, []);
 

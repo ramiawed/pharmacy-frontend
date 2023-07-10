@@ -1,77 +1,20 @@
 @import "../variables.scss";
 
 .link {
-  width: 100%;
-  text-decoration: none;
-  color: $white-color;
-  padding: 5px 5px;
-  margin-block-end: 4px;
-  margin-bottom: 4px;
-  font-size: 18px;
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.link.selected,
-.link:hover,
-.link.selected:hover {
-  background: $red-color;
-  color: $white-color;
-  border-radius: 6px;
-}
-
-.badge {
-  display: inline-block;
-  background: $white-color;
-  color: $red-color;
-  padding-left: 12px;
-  padding-right: 12px;
-  border-radius: 50%;
-}
-
-.nav {
-  display: flex;
-  align-items: flex-start;
-  justify-content: flex-start;
-}
-
-.nav_icon {
+  color: var(--dark-color);
   display: flex;
   align-items: center;
-  justify-content: center;
-  margin-block: auto;
-  margin-top: auto;
-  margin-bottom: auto;
-  margin-inline-end: 10px;
-  position: relative;
+  gap: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  border: 1px solid #e3e3e3;
+  border-radius: 6px;
+  font-size: 12px;
+  padding: 6px 10px;
 }
 
-.nav_icon:lang(ar) {
-  margin-left: 10px;
-}
-
-.nav_icon:land(en) {
-  margin-right: 10px;
-}
-
-.tooltip {
-  display: none;
-  position: absolute;
-  top: 5px;
-  background: black;
-  padding-left: 4px;
-  padding-right: 4px;
-  border-radius: 4px;
-  font-size: 0.7rem;
-}
-
-.tooltip:lang(ar) {
-  right: 25px;
-}
-.tooltip:lang(en) {
-  left: 25px;
-}
-
-.nav_icon:hover .tooltip {
-  display: block;
+.link:hover,
+.selected {
+  background: var(--dark-color);
+  color: var(--white-color);
 }

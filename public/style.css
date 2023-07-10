@@ -262,3 +262,7 @@ body {
     background: -moz-linear-gradient(225deg, hsla(160, 100%, 91%, 1) 10%, hsla(81, 100%, 93%, 1) 91%);
     background: -webkit-linear-gradient(225deg, hsla(160, 100%, 91%, 1) 10%, hsla(81, 100%, 93%, 1) 91%);
 }
+
+.add_shadow {
+    box-shadow: 0 0px 2px 2px #cbc9c966;
+}

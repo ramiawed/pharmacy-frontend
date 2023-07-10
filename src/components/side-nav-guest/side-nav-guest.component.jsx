@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // styles
@@ -14,7 +14,8 @@ import {
   setSearchWarehouseId,
 } from "../../redux/medicines/medicinesSlices";
 
-function SideNavGuest({ selectedOption, onSelectedChange, collapsed }) {
+function SideNavGuest({ hideMenu }) {
+  const history = useHistory();
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -23,24 +24,18 @@ function SideNavGuest({ selectedOption, onSelectedChange, collapsed }) {
       <Link
         className={[
           styles.link,
-          selectedOption === SideNavLinks.PROFILE ? `${styles.selected}` : "",
+          history.location.pathname === "/profile" ? `${styles.selected}` : "",
         ].join(" ")}
-        onClick={() => {
-          onSelectedChange(SideNavLinks.PROFILE);
-          dispatch(setSearchWarehouseId(null));
-          dispatch(setSearchCompanyId(null));
-        }}
+        // onClick={() => {
+        //   onSelectedChange(SideNavLinks.PROFILE);
+        //   dispatch(setSearchWarehouseId(null));
+        //   dispatch(setSearchCompanyId(null));
+        // }}
         to="/profile"
+        onClick={() => hideMenu()}
       >
-        <div className={styles.nav}>
-          <div className={styles.nav_icon}>
-            <CgProfile size={24} />
-            {collapsed && (
-              <label className={styles.tooltip}>{t("profile")}</label>
-            )}
-          </div>
-          {!collapsed && <div className={styles.nav_label}>{t("profile")}</div>}
-        </div>
+        <CgProfile size={24} />
+        <label className={styles.tooltip}>{t("profile")}</label>
       </Link>
     </>
   );

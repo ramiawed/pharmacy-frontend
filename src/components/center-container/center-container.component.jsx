@@ -7,7 +7,7 @@ const CenterContainer = ({ children, style }) => {
         display: "flex",
         flexWrap: "wrap",
         justifyContent: "space-around",
-        padding: "6px 0",
+        padding: "6px 20px",
         ...style,
       }}
     >

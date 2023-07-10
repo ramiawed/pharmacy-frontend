@@ -3,9 +3,7 @@ import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 
 // react-icons
-import { VscClose } from "react-icons/vsc";
 import { GoSignOut } from "react-icons/go";
-import { GiHamburgerMenu } from "react-icons/gi";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -32,17 +30,16 @@ import {
   medicinesSliceSignOut,
   resetMedicines,
 } from "../../redux/medicines/medicinesSlices";
-import { changeNavSettings } from "../../redux/navs/navigationSlice";
 import { savedItemsSliceSignOut } from "../../redux/savedItems/savedItemsSlice";
 import { basketsSliceSignOut } from "../../redux/baskets/basketsSlice";
 import { itemsWithPointsSliceSignOut } from "../../redux/itemsWithPoints/itemsWithPointsSlices";
 
 // styles
-import styles from "./side-nav.module.scss";
+import styles from "../side-nav.module.scss";
 import linkStyles from "../side-nav.module.scss";
 
 // constants
-import { SERVER_URL, UserTypeConstants } from "../../utils/constants";
+import { UserTypeConstants } from "../../utils/constants";
 
 const SideNavAdmin = lazy(() =>
   import("../side-nav-admin/side-nav-admin.component")
@@ -60,12 +57,7 @@ const SideNavWarehouse = lazy(() =>
   import("../side-nav-warehouse/side-nav-warehouse.component")
 );
 
-function SideNav({
-  collapsed,
-  onCollapsedChange,
-  selectedOption,
-  onSelectedChange,
-}) {
+function SideNav({ hideMenu }) {
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -102,111 +94,36 @@ function SideNav({
 
   return (
     <>
-      <div
-        className={[
-          styles.side_nav_container,
-          `${collapsed ? styles.collapsed : styles.showed}`,
-        ].join(" ")}
-      >
-        {!collapsed && (
-          <div className={styles.close_icon} onClick={onCollapsedChange}>
-            <VscClose size={32} />
-          </div>
-        )}
+      <>
+        <Suspense fallback={<></>}>
+          {user.type === UserTypeConstants.ADMIN && (
+            <SideNavAdmin hideMenu={hideMenu} />
+          )}
+          {user.type === UserTypeConstants.COMPANY && (
+            <SideNavCompany hideMenu={hideMenu} />
+          )}
+          {user.type === UserTypeConstants.WAREHOUSE && (
+            <SideNavWarehouse hideMenu={hideMenu} />
+          )}
+          {user.type === UserTypeConstants.PHARMACY && (
+            <SideNavPharmacy hideMenu={hideMenu} />
+          )}
+          {user.type === UserTypeConstants.GUEST && (
+            <SideNavGuest hideMenu={hideMenu} />
+          )}
+        </Suspense>
 
-        {!collapsed ? (
-          <div
-            className={[styles.profile_img, "flex_center_container"].join(" ")}
-            style={{
-              flexDirection: "column",
-            }}
-          >
-            {user.logo_url.length > 0 && (
-              <img
-                src={`${SERVER_URL}/profiles/${user.logo_url}`}
-                alt="thumb"
-              />
-            )}
-
-            <h3>{user.name}</h3>
-            <p>{t(user.type)}</p>
-          </div>
-        ) : (
-          <GiHamburgerMenu
-            size={24}
-            color="white"
-            onClick={(e) => {
-              dispatch(
-                changeNavSettings({
-                  showTopNav: false,
-                  collapsedSideNavOption: false,
-                  showSearchBar: false,
-                })
-              );
-              e.stopPropagation();
-            }}
-          />
-        )}
-        <div className={styles.links}>
-          <Suspense fallback={<></>}>
-            {user.type === UserTypeConstants.ADMIN && (
-              <SideNavAdmin
-                selectedOption={selectedOption}
-                onSelectedChange={onSelectedChange}
-                collapsed={collapsed}
-              />
-            )}
-            {user.type === UserTypeConstants.COMPANY && (
-              <SideNavCompany
-                selectedOption={selectedOption}
-                onSelectedChange={onSelectedChange}
-                collapsed={collapsed}
-              />
-            )}
-            {user.type === UserTypeConstants.WAREHOUSE && (
-              <SideNavWarehouse
-                selectedOption={selectedOption}
-                onSelectedChange={onSelectedChange}
-                collapsed={collapsed}
-              />
-            )}
-            {user.type === UserTypeConstants.PHARMACY && (
-              <SideNavPharmacy
-                selectedOption={selectedOption}
-                onSelectedChange={onSelectedChange}
-                collapsed={collapsed}
-              />
-            )}
-            {user.type === UserTypeConstants.GUEST && (
-              <SideNavGuest
-                selectedOption={selectedOption}
-                onSelectedChange={onSelectedChange}
-                collapsed={collapsed}
-              />
-            )}
-          </Suspense>
-
-          <Link
-            className={linkStyles.link}
-            to={{
-              pathname: "/",
-            }}
-            onClick={handleSignOut}
-          >
-            <div className={linkStyles.nav}>
-              <div className={linkStyles.nav_icon}>
-                <GoSignOut size={24} />
-                {collapsed && (
-                  <label className={linkStyles.tooltip}>{t("sign out")}</label>
-                )}
-              </div>
-              {!collapsed && (
-                <div className={linkStyles.nav_label}>{t("sign out")}</div>
-              )}
-            </div>
-          </Link>
-        </div>
-      </div>
+        <Link
+          className={styles.link}
+          to={{
+            pathname: "/",
+          }}
+          onClick={handleSignOut}
+        >
+          <GoSignOut size={24} />
+          <label className={linkStyles.tooltip}>{t("sign out")}</label>
+        </Link>
+      </>
     </>
   );
 }

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // icons
@@ -34,7 +34,8 @@ import styles from "../side-nav.module.scss";
 // constants
 import { SideNavLinks, UserTypeConstants } from "../../utils/constants.js";
 
-function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
+function SideNavAdmin({ hideMenu }) {
+  const history = useHistory();
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -45,284 +46,205 @@ function SideNavAdmin({ selectedOption, onSelectedChange, collapsed }) {
 
   return (
     <>
-      <div
-        style={{
-          height: "5px",
-        }}
-      ></div>
       <Link
         className={[
           styles.link,
-          selectedOption === SideNavLinks.PARTNERS ? `${styles.selected}` : "",
+          history.location.pathname === "/admin/partners"
+            ? `${styles.selected}`
+            : "",
         ].join(" ")}
-        onClick={() => {
-          onSelectedChange(SideNavLinks.PARTNERS);
-          dispatch(setSearchWarehouseId(null));
-          dispatch(setSearchCompanyId(null));
-        }}
+        onClick={() => hideMenu()}
+        // onClick={() => {
+        //   onSelectedChange(SideNavLinks.PARTNERS);
+        //   dispatch(setSearchWarehouseId(null));
+        //   dispatch(setSearchCompanyId(null));
+        // }}
         to="/admin/partners"
       >
-        <div className={styles.nav}>
-          <div className={styles.nav_icon}>
-            <HiUsers size={24} />
-            {collapsed && (
-              <label className={styles.tooltip}>
-                {t(SideNavLinks.PARTNERS)}
-              </label>
-            )}
-          </div>
-          {!collapsed && (
-            <div className={styles.nav_label}>{t(SideNavLinks.PARTNERS)}</div>
-          )}
-        </div>
+        <HiUsers size={24} />
+        <label className={styles.tooltip}>{t(SideNavLinks.PARTNERS)}</label>
       </Link>
 
       <Link
         className={[
           styles.link,
-          selectedOption === SideNavLinks.ITEMS ? `${styles.selected}` : "",
+          history.location.pathname === "/items" ? `${styles.selected}` : "",
         ].join(" ")}
-        onClick={() => {
-          onSelectedChange(SideNavLinks.ITEMS);
-          dispatch(resetPageState());
-          dispatch(
-            setPageState({
-              company: null,
-              warehouse: null,
-              role: UserTypeConstants.ADMIN,
-            })
-          );
-          dispatch(setSearchWarehouseId(null));
-          dispatch(setSearchCompanyId(null));
-        }}
+        // onClick={() => {
+        //   onSelectedChange(SideNavLinks.ITEMS);
+        //   dispatch(resetPageState());
+        //   dispatch(
+        //     setPageState({
+        //       company: null,
+        //       warehouse: null,
+        //       role: UserTypeConstants.ADMIN,
+        //     })
+        //   );
+        //   dispatch(setSearchWarehouseId(null));
+        //   dispatch(setSearchCompanyId(null));
+        // }}
         to={{
           pathname: "/items",
         }}
+        onClick={() => hideMenu()}
       >
-        <div className={styles.nav}>
-          <div className={styles.nav_icon}>
-            <GiMedicines size={24} />
-            {collapsed && (
-              <label className={styles.tooltip}>{t("items")}</label>
-            )}
-          </div>
-          {!collapsed && <div className={styles.nav_label}>{t("items")}</div>}
-        </div>
+        <GiMedicines size={24} />
+        <label className={styles.tooltip}>{t("items")}</label>
       </Link>
 
       {saveOrders && (
         <Link
           className={[
             styles.link,
-            selectedOption === SideNavLinks.ORDERS ? `${styles.selected}` : "",
+            history.location.pathname === "/orders" ? `${styles.selected}` : "",
           ].join(" ")}
-          onClick={() => {
-            onSelectedChange(SideNavLinks.ORDERS);
-            dispatch(setRefresh(true));
-            dispatch(orderSliceSignOut());
-            dispatch(setSearchWarehouseId(null));
-            dispatch(setSearchCompanyId(null));
-          }}
+          // onClick={() => {
+          //   onSelectedChange(SideNavLinks.ORDERS);
+          //   dispatch(setRefresh(true));
+          //   dispatch(orderSliceSignOut());
+          //   dispatch(setSearchWarehouseId(null));
+          //   dispatch(setSearchCompanyId(null));
+          // }}
           to="/orders"
+          onClick={() => hideMenu()}
         >
-          <div className={styles.nav}>
-            <div className={styles.nav_icon}>
-              <BsFillEnvelopeFill size={24} />
-              {collapsed && (
-                <label className={styles.tooltip}>{t("orders")}</label>
-              )}
-            </div>
-            {!collapsed && (
-              <div className={styles.nav_label}>{t("orders")} </div>
-            )}
-          </div>
+          <BsFillEnvelopeFill size={24} />
+          <label className={styles.tooltip}>{t("orders")}</label>
         </Link>
       )}
 
       <Link
         className={[
           styles.link,
-          selectedOption === SideNavLinks.BASKETS ? `${styles.selected}` : "",
+          history.location.pathname === "/baskets" ? `${styles.selected}` : "",
         ].join(" ")}
-        onClick={() => {
-          onSelectedChange(SideNavLinks.BASKETS);
-          dispatch(setSearchWarehouseId(null));
-          dispatch(setSearchCompanyId(null));
-        }}
+        // onClick={() => {
+        //   onSelectedChange(SideNavLinks.BASKETS);
+        //   dispatch(setSearchWarehouseId(null));
+        //   dispatch(setSearchCompanyId(null));
+        // }}
         to="/baskets"
+        onClick={() => hideMenu()}
       >
-        <div className={styles.nav}>
-          <div className={styles.nav_icon}>
-            {collapsed && (
-              <label className={styles.tooltip}>{t("baskets")}</label>
-            )}
-            <BsBasket2Fill size={24} />
-          </div>
-          {!collapsed && <div className={styles.nav_label}>{t("baskets")}</div>}
-        </div>
+        <BsBasket2Fill size={24} />
+        <label className={styles.tooltip}>{t("baskets")}</label>
       </Link>
 
       <Link
         className={[
           styles.link,
-          selectedOption === SideNavLinks.STATISTICS
+          history.location.pathname === "/admin/statistics"
             ? `${styles.selected}`
             : "",
         ].join(" ")}
-        onClick={() => {
-          onSelectedChange(SideNavLinks.STATISTICS);
-          dispatch(setSearchWarehouseId(null));
-          dispatch(setSearchCompanyId(null));
-          // dispatch(setSelectedWarehouse(null));
-        }}
+        // onClick={() => {
+        //   // onSelectedChange(SideNavLinks.STATISTICS);
+        //   // dispatch(setSearchWarehouseId(null));
+        //   // dispatch(setSearchCompanyId(null));
+        //   // dispatch(setSelectedWarehouse(null));
+        // }}
         to="/admin/statistics"
+        onClick={() => hideMenu()}
       >
-        <div className={styles.nav}>
-          <div className={styles.nav_icon}>
-            <BsFillBarChartLineFill size={24} />
-            {collapsed && (
-              <label className={styles.tooltip}>{t("statistics")}</label>
-            )}
-          </div>
-          {!collapsed && (
-            <div className={styles.nav_label}>{t("statistics")}</div>
-          )}
-        </div>
+        <BsFillBarChartLineFill size={24} />
+        <label className={styles.tooltip}>{t("statistics")}</label>
       </Link>
 
       <Link
         className={[
           styles.link,
-          selectedOption === SideNavLinks.ADVERTISEMENTS
+          history.location.pathname === "/admin/advertisements"
             ? `${styles.selected}`
             : "",
         ].join(" ")}
-        onClick={() => {
-          onSelectedChange(SideNavLinks.ADVERTISEMENTS);
-          dispatch(setSearchWarehouseId(null));
-          dispatch(setSearchCompanyId(null));
-          // dispatch(setSelectedWarehouse(null));
-        }}
+        // onClick={() => {
+        //   onSelectedChange(SideNavLinks.ADVERTISEMENTS);
+        //   dispatch(setSearchWarehouseId(null));
+        //   dispatch(setSearchCompanyId(null));
+        //   // dispatch(setSelectedWarehouse(null));
+        // }}
         to="/admin/advertisements"
+        onClick={() => hideMenu()}
       >
-        <div className={styles.nav}>
-          <div className={styles.nav_icon}>
-            {collapsed && (
-              <label className={styles.tooltip}>{t("advertisements")}</label>
-            )}
-            <RiAdvertisementFill size={24} />
-          </div>
-          {!collapsed && (
-            <div className={styles.nav_label}>{t("advertisements")}</div>
-          )}
-        </div>
+        <RiAdvertisementFill size={24} />
+        <label className={styles.tooltip}>{t("advertisements")}</label>
       </Link>
 
       <Link
         className={[
           styles.link,
-          selectedOption === SideNavLinks.NOTIFICATIONS
+          history.location.pathname === "/admin/notifications"
             ? `${styles.selected}`
             : "",
         ].join(" ")}
-        onClick={() => {
-          onSelectedChange(SideNavLinks.NOTIFICATIONS);
-          dispatch(setSearchWarehouseId(null));
-          dispatch(setSearchCompanyId(null));
-          // dispatch(setSelectedWarehouse(null));
-        }}
+        // onClick={() => {
+        //   onSelectedChange(SideNavLinks.NOTIFICATIONS);
+        //   dispatch(setSearchWarehouseId(null));
+        //   dispatch(setSearchCompanyId(null));
+        //   // dispatch(setSelectedWarehouse(null));
+        // }}
         to="/admin/notifications"
+        onClick={() => hideMenu()}
       >
-        <div className={styles.nav}>
-          <div className={styles.nav_icon}>
-            <MdNotificationsActive size={24} />
-            {collapsed && (
-              <label className={styles.tooltip}>{t("notifications")}</label>
-            )}
-          </div>
-          {!collapsed && (
-            <div className={styles.nav_label}>{t("notifications")}</div>
-          )}
-        </div>
+        <MdNotificationsActive size={24} />
+        <label className={styles.tooltip}>{t("notifications")}</label>
       </Link>
 
       <Link
         className={[
           styles.link,
-          selectedOption === SideNavLinks.SETTINGS ? `${styles.selected}` : "",
-        ].join(" ")}
-        onClick={() => {
-          onSelectedChange(SideNavLinks.SETTINGS);
-          dispatch(setSearchWarehouseId(null));
-          dispatch(setSearchCompanyId(null));
-        }}
-        to="/admin/settings"
-      >
-        <div className={styles.nav}>
-          <div className={styles.nav_icon}>
-            <MdOutlineSettings size={24} />
-            {collapsed && (
-              <label className={styles.tooltip}>{t("settings")}</label>
-            )}
-          </div>
-          {!collapsed && (
-            <div className={styles.nav_label}>{t("settings")}</div>
-          )}
-        </div>
-      </Link>
-
-      <Link
-        className={[
-          styles.link,
-          selectedOption === SideNavLinks.BACKUP_RESTORE
+          history.location.pathname === "/admin/settings"
             ? `${styles.selected}`
             : "",
         ].join(" ")}
-        onClick={() => {
-          onSelectedChange(SideNavLinks.BACKUP_RESTORE);
-          dispatch(setSearchWarehouseId(null));
-          dispatch(setSearchCompanyId(null));
-          // dispatch(setSelectedWarehouse(null));
-        }}
-        to="/admin/backup-restore"
+        // onClick={() => {
+        //   onSelectedChange(SideNavLinks.SETTINGS);
+        //   dispatch(setSearchWarehouseId(null));
+        //   dispatch(setSearchCompanyId(null));
+        // }}
+        to="/admin/settings"
+        onClick={() => hideMenu()}
       >
-        <div className={styles.nav}>
-          <div className={styles.nav_icon}>
-            <MdBackup size={24} />
-            {collapsed && (
-              <label className={styles.tooltip}>
-                {t("backup and restore")}
-              </label>
-            )}
-          </div>
-          {!collapsed && (
-            <div className={styles.nav_label}>{t("backup and restore")}</div>
-          )}
-        </div>
+        <MdOutlineSettings size={24} />
+        <label className={styles.tooltip}>{t("settings")}</label>
       </Link>
 
       <Link
         className={[
           styles.link,
-          selectedOption === SideNavLinks.PROFILE ? `${styles.selected}` : "",
+          history.location.pathname === "/admin/backup-restore"
+            ? `${styles.selected}`
+            : "",
         ].join(" ")}
-        onClick={() => {
-          onSelectedChange(SideNavLinks.PROFILE);
-          dispatch(setSearchWarehouseId(null));
-          dispatch(setSearchCompanyId(null));
-          // dispatch(setSelectedWarehouse(null));
-        }}
-        to="/profile"
+        // onClick={() => {
+        //   onSelectedChange(SideNavLinks.BACKUP_RESTORE);
+        //   dispatch(setSearchWarehouseId(null));
+        //   dispatch(setSearchCompanyId(null));
+        //   // dispatch(setSelectedWarehouse(null));
+        // }}
+        to="/admin/backup-restore"
+        onClick={() => hideMenu()}
       >
-        <div className={styles.nav}>
-          <div className={styles.nav_icon}>
-            <CgProfile size={24} />
-            {collapsed && (
-              <label className={styles.tooltip}>{t("profile")}</label>
-            )}
-          </div>
-          {!collapsed && <div className={styles.nav_label}>{t("profile")}</div>}
-        </div>
+        <MdBackup size={24} />
+        <label className={styles.tooltip}>{t("backup and restore")}</label>
+      </Link>
+
+      <Link
+        className={[
+          styles.link,
+          history.location.pathname === "/profile" ? `${styles.selected}` : "",
+        ].join(" ")}
+        // onClick={() => {
+        //   onSelectedChange(SideNavLinks.PROFILE);
+        //   dispatch(setSearchWarehouseId(null));
+        //   dispatch(setSearchCompanyId(null));
+        //   // dispatch(setSelectedWarehouse(null));
+        // }}
+        to="/profile"
+        onClick={() => hideMenu()}
+      >
+        <CgProfile size={24} />
+        <label className={styles.tooltip}>{t("profile")}</label>
       </Link>
     </>
   );

@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
 // redux stuff
@@ -24,7 +24,8 @@ import { BsBasket2Fill, BsFillEnvelopeFill } from "react-icons/bs";
 import { CgProfile } from "react-icons/cg";
 import { GiMedicines } from "react-icons/gi";
 
-function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
+function SideNavWarehouse({ hideMenu }) {
+  const history = useHistory();
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -38,113 +39,83 @@ function SideNavWarehouse({ selectedOption, onSelectedChange, collapsed }) {
       <Link
         className={[
           styles.link,
-          selectedOption === SideNavLinks.ITEMS ? `${styles.selected}` : "",
+          history.location.pathname === "/items" ? `${styles.selected}` : "",
         ].join(" ")}
-        onClick={() => {
-          onSelectedChange(SideNavLinks.ITEMS);
-          dispatch(resetPageState());
-          dispatch(
-            setPageState({
-              company: null,
-              warehouse: user,
-              role: UserTypeConstants.WAREHOUSE,
-            })
-          );
+        // onClick={() => {
+        //   onSelectedChange(SideNavLinks.ITEMS);
+        //   dispatch(resetPageState());
+        //   dispatch(
+        //     setPageState({
+        //       company: null,
+        //       warehouse: user,
+        //       role: UserTypeConstants.WAREHOUSE,
+        //     })
+        //   );
 
-          dispatch(setSearchWarehouseId(null));
-          dispatch(setSearchCompanyId(null));
-        }}
+        //   dispatch(setSearchWarehouseId(null));
+        //   dispatch(setSearchCompanyId(null));
+        // }}
         to={{
           pathname: "/items",
         }}
+        onClick={() => hideMenu()}
       >
-        <div className={styles.nav}>
-          <div className={styles.nav_icon}>
-            <GiMedicines size={24} />
-            {collapsed && (
-              <label className={styles.tooltip}>{t("my items")}</label>
-            )}
-          </div>
-          {!collapsed && (
-            <div className={styles.nav_label}>{t("my items")}</div>
-          )}
-        </div>
+        <GiMedicines size={24} />
+        <label className={styles.tooltip}>{t("my items")}</label>
       </Link>
 
       {saveOrders && (
         <Link
           className={[
             styles.link,
-            selectedOption === SideNavLinks.ORDERS ? `${styles.selected}` : "",
+            history.location.pathname === "/orders" ? `${styles.selected}` : "",
           ].join(" ")}
-          onClick={() => {
-            onSelectedChange(SideNavLinks.ORDERS);
-            dispatch(orderSliceSignOut());
-            dispatch(setSearchWarehouseId(null));
-            dispatch(setSearchCompanyId(null));
-          }}
+          // onClick={() => {
+          //   onSelectedChange(SideNavLinks.ORDERS);
+          //   dispatch(orderSliceSignOut());
+          //   dispatch(setSearchWarehouseId(null));
+          //   dispatch(setSearchCompanyId(null));
+          // }}
           to="/orders"
+          onClick={() => hideMenu()}
         >
-          <div className={styles.nav}>
-            <div className={styles.nav_icon}>
-              <BsFillEnvelopeFill size={24} />
-              {collapsed && (
-                <label className={styles.tooltip}>{t("my orders")}</label>
-              )}
-            </div>
-            {!collapsed && (
-              <div className={styles.nav_label}>{t("my orders")} </div>
-            )}
-          </div>
+          <BsFillEnvelopeFill size={24} />
+          <label className={styles.tooltip}>{t("my orders")}</label>
         </Link>
       )}
 
       <Link
         className={[
           styles.link,
-          selectedOption === SideNavLinks.BASKETS ? `${styles.selected}` : "",
+          history.location.pathname === "/baskets" ? `${styles.selected}` : "",
         ].join(" ")}
-        onClick={() => {
-          onSelectedChange(SideNavLinks.BASKETS);
-          dispatch(setSearchWarehouseId(null));
-          dispatch(setSearchCompanyId(null));
-        }}
+        // onClick={() => {
+        //   onSelectedChange(SideNavLinks.BASKETS);
+        //   dispatch(setSearchWarehouseId(null));
+        //   dispatch(setSearchCompanyId(null));
+        // }}
         to="/baskets"
+        onClick={() => hideMenu()}
       >
-        <div className={styles.nav}>
-          <div className={styles.nav_icon}>
-            {collapsed && (
-              <label className={styles.tooltip}>{t("my baskets")}</label>
-            )}
-            <BsBasket2Fill size={24} />
-          </div>
-          {!collapsed && (
-            <div className={styles.nav_label}>{t("my baskets")}</div>
-          )}
-        </div>
+        <BsBasket2Fill size={24} />
+        <label className={styles.tooltip}>{t("my baskets")}</label>
       </Link>
 
       <Link
         className={[
           styles.link,
-          selectedOption === SideNavLinks.PROFILE ? `${styles.selected}` : "",
+          history.location.pathname === "/profile" ? `${styles.selected}` : "",
         ].join(" ")}
-        onClick={() => {
-          onSelectedChange(SideNavLinks.PROFILE);
-          dispatch(setSearchWarehouseId(null));
-          dispatch(setSearchCompanyId(null));
-        }}
+        // onClick={() => {
+        //   onSelectedChange(SideNavLinks.PROFILE);
+        //   dispatch(setSearchWarehouseId(null));
+        //   dispatch(setSearchCompanyId(null));
+        // }}
         to="/profile"
+        onClick={() => hideMenu()}
       >
-        <div className={styles.nav}>
-          <div className={styles.nav_icon}>
-            <CgProfile size={24} />
-            {collapsed && (
-              <label className={styles.tooltip}>{t("profile")}</label>
-            )}
-          </div>
-          {!collapsed && <div className={styles.nav_label}>{t("profile")}</div>}
-        </div>
+        <CgProfile size={24} />
+        <label className={styles.tooltip}>{t("profile")}</label>
       </Link>
     </>
   );

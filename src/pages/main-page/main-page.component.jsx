@@ -131,27 +131,6 @@ function MainPage() {
         <>
           <SocketObserver />
 
-          {/* <div className={styles.layout_container}></div> */}
-          <SideNav
-            collapsed={collapsedSideNavOption}
-            onCollapsedChange={() => {
-              changeNavigationSettingHandler({
-                collapsedSideNavOption: !collapsedSideNavOption,
-                showTopNav: false,
-              });
-            }}
-            selectedOption={selectedSideNavOption}
-            onSelectedChange={(val) => {
-              changeNavigationSettingHandler({
-                selectedSideNavOption: val,
-                selectedTopNavOption: "",
-                collapsedSideNavOption: true,
-                showSearchBar: false,
-              });
-            }}
-            showSearchBar={showSearchBar}
-          />
-
           <TopNav
             selectedOption={selectedTopNavOption}
             onSelectedChange={(val) => {
@@ -165,7 +144,7 @@ function MainPage() {
             }}
           />
 
-          <div className={styles.content_area}>
+          <div style={{ minHeight: "calc(100vh - 60px)" }}>
             <Suspense fallback={<HomePageLoader />}>
               {user.type === UserTypeConstants.COMPANY && (
                 <CompanyRoutes

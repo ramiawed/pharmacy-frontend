@@ -159,7 +159,7 @@ function HomePage({ onSelectedChange }) {
     <div
       style={{
         overflow: "hidden",
-        paddingInlineStart: "35px",
+        // paddingInlineStart: "35px",
         position: "relative",
       }}
     >

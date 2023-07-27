@@ -1,20 +1,20 @@
 @import "../variables.scss";
 
-.link {
-  color: var(--dark-color);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  text-decoration: none;
-  cursor: pointer;
-  border: 1px solid #e3e3e3;
-  border-radius: 6px;
-  font-size: 12px;
-  padding: 6px 10px;
-}
+// .link {
+//   color: var(--dark-color);
+//   display: flex;
+//   align-items: center;
+//   gap: 10px;
+//   text-decoration: none;
+//   cursor: pointer;
+//   border: 1px solid #e3e3e3;
+//   border-radius: 6px;
+//   font-size: 12px;
+//   padding: 6px 10px;
+// }
 
-.link:hover,
-.selected {
-  background: var(--dark-color);
-  color: var(--white-color);
-}
+// .link:hover,
+// .selected {
+//   background: var(--dark-color);
+//   color: var(--white-color);
+// }

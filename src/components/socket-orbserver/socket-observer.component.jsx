@@ -6,10 +6,9 @@ import Toast from "../toast/toast.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
-import { authSliceSignOut, selectUserData } from "../../redux/auth/authSlice";
+import { selectUserData } from "../../redux/auth/authSlice";
 import {
   orderDeletedSocket,
-  orderSliceSignOut,
   orderInsertedSocket,
   orderUpdatedSocket,
   basketOrderInsertedSocket,
@@ -20,72 +19,49 @@ import {
 } from "../../redux/orders/ordersSlice";
 import {
   addAdvertisementSocket,
-  advertisementsSignOut,
   deleteAdvertisementSocket,
   // setForceRefresh as advertisementForceRefresh,
 } from "../../redux/advertisements/advertisementsSlice";
 import {
   getUnreadNotification,
   setForceRefresh as notificationForceRefresh,
-  usersNotificationsSignOut,
 } from "../../redux/userNotifications/userNotificationsSlice";
 import NotificationToast from "../notification-toast/notification-toast.component";
-import {
-  settingsSignOut,
-  socketUpdateSettings,
-} from "../../redux/settings/settingsSlice";
-import { cartSliceSignOut } from "../../redux/cart/cartSlice";
-import { companySliceSignOut } from "../../redux/company/companySlice";
-import { favoritesSliceSignOut } from "../../redux/favorites/favoritesSlice";
-import { itemsSliceSignOut } from "../../redux/items/itemsSlices";
-import { statisticsSliceSignOut } from "../../redux/statistics/statisticsSlice";
-import { usersSliceSignOut, setRefresh } from "../../redux/users/usersSlice";
-import { warehouseSliceSignOut } from "../../redux/warehouse/warehousesSlice";
-import {
-  medicinesSliceSignOut,
-  resetMedicines,
-} from "../../redux/medicines/medicinesSlices";
+import { socketUpdateSettings } from "../../redux/settings/settingsSlice";
+
+import { setRefresh } from "../../redux/users/usersSlice";
+
 import {
   addCompanyToSectionOneSocket,
-  companiesSectionOneSignOut,
   removeCompanyFromSectionOneSocket,
 } from "../../redux/advertisements/companiesSectionOneSlice";
 import {
   addCompanyToSectionTwoSocket,
-  companiesSectionTwoSignOut,
   removeCompanyFromSectionTwoSocket,
 } from "../../redux/advertisements/companiesSectionTwoSlice";
 import {
   addItemToSectionOneSocket,
-  itemsSectionOneSignOut,
   removeItemFromSectionOneSocket,
 } from "../../redux/advertisements/itemsSectionOneSlice";
 import {
   addItemToSectionThreeSocket,
-  itemsSectionThreeSignOut,
   removeItemFromSectionThreeSocket,
 } from "../../redux/advertisements/itemsSectionThreeSlice";
 import {
   addItemToSectionTwoSocket,
-  itemsSectionTwoSignOut,
   removeItemFromSectionTwoSocket,
 } from "../../redux/advertisements/itemsSectionTwoSlice";
 import {
   addWarehouseToSectionOneSocket,
   removeWarehouseToSectionOneSocket,
-  warehousesSectionOneSignOut,
 } from "../../redux/advertisements/warehousesSectionOneSlice";
-import { notificationsSignOut } from "../../redux/notifications/notificationsSlice";
 
 // constants
 import { Colors, SERVER_URL, UserTypeConstants } from "../../utils/constants";
 
 // socket
 import socketIoClient from "socket.io-client";
-import { savedItemsSliceSignOut } from "../../redux/savedItems/savedItemsSlice";
-import { basketsSliceSignOut } from "../../redux/baskets/basketsSlice";
 import { useLocation } from "react-router-dom";
-import { itemsWithPointsSliceSignOut } from "../../redux/itemsWithPoints/itemsWithPointsSlices";
 
 const socket = socketIoClient(`${SERVER_URL}`, { autoConnect: false });
 
@@ -105,30 +81,9 @@ function SocketObserver() {
   const [msg, setMsg] = useState("");
 
   const handleSignOut = () => {
-    dispatch(authSliceSignOut());
-    dispatch(cartSliceSignOut());
-    dispatch(companySliceSignOut());
-    dispatch(favoritesSliceSignOut());
-    dispatch(itemsSliceSignOut());
-    dispatch(statisticsSliceSignOut());
-    dispatch(usersSliceSignOut());
-    dispatch(warehouseSliceSignOut());
-    dispatch(orderSliceSignOut());
-    dispatch(resetMedicines());
-    dispatch(advertisementsSignOut());
-    dispatch(companiesSectionOneSignOut());
-    dispatch(companiesSectionTwoSignOut());
-    dispatch(itemsSectionOneSignOut());
-    dispatch(itemsSectionThreeSignOut());
-    dispatch(itemsSectionTwoSignOut());
-    dispatch(warehousesSectionOneSignOut());
-    dispatch(medicinesSliceSignOut());
-    dispatch(notificationsSignOut());
-    dispatch(settingsSignOut());
-    dispatch(usersNotificationsSignOut());
-    dispatch(savedItemsSliceSignOut());
-    dispatch(basketsSliceSignOut());
-    dispatch(itemsWithPointsSliceSignOut());
+    dispatch({
+      type: "SIGNOUT_REQUEST",
+    });
     localStorage.removeItem("token");
   };
 

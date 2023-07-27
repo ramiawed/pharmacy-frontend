@@ -1,15 +1,13 @@
 import React from "react";
-import NoContentImage from "../../assets/no_content.jpeg";
-
-// styles
-import styles from "./no-content.module.scss";
+import NoContentImage from "../../assets/no-content.png";
 
 // constants
-import { Colors } from "../../utils/constants";
+import { useTheme } from "../../contexts/themeContext";
 
 function NoContent({ msg }) {
+  const { theme } = useTheme();
   return (
-    <div className={[styles.container].join(" ")}>
+    <div className="w-1/2 h-[200px] my-[50px] mx-auto rounded-md flex justify-center items-center flex-col">
       <img
         src={NoContentImage}
         alt="thumb"
@@ -20,9 +18,9 @@ function NoContent({ msg }) {
       />
 
       <p
-        style={{
-          color: Colors.MAIN_COLOR,
-        }}
+        className={`bold text-lg ${
+          theme === "light" ? "text-dark" : "text-color-primary-500"
+        }`}
       >
         {msg}
       </p>

@@ -20,6 +20,9 @@ import {
 // constants
 import { Colors } from "./utils/constants";
 
+// context
+import { ThemeProvider } from "./contexts/themeContext";
+
 function App() {
   const { i18n, t } = useTranslation();
   const dispatch = useDispatch();
@@ -45,26 +48,28 @@ function App() {
   }, [dispatch]);
 
   return (
-    <div>
-      <Switch>
-        <Route path="/signin" exact component={SignInPage} />
-        <Route path="/signup" exact component={SignUpPage} />
-        <Route path="/approve" exact component={ApprovePage} />
-        <Route path="/" component={MainPage} />
-      </Switch>
+    <ThemeProvider>
+      <div>
+        <Switch>
+          <Route path="/signin" exact component={SignInPage} />
+          <Route path="/signup" exact component={SignUpPage} />
+          <Route path="/approve" exact component={ApprovePage} />
+          <Route path="/" component={MainPage} />
+        </Switch>
 
-      {onlineMsg && (
-        <Toast
-          bgColor={Colors.FAILED_COLOR}
-          foreColor="#fff"
-          actionAfterTimeout={() => {
-            dispatch(resetOnlineMsg());
-          }}
-        >
-          <p>{t(onlineMsg)}</p>
-        </Toast>
-      )}
-    </div>
+        {onlineMsg && (
+          <Toast
+            bgColor={Colors.FAILED_COLOR}
+            foreColor="#fff"
+            actionAfterTimeout={() => {
+              dispatch(resetOnlineMsg());
+            }}
+          >
+            <p>{t(onlineMsg)}</p>
+          </Toast>
+        )}
+      </div>
+    </ThemeProvider>
   );
 }
 

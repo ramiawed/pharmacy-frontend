@@ -1,27 +1,44 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
 
-// components
-import Button from "../button/button.component";
-
-// styles
-import styles from "./signup-stages-actions.module.scss";
+// context
+import { useTheme } from "../../contexts/themeContext";
+import CustomButton from "../custom-button/custom-button.component";
 
 const SignupStagesActions = ({ stage, prevHandler, nextHandler }) => {
+  const { theme } = useTheme();
   const { t } = useTranslation();
 
   return (
-    <div className={styles.container}>
+    <div className="flex flex-row items-center justify-center gap-5 p-4">
       {stage > 1 && (
-        <Button
+        <CustomButton
           text={t("previous")}
-          action={prevHandler}
-          classStyle="bg_green"
+          onClickHandler={prevHandler}
+          classname={`${
+            theme === "light" ? "bg-green text-white" : "d-primary500-mixed300"
+          }`}
         />
+        // <button
+        //   onClick={prevHandler}
+        //   className={`${
+        //     theme === "light"
+        //       ? "bg-green text-white"
+        //       : "bg-color-primary-300 text-color-surface-300"
+        //   } rounded-full px-4 py-2 hover:px-5 transition-all`}
+        // >
+        //   {t("previous")}
+        // </button>
       )}
-      <div style={{ width: "10px" }}></div>
+
       {stage <= 4 && (
-        <Button text={t("next")} action={nextHandler} classStyle="bg_green" />
+        <CustomButton
+          text={t("next")}
+          onClickHandler={nextHandler}
+          classname={`${
+            theme === "light" ? "bg-green text-white" : "d-primary500-mixed300"
+          }`}
+        />
       )}
     </div>
   );

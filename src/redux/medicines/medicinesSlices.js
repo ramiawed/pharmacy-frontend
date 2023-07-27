@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { BASEURL, UserTypeConstants } from "../../utils/constants";
+import { BASEURL } from "../../utils/constants";
 
 let CancelToken;
 let source;
@@ -479,33 +479,6 @@ export const medicinesSlice = createSlice({
         page: 1,
       };
     },
-
-    medicinesSliceSignOut: (state) => {
-      state.status = "idle";
-      state.medicines = [];
-      state.count = 0;
-      state.error = "";
-      state.addToWarehouseStatus = "idle";
-      state.addToWarehouseError = "";
-      state.removeFromWarehouseStatus = "idle";
-      state.removeFromWarehouseError = "";
-      state.pageState = {
-        searchName: "",
-        searchCompanyName: "",
-        searchWarehouseName: "",
-        searchWarehouseId: null,
-        searchCompanyId: null,
-        searchWarehouseCompanyId: null,
-        searchInWarehouse: false,
-        searchOutWarehouse: false,
-        searchHaveOffer: false,
-        searchHavePoint: false,
-        searchCompaniesIds: [],
-        searchWarehousesIds: [],
-        displayType: "list",
-        page: 1,
-      };
-    },
   },
   extraReducers: {
     [getMedicines.pending]: (state) => {
@@ -588,7 +561,6 @@ export const {
   resetStatus,
   resetError,
   resetMedicines,
-  medicinesSliceSignOut,
   resetAddToWarehouseStatus,
   resetAddToWarehouseError,
   resetRemoveFromWarehouseStatus,

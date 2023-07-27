@@ -470,20 +470,6 @@ export const authSlice = createSlice({
         logo_url: action.payload,
       };
     },
-    authSliceSignOut: (state) => {
-      state.status = "idle";
-      state.updateStatus = "idle";
-      state.changeLogoStatus = "idle";
-      state.changePasswordStatus = "idle";
-      state.deleteStatus = "idle";
-      state.user = null;
-      state.token = "";
-      state.error = "";
-      state.updateError = "";
-      state.passwordError = "";
-      state.deleteError = "";
-      state.changeLogoError = "";
-    },
   },
   extraReducers: {
     [authSign.pending]: (state) => {
@@ -761,7 +747,6 @@ export const {
   resetChangeLogoError,
   resetUpdateStatus,
   resetUpdateError,
-  authSliceSignOut,
   changeLogoURL,
 } = authSlice.actions;
 

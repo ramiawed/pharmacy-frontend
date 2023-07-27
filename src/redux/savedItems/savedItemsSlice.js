@@ -136,12 +136,6 @@ export const savedItemsSlice = createSlice({
       state.status = "idle";
       state.error = "";
     },
-    savedItemsSliceSignOut: (state) => {
-      state.status = "idle";
-      state.savedItems = [];
-      state.count = 0;
-      state.error = "";
-    },
   },
   extraReducers: {
     [getSavedItems.pending]: (state) => {
@@ -213,7 +207,7 @@ export const savedItemsSlice = createSlice({
   },
 });
 
-export const { resetSavedItems, resetSavedItemsError, savedItemsSliceSignOut } =
+export const { resetSavedItems, resetSavedItemsError } =
   savedItemsSlice.actions;
 
 export const selectSavedItems = (state) => state.savedItems;

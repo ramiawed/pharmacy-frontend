@@ -5,101 +5,71 @@ import { useHistory } from "react-router-dom";
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import {
-  changeDisplayType,
   changeSearchCity,
   changeSearchName,
   selectCompaniesPageState,
 } from "../../redux/company/companySlice";
 
 // components
-import Icon from "../icon/icon.component";
 import ActionBar from "../action-bar/action-bar.component";
 
 // react icons
 import { RiRefreshLine } from "react-icons/ri";
-import { AiFillAppstore } from "react-icons/ai";
-import { FaListUl } from "react-icons/fa";
 import { VscClearAll } from "react-icons/vsc";
 import { IoMdArrowRoundBack } from "react-icons/io";
 
 // constants and utils
-import { CitiesName, Colors } from "../../utils/constants";
+import { CitiesName } from "../../utils/constants";
+import CustomButton from "../custom-button/custom-button.component";
+import { useTheme } from "../../contexts/themeContext";
 
 function CompaniesActions({ refreshHandler }) {
+  const { theme } = useTheme();
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
 
-  const { searchName, searchCity, displayType } = useSelector(
-    selectCompaniesPageState
-  );
+  const { searchName, searchCity } = useSelector(selectCompaniesPageState);
 
   return (
-    <>
-      <ActionBar>
-        {/* refresh */}
-        <Icon
-          withBackground={true}
-          selected={false}
-          foreColor={Colors.MAIN_COLOR}
-          tooltip={t("refresh")}
-          onclick={() => {
-            refreshHandler();
+    <ActionBar>
+      {(searchName.length > 0 || searchCity !== CitiesName.ALL) && (
+        <CustomButton
+          icon={() => <VscClearAll />}
+          onClickHandler={() => {
+            dispatch(changeSearchName(""));
+            dispatch(changeSearchCity(CitiesName.ALL));
           }}
-          icon={() => <RiRefreshLine />}
+          classname={`${
+            theme === "light" ? "bg-dark text-white" : "d-primary500-mixed300"
+          }`}
+          tooltip={t("clear filter")}
         />
+      )}
 
-        {(searchName.length > 0 || searchCity !== CitiesName.ALL) && (
-          <Icon
-            withBackground={true}
-            selected={false}
-            foreColor={Colors.MAIN_COLOR}
-            tooltip={t("clear filter")}
-            onclick={() => {
-              dispatch(changeSearchName(""));
-              dispatch(changeSearchCity(CitiesName.ALL));
-            }}
-            icon={() => <VscClearAll />}
-          />
-        )}
+      {/* refresh */}
+      <CustomButton
+        icon={() => <RiRefreshLine />}
+        onClickHandler={() => {
+          refreshHandler();
+        }}
+        classname={`${
+          theme === "light" ? "bg-dark text-white" : "d-primary500-mixed300"
+        }`}
+        tooltip={t("refresh")}
+      />
 
-        {/* display card option */}
-        <Icon
-          withBackground={true}
-          foreColor={
-            displayType === "card" ? Colors.SUCCEEDED_COLOR : Colors.MAIN_COLOR
-          }
-          tooltip={t("show as card")}
-          onclick={() => {
-            dispatch(changeDisplayType("card"));
-          }}
-          icon={() => <AiFillAppstore />}
-        />
-
-        {/* display list option */}
-        <Icon
-          withBackground={true}
-          foreColor={
-            displayType === "list" ? Colors.SUCCEEDED_COLOR : Colors.MAIN_COLOR
-          }
-          tooltip={t("show as list")}
-          onclick={() => {
-            dispatch(changeDisplayType("list"));
-          }}
-          icon={() => <FaListUl />}
-        />
-
-        <Icon
-          withBackground={true}
-          tooltip={t("back")}
-          onclick={() => {
-            history.goBack();
-          }}
-          icon={() => <IoMdArrowRoundBack />}
-          foreColor={Colors.MAIN_COLOR}
-        />
-      </ActionBar>
-    </>
+      <CustomButton
+        icon={() => <IoMdArrowRoundBack />}
+        onClickHandler={() => {
+          history.goBack();
+        }}
+        classname={`${
+          theme === "light" ? "bg-dark text-white" : "d-primary500-mixed300"
+        }`}
+        tooltip={t("back")}
+      />
+    </ActionBar>
   );
 }
 

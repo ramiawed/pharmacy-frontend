@@ -2,11 +2,23 @@ import React from "react";
 
 // styles
 import styles from "./license.module.scss";
+import { useTheme } from "../../contexts/themeContext";
 
 function License({ action }) {
+  const { theme } = useTheme();
   return (
-    <div className={styles.container}>
-      <h3>تعهد الخصوصية لشركة سمارت فارما الطبية</h3>
+    <div
+      className={`max-h-[400px] overflow-auto px-3 ${
+        theme === "light" ? "text-black" : "text-color-primary-500"
+      }`}
+    >
+      <h3
+        className={`text-xl ${
+          theme === "light" ? "text-main" : "text-color-primary-100"
+        } underline`}
+      >
+        تعهد الخصوصية لشركة سمارت فارما الطبية
+      </h3>
       <p>
         شركة سمارت فارما التضامنية ملتزمة بحماية خصوصية بيانات كل مستخدمي موقعنا
         على الانترنت أو تطبيق الهاتف المحمول الخاص بنا. يرجى قراءة سياسة

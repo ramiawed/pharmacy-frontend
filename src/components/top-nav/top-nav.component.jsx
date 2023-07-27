@@ -1,23 +1,19 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useCallback } from "react";
 import { useTranslation } from "react-i18next";
 import { Link, useHistory } from "react-router-dom";
-
-// components
-import FilterItemsModal from "../../modals/filter-items-modal/filter-items-modal.component";
+import Logo from "../../assets/transparent_logo.png";
+import SmallLogo from "../../assets/small_logo.png";
 
 // redux stuff
 import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/auth/authSlice";
 import { selectFavorites } from "../../redux/favorites/favoritesSlice";
 import { selectCartItemCount } from "../../redux/cart/cartSlice";
 import { selectUserNotifications } from "../../redux/userNotifications/userNotificationsSlice";
 
-import Logo from "../../assets/transparent_logo.png";
-import SmallLogo from "../../assets/small_logo.png";
-
 // components
-import Icon from "../icon/icon.component";
+import CustomLink from "../custom-link/custom-link.component";
 import SideNav from "../side-nav/side-nav.component";
+import Icon from "../icon/icon.component";
 
 // icons
 import { GiHamburgerMenu, GiShoppingCart } from "react-icons/gi";
@@ -25,72 +21,76 @@ import { AiFillStar } from "react-icons/ai";
 import { IoMdNotifications } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 
-// style
-import styles from "./top-nav.module.scss";
-
 // constants
-import { Colors } from "../../utils/constants.js";
+import { UserTypeConstants } from "../../utils/constants.js";
 
-function TopNav() {
+// context
+import { useTheme } from "../../contexts/themeContext";
+
+function TopNav({ userType, showSearchHandler }) {
+  const { theme } = useTheme();
   const history = useHistory();
   const { t } = useTranslation();
 
   // selectors
   const { unReadNotificationCount } = useSelector(selectUserNotifications);
   const allFavorites = useSelector(selectFavorites);
-  const total = useSelector(selectCartItemCount);
+  const cartItemsCount = useSelector(selectCartItemCount);
 
   const [showProfileOptions, setShowProfileOptions] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
 
   const navRef = useRef(null);
 
-  // own state
-  const [showTopSearchBar, setShowTopSearchBar] = useState(false);
-
-  function hideMenu() {
+  const hideMenu = useCallback(() => {
     setShowMenu(false);
     setShowProfileOptions(false);
-  }
+  }, []);
 
   return (
     <>
-      <nav className={styles.nav} ref={navRef}>
-        <div className={styles.main_nav}>
-          <Link to="/" style={{ textDecoration: "none" }}>
-            <div className={styles.title_with_logo_container}>
+      <nav
+        className={`${
+          theme === "light" ? "bg-gray-50 text-dark" : "d-mixed300-primary300"
+        } sticky top-0 px-[20px] py-[5px] z-20 flex flex-col`}
+        ref={navRef}
+      >
+        <div className="flex items-center justify-between">
+          <Link to="/">
+            <div className="flex flex-row items-center">
               <img src={SmallLogo} width={64} height={64} alt="logo" />
-              <p>{t("app name in arabic")}</p>
+              <p className="hidden text-2xl md:inline-block  hover:underline font-bold">
+                {t("app name in arabic")}
+              </p>
             </div>
           </Link>
 
-          <div className={styles.end_container}>
-            <div className={styles.links}>
+          <div className="flex items-center justify-self-end gap-[10px]">
+            <div className="hidden md:inline-block">
               <Link
                 to="/companies"
-                className={[
-                  styles.link,
-                  history.location.pathname === "/companies"
-                    ? styles.selected
-                    : null,
-                ].join(" ")}
+                className={`top-nav-link ${
+                  history.location.pathname === "/companies" ? "!text-red" : ""
+                }`}
                 onClick={() => hideMenu()}
               >
                 {t("companies")}
               </Link>
 
-              <Link
-                to="/warehouses"
-                className={[
-                  styles.link,
-                  history.location.pathname === "/warehouses"
-                    ? styles.selected
-                    : null,
-                ].join(" ")}
-                onClick={() => hideMenu()}
-              >
-                {t("warehouses")}
-              </Link>
+              {(userType === UserTypeConstants.PHARMACY ||
+                userType === UserTypeConstants.ADMIN) && (
+                <Link
+                  to="/warehouses"
+                  className={`top-nav-link ${
+                    history.location.pathname === "/warehouses"
+                      ? "!text-red"
+                      : ""
+                  }`}
+                  onClick={() => hideMenu()}
+                >
+                  {t("warehouses")}
+                </Link>
+              )}
 
               <Link
                 to={{
@@ -99,76 +99,70 @@ function TopNav() {
                     myCompanies: [],
                   },
                 }}
-                className={[
-                  styles.link,
-                  history.location.pathname === "/medicines"
-                    ? styles.selected
-                    : null,
-                ].join(" ")}
+                className={`top-nav-link ${
+                  history.location.pathname === "/medicines" ? "!text-red" : ""
+                }`}
                 onClick={() => hideMenu()}
               >
                 {t("items")}
               </Link>
 
-              <Link
-                to="/offers"
-                className={[
-                  styles.link,
-                  history.location.pathname === "/offers"
-                    ? styles.selected
-                    : null,
-                ].join(" ")}
-                onClick={() => hideMenu()}
-              >
-                {t("offers")}
-              </Link>
+              {(userType === UserTypeConstants.ADMIN ||
+                userType === UserTypeConstants.PHARMACY) && (
+                <>
+                  <Link
+                    to="/offers"
+                    className={`top-nav-link ${
+                      history.location.pathname === "/offers" ? "!text-red" : ""
+                    }`}
+                    onClick={() => hideMenu()}
+                  >
+                    {t("offers")}
+                  </Link>
 
-              <Link
-                to="/items-with-points"
-                className={[
-                  styles.link,
-                  history.location.pathname === "/items-with-points"
-                    ? styles.selected
-                    : null,
-                ].join(" ")}
-                onClick={() => hideMenu()}
-              >
-                {t("points offer")}
-              </Link>
+                  <Link
+                    to="/items-with-points"
+                    className={`top-nav-link ${
+                      history.location.pathname === "/items-with-points"
+                        ? "!text-red"
+                        : ""
+                    }`}
+                    onClick={() => hideMenu()}
+                  >
+                    {t("points offer")}
+                  </Link>
+                </>
+              )}
 
-              <Link
-                to="/special-offers"
-                className={[
-                  styles.link,
-                  history.location.pathname === "/special-offers"
-                    ? styles.selected
-                    : null,
-                ].join(" ")}
-                onClick={() => hideMenu()}
-              >
-                {t("baskets")}
-              </Link>
+              {userType === UserTypeConstants.PHARMACY && (
+                <Link
+                  to="/special-offers"
+                  className={`top-nav-link ${
+                    history.location.pathname === "/special-offers"
+                      ? "!text-red"
+                      : ""
+                  }`}
+                  onClick={() => hideMenu()}
+                >
+                  {t("baskets")}
+                </Link>
+              )}
             </div>
 
-            <div className={styles.icons}>
+            <div className="flex items-center gap-[8px]">
               <FiSearch
-                className={styles.icon}
-                size={24}
+                className={`top-nav-icon`}
                 onClick={() => {
-                  setShowTopSearchBar(true);
+                  showSearchHandler(true);
                   hideMenu();
                 }}
-                color={Colors.DARK_COLOR}
               />
 
               <Link
                 to="/favorites"
-                className={[
-                  styles.icon,
-                  history.location.pathname === "/favorites"
-                    ? styles.selected
-                    : null,
-                ].join(" ")}
+                className={`top-nav-icon ${
+                  history.location.pathname === "/favorites" ? "!text-red" : ""
+                }`}
                 onClick={() => hideMenu()}
               >
                 <Icon
@@ -181,48 +175,49 @@ function TopNav() {
                   }
                   closeToIcon={true}
                   onClick={() => hideMenu()}
+                  withBackground={false}
                 />
               </Link>
 
-              <Link
-                to="/notifications"
-                className={[
-                  styles.icon,
-                  history.location.pathname === "/notifications"
-                    ? styles.selected
-                    : null,
-                ].join(" ")}
-                onClick={() => hideMenu()}
-              >
-                <Icon
-                  icon={() => <IoMdNotifications size={24} />}
-                  tooltip={t("notifications")}
-                  withAlertIcon={unReadNotificationCount > 0}
-                  closeToIcon={true}
-                />
-              </Link>
+              {userType !== UserTypeConstants.ADMIN && (
+                <Link
+                  to="/notifications"
+                  className={`top-nav-icon ${
+                    history.location.pathname === "/notifications"
+                      ? "!text-red"
+                      : ""
+                  }`}
+                  onClick={() => hideMenu()}
+                >
+                  <Icon
+                    icon={() => <IoMdNotifications size={24} />}
+                    tooltip={t("notifications")}
+                    withAlertIcon={unReadNotificationCount > 0}
+                    closeToIcon={true}
+                  />
+                </Link>
+              )}
 
-              <Link
-                to="/cart"
-                className={[
-                  styles.icon,
-                  history.location.pathname === "/cart"
-                    ? styles.selected
-                    : null,
-                ].join(" ")}
-                onClick={() => hideMenu()}
-              >
-                <Icon
-                  icon={() => <GiShoppingCart size={24} />}
-                  tooltip={t("cart")}
-                  withAlertIcon={total > 0}
-                  closeToIcon={true}
-                />
-              </Link>
+              {userType === UserTypeConstants.PHARMACY && (
+                <Link
+                  to="/cart"
+                  className={`top-nav-icon ${
+                    history.location.pathname === "/cart" ? "!text-red" : ""
+                  }`}
+                  onClick={() => hideMenu()}
+                >
+                  <Icon
+                    icon={() => <GiShoppingCart size={24} />}
+                    tooltip={t("cart")}
+                    withAlertIcon={cartItemsCount > 0}
+                    closeToIcon={true}
+                  />
+                </Link>
+              )}
 
               <img
                 src={Logo}
-                className={styles.profile_img}
+                className="w-[32px] h-[32px] object-fill rounded-full cursor-pointer border-x border-y border-light_grey bg-white"
                 alt="profile"
                 onClick={() => {
                   setShowProfileOptions(!showProfileOptions);
@@ -236,109 +231,64 @@ function TopNav() {
                   setShowProfileOptions(false);
                   e.stopPropagation();
                 }}
-                className={styles.hamburger_menu_icon}
+                className="cursor-pointer hover:text-red md:hidden"
               />
             </div>
           </div>
         </div>
 
         {showProfileOptions && (
-          <div className={styles.sub_nav}>
+          <div className="flex flex-col md:flex-row flex-wrap gap-[5px]">
             <SideNav hideMenu={hideMenu} />
           </div>
         )}
 
         {showMenu && (
-          <div className={styles.links_in_small}>
-            <Link
+          <div className="md:hidden flex flex-col sm:flex-row gap-[5px]">
+            <CustomLink
               to="/companies"
-              className={[
-                styles.link,
-                history.location.pathname === "/companies"
-                  ? styles.selected
-                  : null,
-              ].join(" ")}
-              onClick={() => hideMenu()}
-            >
-              {t("companies")}
-            </Link>
+              text={t("companies")}
+              onClickHandler={() => hideMenu()}
+            />
+            {(userType === UserTypeConstants.ADMIN ||
+              userType === UserTypeConstants.PHARMACY) && (
+              <CustomLink
+                to="/warehouses"
+                text={t("warehouses")}
+                onClickHandler={() => hideMenu()}
+              />
+            )}
 
-            <Link
-              to="/warehouses"
-              className={[
-                styles.link,
-                history.location.pathname === "/warehouses"
-                  ? styles.selected
-                  : null,
-              ].join(" ")}
-              onClick={() => hideMenu()}
-            >
-              {t("warehouses")}
-            </Link>
+            <CustomLink
+              to="/medicines"
+              text={t("items")}
+              onClickHandler={() => hideMenu()}
+            />
 
-            <Link
-              to={{
-                pathname: "/medicines",
-                state: {
-                  myCompanies: [],
-                },
-              }}
-              className={[
-                styles.link,
-                history.location.pathname === "/medicines"
-                  ? styles.selected
-                  : null,
-              ].join(" ")}
-              onClick={() => hideMenu()}
-            >
-              {t("items")}
-            </Link>
+            {(userType === UserTypeConstants.ADMIN ||
+              userType === UserTypeConstants.PHARMACY) && (
+              <>
+                <CustomLink
+                  to="/offers"
+                  text={t("offers")}
+                  onClickHandler={() => hideMenu()}
+                />
+                <CustomLink
+                  to="/items-with-points"
+                  text={t("points offer")}
+                  onClickHandler={() => hideMenu()}
+                />
 
-            <Link
-              to="/offers"
-              className={[
-                styles.link,
-                history.location.pathname === "/offers"
-                  ? styles.selected
-                  : null,
-              ].join(" ")}
-              onClick={() => hideMenu()}
-            >
-              {t("offers")}
-            </Link>
-
-            <Link
-              to="/items-with-points"
-              className={[
-                styles.link,
-                history.location.pathname === "/items-with-points"
-                  ? styles.selected
-                  : null,
-              ].join(" ")}
-              onClick={() => hideMenu()}
-            >
-              {t("points offer")}
-            </Link>
-
-            <Link
-              to="/special-offers"
-              className={[
-                styles.link,
-                history.location.pathname === "/special-offers"
-                  ? styles.selected
-                  : null,
-              ].join(" ")}
-              onClick={() => hideMenu()}
-            >
-              {t("baskets")}
-            </Link>
+                <CustomLink
+                  to="/special-offers"
+                  text={t("baskets")}
+                  onClickHandler={() => hideMenu()}
+                />
+              </>
+            )}
           </div>
         )}
       </nav>
-
-      {showTopSearchBar && (
-        <FilterItemsModal close={() => setShowTopSearchBar(false)} />
-      )}
     </>
   );
 }

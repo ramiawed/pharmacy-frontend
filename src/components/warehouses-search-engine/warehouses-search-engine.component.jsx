@@ -13,8 +13,8 @@ import { selectUser } from "../../redux/auth/authSlice";
 // components
 import ChooserContainer from "../chooser-container/chooser-container.component";
 import SearchContainer from "../search-container/search-container.component";
+import InputSignIn from "../input-sign-in/input-sign-in.component";
 import ChooseValue from "../choose-value/choose-value.component";
-import SearchInput from "../search-input/search-input.component";
 
 // constants and utils
 import { CitiesName, UserTypeConstants } from "../../utils/constants";
@@ -56,7 +56,7 @@ function WarehousesSearchEngine({ onSearch, keyUpHandler }) {
   return (
     <>
       <SearchContainer searchEngineAlert={isThereSearch}>
-        <SearchInput
+        <InputSignIn
           label="name"
           id="search-name"
           type="text"
@@ -66,6 +66,7 @@ function WarehousesSearchEngine({ onSearch, keyUpHandler }) {
           }}
           placeholder="search by warehouse name"
           resetField={() => dispatch(changeSearchName(""))}
+          forSearch={true}
         />
 
         {user.type === UserTypeConstants.ADMIN && (
@@ -89,7 +90,6 @@ function WarehousesSearchEngine({ onSearch, keyUpHandler }) {
           defaultValue={searchCity}
           chooseHandler={(value) => {
             dispatch(changeSearchCity(value));
-            // onSearch();
           }}
         />
       )}

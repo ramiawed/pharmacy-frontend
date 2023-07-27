@@ -188,18 +188,6 @@ export const itemsSectionThreeSlice = createSlice({
       state.count = 0;
       state.refresh = true;
     },
-
-    itemsSectionThreeSignOut: (state) => {
-      state.itemsSectionThreeStatus = "idle";
-      state.itemsSectionThreeError = "";
-      state.addItemToSectionThreeStatus = "idle";
-      state.addItemToSectionThreeError = "";
-      state.removeItemFromSectionThreeStatus = "idle";
-      state.removeItemFromSectionThreeError = "";
-      state.itemsSectionThree = [];
-      state.count = 0;
-      state.refresh = true;
-    },
   },
 
   extraReducers: {
@@ -280,7 +268,6 @@ export const itemsSectionThreeSlice = createSlice({
 export const selectItemsSectionThree = (state) => state.itemsSectionThree;
 
 export const {
-  itemsSectionThreeSignOut,
   resetItemsSectionThreeStatus,
   resetItemsSectionThreeError,
   resetAddItemToSectionThreeStatus,

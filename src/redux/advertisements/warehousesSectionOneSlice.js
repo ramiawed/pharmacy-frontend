@@ -191,18 +191,6 @@ export const warehousesSectionOneSlice = createSlice({
       state.count = 0;
       state.refresh = true;
     },
-
-    warehousesSectionOneSignOut: (state) => {
-      state.warehousesSectionOneStatus = "idle";
-      state.warehousesSectionOneError = "";
-      state.addWarehouseToSectionOneStatus = "idle";
-      state.addWarehouseToSectionOneError = "";
-      state.removeWarehouseFromSectionOneStatus = "idle";
-      state.removeWarehouseFromSectionOneError = "";
-      state.warehousesSectionOne = [];
-      state.count = 0;
-      state.refresh = true;
-    },
   },
 
   extraReducers: {
@@ -277,7 +265,6 @@ export const warehousesSectionOneSlice = createSlice({
 export const selectWarehousesSectionOne = (state) => state.warehousesSectionOne;
 
 export const {
-  warehousesSectionOneSignOut,
   resetWarehousesSectionOneStatus,
   resetWarehousesSectionOneError,
   resetAddWarehouseToSectionOneStatus,

@@ -4,40 +4,11 @@ import { useTranslation } from "react-i18next";
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
 import { unwrapResult } from "@reduxjs/toolkit";
-import {
-  authSliceSignOut,
-  deleteMe,
-  selectUserData,
-} from "../../redux/auth/authSlice";
-import { usersSliceSignOut } from "../../redux/users/usersSlice";
-import { favoritesSliceSignOut } from "../../redux/favorites/favoritesSlice";
-import { companySliceSignOut } from "../../redux/company/companySlice";
-import { warehouseSliceSignOut } from "../../redux/warehouse/warehousesSlice";
-import { itemsSliceSignOut } from "../../redux/items/itemsSlices";
-import { cartSliceSignOut } from "../../redux/cart/cartSlice";
-import { orderSliceSignOut } from "../../redux/orders/ordersSlice";
+import { deleteMe, selectUserData } from "../../redux/auth/authSlice";
 import {
   changeOnlineMsg,
   selectOnlineStatus,
 } from "../../redux/online/onlineSlice";
-import {
-  medicinesSliceSignOut,
-  resetMedicines,
-} from "../../redux/medicines/medicinesSlices";
-import { statisticsSliceSignOut } from "../../redux/statistics/statisticsSlice";
-import { advertisementsSignOut } from "../../redux/advertisements/advertisementsSlice";
-import { companiesSectionOneSignOut } from "../../redux/advertisements/companiesSectionOneSlice";
-import { companiesSectionTwoSignOut } from "../../redux/advertisements/companiesSectionTwoSlice";
-import { itemsSectionOneSignOut } from "../../redux/advertisements/itemsSectionOneSlice";
-import { itemsSectionThreeSignOut } from "../../redux/advertisements/itemsSectionThreeSlice";
-import { itemsSectionTwoSignOut } from "../../redux/advertisements/itemsSectionTwoSlice";
-import { warehousesSectionOneSignOut } from "../../redux/advertisements/warehousesSectionOneSlice";
-import { notificationsSignOut } from "../../redux/notifications/notificationsSlice";
-import { settingsSignOut } from "../../redux/settings/settingsSlice";
-import { usersNotificationsSignOut } from "../../redux/userNotifications/userNotificationsSlice";
-import { savedItemsSliceSignOut } from "../../redux/savedItems/savedItemsSlice";
-import { basketsSliceSignOut } from "../../redux/baskets/basketsSlice";
-import { itemsWithPointsSliceSignOut } from "../../redux/itemsWithPoints/itemsWithPointsSlices";
 
 // components
 import CenterContainer from "../center-container/center-container.component";
@@ -78,30 +49,9 @@ function DeleteMe() {
       .then(unwrapResult)
       .then(() => {
         // on succeeded sign out and reset redux's store
-        dispatch(authSliceSignOut());
-        dispatch(cartSliceSignOut());
-        dispatch(companySliceSignOut());
-        dispatch(favoritesSliceSignOut());
-        dispatch(itemsSliceSignOut());
-        dispatch(statisticsSliceSignOut());
-        dispatch(usersSliceSignOut());
-        dispatch(warehouseSliceSignOut());
-        dispatch(orderSliceSignOut());
-        dispatch(resetMedicines());
-        dispatch(advertisementsSignOut());
-        dispatch(companiesSectionOneSignOut());
-        dispatch(companiesSectionTwoSignOut());
-        dispatch(itemsSectionOneSignOut());
-        dispatch(itemsSectionThreeSignOut());
-        dispatch(itemsSectionTwoSignOut());
-        dispatch(warehousesSectionOneSignOut());
-        dispatch(medicinesSliceSignOut());
-        dispatch(notificationsSignOut());
-        dispatch(settingsSignOut());
-        dispatch(usersNotificationsSignOut());
-        dispatch(savedItemsSliceSignOut());
-        dispatch(basketsSliceSignOut());
-        dispatch(itemsWithPointsSliceSignOut());
+        dispatch({
+          type: "SIGNOUT_REQUEST",
+        });
         localStorage.removeItem("token");
       })
       .catch(() => {

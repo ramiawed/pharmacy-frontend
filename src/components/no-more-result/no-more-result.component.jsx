@@ -1,10 +1,17 @@
 import React from "react";
-
-// styles
-import styles from "./no-more-result.module.scss";
+import { useTheme } from "../../contexts/themeContext";
 
 const NoMoreResult = ({ msg }) => {
-  return <p className={[styles.text, "fc_main"].join(" ")}>{msg}</p>;
+  const { theme } = useTheme();
+  return (
+    <p
+      className={`bold text-lg text-center my-2 ${
+        theme === "light" ? "text-dark" : "text-color-primary-500"
+      }`}
+    >
+      {msg}
+    </p>
+  );
 };
 
 export default NoMoreResult;

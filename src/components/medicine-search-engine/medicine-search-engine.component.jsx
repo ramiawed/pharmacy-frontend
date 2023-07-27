@@ -43,7 +43,7 @@ const MedicineSearchEngine = ({ handleEnterPress, keyUpHandler, location }) => {
 
   const [showChooseCompanyModal, setShowChooseCompanyModal] = useState(false);
 
-  const companiesOptions = location.state.myCompanies
+  const companiesOptions = location?.state?.myCompanies
     ? [
         { value: "", label: t("all companies") },
         ...location.state.myCompanies?.map((c) => {

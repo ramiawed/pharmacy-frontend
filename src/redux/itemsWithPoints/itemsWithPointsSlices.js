@@ -182,19 +182,6 @@ export const itemsWithPointsSlice = createSlice({
         page: 1,
       };
     },
-
-    itemsWithPointsSliceSignOut: (state) => {
-      state.status = "idle";
-      state.medicines = [];
-      state.count = 0;
-      state.error = "";
-      state.pageState = {
-        searchName: "",
-        searchCompaniesIds: [],
-        searchWarehousesIds: [],
-        page: 1,
-      };
-    },
   },
   extraReducers: {
     [getItemsWithPoints.pending]: (state) => {
@@ -228,7 +215,6 @@ export const {
   resetStatus,
   resetError,
   resetMedicines,
-  itemsWithPointsSliceSignOut,
   setSearchName,
   setPage,
   resetItemsWithPointsArray,

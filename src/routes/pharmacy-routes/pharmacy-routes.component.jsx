@@ -64,271 +64,269 @@ const ItemsWithPointsPage = lazy(() =>
 
 function PharmacyRoutes({ changeOptionHandler }) {
   return (
-    <>
-      <Suspense fallback={<HomePageLoader />}>
-        <Switch>
-          <Route exact path="/">
-            <HomePage
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: TopNavLinks.HOME,
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: "",
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route>
+    <Suspense fallback={<HomePageLoader />}>
+      <Switch>
+        <Route exact path="/">
+          <HomePage
+            onSelectedChange={() => {
+              changeOptionHandler({
+                selectedTopNavOption: TopNavLinks.HOME,
+                collapsedSideNavOption: true,
+                selectedSideNavOption: "",
+                showTopNav: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+        </Route>
 
-          <Route exact path="/companies">
-            <CompaniesPage
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: TopNavLinks.COMPANIES,
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: "",
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route>
+        <Route exact path="/companies">
+          <CompaniesPage
+            onSelectedChange={() => {
+              changeOptionHandler({
+                selectedTopNavOption: TopNavLinks.COMPANIES,
+                collapsedSideNavOption: true,
+                selectedSideNavOption: "",
+                showTopNav: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+        </Route>
 
-          <Route excat path="/special-offers">
-            <SpecialOffersPage
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: TopNavLinks.SPEACIAL_OFFERS,
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: "",
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route>
+        <Route excat path="/special-offers">
+          <SpecialOffersPage
+            onSelectedChange={() => {
+              changeOptionHandler({
+                selectedTopNavOption: TopNavLinks.SPEACIAL_OFFERS,
+                collapsedSideNavOption: true,
+                selectedSideNavOption: "",
+                showTopNav: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+        </Route>
 
-          <Route exact path="/ordered-baskets">
-            <OrdersPage
-              type="basket"
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: "",
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: SideNavLinks.BASKETS,
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route>
+        <Route exact path="/ordered-baskets">
+          <OrdersPage
+            type="basket"
+            onSelectedChange={() => {
+              changeOptionHandler({
+                selectedTopNavOption: "",
+                collapsedSideNavOption: true,
+                selectedSideNavOption: SideNavLinks.BASKETS,
+                showTopNav: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+        </Route>
 
-          <Route exact path="/medicines">
-            <MedicinesPage
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: TopNavLinks.MEDICINES,
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: "",
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route>
+        <Route exact path="/medicines">
+          <MedicinesPage
+            onSelectedChange={() => {
+              changeOptionHandler({
+                selectedTopNavOption: TopNavLinks.MEDICINES,
+                collapsedSideNavOption: true,
+                selectedSideNavOption: "",
+                showTopNav: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+        </Route>
 
-          <Route exact path="/offers">
-            <OffersPage
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: TopNavLinks.OFFERS,
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: "",
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route>
+        <Route exact path="/offers">
+          <OffersPage
+            onSelectedChange={() => {
+              changeOptionHandler({
+                selectedTopNavOption: TopNavLinks.OFFERS,
+                collapsedSideNavOption: true,
+                selectedSideNavOption: "",
+                showTopNav: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+        </Route>
 
-          <Route exact path="/items-with-points">
-            <ItemsWithPointsPage
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: TopNavLinks.ITEMS_WITH_POINTS,
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: "",
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route>
+        <Route exact path="/items-with-points">
+          <ItemsWithPointsPage
+            onSelectedChange={() => {
+              changeOptionHandler({
+                selectedTopNavOption: TopNavLinks.ITEMS_WITH_POINTS,
+                collapsedSideNavOption: true,
+                selectedSideNavOption: "",
+                showTopNav: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+        </Route>
 
-          <Route exact path="/warehouses">
-            <WarehousesPage
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: TopNavLinks.WAREHOUSES,
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: "",
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route>
+        <Route exact path="/warehouses">
+          <WarehousesPage
+            onSelectedChange={() => {
+              changeOptionHandler({
+                selectedTopNavOption: TopNavLinks.WAREHOUSES,
+                collapsedSideNavOption: true,
+                selectedSideNavOption: "",
+                showTopNav: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+        </Route>
 
-          <Route exact path="/my-points">
-            <MyPointPage
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: "",
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: SideNavLinks.MY_POINTS,
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route>
+        <Route exact path="/my-points">
+          <MyPointPage
+            onSelectedChange={() => {
+              changeOptionHandler({
+                selectedTopNavOption: "",
+                collapsedSideNavOption: true,
+                selectedSideNavOption: SideNavLinks.MY_POINTS,
+                showTopNav: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+        </Route>
 
-          <Route exact path="/item">
-            <ItemPage />
-          </Route>
+        <Route exact path="/item">
+          <ItemPage />
+        </Route>
 
-          <Route exact path="/profile">
-            <UserProfilePage
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: "",
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: SideNavLinks.PROFILE,
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route>
+        <Route exact path="/profile">
+          <UserProfilePage
+            onSelectedChange={() => {
+              changeOptionHandler({
+                selectedTopNavOption: "",
+                collapsedSideNavOption: true,
+                selectedSideNavOption: SideNavLinks.PROFILE,
+                showTopNav: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+        </Route>
 
-          <Route exact path="/favorites">
-            <FavoritesPage
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: TopNavLinks.FAVORITES,
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: "",
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route>
+        <Route exact path="/favorites">
+          <FavoritesPage
+            onSelectedChange={() => {
+              changeOptionHandler({
+                selectedTopNavOption: TopNavLinks.FAVORITES,
+                collapsedSideNavOption: true,
+                selectedSideNavOption: "",
+                showTopNav: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+        </Route>
 
-          <Route exact path="/basket-order-details">
-            <BasketOrderDetailsPage
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: "",
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: SideNavLinks.BASKETS,
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route>
+        <Route exact path="/basket-order-details">
+          <BasketOrderDetailsPage
+            onSelectedChange={() => {
+              changeOptionHandler({
+                selectedTopNavOption: "",
+                collapsedSideNavOption: true,
+                selectedSideNavOption: SideNavLinks.BASKETS,
+                showTopNav: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+        </Route>
 
-          <Route exact path="/cart">
-            <CartPage
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: "",
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: TopNavLinks.CART,
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route>
+        <Route exact path="/cart">
+          <CartPage
+            onSelectedChange={() => {
+              changeOptionHandler({
+                selectedTopNavOption: "",
+                collapsedSideNavOption: true,
+                selectedSideNavOption: TopNavLinks.CART,
+                showTopNav: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+        </Route>
 
-          <Route exact path="/saved-items">
-            <SavedItemsPage
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: "",
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: TopNavLinks.SAVEDITEMS,
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route>
+        <Route exact path="/saved-items">
+          <SavedItemsPage
+            onSelectedChange={() => {
+              changeOptionHandler({
+                selectedTopNavOption: "",
+                collapsedSideNavOption: true,
+                selectedSideNavOption: TopNavLinks.SAVEDITEMS,
+                showTopNav: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+        </Route>
 
-          <Route exact path="/notifications">
-            <UserNotificationPage
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: "",
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: SideNavLinks.NOTIFICATIONS,
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route>
+        <Route exact path="/notifications">
+          <UserNotificationPage
+            onSelectedChange={() => {
+              changeOptionHandler({
+                selectedTopNavOption: "",
+                collapsedSideNavOption: true,
+                selectedSideNavOption: SideNavLinks.NOTIFICATIONS,
+                showTopNav: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+        </Route>
 
-          <Route exact path="/notification/:notificationId">
-            <NotificationPage
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: "",
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: SideNavLinks.NOTIFICATIONS,
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route>
+        <Route exact path="/notification/:notificationId">
+          <NotificationPage
+            onSelectedChange={() => {
+              changeOptionHandler({
+                selectedTopNavOption: "",
+                collapsedSideNavOption: true,
+                selectedSideNavOption: SideNavLinks.NOTIFICATIONS,
+                showTopNav: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+        </Route>
 
-          <Route exact path="/orders">
-            <OrdersPage
-              type="order"
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: "",
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: SideNavLinks.ORDERS,
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route>
+        <Route exact path="/orders">
+          <OrdersPage
+            type="order"
+            onSelectedChange={() => {
+              changeOptionHandler({
+                selectedTopNavOption: "",
+                collapsedSideNavOption: true,
+                selectedSideNavOption: SideNavLinks.ORDERS,
+                showTopNav: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+        </Route>
 
-          <Route exact path="/order-details">
-            <OrderDetailsPage
-              onSelectedChange={() => {
-                changeOptionHandler({
-                  selectedTopNavOption: "",
-                  collapsedSideNavOption: true,
-                  selectedSideNavOption: SideNavLinks.ORDERS,
-                  showTopNav: false,
-                  showSearchBar: false,
-                });
-              }}
-            />
-          </Route>
+        <Route exact path="/order-details">
+          <OrderDetailsPage
+            onSelectedChange={() => {
+              changeOptionHandler({
+                selectedTopNavOption: "",
+                collapsedSideNavOption: true,
+                selectedSideNavOption: SideNavLinks.ORDERS,
+                showTopNav: false,
+                showSearchBar: false,
+              });
+            }}
+          />
+        </Route>
 
-          <Route component={NotFound} />
-        </Switch>
-      </Suspense>
-    </>
+        <Route component={NotFound} />
+      </Switch>
+    </Suspense>
   );
 }
 

@@ -35,9 +35,12 @@ import {
 
 // styles
 import styles from "./signup.module.scss";
+import { useTheme } from "../../contexts/themeContext";
+import CustomButton from "../custom-button/custom-button.component";
 
 // Sign up component
 function SignUp() {
+  const { theme } = useTheme();
   const { t } = useTranslation();
   const history = useHistory();
 
@@ -154,10 +157,10 @@ function SignUp() {
   // check the password and passwordConfirm length (must be greater than or equals to 8)
   // check the equality of the password and passwordConfirm
   const createAccountHandler = () => {
-    if (!isOnline) {
-      dispatch(changeOnlineMsg());
-      return;
-    }
+    // if (!isOnline) {
+    //   dispatch(changeOnlineMsg());
+    //   return;
+    // }
 
     setUser({
       type: userType,
@@ -234,12 +237,30 @@ function SignUp() {
   ) : signupSucceeded ? (
     <Redirect to="/approve" />
   ) : (
-    <div className={[styles.outer_container].join(" ")}>
+    <div
+      className={[
+        styles.outer_container,
+        "flex flex-col gap-4 items-center relative min-w-[350px]",
+      ].join(" ")}
+    >
       {/* top left */}
-      <div className={[styles.container, "bg_main"].join(" ")}>
-        <div className={styles.header}>
-          <h3>{t("sign up")}</h3>
-          <img src={Logo} alt="thumb" className={styles.img} />
+      <div
+        className={`w-full flex flex-col items-center p-5 rounded-xl 
+          ${theme === "light" ? "bg-main " : "d-mixed300-primary300"}`}
+      >
+        <div className="w-full flex flex-row items-center mb-3">
+          <div
+            className={`${
+              theme === "light" ? "text-white" : ""
+            } flex-1 bold text-2xl`}
+          >
+            {t("sign up")}
+          </div>
+          <img
+            src={Logo}
+            alt="thumb"
+            className={`w-[75px] h-auto rounded-full`}
+          />
         </div>
 
         <SignupStagesNumber
@@ -296,25 +317,29 @@ function SignUp() {
 
           {((stage === 4 && userType === UserTypeConstants.COMPANY) ||
             stage === 5) && (
-            <div className={styles.final_stage_div}>
+            <div className="flex flex-col gap-4 justify-center items-center w-full">
               <button
                 onClick={createAccountHandler}
-                className={styles.create_account_btn}
+                className={`w-4/5 hover:w-5/6 transition-all rounded-xl h-20 ${
+                  theme === "light"
+                    ? "bg-offer text-dark"
+                    : "bg-color-surface-200 text-color-primary-200"
+                }`}
               >
                 {t("sign up press")}
               </button>
-              <div
-                style={{
-                  height: "20px",
-                }}
-              ></div>
-              <Button
-                action={() => {
+
+              <CustomButton
+                onClickHandler={() => {
                   setPrevStage(stage);
                   setStage(stage - 1);
                 }}
                 text={t("previous")}
-                classStyle="bg_green"
+                classname={`${
+                  theme === "light"
+                    ? "bg-green text-white"
+                    : "d-primary500-mixed300"
+                }`}
               />
             </div>
           )}
@@ -322,27 +347,25 @@ function SignUp() {
       </div>
 
       <div
-        className={[styles.container, styles.bottom_container, "bg_main"].join(
-          " "
-        )}
+        className={`w-full flex flex-col items-center group p-5 rounded-xl cursor-pointer
+        ${
+          theme === "light"
+            ? "bg-[#606ba0] hover:shadow-[0_0px_5px_3px_rgba(86,96,146,0.6)]"
+            : "d-mixed300-primary300 hover:shadow-[0_0px_5px_3px_rgba(255,255,255,0.2)]"
+        }`}
         onClick={signInHandler}
       >
-        <div className={[styles.signup, "fc_white", "center"].join(" ")}>
-          <label style={{ cursor: "pointer", fontSize: "14px" }}>
-            {t("sign in sentence")}
-          </label>
-          <br />
-          <label
-            className={[
-              styles.signup_button,
-              "fc_red",
-              "bold",
-              "inline_block",
-            ].join(" ")}
-          >
-            {t("sign in")}
-          </label>
-        </div>
+        <label className="cursor-pointer text-sm text-white">
+          {t("sign up sentence")}
+        </label>
+        {/* <br /> */}
+        <label
+          className={`${
+            theme === "light" ? "text-red" : ""
+          } inline-block bold cursor-pointer`}
+        >
+          {t("sign in")}
+        </label>
       </div>
 
       {networkError && (
@@ -379,13 +402,14 @@ function SignUp() {
 
       {showLicenseModel && (
         <Modal
-          closeModal={() => {
+          closeHandler={() => {
             setShowLicenseModal(false);
           }}
-          header={t("license header")}
-          cancelLabel={t("close")}
-          okLabel={t("i agree liscene")}
-          okModal={newAccountHandler}
+          headerText={t("license header")}
+          cancelText={t("close")}
+          okText={t("i agree liscene")}
+          okHandler={newAccountHandler}
+          showFooter={true}
         >
           <License />
         </Modal>

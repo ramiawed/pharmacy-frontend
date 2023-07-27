@@ -9,16 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getFavorites } from "../../redux/favorites/favoritesSlice";
 import { getUnreadNotification } from "../../redux/userNotifications/userNotificationsSlice";
 import { selectSettings } from "../../redux/settings/settingsSlice";
-import {
-  changeNavSettings,
-  selectNavigationSlice,
-} from "../../redux/navs/navigationSlice";
 import { selectAdvertisements } from "../../redux/advertisements/advertisementsSlice";
 import { getSavedItems } from "../../redux/savedItems/savedItemsSlice";
+import { getCompanies } from "../../redux/company/companySlice";
+import { getWarehouses } from "../../redux/warehouse/warehousesSlice";
 
 // components
 import TopNav from "../../components/top-nav/top-nav.component";
-import SideNav from "../../components/side-nav/side-nav.component";
 import Footer from "../../components/footer/footer.component";
 import ErrorFallback from "../../components/error-fall-back/error-fall-back.component";
 import HomePageLoader from "../../components/home-page-loader/home-page-loader.component";
@@ -32,8 +29,8 @@ import styles from "./main-page.module.scss";
 
 // constants
 import { UserTypeConstants } from "../../utils/constants";
-import { getCompanies } from "../../redux/company/companySlice";
-import { getWarehouses } from "../../redux/warehouse/warehousesSlice";
+import FilterItemsModal from "../../modals/filter-items-modal/filter-items-modal.component";
+import { useTheme } from "../../contexts/themeContext";
 
 const CompanyRoutes = lazy(() =>
   import("../../routes/company-routes/company-routes.component")
@@ -54,6 +51,7 @@ const AdminRoutes = lazy(() =>
 // MainPage
 // you have to sign in first
 function MainPage() {
+  const { theme } = useTheme();
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -61,18 +59,10 @@ function MainPage() {
   // get the user and the token from redux-store-auth
   const { user, token } = useSelector(selectUserData);
   const { status: settingsStatus } = useSelector(selectSettings);
+  const { status: advertisementsStatus } = useSelector(selectAdvertisements);
 
   const [toTopVisible, setToTopVisible] = useState(false);
-
-  const {
-    setting: {
-      selectedTopNavOption,
-      collapsedSideNavOption,
-      selectedSideNavOption,
-      showSearchBar,
-    },
-  } = useSelector(selectNavigationSlice);
-  const { status: advertisementsStatus } = useSelector(selectAdvertisements);
+  const [showTopSearchBar, setShowTopSearchBar] = useState(false);
 
   const dispatchProperties = useCallback(() => {
     if (user) {
@@ -99,7 +89,7 @@ function MainPage() {
 
     // show toTop button after scroll more than 500
     const toggleToTopVisible = () => {
-      if (window.pageYOffset > 500) {
+      if (window.scrollY > 500) {
         setToTopVisible(true);
       } else {
         setToTopVisible(false);
@@ -115,7 +105,7 @@ function MainPage() {
   }, [dispatchProperties]);
 
   const changeNavigationSettingHandler = (obj) => {
-    dispatch(changeNavSettings(obj));
+    // dispatch(changeNavSettings(obj));
   };
 
   return user ? (
@@ -128,20 +118,25 @@ function MainPage() {
       {settingsStatus === "loading" || advertisementsStatus === "loading" ? (
         <HomePageLoader />
       ) : (
-        <>
+        <div
+          style={{
+            backgroundColor:
+              theme === "light" ? "rgb(255, 255, 255)" : "rgb(51, 65, 85)",
+            backgroundImage:
+              theme === "light"
+                ? "radial-gradient(at 31% 21%, rgb(224, 231, 255) 0, transparent 23%), radial-gradient(at 73% 24%, rgb(254, 249, 195) 0, transparent 16%), radial-gradient(at 89% 39%, rgb(191, 219, 254) 0, transparent 38%), radial-gradient(at 31% 90%, rgb(241, 245, 249) 0, transparent 15%), radial-gradient(at 73% 100%, rgb(224, 231, 255) 0, transparent 36%), radial-gradient(at 3% 73%, rgb(229, 229, 229) 0, transparent 56%)"
+                : "radial-gradient(at 2% 27%, rgb(51, 65, 85) 0, transparent 53%), radial-gradient(at 0% 100%, rgb(51, 65, 85) 0, transparent 41%), radial-gradient(at 100% 0%, rgb(18, 18, 18) 0, transparent 46%)",
+          }}
+          // style={{
+          //   backgroundColor: "rgb(23, 23, 23)",
+          //   backgroundImage:
+          //     "radial-gradient(at 2% 27%, rgb(51, 65, 85) 0, transparent 53%), radial-gradient(at 0% 100%, rgb(46, 46, 51) 0, transparent 41%), radial-gradient(at 100% 0%, rgb(18, 18, 18) 0, transparent 46%)",
+          // }}
+        >
           <SocketObserver />
-
           <TopNav
-            selectedOption={selectedTopNavOption}
-            onSelectedChange={(val) => {
-              changeNavigationSettingHandler({
-                selectedTopNavOption: val,
-                collapsedSideNavOption: true,
-                selectedSideNavOption: "",
-                searchNavShow: false,
-                showSearchBar: false,
-              });
-            }}
+            userType={user.type}
+            showSearchHandler={setShowTopSearchBar}
           />
 
           <div style={{ minHeight: "calc(100vh - 60px)" }}>
@@ -175,6 +170,7 @@ function MainPage() {
               )}
             </Suspense>
           </div>
+
           <Footer />
 
           {toTopVisible && (
@@ -189,7 +185,11 @@ function MainPage() {
               }}
             />
           )}
-        </>
+
+          {showTopSearchBar && (
+            <FilterItemsModal close={() => setShowTopSearchBar(false)} />
+          )}
+        </div>
       )}
     </ErrorBoundary>
   ) : (

@@ -4,24 +4,28 @@ import { useTranslation } from "react-i18next";
 // react-icons
 import { FaFilter, FaSearch } from "react-icons/fa";
 
-// constants
-import { Colors } from "../../utils/constants";
-
-// components
-import Icon from "../icon/icon.component";
-
-// styles
-import styles from "./search-container.module.scss";
+// context
+import { useTheme } from "../../contexts/themeContext";
 
 function SearchContainer({ children, searchAction, searchEngineAlert }) {
+  const { theme } = useTheme();
   const { t } = useTranslation();
 
   let childrenArray = React.Children.toArray(children);
   const [moreSearchOptions, setMoreSearchOptions] = useState(false);
 
   return (
-    <div className={[styles.search_container, styles.expanded].join(" ")}>
-      <div className={styles.options_container}>
+    <div
+      className={`${
+        theme === "light"
+          ? "bg-gray-50 border-b-[1px] border-light_grey"
+          : "d-mixed300-primary300 "
+      }
+      
+      flex flex-row justify-around items-start sticky p-2 top-[74px] z-10 overflow-hidden`}
+    >
+      {/* border-b-[1px] border-color-surface-500 */}
+      <div className="flex flex-col justify-start flex-1">
         {childrenArray[0]}
         {moreSearchOptions && childrenArray.length > 1
           ? childrenArray.map((child, index) => {
@@ -32,7 +36,7 @@ function SearchContainer({ children, searchAction, searchEngineAlert }) {
 
         {moreSearchOptions && searchAction && (
           <button
-            className={styles.search_button}
+            className=""
             onClick={() => {
               searchAction();
               setMoreSearchOptions(false);
@@ -43,21 +47,35 @@ function SearchContainer({ children, searchAction, searchEngineAlert }) {
         )}
       </div>
 
-      <div className={styles.icon_container}>
+      <div className="flex items-center justify-center ms-1">
         {childrenArray.length > 1 ? (
-          <Icon
-            onclick={() => setMoreSearchOptions(!moreSearchOptions)}
-            icon={() => <FaFilter size={24} color={Colors.WHITE_COLOR} />}
-            withAlertIcon={searchEngineAlert}
-          />
+          <div
+            className={`h-9 w-7 flex items-center justify-center cursor-pointer relative ${
+              theme === "light" ? "text-dark" : "text-color-primary-500"
+            }`}
+          >
+            <FaFilter
+              size={24}
+              onClick={() => setMoreSearchOptions(!moreSearchOptions)}
+            />
+            {searchEngineAlert && (
+              <div className="absolute top-0 end-0 w-3 h-3 rounded-full bg-red"></div>
+            )}
+          </div>
         ) : searchAction ? (
-          <Icon
-            onclick={() => {
-              searchAction();
-              setMoreSearchOptions(false);
-            }}
-            icon={() => <FaSearch size={24} color={Colors.WHITE_COLOR} />}
-          />
+          <div
+            className={`h-9 w-7 flex items-center justify-center cursor-pointer relative ${
+              theme === "light" ? "text-dark" : "text-color-primary-500"
+            }`}
+          >
+            <FaSearch
+              size={24}
+              onClick={() => {
+                searchAction();
+                setMoreSearchOptions(false);
+              }}
+            />
+          </div>
         ) : (
           <></>
         )}

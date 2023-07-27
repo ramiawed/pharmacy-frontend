@@ -9,10 +9,10 @@ import SignupStagesActions from "../signup-stages-actions/signup-stages-actions.
 import ChooserContainer from "../chooser-container/chooser-container.component";
 import StageContainer from "../stage-container/stage-container.component";
 import ChooseValue from "../choose-value/choose-value.component";
-import Input from "../input/input.component";
 
 // styles
 import styles from "./create-account-stage-three.module.scss";
+import InputSignIn from "../input-sign-in/input-sign-in.component";
 
 const CreateAccountStageThree = ({
   next,
@@ -119,7 +119,7 @@ const CreateAccountStageThree = ({
             error={error.city}
           />
 
-          <Input
+          <InputSignIn
             type="email"
             label="email"
             id="email"
@@ -127,9 +127,10 @@ const CreateAccountStageThree = ({
             onchange={(e) => inputChangeHandler("email", e.target.value)}
             placeholder="optional placeholder"
             onEnterPress={nextStageHandler}
+            resetField={(e) => inputChangeHandler("email", e.target.value)}
           />
 
-          <Input
+          <InputSignIn
             type="text"
             label="phone"
             id="phone"
@@ -137,9 +138,10 @@ const CreateAccountStageThree = ({
             onchange={(e) => inputChangeHandler("phone", e.target.value)}
             placeholder="optional placeholder"
             onEnterPress={nextStageHandler}
+            resetField={(e) => inputChangeHandler("phone", e.target.value)}
           />
 
-          <Input
+          <InputSignIn
             type="text"
             label="mobile"
             id="mobile"
@@ -149,9 +151,10 @@ const CreateAccountStageThree = ({
             errorMsg={t(error.mobile)}
             placeholder="mandatory placeholder"
             onEnterPress={nextStageHandler}
+            resetField={(e) => inputChangeHandler("mobile", e.target.value)}
           />
 
-          <Input
+          <InputSignIn
             type="text"
             label="address"
             id="addressDetails"
@@ -163,6 +166,9 @@ const CreateAccountStageThree = ({
             errorMsg={t(error.addressDetails)}
             placeholder="mandatory placeholder"
             onEnterPress={nextStageHandler}
+            resetField={(e) =>
+              inputChangeHandler("addressDetails", e.target.value)
+            }
           />
 
           <SignupStagesActions

@@ -656,34 +656,6 @@ export const itemsSlice = createSlice({
         page: 1,
       };
     },
-
-    itemsSliceSignOut: (state) => {
-      state.status = "idle";
-      state.items = [];
-      state.count = 0;
-      state.error = "";
-      state.addStatus = "";
-      state.addError = "";
-      state.activeStatus = "idle";
-      state.activeError = "";
-      state.updateStatus = "idle";
-      state.updateError = "";
-      state.changeLogoStatus = "idle";
-      state.changeLogoError = "";
-      state.pageState = {
-        role: null,
-        company: null,
-        warehouse: null,
-        searchName: "",
-        searchCompaniesIds: [],
-        searchWarehousesIds: [],
-        searchDeletedItems: false,
-        searchActiveItems: false,
-        searchInWarehouse: false,
-        searchOutWarehouse: false,
-        page: 1,
-      };
-    },
   },
 
   extraReducers: {
@@ -934,7 +906,6 @@ export const {
   resetChangeLogoError,
   resetChangeOfferStatus,
   resetChangeOffersError,
-  itemsSliceSignOut,
   resetPageState,
   setPage,
   clearFilter,

@@ -20,7 +20,12 @@ function Header({ refreshHandler, title, count }) {
   const { t } = useTranslation();
 
   return (
-    <div className={styles.header}>
+    <div
+      className={[
+        styles.header,
+        "bg-gray-50 border-b-[1px] border-light_grey",
+      ].join(" ")}
+    >
       <p>
         {t(title)}
         {count ? <span>{count}</span> : ""}
@@ -28,7 +33,7 @@ function Header({ refreshHandler, title, count }) {
       {refreshHandler && (
         <Icon
           selected={false}
-          foreColor={Colors.WHITE_COLOR}
+          foreColor={Colors.DARK_COLOR}
           tooltip={t("refresh")}
           onclick={refreshHandler}
           icon={() => <RiRefreshLine />}
@@ -39,7 +44,7 @@ function Header({ refreshHandler, title, count }) {
           history.goBack();
         }}
         icon={() => <IoMdArrowRoundBack />}
-        foreColor={Colors.WHITE_COLOR}
+        foreColor={Colors.DARK_COLOR}
       />
     </div>
   );

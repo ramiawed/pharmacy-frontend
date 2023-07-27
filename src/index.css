@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.top-nav-link {
+  @apply no-underline  font-semibold  md:text-xs lg:text-sm px-[8px] py-[4px] cursor-pointer hover:text-red active:text-red;
+}
+
+.top-nav-icon {
+  @apply cursor-pointer hover:text-red w-6 h-6 min-w-[24px] min-h-[24px] relative flex items-center justify-center;
+}
+
+.menu-link {
+  @apply flex items-center gap-5 no-underline cursor-pointer text-base px-3 py-2 rounded-full;
+}
+
+.d-mixed100-white {
+  @apply bg-color-surface-mixed-100 text-white;
+}
+
+.d-mixed200-white {
+  @apply bg-color-surface-mixed-200 text-white;
+}
+
+.d-mixed300-white {
+  @apply bg-color-surface-mixed-300 text-white;
+}
+
+.d-mixed100-primary300 {
+  @apply bg-color-surface-mixed-100 text-color-primary-300;
+}
+
+.d-mixed200-primary300 {
+  @apply bg-color-surface-mixed-200 text-color-primary-300;
+}
+
+.d-mixed300-primary300 {
+  @apply bg-color-surface-mixed-300 text-color-primary-300;
+}
+
+.d-mixed300-primary100 {
+  @apply bg-color-surface-mixed-300 text-color-primary-100;
+}
+
+.d-primary500-mixed300 {
+  @apply bg-color-primary-500 text-color-surface-mixed-300;
+}
+
+.d-primary300-mixed300 {
+  @apply bg-color-primary-300 text-color-surface-mixed-300;
+}
+
+.d-primary200-mixed300 {
+  @apply bg-color-primary-200 text-color-surface-mixed-300;
+}

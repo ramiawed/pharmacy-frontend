@@ -741,26 +741,6 @@ export const ordersSlice = createSlice({
         });
       }
     },
-
-    orderSliceSignOut: (state) => {
-      state.status = "idle";
-      state.orders = [];
-      state.basketOrders = [];
-      state.count = 0;
-      state.basketOrdersCount = 0;
-      state.error = "";
-      state.refresh = true;
-      state.pageState = {
-        type: "normal",
-        searchPharmacyName: "",
-        searchWarehouseName: "",
-        date: "",
-        dateOption: "",
-        page: 1,
-        basketOrdersPage: 1,
-        orderStatus: OrdersStatusOptions.ALL,
-      };
-    },
   },
 
   extraReducers: {
@@ -900,7 +880,6 @@ export const {
   setDateOption,
   setOrderStatus,
   setSearchDate,
-  orderSliceSignOut,
   clearFilter,
   resetSocketMsg,
   selectedChange,

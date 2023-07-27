@@ -213,12 +213,6 @@ export const favoritesSlice = createSlice({
       state.status = "idle";
       state.error = "";
     },
-    favoritesSliceSignOut: (state) => {
-      state.status = "idle";
-      state.favorites_partners = [];
-      state.favorites_items = [];
-      state.error = "";
-    },
   },
   extraReducers: {
     [getFavorites.pending]: (state) => {
@@ -332,13 +326,16 @@ export const favoritesSlice = createSlice({
   },
 });
 
-export const { resetFavorites, resetFavoriteError, favoritesSliceSignOut } =
-  favoritesSlice.actions;
+export const { resetFavorites, resetFavoriteError } = favoritesSlice.actions;
 
 export const selectFavoritesPartners = (state) =>
   state.favorites.favorites_partners;
 export const selectFavoritesItems = (state) => state.favorites.favorites_items;
 export const selectFavorites = (state) => state.favorites;
 export const selectFavoritesError = (state) => state.favorites.error;
+
+export const isInFavoritePartner = (state, id) => {
+  return state.favorites.favorites_partners.map((fa) => fa._id).includes(id);
+};
 
 export default favoritesSlice.reducer;

@@ -170,48 +170,7 @@ export const settingsSlice = createSlice({
         },
       };
     },
-    settingsSignOut: (state) => {
-      state.status = "idle";
-      state.error = "";
-      state.settings = {
-        companiesSectionOne: {
-          show: true,
-          title: "company section one title",
-          description: "company section one description",
-          order: 1,
-        },
-        companiesSectionTwo: {
-          show: true,
-          title: "company section two title",
-          description: "company section two description",
-          order: 1,
-        },
-        warehousesSectionOne: {
-          show: true,
-          title: "warehouse section one title",
-          description: "warehouse section one description",
-          order: 1,
-        },
-        itemsSectionOne: {
-          show: true,
-          title: "item section one title",
-          description: "item section one description",
-          order: 1,
-        },
-        itemsSectionTwo: {
-          show: true,
-          title: "item section two title",
-          description: "company section two description",
-          order: 1,
-        },
-        itemsSectionThree: {
-          show: true,
-          title: "item section three title",
-          description: "item section three description",
-          order: 1,
-        },
-      };
-    },
+
     socketUpdateSettings: (state, action) => {
       state.settings = {
         ...state.settings,
@@ -266,7 +225,6 @@ export const {
   resetSettingStatus,
   resetSettingError,
   resetSetting,
-  settingsSignOut,
   socketUpdateSettings,
 } = settingsSlice.actions;
 

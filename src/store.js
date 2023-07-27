@@ -29,7 +29,7 @@ import savedItemsSlice from "./redux/savedItems/savedItemsSlice";
 import basketsSlice from "./redux/baskets/basketsSlice";
 import itemsWithPointsSlice from "./redux/itemsWithPoints/itemsWithPointsSlices";
 
-const reducers = combineReducers({
+const appReducers = combineReducers({
   auth: authSlice,
   users: usersSlice,
   companies: companiesSlice,
@@ -58,6 +58,17 @@ const reducers = combineReducers({
   itemsWithPoints: itemsWithPointsSlice,
 });
 
+const rootReducers = (state, action) => {
+  if (action.type === "SIGNOUT_REQUEST") {
+    // for all keys defined in your persistConfig(s)
+    storage.removeItem("persist:root");
+    // storage.removeItem('persist:otherKey')
+
+    return appReducers(undefined, action);
+  }
+  return appReducers(state, action);
+};
+
 const persistConfig = {
   key: "root",
   storage,
@@ -65,7 +76,7 @@ const persistConfig = {
   blacklist: [],
 };
 
-const persistedReducer = persistReducer(persistConfig, reducers);
+const persistedReducer = persistReducer(persistConfig, rootReducers);
 
 export default configureStore({
   reducer: persistedReducer,

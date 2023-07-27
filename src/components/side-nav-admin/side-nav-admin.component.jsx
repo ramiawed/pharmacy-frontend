@@ -1,6 +1,8 @@
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+
+// components
+import CustomLink from "../custom-link/custom-link.component";
 
 // icons
 import { HiUsers } from "react-icons/hi";
@@ -20,24 +22,13 @@ import { CgProfile } from "react-icons/cg";
 
 // react redux
 import { selectSettings } from "../../redux/settings/settingsSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { resetPageState, setPageState } from "../../redux/items/itemsSlices";
-import {
-  setSearchCompanyId,
-  setSearchWarehouseId,
-} from "../../redux/medicines/medicinesSlices";
-import { orderSliceSignOut, setRefresh } from "../../redux/orders/ordersSlice";
-
-// styles
-import styles from "../side-nav.module.scss";
+import { useSelector } from "react-redux";
 
 // constants
-import { SideNavLinks, UserTypeConstants } from "../../utils/constants.js";
+import { SideNavLinks } from "../../utils/constants.js";
 
 function SideNavAdmin({ hideMenu }) {
-  const history = useHistory();
   const { t } = useTranslation();
-  const dispatch = useDispatch();
 
   // selectors
   const {
@@ -46,206 +37,77 @@ function SideNavAdmin({ hideMenu }) {
 
   return (
     <>
-      <Link
-        className={[
-          styles.link,
-          history.location.pathname === "/admin/partners"
-            ? `${styles.selected}`
-            : "",
-        ].join(" ")}
-        onClick={() => hideMenu()}
-        // onClick={() => {
-        //   onSelectedChange(SideNavLinks.PARTNERS);
-        //   dispatch(setSearchWarehouseId(null));
-        //   dispatch(setSearchCompanyId(null));
-        // }}
+      <CustomLink
+        icon={() => <HiUsers size={24} />}
         to="/admin/partners"
-      >
-        <HiUsers size={24} />
-        <label className={styles.tooltip}>{t(SideNavLinks.PARTNERS)}</label>
-      </Link>
+        text={t(SideNavLinks.PARTNERS)}
+        onClickHandler={() => hideMenu()}
+      />
 
-      <Link
-        className={[
-          styles.link,
-          history.location.pathname === "/items" ? `${styles.selected}` : "",
-        ].join(" ")}
-        // onClick={() => {
-        //   onSelectedChange(SideNavLinks.ITEMS);
-        //   dispatch(resetPageState());
-        //   dispatch(
-        //     setPageState({
-        //       company: null,
-        //       warehouse: null,
-        //       role: UserTypeConstants.ADMIN,
-        //     })
-        //   );
-        //   dispatch(setSearchWarehouseId(null));
-        //   dispatch(setSearchCompanyId(null));
-        // }}
-        to={{
-          pathname: "/items",
-        }}
-        onClick={() => hideMenu()}
-      >
-        <GiMedicines size={24} />
-        <label className={styles.tooltip}>{t("items")}</label>
-      </Link>
+      <CustomLink
+        icon={() => <GiMedicines size={24} />}
+        to="/items"
+        text={t("items")}
+        onClickHandler={() => hideMenu()}
+      />
 
       {saveOrders && (
-        <Link
-          className={[
-            styles.link,
-            history.location.pathname === "/orders" ? `${styles.selected}` : "",
-          ].join(" ")}
-          // onClick={() => {
-          //   onSelectedChange(SideNavLinks.ORDERS);
-          //   dispatch(setRefresh(true));
-          //   dispatch(orderSliceSignOut());
-          //   dispatch(setSearchWarehouseId(null));
-          //   dispatch(setSearchCompanyId(null));
-          // }}
+        <CustomLink
+          icon={() => <BsFillEnvelopeFill size={24} />}
           to="/orders"
-          onClick={() => hideMenu()}
-        >
-          <BsFillEnvelopeFill size={24} />
-          <label className={styles.tooltip}>{t("orders")}</label>
-        </Link>
+          text={t("orders")}
+          onClickHandler={() => hideMenu()}
+        />
       )}
 
-      <Link
-        className={[
-          styles.link,
-          history.location.pathname === "/baskets" ? `${styles.selected}` : "",
-        ].join(" ")}
-        // onClick={() => {
-        //   onSelectedChange(SideNavLinks.BASKETS);
-        //   dispatch(setSearchWarehouseId(null));
-        //   dispatch(setSearchCompanyId(null));
-        // }}
+      <CustomLink
+        icon={() => <BsBasket2Fill size={24} />}
         to="/baskets"
-        onClick={() => hideMenu()}
-      >
-        <BsBasket2Fill size={24} />
-        <label className={styles.tooltip}>{t("baskets")}</label>
-      </Link>
+        text={t("baskets")}
+        onClickHandler={() => hideMenu()}
+      />
 
-      <Link
-        className={[
-          styles.link,
-          history.location.pathname === "/admin/statistics"
-            ? `${styles.selected}`
-            : "",
-        ].join(" ")}
-        // onClick={() => {
-        //   // onSelectedChange(SideNavLinks.STATISTICS);
-        //   // dispatch(setSearchWarehouseId(null));
-        //   // dispatch(setSearchCompanyId(null));
-        //   // dispatch(setSelectedWarehouse(null));
-        // }}
+      <CustomLink
+        icon={() => <BsFillBarChartLineFill size={24} />}
         to="/admin/statistics"
-        onClick={() => hideMenu()}
-      >
-        <BsFillBarChartLineFill size={24} />
-        <label className={styles.tooltip}>{t("statistics")}</label>
-      </Link>
+        text={t("statistics")}
+        onClickHandler={() => hideMenu()}
+      />
 
-      <Link
-        className={[
-          styles.link,
-          history.location.pathname === "/admin/advertisements"
-            ? `${styles.selected}`
-            : "",
-        ].join(" ")}
-        // onClick={() => {
-        //   onSelectedChange(SideNavLinks.ADVERTISEMENTS);
-        //   dispatch(setSearchWarehouseId(null));
-        //   dispatch(setSearchCompanyId(null));
-        //   // dispatch(setSelectedWarehouse(null));
-        // }}
+      <CustomLink
+        icon={() => <RiAdvertisementFill size={24} />}
         to="/admin/advertisements"
-        onClick={() => hideMenu()}
-      >
-        <RiAdvertisementFill size={24} />
-        <label className={styles.tooltip}>{t("advertisements")}</label>
-      </Link>
+        text={t("advertisements")}
+        onClickHandler={() => hideMenu()}
+      />
 
-      <Link
-        className={[
-          styles.link,
-          history.location.pathname === "/admin/notifications"
-            ? `${styles.selected}`
-            : "",
-        ].join(" ")}
-        // onClick={() => {
-        //   onSelectedChange(SideNavLinks.NOTIFICATIONS);
-        //   dispatch(setSearchWarehouseId(null));
-        //   dispatch(setSearchCompanyId(null));
-        //   // dispatch(setSelectedWarehouse(null));
-        // }}
+      <CustomLink
+        icon={() => <MdNotificationsActive size={24} />}
         to="/admin/notifications"
-        onClick={() => hideMenu()}
-      >
-        <MdNotificationsActive size={24} />
-        <label className={styles.tooltip}>{t("notifications")}</label>
-      </Link>
+        text={t("notifications")}
+        onClickHandler={() => hideMenu()}
+      />
 
-      <Link
-        className={[
-          styles.link,
-          history.location.pathname === "/admin/settings"
-            ? `${styles.selected}`
-            : "",
-        ].join(" ")}
-        // onClick={() => {
-        //   onSelectedChange(SideNavLinks.SETTINGS);
-        //   dispatch(setSearchWarehouseId(null));
-        //   dispatch(setSearchCompanyId(null));
-        // }}
+      <CustomLink
+        icon={() => <MdOutlineSettings size={24} />}
         to="/admin/settings"
-        onClick={() => hideMenu()}
-      >
-        <MdOutlineSettings size={24} />
-        <label className={styles.tooltip}>{t("settings")}</label>
-      </Link>
+        text={t("settings")}
+        onClickHandler={() => hideMenu()}
+      />
 
-      <Link
-        className={[
-          styles.link,
-          history.location.pathname === "/admin/backup-restore"
-            ? `${styles.selected}`
-            : "",
-        ].join(" ")}
-        // onClick={() => {
-        //   onSelectedChange(SideNavLinks.BACKUP_RESTORE);
-        //   dispatch(setSearchWarehouseId(null));
-        //   dispatch(setSearchCompanyId(null));
-        //   // dispatch(setSelectedWarehouse(null));
-        // }}
+      <CustomLink
+        icon={() => <MdBackup size={24} />}
         to="/admin/backup-restore"
-        onClick={() => hideMenu()}
-      >
-        <MdBackup size={24} />
-        <label className={styles.tooltip}>{t("backup and restore")}</label>
-      </Link>
+        text={t("backup and restore")}
+        onClickHandler={() => hideMenu()}
+      />
 
-      <Link
-        className={[
-          styles.link,
-          history.location.pathname === "/profile" ? `${styles.selected}` : "",
-        ].join(" ")}
-        // onClick={() => {
-        //   onSelectedChange(SideNavLinks.PROFILE);
-        //   dispatch(setSearchWarehouseId(null));
-        //   dispatch(setSearchCompanyId(null));
-        //   // dispatch(setSelectedWarehouse(null));
-        // }}
+      <CustomLink
+        icon={() => <CgProfile size={24} />}
         to="/profile"
-        onClick={() => hideMenu()}
-      >
-        <CgProfile size={24} />
-        <label className={styles.tooltip}>{t("profile")}</label>
-      </Link>
+        text={t("profile")}
+        onClickHandler={() => hideMenu()}
+      />
     </>
   );
 }

@@ -154,11 +154,6 @@ export const cartSlice = createSlice({
         (ci) => ci.warehouse.name !== action.payload.name
       );
     },
-
-    cartSliceSignOut: (state) => {
-      state.cartItems = [];
-      state.cartWarehouse = [];
-    },
   },
 });
 
@@ -168,7 +163,6 @@ export const {
   resetCartItems,
   increaseItemQty,
   decreaseItemQty,
-  cartSliceSignOut,
 } = cartSlice.actions;
 
 export const selectCartItems = (state) => state.cart.cartItems;

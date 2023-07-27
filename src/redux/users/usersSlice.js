@@ -418,35 +418,6 @@ export const usersSlice = createSlice({
         page: 1,
       };
     },
-
-    usersSliceSignOut: (state) => {
-      state.status = "idle";
-      state.users = null;
-      state.error = "";
-      state.count = 0;
-      state.refresh = true;
-      state.activationDeleteStatus = "idle";
-      state.activationDeleteStatusMsg = "";
-      state.resetUserPasswordStatus = "idle";
-      state.resetUserPasswordError = "";
-
-      state.pageState = {
-        searchName: "",
-        searchCity: CitiesName.ALL,
-        searchAddressDetails: "",
-        searchEmployeeName: "",
-        searchCertificateName: "",
-        searchCompanyName: "",
-        searchJobTitle: "",
-        searchMobile: "",
-        active: UserActiveState.ALL,
-        userType: UserTypeConstants.ALL,
-        searchJob: GuestJob.NONE,
-        showItems: ShowWarehouseItems.ALL,
-        orderBy: {},
-        page: 1,
-      };
-    },
   },
   extraReducers: {
     [getUsers.pending]: (state) => {
@@ -531,7 +502,6 @@ export const {
   resetUserChangePasswordError,
   resetError,
   resetPageState,
-  usersSliceSignOut,
   setSearchName,
   setSearchCity,
   setSearchAddressDetails,
@@ -540,7 +510,6 @@ export const {
   setSearchCompanyName,
   setSearchJobTitle,
   setSearchMobile,
-  // setUserApproved,
   setUserActive,
   setUserType,
   setSearchJob,

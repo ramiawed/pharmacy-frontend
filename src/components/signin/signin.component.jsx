@@ -11,7 +11,6 @@ import { RiLockPasswordLine } from "react-icons/ri";
 // component
 import InputSignIn from "../input-sign-in/input-sign-in.component";
 import Modal from "../../modals/modal/modal.component";
-import Button from "../button/button.component";
 
 // redux
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -33,8 +32,14 @@ import styles from "./signin.module.scss";
 // constants
 import { VERSION } from "../../utils/constants";
 
+// contexts
+import { useTheme } from "../../contexts/themeContext";
+import Checkbox from "../checkbox/checkbox.component";
+import CustomButton from "../custom-button/custom-button.component";
+
 // Sign in component
 function SignIn() {
+  const { theme } = useTheme();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const history = useHistory();
@@ -175,16 +180,34 @@ function SignIn() {
   };
 
   return (
-    <div className={styles.outer_container}>
-      <div className={[styles.container].join(" ")}>
-        <div className={styles.header}>
-          <h3>{t("sign in")}</h3>
-          <img src={Logo} alt="thumb" className={styles.img} />
+    <div
+      className={[
+        styles.outer_container,
+        "flex flex-col gap-4 items-center relative min-w-[350px]",
+      ].join(" ")}
+    >
+      <div
+        className={`w-full flex flex-col items-center p-5 rounded-xl transition-all
+          ${theme === "light" ? "bg-main" : "d-mixed300-primary300"}`}
+      >
+        <div className="w-full flex flex-row items-center mb-3">
+          <div
+            className={`${
+              theme === "light" ? "text-white" : ""
+            } flex-1 bold text-2xl`}
+          >
+            {t("sign in")}
+          </div>
+          <img
+            src={Logo}
+            alt="thumb"
+            className={`w-[75px] h-auto rounded-full`}
+          />
         </div>
 
         {/* username */}
         <InputSignIn
-          icon={<HiUser className={styles.icons} />}
+          icon={<HiUser size={20} />}
           type="text"
           placeholder="username"
           id="username"
@@ -197,7 +220,7 @@ function SignIn() {
 
         {/* password */}
         <InputSignIn
-          icon={<RiLockPasswordLine className={styles.icon} />}
+          icon={<RiLockPasswordLine size={20} />}
           type="password"
           placeholder="password"
           id="password"
@@ -209,18 +232,25 @@ function SignIn() {
         />
 
         <div
-          className={styles.remember_me}
-          defaultChecked={rememberMeOption}
-          defaultValue={rememberMeOption}
-          onChange={() => setRememberMeOption(!rememberMeOption)}
+          className={`mt-3 w-full flex items-center justify-between mb-4 ${
+            theme === "light" ? "text-white" : ""
+          } `}
         >
-          <div>
-            <input id="remember" type="checkbox" />
-            <label htmlFor="remember">{t("remember me")}</label>
-          </div>
+          {/* <div className="flex flex-row items-center"> */}
+          <Checkbox
+            check={rememberMeOption}
+            clickHandler={() => setRememberMeOption(!rememberMeOption)}
+            label={t("remember me")}
+            classname={`${
+              theme === "light" ? "bg-white text-dark" : "d-mixed100-primary300"
+            }`}
+            labelClassname={`${
+              theme === "light" ? "text-white" : "text-color-primary-300"
+            }`}
+          />
 
           <p
-            className={styles.forget_password}
+            className="text-sm cursor-pointer hover:underline"
             onClick={() => {
               setShowForgetPasswordModal(true);
             }}
@@ -234,7 +264,7 @@ function SignIn() {
           {Object.keys(preSignError).map((key) => {
             if (preSignError[key].length > 0) {
               return (
-                <p className={styles.error} key={key}>
+                <p className="text-red text-xs bold" key={key}>
                   {t(`${preSignError[key]}`)}
                 </p>
               );
@@ -242,45 +272,56 @@ function SignIn() {
               return null;
             }
           })}
-          {error && <p className={styles.error}>{t(error)}</p>}
+          {error && <p className="text-red text-xs bold">{t(error)}</p>}
         </>
 
-        <div
-          style={{
-            marginTop: "15px",
-          }}
-        >
-          <Button
-            text={t("sign in")}
-            action={signInHandler}
-            classStyle="bg_red"
-          />
-        </div>
+        <CustomButton
+          text={t("sign in")}
+          onClickHandler={signInHandler}
+          classname={`${
+            theme === "light" ? "bg-red text-white" : "d-primary500-mixed300"
+          }`}
+        />
       </div>
 
       <div
-        className={[styles.container, styles.bottom_container].join(" ")}
+        className={`w-full flex flex-col items-center group p-5 rounded-xl cursor-pointer
+        ${
+          theme === "light"
+            ? "bg-[#606ba0] hover:shadow-[0_0px_5px_3px_rgba(86,96,146,0.6)]"
+            : "d-mixed300-primary300 hover:shadow-[0_0px_5px_3px_rgba(255,255,255,0.2)]"
+        }`}
         onClick={signupHandler}
       >
-        <div className={styles.signup}>
-          <label style={{ cursor: "pointer", fontSize: "14px" }}>
-            {t("sign up sentence")}
-          </label>
-          <br />
-          <label className={styles.signup_button}>{t("sign up")}</label>
-        </div>
+        <label className="cursor-pointer text-sm text-white">
+          {t("sign up sentence")}
+        </label>
+        {/* <br /> */}
+        <label
+          className={`${
+            theme === "light" ? "text-red" : ""
+          } inline-block bold cursor-pointer`}
+        >
+          {t("sign up")}
+        </label>
       </div>
+
       {showForgetPasswordModal && (
         <Modal
-          closeModal={() => {
+          closeHandler={() => {
             setShowForgetPasswordModal(false);
           }}
-          header={t("contact us")}
-          cancelLabel={t("close")}
-          small={true}
-          green={true}
+          headerText={t("contact us")}
+          cancelText={t("close")}
+          showFooter={true}
         >
-          <p>{t("forget password msg")}</p>
+          <p
+            className={`${
+              theme === "light" ? "text-dark" : "text-color-primary-400"
+            }`}
+          >
+            {t("forget password msg")}
+          </p>
           <p style={{ color: "#25D366" }}>
             {t("contact us via whatsapp")} : {t("our phone number")}
           </p>

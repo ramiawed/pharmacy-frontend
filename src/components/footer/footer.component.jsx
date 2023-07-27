@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 // components
+import LanguageChanger from "../language-changer/langauge-changer.component";
+import ThemeChanger from "../theme-changer/theme-changer.component";
 import Modal from "../../modals/modal/modal.component";
 
 // react-icons
@@ -12,25 +14,27 @@ import {
   RiTelegramFill,
 } from "react-icons/ri";
 
-// constants
-import { Colors } from "../../utils/constants";
-
-// styles
-import styles from "./footer.module.scss";
+// context
+import { useTheme } from "../../contexts/themeContext";
 
 function Footer() {
+  const { theme } = useTheme();
   const { t } = useTranslation();
 
   const [showWhatsappModal, setShowWhatsappModal] = useState();
 
   return (
     <>
-      <div className={styles.footer_container}>
+      <div
+        className={`mt-auto w-screen p-3 flex flex-col justify-center items-center text-sm ${
+          theme === "light" ? "bg-main text-white" : "d-mixed100-primary300"
+        }`}
+      >
         <p>{t("contact us")}</p>
-        <div className={styles.communication_info}>
+        <div className="flex items-center justify-center">
           <RiFacebookCircleFill
             size={24}
-            className={styles.icon}
+            className="cursor-pointer mx-1"
             onClick={() =>
               window.open(
                 "https://www.facebook.com/Smart-Pharma-106820748580558/",
@@ -40,7 +44,7 @@ function Footer() {
           />
           <RiInstagramFill
             size={24}
-            className={styles.icon}
+            className="cursor-pointer mx-1"
             onClick={() =>
               window.open(
                 "https://www.instagram.com/p/CZsAC7Rrocc/?utm_medium=copy_link",
@@ -50,14 +54,14 @@ function Footer() {
           />
           <RiTelegramFill
             size={24}
-            className={styles.icon}
+            className="cursor-pointer mx-1"
             onClick={() =>
               window.open("https://t.me/+8SM-2Zfg8fcyNDdk", "_blank")
             }
           />
           <RiWhatsappFill
             size={24}
-            className={styles.icon}
+            className="cursor-pointer mx-1"
             onClick={() => {
               setShowWhatsappModal(true);
             }}
@@ -72,19 +76,26 @@ function Footer() {
           {t("copy right")}
         </p>
         <p>{t("developed by")}</p>
+        <div className="flex flex-row gap-4 p-2">
+          <ThemeChanger />
+          <LanguageChanger />
+        </div>
       </div>
 
       {showWhatsappModal && (
         <Modal
-          header="contact us"
-          cancelLabel="close"
-          closeModal={() => {
+          headerText="contact us"
+          cancelText="close"
+          closeHandler={() => {
             setShowWhatsappModal(false);
           }}
-          small={true}
-          color={Colors.LIGHT_COLOR}
+          showFooter={true}
         >
-          <p>
+          <p
+            className={`${
+              theme === "light" ? "text-dark" : "text-color-primary-400"
+            }`}
+          >
             {t("contact us via whatsapp")}: {t("our phone number")}
           </p>
         </Modal>

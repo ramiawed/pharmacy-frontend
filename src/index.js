@@ -12,6 +12,7 @@ import { persistStore } from "redux-persist";
 import store from "./store";
 import App from "./App";
 import "./i18n/i18n";
+import "./index.css";
 
 let persistor = persistStore(store);
 

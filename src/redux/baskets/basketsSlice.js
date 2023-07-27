@@ -242,19 +242,6 @@ export const basketsSlice = createSlice({
       state.count = 0;
     },
 
-    basketsSliceSignOut: (state) => {
-      state.status = "idle";
-      state.baskets = [];
-      state.count = 0;
-      state.error = "";
-      state.pageState = {
-        searchWarehousesIds: [],
-        warehouseName: "",
-        pharmacyName: "",
-        page: 1,
-      };
-    },
-
     addIdToWarehousesIds: (state, action) => {
       const { value } = action.payload;
       if (
@@ -384,7 +371,6 @@ export const basketsSlice = createSlice({
 export const selectBaskets = (state) => state.baskets;
 
 export const {
-  basketsSliceSignOut,
   resetBaskets,
   resetBasketPageState,
   resetBasketsArray,

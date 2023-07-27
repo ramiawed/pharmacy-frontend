@@ -14,6 +14,7 @@ import CenterContainer from "../center-container/center-container.component";
 
 // styles
 import styles from "./create-account-stage-two.module.scss";
+import InputSignIn from "../input-sign-in/input-sign-in.component";
 
 const CreateAccountStageTwo = ({
   next,
@@ -161,7 +162,7 @@ const CreateAccountStageTwo = ({
   return (
     <StageContainer next={next}>
       <div className={styles.container}>
-        <Input
+        <InputSignIn
           type="text"
           label="name"
           id="name"
@@ -171,9 +172,10 @@ const CreateAccountStageTwo = ({
           errorMsg={t(error.name)}
           placeholder={placeholder}
           onEnterPress={nextStageHandler}
+          resetField={() => inputChangeHandler("name", "")}
         />
 
-        <Input
+        <InputSignIn
           type="text"
           label="username"
           id="username"
@@ -183,9 +185,10 @@ const CreateAccountStageTwo = ({
           errorMsg={t(error.username)}
           placeholder="mandatory placeholder"
           onEnterPress={nextStageHandler}
+          resetField={() => inputChangeHandler("username", "")}
         />
 
-        <Input
+        <InputSignIn
           type="password"
           label="password"
           id="password"
@@ -195,9 +198,10 @@ const CreateAccountStageTwo = ({
           errorMsg={t(error.password)}
           placeholder="mandatory placeholder"
           onEnterPress={nextStageHandler}
+          resetField={() => inputChangeHandler("password", "")}
         />
 
-        <Input
+        <InputSignIn
           type="password"
           label="password confirm"
           id="passwordConfirm"
@@ -209,6 +213,7 @@ const CreateAccountStageTwo = ({
           errorMsg={t(error.passwordConfirm)}
           placeholder="mandatory placeholder"
           onEnterPress={nextStageHandler}
+          resetField={() => inputChangeHandler("passwordConfirm", "")}
         />
 
         {checking ? (

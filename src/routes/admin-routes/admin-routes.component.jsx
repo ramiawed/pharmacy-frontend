@@ -92,8 +92,7 @@ const ItemsWithPointsPage = lazy(() =>
 
 function AdminRoutes({ changeOptionHandler }) {
   return (
-    <>
-      <Suspense fallback={<HomePageLoader />}></Suspense>
+    <Suspense fallback={<HomePageLoader />}>
       <Switch>
         <Route exact path="/">
           <HomePage
@@ -123,7 +122,7 @@ function AdminRoutes({ changeOptionHandler }) {
           />
         </Route>
 
-        <Route exact path="/medicines">
+        <Route path="/medicines">
           <MedicinesPage
             onSelectedChange={() => {
               changeOptionHandler({
@@ -428,7 +427,7 @@ function AdminRoutes({ changeOptionHandler }) {
 
         <Route component={NotFound} />
       </Switch>
-    </>
+    </Suspense>
   );
 }
 

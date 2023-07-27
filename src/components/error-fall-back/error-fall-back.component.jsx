@@ -1,29 +1,11 @@
 import React from "react";
 import { useTranslation } from "react-i18next";
-// import { motion } from "framer-motion";
 
 // component
 import Button from "../../components/button/button.component";
 
 // styles
 import styles from "./error-fall-back.module.scss";
-
-// constants
-
-const containerVariant = {
-  hidden: {
-    opacity: 0,
-    left: "100vw",
-  },
-  visible: {
-    opacity: 1,
-    left: "0",
-    transition: {
-      type: "spring",
-      delay: 0.5,
-    },
-  },
-};
 
 function ErrorFallback({ error, resetErrorBoundary }) {
   const { t } = useTranslation();

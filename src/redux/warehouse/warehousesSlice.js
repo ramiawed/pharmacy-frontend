@@ -13,7 +13,6 @@ const initialState = {
   pageState: {
     searchName: "",
     searchCity: CitiesName.ALL,
-    displayType: "list",
   },
 };
 
@@ -126,13 +125,6 @@ export const warehousesSlice = createSlice({
       };
     },
 
-    changeDisplayType: (state, action) => {
-      state.pageState = {
-        ...state.pageState,
-        displayType: action.payload,
-      };
-    },
-
     setSelectedWarehouse: (state, action) => {
       state.selectedWarehouse = action.payload;
     },
@@ -141,7 +133,6 @@ export const warehousesSlice = createSlice({
       state.pageState = {
         searchName: "",
         searchCity: CitiesName.ALL,
-        displayType: "list",
       };
     },
     resetError: (state) => {
@@ -163,17 +154,6 @@ export const warehousesSlice = createSlice({
       state.warehouses = [];
       state.pageState = {
         ...state.pageState,
-      };
-    },
-
-    warehouseSliceSignOut: (state) => {
-      state.status = "idle";
-      state.warehouses = [];
-      state.error = null;
-      state.pageState = {
-        searchName: "",
-        searchCity: CitiesName.ALL,
-        displayType: "list",
       };
     },
   },
@@ -238,8 +218,6 @@ export const {
   resetWarehousePageState,
   changeSearchName,
   changeSearchCity,
-  changeDisplayType,
-  warehouseSliceSignOut,
   resetWarehousesArray,
   setSelectedWarehouse,
 } = warehousesSlice.actions;

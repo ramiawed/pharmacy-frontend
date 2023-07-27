@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { Redirect } from "react-router";
 import { useHistory } from "react-router-dom";
@@ -8,15 +8,11 @@ import WarehousesSearchEngine from "../../components/warehouses-search-engine/wa
 import MainContentContainer from "../../components/main-content-container/main-content-container.component";
 import WarehousesActions from "../../components/warehouses-actions/warehouses-actions.component";
 import CenterContainer from "../../components/center-container/center-container.component";
-import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 import NoMoreResult from "../../components/no-more-result/no-more-result.component";
 import ResultsCount from "../../components/results-count/results-count.component";
-import PartnerCard from "../../components/partner-card/partner-card.component";
 import CylonLoader from "../../components/cylon-loader/cylon-loader.component";
 import PartnerRow from "../../components/partner-row/partner-row.component";
 import NoContent from "../../components/no-content/no-content.component";
-import ActionBar from "../../components/action-bar/action-bar.component";
-import Toast from "../../components/toast/toast.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -31,19 +27,13 @@ import {
 import {
   getFavorites,
   resetFavorites,
-  selectFavorites,
 } from "../../redux/favorites/favoritesSlice";
 import { selectOnlineStatus } from "../../redux/online/onlineSlice";
 
 // constants and utils
-import {
-  CitiesName,
-  Colors,
-  UserTypeConstants,
-} from "../../utils/constants.js";
+import { CitiesName, UserTypeConstants } from "../../utils/constants.js";
 
 // icons
-import { CgMoreVertical } from "react-icons/cg";
 
 // handlers
 import {
@@ -51,8 +41,9 @@ import {
   partnerRowClickHandler,
   removePartnerFromFavoriteHandler,
 } from "../../utils/handlers";
+import WarehouseCard from "../../components/warehouse-card/warehouse-card.component";
 
-function WarehousePage({ onSelectedChange }) {
+function WarehousePage() {
   const { t } = useTranslation();
   const history = useHistory();
   const dispatch = useDispatch();
@@ -60,10 +51,8 @@ function WarehousePage({ onSelectedChange }) {
   // selectors
   const isOnline = useSelector(selectOnlineStatus);
   const { token, user } = useSelector(selectUserData);
-  const { warehouses, count, status } = useSelector(selectWarehouses);
-  const { searchName, searchCity, displayType } = useSelector(
-    selectWarehousesPageState
-  );
+  const { warehouses, status } = useSelector(selectWarehouses);
+  const { searchName, searchCity } = useSelector(selectWarehousesPageState);
 
   let filteredWarehouses = warehouses.filter((warehouse) => {
     if (searchName.trim().length > 0) {
@@ -78,11 +67,6 @@ function WarehousePage({ onSelectedChange }) {
     }
     return true;
   });
-
-  // select favorites from favoriteSlice
-  const { error: favoriteError } = useSelector(selectFavorites);
-
-  const [favoritesError, setFavoritesError] = useState(favoriteError);
 
   // handle search
   const searchHandler = () => {
@@ -110,110 +94,60 @@ function WarehousePage({ onSelectedChange }) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-
-    onSelectedChange();
   }, []);
 
   return user &&
     (user.type === UserTypeConstants.ADMIN ||
       user.type === UserTypeConstants.PHARMACY) ? (
     <>
-      <WarehousesSearchEngine />
       <MainContentContainer>
+        <WarehousesSearchEngine />
+
         <WarehousesActions refreshHandler={refreshHandler} />
 
         {filteredWarehouses.length > 0 && (
           <ResultsCount
-            count={filteredWarehouses.length}
             label={t("warehouses count")}
+            count={filteredWarehouses.length}
           />
         )}
 
-        {/* display as list */}
-        {displayType === "list" && (
-          <CenterContainer>
-            {filteredWarehouses.map((warehouse) => (
-              <PartnerRow
-                key={warehouse._id}
-                partner={warehouse}
-                addPartnerToFavoriteHandler={() =>
-                  addPartnerToFavoriteHandler(
-                    warehouse,
-                    isOnline,
-                    dispatch,
-                    token,
-                    user
-                  )
-                }
-                removePartnerFromFavoriteHandler={() => {
-                  removePartnerFromFavoriteHandler(
-                    warehouse,
-                    isOnline,
-                    dispatch,
-                    token
-                  );
-                }}
-                partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
-                  partnerRowClickHandler(
-                    warehouse,
-                    allowShowingWarehouseMedicines,
-                    user,
-                    dispatch,
-                    token,
-                    history
-                  )
-                }
-              />
-            ))}
-          </CenterContainer>
-        )}
-
-        {/* display as card */}
-        {displayType === "card" && (
-          <CenterContainer
-            style={{
-              alignItems: "stretch",
-            }}
-          >
-            {filteredWarehouses.map((warehouse) => (
-              <PartnerCard
-                key={warehouse._id}
-                partner={warehouse}
-                addPartnerToFavoriteHandler={() =>
-                  addPartnerToFavoriteHandler(
-                    warehouse,
-                    isOnline,
-                    dispatch,
-                    token,
-                    user
-                  )
-                }
-                removePartnerFromFavoriteHandler={() => {
-                  removePartnerFromFavoriteHandler(
-                    warehouse,
-                    isOnline,
-                    dispatch,
-                    token
-                  );
-                }}
-                partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
-                  partnerRowClickHandler(
-                    warehouse,
-                    allowShowingWarehouseMedicines,
-                    user,
-                    dispatch,
-                    token,
-                    history
-                  )
-                }
-              />
-            ))}
-          </CenterContainer>
-        )}
-
-        {count > 0 && status !== "loading" && (
-          <ResultsCount count={`${filteredWarehouses.length} / ${count}`} />
-        )}
+        <CenterContainer>
+          {filteredWarehouses.map((warehouse) => (
+            <WarehouseCard partner={warehouse} key={warehouse._id} />
+            // <PartnerRow
+            //   key={warehouse._id}
+            //   partner={warehouse}
+            //   addPartnerToFavoriteHandler={() =>
+            //     addPartnerToFavoriteHandler(
+            //       warehouse,
+            //       isOnline,
+            //       dispatch,
+            //       token,
+            //       user
+            //     )
+            //   }
+            //   removePartnerFromFavoriteHandler={() => {
+            //     removePartnerFromFavoriteHandler(
+            //       warehouse,
+            //       isOnline,
+            //       dispatch,
+            //       token
+            //     );
+            //   }}
+            //   partnerRowClickHandler={(allowShowingWarehouseMedicines) =>
+            //     partnerRowClickHandler(
+            //       warehouse,
+            //       allowShowingWarehouseMedicines,
+            //       user,
+            //       dispatch,
+            //       token,
+            //       history
+            //     )
+            //   }
+            // />
+          ))}
+        </CenterContainer>
 
         {filteredWarehouses.length === 0 &&
           status !== "loading" &&
@@ -230,31 +164,8 @@ function WarehousePage({ onSelectedChange }) {
 
         {status === "loading" && <CylonLoader />}
 
-        {filteredWarehouses.length < count && (
-          <ActionBar>
-            <ButtonWithIcon
-              text={t("more")}
-              action={searchHandler}
-              bgColor={Colors.SUCCEEDED_COLOR}
-              icon={() => <CgMoreVertical />}
-            />
-          </ActionBar>
-        )}
-
-        {filteredWarehouses.length === count &&
-          status !== "loading" &&
-          count !== 0 && <NoMoreResult msg={t("no more")} />}
-
-        {favoritesError && (
-          <Toast
-            bgColor={Colors.FAILED_COLOR}
-            foreColor="#fff"
-            actionAfterTimeout={() => {
-              setFavoritesError("");
-            }}
-          >
-            {t(favoriteError)}
-          </Toast>
+        {status !== "loading" && filteredWarehouses.length > 0 && (
+          <NoMoreResult msg={t("no more")} />
         )}
       </MainContentContainer>
     </>

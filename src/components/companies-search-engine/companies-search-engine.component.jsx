@@ -13,7 +13,7 @@ import {
 import ChooserContainer from "../chooser-container/chooser-container.component";
 import SearchContainer from "../search-container/search-container.component";
 import ChooseValue from "../choose-value/choose-value.component";
-import SearchInput from "../search-input/search-input.component";
+import InputSignIn from "../input-sign-in/input-sign-in.component";
 
 // constants
 import { CitiesName } from "../../utils/constants";
@@ -23,7 +23,6 @@ function CompaniesSearchEngine({ search }) {
   const dispatch = useDispatch();
 
   const { searchName, searchCity } = useSelector(selectCompaniesPageState);
-
   const [showChooseCityModal, setShowChooseCityModal] = useState(false);
 
   // guest options and its change handler
@@ -54,16 +53,18 @@ function CompaniesSearchEngine({ search }) {
   return (
     <>
       <SearchContainer searchAction={search} searchEngineAlert={isThereSearch}>
-        <SearchInput
+        <InputSignIn
           label="name"
-          id="search-name"
           type="text"
+          id="search-name"
           value={searchName}
           onchange={(e) => {
             dispatch(changeSearchName(e.target.value));
           }}
-          placeholder="search by company name"
+          onEnterPress={search}
           resetField={() => dispatch(changeSearchName(""))}
+          placeholder="search by company name"
+          forSearch={true}
         />
 
         <ChooserContainer
@@ -71,7 +72,6 @@ function CompaniesSearchEngine({ search }) {
           selectedValue={searchCity}
           label="city"
           styleForSearch={true}
-          withoutBorder={true}
         />
       </SearchContainer>
 

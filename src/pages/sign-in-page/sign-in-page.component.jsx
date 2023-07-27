@@ -5,7 +5,6 @@ import { Redirect } from "react-router-dom";
 import SignIn from "../../components/signin/signin.component";
 import HomePageLoader from "../../components/home-page-loader/home-page-loader.component";
 import Loader from "../../components/action-loader/action-loader.component";
-import HeaderWithSlogn from "../../components/header-with-slogn/header-with-slogn.component";
 
 // redux stuff
 import { unwrapResult } from "@reduxjs/toolkit";
@@ -23,6 +22,7 @@ import { getSavedItems } from "../../redux/savedItems/savedItemsSlice";
 
 // constants
 import { UserTypeConstants, VERSION } from "../../utils/constants";
+import SignContainer from "../../components/sign-container/sign-container.component";
 
 function SignInPage() {
   const dispatch = useDispatch();
@@ -78,10 +78,9 @@ function SignInPage() {
     <Redirect to="/" />
   ) : (
     <>
-      <div className="sign_container">
+      <SignContainer>
         <SignIn />
-        <HeaderWithSlogn bgColor="white" />
-      </div>
+      </SignContainer>
       {status === "loading" && (
         <Loader allowCancel={true} onclick={cancelOperationHandler} />
       )}

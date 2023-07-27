@@ -182,19 +182,6 @@ export const itemsWithOffersSlice = createSlice({
         page: 1,
       };
     },
-
-    offersSliceSignOut: (state) => {
-      state.status = "idle";
-      state.medicines = [];
-      state.count = 0;
-      state.error = "";
-      state.pageState = {
-        searchName: "",
-        searchCompaniesIds: [],
-        searchWarehousesIds: [],
-        page: 1,
-      };
-    },
   },
   extraReducers: {
     [getOffers.pending]: (state) => {
@@ -228,7 +215,6 @@ export const {
   resetStatus,
   resetError,
   resetMedicines,
-  offersSliceSignOut,
   setSearchName,
   setPage,
   resetOfferItemsArray,

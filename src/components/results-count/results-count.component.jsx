@@ -1,12 +1,18 @@
 import React from "react";
 
-import styles from "./results-count.module.scss";
+import { useTheme } from "../../contexts/themeContext";
 
 const ResultsCount = ({ label, count }) => {
+  const { theme } = useTheme();
+
   return (
-    <div className={styles.container}>
-      {label && <label className={styles.label}>{label}</label>}
-      <label className={styles.count}>{count}</label>
+    <div
+      className={`mt-3 flex items-center justify-center text-base gap-2 bold ${
+        theme === "light" ? "text-dark" : "text-color-primary-500"
+      }`}
+    >
+      {label && <label>{label}</label>}
+      <label>{count}</label>
     </div>
   );
 };

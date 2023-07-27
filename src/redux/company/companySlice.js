@@ -12,7 +12,6 @@ const initialState = {
   pageState: {
     searchName: "",
     searchCity: CitiesName.ALL,
-    displayType: "list",
   },
 };
 
@@ -82,18 +81,10 @@ export const companiesSlice = createSlice({
       };
     },
 
-    changeDisplayType: (state, action) => {
-      state.pageState = {
-        ...state.pageState,
-        displayType: action.payload,
-      };
-    },
-
     resetCompaniesPageState: (state) => {
       state.pageState = {
         searchName: "",
         searchCity: CitiesName.ALL,
-        displayType: "list",
       };
     },
 
@@ -110,17 +101,6 @@ export const companiesSlice = createSlice({
       state.status = "idle";
       state.companies = [];
       state.error = null;
-    },
-
-    companySliceSignOut: (state) => {
-      state.status = "idle";
-      state.companies = [];
-      state.error = "";
-      state.pageState = {
-        searchName: "",
-        searchCity: CitiesName.ALL,
-        displayType: "list",
-      };
     },
   },
   extraReducers: {
@@ -162,8 +142,6 @@ export const {
   resetCompaniesPageState,
   changeSearchName,
   changeSearchCity,
-  changeDisplayType,
-  companySliceSignOut,
 } = companiesSlice.actions;
 
 export default companiesSlice.reducer;

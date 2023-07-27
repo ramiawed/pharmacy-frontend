@@ -191,18 +191,6 @@ export const companiesSectionTwoSlice = createSlice({
       state.count = 0;
       state.refresh = true;
     },
-
-    companiesSectionTwoSignOut: (state) => {
-      state.companiesSectionTwoStatus = "idle";
-      state.companiesSectionTwoError = "";
-      state.addCompanyToSectionTwoStatus = "idle";
-      state.addCompanyToSectionTwoError = "";
-      state.removeCompanyFromSectionTwoStatus = "idle";
-      state.removeCompanyFromSectionTwoError = "";
-      state.companiesSectionTwo = [];
-      state.count = 0;
-      state.refresh = true;
-    },
   },
 
   extraReducers: {
@@ -277,7 +265,6 @@ export const companiesSectionTwoSlice = createSlice({
 export const selectCompaniesSectionTwo = (state) => state.companiesSectionTwo;
 
 export const {
-  companiesSectionTwoSignOut,
   resetCompaniesSectionTwoStatus,
   resetCompaniesSectionTwoError,
   resetAddCompanyToSectionTwoStatus,

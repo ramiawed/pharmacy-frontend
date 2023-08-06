@@ -14,15 +14,15 @@ import {
 
 // components
 import LabelValueRow from "../label-value-row/label-value-row.component";
-import Icon from "../icon/icon.component";
 
 // constants
-import { Colors } from "../../utils/constants";
 
 // styles
-import rowStyles from "../row.module.scss";
+import { useTheme } from "../../contexts/themeContext";
+import CustomButton from "../custom-button/custom-button.component";
 
 function SettingRow({ data, tooltip, action, type }) {
+  const { theme } = useTheme();
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
@@ -34,18 +34,13 @@ function SettingRow({ data, tooltip, action, type }) {
   let timer = useRef();
 
   // own state
-  const [loading, setLoading] = useState(false);
 
-  const removeFromAdvertisementSectionHandler = () => {
+  const removeHandler = () => {
     if (!isOnline) {
       dispatch(changeOnlineMsg());
       return;
     }
 
-    setLoading(true);
-    timer = setTimeout(() => {
-      setLoading(false);
-    }, 15000);
     action(data._id);
   };
 
@@ -56,49 +51,35 @@ function SettingRow({ data, tooltip, action, type }) {
   }, []);
 
   return (
-    <>
-      <div
-        className={[rowStyles.container, rowStyles.without_box_shadow].join(
-          " "
+    <div
+      className={`p-2 rounded-lg flex flex-row border ${
+        theme === "light"
+          ? "text-dark border-light_grey"
+          : "d-mixed300-primary300 border-color-primary-100"
+      }`}
+    >
+      <div className={`flex-1 flex flex-col items-start justify-start`}>
+        {type === "item" ? (
+          <>
+            <label className="bold text-lg underline">{data.name}</label>
+            <label className="text-sm">{data.caliber}</label>
+            <label className="text-sm">{data.packing}</label>
+          </>
+        ) : (
+          <label>{data.name}</label>
         )}
-      >
-        <div
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-start",
-            alignItems: "flex-start",
-          }}
-        >
-          {type === "item" ? (
-            <>
-              <LabelValueRow label="item name" value={data.name} />
-              <LabelValueRow label="caliber" value={data.caliber} />
-              <LabelValueRow label="packing" value={data.packing} />
-            </>
-          ) : (
-            <label style={{ padding: "0 10px" }}>{data.name}</label>
-          )}
-        </div>
-
-        <div className={rowStyles.padding_end}>
-          {loading ? (
-            <Icon
-              icon={() => <VscLoading className="loading" size={24} />}
-              onclick={() => {}}
-              foreColor={Colors.FAILED_COLOR}
-            />
-          ) : (
-            <Icon
-              icon={() => <RiDeleteBin5Fill size={24} />}
-              foreColor={Colors.FAILED_COLOR}
-              onclick={removeFromAdvertisementSectionHandler}
-              tooltip={t(tooltip)}
-            />
-          )}
-        </div>
       </div>
-    </>
+
+      <div>
+        <CustomButton
+          icon={() => <RiDeleteBin5Fill />}
+          onClickHandler={removeHandler}
+          classname={`${
+            theme === "light" ? "bg-red text-white" : "d-primary500-mixed300"
+          }`}
+        />
+      </div>
+    </div>
   );
 }
 

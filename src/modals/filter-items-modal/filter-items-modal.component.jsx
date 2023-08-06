@@ -7,29 +7,29 @@ import { useSelector } from "react-redux";
 import { selectUserData } from "../../redux/auth/authSlice";
 
 // react icons
+import { CgMoreVertical } from "react-icons/cg";
 import { RiCloseLine } from "react-icons/ri";
 
 // components
-import ButtonWithIcon from "../../components/button-with-icon/button-with-icon.component";
 import NoMoreResult from "../../components/no-more-result/no-more-result.component";
+import CustomButton from "../../components/custom-button/custom-button.component";
 import ResultsCount from "../../components/results-count/results-count.component";
 import MedicineRow from "../../components/medicine-row/medicine-row.component";
 import CylonLoader from "../../components/cylon-loader/cylon-loader.component";
-import ActionBar from "../../components/action-bar/action-bar.component";
 import NoContent from "../../components/no-content/no-content.component";
 import Modal from "../modal/modal.component";
 
-// styles
-import styles from "./filter-items-modal.module.scss";
+// context
+import { useTheme } from "../../contexts/themeContext";
 
 // constants
-import { Colors, BASEURL } from "../../utils/constants";
-import { CgMoreVertical } from "react-icons/cg";
+import { BASEURL } from "../../utils/constants";
 
 let CancelToken = null;
 let source = null;
 
 function FilterItemsModal({ close, selectedAction }) {
+  const { theme } = useTheme();
   const { t } = useTranslation();
 
   // selectors
@@ -122,11 +122,20 @@ function FilterItemsModal({ close, selectedAction }) {
   });
 
   return (
-    <Modal closeModal={close} cancelLabel="close">
-      <div className={styles.search_container}>
-        <div className={[styles.search_div].join(" ")}>
+    <Modal
+      showHeader={false}
+      closeHandler={close}
+      cancelText="close"
+      showFooter={true}
+    >
+      <div className="flex flex-col relative rounded-xl">
+        <div
+          className={`flex flex-1 border-b items-center justify-center p-1 ${
+            theme === "light" ? "text-dark" : "text-color-primary-300"
+          }`}
+        >
           <input
-            className={styles.input}
+            className="bg-transparent flex-1 border-none outline-none"
             type="text"
             value={searchName}
             onChange={(e) => {
@@ -139,16 +148,14 @@ function FilterItemsModal({ close, selectedAction }) {
           />
 
           {searchName.length > 0 && (
-            <RiCloseLine
-              size={24}
-              color={Colors.DARK_COLOR}
-              onClick={clearResultHandler}
-            />
+            <RiCloseLine size={24} onClick={clearResultHandler} />
           )}
         </div>
 
         {searchName.length >= 3 ? (
-          <div className={styles.result_div}>
+          <div
+            className={`max-h-[400px] flex flex-col items-center justify-start overflow-scroll`}
+          >
             {items.map((d, index) => (
               <MedicineRow
                 key={d._id}
@@ -166,14 +173,16 @@ function FilterItemsModal({ close, selectedAction }) {
             )}
 
             {items.length < count && !loading && (
-              <ActionBar>
-                <ButtonWithIcon
-                  text={t("more")}
-                  action={moreDataHandler}
-                  bgColor={Colors.SUCCEEDED_COLOR}
-                  icon={() => <CgMoreVertical />}
-                />
-              </ActionBar>
+              <CustomButton
+                icon={() => <CgMoreVertical />}
+                onClickHandler={moreDataHandler}
+                classname={`${
+                  theme === "light"
+                    ? "bg-green text-white"
+                    : "d-primary500-mixed300"
+                }`}
+                text={t("more")}
+              />
             )}
 
             {items.length === count && !loading && count !== 0 && (
@@ -185,7 +194,9 @@ function FilterItemsModal({ close, selectedAction }) {
             )}
           </div>
         ) : (
-          <p className={styles.msg}>{t("enter at least 3 characters")}</p>
+          <p className={`bold text-center text-green my-2`}>
+            {t("enter at least 3 characters")}
+          </p>
         )}
       </div>
     </Modal>

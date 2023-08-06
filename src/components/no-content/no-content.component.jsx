@@ -18,7 +18,7 @@ function NoContent({ msg }) {
       />
 
       <p
-        className={`bold text-lg ${
+        className={`bold text-center text-lg ${
           theme === "light" ? "text-dark" : "text-color-primary-500"
         }`}
       >

@@ -208,7 +208,6 @@ function NewAdvertisement({ closeHandler, header }) {
       )}
       {showSelectCompanyModal && (
         <SelectPartnerModal
-          header="choose company"
           close={() => setShowSelectCompanyModal(false)}
           chooseAction={(data) => selectCompanyHandler(data)}
           data={companies}
@@ -217,7 +216,6 @@ function NewAdvertisement({ closeHandler, header }) {
       )}
       {showSelectWarehouseModal && (
         <SelectPartnerModal
-          header="choose warehouse"
           close={() => setShowSelectWarehouseModal(false)}
           chooseAction={(data) => selectWarehouseHandler(data)}
           data={warehouses}

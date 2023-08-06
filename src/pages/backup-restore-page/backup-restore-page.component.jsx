@@ -5,19 +5,16 @@ import BackupRestoreSection from "../../components/backup-restore-section/backup
 import MainContentContainer from "../../components/main-content-container/main-content-container.component";
 import Header from "../../components/header/header.component";
 
-// styles
-import styles from "./backup-restore-page.module.scss";
-
 // constants
 import { BASEURL } from "../../utils/constants";
 
 function BackupRestorePage() {
   return (
     <>
-      <Header title="backup and restore" />
-
       <MainContentContainer>
-        <ul className={styles.ul}>
+        <Header title="backup and restore" />
+
+        <ul>
           {/* users */}
           <BackupRestoreSection
             title="partners"

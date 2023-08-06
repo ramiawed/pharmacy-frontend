@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 // components
-import Icon from "../icon/icon.component";
+import CustomButton from "../custom-button/custom-button.component";
 
 // redux stuff
 import { useDispatch, useSelector } from "react-redux";
@@ -13,15 +13,15 @@ import { selectToken } from "../../redux/auth/authSlice";
 import { AiFillCloseCircle, AiFillEdit } from "react-icons/ai";
 import { IoCheckmarkDoneCircle } from "react-icons/io5";
 
-// styles
-import styles from "./setting-section-header.module.scss";
-
 // constants and utils
 import {
-  Colors,
   onKeyPressForNumberInput,
   toEnglishNumber,
 } from "../../utils/constants";
+
+// context
+import { useTheme } from "../../contexts/themeContext";
+import Checkbox from "../checkbox/checkbox.component";
 
 function SettingSectionHeader({
   show,
@@ -33,6 +33,7 @@ function SettingSectionHeader({
   updateAction,
   field,
 }) {
+  const { theme } = useTheme();
   const { t } = useTranslation();
   const dispatch = useDispatch();
   const token = useSelector(selectToken);
@@ -100,117 +101,174 @@ function SettingSectionHeader({
 
   return (
     <>
-      <div
-        className={["flex_center_container"]}
-        style={{ justifyContent: "flex-start" }}
-      >
-        <h3 style={{ color: Colors.FAILED_COLOR, paddingInlineEnd: "12px" }}>
-          {header}
-        </h3>
-        {edit ? (
-          <>
-            <Icon
-              icon={() => <IoCheckmarkDoneCircle size={24} />}
-              foreColor={Colors.SUCCEEDED_COLOR}
-              onclick={editHandler}
+      <div className="flex flex-row items-center gap-1 m-2 mt-4">
+        <div className="flex flex-row items-center justify-center gap-2 mx-auto my-2">
+          <p
+            className={`${
+              theme === "light" ? "text-dark" : "text-color-primary-600"
+            } text-lg bold`}
+          >
+            {header}
+          </p>
+          {edit ? (
+            <>
+              <CustomButton
+                icon={() => <IoCheckmarkDoneCircle />}
+                onClickHandler={editHandler}
+                classname={`${
+                  theme === "light"
+                    ? "bg-green text-white"
+                    : "d-primary500-mixed300"
+                }`}
+              />
+
+              <CustomButton
+                icon={() => <AiFillCloseCircle />}
+                onClickHandler={closeHandler}
+                classname={`${
+                  theme === "light"
+                    ? "bg-red text-white"
+                    : "d-primary500-mixed300"
+                }`}
+              />
+            </>
+          ) : (
+            <CustomButton
+              icon={() => <AiFillEdit />}
+              onClickHandler={() => setEdit(true)}
+              classname={`${
+                theme === "light"
+                  ? "bg-dark text-white"
+                  : "d-primary500-mixed300"
+              }`}
+              tooltip={t("update")}
             />
-            <Icon
-              icon={() => <AiFillCloseCircle size={24} />}
-              foreColor={Colors.FAILED_COLOR}
-              onclick={closeHandler}
-            />
-          </>
-        ) : (
-          <Icon
-            icon={() => <AiFillEdit size={24} />}
-            foreColor={Colors.MAIN_COLOR}
-            onclick={() => {
-              setEdit(true);
-            }}
-            tooltip={t("update")}
-          />
-        )}
+          )}
+        </div>
       </div>
-
-      <div
-        className={["flex_center_container", "fc_light"].join(" ")}
-        style={{
-          justifyContent: "flex-start",
-          padding: "4px 0",
-        }}
-      >
-        <label className={styles.label}>{t("title")}</label>
-        {edit ? (
-          <input
-            className={[styles.input, titleError ? styles.error : ""].join(" ")}
-            value={titleState}
-            onChange={(e) => setTitleState(e.target.value)}
-            placeholder={t("title")}
-          />
-        ) : (
-          <label className={styles.value}>{titleState}</label>
-        )}
-      </div>
-
-      <div
-        className={["flex_center_container", "fc_light"].join(" ")}
-        style={{
-          justifyContent: "flex-start",
-          padding: "4px 0",
-        }}
-      >
-        <label className={styles.label}>{t("section description")}</label>
-        {edit ? (
-          <input
-            className={[styles.input].join(" ")}
-            value={descriptionState}
-            onChange={(e) => setDescriptionState(e.target.value)}
-            placeholder={t("section description")}
-          />
-        ) : (
-          <label className={styles.value}>{descriptionState}</label>
-        )}
-      </div>
-
-      <div
-        className={["flex_center_container", "fc_light"].join(" ")}
-        style={{
-          justifyContent: "flex-start",
-          padding: "4px 0",
-        }}
-      >
-        <label className={styles.label}>{t("section order")}</label>
-        {edit ? (
-          <>
+      <div className="flex flex-col gap-1">
+        <div
+          className={`w-[95%] mx-auto flex items-center justify-start rounded-lg overflow-hidden border ${
+            theme === "light"
+              ? "border-light_grey"
+              : "border-color-surface-mixed-300"
+          } ${titleError ? "!border-red" : ""}`}
+        >
+          <label
+            className={`w-[100px] p-1 text-sm ps-2 ${
+              theme === "light" ? "bg-dark text-white" : "d-mixed300-primary300"
+            }`}
+          >
+            {t("title")}
+          </label>
+          {edit ? (
             <input
-              value={orderState}
-              onKeyPress={onKeyPressForNumberInput}
-              onChange={quantityChange}
-              className={[styles.input, orderError ? styles.error : ""].join(
-                " "
-              )}
-              placeholder={t("section order")}
+              className={`${
+                theme === "light" ? "text-dark" : "text-color-primary-500"
+              } ps-2 border-none outline-none flex-1 bg-transparent`}
+              // className={[styles.input, titleError ? styles.error : ""].join(
+              //   " "
+              // )}
+              value={titleState}
+              onChange={(e) => setTitleState(e.target.value)}
+              placeholder={t("title")}
             />
-          </>
-        ) : (
-          <label className={styles.value}>{orderState}</label>
-        )}
-      </div>
+          ) : (
+            <label
+              className={`ps-1 ${
+                theme === "light" ? "text-dark" : "text-color-primary-500"
+              }`}
+            >
+              {titleState}
+            </label>
+          )}
+        </div>
 
-      <div
-        className={["flex_center_container", "fc_light"].join(" ")}
-        style={{
-          justifyContent: "flex-start",
-        }}
-      >
-        <input
-          type="checkbox"
-          value={showState}
-          checked={showState}
-          disabled={!edit}
-          onChange={() => setShowState(!showState)}
-        />
-        <label className={styles.checkbox_label}>{t(checkboxLabel)}</label>
+        <div
+          className={`w-[95%] mx-auto flex items-center justify-start rounded-lg overflow-hidden border ${
+            theme === "light"
+              ? "border-light_grey"
+              : "border-color-surface-mixed-300"
+          } `}
+        >
+          <label
+            className={`w-[100px] p-1 text-sm ps-2 ${
+              theme === "light" ? "bg-dark text-white" : "d-mixed300-primary300"
+            }`}
+          >
+            {t("section description")}
+          </label>
+          {edit ? (
+            <input
+              className={`${
+                theme === "light" ? "text-dark" : "text-color-primary-500"
+              } ps-2 border-none outline-none flex-1 bg-transparent`}
+              value={descriptionState}
+              onChange={(e) => setDescriptionState(e.target.value)}
+              placeholder={t("section description")}
+            />
+          ) : (
+            <label
+              className={`ps-1 ${
+                theme === "light" ? "text-dark" : "text-color-primary-500"
+              }`}
+            >
+              {descriptionState}
+            </label>
+          )}
+        </div>
+
+        <div
+          className={`w-[95%] mx-auto flex items-center justify-start rounded-lg overflow-hidden border ${
+            theme === "light"
+              ? "border-light_grey"
+              : "border-color-surface-mixed-300"
+          } ${orderError ? "!border-red" : ""}`}
+        >
+          <label
+            className={`w-[100px] p-1 text-sm ps-2 ${
+              theme === "light" ? "bg-dark text-white" : "d-mixed300-primary300"
+            }`}
+          >
+            {t("section order")}
+          </label>
+          {edit ? (
+            <>
+              <input
+                value={orderState}
+                onKeyPress={onKeyPressForNumberInput}
+                onChange={quantityChange}
+                className={`${
+                  theme === "light" ? "text-dark" : "text-color-primary-500"
+                } ps-2 border-none outline-none flex-1 bg-transparent`}
+                placeholder={t("section order")}
+              />
+            </>
+          ) : (
+            <label
+              className={`ps-1 ${
+                theme === "light" ? "text-dark" : "text-color-primary-500"
+              }`}
+            >
+              {orderState}
+            </label>
+          )}
+        </div>
+
+        <div className={`w-[95%] mx-auto flex items-center justify-start`}>
+          <Checkbox
+            isDisable={!edit}
+            check={showState}
+            clickHandler={() => setShowState(!showState)}
+            label={t(checkboxLabel)}
+            classname={`${
+              theme === "light" ? "bg-dark text-white" : "d-mixed300-primary300"
+            }`}
+            labelClassname={`${
+              theme === "light" ? "text-dark" : "text-color-primary-300"
+            }`}
+          />
+        </div>
       </div>
     </>
   );

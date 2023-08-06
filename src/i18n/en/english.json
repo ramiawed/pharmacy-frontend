@@ -477,5 +477,10 @@
     "item delete confirm message": "When the product is deleted, it will not be available for adding to any warehouse, do you want to continue the process?",
     "item undo delete header": "Restore an Product",
     "item undo delete confirm message": "When the product is restored, it will be available for adding to any repository. Do you want to continue the process?",
-    "number of points in your account": "Number of points in your account"
+    "number of points in your account": "Number of points in your account",
+    "no companies in favorites": "You don't have any companies in your favorite",
+    "no warehouses in favorites": "You don't have any warehouses in your favorite",
+    "no products in favorites": "You don't have any products in your favorite",
+    "no notifications": "No notifications",
+    "restore": "Restore"
 }

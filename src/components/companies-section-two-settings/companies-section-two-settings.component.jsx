@@ -29,8 +29,11 @@ import { selectCompanies } from "../../redux/company/companySlice";
 
 // constants
 import { Colors } from "../../utils/constants";
+import CustomButton from "../custom-button/custom-button.component";
+import { useTheme } from "../../contexts/themeContext";
 
 function CompaniesSectionTwoSettings() {
+  const { theme } = useTheme();
   const { t } = useTranslation();
   const token = useSelector(selectToken);
   const dispatch = useDispatch();
@@ -74,8 +77,8 @@ function CompaniesSectionTwoSettings() {
         {companiesSectionTwoStatus === "loading" ? (
           <Loader />
         ) : (
-          <>
-            <div>
+          <div className="p-2">
+            <CenterContainer>
               {companiesSectionTwo.map((company) => (
                 <SettingRow
                   data={company}
@@ -83,24 +86,27 @@ function CompaniesSectionTwoSettings() {
                   action={removeFromSectionTwo}
                 />
               ))}
+            </CenterContainer>
 
-              <CenterContainer>
-                <Button
-                  text="add"
-                  action={() => {
-                    setShowChooseModal(true);
-                  }}
-                  classStyle="bg_green"
-                />
-              </CenterContainer>
+            <div className="max-w-fit mx-auto">
+              <CustomButton
+                text={t("add")}
+                onClickHandler={() => {
+                  setShowChooseModal(true);
+                }}
+                classname={`${
+                  theme === "light"
+                    ? "bg-green text-white"
+                    : "d-primary500-mixed300"
+                }`}
+              />
             </div>
-          </>
+          </div>
         )}
       </CardInfo>
 
       {showChooseModal && (
         <SelectPartnerModal
-          header={`${"choose company"}`}
           close={() => setShowChooseModal(false)}
           chooseAction={(data) => {
             dispatch(addCompanyToSectionTwo({ token, id: data._id }));

@@ -29,8 +29,11 @@ import { selectWarehouses } from "../../redux/warehouse/warehousesSlice";
 
 // constants
 import { Colors } from "../../utils/constants";
+import CustomButton from "../custom-button/custom-button.component";
+import { useTheme } from "../../contexts/themeContext";
 
 function WarehousesSectionOneSettings() {
+  const { theme } = useTheme();
   const { t } = useTranslation();
   const token = useSelector(selectToken);
   const dispatch = useDispatch();
@@ -77,8 +80,8 @@ function WarehousesSectionOneSettings() {
         {warehousesSectionOneStatus === "loading" ? (
           <Loader />
         ) : (
-          <>
-            <div>
+          <div className="p-2">
+            <CenterContainer>
               {warehousesSectionOne.map((warehouse) => (
                 <SettingRow
                   data={warehouse}
@@ -86,24 +89,27 @@ function WarehousesSectionOneSettings() {
                   action={removeFromSectionOneHandler}
                 />
               ))}
+            </CenterContainer>
 
-              <CenterContainer>
-                <Button
-                  text="add"
-                  action={() => {
-                    setShowChooseModal(true);
-                  }}
-                  classStyle="bg_green"
-                />
-              </CenterContainer>
+            <div className="max-w-fit mx-auto">
+              <CustomButton
+                text={t("add")}
+                onClickHandler={() => {
+                  setShowChooseModal(true);
+                }}
+                classname={`${
+                  theme === "light"
+                    ? "bg-green text-white"
+                    : "d-primary500-mixed300"
+                }`}
+              />
             </div>
-          </>
+          </div>
         )}
       </CardInfo>
 
       {showChooseModal && (
         <SelectPartnerModal
-          header={`${"choose warehouse"}`}
           close={() => setShowChooseModal(false)}
           chooseAction={(data) => {
             dispatch(addWarehouseToSectionOne({ token, id: data._id }));

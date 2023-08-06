@@ -11,6 +11,7 @@ import {
 } from "../../redux/company/companySlice";
 
 // components
+import CustomButton from "../custom-button/custom-button.component";
 import ActionBar from "../action-bar/action-bar.component";
 
 // react icons
@@ -20,7 +21,6 @@ import { IoMdArrowRoundBack } from "react-icons/io";
 
 // constants and utils
 import { CitiesName } from "../../utils/constants";
-import CustomButton from "../custom-button/custom-button.component";
 import { useTheme } from "../../contexts/themeContext";
 
 function CompaniesActions({ refreshHandler }) {

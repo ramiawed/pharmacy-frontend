@@ -627,7 +627,6 @@ function Basket({ setIsNew, basket, editable, forRead }) {
 
       {showSelectWarehouseModal && (
         <SelectPartnerModal
-          header="choose warehouse"
           close={() => setShowSelectWarehouseModal(false)}
           chooseAction={(data) => selectWarehouseHandler(data)}
           data={warehouses}

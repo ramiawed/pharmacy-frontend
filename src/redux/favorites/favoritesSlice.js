@@ -1,6 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
-import { BASEURL } from "../../utils/constants";
+import { BASEURL, UserTypeConstants } from "../../utils/constants";
 
 let CancelToken;
 let source;
@@ -336,6 +336,18 @@ export const selectFavoritesError = (state) => state.favorites.error;
 
 export const isInFavoritePartner = (state, id) => {
   return state.favorites.favorites_partners.map((fa) => fa._id).includes(id);
+};
+
+export const selectFavoriteCompanies = (state) => {
+  return state.favorites.favorites_partners.filter(
+    (fa) => fa.type === UserTypeConstants.COMPANY
+  );
+};
+
+export const selectFavoriteWarehouses = (state) => {
+  return state.favorites.favorites_partners.filter(
+    (fa) => fa.type === UserTypeConstants.WAREHOUSE
+  );
 };
 
 export default favoritesSlice.reducer;

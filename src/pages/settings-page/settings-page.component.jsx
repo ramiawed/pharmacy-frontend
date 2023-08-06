@@ -26,19 +26,21 @@ import ItemsSectionOneSettings from "../../components/items-section-one-settings
 import ItemsSectionTwoSettings from "../../components/items-section-two-settings/items-section-two-settings.component";
 import MainContentContainer from "../../components/main-content-container/main-content-container.component";
 import { default as ActionLoader } from "../../components/action-loader/action-loader.component";
-import SettingCheckbox from "../../components/setting-checkbox/setting-checkbox.component";
 
 // constants
 import { Colors, UserTypeConstants } from "../../utils/constants";
+import Checkbox from "../../components/checkbox/checkbox.component";
+import { useTheme } from "../../contexts/themeContext";
 
-function SettingsPage({ onSelectedChange }) {
+function SettingsPage() {
+  const { theme } = useTheme();
   const { t } = useTranslation();
   const dispatch = useDispatch();
 
   const { status } = useSelector(selectSettings);
   const { user, token } = useSelector(selectUserData);
   const {
-    settings: { showWarehouseItem, showAdvertisements, saveOrders },
+    settings: { showWarehouseItem, showAdvertisements },
   } = useSelector(selectSettings);
 
   const changeShowWarehouseItemSettingHandler = () =>
@@ -61,16 +63,6 @@ function SettingsPage({ onSelectedChange }) {
       })
     );
 
-  const changeSaveOrdersSettingHandler = () =>
-    dispatch(
-      updateSettings({
-        token,
-        obj: {
-          saveOrders: !saveOrders,
-        },
-      })
-    );
-
   const refreshHandler = () => {
     dispatch(getCompaniesSectionOne({ token }));
     dispatch(getCompaniesSectionTwo({ token }));
@@ -82,40 +74,58 @@ function SettingsPage({ onSelectedChange }) {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    onSelectedChange();
   }, []);
 
   return user && user.type === UserTypeConstants.ADMIN ? (
     <>
-      <Header title="settings" refreshHandler={refreshHandler} />
-
       <MainContentContainer>
-        <CompaniesSectionOneSettings />
-        <CompaniesSectionTwoSettings />
-        <WarehousesSectionOneSettings />
-        <ItemsSectionOneSettings />
-        <ItemsSectionTwoSettings />
-        <ItemsSectionThreeSettings />
-        <div>
-          <h3 style={{ color: Colors.FAILED_COLOR }}>
-            {t("general settings")}
-          </h3>
+        <Header title="settings" refreshHandler={refreshHandler} />
+        <div className="px-4">
+          <CompaniesSectionOneSettings />
+          <CompaniesSectionTwoSettings />
+          <WarehousesSectionOneSettings />
+          <ItemsSectionOneSettings />
+          <ItemsSectionTwoSettings />
+          <ItemsSectionThreeSettings />
+
+          <div className="flex flex-col items-start gap-1 m-2 max-w-fit">
+            <p
+              className={`${
+                theme === "light" ? "text-red" : "text-color-primary-600"
+              } text-lg bold `}
+            >
+              {t("general settings")}
+            </p>
+
+            <Checkbox
+              check={showWarehouseItem}
+              clickHandler={changeShowWarehouseItemSettingHandler}
+              label={t("show warehouse items permission")}
+              classname={`${
+                theme === "light"
+                  ? "bg-dark text-white"
+                  : "d-mixed100-primary300"
+              }`}
+              labelClassname={`${
+                theme === "light" ? "text-dark" : "text-color-primary-300"
+              }`}
+            />
+
+            <Checkbox
+              check={showAdvertisements}
+              clickHandler={changeShowAdvertisementSettingHandler}
+              label={t("show advertisement on home page")}
+              classname={`${
+                theme === "light"
+                  ? "bg-dark text-white"
+                  : "d-mixed100-primary300"
+              }`}
+              labelClassname={`${
+                theme === "light" ? "text-dark" : "text-color-primary-300"
+              }`}
+            />
+          </div>
         </div>
-        <SettingCheckbox
-          label={t("show warehouse items permission")}
-          value={showWarehouseItem}
-          action={changeShowWarehouseItemSettingHandler}
-        />
-        <SettingCheckbox
-          label={t("show advertisement on home page")}
-          value={showAdvertisements}
-          action={changeShowAdvertisementSettingHandler}
-        />
-        <SettingCheckbox
-          label={t("save orders in database permission")}
-          value={saveOrders}
-          action={changeSaveOrdersSettingHandler}
-        />
       </MainContentContainer>
       {status === "loading" && <ActionLoader />}
     </>

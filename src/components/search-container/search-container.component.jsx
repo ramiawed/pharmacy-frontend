@@ -19,10 +19,9 @@ function SearchContainer({ children, searchAction, searchEngineAlert }) {
       className={`${
         theme === "light"
           ? "bg-gray-50 border-b-[1px] border-light_grey"
-          : "d-mixed300-primary300 "
+          : "d-mixed300-primary300"
       }
-      
-      flex flex-row justify-around items-start sticky p-2 top-[74px] z-10 overflow-hidden`}
+       flex flex-row justify-around items-start sticky p-2 top-[74px] z-10 overflow-x-scroll`}
     >
       {/* border-b-[1px] border-color-surface-500 */}
       <div className="flex flex-col justify-start flex-1">

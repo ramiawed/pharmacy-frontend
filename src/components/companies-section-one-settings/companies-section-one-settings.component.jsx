@@ -29,8 +29,11 @@ import { selectCompanies } from "../../redux/company/companySlice";
 
 // constants
 import { Colors } from "../../utils/constants";
+import CustomButton from "../custom-button/custom-button.component";
+import { useTheme } from "../../contexts/themeContext";
 
 function CompaniesSectionOneSettings() {
+  const { theme } = useTheme();
   const { t } = useTranslation();
   const token = useSelector(selectToken);
   const dispatch = useDispatch();
@@ -64,7 +67,6 @@ function CompaniesSectionOneSettings() {
         title={title}
         description={description}
         order={order}
-        titleRight={titleRight}
         header={t("section one companies")}
         checkboxLabel="show section in home page"
         updateAction={updateSettings}
@@ -75,8 +77,8 @@ function CompaniesSectionOneSettings() {
         {companiesSectionOneStatus === "loading" ? (
           <Loader />
         ) : (
-          <>
-            <div>
+          <div className="p-2">
+            <CenterContainer>
               {companiesSectionOne.map((company) => (
                 <SettingRow
                   data={company}
@@ -84,24 +86,27 @@ function CompaniesSectionOneSettings() {
                   action={removeFromSectionOne}
                 />
               ))}
+            </CenterContainer>
 
-              <CenterContainer>
-                <Button
-                  text="add"
-                  action={() => {
-                    setShowChooseModal(true);
-                  }}
-                  classStyle="bg_green"
-                />
-              </CenterContainer>
+            <div className="max-w-fit mx-auto">
+              <CustomButton
+                text={t("add")}
+                onClickHandler={() => {
+                  setShowChooseModal(true);
+                }}
+                classname={`${
+                  theme === "light"
+                    ? "bg-green text-white"
+                    : "d-primary500-mixed300"
+                }`}
+              />
             </div>
-          </>
+          </div>
         )}
       </CardInfo>
 
       {showChooseModal && (
         <SelectPartnerModal
-          header={`${"choose company"}`}
           close={() => setShowChooseModal(false)}
           chooseAction={(data) => {
             dispatch(addCompanyToSectionOne({ token, id: data._id }));

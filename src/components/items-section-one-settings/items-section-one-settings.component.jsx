@@ -28,8 +28,11 @@ import { selectToken } from "../../redux/auth/authSlice.js";
 
 // constants
 import { Colors } from "../../utils/constants";
+import CustomButton from "../custom-button/custom-button.component";
+import { useTheme } from "../../contexts/themeContext";
 
 function ItemsSectionOneSettings() {
+  const { theme } = useTheme();
   const { t } = useTranslation();
   const token = useSelector(selectToken);
   const dispatch = useDispatch();
@@ -73,8 +76,8 @@ function ItemsSectionOneSettings() {
         {itemsSectionOneStatus === "loading" ? (
           <Loader />
         ) : (
-          <>
-            <div>
+          <div className="p-2">
+            <CenterContainer>
               {itemsSectionOne.map((item) => (
                 <SettingRow
                   data={item}
@@ -83,18 +86,22 @@ function ItemsSectionOneSettings() {
                   type="item"
                 />
               ))}
+            </CenterContainer>
 
-              <CenterContainer>
-                <Button
-                  text="add"
-                  action={() => {
-                    setShowChooseModal(true);
-                  }}
-                  classStyle="bg_green"
-                />
-              </CenterContainer>
+            <div className="max-w-fit mx-auto">
+              <CustomButton
+                text={t("add")}
+                onClickHandler={() => {
+                  setShowChooseModal(true);
+                }}
+                classname={`${
+                  theme === "light"
+                    ? "bg-green text-white"
+                    : "d-primary500-mixed300"
+                }`}
+              />
             </div>
-          </>
+          </div>
         )}
       </CardInfo>
 

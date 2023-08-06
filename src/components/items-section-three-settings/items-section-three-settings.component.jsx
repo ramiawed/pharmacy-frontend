@@ -8,7 +8,6 @@ import CenterContainer from "../center-container/center-container.component";
 import SettingRow from "../setting-row/setting-row.component";
 import CardInfo from "../card-info/card-info.component";
 import Loader from "../loader/loader.component";
-import Button from "../button/button.component";
 import Toast from "../toast/toast.component";
 
 // redux stuff
@@ -28,8 +27,11 @@ import { selectToken } from "../../redux/auth/authSlice.js";
 
 // constants
 import { Colors } from "../../utils/constants";
+import { useTheme } from "../../contexts/themeContext";
+import CustomButton from "../custom-button/custom-button.component";
 
 function ItemsSectionThreeSettings() {
+  const { theme } = useTheme();
   const { t } = useTranslation();
   const token = useSelector(selectToken);
   const dispatch = useDispatch();
@@ -73,8 +75,8 @@ function ItemsSectionThreeSettings() {
         {itemsSectionThreeStatus === "loading" ? (
           <Loader />
         ) : (
-          <>
-            <div>
+          <div className="p-2">
+            <CenterContainer>
               {itemsSectionThree.map((item) => (
                 <SettingRow
                   data={item}
@@ -83,18 +85,22 @@ function ItemsSectionThreeSettings() {
                   type="item"
                 />
               ))}
+            </CenterContainer>
 
-              <CenterContainer>
-                <Button
-                  text="add"
-                  action={() => {
-                    setShowChooseModal(true);
-                  }}
-                  classStyle="bg_green"
-                />
-              </CenterContainer>
+            <div className="max-w-fit mx-auto">
+              <CustomButton
+                text={t("add")}
+                onClickHandler={() => {
+                  setShowChooseModal(true);
+                }}
+                classname={`${
+                  theme === "light"
+                    ? "bg-green text-white"
+                    : "d-primary500-mixed300"
+                }`}
+              />
             </div>
-          </>
+          </div>
         )}
       </CardInfo>
 

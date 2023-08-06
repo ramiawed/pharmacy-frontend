@@ -79,11 +79,6 @@ const SearchPartnerContainer = ({
 
       {showChoosePartnerModal && (
         <SelectPartnerModal
-          header={`${
-            partnerType === UserTypeConstants.WAREHOUSE
-              ? "choose warehouse"
-              : "choose company"
-          }`}
           close={() => setShowChoosePartnerModal(false)}
           chooseAction={(data) => {
             dispatch(addId({ value: data._id, label: data.name }));

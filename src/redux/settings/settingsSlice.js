@@ -43,7 +43,6 @@ const initialState = {
     },
     showAdvertisements: false,
     showWarehouseItem: false,
-    saveOrders: false,
   },
   error: "",
 };

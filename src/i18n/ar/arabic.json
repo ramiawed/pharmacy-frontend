@@ -477,5 +477,10 @@
     "item delete confirm message": "عند حذف المنتج لن يكون متاح للإضافة لأي مستودع، هل تريد متابعة العملية؟",
     "item undo delete header": "استعادة منتج",
     "item undo delete confirm message": "عند استعادة المنتج سوف يكون متاح للإضافة لأي مستودع، هل تريد متابعة العملية؟",
-    "number of points in your account": "عدد النقاط في حسابك"
+    "number of points in your account": "عدد النقاط في حسابك",
+    "no companies in favorites": "لا يوجد اي شركة ضمن المفضلة",
+    "no warehouses in favorites": "لا يوجد اي مستودع ضمن المفضلة",
+    "no products in favorites": "لا يوجد اي منتج ضمن المفضلة",
+    "no notifications": "لا يوجد اشعارات",
+    "restore": "استعادة"
 }

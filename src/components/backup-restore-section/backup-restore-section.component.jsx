@@ -4,25 +4,26 @@ import axios from "axios";
 import * as FileSaver from "file-saver";
 
 // components
+import CustomButton from "../custom-button/custom-button.component";
 import Loader from "../action-loader/action-loader.component";
 import Modal from "../../modals/modal/modal.component";
 import Toast from "../toast/toast.component";
-import Icon from "../icon/icon.component";
 
 // redux stuff
-import { useSelector } from "react-redux";
 import { selectToken } from "../../redux/auth/authSlice";
-
-// styles
-import styles from "./backup-restore-section.module.scss";
+import { useSelector } from "react-redux";
 
 // constants
 import { Colors } from "../../utils/constants";
 
 // icons
-import { RiDeleteBin5Fill } from "react-icons/ri";
+import { TiCancelOutline } from "react-icons/ti";
+
+// context
+import { useTheme } from "../../contexts/themeContext";
 
 const BackupRestoreSection = ({ title, backupFromUrl, restoreToUrl }) => {
+  const { theme } = useTheme();
   const { t } = useTranslation();
   const token = useSelector(selectToken);
   const inputFileRef = useRef(null);
@@ -119,42 +120,61 @@ const BackupRestoreSection = ({ title, backupFromUrl, restoreToUrl }) => {
 
   return (
     <>
-      <li className={styles.listItem}>
-        <label>{t(title)}</label>
-        <button
-          className={styles.backup_button}
-          onClick={() => {
+      <li
+        className={`relative flex flex-col md:border-none border m-2 rounded-md items-center gap-2 py-2 ps-3 md:flex-row ${
+          theme === "light"
+            ? "text-dark border-dark"
+            : "text-color-primary-300 border-color-primary-300"
+        }`}
+      >
+        <label className={`inline-block min-w-[150px] text-lg text-center`}>
+          {t(title)}
+        </label>
+        <CustomButton
+          text={t("backup button")}
+          onClickHandler={() => {
             setShowConfirmModal(true);
           }}
-        >
-          {t("backup button")}
-        </button>
-        <button className={styles.restore_button} onClick={() => handleClick()}>
-          {t("restore button")}
-        </button>
+          classname={`${
+            theme === "light" ? "bg-green text-white" : "d-primary500-mixed300"
+          }`}
+        />
+
+        <CustomButton
+          text={t("restore")}
+          onClickHandler={() => handleClick()}
+          classname={`${
+            theme === "light" ? "bg-dark text-white" : "d-primary500-mixed300"
+          }`}
+        />
         {data.length > 0 ? (
           stage < numberOfStage ? (
             <>
-              <button
-                className={styles.restore_button}
-                onClick={restoreHandler}
-              >
-                {stage + 1} {t("from")} {numberOfStage}
-              </button>
-              <label>
+              <CustomButton
+                text={`${stage + 1} ${t("from")} ${numberOfStage}`}
+                onClickHandler={restoreHandler}
+                classname={`${
+                  theme === "light"
+                    ? "bg-dark text-white"
+                    : "d-primary500-mixed300"
+                }`}
+              />
+
+              <label className="text-center">
                 {t("you have finish all the stage to restore all information")}
               </label>
-              <Icon
-                icon={() => <RiDeleteBin5Fill size={24} />}
-                onclick={() => {
+
+              <CustomButton
+                icon={() => <TiCancelOutline size={24} />}
+                onClickHandler={() => {
                   setShowConfirmCancelRestoreModel(true);
                 }}
+                classname={`bg-red text-white !absolute top-3 end-2 md:!relative md:top-0 md:end-0`}
                 tooltip={t("cancel restore operation")}
-                foreColor={Colors.FAILED_COLOR}
               />
             </>
           ) : (
-            <label>{t("restore completed")}</label>
+            <label className="text-center">{t("restore completed")}</label>
           )
         ) : (
           <></>
@@ -197,40 +217,52 @@ const BackupRestoreSection = ({ title, backupFromUrl, restoreToUrl }) => {
 
       {showConfirmModal && (
         <Modal
-          header="backup header"
-          cancelLabel="close"
-          okLabel="ok"
-          closeModal={() => {
+          showHeader={true}
+          showFooter={true}
+          headerText="backup header"
+          cancelText="close"
+          okText="ok"
+          closeHandler={() => {
             setShowConfirmModal(false);
           }}
-          small={true}
-          okModal={() => {
+          okHandler={() => {
             setShowConfirmModal(false);
             exportToCSV(`${title}-${Date.now()}`);
           }}
-          color={Colors.MAIN_COLOR}
         >
-          <p>{t("do you want to take a backup of this section")}</p>
+          <p
+            className={`${
+              theme === "light" ? "text-dark" : "text-color-primary-500"
+            }`}
+          >
+            {t("do you want to take a backup of this section")}
+          </p>
         </Modal>
       )}
 
       {showConfirmCancelRestoreModel && (
         <Modal
-          header="backup header"
-          cancelLabel="close"
-          okLabel="ok"
-          closeModal={() => {
+          showHeader={true}
+          showFooter={true}
+          headerText="backup header"
+          cancelText="close"
+          okText="ok"
+          closeHandler={() => {
             setShowConfirmCancelRestoreModel(false);
           }}
-          small={true}
-          okModal={() => {
+          okHandler={() => {
             setShowConfirmCancelRestoreModel(false);
             setData([]);
             setStage(0);
           }}
-          color={Colors.MAIN_COLOR}
         >
-          <p>{t("cancel restore operation msg")}</p>
+          <p
+            className={`${
+              theme === "light" ? "text-dark" : "text-color-primary-500"
+            }`}
+          >
+            {t("cancel restore operation msg")}
+          </p>
         </Modal>
       )}
     </>
